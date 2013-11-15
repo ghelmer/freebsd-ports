@@ -1,0 +1,25 @@
+--- src/forward.cc.ORIG	2013-09-24 07:02:19.000000000 -0500
++++ src/forward.cc	2013-09-24 07:02:54.000000000 -0500
+@@ -737,6 +737,9 @@
+                 }
+             }
+ 
++	    debugs(81, DBG_IMPORTANT, "negotiateSSL: FD " << fd <<
++		   ": SSL failure for request host " << request->GetHost());
++
+             ErrorState *const anErr = makeConnectingError(ERR_SECURE_CONNECT_FAIL);
+             anErr->xerrno = sysErrNo;
+             anErr->detail = errDetails;
+@@ -757,8 +760,11 @@
+             serverBump->serverCert.reset(SSL_get_peer_certificate(ssl));
+ 
+             // remember validation errors, if any
+-            if (Ssl::Errors *errs = static_cast<Ssl::Errors *>(SSL_get_ex_data(ssl, ssl_ex_index_ssl_errors)))
++            if (Ssl::Errors *errs = static_cast<Ssl::Errors *>(SSL_get_ex_data(ssl, ssl_ex_index_ssl_errors))) {
+                 serverBump->sslErrors = cbdataReference(errs);
++		debugs(81, DBG_IMPORTANT, "negotiateSSL: FD " << fd <<
++		       ": SSL validation failure for request host " << request->GetHost());
++	    }
+         }
+     }
+ 

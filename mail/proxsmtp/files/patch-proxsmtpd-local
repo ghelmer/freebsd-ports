@@ -1,0 +1,981 @@
+Index: configure.in
+===================================================================
+--- configure.in	(.../vendor/1.10)	(revision 29)
++++ configure.in	(.../trunk)	(revision 29)
+@@ -109,6 +109,56 @@
+ AC_CHECK_FUNCS([getline getdelim])
+ 
+ # --------------------------------------------------------------------
++# TLS support - STARTTLS is disabled by default
++AM_CONDITIONAL(ENABLE_SSL, false)
++use_ssl=no
++
++AC_ARG_ENABLE(ssl,
++  AS_HELP_STRING([--enable-ssl],[Enable STARTTLS support using OpenSSL]),
++[ if test "$enableval" != "no"; then
++    AC_MSG_NOTICE([STARTTLS using OpenSSL enabled])
++    AC_DEFINE(USE_SSL,1,[Define this to include code for SSL encryption.])
++    AM_CONDITIONAL(ENABLE_SSL, true)
++    use_ssl=yes
++    case "$host_os" in
++    mingw|mingw32)
++        dnl Native Windows port of OpenSSL needs -lgdi32
++        SSLLIB='-lssleay32 -leay32 -lgdi32'
++        ;;
++    *)
++        SSLLIB='-lssl -lcrypto'
++        ;;
++    esac
++    USE_OPENSSL=1
++  fi
++])
++
++# User may specify OpenSSL is needed from a non-standard location
++AC_ARG_WITH(openssl,
++  AS_HELP_STRING([--with-openssl{=PATH}],[Compile with the OpenSSL libraries. The path to
++                  the OpenSSL development libraries and headers
++                  installation can be specified if outside of the
++                  system standard directories]),
++[ 
++  case "$with_openssl" in
++  yes)
++    USE_OPENSSL=1
++    ;;
++  no)
++    USE_OPENSSL=
++    ;;
++  *)
++    SSLLIBDIR="$with_openssl/lib"
++    CPPFLAGS="-I$with_openssl/include $CPPFLAGS"
++    USE_OPENSSL=1
++  esac
++])
++if test -n "$SSLLIBDIR"; then
++  SSLLIB="-L$SSLLIBDIR $SSLLIB"
++fi
++AC_SUBST(SSLLIB)
++
++# --------------------------------------------------------------------
+ # Linux tproxy support
+ AC_ARG_ENABLE(tproxy,
+ 	AC_HELP_STRING([--enable-tproxy], [Enable linux true transparent proxy]))
+Index: src/proxsmtpd.c
+===================================================================
+--- src/proxsmtpd.c	(.../vendor/1.10)	(revision 29)
++++ src/proxsmtpd.c	(.../trunk)	(revision 29)
+@@ -48,6 +48,9 @@
+ #include <signal.h>
+ 
+ #include "usuals.h"
++#ifdef USE_SSL
++#include <openssl/ssl.h>
++#endif
+ 
+ #include "compat.h"
+ #include "sock_any.h"
+Index: src/Makefile.am
+===================================================================
+--- src/Makefile.am	(.../vendor/1.10)	(revision 29)
++++ src/Makefile.am	(.../trunk)	(revision 29)
+@@ -1,6 +1,8 @@
+ 
+ sbin_PROGRAMS = proxsmtpd
+ 
++proxsmtpd_LDADD = $(SSLLIB)
++
+ proxsmtpd_SOURCES = proxsmtpd.c proxsmtpd.h \
+ 			../common/spio.c ../common/smtppass.c ../common/smtppass.h ../common/sppriv.h \
+ 			../common/stringx.c ../common/stringx.h ../common/sock_any.c ../common/sock_any.h \
+Index: common/smtppass.h
+===================================================================
+--- common/smtppass.h	(.../vendor/1.10)	(revision 29)
++++ common/smtppass.h	(.../trunk)	(revision 29)
+@@ -65,6 +65,9 @@
+ typedef struct spio
+ {
+     int fd;                             /* The file descriptor wrapped */
++#ifdef USE_SSL
++    SSL *ssl;				/* NULL if SSL not in use */
++#endif
+     const char* name;                   /* The name for logging */
+     time_t last_action;                 /* Time of last action on descriptor */
+     char peername[MAXPATHLEN];          /* Name of the peer on other side of socket */
+@@ -104,6 +107,11 @@
+ int spio_write_dataf(struct spctx* ctx, spio_t* io, const char* fmt, ...);
+ int spio_write_data_raw(struct spctx* ctx, spio_t* io, const unsigned char* buf, int len);
+ 
++#ifdef USE_SSL
++/* Upgrade server side to TLS/SSL. */
++int spio_start_tls_server(struct spctx* ctx, spio_t* io, SSL_CTX *base_ssl_ctx);
++#endif
++
+ /* Empty the given socket */
+ void spio_read_junk(struct spctx* sp, spio_t* io);
+ 
+Index: common/smtppass.c
+===================================================================
+--- common/smtppass.c	(.../vendor/1.10)	(revision 29)
++++ common/smtppass.c	(.../trunk)	(revision 29)
+@@ -40,6 +40,8 @@
+ 
+ #define _GNU_SOURCE
+ 
++#define FORK 1
++
+ #include <sys/time.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+@@ -61,8 +63,17 @@
+ #include <pwd.h>
+ #include <time.h>
+ 
++#if defined(FORK)
++#include <sys/wait.h>
++#endif
++
+ #include "usuals.h"
+ 
++#ifdef USE_SSL
++#include <openssl/ssl.h>
++#include <openssl/err.h>
++#endif
++
+ #if LINUX_NETFILTER
+ #include <linux/types.h>
+ #include <linux/netfilter_ipv4.h>
+@@ -84,7 +95,11 @@
+ 
+ typedef struct spthread
+ {
++#if defined(FORK)
++    int pid;
++#else
+     pthread_t tid;      /* Written to by the main thread */
++#endif
+     int fd;             /* The file descriptor or -1 */
+ }
+ spthread_t;
+@@ -100,10 +115,12 @@
+ #define SMTP_STARTFAILED    "421 Local Error, cannot start thread" CRLF
+ #define SMTP_DATAINTERMED   "354 Start mail input; end with <CRLF>.<CRLF>" CRLF
+ #define SMTP_FAILED         "451 Local Error" CRLF
++#define SMTP_TLS_FAILED     "454 TLS already active" CRLF
+ #define SMTP_NOTSUPP        "502 Command not implemented" CRLF
+ #define SMTP_NOTAUTH        "554 Insufficient authorization" CRLF
+ #define SMTP_OK             "250 Ok" CRLF
+ #define SMTP_REJPREFIX      "550 Content Rejected; "
++#define SMTP_STARTTLS_READY "220 Ready to start TLS" CRLF
+ 
+ #define SMTP_DATA           "DATA" CRLF
+ #define SMTP_NOOP           "NOOP" CRLF
+@@ -135,6 +152,7 @@
+ #define XCLIENT_CMD         "XCLIENT"
+ #define XFORWARD_CMD        "XFORWARD"
+ #define AUTH_CMD            "AUTH"
++#define FROM_CMD_AUTH_OPT   " AUTH="
+ 
+ #define DATA_END_SIG        "." CRLF
+ 
+@@ -183,6 +201,9 @@
+ #define CFG_USER            "User"
+ #define CFG_PIDFILE         "PidFile"
+ #define CFG_XCLIENT         "XClient"
++#define CFG_CERTFILE	    "CertFile"
++#define CFG_PRIVATEKEYFILE  "PrivateKeyFile"
++#define CFG_TLSDISABLED	    "TLSDisabled"
+ #define CFG_SKIP            "Skip"
+ 
+ #define VAL_AUTHENTICATED   "authenticated"
+@@ -205,9 +226,20 @@
+ 
+ spstate_t g_state;                          /* The state and configuration of the daemon */
+ unsigned int g_unique_id = 0x00100000;      /* For connection ids */
++#if !defined(FORK)
+ pthread_mutex_t g_mutex;                    /* The main mutex */
+ pthread_mutexattr_t g_mtxattr;
++#endif
+ 
++#ifdef USE_SSL
++static SSL_CTX *base_ssl_ctx = NULL;
++static const char *cert_fn = NULL;
++static const char *privatekey_fn = NULL;
++static int tls_disabled = 0;
++#else
++static void *base_ssl_ctx = NULL;          /* Dummy definition to simplify code below. */
++#endif
++ 
+ /* -----------------------------------------------------------------------
+  *  FORWARD DECLARATIONS
+  */
+@@ -216,7 +248,11 @@
+ static void drop_privileges();
+ static void pid_file(int write);
+ static void connection_loop(int sock);
++#if defined(FORK)
++static int child_main(spthread_t *thread);
++#else
+ static void* thread_main(void* arg);
++#endif
+ static int smtp_passthru(spctx_t* ctx);
+ static int make_connections(spctx_t* ctx, int client);
+ static int read_server_response(spctx_t* ctx);
+@@ -254,7 +290,8 @@
+     /* We need the default to parse into a useable form, so we do this: */
+     r = sp_parse_option(CFG_LISTENADDR, DEFAULT_SOCKET);
+     ASSERT(r == 1);
+-
++    
++#if !defined(FORK)
+     /* Create the main mutex and condition variable */
+     if(pthread_mutexattr_init(&g_mtxattr) != 0 ||
+ #ifdef HAVE_ERR_MUTEX
+@@ -262,8 +299,58 @@
+ #endif
+        pthread_mutex_init(&g_mutex, &g_mtxattr) != 0)
+         errx(1, "threading problem. can't create mutex or condition var");
++#endif
+ }
+ 
++#ifdef USE_SSL
++void sp_ssl_init()
++{
++    SSL_METHOD *method;
++
++    SSL_library_init();
++    SSL_load_error_strings();
++	
++    method = SSLv23_method();
++	
++    if (method == NULL)
++    {
++	errx(1, "Couldn't set SSL method: %s", ERR_error_string(ERR_get_error(), NULL));
++    }
++
++    if (cert_fn != NULL && privatekey_fn != NULL && !tls_disabled)
++    {
++	base_ssl_ctx = SSL_CTX_new(method);
++
++	if (base_ssl_ctx == NULL)
++	{
++	    errx(1, "Couldn't create SSL context: %s", ERR_error_string(ERR_get_error(), NULL));
++	}
++
++	if (SSL_CTX_use_certificate_chain_file(base_ssl_ctx, cert_fn) <= 0)
++	{
++	    errx(1, "Couldnt open server certificate %s: %s", cert_fn,
++		 ERR_error_string(ERR_get_error(), NULL));
++	}
++
++	if (SSL_CTX_use_PrivateKey_file(base_ssl_ctx, privatekey_fn, SSL_FILETYPE_PEM) <= 0)
++	{
++	    errx(1, "Couldnt open server private key %s: %s", privatekey_fn,
++		 ERR_error_string(ERR_get_error(), NULL));
++	}
++
++	if (!SSL_CTX_check_private_key(base_ssl_ctx))
++	{
++	    errx(1, "SSL private key %s does not match public key %s: %s",
++		 privatekey_fn, cert_fn, ERR_error_string(ERR_get_error(), NULL));
++	}
++    }
++    else
++    {
++        sp_messagex(NULL, LOG_WARNING, "CertFile and/or PrivateKeyFile not specified; STARTTLS will not be available");
++    }
++}
++#endif
++
+ int sp_run(const char* configfile, const char* pidfile, int dbg_level)
+ {
+     int sock;
+@@ -297,11 +384,12 @@
+     else if(g_state.outname != NULL && g_state.transparent)
+         warnx("the " CFG_OUTADDR " option will be ignored when " CFG_TRANSPARENT " is enabled");
+ 
++#ifdef USE_SSL
++    sp_ssl_init();
++#endif
++
+     sp_messagex(NULL, LOG_DEBUG, "starting up (%s)...", VERSION);
+ 
+-    /* Drop privileges before daemonizing */
+-    drop_privileges();
+-
+     /* When set to this we daemonize */
+     if(g_state.debug_level == -1)
+     {
+@@ -316,7 +404,7 @@
+         g_state.daemonized = 1;
+ 
+         /* Open the system log */
+-        openlog(g_state.name, 0, LOG_MAIL);
++        openlog(g_state.name, LOG_PID, LOG_MAIL);
+     }
+ 
+     /* Handle some signals */
+@@ -360,8 +448,8 @@
+ 
+     sp_messagex(NULL, LOG_DEBUG, "created socket: %s", g_state.listenname);
+ 
+-    /* Let 5 connections queue up */
+-    if(listen(sock, 5) != 0)
++    /* Let 256 connections queue up */
++    if(listen(sock, 256) != 0)
+     {
+         sp_message(NULL, LOG_CRIT, "couldn't listen on socket");
+         exit(1);
+@@ -369,6 +457,9 @@
+ 
+     pid_file(1);
+ 
++    /* Drop privileges before accepting input */
++    drop_privileges();
++
+     sp_messagex(NULL, LOG_DEBUG, "accepting connections");
+ 
+     connection_loop(sock);
+@@ -378,6 +469,14 @@
+     /* Our listen socket */
+     close(sock);
+ 
++#ifdef USE_SSL
++    if (base_ssl_ctx != NULL)
++    {
++	SSL_CTX_free(base_ssl_ctx);
++	base_ssl_ctx = NULL;
++    }
++#endif
++            
+     sp_messagex(NULL, LOG_DEBUG, "stopped processing");
+     return 0;
+ }
+@@ -395,9 +494,11 @@
+ 
+ void sp_done()
+ {
++#if !defined(FORK)
+     /* Close the mutex */
+     pthread_mutex_destroy(&g_mutex);
+     pthread_mutexattr_destroy(&g_mtxattr);
++#endif
+ 
+     if(g_state._p)
+         free(g_state._p);
+@@ -564,6 +665,58 @@
+         for(i = 0; i < g_state.max_threads; i++)
+         {
+             /* Find a thread to run or clean up old threads */
++#if defined(FORK)
++            if(threads[i].pid != 0)
++            {
++		int status;
++
++		if (waitpid(threads[i].pid, &status, WNOHANG) > 0)
++		{
++                    sp_messagex(NULL, LOG_DEBUG, "cleaning up completed thread");
++                    threads[i].pid = 0;
++                }
++#ifdef _DEBUG
++                else
++                {
++                    /* For debugging connection problems: */
++                    sp_messagex(NULL, LOG_DEBUG, "active connection process: %x", (int)threads[i].pid);
++                }
++#endif                    
++            }
++
++            /* Start a new child if neccessary */
++            if(fd != -1 && threads[i].pid == 0)
++            {
++		int pid;
++
++                threads[i].fd = fd;
++		g_unique_id++;
++		pid = fork();
++		switch (pid)
++		{
++		case -1:
++                    errno = r;
++                    sp_message(NULL, LOG_ERR, "couldn't fork to create process");
++
++                    write(fd, SMTP_STARTFAILED, KL(SMTP_STARTFAILED));
++                    shutdown(fd, SHUT_RDWR);
++                    close(fd);
++                    fd = -1;
++		    break;
++		case 0:
++		    /* Child. */
++		    exit(child_main(&threads[i]));
++		    break;
++		default:
++		    /* Parent. */
++		    sp_messagex(NULL, LOG_DEBUG, "created process for connection");
++		    close(fd);
++		    fd = -1;
++		    threads[i].pid = pid;
++		    break;
++		}
++            }
++#else
+             if(threads[i].tid != 0)
+             {
+                 sp_lock();
+@@ -607,9 +760,10 @@
+                 fd = -1;
+                 break;
+             }
++#endif
+         }
+ 
+-        /* Check to make sure we have a thread */
++        /* Check to make sure we have a thread / process */
+         if(fd != -1)
+         {
+             sp_messagex(NULL, LOG_ERR, "too many connections open (max %d). sent busy response", g_state.max_threads);
+@@ -620,6 +774,7 @@
+         }
+     }
+ 
++#if !defined(FORK)
+     sp_messagex(NULL, LOG_DEBUG, "waiting for threads to quit");
+ 
+     /* Quit all threads here */
+@@ -644,7 +799,31 @@
+             threads[i].tid = 0;
+         }
+     }
++#else
++    for(i = 0; i < g_state.max_threads; i++)
++    {
++	if(threads[i].pid != 0)
++	{
++	    int status;
+ 
++	    if (waitpid(threads[i].pid, &status, WNOHANG) > 0)
++	    {
++		/* Thread completed -- reap it. */
++		sp_messagex(NULL, LOG_DEBUG, "cleaning up completed thread");
++		threads[i].pid = 0;
++	    }
++	    else
++	    {
++		/*
++		 * Send the child a terminate signal.
++		 * Don't bother waiting -- init(8) can catch the child.
++		 */
++		kill(threads[i].pid, SIGTERM);
++	    }
++	}
++    }
++#endif
++
+     free(threads);
+ }
+ 
+@@ -660,6 +839,11 @@
+         spio_init(&(ctx->server), "SERVER");
+         spio_init(&(ctx->client), "CLIENT");
+ 
++#if defined(FORK)
++	/* The unique id for the connection was assigned by the parent proc */
++	ctx->id = g_unique_id;
++        sp_messagex(ctx, LOG_NOTICE, "processing %d on process %d", fd, (int)getpid());
++#else
+         sp_lock();
+             /* Assign a unique id to the connection */
+             ctx->id = g_unique_id++;
+@@ -670,6 +854,7 @@
+         sp_unlock();
+ 
+         sp_messagex(ctx, LOG_DEBUG, "processing %d on thread %x", fd, (int)pthread_self());
++#endif
+ 
+         /* Connect to the outgoing server ... */
+         if(make_connections(ctx, fd) == -1)
+@@ -739,6 +924,50 @@
+     cb_del_context(ctx);
+ }
+ 
++#if defined(FORK)
++static int child_main(spthread_t *thread)
++{
++    spctx_t* ctx = NULL;
++    int processing = 0;
++    int ret = 0;
++    int fd;
++    
++    ASSERT(thread);
++
++    siginterrupt(SIGINT, 1);
++    siginterrupt(SIGTERM, 1);
++
++    /* Get the client socket */
++    fd = thread->fd;
++
++    /* Sometimes we get to this point and then quit is noted */    
++    if(sp_is_quit() || (ctx = init_thread(fd)) == NULL)
++    {
++        /* Special case. We don't have a context so clean up descriptor */
++        close(fd);
++
++        /* new_context() should have already logged reason */
++        RETURN(-1);
++    }
++
++    /* call the processor */
++    processing = 1;
++    ret = smtp_passthru(ctx);
++    
++cleanup:
++
++    if(ctx)
++    {
++        /* Let the client know about fatal errors */
++        if(!processing && ret == -1 && spio_valid(&(ctx->client)))
++           spio_write_data(ctx, &(ctx->client), SMTP_STARTFAILED);
++    
++        done_thread(ctx);
++    }
++    
++    return (ret == 0 ? 0 : 1);
++}
++#else
+ static void* thread_main(void* arg)
+ {
+     spthread_t* thread = (spthread_t*)arg;
+@@ -789,6 +1018,7 @@
+ 
+     return (void*)(ret == 0 ? (size_t)0 : (size_t)1);
+ }
++#endif
+ 
+ static int make_connections(spctx_t* ctx, int client)
+ {
+@@ -939,7 +1169,7 @@
+         {
+             neterror = 1;
+             RETURN(-1);
+-		}
++               }
+ 
+         /* Client has data available, read a line and process */
+         if(mask & 1)
+@@ -1042,7 +1272,7 @@
+              * filtered out their service extensions earlier in the EHLO response.
+              * This is just for errant clients.
+              */
+-            else if(is_first_word(C_LINE, STARTTLS_CMD, KL(STARTTLS_CMD)) ||
++            else if((base_ssl_ctx == NULL && is_first_word(C_LINE, STARTTLS_CMD, KL(STARTTLS_CMD))) ||
+                     is_first_word(C_LINE, BDAT_CMD, KL(BDAT_CMD)))
+             {
+                 sp_messagex(ctx, LOG_DEBUG, "ESMTP feature not supported");
+@@ -1093,6 +1323,59 @@
+                 }
+             }
+ 
++#ifdef USE_SSL
++	    /* STARTTLS */
++	    else if (is_first_word(C_LINE, STARTTLS_CMD, KL(STARTTLS_CMD)))
++	    {
++		if (ctx->client.ssl != NULL)
++		{
++		    if(spio_write_data(ctx, &(ctx->client), SMTP_STARTTLS_READY) == -1)
++			RETURN(-1);
++		}
++		else
++		{
++		    if(spio_write_data(ctx, &(ctx->client), SMTP_STARTTLS_READY) == -1)
++			RETURN(-1);
++
++		    if (!spio_start_tls_server(ctx, &(ctx->client), base_ssl_ctx))
++			RETURN(-1);
++
++		    /* Destroy any existing context (RFC2487 section 5.2). */
++		    cleanup_context(ctx);
++		}
++
++		/* Command handled */
++		continue;
++	    }
++#endif
++	    /* Trim AUTH option from MAIL FROM to avoid sendmail unnecessarily failing the command */
++	    else if((r = check_first_word(C_LINE, FROM_CMD, KL(FROM_CMD), SMTP_DELIMS)) > 0)
++	    {
++		char *start_p;
++		char *end_p;
++		if ((start_p = strstr(C_LINE, FROM_CMD_AUTH_OPT)) != NULL)
++		{
++		    /*
++		     * Remove the AUTH option and its parameter from the string.
++		     * According to RFC x, the parameter is an xtext as defined by RFC 1891.
++		     * xtext encoding involves changing characters outside the range of
++		     * '!' to '~' into '+XX' sequences, but we aren't concerned with decoding
++		     * here.  We just want to find the end of the option.
++		     */
++		    end_p = start_p + KL(FROM_CMD_AUTH_OPT);
++		    while ((*end_p >= '!' && *end_p <= '~') && *end_p != '=')
++		    {
++			end_p++;
++		    }
++		    sp_messagex(ctx, LOG_DEBUG, "Removing AUTH option from MAIL FROM command: Before=%s",
++				C_LINE);
++		    memmove(start_p, end_p, strlen(end_p) + 1);
++		    sp_messagex(ctx, LOG_DEBUG, "Removing AUTH option from MAIL FROM command: After=%s",
++				C_LINE);
++		}
++		/* Allow the modified command to be sent to the server. */
++	    }
++
+             /* All other commands just get passed through to server */
+             if(spio_write_data(ctx, &(ctx->server), C_LINE) == -1)
+                 RETURN(-1);
+@@ -1167,7 +1450,7 @@
+ 
+                 /*
+                  * Filter out any EHLO responses that we can't or don't want
+-                 * to support. For example pipelining or TLS.
++                 * to support. For example pipelining. 
+                  */
+                 if(is_first_word(C_LINE, EHLO_CMD, KL(EHLO_CMD)))
+                 {
+@@ -1182,7 +1465,7 @@
+                     }
+ 
+                     if(is_first_word(p, ESMTP_PIPELINE, KL(ESMTP_PIPELINE)) ||
+-                       is_first_word(p, ESMTP_TLS, KL(ESMTP_TLS)) ||
++		       (base_ssl_ctx == NULL && is_first_word(p, ESMTP_TLS, KL(ESMTP_TLS))) ||
+                        is_first_word(p, ESMTP_CHUNK, KL(ESMTP_CHUNK)) ||
+                        is_first_word(p, ESMTP_BINARY, KL(ESMTP_BINARY)) ||
+                        is_first_word(p, ESMTP_CHECK, KL(ESMTP_CHECK)) ||
+@@ -2034,9 +2317,13 @@
+         len = strlen(buf);
+         strerror_r(e, buf + len, MAX_MSGLEN - len); */
+ 
++#if !defined(FORK)            
+         sp_lock();
++#endif
+             strncat(buf, strerror(e), MAX_MSGLEN);
++#if !defined(FORK)            
+         sp_unlock();
++#endif
+     }
+ 
+     /* As a precaution */
+@@ -2072,6 +2359,7 @@
+  * LOCKING
+  */
+ 
++#if !defined(FORK) 
+ void sp_lock()
+ {
+     int r;
+@@ -2117,6 +2405,7 @@
+         sp_message(NULL, LOG_CRIT, "threading problem. couldn't unlock mutex");
+     }
+ }
++#endif
+ 
+ /* -----------------------------------------------------------------------------
+  * CONFIG FILE
+@@ -2237,6 +2526,27 @@
+         ret = 1;
+     }
+ 
++#ifdef USE_SSL
++    else if (strcasecmp(CFG_CERTFILE, name) == 0)
++    {
++	cert_fn = value;
++	ret = 1;
++    }
++
++    else if (strcasecmp(CFG_PRIVATEKEYFILE, name) == 0)
++    {
++	privatekey_fn = value;
++	ret = 1;
++    }
++
++    else if (strcasecmp(CFG_TLSDISABLED, name) == 0)
++    {
++	if((tls_disabled = strtob(value)) == -1)
++            errx(2, "invalid value for " CFG_TLSDISABLED);
++        ret = 1;
++    }
++#endif
++
+     else if(strcasecmp(CFG_SKIP, name) == 0)
+     {
+         if(strcasecmp(value, VAL_AUTHENTICATED) == 0)
+Index: common/spio.c
+===================================================================
+--- common/spio.c	(.../vendor/1.10)	(revision 29)
++++ common/spio.c	(.../trunk)	(revision 29)
+@@ -68,6 +68,10 @@
+ 
+ #include "compat.h"
+ #include "usuals.h"
++#ifdef USE_SSL
++#include <openssl/ssl.h>
++#include <openssl/err.h>
++#endif
+ #include "sock_any.h"
+ #include "stringx.h"
+ #include "sppriv.h"
+@@ -117,6 +121,9 @@
+     memset(io, 0, sizeof(*io));
+     io->name = name;
+     io->fd = -1;
++#ifdef USE_SSL
++    io->ssl = NULL;
++#endif
+ }
+ 
+ void spio_attach(spctx_t* ctx, spio_t* io, int fd, struct sockaddr_any* peer)
+@@ -232,11 +239,48 @@
+ 
+     if(spio_valid(io))
+     {
++#ifdef USE_SSL
++	if (io->ssl != NULL)
++	{
++	    SSL_free(io->ssl);
++	    io->ssl = NULL;
++	}
++#endif
+         close_raw(&(io->fd));
+         sp_messagex(ctx, LOG_DEBUG, "%s connection closed", GET_IO_NAME(io));
+     }
+ }
+ 
++#ifdef USE_SSL
++int spio_start_tls_server(spctx_t* ctx, spio_t* io, SSL_CTX *base_ssl_ctx)
++{
++    /* Start the server side of the TLS/SSL connection. */
++    ASSERT(ctx && io && io->ssl == NULL);
++    
++    if (io->fd == -1)
++        return 0;
++
++    io->ssl = SSL_new(base_ssl_ctx);
++    if (io->ssl == NULL)
++    {
++        sp_messagex(ctx, LOG_DEBUG, "%s failed to get SSL context: %s",
++		    GET_IO_NAME(io), ERR_error_string(ERR_get_error(), NULL));
++	return 0;
++    }
++    SSL_set_mode(io->ssl, SSL_MODE_AUTO_RETRY);
++    SSL_set_fd(io->ssl, io->fd);
++    if (SSL_accept(io->ssl) < 0)
++    {
++        sp_messagex(ctx, LOG_DEBUG, "%s failed to accept SSL context: %s",
++		    GET_IO_NAME(io), ERR_error_string(ERR_get_error(), NULL));
++	SSL_free(io->ssl);
++	io->ssl = NULL;
++	return 0;
++    }
++    return 1;
++}
++#endif
++
+ unsigned int spio_select(spctx_t* ctx, ...)
+ {
+     fd_set mask;
+@@ -264,6 +308,12 @@
+             if(HAS_EXTRA(io))
+                 ret |= (1 << i);
+ 
++#ifdef USE_SSL
++	    /* Check for data at the SSL level. */
++	    if (io->ssl != NULL && SSL_pending(io->ssl) > 0)
++		ret |= (1 << i);
++#endif
++        
+             /* Mark for select */
+             FD_SET(io->fd, &mask);
+             have = 1;
+@@ -406,7 +456,53 @@
+     {
+         /* Read a block of data */
+         ASSERT(io->fd != -1);
++#ifdef USE_SSL
++	if (io->ssl != NULL)
++	{
++	    x = SSL_read(io->ssl, at, sizeof(char) * len);
++	    if (x < 0)
++	    {
++		/* Handle any SSL-specific errors. */
++		switch (SSL_get_error(io->ssl, x))
++		{
++		case SSL_ERROR_NONE:
++		    x = 0;
++		    break;
++		case SSL_ERROR_WANT_READ:
++		    /* ? */
++		    sp_messagex(ctx, LOG_WARNING, "%s: SSL_ERROR_WANT_READ during SSL_read()", GET_IO_NAME(io));
++		    SSL_free(io->ssl);
++		    io->ssl = NULL;
++		    close_raw(&(io->fd));
++		    return -1;
++		    break;
++		case SSL_ERROR_WANT_WRITE:
++		    /* ? */
++		    sp_messagex(ctx, LOG_WARNING, "%s: SSL_ERROR_WANT_WRITE during SSL_read()", GET_IO_NAME(io));
++		    SSL_free(io->ssl);
++		    io->ssl = NULL;
++		    close_raw(&(io->fd));
++		    return -1;
++		    break;
++		case SSL_ERROR_SSL:
++		    sp_messagex(ctx, LOG_WARNING, "%s: SSL_ERROR_SSL protocol error during SSL_read()", GET_IO_NAME(io));
++		    SSL_free(io->ssl);
++		    io->ssl = NULL;
++		    close_raw(&(io->fd));
++		    return -1;
++		    break;
++		case SSL_ERROR_SYSCALL:
++		    /* Let the errno processing below handle it. */
++		    x = -1;
++		    break;
++		}
++	    }
++	}
++	else
++#endif
++	{
+         x = read(io->fd, at, sizeof(char) * len);
++	}
+ 
+         if(x == -1)
+         {
+@@ -432,6 +528,13 @@
+              * reading from the socket once then we shut it down as it's
+              * no good trying to read from again later.
+              */
++#ifdef USE_SSL
++	    if (io->ssl != NULL)
++	    {
++		SSL_free(io->ssl);
++		io->ssl = NULL;
++	    }
++#endif
+             close_raw(&(io->fd));
+ 
+             return -1;
+@@ -597,7 +700,53 @@
+ 
+     while(len > 0)
+     {
++#ifdef USE_SSL
++	if (io->ssl != NULL)
++	{
++	    r = SSL_write(io->ssl, buf, len);
++	    if (r < 0)
++	    {
++		/* Handle any SSL-specific errors. */
++		switch (SSL_get_error(io->ssl, r))
++		{
++		case SSL_ERROR_NONE:
++		    r = 0;
++		    break;
++		case SSL_ERROR_WANT_READ:
++		    /* ? */
++		    sp_messagex(ctx, LOG_WARNING, "%s: SSL_ERROR_WANT_READ during SSL_write()", GET_IO_NAME(io));
++		    SSL_free(io->ssl);
++		    io->ssl = NULL;
++		    close_raw(&(io->fd));
++		    return -1;
++		    break;
++		case SSL_ERROR_WANT_WRITE:
++		    /* ? */
++		    sp_messagex(ctx, LOG_WARNING, "%s: SSL_ERROR_WANT_WRITE during SSL_write()", GET_IO_NAME(io));
++		    SSL_free(io->ssl);
++		    io->ssl = NULL;
++		    close_raw(&(io->fd));
++		    return -1;
++		    break;
++		case SSL_ERROR_SSL:
++		    sp_messagex(ctx, LOG_WARNING, "%s: SSL_ERROR_SSL protocol error during SSL_write()", GET_IO_NAME(io));
++		    SSL_free(io->ssl);
++		    io->ssl = NULL;
++		    close_raw(&(io->fd));
++		    return -1;
++		    break;
++		case SSL_ERROR_SYSCALL:
++		    /* Let the errno processing below handle it. */
++		    r = -1;
++		    break;
++		}
++	    }
++	}
++	else
++#endif
++	{
+         r = write(io->fd, buf, len);
++	}
+ 
+         if(r > 0)
+         {
+@@ -605,7 +754,7 @@
+             len -= r;
+         }
+ 
+-        else if(r == -1)
++        if(r == -1)
+         {
+             if(errno == EINTR)
+             {
+@@ -622,6 +771,13 @@
+              * writing to the socket once then we shut it down as it's
+              * no good trying to write to it again later.
+              */
++#ifdef USE_SSL
++	    if (io->ssl != NULL)
++	    {
++		SSL_free(io->ssl);
++		io->ssl = NULL;
++	    }
++#endif
+             close_raw(&(io->fd));
+ 
+             if(errno == EAGAIN)
+Index: config.h.in
+===================================================================
+--- config.h.in	(.../vendor/1.10)	(revision 29)
++++ config.h.in	(.../trunk)	(revision 29)
+@@ -181,6 +181,9 @@
+ /* Define to 1 if you have the ANSI C header files. */
+ #undef STDC_HEADERS
+ 
++/* Define this to include code for SSL encryption. */
++#undef USE_SSL
++
+ /* Version number of package */
+ #undef VERSION
+ 
+Index: doc/proxsmtpd.conf
+===================================================================
+--- doc/proxsmtpd.conf	(.../vendor/1.10)	(revision 29)
++++ doc/proxsmtpd.conf	(.../trunk)	(revision 29)
+@@ -10,6 +10,11 @@
+ # This option is required unless TransparentProxy is enabled
+ OutAddress: 10026
+ 
++# The file containing the server's certificate, in PEM format
++#CertFile: /usr/local/etc/proxsmtpd.crt
++# And the file containing the server's private key
++#PrivateKeyFile: /usr/local/etc/proxsmtpd.key
++
+ # The Filter Command run for each email. See 'man proxsmtpd' for details
+ # The following command is a simple which just creates temp files.
+ #FilterCommand: tee `mktemp -t sample-filter.XXXXXX`
+--- src/Makefile.in.orig	2011-10-21 08:25:28.000000000 -0500
++++ src/Makefile.in	2013-06-06 09:45:56.426424000 -0500
+@@ -52,7 +52,8 @@
+ 	proxsmtpd-stringx.$(OBJEXT) proxsmtpd-sock_any.$(OBJEXT) \
+ 	proxsmtpd-compat.$(OBJEXT)
+ proxsmtpd_OBJECTS = $(am_proxsmtpd_OBJECTS)
+-proxsmtpd_LDADD = $(LDADD)
++proxsmtpd_LDADD = $(LDADD) $(SSLLIB)
++SSLLIB = -lssl -lcrypto
+ proxsmtpd_LINK = $(CCLD) $(proxsmtpd_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+ 	$(LDFLAGS) -o $@
+ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)

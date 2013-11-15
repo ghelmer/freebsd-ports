@@ -1,0 +1,22 @@
+--- src/client_side.cc.ORIG	2013-09-10 23:08:38.000000000 -0500
++++ src/client_side.cc	2013-09-24 06:56:42.000000000 -0500
+@@ -3476,6 +3476,19 @@
+             debugs(83, DBG_IMPORTANT, "clientNegotiateSSL: Error negotiating SSL connection on FD " <<
+                    fd << ": " << ERR_error_string(ERR_get_error(), NULL) <<
+                    " (" << ssl_error << "/" << ret << ")");
++	    X509 *my_cert = SSL_get_certificate(ssl);
++	    if (my_cert != NULL) {
++		    debugs(83, DBG_IMPORTANT, "clientNegotiateSSL: FD " << fd <<
++			   " server certificate: subject: " <<
++			   X509_NAME_oneline(X509_get_subject_name(my_cert), 0, 0));
++		    debugs(83, DBG_IMPORTANT, "clientNegotiateSSL: FD " << fd <<
++			   " server certificate: issuer: " <<
++			   X509_NAME_oneline(X509_get_issuer_name(my_cert), 0, 0));
++		    //X509_free(my_cert);
++	    } else {
++		    debugs(83, 5, "clientNegotiateSSL: FD " << fd <<
++			   " has no server certificate.");
++	    }
+             comm_close(fd);
+             return;
+         }

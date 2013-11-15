@@ -1,0 +1,47 @@
+Index: ares_process.c
+===================================================================
+--- ares_process.c	(revision 2292)
++++ ares_process.c	(revision 2690)
+@@ -24,6 +24,7 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <fcntl.h>
++#include <syslog.h>
+ #include <time.h>
+ #include <errno.h>
+ #include "ares.h"
+@@ -231,6 +232,7 @@
+   struct server_state *server;
+   int i, count;
+   unsigned char buf[PACKETSZ + 1];
++  int oflags;
+ 
+   for (i = 0; i < channel->nservers; i++)
+     {
+@@ -239,7 +241,26 @@
+       if (server->udp_socket == -1 || !FD_ISSET(server->udp_socket, read_fds))
+ 	continue;
+ 
++      /*
++       * Safety belt: set udp_socket to non-blocking temporarily.
++       * ares occasionally was hanging on a read or recv and
++       * as a result plugging up the entire system.
++       */
++      oflags = 0;
++      if (fcntl(server->udp_socket, F_GETFL, &oflags) < 0 ||
++	  fcntl(server->udp_socket, F_SETFL, oflags|O_NONBLOCK) < 0)
++	{
++	  syslog(LOG_WARNING, "ares::read_udp_packets: could not set non-blocking mode: %m");
++	}
+       count = recv(server->udp_socket, buf, sizeof(buf), 0);
++      if (fcntl(server->udp_socket, F_SETFL, oflags) < 0)
++	{
++	  syslog(LOG_WARNING, "ares::read_udp_packets: could not restore file mode: %m");
++	}
++      if (count < 0 && errno == EAGAIN)
++	{
++	  syslog(LOG_WARNING, "ares::read_udp_packets: no data on supposedly ready socket");
++	}
+       if (count <= 0)
+ 	handle_error(channel, i, now);
+ 

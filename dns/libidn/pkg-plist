@@ -11,8 +11,6 @@ lib/libidn.la
 lib/libidn.so
 lib/libidn.so.17
 libdata/pkgconfig/libidn.pc
-share/emacs/site-lisp/idna.el
-share/emacs/site-lisp/punycode.el
 %%NLS%%share/locale/cs/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/da/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/de/LC_MESSAGES/libidn.mo

@@ -13,7 +13,33 @@
  
  #ifndef HAVE_LDAP_MEMFREE
  #define ldap_memfree(x)	free(x)
-@@ -3411,7 +3406,7 @@ pam_sm_authenticate (pam_handle_t * pamh
+@@ -1192,6 +1187,16 @@ _open_session (pam_ldap_session_t * sess
+   struct timeval tv;
+ #endif
+ 
++#if defined(LDAP_API_FEATURE_X_OPENLDAP) && defined(LDAP_OPT_NETWORK_TIMEOUT)
++  /*
++   * Set the global connection timeout before invoking
++   * ldap_init/ldap_open/ldap_initialize.
++   */
++  tv.tv_sec = session->conf->bind_timelimit;
++  tv.tv_usec = 0;
++  (void) ldap_set_option (NULL, LDAP_OPT_NETWORK_TIMEOUT, &tv);
++#endif
++
+ #ifdef HAVE_LDAP_SET_OPTION
+   if (session->conf->debug)
+     {
+@@ -1338,7 +1343,7 @@ _open_session (pam_ldap_session_t * sess
+   (void) ldap_set_option (session->ld, LDAP_X_OPT_CONNECT_TIMEOUT, &timeout);
+ #endif
+ 
+-#if defined(HAVE_LDAP_SET_OPTION) && defined(LDAP_OPT_NETWORK_TIMEOUT)
++#if defined(HAVE_LDAP_SET_OPTION) && defined(LDAP_OPT_NETWORK_TIMEOUT) && !defined(LDAP_API_FEATURE_X_OPENLDAP)
+   tv.tv_sec = session->conf->bind_timelimit;
+   tv.tv_usec = 0;
+   (void) ldap_set_option (session->ld, LDAP_OPT_NETWORK_TIMEOUT, &tv);
+@@ -3411,7 +3416,7 @@ pam_sm_authenticate (pam_handle_t * pamh
    int rc;
    const char *username;
    char *p;
@@ -22,7 +48,7 @@
    int i;
    pam_ldap_session_t *session = NULL;
    const char *configFile = NULL;
-@@ -3432,6 +3427,8 @@ pam_sm_authenticate (pam_handle_t * pamh
+@@ -3432,6 +3437,8 @@ pam_sm_authenticate (pam_handle_t * pamh
  	;
        else if (!strcmp (argv[i], "debug"))
  	;
@@ -31,7 +57,7 @@
        else
  	syslog (LOG_ERR, "illegal option %s", argv[i]);
      }
-@@ -3445,6 +3442,22 @@ pam_sm_authenticate (pam_handle_t * pamh
+@@ -3445,6 +3452,22 @@ pam_sm_authenticate (pam_handle_t * pamh
      return rc;
  
    rc = pam_get_item (pamh, PAM_AUTHTOK, (CONST_ARG void **) &p);
@@ -54,7 +80,7 @@
    if (rc == PAM_SUCCESS && (use_first_pass || try_first_pass))
      {
        rc = _do_authentication (pamh, session, username, p);
-@@ -3721,7 +3734,7 @@ pam_sm_chauthtok (pam_handle_t * pamh, i
+@@ -3721,7 +3744,7 @@ pam_sm_chauthtok (pam_handle_t * pamh, i
  	  if (curpass == NULL)
  	    return PAM_MAXTRIES;	/* maximum tries exceeded */
  	  else

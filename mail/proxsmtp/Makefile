@@ -12,7 +12,9 @@ COMMENT=	Flexible SMTP filter which can act also as transparent proxy
 LICENSE=	BSD
 
 USE_GMAKE=	yes
+USE_AUTOTOOLS=  aclocal automake autoconf
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS+= --enable-ssl
 
 USE_RC_SUBR=	proxsmtpd
 SUB_FILES=	pkg-message
