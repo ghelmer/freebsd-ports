@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	rabbitmq
-PORTVERSION=	3.1.5
+PORTVERSION=	3.2.2
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://www.rabbitmq.com/releases/rabbitmq-server/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-server-${PORTVERSION}
 
-MAINTAINER=	pneumann@gmail.com
+MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	RabbitMQ is an implementation of AMQP
 
 BUILD_DEPENDS=	erl:${PORTSDIR}/lang/erlang \
@@ -20,22 +21,22 @@ RUN_DEPENDS=	erl:${PORTSDIR}/lang/erlang
 USES=		gmake shebangfix
 USE_PYTHON_BUILD=yes
 USE_RC_SUBR=	rabbitmq
-SHEBANG_FILES=	plugins-src/rabbitmq-amqp1.0/codegen.py
+SHEBANG_FILES=	calculate-relative plugins-src/rabbitmq-amqp1.0/codegen.py
+python_OLD_CMD=	.*python
+python_CMD=	${PYTHON_CMD}
 
-USERS=	rabbitmq
-GROUPS=	rabbitmq
+USERS=		rabbitmq
+GROUPS=		rabbitmq
 
-PLIST_SUB=	"VERSION=${PORTVERSION}"
-
-MAN1=		rabbitmq-server.1 rabbitmqctl.1 rabbitmq-plugins.1
-MAN5=		rabbitmq-env.conf.5
-MANCOMPRESSED=	yes
+PLIST_SUB=	VERSION=${PORTVERSION}
 
 SCRIPTS_DIR=	${WRKSRC}/scripts/
-MAKE_ENV+=	TARGET_DIR="${PREFIX}/lib/erlang/lib/rabbitmq_server-${PORTVERSION}" SBIN_DIR="${PREFIX}/sbin/" \
-		MAN_DIR="${PREFIX}/man"
+MAKE_ARGS+=	PYTHON=${PYTHON_CMD}
+MAKE_ENV+=	TARGET_DIR="${STAGEDIR}${PREFIX}/lib/erlang/lib/rabbitmq_server-${PORTVERSION}" \
+		SBIN_DIR="${STAGEDIR}${PREFIX}/sbin/" \
+		MAN_DIR="${STAGEDIR}${PREFIX}/man" \
+		DOC_INSTALL_DIR="${STAGEDIR}${EXAMPLESDIR}"
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/rabbitmq|${PREFIX}/etc/rabbitmq|g ; s|/var/lib|/var/db|g ; s|erl|${LOCALBASE}/bin/erl|g' \
 		${SCRIPTS_DIR}/rabbitmq-server ${SCRIPTS_DIR}/rabbitmqctl \
@@ -50,17 +51,9 @@ post-patch:
 		${WRKSRC}/Makefile
 	@${FIND} ${WRKSRC} -name "*.bak" -delete
 
-pre-install:
-	@${FIND} ${WRKSRC}/ebin ${WRKSRC}/include -type d | \
-		${XARGS} ${CHMOD} 0755
-	@${FIND} ${WRKSRC}/ebin ${WRKSRC}/include -type f | \
-		${XARGS} ${CHMOD} 0644
-	@${MKDIR} ${PREFIX}/etc/rabbitmq
-
 post-install:
-	@${MKDIR} /var/db/rabbitmq/mnesia
-	@${MKDIR} /var/log/rabbitmq
-	@${CHOWN} -R rabbitmq:rabbitmq /var/db/rabbitmq
-	@${CHOWN} -R rabbitmq:rabbitmq /var/log/rabbitmq
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/rabbitmq
+	@${MKDIR} ${STAGEDIR}/var/db/rabbitmq/mnesia
+	@${MKDIR} ${STAGEDIR}/var/log/rabbitmq
 
 .include <bsd.port.mk>

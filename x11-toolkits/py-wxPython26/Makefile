@@ -7,6 +7,7 @@ PORTREVISION?=	7
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	SF/wxpython/wxPython/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+PKGNAMESUFFIX=	26
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	neal@nelson.name
@@ -83,7 +84,7 @@ PLIST_SUB+=	WX_VERSION=${WX_VERSION}
 
 .if defined(WITH_COMMON_ONLY)
 ## These are not shared amongst installations
-PKGNAMESUFFIX=	-common
+PKGNAMESUFFIX=	26-common
 
 PYDISTUTILS_BUILDARGS+=	\
 			INSTALL_MULTIVERSION=1
@@ -99,7 +100,7 @@ PYDISTUTILS_BUILDARGS+=	\
 . if defined(WITH_WXPYTHON_UNICODE)
 WX_UNICODE=	yes
 
-PKGNAMESUFFIX=	-unicode
+PKGNAMESUFFIX=	26-unicode
 
 PYDISTUTILS_BUILDARGS+=	\
 			UNICODE=1
@@ -151,6 +152,7 @@ post-install:
 # fix installation permissions
 	${CHMOD} -R a+rX \
 		${PYTHON_SITELIBDIR:C@^${LOCALBASE}@${PREFIX}@}/${WX_PYTHON_DIR}
+	@${RM} -rf ${PYTHON_SITELIBDIR:C@^${LOCALBASE}@${PREFIX}@}/${WX_PYTHON_DIR}/*egg-info
 .endif
 ##
 # wxversion wxPython available list

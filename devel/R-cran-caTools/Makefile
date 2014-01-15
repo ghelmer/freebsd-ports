@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	caTools
-PORTVERSION=	1.14
-PORTREVISION=	3
+PORTVERSION=	1.16
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -14,8 +13,6 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	R-cran-bitops>0:${PORTSDIR}/devel/R-cran-bitops
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

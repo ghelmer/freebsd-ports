@@ -22,15 +22,16 @@ LICENSE_COMB=	dual
 LICENSE_NAME_SpecialAuth=	Special authorization from developer
 LICENSE_FILE_SpecialAuth=	${FILESDIR}/SpecialAuth.mbox
 LICENSE_PERMS_SpecialAuth=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LEGAL_TEXT=	FreeBSD granted special license to distribute 3.x under GPLv3
 
 USE_ZIP=	yes
 NO_WRKSUBDIR=	yes
-USE_LDCONFIG=	yes
-USE_DOS2UNIX=	yes
-DOS2UNIX_REGEX=	.*\.(cpp|h|txt)
 
-USE_GCC=	yes
-USES=		cmake gmake
+USE_LDCONFIG=	yes
+USE_GCC=	any
+
+USES=		dos2unix cmake gmake
+DOS2UNIX_REGEX=	.*\.(cpp|h|txt)
 
 # XXX Do not provide Samples for the following reason :
 # - potential licensing problems
@@ -53,15 +54,15 @@ pre-install:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/raknet
-	@(cd ${WRKSRC}/Source/ && ${COPYTREE_SHARE} \*.h ${STAGEDIR}${PREFIX}/include/raknet)
+	(cd ${WRKSRC}/Source/ && ${COPYTREE_SHARE} \*.h ${STAGEDIR}${PREFIX}/include/raknet)
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib
-	@${INSTALL_LIB} ${WRKSRC}/Lib/DLL/libRakNetDynamic.so \
+	${INSTALL_LIB} ${WRKSRC}/Lib/DLL/libRakNetDynamic.so \
 		${STAGEDIR}${PREFIX}/lib/libraknet.so.0
-	@${LN} -sf ${PREFIX}/lib/libraknet.so.0 ${STAGEDIR}${PREFIX}/lib/libraknet.so
-	@${INSTALL_LIB} ${WRKSRC}/Lib/LibStatic/libRakNetStatic.a \
+	${LN} -sf ${PREFIX}/lib/libraknet.so.0 ${STAGEDIR}${PREFIX}/lib/libraknet.so
+	${INSTALL_LIB} ${WRKSRC}/Lib/LibStatic/libRakNetStatic.a \
 		${STAGEDIR}${PREFIX}/lib/libraknet.a
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/Help
-	@(cd ${WRKSRC}/Help/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR}/Help)
-	@${INSTALL_DATA} ${WRKSRC}/readme.txt ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/Help/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/Help)
+	${INSTALL_DATA} ${WRKSRC}/readme.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -13,11 +13,11 @@ MASTER_SITES=	http://repository.slacky.eu/slackware-12.2/multimedia/${PKGNAMEPRE
 PKGNAMEPREFIX=	xmms-
 DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	alexbestms@wwu.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Native Monkey Audio Codec plugin for the XMMS1 Multimedia Player
 
-LIB_DEPENDS=	xmms.4:${PORTSDIR}/multimedia/xmms \
-		mac.2:${PORTSDIR}/audio/mac
+LIB_DEPENDS=	libxmms.so:${PORTSDIR}/multimedia/xmms \
+		libmac.so:${PORTSDIR}/audio/mac
 
 USES=		gmake
 NO_STAGE=	yes

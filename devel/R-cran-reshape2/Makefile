@@ -15,8 +15,6 @@ LICENSE=	MIT
 RUN_DEPENDS=	R-cran-plyr>=1.5:${PORTSDIR}/devel/R-cran-plyr \
 		R-cran-stringr>0:${PORTSDIR}/textproc/R-cran-stringr
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

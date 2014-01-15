@@ -3,23 +3,22 @@
 
 PORTNAME=	hugin
 PORTVERSION=	2012.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	A GUI for Panorama Tools, to stitch panoramic images
 
-LIB_DEPENDS=	IlmImf:${PORTSDIR}/graphics/OpenEXR \
-		IlmImf:${PORTSDIR}/graphics/OpenEXR \
-		Imath:${PORTSDIR}/graphics/ilmbase \
-		boost_thread:${PORTSDIR}/devel/boost-libs \
-		exiv2.12:${PORTSDIR}/graphics/exiv2 \
-		jpeg:${PORTSDIR}/graphics/jpeg \
-		lensfun:${PORTSDIR}/graphics/lensfun \
-		pano13:${PORTSDIR}/graphics/libpano13 \
-		png15:${PORTSDIR}/graphics/png \
-		tiff:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
+		libImath.so:${PORTSDIR}/graphics/ilmbase \
+		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
+		libexiv2.so:${PORTSDIR}/graphics/exiv2 \
+		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+		liblensfun.so:${PORTSDIR}/graphics/lensfun \
+		libpano13.so:${PORTSDIR}/graphics/libpano13 \
+		libpng15.so:${PORTSDIR}/graphics/png \
+		libtiff.so:${PORTSDIR}/graphics/tiff
 BUILD_DEPENDS=	swig2.0:${PORTSDIR}/devel/swig20 \
 		tclap>=1.2.1:${PORTSDIR}/devel/tclap
 # gmake is really needed at _runtime_.   Do not remove it from this list.
@@ -28,6 +27,7 @@ RUN_DEPENDS=	enblend>=3.1.r20080615:${PORTSDIR}/graphics/enblend \
 		gmake:${PORTSDIR}/devel/gmake
 
 USE_BZIP2=	yes
+USE_PYTHON=	yes
 
 OPTIONS_DEFINE=	PANOMATIC AUTOPANOSIFTC
 OPTIONS_DEFAULT=	PANOMATIC AUTOPANOSIFTC
@@ -69,6 +69,7 @@ MAN1=		\
 		pano_modify.1 \
 		pano_trafo.1 \
 		pto2mk.1 \
+		pto_gen.1 \
 		pto_merge.1 \
 		tca_correct.1 \
 		vig_optimize.1

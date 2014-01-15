@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-PORTVERSION=	1.7.6
+PORTVERSION=	1.7.10
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	LOCAL/dbn/repos/wine/${DIST_SUBDIR}/${PORTVERSION}
@@ -23,7 +23,7 @@ OPTIONS_DEFINE=	GECKO MONO
 GECKO_DESC=     Bundle Gecko MSI package for Wine
 MONO_DESC=      Bundle Mono MSI package for Wine
 
-CONFLICTS_INSTALL=	i386-wine-1.4* i386-wine-1.6* wine-[0-9]*
+CONFLICTS_INSTALL=	i386-wine-[0-9]* wine-[0-9]* wine-devel-[0-9]*
 
 EXTRACT_AFTER_ARGS=	-C / --exclude +COMPACT_MANIFEST --exclude +MANIFEST \
 				--exclude +MTREE_DIRS --exclude share/licenses/'*' \
@@ -39,19 +39,15 @@ SUB_FILES=	pkg-message
 USE_LDCONFIG32=	${PREFIX}/lib32 ${PREFIX}/lib32/wine
 USE_XZ=		yes
 
+GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine_gecko-2.24-x86.msi:${PORTSDIR}/emulators/wine-gecko-devel
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.5.2.msi:${PORTSDIR}/emulators/wine-mono-devel
+
+# Included for OPSYS and OSVERSION
 .include <bsd.port.pre.mk>
 
-.if !(${OSVERSION} >= 803000 && ${OSVERSION} < 900000) && !(${OSVERSION} >= 901000 && ${OSVERSION} < 1000000)
+.if ${OPSYS} != FreeBSD || (!(${OSVERSION} >= 803000 && ${OSVERSION} < 900000) && !(${OSVERSION} >= 901000 && ${OSVERSION} < 1000000))
 IGNORE=		binaries compiled for FreeBSD 8.3+ and 9.1+ only
 DISTFILES=
-.endif
-
-.if ${PORT_OPTIONS:MGECKO}
-RUN_DEPENDS+=   ${DATADIR}/gecko/wine_gecko-2.24-x86.msi:${PORTSDIR}/emulators/wine-gecko-devel
-.endif
-
-.if ${PORT_OPTIONS:MMONO}
-RUN_DEPENDS+=   ${DATADIR}/mono/wine-mono-0.0.8.msi:${PORTSDIR}/emulators/wine-mono
 .endif
 
 do-extract:
@@ -64,8 +60,7 @@ do-install:
 
 pkg-plist: extract
 	${TAR} -tf ${_DISTDIR}/${EXTRACT_ONLY} ${EXTRACT_AFTER_ARGS} | ${GREP} -v '/$$' | ${SED} 's|/usr/local/||g' | sort > ${WRKDIR}/pkg-plist
-	${TAR} -tf ${_DISTDIR}/${EXTRACT_ONLY} ${EXTRACT_AFTER_ARGS} | ${GREP} '/$$' | ${SED} 's|/usr/local/\(.*\)/$$|@dirrm \1|g' | sort -r >> ${WRKDIR}/pkg-plist
-	${REINPLACE_CMD} -e 's|@dirrm share/applications|@dirrmtry share/applications|' -e 's|/$$||g' ${WRKDIR}/pkg-plist
+	${TAR} -tf ${_DISTDIR}/${EXTRACT_ONLY} ${EXTRACT_AFTER_ARGS} | ${GREP} '/$$' | ${SED} -e 's|/usr/local/\(.*\)/$$|@dirrm \1|g' -e 's|/$$||g' -e 's|@dirrm man|@dirrmtry man|g' | sort -r >> ${WRKDIR}/pkg-plist
 	${MV} ${WRKDIR}/pkg-plist ${PLIST}
 
 port-update:

@@ -2,88 +2,85 @@
 # $FreeBSD$
 
 PORTNAME=	minetest
-PORTVERSION=	0.4.4
+PORTVERSION=	0.4.9
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	An Infiniminer/Minecraft inspired game
-
-LIB_DEPENDS=	Irrlicht:${PORTSDIR}/x11-toolkits/irrlicht \
-		sqlite3:${PORTSDIR}/databases/sqlite3
+COMMENT=	Infiniminer/Minecraft inspired game
 
 LICENSE=	LGPL21
 
+LIB_DEPENDS=	libIrrlicht.so:${PORTSDIR}/x11-toolkits/irrlicht \
+		sqlite3:${PORTSDIR}/databases/sqlite3
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	celeron55
-GH_TAGNAME=	0.4.4
-GH_COMMIT=	ab06fca
+GH_ACCOUNT=	minetest
+GH_COMMIT=	ad11a9e
 
 USES=		cmake
 CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
-		-DCUSTOM_EXAMPLE_CONF_DIR="${EXAMPLESDIR}"
+		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc"
 
+PORTDATA=	*
 PORTDOCS=	*
-PORTEXAMPLES=	*
 
-MAN6=		minetest.6 minetestserver.6
+OPTIONS_DEFINE=	CLIENT SERVER CURL NLS SOUND DOCS EXAMPLES FREETYPE LEVELDB LUAJIT
+OPTIONS_DEFAULT=CLIENT SERVER CURL SOUND
+OPTIONS_SUB=	yes
 
-OPTIONS_DEFINE=	CLIENT SERVER SOUND NLS DOCS EXAMPLES
-OPTIONS_DEFAULT=CLIENT SERVER SOUND NLS DOCS EXAMPLES
 CLIENT_DESC=	Build client
 SERVER_DESC=	Build server
+CURL_DESC=	Enable cURL support for fetching media
 SOUND_DESC=	Enable sound
+LEVELDB_DESC=	Enable LevelDB backend
+FREETYPE_DESC=	Support for TrueType fonts with unicode
+LUAJIT_DESC=	LuaJIT support
 
-NO_STAGE=	yes
+CLIENT_CMAKE_ON=	-DBUILD_CLIENT=1
+CLIENT_CMAKE_OFF=	-DBUILD_CLIENT=0
+CLIENT_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
+			libpng.so:${PORTSDIR}/graphics/png
+CLIENT_USE=		GL=gl XORG=x11
+SERVER_CMAKE_ON=	-DBUILD_SERVER=1
+SERVER_CMAKE_OFF=	-DBUILD_SERVER=0
+CURL_CMAKE_ON=		-DENABLE_CURL=1
+CURL_CMAKE_OFF=		-DENABLE_CURL=0
+CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+NLS_CMAKE_ON=		-DENABLE_GETTEXT=1
+NLS_CMAKE_OFF=		-DENABLE_GETTEXT=0
+NLS_USES=		gettext
+NLS_LDFLAGS=		-L${LOCALBASE}/lib
+SOUND_CMAKE_ON=		-DENABLE_SOUND=1
+SOUND_CMAKE_OFF=	-DENABLE_SOUND=0
+LEVELDB_CMAKE_ON=	-DENABLE_LEVELDB=1
+LEVELDB_CMAKE_OFF=	-DENABLE_LEVELDB=0
+LEVELDB_LIB_DEPENDS=	libleveldb.so:${PORTSDIR}/databases/leveldb
+FREETYPE_CMAKE_ON=	-DENABLE_FREETYPE=1
+FREETYPE_CMAKE_OFF=	-DENABLE_FREETYPE=0
+FREETYPE_LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
+
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MNLS}
-CMAKE_ARGS+=	-DENABLE_GETTEXT:BOOL=YES
-USES+=		gettext
-LDFLAGS+=	-L${LOCALBASE}/lib
-PLIST_SUB+=	NLS=""
-.else
-CMAKE_ARGS+=	-DENABLE_GETTEXT:BOOL=NO
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MCLIENT}
-USE_GL=		gl
-LIB_DEPENDS+=	jpeg:${PORTSDIR}/graphics/jpeg \
-		png15:${PORTSDIR}/graphics/png
-CMAKE_ARGS+=	-DBUILD_CLIENT=1
-PLIST_SUB+=	CLIENT=""
-.else
-CMAKE_ARGS+=	-DBUILD_CLIENT=0
-PLIST_SUB+=	CLIENT="@comment "
+.if ${PORT_OPTIONS:MCLIENT} && ${PORT_OPTIONS:MSOUND}
+USES+=		openal
+LIB_DEPENDS+=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 .endif
 
 .if ${PORT_OPTIONS:MSERVER}
-CMAKE_ARGS+=	-DBUILD_SERVER=1
-PLIST_SUB+=	SERVER=""
-.else
-CMAKE_ARGS+=	-DBUILD_SERVER=0
-PLIST_SUB+=	SERVER="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MSOUND}
-USE_OPENAL=	yes
-LIB_DEPENDS+=	vorbis:${PORTSDIR}/audio/libvorbis
-.else
-CMAKE_ARGS+=	-DENABLE_SOUND:BOOL=OFF
+USE_RC_SUBR=	${PORTNAME}
+USERS=		${PORTNAME}
+GROUPS=		${PORTNAME}
 .endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
-		${WRKSRC}/cmake/Modules/FindIrrlicht.cmake
+		${WRKSRC}/cmake/Modules/*.cmake
 	@${REINPLACE_CMD} -e 's|-lpthread|${PTHREAD_LIBS}|' \
 		${WRKSRC}/src/CMakeLists.txt
-#	@${REINPLACE_CMD} -e 's|share/man|man|; /EXAMPLE_CONF_DIR/ s|..DOCDIR.|"${EXAMPLESDIR}"|' \
-#		${WRKSRC}/CMakeLists.txt
-.if ! ${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e '/install.*DESTINATION.*DOCDIR/I d' ${WRKSRC}/CMakeLists.txt
-.endif
-.if ! ${PORT_OPTIONS:MEXAMPLES}
-	@${REINPLACE_CMD} -e '/install.*DESTINATION.*EXAMPLE_CONF_DIR/I d' ${WRKSRC}/CMakeLists.txt
+.if ! ${PORT_OPTIONS:MLUAJIT}
+	@${REINPLACE_CMD} -e '/find_/ s|LUA_|NO&|g' \
+		${WRKSRC}/src/CMakeLists.txt
 .endif
 
 .include <bsd.port.mk>

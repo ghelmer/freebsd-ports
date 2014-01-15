@@ -11,7 +11,7 @@ DISTNAME=	SpiralLoops-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Loop-based sampler
 
-LIB_DEPENDS=	fltk.1:${PORTSDIR}/x11-toolkits/fltk
+LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
 
 NO_STAGE=	yes
 DOCDIR=		share/doc/${PORTNAME}
@@ -42,7 +42,7 @@ post-patch:
 
 pre-install:
 	${ECHO_CMD} bin/SpiralLoops > ${PLIST}
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 .for i in ${DOC_FILES}
 	${ECHO_CMD} ${DOCDIR}/`${BASENAME} ${i}` >> ${PLIST}
 .endfor
@@ -51,7 +51,7 @@ pre-install:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/SpiralLoops ${PREFIX}/bin
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 .for i in ${DOC_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${i} ${DOCSDIR}

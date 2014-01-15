@@ -15,21 +15,20 @@ COMMENT=	Alternative Bitcoin peer-to-peer currency client
 LICENSE=	MIT
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/graph/parallel/algorithm.hpp:${PORTSDIR}/devel/boost-libs
-LIB_DEPENDS=	boost_date_time:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs
 
 OPTIONS_DEFINE=	WXGTK
 OPTIONS_DEFAULT=	WXGTK
 
 WRKSRC=		${WRKDIR}/src
 
+USES=		gmake dos2unix
 USE_ZIP=	yes
-USE_DOS2UNIX=	yes
 USE_GNOME=	glib20
 USE_OPENSSL=	yes
 USE_BDB=	yes
 WANT_BDB_VER=	47
 USE_GCC=	any
-USE_GMAKE=	yes
 ALL_TARGET=	${BINARY}
 
 CXXFLAGS+=	-Wno-invalid-offsetof

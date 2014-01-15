@@ -12,6 +12,8 @@ WRKSRC=		${WRKDIR}/sumwars-${PORTVERSION}
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Role-playing game, featuring both a single and a multiplayer mode
 
+BROKEN=		Fails to build
+
 BUILD_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so.1.8.1:${PORTSDIR}/graphics/ogre3d \
 		${LOCALBASE}/lib/libOIS-1.2.0.so:${PORTSDIR}/devel/ois \
 		${LOCALBASE}/lib/libenet.a:${PORTSDIR}/net/enet
@@ -22,14 +24,11 @@ LIB_DEPENDS=	CEGUIBase-0.7.9.0:${PORTSDIR}/graphics/cegui \
 		PocoNet.12:${PORTSDIR}/devel/poco \
 		physfs.1:${PORTSDIR}/devel/physfs
 
-USES=		cmake gettext gmake pkgconfig
+USES=		cmake gettext gmake openal:al,alut pkgconfig
 USE_GL=		gl glu
 USE_BZIP2=	yes
 INSTALLS_ICONS=	yes
 USE_LUA=	5.1
-USE_OPENAL=	al alut
-
-FETCH_ARGS?=	-pRr
 
 CMAKE_ARGS+=	-DGETTEXT_SEARCH_PATH=${LOCALBASE}/lib
 

@@ -8,45 +8,41 @@ CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/AutoQ3D%20${PORTVERSION}
 DISTNAME=	AutoQ3DCommunity${PORTVERSION:C/\./-/}qt4source
 
-MAINTAINER=	nemysis@gmx.ch
-COMMENT=	Qt4 quick 3D model editor
+MAINTAINER=	nemysis@FreeBSD.org
+COMMENT=	Qt 4 quick 3D model editor
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USE_DOS2UNIX=	yes
-USE_GL=		glu
 USE_ZIP=	yes
-USE_QT4=	corelib gui opengl \
-		moc_build qmake_build
+USES=		dos2unix qmake
+DOS2UNIX_FILES=	*.pro src/cmds/*.cpp src/fgui/*.cpp docs/*.txt
+DOS2UNIX_REGEX=	.*.[^p][^n][^g]$
+USE_GL=		glu
+USE_QT4=	corelib gui opengl moc_build
 
 PORTDOCS=	3DQformat.txt ChangeLog.txt
 
-DESKTOP_ENTRIES="AutoQ3D" \
-		"${COMMENT}" \
-		"AutoQ3D" \
-		"AutoQ3D" \
-		"Graphics;3DGraphics;Qt;" \
-		false
+OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+DESKTOP_ENTRIES="AutoQ3D" "" "${PORTNAME}" \
+		"${PORTNAME}" "Graphics;3DGraphics;Qt;" ""
+
 post-patch:
 .for file in src/main.cpp src/fgui/cadform.cpp src/dialogs/prgsettings.cpp
-	@${REINPLACE_CMD} -e \
-		's|/usr/share/AutoQ3D-Community|${DATADIR}|g' ${WRKSRC}/${file}
+	@${REINPLACE_CMD} \
+		-e 's|/usr/share/AutoQ3D-Community|${DATADIR}|g' \
+		${WRKSRC}/${file}
 .endfor
 
-do-configure:
-	@(cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${QMAKE} ${QMAKEFLAGS})
-
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/AutoQ3D ${PREFIX}/bin
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "images *.htm *.qm" ${DATADIR})
-	${INSTALL_DATA} ${WRKSRC}/AutoQ3D.png ${PREFIX}/share/pixmaps
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/docs/|} ${DOCSDIR}
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/AutoQ3D ${STAGEDIR}${PREFIX}/bin/
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "images *.htm *.qm" \
+		${STAGEDIR}${DATADIR})
+	${INSTALL_DATA} ${WRKSRC}/AutoQ3D.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/
+
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/docs/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

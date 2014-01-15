@@ -11,11 +11,9 @@ MASTER_SITES=	http://www.tinc-vpn.org/packages/ \
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	A Virtual Private Network (VPN) daemon
 
-LIB_DEPENDS=	lzo2:${PORTSDIR}/archivers/lzo2
+LIB_DEPENDS=	liblzo2.so:${PORTSDIR}/archivers/lzo2
 
 LICENSE=	GPLv3
-
-NO_STAGE=	yes
 
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
@@ -23,10 +21,8 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--localstatedir=/var
 USE_RC_SUBR=	tincd
-
-PLIST_FILES=	sbin/tincd
-MAN5=	tinc.conf.5
-MAN8=	tincd.8
-INFO=	tinc
+INFO=		tinc
+PLIST_FILES=	sbin/tincd \
+		man/man5/tinc.conf.5.gz man/man8/tincd.8.gz
 
 .include <bsd.port.mk>

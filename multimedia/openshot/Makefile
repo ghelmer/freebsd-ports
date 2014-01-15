@@ -22,14 +22,13 @@ RUN_DEPENDS=	ffmpeg:${PORTSDIR}/multimedia/ffmpeg \
 		sox:${PORTSDIR}/audio/sox
 
 USE_GNOME=	pygtk2 desktopfileutils
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_PYDISTUTILS=yes
 USES=		gettext
 INSTALLS_OMF=	yes
 
 MAN1=		${PORTNAME}.1 \
 		${PORTNAME}-render.1
-FETCH_ARGS=	-pRr
 
 NO_STAGE=	yes
 post-patch:

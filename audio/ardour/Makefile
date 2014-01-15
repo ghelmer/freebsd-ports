@@ -12,22 +12,21 @@ COMMENT=	Multichannel digital audio workstation
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	lo:${PORTSDIR}/audio/liblo \
-		lrdf:${PORTSDIR}/textproc/liblrdf \
-		aubio:${PORTSDIR}/audio/aubio \
-		fftw3:${PORTSDIR}/math/fftw3 \
-		boost_date_time:${PORTSDIR}/devel/boost-libs \
-		gnomecanvasmm-2.6:${PORTSDIR}/graphics/libgnomecanvasmm26
+LIB_DEPENDS=	liblo.so:${PORTSDIR}/audio/liblo \
+		liblrdf.so:${PORTSDIR}/textproc/liblrdf \
+		libaubio.so:${PORTSDIR}/audio/aubio \
+		libfftw3.so:${PORTSDIR}/math/fftw3 \
+		libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
+		libgnomecanvasmm-2.6.so:${PORTSDIR}/graphics/libgnomecanvasmm26
 
 USE_BZIP2=	yes
-NO_STAGE=	yes
 USES=		gettext pkgconfig
 USE_SCONS=	yes
 SCONS_ENV+=	SYSLIBS=yes PREFIX=${PREFIX} NLS=yes
 CFLAGS+=	-I${LOCALBASE}/include
 USE_GNOME=	libxslt
 USE_LDCONFIG=	${PREFIX}/lib/ardour2 ${PREFIX}/lib/ardour2/surfaces
-TEMPLATESDIR=	${PREFIX}/share/ardour2/templates
+
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS VST
@@ -40,7 +39,7 @@ SCONS_ENV+=	VST=yes
 BUILD_DEPENDS+=	winegcc:${PORTSDIR}/emulators/wine \
 		unzip:${PORTSDIR}/archivers/unzip \
 		gsed:${PORTSDIR}/textproc/gsed
-LIB_DEPENDS+=	wine.1:${PORTSDIR}/emulators/wine
+LIB_DEPENDS+=	libwine.so:${PORTSDIR}/emulators/wine
 
 PLIST_SUB+=	NO_VST="@comment "
 PLIST_SUB+=	VST=""
@@ -67,11 +66,15 @@ SCONS_ENV+=	FPU_OPTIMIZATION=0
 .endif
 
 post-patch:
-	${REINPLACE_CMD} -e 's|%%CFLAGS%%|${CFLAGS}|' ${WRKSRC}/SConstruct
-	${REINPLACE_CMD} -e 's|alsa_pcm|oss|g' ${WRKSRC}/templates/*.template
+	@${REINPLACE_CMD} -e 's|%%CFLAGS%%|${CFLAGS}|' ${WRKSRC}/SConstruct
+	@${REINPLACE_CMD} -e 's|alsa_pcm|oss|g' ${WRKSRC}/templates/*.template
+
+pre-build:
+	@${MKDIR} ${STAGEDIR}
 
 post-install:
-	@${MKDIR} ${TEMPLATESDIR}
-	${INSTALL_DATA} ${WRKSRC}/templates/*.template ${TEMPLATESDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/ardour2/templates
+	${INSTALL_DATA} ${WRKSRC}/templates/*.template \
+		${STAGEDIR}${PREFIX}/share/ardour2/templates
 
 .include <bsd.port.mk>

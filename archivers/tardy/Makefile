@@ -4,6 +4,7 @@
 PORTNAME=	tardy
 PORTVERSION=	1.28
 DISTVERSIONSUFFIX=	.D001.orig
+PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	SF/tardy/${PORTVERSION}/
 DISTNAME=	${PORTNAME}_${PORTVERSION}${DISTVERSIONSUFFIX}
@@ -15,7 +16,7 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost-libs \
 		${LOCALBASE}/include/libiberty/libiberty.h:${PORTSDIR}/devel/gnulibiberty
-LIB_DEPENDS=	explain:${PORTSDIR}/devel/libexplain
+LIB_DEPENDS=	libexplain.so:${PORTSDIR}/devel/libexplain
 
 GNU_CONFIGURE=	yes
 
@@ -27,12 +28,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_FILES=	bin/tardy man/man1/tardy.1.gz
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 800505 || (${OSVERSION} >= 900000 && ${OSVERSION} < 900012)
-BUILD_DEPENDS+=	lzma:${PORTSDIR}/archivers/xz
-.endif
 
 post-patch:
 .for var in CFLAGS LDFLAGS
@@ -46,4 +41,4 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/man/man1/${PORTNAME}.1 \
 		${STAGEDIR}${MANPREFIX}/man/man1
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

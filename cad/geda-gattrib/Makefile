@@ -15,22 +15,20 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The gEDA's attribute editor
 
 RUN_DEPENDS=	${LOCALBASE}/share/geda/sym:${PORTSDIR}/cad/geda-symbols
-LIB_DEPENDS=	geda.33:${PORTSDIR}/cad/libgeda
+LIB_DEPENDS=	libgeda.so:${PORTSDIR}/cad/libgeda
 
 DATADIR=	${PREFIX}/share/geda
 DOCSDIR=	${PREFIX}/share/doc/geda
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig
+USES=		desktop-file-utils gmake pkgconfig
 USE_GNOME=	gtk20 glib20
-USE_GMAKE=	yes
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--with-docdir="${DOCSDIR}" --disable-update-mime-database \
 		--disable-update-desktop-database
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

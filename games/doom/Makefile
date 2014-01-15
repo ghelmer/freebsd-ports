@@ -8,12 +8,12 @@ CATEGORIES=	games
 MASTER_SITES=	${MASTER_SITE_IDSOFTWARE:S|$|source/|}
 DISTNAME=	doomsrc
 
-MAINTAINER=	c.petrik.sosa@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DOOM: the game and the sound server
 
 LICENSE=	GPLv1
 
-NO_CDROM=	requested by IDsoftware
+NO_CDROM=	Redistribution is limited, see license; Requested by id Software
 
 ONLY_FOR_ARCHS=	i386
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	kdelibs
 PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11 kde ipv6
 MASTER_SITES=	${MASTER_SITE_KDE}
 MASTER_SITE_SUBDIR=	${KDE4_BRANCH}/${PORTVERSION}/src
@@ -39,11 +39,10 @@ CONFLICTS=	kdebase-runtime-4.5.[0-5]
 LATEST_LINK=	${PORTNAME}4
 
 USE_XZ=		yes
-USE_FAM=	yes
 USE_GNOME=	libxml2 libxslt
 USE_KDE4=	kdehier kdeprefix oxygen \
 		attica automoc4 ontologies sharedmime soprano strigi
-USES=		cmake:outsource gettext perl5
+USES=		cmake:outsource fam gettext perl5
 USE_OPENSSL=	yes
 USE_QT4=	corelib dbus declarative designer_build gui \
 		network opengl phonon qt3support \
@@ -84,10 +83,6 @@ AVAHI_DESC=	Use Avahi's mDNSResponder (otherwise Apple's)
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 800505 || (${OSVERSION} >= 900000 && ${OSVERSION} < 900012)
-LIB_DEPENDS+=	lzma.5:${PORTSDIR}/archivers/xz
-.endif
 
 .if ${OSVERSION} < 900004
 LIB_DEPENDS+=	utempter:${PORTSDIR}/sysutils/libutempter

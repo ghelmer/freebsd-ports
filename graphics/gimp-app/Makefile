@@ -3,8 +3,8 @@
 #   $MCom: ports/graphics/gimp-app/Makefile,v 1.65 2012/12/30 18:09:11 mezz Exp $
 
 PORTNAME?=	gimp-app
-PORTVERSION=	2.8.8
-PORTREVISION?=	0
+PORTVERSION=	2.8.10
+PORTREVISION?=	1
 PORTEPOCH?=	1
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	ftp://ftp.gimp.org/pub/%SUBDIR%/ \
@@ -34,7 +34,7 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-co
 
 USE_BZIP2=	yes
 USE_XORG=	xpm xmu xext
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
 USE_GNOME+=	intltool intlhack gtk20 libartlgpl2 ltverhack gnomehier
 USES=		desktop-file-utils gettext gmake pathfix pkgconfig
 USE_LDCONFIG=	yes

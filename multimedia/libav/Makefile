@@ -2,7 +2,7 @@
 
 PORTNAME=	libav
 PORTVERSION=	9.10
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://libav.org/releases/
 
@@ -33,8 +33,8 @@ CONFIGURE_ARGS+=	--prefix="${PREFIX}" \
 
 OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB BZIP2 CDIO FAAC FDK_AAC FREETYPE FREI0R \
 		GNUTLS GSM ILBC JACK LAME OPENCV OPENJPEG OPENSSL OPUS \
-		PULSEAUDIO RTMP SCHROEDINGER SPEEX THEORA V4L2 VAAPI VDPAU \
-		VO_AACENC VO_AMRWBENC VORBIS VPX X264 XVID ZLIB
+		PULSEAUDIO RTMP SCHROEDINGER SPEEX THEORA V4L VAAPI VDPAU \
+		VO_AACENC VO_AMRWBENC VORBIS VPX X11GRAB X264 XVID ZLIB
 
 OPTIONS_DEFAULT=	BZIP2 FREETYPE FREI0R GNUTLS OPENCV SCHROEDINGER \
 			THEORA VO_AACENC VORBIS VPX X264 XVID ZLIB
@@ -42,6 +42,7 @@ OPTIONS_DEFAULT=	BZIP2 FREETYPE FREI0R GNUTLS OPENCV SCHROEDINGER \
 FDK_AAC_DESC=	AAC audio encoding via Fraunhofer FDK
 ILBC_DESC=	iLBC en/decoding via libilbc
 OPUS_DESC=	Opus decoding with libopus
+X11GRAB_DESC=	X11 grabbing
 
 ALSA_LIB_DEPENDS=		libasound.so:${PORTSDIR}/audio/alsa-lib
 ALSA_CONFIGURE_ON=		--enable-indev=alsa --enable-outdev=alsa
@@ -89,8 +90,7 @@ JACK_CONFIGURE_ENABLE=		indev=jack
 LAME_LIB_DEPENDS=		libmp3lame.so:${PORTSDIR}/audio/lame
 LAME_CONFIGURE_ENABLE=		libmp3lame
 
-OPENCV_LIB_DEPENDS=		libopencv_imgproc.so:${PORTSDIR}/graphics/opencv-core \
-				libopencv_gpu.so:${PORTSDIR}/graphics/opencv
+OPENCV_LIB_DEPENDS=		libopencv_gpu.so:${PORTSDIR}/graphics/opencv
 OPENCV_CONFIGURE_ENABLE=	libopencv
 
 OPENJPEG_LIB_DEPENDS=		libopenjpeg.so:${PORTSDIR}/graphics/openjpeg
@@ -116,8 +116,8 @@ SPEEX_CONFIGURE_ENABLE=		libspeex
 THEORA_LIB_DEPENDS=		libtheora.so:${PORTSDIR}/multimedia/libtheora
 THEORA_CONFIGURE_ENABLE=	libtheora
 
-V4L2_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat
-V4L2_CONFIGURE_ENABLE=		indev=v4l2
+V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat
+V4L_CONFIGURE_ENABLE=		indev=v4l2
 
 VAAPI_LIB_DEPENDS=		libva.so:${PORTSDIR}/multimedia/libva
 VAAPI_CONFIGURE_ENABLE=		vaapi
@@ -136,6 +136,8 @@ VORBIS_CONFIGURE_ENABLE=	libvorbis
 
 VPX_LIB_DEPENDS=		libvpx.so:${PORTSDIR}/multimedia/libvpx
 VPX_CONFIGURE_ENABLE=		libvpx
+
+X11GRAB_USE=			XORG=x11 xext xfixes
 
 X264_LIB_DEPENDS=		libx264.so:${PORTSDIR}/multimedia/x264
 X264_CONFIGURE_ENABLE=		libx264
@@ -203,10 +205,12 @@ LICENSE=	LGPL21
 .endif
 
 post-patch:
+	@${REINPLACE_CMD} -e 's|freetype/freetype.h|freetype2/freetype.h|' \
+		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|gsm/gsm.h|gsm.h|' \
 		${WRKSRC}/configure \
 		${WRKSRC}/libavcodec/libgsm.c
-	${REINPLACE_CMD} -e 's|$$(LIBDIR)/pkgconfig|${STAGEDIR}${PREFIX}/libdata/pkgconfig|' \
+	@${REINPLACE_CMD} -e 's|$$(LIBDIR)/pkgconfig|${STAGEDIR}${PREFIX}/libdata/pkgconfig|' \
 		${WRKSRC}/library.mak
 
 .include <bsd.port.post.mk>

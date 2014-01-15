@@ -13,10 +13,10 @@ COMMENT=	Search using regexes for file names and text
 
 LICENSE=	GPLv3 # (or later)
 
-USES=		qmake
+USES=		qmake dos2unix
 USE_ZIP=	yes
-USE_DOS2UNIX=	*.cpp *.h
-USE_QT4=	corelib gui moc_build qmake_build rcc_build uic_build
+DOS2UNIX_GLOB=	*.cpp *.h
+USE_QT4=	corelib gui moc_build rcc_build uic_build
 
 PLIST_FILES=	bin/${PORTNAME}
 

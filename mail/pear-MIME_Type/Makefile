@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	MIME_Type
-PORTVERSION=	1.3.1
+PORTVERSION=	1.3.3
 CATEGORIES=	mail www pear
 
 MAINTAINER=	miwi@FreeBSD.org
@@ -17,7 +17,6 @@ PEAR_SYSTEM_COMMAND_DESC=	PEAR::System_Command support
 
 PEAR_AUTOINSTALL=yes
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPEAR_SYSTEM_COMMAND}

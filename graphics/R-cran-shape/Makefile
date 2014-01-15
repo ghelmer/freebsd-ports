@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	shape
-PORTVERSION=	1.4.0
-PORTREVISION=	5
+PORTVERSION=	1.4.1
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -12,8 +11,6 @@ COMMENT=	Functions for plotting graphical shapes, colors
 
 LICENSE=	GPLv3
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

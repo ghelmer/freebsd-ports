@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	httpuv
-PORTVERSION=	1.1.0
-PORTREVISION=	2
+PORTVERSION=	1.2.1
 CATEGORIES=	www
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -18,11 +17,7 @@ LICENSE_PERMS_NODE=	auto-accept
 
 RUN_DEPENDS=	R-cran-Rcpp>=0.10.2:${PORTSDIR}/devel/R-cran-Rcpp
 
-USE_GMAKE=	yes
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
-
 MAKE_ENV=	MAKE=${GMAKE}
+USES=		cran:auto-plist gmake
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

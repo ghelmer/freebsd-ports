@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	x2goclient
-PORTVERSION=	4.0.1.1
+PORTVERSION=	4.0.1.2
 CATEGORIES=	net
 MASTER_SITES=	http://code.x2go.org/releases/source/x2goclient/
 
@@ -24,8 +24,8 @@ OPTIONS_DEFAULT=LDAP
 USES=		qmake
 USE_XORG=	xpm
 USE_QT4=	gui network svg \
-		linguist_build moc_build qmake_build rcc_build uic_build
-QMAKE_ARGS=	QMAKE_LRELEASE="${QT_PREFIX}/bin/lrelease-qt4"
+		linguist_build moc_build rcc_build uic_build
+QMAKE_ARGS=	QMAKE_LRELEASE="${LRELEASE}"
 INSTALLS_ICONS=	yes
 
 .include <bsd.port.options.mk>
@@ -65,7 +65,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/icons
 	(cd ${WRKSRC}/icons && ${INSTALL_DATA} x2goclient.xpm \
 		${STAGEDIR}${DATADIR}/icons)
-.for i in x2goclient.png x2gosession.png 
+.for i in x2goclient.png x2gosession.png
 	(cd ${WRKSRC}/icons/128x128 && ${INSTALL_DATA} ${i} \
 		${STAGEDIR}${DATADIR}/icons)
 .endfor

@@ -12,16 +12,20 @@ COMMENT=	Digital decoder for psk, cw, psk31, olivia
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	asciidoc:${PORTSDIR}/textproc/asciidoc\
+BUILD_DEPENDS=	pkg-config:${PORTSDIR}/devel/pkgconf \
+		asciidoc:${PORTSDIR}/textproc/asciidoc\
 		docbook-xsl>=1.0:${PORTSDIR}/textproc/docbook-xsl\
 		xsltproc:${PORTSDIR}/textproc/libxslt
-LIB_DEPENDS=	samplerate:${PORTSDIR}/audio/libsamplerate\
-		fltk:${PORTSDIR}/x11-toolkits/fltk
+LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
+		libsamplerate.so:${PORTSDIR}/audio/libsamplerate\
+		libboost_system.so:${PORTSDIR}/devel/boost-libs\
+		libfltk.so:${PORTSDIR}/x11-toolkits/fltk
+USE_CXXSTD=	gnu++0x
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig
-USE_GMAKE=	yes
-CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config"
+USES=		gmake pkgconfig compiler:c++11-lib
+CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config" \
+		    EXTRA_LIBS="-lexecinfo"
 MAN1=		fldigi.1
 
 OPTIONS_DEFINE=	NATIVE_OPT FLARQ XMLRPC OSS SNDFILE PORTAUDIO PULSEAUDIO HAMLIB NLS
@@ -37,7 +41,6 @@ HAMLIB_DESC=		Support rig control via hamlib
 
 OPTIONS_DEFAULT=	OPTFLARQ OPTOSS HAMLIB
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "sparc64"
@@ -121,12 +124,9 @@ post-configure:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	@${ECHO} ""
-	${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/doc/guide.html ${DOCSDIR}
-	@${ECHO} "fldigi docs installed in ${DOCSDIR}"
-	@${ECHO} ""
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/doc/guide.html ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.post.mk>

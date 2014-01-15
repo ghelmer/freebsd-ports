@@ -25,12 +25,13 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/editobj/editor.py:${PORTSDIR}/graphics/py-edit
 USE_BZIP2=	yes
 USE_PYTHON=	yes
 USE_PYDISTUTILS=	yes
-USE_OPENAL=	al alut
-USE_GL=		glew
-USE_GMAKE=	yes
+USES=		gmake openal:al,alut
+USE_GL=		glew glu
 USE_SDL=	sdl
 
 PYDISTUTILS_PKGNAME=	Soya
+
+LDFLAGS+=	-L${LOCALBASE}/lib -lGLU
 
 MANDIR=	${WRKDIR}/${DISTNAME}/manpage/man1
 MAN1=	soya_editor.1

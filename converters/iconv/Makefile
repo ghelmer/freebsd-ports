@@ -11,14 +11,10 @@ MASTER_SITE_SUBDIR=	bland
 MAINTAINER=	bland@FreeBSD.org
 COMMENT=	Charset conversion library and utilities
 
-USES=		shebangfix perl5
+USES=		shebangfix perl5 uidfix
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	iconv_builtin ccs/iconv_mktbl
-
-MANCOMPRESSED=	yes
-MAN1=		biconv.1
-MAN3=		biconv.3 biconv_open.3 biconv_close.3
 
 OPTIONS_DEFINE=	CCSUTIL
 OPTIONS_DEFAULT=CCSUTIL
@@ -27,13 +23,18 @@ OPTIONS_SUB=	yes
 
 CCSUTIL_DESC=	Install Coded character set (CCS) util
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCCSUTIL}
 USE_PERL5+=	run
 .else
 EXTRA_PATCHES=	${FILESDIR}/extra-patch-ccs_Makefile
+.endif
+
+.if defined(NO_PROFILE)
+PLIST_SUB+=	PROFILE="@comment "
+.else
+PLIST_SUB+=	PROFILE=""
 .endif
 
 .include <bsd.port.mk>

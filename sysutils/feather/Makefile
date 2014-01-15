@@ -7,13 +7,13 @@ CATEGORIES=	sysutils python
 MASTER_SITES=	http://www.sourcehosting.net/freebsd/distfiles/ \
 		LOCAL/glarkin
 
-MAINTAINER=	glarkin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A Python script for managing tarsnap backups
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=0:${PORTSDIR}/devel/py-yaml \
 		tarsnap>=0:${PORTSDIR}/sysutils/tarsnap
 
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 NO_BUILD=	yes
 NO_INSTALL=	yes
 STRIP=

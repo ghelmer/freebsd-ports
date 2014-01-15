@@ -3,7 +3,7 @@
 
 PORTNAME=	gnokii
 PORTVERSION=	0.6.31
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnokii/ \
@@ -80,7 +80,7 @@ CONFIGURE_ARGS+=	--disable-postgres
 PLIST_SUB+=	PGM='@comment '
 . endif
 . if ${PORT_OPTIONS:MSQLITE}
-LIB_DEPENDS+=	sqlite3:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS+=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 PLIST_SUB+=	SQLT=''
 . else
 CONFIGURE_ARGS+=	--disable-sqlite

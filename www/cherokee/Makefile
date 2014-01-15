@@ -9,9 +9,7 @@ MASTER_SITES=	${MASTER_SITE_SAMBA}
 MASTER_SITE_SUBDIR=cherokee/1.2/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Extremely fast and flexible web server
-
-BROKEN=		Does not configure
+COMMENT=	Fast and flexible web server
 
 USES=		gettext gmake pathfix pkgconfig
 USE_OPENSSL=	yes
@@ -60,7 +58,7 @@ NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MADMIN}
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 PLIST_SUB+=	ADMIN=""
 .else
 CONFIGURE_ARGS+=--disable-admin
@@ -92,7 +90,7 @@ PLIST_SUB+=	LDAP="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MGEOIP}
-LIB_DEPENDS+=	GeoIP:${PORTSDIR}/net/GeoIP
+LIB_DEPENDS+=	libGeoIP.so:${PORTSDIR}/net/GeoIP
 CONFIGURE_ARGS+=--with-geoip=yes
 PLIST_SUB+=	GEOIP=""
 .else
@@ -101,9 +99,9 @@ PLIST_SUB+=	GEOIP="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MFFMPEG}
-LIB_DEPENDS+=	avformat:${PORTSDIR}/multimedia/ffmpeg \
-		avcodec:${PORTSDIR}/multimedia/ffmpeg \
-		avutil:${PORTSDIR}/multimedia/ffmpeg
+LIB_DEPENDS+=	libavformat.so:${PORTSDIR}/multimedia/ffmpeg \
+		libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
+		libavutil.so:${PORTSDIR}/multimedia/ffmpeg
 CONFIGURE_ARGS+=--with-ffmpeg=yes
 .else
 CONFIGURE_ARGS+=--with-ffmpeg=no
@@ -119,7 +117,7 @@ PLIST_SUB+=	NLS="@comment "
 .if ${PORT_OPTIONS:MINTPCRE}
 CONFIGURE_ARGS+=--enable-internal-pcre
 .else
-LIB_DEPENDS+=	pcre:${PORTSDIR}/devel/pcre
+LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre
 .endif
 
 .if ${PORT_OPTIONS:MRRDTOOL}

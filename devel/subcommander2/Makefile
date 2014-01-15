@@ -13,19 +13,19 @@ COMMENT=	Qt4 based multiplatform subversion client, diff & merge tool
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	boost_thread:${PORTSDIR}/devel/boost-libs \
-		svn_client-1:${PORTSDIR}/devel/subversion
+LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
+		libsvn_client-1.so:${PORTSDIR}/devel/subversion
 
 LATEST_LINK=	subcommander2
 CONFLICTS=	subcommander-1.*
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R:S,.b,b,}p${PORTVERSION:E}
 
-USE_DOS2UNIX=	*.cpp *.h
+USES=		gmake dos2unix
+DOS2UNIX_GLOB=	*.cpp *.h
 USE_QT4=	corelib gui network qt3support moc_build rcc_build uic_build
 QT_NONSTANDARD=	yes
 USE_OPENSSL=	yes
-USE_GMAKE=	yes
 USE_AUTOTOOLS=	aclocal automake autoheader autoconf
 ACLOCAL_ARGS=	-I ac-macros
 AUTOMAKE_ARGS=	--copy --force-missing --foreign

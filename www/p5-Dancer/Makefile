@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Dancer
-PORTVERSION=	1.3119
+PORTVERSION=	1.3120
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:YANICK
@@ -18,6 +18,7 @@ RUN_DEPENDS=	\
 	p5-HTTP-Body>=1.07:${PORTSDIR}/www/p5-HTTP-Body \
 	p5-HTTP-Server-Simple-PSGI>=0.11:${PORTSDIR}/www/p5-HTTP-Server-Simple-PSGI \
 	p5-MIME-Types>0:${PORTSDIR}/mail/p5-MIME-Types \
+	p5-Module-Runtime>=0:${PORTSDIR}/devel/p5-Module-Runtime \
 	p5-URI>=1.59:${PORTSDIR}/net/p5-URI \
 	p5-Try-Tiny>=0.09:${PORTSDIR}/lang/p5-Try-Tiny
 BUILD_DEPENDS:=	${RUN_DEPENDS}

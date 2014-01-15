@@ -5,7 +5,11 @@
 STAGEDIR?=	${WRKDIR}/stage
 DESTDIRNAME?=	DESTDIR
 
+.if defined(_DESTDIR_VIA_ENV)
+MAKE_ENV+=	${DESTDIRNAME}=${STAGEDIR}
+.else
 MAKE_ARGS+=	${DESTDIRNAME}=${STAGEDIR}
+.endif
 QA_ENV+=	STAGEDIR=${STAGEDIR} \
 		PREFIX=${PREFIX} \
 		LOCALBASE=${LOCALBASE} \
@@ -28,10 +32,6 @@ stage-dir:
 	@${MKDIR} ${STAGEDIR}${PREFIX}
 .if !defined(NO_MTREE)
 	@${MTREE_CMD} ${MTREE_ARGS} ${STAGEDIR}${PREFIX} > /dev/null
-.if defined(USE_LINUX) && ${PREFIX} != ${LINUXBASE}
-	@${MKDIR} ${STAGEDIR}${LINUXBASE}
-	@${MTREE_CMD} ${MTREE_ARGS} ${STAGEDIR}${LINUXBASE} > /dev/null
-.endif
 .endif
 .endif
 
@@ -66,24 +66,6 @@ compress-man:
 				(cd $${link%/*} ; ${LN} -sf $${dest##*/}.gz $${link##*/}.gz) ;\
 		done; \
 	done
-.endif
-
-.if !target(add-plist-info)
-add-plist-info:
-.for i in ${INFO}
-.if !defined(WITH_PKGNG)
-	@${ECHO_CMD} "@cwd ${PREFIX}" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec install-info --quiet --delete %D/${INFO_PATH}/$i.info %D/${INFO_PATH}/dir" \
-		>> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec [ \`info -d %D/${INFO_PATH}  --output - 2>/dev/null | grep -c '^*'\` -eq 1 ] && rm -f %D/${INFO_PATH}/dir || :"\
-		>> ${TMPPLIST}
-	@${LS} ${STAGEDIR}${PREFIX}/${INFO_PATH}/$i.info* | ${SED} -e s:${STAGEDIR}${PREFIX}/::g >> ${TMPPLIST}
-	@${ECHO_CMD} "@exec install-info --quiet %D/${INFO_PATH}/$i.info %D/${INFO_PATH}/dir" \
-		>> ${TMPPLIST}
-.else
-	@${LS} ${STAGEDIR}${PREFIX}/${INFO_PATH}/$i.info* | ${SED} -e s:${STAGEDIR}${PREFIX}/:@info\ :g >> ${TMPPLIST}
-.endif
-.endfor
 .endif
 
 .if !target(makeplist)

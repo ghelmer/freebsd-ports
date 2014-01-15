@@ -91,6 +91,7 @@
     SUBDIR += cvsupchk
     SUBDIR += cvsync
     SUBDIR += cyphesis
+    SUBDIR += czmq
     SUBDIR += daemonlogger
     SUBDIR += dante
     SUBDIR += daq
@@ -127,7 +128,6 @@
     SUBDIR += enet
     SUBDIR += entitymib
     SUBDIR += erlang_xmlrpc
-    SUBDIR += erlyvideo
     SUBDIR += etherboot
     SUBDIR += etrace
     SUBDIR += exabgp
@@ -147,8 +147,6 @@
     SUBDIR += freeradius2
     SUBDIR += freeradius3
     SUBDIR += freerdp
-    SUBDIR += freeswitch
-    SUBDIR += freeswitch-core
     SUBDIR += freeswitch-core-devel
     SUBDIR += freeswitch-curl-devel
     SUBDIR += freeswitch-devel
@@ -161,9 +159,7 @@
     SUBDIR += fspclient
     SUBDIR += fspd
     SUBDIR += fsplib
-    SUBDIR += ftelnetd
     SUBDIR += g2ipmsg
-    SUBDIR += gateway6
     SUBDIR += get_iplayer
     SUBDIR += gini
     SUBDIR += gkrellmqst
@@ -313,6 +309,7 @@
     SUBDIR += libgweather
     SUBDIR += libilbc
     SUBDIR += libkvkontakte
+    SUBDIR += libmateweather
     SUBDIR += libmediawiki
     SUBDIR += libmms
     SUBDIR += libmxp
@@ -348,6 +345,9 @@
     SUBDIR += libunp
     SUBDIR += libutp
     SUBDIR += libvncserver
+    SUBDIR += libzmq2
+    SUBDIR += libzmq3
+    SUBDIR += libzmq4
     SUBDIR += liferea
     SUBDIR += linc
     SUBDIR += linc-reference
@@ -362,7 +362,6 @@
     SUBDIR += liveMedia
     SUBDIR += lla
     SUBDIR += ltm
-    SUBDIR += lua50-luasocket
     SUBDIR += lualdap
     SUBDIR += luasocket
     SUBDIR += lvwimax
@@ -404,6 +403,7 @@
     SUBDIR += ncp
     SUBDIR += ncplib
     SUBDIR += ndisc6
+    SUBDIR += ndpi
     SUBDIR += nemesis
     SUBDIR += nepenthes
     SUBDIR += nepim
@@ -440,6 +440,7 @@
     SUBDIR += nstxd
     SUBDIR += ntlmaps
     SUBDIR += ntop
+    SUBDIR += ntopng
     SUBDIR += ntp
     SUBDIR += ntp-devel
     SUBDIR += ntp-rc
@@ -468,6 +469,7 @@
     SUBDIR += openldap24-server
     SUBDIR += openmcu
     SUBDIR += openmpi
+    SUBDIR += openmpi-devel
     SUBDIR += openmq
     SUBDIR += openmq-client
     SUBDIR += openntpd
@@ -583,6 +585,7 @@
     SUBDIR += p5-Net-Google-Calendar
     SUBDIR += p5-Net-Google-Code
     SUBDIR += p5-Net-Google-DataAPI
+    SUBDIR += p5-Net-Google-PicasaWeb
     SUBDIR += p5-Net-Google-SafeBrowsing2
     SUBDIR += p5-Net-Google-Spreadsheets
     SUBDIR += p5-Net-Growl
@@ -882,7 +885,6 @@
     SUBDIR += proxychains
     SUBDIR += proxychains-ng
     SUBDIR += prtunnel
-    SUBDIR += ptpd
     SUBDIR += ptpd2
     SUBDIR += ptpd2-devel
     SUBDIR += ptunnel
@@ -955,7 +957,6 @@
     SUBDIR += py-zsi
     SUBDIR += pygopherd
     SUBDIR += pynids
-    SUBDIR += pypvm
     SUBDIR += pyrad
     SUBDIR += pythondirector
     SUBDIR += qadsl
@@ -1077,6 +1078,7 @@
     SUBDIR += samba-smbclient
     SUBDIR += samba36
     SUBDIR += samba4
+    SUBDIR += samba41
     SUBDIR += samba4wins
     SUBDIR += samplicator
     SUBDIR += sbd

@@ -15,9 +15,8 @@ LICENSE=	GPLv2
 
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 
-NO_STAGE=	yes
-MAN6=		${PORTNAME}.6
-PLIST_FILES=	bin/deusf bin/deutex
+PLIST_FILES=	bin/deusf bin/deutex \
+		man/man6/${PORTNAME}.6.gz
 PORTDOCS=	*
 
 post-extract:
@@ -27,12 +26,10 @@ post-extract:
 		${WRKSRC}/src/sound.c
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/deusf ${WRKSRC}/deutex ${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${MAN6} ${MANPREFIX}/man/man6
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/CHANGES ${WRKSRC}/TODO ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/dtexman6.txt ${DOCSDIR}/MANUAL
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/deusf ${WRKSRC}/deutex ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.6 ${STAGEDIR}${MAN6PREFIX}/man/man6
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/CHANGES ${WRKSRC}/TODO ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/dtexman6.txt ${STAGEDIR}${DOCSDIR}/MANUAL
 
 .include <bsd.port.mk>

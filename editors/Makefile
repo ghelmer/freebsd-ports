@@ -33,6 +33,7 @@
     SUBDIR += calligra-l10n-et
     SUBDIR += calligra-l10n-fi
     SUBDIR += calligra-l10n-gl
+    SUBDIR += calligra-l10n-ia
     SUBDIR += calligra-l10n-it
     SUBDIR += calligra-l10n-kk
     SUBDIR += calligra-l10n-nb
@@ -81,7 +82,6 @@
     SUBDIR += gnotepad+
     SUBDIR += gnuserv
     SUBDIR += gobby
-    SUBDIR += gphpedit
     SUBDIR += gummi
     SUBDIR += gwrite
     SUBDIR += heme
@@ -213,10 +213,10 @@
     SUBDIR += libreoffice-zu
     SUBDIR += madedit
     SUBDIR += manedit
+    SUBDIR += mate-text-editor
     SUBDIR += mg
     SUBDIR += mined
     SUBDIR += mlview
-    SUBDIR += mode-info
     SUBDIR += morla
     SUBDIR += mousepad
     SUBDIR += mp

@@ -11,11 +11,11 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	sylvio@FreeBSD.org
 COMMENT=	Create digital audio watermark images from photographic images
 
-LIB_DEPENDS=	sndfile:${PORTSDIR}/audio/libsndfile \
-		gd:${PORTSDIR}/graphics/gd \
-		jpeg:${PORTSDIR}/graphics/jpeg \
-		png15:${PORTSDIR}/graphics/png \
-		freetype:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile \
+		libgd.so:${PORTSDIR}/graphics/gd \
+		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+		libpng15.so:${PORTSDIR}/graphics/png \
+		libfreetype.so:${PORTSDIR}/print/freetype2
 
 USES=		pkgconfig
 NO_STAGE=	yes
@@ -24,6 +24,8 @@ LICENSE=	GPLv2
 
 PORTDOCS=	README
 PLIST_FILES=	bin/enscribe
+
+.include <bsd.port.options.mk>
 
 do-build:
 	cd ${BUILD_WRKSRC}; ${CC} ${CFLAGS} \
@@ -34,7 +36,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/enscribe ${PREFIX}/bin
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
 .endif

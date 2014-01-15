@@ -17,14 +17,14 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:${PORTSDIR}/audio/ladspa
-LIB_DEPENDS=	xmms.4:${PORTSDIR}/multimedia/xmms
+LIB_DEPENDS=	libxmms.so:${PORTSDIR}/multimedia/xmms
 
 PLIST_FILES=	lib/xmms/Effect/ladspa.so
 
 USE_GNOME=	gtk12
-NO_STAGE=	yes
 
 do-install:
-	@${INSTALL_DATA} ${WRKSRC}/ladspa.so ${PREFIX}/lib/xmms/Effect/
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/xmms/Effect/
+	@${INSTALL_DATA} ${WRKSRC}/ladspa.so ${STAGEDIR}${PREFIX}/lib/xmms/Effect/
 
 .include <bsd.port.mk>

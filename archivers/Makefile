@@ -80,6 +80,8 @@
     SUBDIR += macutils
     SUBDIR += makeself
     SUBDIR += mar
+    SUBDIR += mate-file-archiver
+    SUBDIR += minizip
     SUBDIR += mscompress
     SUBDIR += mtf
     SUBDIR += nomarch
@@ -119,6 +121,7 @@
     SUBDIR += p5-PerlIO-gzip
     SUBDIR += p5-PerlIO-via-Bzip2
     SUBDIR += p7zip
+    SUBDIR += p7zip-codec-rar
     SUBDIR += packddir
     SUBDIR += paq
     SUBDIR += par
@@ -216,7 +219,6 @@
     SUBDIR += xdms
     SUBDIR += xmill
     SUBDIR += xpk
-    SUBDIR += xz
     SUBDIR += zip
     SUBDIR += zip-ada
     SUBDIR += zipmix

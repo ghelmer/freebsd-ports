@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	phalcon
-PORTVERSION=	1.2.3
+PORTVERSION=	1.2.4
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/phalcon/cphalcon/archive/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-v${PORTVERSION}
@@ -12,7 +12,6 @@ COMMENT=	Phalcon PHP Framework written in C-language
 
 LICENSE=	BSD
 
-FETCH_ARGS=	-pRr
 WRKSRC=		${WRKDIR}/c${PORTNAME}-${PORTVERSION}/build/
 
 CFLAGS+=	-I${LOCALBASE}/include

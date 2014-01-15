@@ -2,15 +2,16 @@
 
 PORTNAME=	povray
 DISTVERSION=	3.7.0.RC6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.povray.org/beta/source/
-DIST_SUBDIR=	${UNIQUENAME}
+PKGNAMESUFFIX=	37
+DIST_SUBDIR=	${PORTNAME}${PKGNAMESUFFIX}
 
 MAINTAINER=	bkoenig@alpha-tierchen.de
 COMMENT=	Persistence of Vision Ray Tracer
 
-LIB_DEPENDS=	boost_thread:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
 OPTIONS_DEFINE=	X11 PNG JPEG TIFF OPENEXR STATIC IO EXAMPLES DOCS
 OPTIONS_DEFAULT=	PNG JPEG EXAMPLES DOCS
@@ -20,7 +21,6 @@ DOCS_DESC=	Install HTML documentation
 
 USE_GMAKE=	yes
 GNU_CONFIGURE=	yes
-LATEST_LINK=	${PORTNAME}37
 
 VERSION_BASE=	${PORTVERSION:C/([0-9]+\.[0-9]+).*/\1/}
 
@@ -32,7 +32,7 @@ ETCDIR=		${PREFIX}/etc/${PORTNAME}/${VERSION_BASE}
 INCLUDES=	-I${LOCALBASE}/include
 
 CONFIGURE_ARGS=	COMPILED_BY=${MAINTAINER} --prefix=${PREFIX} \
-		--program-transform-name='s/${PORTNAME}/${UNIQUENAME}/' \
+		--program-transform-name='s/${PORTNAME}/${PORTNAME}${PKGNAMESUFFIX}/' \
 		--disable-optimiz
 
 NO_STAGE=	yes
@@ -60,7 +60,7 @@ CONFIGURE_ARGS+=--disable-io-restrictions
 .if ${PORT_OPTIONS:MSTATIC}
 BUILD_DEPENDS+=	png>=1.4:${PORTSDIR}/graphics/png
 .else
-LIB_DEPENDS+=	png15:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
 LIBS+=		-lpng
 .endif
 .else
@@ -71,7 +71,7 @@ CONFIGURE_ARGS+=--without-libpng
 .if ${PORT_OPTIONS:MSTATIC}
 BUILD_DEPENDS+=	jpeg>=6b:${PORTSDIR}/graphics/jpeg
 .else
-LIB_DEPENDS+=	jpeg:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
 LIBS+=		-ljpeg
 .endif
 .else
@@ -82,7 +82,7 @@ CONFIGURE_ARGS+=--without-libjpeg
 .if ${PORT_OPTIONS:MSTATIC}
 BUILD_DEPENDS+=	tiff>=4:${PORTSDIR}/graphics/tiff
 .else
-LIB_DEPENDS+=	tiff:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS+=	libtiff.so:${PORTSDIR}/graphics/tiff
 LIBS+=		-ltiff
 .endif
 .else
@@ -93,7 +93,7 @@ CONFIGURE_ARGS+=--without-libtiff
 .if ${PORT_OPTIONS:MSTATIC}
 BUILD_DEPENDS+=	OpenEXR>=1.6:${PORTSDIR}/graphics/OpenEXR
 .else
-LIB_DEPENDS+=	IlmImf:${PORTSDIR}/graphics/OpenEXR
+LIB_DEPENDS+=	libIlmImf.so:${PORTSDIR}/graphics/OpenEXR
 LIBS+=		-lIlmImf
 INCLUDES+=	-I${LOCALBASE}/include/OpenEXR
 .endif
@@ -111,7 +111,7 @@ BROKEN=		Does not compile on sparc64: thread-local storage not supported
 
 CONFIGURE_ARGS+=CXXFLAGS="${CXXFLAGS} ${INCLUDES}"
 
-MAN1=		${UNIQUENAME}.1
+MAN1=		${PORTNAME}${PKGNAMESUFFIX}.1
 
 DOC_FILES=	AUTHORS ChangeLog NEWS
 PORTDOCS=	*
@@ -131,7 +131,7 @@ pre-build:
 .endif
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/unix/${PORTNAME} ${PREFIX}/bin/${UNIQUENAME}
+	@${INSTALL_PROGRAM} ${WRKSRC}/unix/${PORTNAME} ${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
 	@${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${MAN1PREFIX}/man/man1/${MAN1}
 	@${MKDIR} ${ETCDIR}
 	@${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.conf ${ETCDIR}

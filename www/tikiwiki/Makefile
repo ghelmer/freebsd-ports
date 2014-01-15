@@ -3,11 +3,12 @@
 
 PORTNAME=	tikiwiki
 PORTVERSION=	11.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/Tiki_11.x_Vega/${PORTVERSION}/
 DISTNAME=	tiki-${PORTVERSION}
 
-MAINTAINER=	c.petrik.sosa@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful PHP based Wiki/CMS/Groupware
 
 LICENSE=	LGPL20

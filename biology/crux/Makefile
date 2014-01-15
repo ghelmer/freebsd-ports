@@ -15,7 +15,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-python=${PYTHON_CMD} --disable-mpi
 USE_CSTD=	gnu99
 USE_GMAKE=	yes
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 
 OPTIONS_DEFINE=	SYS_LINALG
 SYS_LINALG_DESC=	Enable system ATLAS/LAPACK
@@ -31,7 +31,7 @@ USE_FORTRAN=	yes
 
 .if ${PORT_OPTIONS:MSYS_LINALG}
 CONFIGURE_ARGS+=	--enable-sys-linalg
-LIB_DEPENDS+=	atlas.2:${PORTSDIR}/math/atlas
+LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
 .else
 CONFIGURE_ARGS+=	--disable-sys-linalg
 .endif

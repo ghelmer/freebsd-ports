@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vlc
-DISTVERSION=	2.1.1
+DISTVERSION=	2.1.2
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio ipv6 net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -127,20 +127,18 @@ LIBBLURAY_CONFIGURE_ENABLE=	bluray
 
 LIBSSH2_LIB_DEPENDS=	libssh2.so:${PORTSDIR}/security/libssh2
 LIBSSH2_CONFIGURE_ENABLE=	sftp
+LIBSSH2_CONFIGURE_ENV=	SFTP_CFLAGS=-I${LOCALBASE} SFTP_LIBS=-lssh2\ -L${LOCALBASE}/lib
 
 LIRC_LIB_DEPENDS=	liblirc_client.so:${PORTSDIR}/comms/lirc
 LIRC_CONFIGURE_ENABLE=	lirc
 
-LIVEMEDIA_BUILD_DEPENDS=	${LOCALBASE}/live/liveMedia/libliveMedia.a:${PORTSDIR}/net/liveMedia
+LIVEMEDIA_LIB_DEPENDS=	libliveMedia.so:${PORTSDIR}/net/liveMedia
 LIVEMEDIA_CONFIGURE_ENABLE=	live555
-LIVEMEDIA_CPPFLAGS=	-I${LOCALBASE}/live/liveMedia/include \
-		-I${LOCALBASE}/live/BasicUsageEnvironment/include \
-		-I${LOCALBASE}/live/UsageEnvironment/include \
-		-I${LOCALBASE}/live/groupsock/include
-LIVEMEDIA_LDFLAGS=	-L${LOCALBASE}/live/groupsock \
-		-L${LOCALBASE}/live/liveMedia \
-		-L${LOCALBASE}/live/UsageEnvironment \
-		-L${LOCALBASE}/live/BasicUsageEnvironment
+LIVEMEDIA_CPPFLAGS=	-I${LOCALBASE}/include/liveMedia	\
+			-I${LOCALBASE}/include/UsageEnvironment	\
+			-I${LOCALBASE}/include/groupsock	\
+			-I${LOCALBASE}/include/BasicUsageEnvironment
+LIVEMEDIA_LDFLAGS=	-L${LOCALBASE}/lib
 
 MAD_LIB_DEPENDS=	libid3tag.so:${PORTSDIR}/audio/libid3tag \
 			libmad.so:${PORTSDIR}/audio/libmad
@@ -169,6 +167,7 @@ NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 
 NOTIFY_LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify
+NOTIFY_USE=		GNOME=gtk20
 NOTIFY_CONFIGURE_ENABLE=	notify
 
 OPTIMIZED_CFLAGS_CFLAGS=	-O3 -ffast-math -fomit-frame-pointer
@@ -242,13 +241,13 @@ ZVBI_CONFIGURE_ENABLE=	zvbi
 USE_XZ=		yes
 USES=		desktop-file-utils iconv perl5 gmake pkgconfig
 USE_PERL5=	build
-USE_GL=		yes
 USE_CSTD=	gnu99
 WANT_GNOME=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME:S/a$//}
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+CFLAGS+=	-fPIC
 CPPFLAGS+=	-I${WRKSRC}/include
 CONFIGURE_ENV=	LIBS="-lc"
 LDFLAGS+=	${PTHREAD_LIBS} -lc
@@ -354,7 +353,8 @@ CONFIGURE_ARGS+=--disable-v4l2
 .endif
 
 .if ${PORT_OPTIONS:MX11}
-USE_XORG=xcb xpm
+USE_GL=		yes
+USE_XORG=	xcb xpm
 LIB_DEPENDS+=	libxcb-keysyms.so:${PORTSDIR}/x11/xcb-util-keysyms
 CONFIGURE_ARGS+=--with-x --enable-glx --enable-xcb --enable-xvideo
 .else
@@ -442,6 +442,5 @@ post-install:
 		}; \
 		done | ${SORT} -r | ${SED} \
 		-e "s,${PREFIX}/,,g" | ${GREP} -v "^@unexec rmdir %D/share/licenses" >> ${TMPPLIST} || ${TRUE}
-
 
 .include <bsd.port.post.mk>

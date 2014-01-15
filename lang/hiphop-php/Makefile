@@ -3,7 +3,7 @@
 
 PORTNAME=	hiphop-php
 PORTVERSION=	2.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang devel www
 MASTER_SITES=	https://github.com/facebook/hiphop-php/archive/:main \
 		http://unicode.org/Public/UNIDATA/:unidata \
@@ -13,7 +13,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 PATCH_SITES=	http://cpp.in/dev/
 
-MAINTAINER=	mm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HipHop Virtual Machine for PHP (HHVM)
 
 LICENSE=	PHP301 ZEND200 UNICODE
@@ -32,22 +32,21 @@ LICENSE_DISTFILES_UNICODE= EastAsianWidth.txt \
 	8859-11.TXT 8859-13.TXT 8859-14.TXT 8859-15.TXT 8859-16.TXT
 LICENSE_DISTFILES_ZEND200=	${DISTNAME}${EXTRACT_SUFX}
 
-LIB_DEPENDS=	icudata:${PORTSDIR}/devel/icu \
-		boost_thread:${PORTSDIR}/devel/boost-libs \
-		execinfo:${PORTSDIR}/devel/libexecinfo \
-		tbb:${PORTSDIR}/devel/tbb \
-		gd:${PORTSDIR}/graphics/gd \
-		mcrypt:${PORTSDIR}/security/libmcrypt \
-		onig:${PORTSDIR}/devel/oniguruma4 \
-		pcre:${PORTSDIR}/devel/pcre \
-		expat:${PORTSDIR}/textproc/expat2 \
-		memcached:${PORTSDIR}/databases/libmemcached \
-		c-client4:${PORTSDIR}/mail/cclient \
-		unwind:${PORTSDIR}/devel/libunwind \
-		glog:${PORTSDIR}/devel/glog
+LIB_DEPENDS=	libicudata.so:${PORTSDIR}/devel/icu \
+		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
+		libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
+		libtbb.so:${PORTSDIR}/devel/tbb \
+		libgd.so:${PORTSDIR}/graphics/gd \
+		libmcrypt.so:${PORTSDIR}/security/libmcrypt \
+		libonig.so:${PORTSDIR}/devel/oniguruma4 \
+		libpcre.so:${PORTSDIR}/devel/pcre \
+		libexpat.so:${PORTSDIR}/textproc/expat2 \
+		libmemcached.so:${PORTSDIR}/databases/libmemcached \
+		libc-client4.so:${PORTSDIR}/mail/cclient \
+		libunwind.so:${PORTSDIR}/devel/libunwind \
+		libglog.so:${PORTSDIR}/devel/glog
 
-OPTIONS_DEFINE=		DEBUG DOCS
-OPTIONS_DEFAULT=	DOCS
+OPTIONS_DEFINE=		DOCS
 
 ONLY_FOR_ARCHS=		amd64
 ONLY_FOR_ARCHS_REASON=	This program is developed for amd64 only
@@ -64,7 +63,6 @@ BUILD_DEPENDS+=	bison:${PORTSDIR}/devel/bison \
 
 WRKSRC=		${WRKDIR}/hiphop-php-HPHP-${PORTVERSION}
 
-GNU_CONFIGURE=	yes
 USES=		cmake gettext
 USE_MYSQL=	yes
 USE_GNOME=	libxml2
@@ -73,7 +71,6 @@ USE_OPENLDAP=	yes
 USE_GCC=	yes
 
 GITVERSION=	96532ec
-FETCH_ARGS=	-pRr
 
 CUSTOM_ENV=	HPHP_HOME=${WRKSRC} \
 		HPHP_LIB=${WRKSRC}/bin \
@@ -102,13 +99,6 @@ PORTDOCS=	*
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDEBUG}
-CMAKE_BUILD_TYPE=	Debug
-CONFIGURE_ARGS+=	-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-.endif
-
-.include <bsd.port.pre.mk>
 
 _CFLAGS=	${CFLAGS} -DHAVE_POSIX_FALLOCATE=1
 _CXXFLAGS=	${CXXFLAGS} -D_GLIBCXX_USE_C99 -DHAVE_POSIX_FALLOCATE=1
@@ -153,4 +143,4 @@ do-install:
 	${CP} -rf ${WRKSRC}/hphp/doc/ ${DOCSDIR}/
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

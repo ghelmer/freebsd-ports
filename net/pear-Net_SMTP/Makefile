@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net_SMTP
-PORTVERSION=	1.6.1
+PORTVERSION=	1.6.2
 CATEGORIES=	net mail www pear
 
 MAINTAINER=	miwi@FreeBSD.org
@@ -17,7 +17,6 @@ PEAR_AUTH_SASL_DESC=	PEAR::Auth_SASL support
 
 PEAR_AUTOINSTALL=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPEAR_AUTH_SASL}

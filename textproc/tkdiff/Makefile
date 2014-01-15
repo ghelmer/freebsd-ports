@@ -3,6 +3,7 @@
 
 PORTNAME=	tkdiff
 PORTVERSION=	4.2
+PORTREVISION=	1
 CATEGORIES=	textproc tk
 MASTER_SITES=	SF
 
@@ -14,13 +15,16 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-unix
 
-USE_TK_WRAPPER=	yes
+USES=		tk:wrapper
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/tkdiff
 
-NO_STAGE=	yes
+post-patch:
+	${FIND} ${WRKSRC} -type f | ${XARGS} \
+		${REINPLACE_CMD} -e '/^exec wish/s|wish|${WISH}|g' -e '/^exec tclsh/s|tclsh|${TCLSH}|g'
+
 do-install:
-	@${INSTALL_SCRIPT} ${WRKSRC}/tkdiff ${PREFIX}/bin
+	@${INSTALL_SCRIPT} ${WRKSRC}/tkdiff ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

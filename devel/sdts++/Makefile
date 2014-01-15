@@ -11,11 +11,10 @@ MASTER_SITES=	http://thor-f5.er.usgs.gov/sdts/sdtsxx/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ library for SDTS related development
 
-LIB_DEPENDS=	boost_thread:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
-USE_DOS2UNIX=	sdts++/io/sio_Utils.cpp
-USES=		bison
-USE_GMAKE=	yes
+DOS2UNIX_FILES=	sdts++/io/sio_Utils.cpp
+USES=		bison dos2unix gmake
 USE_AUTOTOOLS=	libtoolize aclocal automake autoconf
 LIBTOOLIZE_ARGS=--copy --force
 ACLOCAL_ARGS=	-I ${LOCALBASE}/share/aclocal

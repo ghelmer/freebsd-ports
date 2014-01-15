@@ -3,7 +3,7 @@
 
 PORTNAME=	ibus-pinyin
 PORTVERSION=	1.4.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	chinese
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTFILES=		${DISTNAME}${EXTRACT_SUFX}
@@ -20,7 +20,6 @@ RUN_DEPENDS=	ibus-daemon:${PORTSDIR}/textproc/ibus \
 USE_PYTHON=	yes
 USE_GNOME=	pygtk2
 
-USE_GCC=	yes
 USES=		gmake pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-dependency-tracking --disable-lua-extension
@@ -32,6 +31,12 @@ OPTIONS_DEFAULT=	ANDROID_DB
 ANDROID_DB_DESC=	Build Android DB
 OPENPHRASE_DB_DESC=	Build Open Phrase DB
 OPENCC_DESC=		Use opencc
+
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} < 1000024
+USE_GCC=	yes
+.endif
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>
@@ -58,7 +63,7 @@ PLIST_SUB+=	OPENPHRASE_DB="@comment "
 
 .if ${PORT_OPTIONS:MOPENCC}
 CONFIGURE_ARGS+=	--enable-opencc
-LIB_DEPENDS+=		opencc.1:${PORTSDIR}/chinese/opencc
+LIB_DEPENDS+=		libopencc.so:${PORTSDIR}/chinese/opencc
 .else
 CONFIGURE_ARGS+=	--disable-opencc
 .endif
@@ -79,4 +84,4 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's|DATADIRNAME=lib|DATADIRNAME=share|' ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

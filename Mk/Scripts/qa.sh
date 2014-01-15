@@ -7,6 +7,9 @@ if [ -z "${STAGEDIR}" -o -z "${PREFIX}" -o -z "${LOCALBASE}" ]; then
 	exit 1
 fi
 
+LF=$(printf '\nX')
+LF=${LF%X}
+
 warn() {
 	echo "Warning: $@" >&2
 }
@@ -17,7 +20,7 @@ err() {
 
 shebang() {
 	rc=0
-	for f in `find ${STAGEDIR} -type f`; do
+	IFS="$LF" ; for f in `find ${STAGEDIR} -type f`; do
 		interp=$(sed -n -e '1s/^#![[:space:]]*\([^[:space:]]*\).*/\1/p;2q' $f)
 		case "$interp" in
 		"") ;;
@@ -26,6 +29,8 @@ shebang() {
 		${PREFIX}/*) ;;
 		/usr/bin/awk) ;;
 		/usr/bin/sed) ;;
+		/usr/bin/nawk) ;;
+		/bin/csh) ;;
 		/bin/sh) ;;
 		*)
 			err "${interp} is an invalid shebang you need USES=shebangfix for ${f#${STAGEDIR}${PREFIX}/}"
@@ -37,7 +42,7 @@ shebang() {
 
 symlinks() {
 	rc=0
-	for l in `find ${STAGEDIR} -type l`; do
+	IFS="$LF" ; for l in `find ${STAGEDIR} -type l`; do
 		link=$(readlink ${l})
 		case "${link}" in
 		${STAGEDIR}*) err "Bad symlinks ${l} pointing inside the stage directory"
@@ -49,9 +54,8 @@ symlinks() {
 
 paths() {
 	rc=0
-	dirs="${STAGEDIR} ${WRKDIR}"
-	for f in `find ${STAGEDIR} -type f`;do
-		for d in ${dirs}; do
+	IFS="$LF" ; for f in `find ${STAGEDIR} -type f`;do
+		for d in ${STAGEDIR} ${WRKDIR}; do
 			if grep -q ${d} ${f} ; then
 				err "${f} is referring to ${d}"
 				rc=1
@@ -64,7 +68,7 @@ paths() {
 stripped() {
 	[ -x /usr/bin/file ] || return # this is fatal
 	[ -n "${STRIP}" ] || return 0
-	for f in `find ${STAGEDIR} -type f`; do
+	IFS="$LF" ; for f in `find ${STAGEDIR} -type f`; do
 		output=`/usr/bin/file ${f}`
 		case "${output}" in
 		*:*\ ELF\ *,\ not\ stripped*) warn "${f} is not stripped consider using \${STRIP_CMD}";;

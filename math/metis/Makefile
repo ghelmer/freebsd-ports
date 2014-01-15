@@ -9,9 +9,9 @@ MASTER_SITES=	http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	A package for unstructured graph partitioning
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
-CONFLICTS=	metis-4* metis-edf-[0-9]*
+CONFLICTS=	metis4-4* metis-edf-[0-9]*
 
 USES=		cmake
 

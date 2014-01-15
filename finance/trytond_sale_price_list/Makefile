@@ -1,3 +1,4 @@
+# Created by: Matthias Petermann <matthias@petermann-it.de>
 # $FreeBSD$
 
 PORTNAME=	trytond_sale_price_list
@@ -15,7 +16,7 @@ RUN_DEPENDS=	trytond>=2.4.0:${PORTSDIR}/finance/trytond \
 		trytond_sale>=2.4.0:${PORTSDIR}/finance/trytond_sale \
 		trytond_product_price_list>=2.4.0:${PORTSDIR}/finance/trytond_product_price_list
 
-CONFLICTS=	trytond_sale_price_list-2.[68].*
+CONFLICTS=	trytond28_sale_price_list-2.8.*
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=easy_install

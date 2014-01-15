@@ -6,7 +6,7 @@ PORTVERSION=	1.5.4
 CATEGORIES+=	audio net
 MASTER_SITES=	SF/nap/nap/${PORTVERSION}
 
-MAINTAINER?=	araujo@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	An MP3 sharing, search, and chat client for the OpenNAP network
 
 CONFLICTS?=	ru-nap-*
@@ -16,8 +16,10 @@ NO_STAGE=	yes
 
 MAN1=	nap.1
 
+.include <bsd.port.options.mk>
+
 post-install:
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 .for file in NEWS README doc/napster.txt doc/userguide.html
 	${INSTALL_DATA} ${WRKSRC}/${file} ${DOCSDIR}

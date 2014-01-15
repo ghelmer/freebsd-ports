@@ -12,23 +12,21 @@ COMMENT=	Multiple Streaming Engine
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	vorbis.4:${PORTSDIR}/audio/libvorbis \
-		ogg:${PORTSDIR}/audio/libogg
+LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis \
+		libogg.so:${PORTSDIR}/audio/libogg
 
 OPTIONS_DEFINE=	X11 LAME SNDFILE DOCS
 OPTIONS_DEFAULT=X11
 
 USES=		gettext gmake
-NO_STAGE=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-debug --disable-lubrify --disable-rpath
 
 CPPFLAGS+=	-I${LOCALBASE}/include -DHAVE_SYS_UIO_H ${PTHREAD_CFLAGS}
 LDFLAGS+=	-L${LOCALBASE}/lib -lintl ${PTHREAD_LIBS}
 
-MAN1=		muse.1
 PORTDOCS=	AUTHORS ChangeLog NEWS KNOWN-BUGS README TODO USAGE
-PLIST_FILES=	bin/muse
+PLIST_FILES=	bin/muse man/man1/muse.1.gz
 .for lang in es it
 PLIST_FILES+=	share/locale/${lang}/LC_MESSAGES/muse.mo
 .endfor
@@ -42,13 +40,13 @@ CONFIGURE_ARGS+=--without-x --with-rubik
 .endif
 
 .if ${PORT_OPTIONS:MLAME}
-LIB_DEPENDS+=	mp3lame.0:${PORTSDIR}/audio/lame
+LIB_DEPENDS+=	libmp3lame.so:${PORTSDIR}/audio/lame
 .else
 CONFIGURE_ENV+=	ac_cv_header_lame_lame_h=no
 .endif
 
 .if ${PORT_OPTIONS:MSNDFILE}
-LIB_DEPENDS+=	sndfile.1:${PORTSDIR}/audio/libsndfile
+LIB_DEPENDS+=	libsndfile.so:${PORTSDIR}/audio/libsndfile
 .endif
 
 post-patch:
@@ -61,10 +59,8 @@ post-patch:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-.for file in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${file} ${DOCSDIR}
-.endfor
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

@@ -9,11 +9,10 @@ DISTNAME=	mod_memcache_block-${GITVERSION}
 DIST_SUBDIR=	apache2
 
 MAINTAINER=	gaod@hychen.org
-COMMENT=	An Apache 2 module to block ip from lists stored in memcache
+COMMENT=	Apache 2.2 module to block IPs from lists stored in memcache
 
-LIB_DEPENDS+=	memcached:${PORTSDIR}/databases/libmemcached
+LIB_DEPENDS+=	libmemcached.so:${PORTSDIR}/databases/libmemcached
 
-FETCH_ARGS=	-Fpr
 GITVERSION=	7b1fcec
 WRKSRC=		${WRKDIR}/netik-${DISTNAME}
 LATEST_LINK=	mod_memcache_block
@@ -24,5 +23,4 @@ AP_GENPLIST=	yes
 AP_INC=		${LOCALBASE}/include/libmemcached
 AP_LIB=		${LOCALBASE}/lib -lmemcached
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -15,7 +15,7 @@ COMMENT=	Scriptable screen reader
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/_dbus_bindings.so:${PORTSDIR}/devel/py-dbus \
 		${PYTHON_SITELIBDIR}/pyatspi/__init__.py:${PORTSDIR}/accessibility/at-spi \
 		${PYTHON_SITELIBDIR}/xdg/__init__.py:${PORTSDIR}/devel/py-xdg
-LIB_DEPENDS=	gnome-mag.2:${PORTSDIR}/accessibility/gnome-mag
+LIB_DEPENDS=	libgnome-mag.so:${PORTSDIR}/accessibility/gnome-mag
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/_dbus_bindings.so:${PORTSDIR}/devel/py-dbus \
 		${PYTHON_SITELIBDIR}/pyatspi/__init__.py:${PORTSDIR}/accessibility/at-spi \
 		${PYTHON_SITELIBDIR}/xdg/__init__.py:${PORTSDIR}/devel/py-xdg
@@ -23,7 +23,7 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/_dbus_bindings.so:${PORTSDIR}/devel/py-dbus \
 NO_STAGE=	yes
 USE_BZIP2=	yes
 USES=		gmake gettext pkgconfig
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_GNOME=	gnomeprefix gnomehack libgnomeui gnomespeech pygnome2 \
 		pygnomedesktop
 INSTALLS_ICONS=	yes

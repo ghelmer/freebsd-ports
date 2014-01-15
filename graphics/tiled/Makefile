@@ -10,17 +10,14 @@ DISTNAME=	tiled-qt-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	General purpose tile map editor
 
+USES=		qmake
 USE_QT4=	corelib gui opengl \
-		linguist_build qmake_build moc_build uic_build rcc_build
+		linguist_build moc_build uic_build rcc_build
 USE_LDCONFIG=	yes
-DESTDIRNAME=	INSTALL_ROOT
 
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=DOCS
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|lrelease|&-qt4|' \
@@ -29,10 +26,6 @@ post-patch:
 		${WRKSRC}/src/tiled/tiled.pro
 	@${REINPLACE_CMD} -e 's|/usr|${PREFIX}|' ${WRKSRC}/docs/tiled.desktop
 	@${FIND} ${WRKSRC} -name "*.pro" -exec ${REINPLACE_CMD} -e 's|share/man|man|' {} \;
-
-do-configure:
-	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
-		${QMAKE} ${QMAKEFLAGS} PREFIX="${PREFIX}" tiled.pro
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

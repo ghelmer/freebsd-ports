@@ -3,7 +3,7 @@
 
 PORTNAME=	nntp
 PORTVERSION=	1.5.12.2
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	news
 MASTER_SITES=	ftp://ftp.dinoex.org/pub/c-news/
 DISTNAME=	${PORTNAME}.${PORTVERSION}
@@ -15,8 +15,6 @@ MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	NNTP with NOV support
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libcnews.a:${PORTSDIR}/news/cnews
-
-NO_STAGE=	yes
 
 NO_WRKSUBDIR=	yes
 MAN1=		nntpxmit.1
@@ -32,21 +30,28 @@ VARBASE?=	/var
 NEWSBIN?=	${PREFIX}/libexec/cnews
 NEWSCTL?=	${VARBASE}/lib/news
 NEWSARTS?=	${VARBASE}/news
-NEWSOV?=	${VARBASE}/news
+NEWSOV?=	${VARBASE}/news/over.view
 
 MAKE_ENV+=	DBLIBS="${LOCALBASE}/lib/libcnews.a -lcrypt -lutil"
-MAKE_ENV+=	ETCDIR="${LOCALBASE}/sbin" BINDIR="${NEWSBIN}"
-MAKE_ENV+=	MANDIR="${LOCALBASE}/man"
+MAKE_ENV+=	ETCDIR="${STAGEDIR}${PREFIX}/sbin"
+MAKE_ENV+=	BINDIR="${STAGEDIR}${NEWSBIN}"
+MAKE_ENV+=	MANDIR="${STAGEDIR}${PREFIX}/man"
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	INETD DOCS
+NO_OPTIONS_SORT=yes
+INETD_DESC=	build to run from inetd only
 
 .include <bsd.port.options.mk>
 
+.if ${PORT_OPTIONS:MINETD}
+ALONE=	-e 's|\#define.ALONE|\#undef	ALONE|'
+.endif
+
 post-extract:
-	@${CP} ${WRKSRC}/conf.h.dist ${WRKSRC}/conf.h
+	${CP} ${WRKSRC}/conf.h.dist ${WRKSRC}/conf.h
 
 pre-configure:
-	${REINPLACE_CMD} \
+	${REINPLACE_CMD} ${ALONE} \
 		-e "s=/usr/local/news/lib/bin/config=${NEWSBIN}/config=" \
 		-e "s=/usr/local/news/cnewsbin=${NEWSBIN}=" \
 		-e "s=/usr/local/news/lib=${NEWSCTL}=" \
@@ -57,17 +62,18 @@ pre-configure:
 		-e "s=/usr/local/man=${PREFIX}/man=" \
 		${WRKSRC}/conf.h
 
+pre-install:
+	${MKDIR} ${STAGEDIR}${NEWSBIN}
+
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/overview.fmt ${NEWSCTL}/overview.fmt
+	${MKDIR} ${STAGEDIR}${NEWSCTL}
+	${INSTALL_DATA} ${WRKSRC}/overview.fmt ${STAGEDIR}${NEWSCTL}/overview.fmt
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${DOCSFILES1:S=^=${WRKSRC}/=} ${DOCSDIR}/
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DOCSFILES1:S=^=${WRKSRC}/=} ${STAGEDIR}${DOCSDIR}/
 .for i in ${DOCSFILES2}
-	${INSTALL_DATA} ${WRKSRC}/${i}/README ${DOCSDIR}/${i}-README
+	${INSTALL_DATA} ${WRKSRC}/${i}/README ${STAGEDIR}${DOCSDIR}/${i}-README
 .endfor
 .endif
-	@${ECHO_MSG}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG}
 
 .include <bsd.port.mk>

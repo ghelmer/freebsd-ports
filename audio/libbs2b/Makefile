@@ -10,13 +10,12 @@ MASTER_SITES=	SF/bs2b/bs2b/${PORTVERSION}
 MAINTAINER=	liangtai.s4@gmail.com
 COMMENT=	Bauer Stereophonic-to-Binaural DSP
 
-LIB_DEPENDS+=	sndfile:${PORTSDIR}/audio/libsndfile \
-		ogg:${PORTSDIR}/audio/libogg \
-		FLAC:${PORTSDIR}/audio/flac \
-		vorbis:${PORTSDIR}/audio/libvorbis
+LIB_DEPENDS+=	libsndfile.so:${PORTSDIR}/audio/libsndfile \
+		libogg.so:${PORTSDIR}/audio/libogg \
+		libFLAC.so:${PORTSDIR}/audio/flac \
+		libvorbis.so:${PORTSDIR}/audio/libvorbis
 
 USES=		gmake pkgconfig
-NO_STAGE=	yes
 USE_BZIP2=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

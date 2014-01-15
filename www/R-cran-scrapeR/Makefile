@@ -13,8 +13,6 @@ COMMENT=	Tools for Scraping Data from HTML and XML Documents
 RUN_DEPENDS=	R-cran-XML>0:${PORTSDIR}/textproc/R-cran-XML \
 		R-cran-RCurl>0:${PORTSDIR}/ftp/R-cran-RCurl
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

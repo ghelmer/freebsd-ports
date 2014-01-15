@@ -10,7 +10,7 @@ MASTER_SITE_SUBDIR=	zookeeper/zookeeper-${PORTVERSION}
 MAINTAINER=	gnn@FreeBSD.org
 COMMENT=	A Coordination Service for Distributed Applications
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 LIB_DEPENDS=	cppunit:${PORTSDIR}/devel/cppunit
 RUN_DEPENDS:=	${BUILD_DEPENDS}
@@ -49,7 +49,7 @@ NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USE_PYTHON=	2
 BUILD_DEPENDS+=	ant:${PORTSDIR}/devel/apache-ant
 PLIST_SUB+=	WITH_PYTHON=""
 .else
@@ -74,6 +74,10 @@ run-autotools:
 	@cd ${CONFIGURE_WRKSRC} && \
 	${SETENV} ${AUTOTOOLS_ENV} ${AUTORECONF} -if
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|executable="python"|executable="${PYTHON_CMD}"|' \
+		${PYTHON_BINDING_WRKSRC}/build.xml
 
 do-build:
 .if ${PORT_OPTIONS:MC}

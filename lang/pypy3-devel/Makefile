@@ -35,11 +35,9 @@ OPTIONS_DEFAULT+=	PYPY_MINMEM
 .endif
 
 CONFLICTS_INSTALL=	pypy3-[0-9]*
-LATEST_LINK=	${PORTNAME}-devel
 
 ALL_TARGET=	${PYPY_NAMES}
 BUILD_WRKSRC=	${WRKDIR}
-LATEST_LINK=	${PORTNAME}-devel
 USE_BZIP2=	yes
 USES=		compiler:c11 gettext iconv
 MAKEFILE=	${FILESDIR}/Makefile
@@ -72,7 +70,7 @@ PYTHON_CMD?=	${LOCALBASE}/bin/pypy
 .elif ${PORT_OPTIONS:MPYPY_MINMEM}
 PYTHON_CMD?=	"${SETENV} PYPY_GC_MAX_DELTA=200MB ${LOCALBASE}/bin/pypy --jit loop_longevity=300"
 .else
-USE_PYTHON_BUILD=	-2.7
+USE_PYTHON_BUILD=	2
 .endif
 
 # List of PyPy instances

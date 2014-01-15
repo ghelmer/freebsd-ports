@@ -11,7 +11,7 @@ DISTNAME=	SpiralSynth-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI-capable synthesizer for X
 
-LIB_DEPENDS=	fltk.1:${PORTSDIR}/x11-toolkits/fltk
+LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
 
 NO_STAGE=	yes
 GNU_CONFIGURE=	yes
@@ -22,6 +22,8 @@ PLIST=		${WRKDIR}/pkg-plist
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
 DOC_FILES=	CHANGES COPYING README
+
+.include <bsd.port.options.mk>
 
 post-patch:
 .for ii in \
@@ -66,7 +68,7 @@ pre-install:
 .else
 	${ECHO_CMD} bin/SpiralSynth > ${PLIST}
 .endif
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 .for ii in ${DOC_FILES}
 	${ECHO_CMD} share/doc/spiralsynth/${ii} >> ${PLIST}
 .endfor
@@ -80,7 +82,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/SpiralSynth ${PREFIX}/bin
 .endif
 
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 .for ii in ${DOC_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${ii} ${DOCSDIR}

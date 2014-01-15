@@ -14,15 +14,12 @@ OPTIONS_DEFINE=	GNOME PGPLOT OPENGL
 OPTIONS_DEFAULT=	PGPLOT OPENGL
 PGPLOT_DESC=	Enable PGPLOT support
 
-NO_STAGE=	yes
 USES=		gmake pathfix gettext perl5
 USE_GNOME=	gnomehier gtk20
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-locale-prefix=${PREFIX}/share/locale
-
-MAN1=		nightfall.1
 
 .include <bsd.port.options.mk>
 
@@ -37,8 +34,8 @@ PLIST_SUB+=	GNOMEUI="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGPLOT}
-LIB_DEPENDS+=	pgplot.5:${PORTSDIR}/graphics/pgplot
-USE_FORTRAN=	yes
+LIB_DEPENDS+=	libpgplot.so:${PORTSDIR}/graphics/pgplot
+USES+=		fortran
 CONFIGURE_ARGS+=	--with-pgplot-include=${LOCALBASE}/include \
 			--with-pgplot-lib=${LOCALBASE}/lib
 .else
@@ -47,7 +44,7 @@ CONFIGURE_ARGS+=	--with-gnuplot
 .endif
 
 .if ${PORT_OPTIONS:MOPENGL}
-LIB_DEPENDS+=	gtkgl-2.0.1:${PORTSDIR}/x11-toolkits/gtkglarea2
+LIB_DEPENDS+=	libgtkgl-2.0.so:${PORTSDIR}/x11-toolkits/gtkglarea2
 USE_GL=		glut
 CONFIGURE_ARGS+=	--with-lib-GL
 .else
@@ -61,6 +58,6 @@ post-patch:
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/nightfall.desktop \
-		${PREFIX}/share/applications
+		${STAGEDIR}${PREFIX}/share/applications
 
 .include <bsd.port.mk>

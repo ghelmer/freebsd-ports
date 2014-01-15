@@ -9,15 +9,15 @@ MASTER_SITES=	http://mirror.kolabsys.com/pub/releases/
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Kolab XML Format Schema Definitions Library
 
-# The XSD schemas in schemas/ are AL2-licensed, and some files are
-# in public domain. The library itself and the installed headers are
-# considered LGPL3-licensed, though.
+# The XSD schemas in schemas/ are APACHE20-licensed, and some files
+# are in public domain. The library itself and the installed headers
+# are considered LGPL3-licensed, though.
 LICENSE=	LGPL3
 
 BUILD_DEPENDS=	xsdcxx:${PORTSDIR}/devel/xsd
-LIB_DEPENDS=	boost_system:${PORTSDIR}/devel/boost-libs \
-		curl:${PORTSDIR}/ftp/curl \
-		xerces-c.3:${PORTSDIR}/textproc/xerces-c3
+LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
+		libcurl.so:${PORTSDIR}/ftp/curl \
+		libxerces-c.so.3:${PORTSDIR}/textproc/xerces-c3
 
 # TODO: Conditionally enable the bindings based on OPTIONs.
 CMAKE_ARGS=	-DBUILD_TESTS:BOOL=OFF \
@@ -31,5 +31,4 @@ USE_LDCONFIG=	yes
 
 PLIST_SUB=	SHLIB_VER=${PORTVERSION}
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

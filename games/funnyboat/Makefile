@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:${PORTSDIR}/devel/py-game
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USE_ZIP=	yes
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 NO_BUILD=	yes
 
 SUB_FILES=	funnyboat_
@@ -25,7 +25,6 @@ SUB_LIST=	PROGRAM_DIR="${PREFIX}/lib/${PORTNAME}"
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=DOCS
 
 do-install:
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "*.py data" ${STAGEDIR}${PREFIX}/lib/${PORTNAME}

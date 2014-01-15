@@ -15,8 +15,6 @@ LICENSE=	BSD
 RUN_DEPENDS=	R-cran-XML>0:${PORTSDIR}/textproc/R-cran-XML \
 		R-cran-xts>0:${PORTSDIR}/math/R-cran-xts
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

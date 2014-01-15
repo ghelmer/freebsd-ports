@@ -9,7 +9,9 @@ MASTER_SITES=	SF/${PORTNAME}/Pushover/${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	A puzzle game where the goal is to push over all dominoes
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
+LICENSE=	GPLv3
+
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl mixer ttf
@@ -19,6 +21,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 USES=		gettext gmake pkgconfig
 
 PORTDOCS=	*
+PORTDATA=	*
 
 DESKTOP_ENTRIES="Pushover" \
 		"Push over all dominoes" \
@@ -27,14 +30,9 @@ DESKTOP_ENTRIES="Pushover" \
 		"Game;LogicGame;" \
 		false
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|lua5.1|lua-5.1|' ${WRKSRC}/configure
-.if ! ${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e '/install-data-am/ s|install-dist_docDATA||' \
-		${WRKSRC}/Makefile.in
-.endif
 
 .include <bsd.port.mk>

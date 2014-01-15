@@ -93,6 +93,11 @@
 # ${opt}_CMAKE_OFF			When option is disabled, it will add its content to
 #							the CMAKE_ARGS.
 #
+# ${opt}_QMAKE_ON			When option is enabled, it will add its content to
+#							the QMAKE_ARGS.
+# ${opt}_QMAKE_OFF			When option is disabled, it will add its content to
+#							the QMAKE_ARGS.
+#
 # ${opt}_USE=	FOO=bar		When option is enabled, it will  enable
 #							USE_FOO+= bar
 #							If you need more than one option, you can do
@@ -346,27 +351,9 @@ NOPORTDOCS=	yes
 NOPORTEXAMPLES=	yes
 .endif
 
-.if empty(PORT_OPTIONS:MNLS)
-WITHOUT_NLS=	yes
-.endif
-
 .if defined(NO_OPTIONS_SORT)
 ALL_OPTIONS=	${OPTIONS_DEFINE}
 .endif
-
-### to be removed once old OPTIONS disappear
-.for opt in ${ALL_OPTIONS}
-.if empty(PORT_OPTIONS:M${opt})
-.   if !defined(WITH_${opt}) && !defined(WITHOUT_${opt})
-WITHOUT_${opt}:=	true
-.   endif
-.else
-.   if !defined(WITH_${opt}) && !defined(WITHOUT_${opt})
-WITH_${opt}:=  true
-.   endif
-.endif
-.endfor
-###
 
 .for opt in ${COMPLETE_OPTIONS_LIST} ${OPTIONS_SLAVE}
 # PLIST_SUB
@@ -398,12 +385,11 @@ CONFIGURE_ARGS+=	--enable-${iopt}
 CONFIGURE_ARGS+=	--with-${iopt}
 .      endfor
 .    endif
-.    if defined(${opt}_CONFIGURE_ON)
-CONFIGURE_ARGS+=	${${opt}_CONFIGURE_ON}
-.    endif
-.    if defined(${opt}_CMAKE_ON)
-CMAKE_ARGS+=	${${opt}_CMAKE_ON}
-.    endif
+.    for configure in CONFIGURE CMAKE QMAKE
+.      if defined(${opt}_${configure}_ON)
+${configure}_ARGS+=	${${opt}_${configure}_ON}
+.      endif
+.    endfor
 .    for flags in CFLAGS CPPFLAGS CXXFLAGS LDFLAGS CONFIGURE_ENV MAKE_ARGS \
          MAKE_ENV ALL_TARGET INSTALL_TARGET USES DISTFILES PLIST_FILES \
          PLIST_DIRS PLIST_DIRSTRY EXTRA_PATCHES PATCHFILES PATCH_SITES CATEGORIES
@@ -427,12 +413,11 @@ CONFIGURE_ARGS+=	--disable-${iopt}
 CONFIGURE_ARGS+=	--without-${iopt}
 .      endfor
 .    endif
-.    if defined(${opt}_CONFIGURE_OFF)
-CONFIGURE_ARGS+=	${${opt}_CONFIGURE_OFF}
-.    endif
-.    if defined(${opt}_CMAKE_OFF)
-CMAKE_ARGS+=	${${opt}_CMAKE_OFF}
-.    endif
+.    for configure in CONFIGURE CMAKE QMAKE
+.      if defined(${opt}_${configure}_OFF)
+${configure}_ARGS+=	${${opt}_${configure}_OFF}
+.      endif
+.    endfor
 .  endif
 .endfor
 

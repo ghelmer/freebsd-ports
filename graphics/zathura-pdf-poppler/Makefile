@@ -3,6 +3,7 @@
 
 PORTNAME=	zathura-pdf-poppler
 PORTVERSION=	0.2.4
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://pwmt.org/projects/zathura/plugins/download/
 
@@ -13,7 +14,7 @@ LIB_DEPENDS=	libpoppler-glib.so:${PORTSDIR}/graphics/poppler-glib
 BUILD_DEPENDS=	zathura:${PORTSDIR}/graphics/zathura
 RUN_DEPENDS=	zathura:${PORTSDIR}/graphics/zathura
 
-USE_GNOME=	glib20 gtk20
+USE_GNOME=	glib20 gtk30
 USES=		desktop-file-utils gmake pkgconfig
 
 PLIST_FILES=	lib/zathura/pdf.so \

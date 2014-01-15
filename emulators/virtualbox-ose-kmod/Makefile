@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-DISTVERSION=	4.2.18
+DISTVERSION=	4.2.20
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${DISTVERSION}/ \
 		http://tmp.chruetertee.ch/ \
@@ -24,7 +24,6 @@ UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 USE_RC_SUBR=	vboxnet
 ONLY_FOR_ARCHS=	i386 amd64
-FETCH_ARGS=	-pRr
 USE_BZIP2=	yes
 
 HAS_CONFIGURE=	yes
@@ -70,14 +69,6 @@ KMK_ARCH=	freebsd.${ARCH}
 .endif
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 802000
-BROKEN=		Does not compile on FreeBSD < 8.2
-.endif
-
-.if ${OSVERSION} < 800500 && !empty(PORT_OPTIONS:MVIMAGE)
-IGNORE=		newer kernel is required to build with VIMAGE
-.endif
 
 post-patch:
 	@${ECHO} 'VBOX_WITH_VBOXDRV = 1' > ${WRKSRC}/LocalConfig.kmk

@@ -16,7 +16,7 @@ RESTRICTED_FILES=	boodler-snd-021902.tar.gz
 
 NO_STAGE=	yes
 USES=		gmake
-USE_PYTHON=	yes
+USE_PYTHON=	2
 DRIVER?=	oss
 WRKSRC=		${WRKDIR}/${PORTNAME}
 BHOME=		${PREFIX}/share/boodler
@@ -34,7 +34,7 @@ pre-everything::
 	@${ECHO} ""
 
 .if ${DRIVER:L} == "esd"
-LIB_DEPENDS+=	esd.2:${PORTSDIR}/audio/esound
+LIB_DEPENDS+=	libesd.so:${PORTSDIR}/audio/esound
 .endif
 
 .include <bsd.port.pre.mk>
@@ -44,6 +44,7 @@ PIC=	--PIC
 .endif
 
 post-patch:
+	${REINPLACE_CMD} -e "s|python|${PYTHON_CMD}|" ${WRKSRC}/Makefile
 	${REINPLACE_CMD} -e "s|^booroot=.*|booroot=${PREFIX}/share/boodler|" ${WRKSRC}/wrapper/boodler
 	@${RMDIR} ${WRKDIR}/boodler-snd/string
 
@@ -60,7 +61,7 @@ do-install:
 	@${CHMOD} -R u+w,a+r,og-w ${WRKDIR}/boodler-snd
 	@${FIND} ${WRKDIR}/boodler-snd -type d -print0 | ${XARGS} -0 ${CHMOD} 755
 	@cd ${WRKDIR} && ${CP} -pPR boodler/boodle boodler/effects boodler-snd ${BHOME}
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/doc/*.html ${DOCSDIR}
 .endif

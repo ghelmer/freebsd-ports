@@ -40,7 +40,6 @@
     SUBDIR += dosage
     SUBDIR += drivel
     SUBDIR += easystroke
-    SUBDIR += ecru
     SUBDIR += egroupware
     SUBDIR += epoch
     SUBDIR += etask
@@ -125,10 +124,8 @@
     SUBDIR += libopensync-plugin-evolution2-devel
     SUBDIR += libopensync-plugin-file
     SUBDIR += libopensync-plugin-python
-    SUBDIR += libopensync-plugin-python-devel
     SUBDIR += libopensync-plugin-sunbird
     SUBDIR += libopensync-plugin-synce
-    SUBDIR += libopensync-plugin-synce-devel
     SUBDIR += libopensync-plugin-synce-legacy
     SUBDIR += libopensync-plugin-vformat-devel
     SUBDIR += libstreamanalyzer
@@ -138,6 +135,11 @@
     SUBDIR += ljit
     SUBDIR += logjam
     SUBDIR += lxshortcut
+    SUBDIR += mate-character-map
+    SUBDIR += mate-file-manager-open-terminal
+    SUBDIR += mate-menu-editor
+    SUBDIR += mate-notification-daemon
+    SUBDIR += mate-utils
     SUBDIR += mcal
     SUBDIR += mdh
     SUBDIR += mencal
@@ -197,7 +199,6 @@
     SUBDIR += py-vobject
     SUBDIR += pybookreader
     SUBDIR += pypanel
-    SUBDIR += q4wine
     SUBDIR += qlabels
     SUBDIR += qorganizer
     SUBDIR += qrfcview
@@ -209,6 +210,7 @@
     SUBDIR += rolo
     SUBDIR += rox-memo
     SUBDIR += rubrica
+    SUBDIR += rubygem-taskjuggler
     SUBDIR += semantik
     SUBDIR += silence
     SUBDIR += simpleagenda
@@ -227,7 +229,6 @@
     SUBDIR += systempreferences
     SUBDIR += tagutils
     SUBDIR += taskcoach
-    SUBDIR += taskjuggler
     SUBDIR += taskwarrior
     SUBDIR += teapot
     SUBDIR += tel

@@ -3,6 +3,7 @@
 
 PORTNAME=	wine
 DISTVERSION=	1.6.1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -19,15 +20,14 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
 LIB_DEPENDS=	libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		liblcms2.so:${PORTSDIR}/graphics/lcms2 \
+		liblcms.so:${PORTSDIR}/graphics/lcms \
 		libpng15.so:${PORTSDIR}/graphics/png \
 		libxml2.so:${PORTSDIR}/textproc/libxml2
 
-CONFLICTS_INSTALL=	i386-wine-* wine-1.5* wine-1.7*
+CONFLICTS_INSTALL=	i386-wine-[0-9]* i386-wine-devel-[0-9]* wine-devel-[0-9]*
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-USE_GCC=	any
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--verbose --disable-tests \
 		--without-alsa --without-capi --without-dbus \
@@ -43,7 +43,8 @@ WINELIBDIR?=	${PREFIX}/lib
 USE_LDCONFIG=	${WINELIBDIR} ${WINELIBDIR}/wine
 .endif
 ONLY_FOR_ARCHS=	i386
-USES=		bison gmake
+USES=		bison compiler:c11 gmake shebangfix
+SHEBANG_FILES=	tools/winemaker tools/winedump/function_grep.pl
 USE_BZIP2=	yes
 USE_GL=		glu
 USE_XORG=	xcursor xi xpm xrandr xrender
@@ -57,6 +58,9 @@ LIBXSLT_DESC=	Use libxslt (only used by msxml3.dll)
 WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
+
+# USES needs to be before bsd.port.pre.mk
+OPENAL_USES=	openal
 
 PORTDATA=	fonts/ generic.ppd l_intl.nls wine.inf
 
@@ -105,7 +109,6 @@ CONFIGURE_ARGS+=	--without-xslt
 
 .if ${PORT_OPTIONS:MOPENAL}
 CONFIGURE_ARGS+=	--with-openal
-USE_OPENAL=		yes
 PLIST_SUB+=		OPENAL=""
 .else
 CONFIGURE_ARGS+=	--without-openal

@@ -3,24 +3,35 @@
 
 PORTNAME=	bs
 PORTVERSION=	2.9
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.catb.org/~esr/bs/
 
-MAINTAINER=	nemysis@gmx.ch
+MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Battleships solitaire game with a color interface
 
-LICENSE=	GPLv2
+LICENSE=	BSD
 
+USES=		gmake
 MAKE_ARGS=	CC="${CC}"
 ALL_TARGET=	# empty
-USE_GMAKE=	yes
 
-MAN6=		bs.6
-PLIST_FILES=	bin/bs
+PLIST_FILES=	bin/${PORTNAME} \
+		man/man6/${PORTNAME}.6.gz \
+		share/applications/${PORTNAME}.desktop \
+		share/pixmaps/battleship.png
 
-NO_STAGE=	yes
+PORTDOCS=	NEWS README
+
+OPTIONS_DEFINE=	DOCS
+
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bs ${PREFIX}/bin
-	${INSTALL_MAN} ${MAN6:S|^|${WRKSRC}/|} ${MAN6PREFIX}/man/man6
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${WRKSRC}/battleship.png ${STAGEDIR}${PREFIX}/share/pixmaps/
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.6 ${STAGEDIR}${MAN6PREFIX}/man/man6/
+
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

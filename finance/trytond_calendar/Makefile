@@ -1,3 +1,4 @@
+# Created by: Matthias Petermann <matthias@petermann-it.de>
 # $FreeBSD$
 
 PORTNAME=	trytond_calendar
@@ -16,7 +17,7 @@ RUN_DEPENDS=	trytond>=2.4.0:${PORTSDIR}/finance/trytond \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:${PORTSDIR}/devel/py-pytz \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=1.5:${PORTSDIR}/devel/py-dateutil
 
-CONFLICTS=	trytond_calendar-2.[68].*
+CONFLICTS=	trytond28_calendar-2.8.*
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=easy_install

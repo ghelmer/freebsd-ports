@@ -11,8 +11,8 @@ COMMENT=	Low-level I/O storage library which packs data
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	boost_iostreams:${PORTSDIR}/devel/boost-libs \
-		snappy:${PORTSDIR}/archivers/snappy
+LIB_DEPENDS=	libboost_iostreams.so:${PORTSDIR}/devel/boost-libs \
+		libsnappy.so:${PORTSDIR}/archivers/snappy
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	zloidemon
@@ -26,10 +26,6 @@ OPTIONS_DEFINE=	EXAMPLES
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>
-
-.if ${OSVERSION} < 802515 || ${OSVERSION} >= 900000 && ${OSVERSION} < 900501
-BROKEN=		requires posix_fadvise(2)
-.endif
 
 .if ${PORT_OPTIONS:MEXAMPLES}
 PLIST_SUB=	EXAMPLES=""

@@ -12,12 +12,11 @@ DIST_SUBDIR=	fcitx
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Chewing support for Fcitx
 
-LIB_DEPENDS=	fcitx-config:${PORTSDIR}/chinese/fcitx \
-		chewing:${PORTSDIR}/chinese/libchewing
+LIB_DEPENDS=	libfcitx-config.so:${PORTSDIR}/chinese/fcitx \
+		libchewing.so:${PORTSDIR}/chinese/libchewing
 
 USE_XZ=		yes
 USES=		cmake gettext pkgconfig
 USE_GNOME=	intltool
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

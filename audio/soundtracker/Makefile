@@ -17,7 +17,6 @@ LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile
 
 GNU_CONFIGURE=	yes
 USES=		pathfix pkgconfig
-NO_STAGE=	yes
 USE_GNOME=	esound gdkpixbuf
 
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -40,7 +39,7 @@ CONFIGURE_ARGS+=	--enable-asm
 .endif
 
 .if ${PORT_OPTIONS:MJACK}
-LIB_DEPENDS+=		jack:${PORTSDIR}/audio/jack
+LIB_DEPENDS+=		libjack.so:${PORTSDIR}/audio/jack
 .else
 CONFIGURE_ARGS+=	--disable-jack
 .endif
@@ -76,6 +75,6 @@ pre-build:
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/sharp.xpm \
-		${PREFIX}/share/pixmaps/soundtracker.xpm
+		${STAGEDIR}${PREFIX}/share/pixmaps/soundtracker.xpm
 
 .include <bsd.port.mk>

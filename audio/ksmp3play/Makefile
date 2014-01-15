@@ -10,7 +10,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTVERSION:R}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses-based MP3 player
 
-LIB_DEPENDS=	smpeg:${PORTSDIR}/multimedia/smpeg
+LIB_DEPENDS=	libsmpeg.so:${PORTSDIR}/multimedia/smpeg
 
 GNU_CONFIGURE=	yes
 USES=	pathfix
@@ -23,8 +23,10 @@ MAN1=		ksmp3play.1
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+.include <bsd.port.options.mk>
+
 post-install:
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 	${TAR} -C ${WRKSRC}/doc --exclude "CVS" -cf - . | \
 		${TAR} -C ${DOCSDIR} --unlink -xf -

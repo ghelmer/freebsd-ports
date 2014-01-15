@@ -33,18 +33,20 @@ PLIST_REINPLACE:=	${PLIST_REINPLACE:Nstopdaemon}
 ACTUAL-PACKAGE-DEPENDS?= \
 	if [ "${_LIB_RUN_DEPENDS}" != "  " ]; then \
 		${PKG_QUERY} "%n: {origin: %o, version: \"%v\"}" " " ${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,:C,${PORTSDIR}/,,} 2>/dev/null || : ; \
-		${PKG_QUERY} "%dn: {origin: %do, version: \"%dv\"}" " " ${_LIB_RUN_DEPENDS:C,[^:]*:([^:]*):?.*,\1,:C,${PORTSDIR}/,,} 2>/dev/null || : ; \
 	fi
 
 create-manifest:
 	@${MKDIR} ${METADIR}
 	@${ECHO_CMD} "name: ${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}" > ${MANIFESTF} 
-	@${ECHO_CMD} "version: ${PKGVERSION}" >> ${MANIFESTF} 
-	@${ECHO_CMD} "origin: ${PKGORIGIN}" >> ${MANIFESTF} 
+	@${ECHO_CMD} "version: ${PKGVERSION}" >> ${MANIFESTF}
+	@${ECHO_CMD} "origin: ${PKGORIGIN}" >> ${MANIFESTF}
 	@${ECHO_CMD} "comment: |" >> ${MANIFESTF}
 	@${ECHO_CMD} "  "${COMMENT:Q} >> ${MANIFESTF}
 	@${ECHO_CMD} "maintainer: ${MAINTAINER}" >> ${MANIFESTF}
 	@${ECHO_CMD} "prefix: ${PREFIX}" >> ${MANIFESTF}
+#.if defined(NO_ARCH)
+#	@${ECHO_CMD} "arch: `${PKG_BIN} config abi | ${CUT} -d: -f1,2`:*" >> ${MANIFESTF}
+#.endif
 .if defined(WWW)
 	@${ECHO_CMD} "www: ${WWW}" >> ${MANIFESTF}
 .endif
@@ -96,7 +98,7 @@ create-manifest:
 		[ -f $$a ] && ${CAT} $$a >> ${METADIR}/+PRE_DEINSTALL ; \
 	done ; \
 	${RM} -f ${METADIR}/+POST_DEINSTALL ; \
-	for a in ${PKGPOSRDEINSTALL}; do \
+	for a in ${PKGPOSTDEINSTALL}; do \
 		[ -f $$a ] && ${CAT} $$a >> ${METADIR}/+POST_DEINSTALL ; \
 	done ; \
 	[ -f ${PKGPOSTDEINSTALL} ] && ${CP} ${PKGPOSTDEINSTALL} ${METADIR}/+POST_DEINSTALL; \
@@ -117,8 +119,8 @@ STAGE_ARGS=		-l
 STAGE_ARGS=		-i ${STAGEDIR}
 .endif
 
-fake-pkg: create-manifest
 .if !defined(NO_PKG_REGISTER)
+fake-pkg: create-manifest
 .if defined(INSTALLS_DEPENDS)
 	@${ECHO_MSG} "===>   Registering installation for ${PKGNAME} as automatic"
 .else
@@ -130,8 +132,6 @@ fake-pkg: create-manifest
 	@${SETENV} FORCE_POST="${_FORCE_POST_PATTERNS}" ${PKG_CMD} ${STAGE_ARGS} -m ${METADIR} -f ${TMPPLIST}
 .endif
 	@${RM} -rf ${METADIR}
-.else
-	@${DO_NADA}
 .endif
 .endif
 
@@ -270,8 +270,8 @@ do-package: ${TMPPLIST}
 
 .if defined(WITH_PKGNG)
 .if !target(check-already-installed)
-check-already-installed:
 .if !defined(NO_PKG_REGISTER) && !defined(FORCE_PKG_REGISTER)
+check-already-installed:
 		@${ECHO_MSG} "===>  Checking if ${PKGORIGIN} already installed"; \
 		pkgname=`${PKG_INFO} -q -O ${PKGORIGIN}`; \
 		if [ -n "$${pkgname}" ]; then \
@@ -288,8 +288,6 @@ check-already-installed:
 			${ECHO_MSG} "      in your environment or the \"make install\" command line."; \
 			exit 1; \
 		fi
-.else
-	@${DO_NADA}
 .endif
 .endif
 

@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ccid
-PORTVERSION=	1.4.11
+PORTVERSION=	1.4.14
 CATEGORIES=	devel
-#MASTER_SITES=	https://alioth.debian.org/frs/download.php/3920/
+#MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3971/
 MASTER_SITES=	${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	arved
 
@@ -28,9 +28,6 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 
 PLIST_SUB=	VER=${PORTVERSION}
 
-MAN1=		RSA_SecurID_getpasswd.1
-
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} < 801000
@@ -47,8 +44,8 @@ post-patch:
 
 post-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/contrib/RSA_SecurID/RSA_SecurID_getpasswd \
-		${PREFIX}/bin
+		${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/contrib/RSA_SecurID/RSA_SecurID_getpasswd.1 \
-		${MANPREFIX}/man/man1
+		${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.post.mk>

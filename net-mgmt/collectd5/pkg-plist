@@ -139,6 +139,9 @@ lib/collectd/pf.la
 lib/collectd/processes.a
 lib/collectd/processes.so
 lib/collectd/processes.la
+%%PYTHON%%lib/collectd/python.a
+%%PYTHON%%lib/collectd/python.la
+%%PYTHON%%lib/collectd/python.so
 %%REDIS%%lib/collectd/redis.a
 %%REDIS%%lib/collectd/redis.so
 %%REDIS%%lib/collectd/redis.la
@@ -151,6 +154,9 @@ lib/collectd/processes.la
 %%RRDTOOL%%lib/collectd/rrdtool.a
 %%RRDTOOL%%lib/collectd/rrdtool.so
 %%RRDTOOL%%lib/collectd/rrdtool.la
+%%SIGROK%%lib/collectd/sigrok.a
+%%SIGROK%%lib/collectd/sigrok.la
+%%SIGROK%%lib/collectd/sigrok.so
 %%SNMP%%lib/collectd/snmp.a
 %%SNMP%%lib/collectd/snmp.so
 %%SNMP%%lib/collectd/snmp.la

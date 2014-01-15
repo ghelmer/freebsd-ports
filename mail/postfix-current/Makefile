@@ -22,7 +22,7 @@ LICENSE_NAME=	IBM PUBLIC LICENSE VERSION 1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS=	courier-0.* postfix-1.* postfix-2.* postfix-base-2.* \
+CONFLICTS=	courier-0.* postfix-1.* postfix-2.* postfix-base-2.* postfix2[789]-* \
 		sendmail-8.* sendmail+*-8.* smail-3.* zmailer-2.* opensmtpd-[0-9]*
 
 USERS=		postfix
@@ -216,7 +216,7 @@ POSTFIX_CCARGS+=	-I${LOCALBASE}/include/sasl -DUSE_LDAP_SASL
 .endif
 
 .if ${PORT_OPTIONS:MCDB}
-BUILD_DEPENDS+=		${LOCALBASE}/lib/libcdb.a:${PORTSDIR}/databases/tinycdb
+LIB_DEPENDS+=		libcdb.so:${PORTSDIR}/databases/tinycdb
 POSTFIX_CCARGS+=	-DHAS_CDB -I${LOCALBASE}/include
 POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -lcdb
 .endif

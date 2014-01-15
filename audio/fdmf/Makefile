@@ -10,9 +10,9 @@ MASTER_SITES=	http://w140.com/audio/ CENKES
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find similar music by perceptual hashing
 
-LIB_DEPENDS=	gdbm.4:${PORTSDIR}/databases/gdbm \
-		plot.4:${PORTSDIR}/graphics/plotutils \
-		fftw3:${PORTSDIR}/math/fftw3
+LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
+		libplot.so:${PORTSDIR}/graphics/plotutils \
+		libfftw3.so:${PORTSDIR}/math/fftw3
 RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
 		mpg123:${PORTSDIR}/audio/mpg123 \
 		ogg123:${PORTSDIR}/audio/vorbis-tools \
@@ -27,13 +27,15 @@ BINS=		sonic_reducer vector_pairs
 SCRS=		${PORTNAME} ${PORTNAME}_bench cleanup_dups optparam
 PLIST_FILES=	${BINS:S,^,bin/,} ${SCRS:S,^,bin/,}
 
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -Ee '/^(CFLAGS|CC) =/s|.*||' -e 's|common/||g' ${WRKSRC}/Makefile
 
 do-install:
 	@${INSTALL_PROGRAM} ${BINS:S,^,${WRKSRC}/,} ${PREFIX}/bin/
 	@${INSTALL_SCRIPT} ${SCRS:S,^,${WRKSRC}/,} ${PREFIX}/bin/
-.ifndef NOPORTDOCS
+.if ${PORT_OPTIONS:MDOCS}
 	@${INSTALL} -d ${DOCSDIR}/
 	@${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${DOCSDIR}/
 .endif

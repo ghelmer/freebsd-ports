@@ -1,21 +1,22 @@
 # $FreeBSD$
 
 PORTNAME=	postgis
-PORTVERSION=	2.0.2
-PORTREVISION=	4
+PORTVERSION=	2.0.4
 CATEGORIES=	databases geography
 MASTER_SITES=	http://download.osgeo.org/postgis/source/
+PKGNAMESUFFIX=	20
 
 MAINTAINER=	matt.trisoline@intermedix.com
-COMMENT=	Adds support for geographic objects to PostgreSQL databases
+COMMENT=	Geographic objects support for PostgreSQL databases
 
-LIB_DEPENDS=	proj:${PORTSDIR}/graphics/proj \
-		geos:${PORTSDIR}/graphics/geos \
-		json:${PORTSDIR}/devel/json-c
+LICENSE=	GPLv2
+
+LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj \
+		libgeos.so:${PORTSDIR}/graphics/geos \
+		libjson.so:${PORTSDIR}/devel/json-c
 RUN_DEPENDS=	postmaster:${PORTSDIR}/databases/postgresql${PGSQL_VER}-server
 
-CONFLICTS=	postgis-1.*
-LATEST_LINK=	postgis20
+CONFLICTS=	postgis-1.* postgis-2.1.*
 
 USE_GNOME=	libxml2
 USE_PGSQL=	yes
@@ -24,6 +25,8 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 USE_PERL5=	build
 
+PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+
 OPTIONS_DEFINE=		LOADERGUI RASTER TOPOLOGY
 OPTIONS_DEFAULT=	TOPOLOGY
 
@@ -31,7 +34,6 @@ LOADERGUI_DESC=	Enable shp2pgsql-gui
 RASTER_DESC=	Build with raster support
 TOPOLOGY_DESC=	Build with topology support
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLOADERGUI}
@@ -39,7 +41,8 @@ USE_GNOME+=		gtk20
 CONFIGURE_ARGS+=	--with-gui
 PLIST_SUB+=		LOADERGUI=""
 .else
-CONFIGURE_ARGS+=	--without-gui
+# Definning without-gui / with-gui=no explicitely enables gui
+# CONFIGURE_ARGS+=	--without-gui
 PLIST_SUB+=		LOADERGUI="@comment "
 .endif
 
@@ -47,7 +50,7 @@ PLIST_SUB+=		LOADERGUI="@comment "
 .if ${OSVERSION} < 900033
 BROKEN=			Raster suppport is broken on FreeBSD < 9.x
 .endif
-LIB_DEPENDS+=		gdal:${PORTSDIR}/graphics/gdal
+LIB_DEPENDS+=		libgdal.so:${PORTSDIR}/graphics/gdal
 CONFIGURE_ARGS+=	--with-raster --with-gdalconfig=${LOCALBASE}/bin/gdal-config
 PLIST_SUB+=		RASTER=""
 .else
@@ -73,9 +76,12 @@ pre-configure:
 	@${SH} ${PKGINSTALL} ${PORTNAME} PRE-INSTALL
 
 post-install: .SILENT
-	${MKDIR} ${DATADIR}/tiger_2010
-	(cd ${WRKSRC}/extras/tiger_geocoder/tiger_2010/ && ${COPYTREE_SHARE} \* ${DATADIR}/tiger_2010/ "! ( -name *\.orig -o -name *\.bak )" )
-	${MKDIR} ${DATADIR}/utils
-	(cd ${WRKSRC}/utils/ && ${COPYTREE_SHARE} \* ${DATADIR}/utils/ "! ( -name *\.orig -o -name *\.bak )" )
+	${MKDIR} ${STAGEDIR}/${DATADIR}/tiger_2010
+	(cd ${WRKSRC}/extras/tiger_geocoder/tiger_2010/ && ${COPYTREE_SHARE} . ${STAGEDIR}/${DATADIR}/tiger_2010/ "! ( -name *\.orig -o -name *\.bak )" )
+	${MKDIR} ${STAGEDIR}/${DATADIR}/utils
+	(cd ${WRKSRC}/utils/ && ${COPYTREE_SHARE} . ${STAGEDIR}/${DATADIR}/utils/ "! ( -name *\.orig -o -name *\.bak )" )
+	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/lib/postgresql/*.so \
+		${STAGEDIR}/${PREFIX}/lib/*.so \
+		${STAGEDIR}/${PREFIX}/bin/*
 
 .include <bsd.port.mk>

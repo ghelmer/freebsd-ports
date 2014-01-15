@@ -10,7 +10,7 @@ MASTER_SITES=	http://download.linuxsampler.org/packages/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modular MIDI sampler
 
-LIB_DEPENDS=	gig:${PORTSDIR}/audio/libgig
+LIB_DEPENDS=	libgig.so:${PORTSDIR}/audio/libgig
 
 RESTRICTED=	no commercial use
 
@@ -23,14 +23,11 @@ DSSI_DESC=	Enable DSSI support
 LV2CORE_DESC=	Enable LV2 support
 
 USE_BZIP2=	yes
-NO_STAGE=	yes
 USES=		gmake pathfix pkgconfig
 USE_SQLITE=	3
 USE_AUTOTOOLS=	libtool
 CONFIGURE_ENV=	HAVE_UNIX98=1
 USE_LDCONFIG=	yes
-
-MAN1=		linuxsampler.1
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -40,13 +37,13 @@ CONFIGURE_ARGS+=--disable-arts-driver
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MJACK}
-LIB_DEPENDS+=	jack:${PORTSDIR}/audio/jack
+LIB_DEPENDS+=	libjack.so:${PORTSDIR}/audio/jack
 .else
 CONFIGURE_ARGS+=--disable-jack-driver
 .endif
 
 .if ${PORT_OPTIONS:MALSA}
-LIB_DEPENDS+=	asound:${PORTSDIR}/audio/alsa-lib
+LIB_DEPENDS+=	libasound.so:${PORTSDIR}/audio/alsa-lib
 .else
 CONFIGURE_ARGS+=--disable-alsa-driver
 .endif
@@ -75,6 +72,6 @@ post-patch:
 		 s|"lv2core"|"_lv2core_"|' ${WRKSRC}/configure
 
 post-install:
-	@${TOUCH} ${PREFIX}/lib/linuxsampler/plugins/.keep_me
+	@${TOUCH} ${STAGEDIR}${PREFIX}/lib/linuxsampler/plugins/.keep_me
 
 .include <bsd.port.mk>

@@ -12,14 +12,11 @@ COMMENT=	Utility for capturing audio streams from programs with OSS output
 
 BUILD_DEPENDS=	sox:${PORTSDIR}/audio/sox
 RUN_DEPENDS=	sox:${PORTSDIR}/audio/sox
-NO_STAGE=	yes
 
 USE_AUTOTOOLS=	libtool
 
 post-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -13,7 +13,7 @@ EXTRACT_ONLY=	${PORTNAME}130${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A compact Finite Element Analysis System
 
-LIB_DEPENDS=	gtkglext-x11-1.0.0:${PORTSDIR}/x11-toolkits/gtkglext
+LIB_DEPENDS=	libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
 
 NO_WRKSUBDIR=	yes
 USES=		pkgconfig
@@ -29,6 +29,9 @@ Z88_BINS=	z88f z88i1 z88i2 z88com z88d z88e z88g z88h z88n z88o	\
 Z88_DATA=	z88.fcd z88.dyn *.dxf *.txt
 
 NO_STAGE=	yes
+
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${CP} ${WRKSRC}/z88.fcd.linux ${WRKSRC}/z88.fcd
 	@${CP} ${WRKSRC}/z88.mk.kernel.gcc32 ${WRKSRC}/z88.kernel.mk
@@ -65,7 +68,7 @@ do-install:
 	@${INSTALL_DATA} ${WRKSRC}/*.htm ${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/*.gif ${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/*.jpg ${DOCSDIR}
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/z88mane.pdf ${DOCSDIR}
 .endif
 

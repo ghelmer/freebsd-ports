@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=		${SAMBA_BASENAME}36
-PORTVERSION=		3.6.20
-PORTREVISION?=		1
+PORTVERSION=		3.6.22
+PORTREVISION?=		0
 CATEGORIES?=		net
 MASTER_SITES=		${MASTER_SITE_SAMBA}
 MASTER_SITE_SUBDIR=	samba samba/stable samba/pre
@@ -239,7 +239,7 @@ WANT_EXP_MODULES+=	vfs_cacheprime vfs_catia vfs_commit vfs_dirsort \
 .endif
 
 .if ${PORT_OPTIONS:MFAM_SUPPORT}
-USE_FAM=		yes
+USES+=			fam
 WANT_EXP_MODULES+=	vfs_notify_fam
 CONFIGURE_ARGS+=	--enable-fam
 .else

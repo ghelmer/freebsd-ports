@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	cssutils
-PORTVERSION=	0.9.10
+PORTVERSION=	1.0
 PORTEPOCH=	1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+EXTRACT_SUFX=	.zip
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	CSS Cascading Style Sheets library for Python
@@ -14,20 +15,18 @@ COMMENT=	CSS Cascading Style Sheets library for Python
 LICENSE=	LGPL3
 
 OPTIONS_DEFINE=	EXAMPLES
+OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
 
-NO_STAGE=	yes
-USE_ZIP=	yes
-USE_PYTHON=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 USE_PYDISTUTILS=easy_install
+USE_PYTHON=	yes
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
-
-.include <bsd.port.options.mk>
+PORTEXAMPLES=	*
 
 post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${EXAMPLESDIR}/
-	${INSTALL_DATA} ${WRKSRC}/examples/* ${EXAMPLESDIR}/
-.endif
+	${CHMOD} ${SHAREMODE} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PYEASYINSTALL_EGG}/EGG-INFO/*
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
+	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}/
 
 .include <bsd.port.mk>

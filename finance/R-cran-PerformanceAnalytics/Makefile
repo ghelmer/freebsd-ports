@@ -15,8 +15,6 @@ LICENSE=	GPLv1
 RUN_DEPENDS=	R-cran-zoo>0:${PORTSDIR}/math/R-cran-zoo \
 		R-cran-xts>=0.8.9:${PORTSDIR}/math/R-cran-xts
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

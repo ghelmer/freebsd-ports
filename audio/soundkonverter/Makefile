@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	soundkonverter
-DISTVERSION=	2.0.4
+DISTVERSION=	2.0.5
 CATEGORIES=	audio kde
 MASTER_SITES=	http://kde-apps.org/CONTENT/content-files/
 DISTNAME=	29024-${PORTNAME}-${DISTVERSION}
@@ -107,5 +107,8 @@ WAVPACK_RUN_DEPENDS=	wavpack:${PORTSDIR}/audio/wavpack
 
 NLS_USES=	gettext
 NLS_CMAKE_OFF=	-DBUILD_po=FALSE
+
+post-patch:
+	${REINPLACE_CMD} "/-pedantic/d" ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	distutils-extra
-PORTVERSION=	2.37
+PORTVERSION=	2.38
 CATEGORIES=	devel python
-MASTER_SITES=	https://launchpadlibrarian.net/116392602/ \
+MASTER_SITES=	https://launchpadlibrarian.net/145592954/ \
 		LOCAL/sunpoet
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-${PORTNAME}-${PORTVERSION}
@@ -17,24 +17,6 @@ LICENSE=	GPLv2
 USE_PYTHON=	yes
 USE_PYDISTUTILS=easy_install
 PYDISTUTILS_PKGNAME=	python_distutils_extra
-PYDISTUTILS_NOEGGINFO=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
-PLIST_SUB=	PYTHON_SUFFIX=${PYTHON_SUFFIX}
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_REL} >= 320
-PLIST_SUB+=	PYTHON32=""
-.else
-PLIST_SUB+=	PYTHON32="@comment "
-.endif
-
-post-install:
-.if ${PYTHON_REL} >= 320
-.for py in __init__.py command/__init__.py command/build_extra.py
-	${PYTHON_CMD} -m compileall ${PYTHON_SITELIBDIR}/${PYEASYINSTALL_EGG}/DistUtilsExtra/${py}
-.endfor
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

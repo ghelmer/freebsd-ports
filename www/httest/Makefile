@@ -2,17 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	httest
-PORTVERSION=	2.4.8
+PORTVERSION=	2.4.9
 CATEGORIES=	www
 MASTER_SITES=	SF/htt/htt${PORTVERSION:R}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	HTTP Test Tool
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
-LIB_DEPENDS=	apr-1:${PORTSDIR}/devel/apr1 \
-		pcre:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libapr-1.so:${PORTSDIR}/devel/apr1 \
+		libpcre.so:${PORTSDIR}/devel/pcre
 
 OPTIONS_DEFINE=	EXAMPLES
 
@@ -24,24 +24,18 @@ CONFIGURE_ARGS=	--enable-lua-module \
 		--with-ssl="${OPENSSLLIB}"
 CPPFLAGS+=	-I${LUA_INCDIR}
 GNU_CONFIGURE=	yes
-USES=		iconv
-USE_LUA=	yes
+USES=		iconv lua
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 
-MAN1=		htntlm.1 htproxy.1 htremote.1 httest.1
 PORTEXAMPLES=	*
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|`$$APR_CONFIG --cflags`||' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|`$$APR_CONFIG --cflags`||; s|-llua|-llua-${LUA_VER}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|/bin/bash|/bin/sh|' ${WRKSRC}/generate_modules_c.sh
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/*.htt ${STAGEDIR}${EXAMPLESDIR}
-.endif
 
 .include <bsd.port.mk>

@@ -12,8 +12,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Navigate a mech through a 3D world and fire at enemies
 
-USES=		gmake
-USE_OPENAL=	al alut
+USES=		gmake openal:al,alut
 USE_GL=		gl glu
 USE_SDL=	sdl
 
@@ -39,7 +38,7 @@ post-patch:
 		${REINPLACE_CMD} -e 's|data/|${DATADIR}/|'
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/dist/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	cd ${WRKSRC}/data && ${COPYTREE_SHARE} '*' ${STAGEDIR}${DATADIR}/
+	${INSTALL_PROGRAM} ${WRKSRC}/dist/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
+	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/
 
 .include <bsd.port.mk>

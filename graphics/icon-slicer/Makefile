@@ -7,7 +7,7 @@ PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.freedesktop.org/software/icon-slicer/releases/
 
-MAINTAINER=	nemysis@gmx.ch
+MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Utility for generating icon and cursor themes
 
 LICENSE=	GPLv2
@@ -24,16 +24,13 @@ PLIST_FILES=	bin/icon-slicer
 
 PORTDOCS=	AUTHORS ChangeLog README TODO
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS/ s|examples||' ${WRKSRC}/Makefile.in
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

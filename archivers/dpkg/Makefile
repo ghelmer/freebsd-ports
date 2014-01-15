@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dpkg
-PORTVERSION=	1.17.1
+PORTVERSION=	1.17.5
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	${MASTER_SITE_DEBIAN_POOL}
 DISTNAME=	dpkg_${PORTVERSION}
@@ -39,8 +39,6 @@ OPTIONS_SUB=	yes
 NLS_CONFIGURE_OFF=	--disable-nls
 NLS_USES=		gettext
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@${REINPLACE_CMD} 's|-t$$host|-t${ARCH}-freebsd|g' \
 		${WRKSRC}/configure
@@ -48,11 +46,9 @@ post-patch:
 		${WRKSRC}/lib/dpkg/dpkg.h
 	@${REINPLACE_CMD} -E 's/(md5|sha1|sha256)sum/g&/g' \
 		${WRKSRC}/scripts/Dpkg/Checksums.pm
-
-post-install:
-.for f in available diversions statoverride status
-	${TOUCH} ${STAGEDIR}${DPKGDIR}/${f}
-.endfor
-	${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
+	@${REINPLACE_CMD} -e '/echo.*RANLIB/,+1d' ${WRKSRC}/lib/*/Makefile.in
+	@${REINPLACE_CMD} -e 's/cp -p $$(DEST/mv $$(DEST/g; s/rm $$(/rm -f $$(/g' \
+		${WRKSRC}/scripts/mk/Makefile.in \
+		${WRKSRC}/scripts/Makefile.in
 
 .include <bsd.port.mk>

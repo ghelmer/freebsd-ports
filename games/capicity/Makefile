@@ -21,9 +21,9 @@ LIB_DEPENDS=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
 
 WRKSRC=		${WRKDIR}/CapiCity_${PORTVERSION}
 
-USES=		iconv
+USES=		iconv qmake
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xrender
-USE_QT4=	moc_build qmake_build rcc_build uic_build iconengines imageformats \
+USE_QT4=	moc_build rcc_build uic_build iconengines_run imageformats_run \
 		corelib gui network script xml
 
 PORTDOCS=	README changelog
@@ -31,8 +31,8 @@ PORTDOCS=	README changelog
 INSTALLS_ICONS=	yes
 ICON_SIZES=	16x16 22x22 24x24 32x32 48x48 64x64
 
-DESKTOP_ENTRIES="Capi City" "${COMMENT}" "${PORTNAME}" \
-		"${PORTNAME}" "Game;BoardGame;" false
+DESKTOP_ENTRIES="Capi City" "" "${PORTNAME}" \
+		"${PORTNAME}" "Game;BoardGame;" ""
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
@@ -40,37 +40,29 @@ OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
-do-configure:
-	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
-	${QMAKE} ${QMAKEFLAGS} PREFIX=${PREFIX}
-
-post-configure:
-	@${REINPLACE_CMD} -e 's|-O2 -pthread||g' ${WRKSRC}/Makefile
-
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/CapiCity ${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKSRC}/CapiCity \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .for d in games images
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ${d} ${DATADIR})
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ${d} ${STAGEDIR}${DATADIR})
 .endfor
 
 .if ${PORT_OPTIONS:MNLS}
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ts ${DATADIR})
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ts ${STAGEDIR}${DATADIR})
 .endif
 
 .for s in ${ICON_SIZES}
-	@${MKDIR} ${PREFIX}/share/icons/hicolor/${s}/apps
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps
 	${INSTALL_DATA} ${WRKSRC}/icons/${s}.png \
-		${PREFIX}/share/icons/hicolor/${s}/apps/${PORTNAME}.png
+		${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/${PORTNAME}.png
 .endfor
-	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png ${PREFIX}/share/pixmaps/
+	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/
 
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -9,13 +9,9 @@ MASTER_SITES=	SF
 MAINTAINER=	trasz@FreeBSD.org
 COMMENT=	Standard MIDI File format library
 
-LIB_DEPENDS+=	readline.6:${PORTSDIR}/devel/readline
-
-USES=	pathfix pkgconfig
-NO_STAGE=	yes
+USES=	pathfix pkgconfig readline:port
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-MAN1=		smfsh.1
 
 .include <bsd.port.mk>

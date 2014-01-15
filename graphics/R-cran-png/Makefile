@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	png
-DISTVERSION=	0.1-6
-PORTREVISION=	2
+DISTVERSION=	0.1-7
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -15,8 +14,6 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

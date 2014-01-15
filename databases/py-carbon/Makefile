@@ -10,14 +10,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	bsdports@wayfair.com
 COMMENT=	Backend storage application for graphite
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}txamqp>=0.3:${PORTSDIR}/net/py-txamqp \
 		${PYTHON_PKGNAMEPREFIX}whisper>=0.9.10:${PORTSDIR}/databases/py-whisper
 
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_PYDISTUTILS=	yes
-USE_TWISTED_RUN=	yes
+USES=		twisted:run
 FETCH_ARGS=	-o ${DISTNAME}${EXTRACT_SUFX}
 USE_RC_SUBR=	carbon
 

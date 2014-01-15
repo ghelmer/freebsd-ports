@@ -10,7 +10,7 @@ DISTNAME=	basho-${PORTNAME}-${GITVERSION}
 MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	A build-tool for Erlang that follows OTP principles
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/escript:${PORTSDIR}/lang/erlang
 RUN_DEPENDS:=	${BUILD_DEPENDS}
@@ -18,7 +18,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 PLIST_FILES=	bin/${PORTNAME}
 
 GITVERSION=	1c98f6c
-FETCH_ARGS=	-Fpr
 
 NO_STAGE=	yes
 do-install:

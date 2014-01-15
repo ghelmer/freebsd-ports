@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	spideroak
-PORTVERSION=	5.0.3
+PORTVERSION=	5.1.1
 #PORTREVISION=	0
 CATEGORIES=	net
 MASTER_SITES=	https://spideroak.com/getbuild?platform=slackware&arch=i386&dummy=/
@@ -14,8 +14,6 @@ COMMENT=	SpiderOak Client (Linux version)
 LICENSE_NAME=	ToU
 LICENSE_TEXT=	http://spideroak.com/terms_of_use
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-
-FETCH_ARGS=	-Fpr
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
@@ -35,7 +33,7 @@ REINPLACE_ARGS=	-e 's,%%PREFIX%%,${PREFIX},1' \
 
 USE_LINUX=	yes
 USE_LINUX_APPS=	xorglibs
-USE_PYTHON=	2.7
+USE_PYTHON=	2
 USES=	desktop-file-utils
 
 .include <bsd.port.options.mk>
@@ -43,11 +41,6 @@ USES=	desktop-file-utils
 post-patch:
 	${REINPLACE_CMD} ${WRKDIR}/usr/share/applications/SpiderOak.desktop \
 		${WRKDIR}/usr/bin/SpiderOak
-
-# waiting to find a proper value for ${MTREE_LINUX_ARGS}...
-stage-dir:
-	@${MKDIR} ${STAGEDIR}${PREFIX}
-	@${MTREE_CMD} ${MTREE_ARGS} ${STAGEDIR}${PREFIX} > /dev/null
 
 do-install:
 	@(cd ${WRKDIR}/etc && \

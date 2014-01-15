@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Tk-FontDialog
-PORTVERSION=	0.15
-PORTREVISION=	3
+PORTVERSION=	0.17
 CATEGORIES=	x11-toolkits perl5 tk
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,7 +15,5 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
-MAN3=		${PORTNAME:S/-/::/g}.3
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

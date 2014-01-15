@@ -34,7 +34,6 @@
     SUBDIR += ii
     SUBDIR += infobot
     SUBDIR += inspircd
-    SUBDIR += inspircd12
     SUBDIR += insub
     SUBDIR += irc
     SUBDIR += irc2dc
@@ -136,7 +135,6 @@
     SUBDIR += xaric
     SUBDIR += xchat
     SUBDIR += xchat-fish
-    SUBDIR += xchat-gnome
     SUBDIR += xchat-mircryption
     SUBDIR += xchat-ruby
     SUBDIR += znc

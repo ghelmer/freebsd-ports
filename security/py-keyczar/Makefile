@@ -11,13 +11,13 @@ DISTNAME=	python-${PORTNAME}-${PORTVERSION}
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	Toolkit for safe and simple cryptography
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=2.0:${PORTSDIR}/security/py-pycrypto
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 PYDISTUTILS_PKGNAME=	python-${PORTNAME}
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

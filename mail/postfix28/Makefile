@@ -12,6 +12,7 @@ MASTER_SITES=	ftp://ftp.porcupine.org/mirrors/postfix-release/official/ \
 		${MASTER_SITE_RINGSERVER:S,%SUBDIR%,net/mail/postfix/official/&,}
 MASTER_SITE_SUBDIR=	. old related/postfix
 DIST_SUBDIR=	${PORTNAME}
+PKGNAMESUFFIX=	28
 
 MAINTAINER=	sahil@FreeBSD.org
 COMMENT=	Secure alternative to widely-used Sendmail
@@ -22,12 +23,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 VDAVERSION=	2.8.14
-CONFLICTS=	courier-0.* postfix-1.* postfix-2.[0-79].* postfix-base-2.[0-79].* \
+CONFLICTS=	courier-0.* postfix-1.* postfix2[79]-* \
 		postfix-2.10.* postfix-base-2.10.* postfix-current-2.* \
 		postfix-current-base-2.* sendmail-8.* sendmail+*-8.* \
 		smail-3.* zmailer-2.* opensmtpd-[0-9]*
-
-NO_LATEST_LINK=	yes
 
 USERS=		postfix
 GROUPS=		mail maildrop postfix
@@ -221,7 +220,7 @@ POSTFIX_CCARGS+=	-I${LOCALBASE}/include/sasl -DUSE_LDAP_SASL
 .endif
 
 .if ${PORT_OPTIONS:MCDB}
-BUILD_DEPENDS+=		${LOCALBASE}/lib/libcdb.a:${PORTSDIR}/databases/tinycdb
+LIB_DEPENDS+=		libcdb.so:${PORTSDIR}/databases/tinycdb
 POSTFIX_CCARGS+=	-DHAS_CDB -I${LOCALBASE}/include
 POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -lcdb
 .endif
@@ -250,7 +249,7 @@ PLIST_SUB+=	TEST="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MINST_BASE}
-PKGNAMESUFFIX=	-base
+PKGNAMESUFFIX=	28-base
 PREFIX=		/usr
 ETCDIR=		/etc/postfix
 USE_RCORDER=	postfix

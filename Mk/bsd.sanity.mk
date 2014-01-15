@@ -7,10 +7,10 @@
 DEV_WARNING+=	"USE_GMAKE is deprecated, consider using USES=gmake"
 .endif
 
-#.if defined(WITHOUT_NLS)
-#WARNING+=	"WITHOUT_NLS is deprecated use NLS option instead"
-#.endif
-#
+.if defined(WITHOUT_NLS)
+WARNING+=	"WITHOUT_NLS is deprecated use OPTIONS_UNSET=NLS instead"
+.endif
+
 #.if defined(WITHOUT_X11)
 #WARNING+=	"WITHOUT_X11 is deprecated use X11 option instead"
 #.endif
@@ -49,6 +49,14 @@ DEV_ERROR+=	"USE_KDELIBS_VER is unsupported"
 
 .if defined(USE_QT_VER)
 DEV_ERROR+=	"USE_QT_VER is unsupported"
+.endif
+
+.if !empty(LIB_DEPENDS:M*/../*)
+DEV_ERROR+=	"LIB_DEPENDS contains unsupported relative path to dependency"
+.endif
+
+.if !empty(RUN_DEPENDS:M*/../*)
+DEV_ERROR+=	"RUN_DEPENDS contains unsupported relative path to dependency"
 .endif
 
 .if defined(USE_DISPLAY)
@@ -126,4 +134,30 @@ DEV_WARNING+=	"PYDISTUTILS_AUTOPLIST features Python 3.x support, PYTHON_PY3K_PL
 
 .if defined(_PREMKINCLUDED)
 DEV_ERROR+=	"you cannot include bsd.port[.pre].mk twice"
+.endif
+
+.if defined(USE_DOS2UNIX)
+DEV_WARNING+=	"USE_DOS2UNIX is deprecated, please use USES=dos2unix"
+.endif
+
+.if defined(LICENSE)
+.if ${LICENSE:MBSD}
+DEV_WARNING+=	"LICENSE must not contain BSD, instead use BSD[234]CLAUSE"
+.endif
+.endif
+
+.if defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} == "easy_install"
+DEV_WARNING+=	"USE_PYDISTUTILS=easy_install is deprecated, please use USE_PYDISTUTILS=yes"
+.endif
+
+.if defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} != "easy_install" && defined(PYDISTUTILS_AUTOPLIST) && defined(PYDISTUTILS_PKGNAME)
+DEV_WARNING+=	"PYDISTUTILS_PKGNAME has no effect for USE_PYDISTUTILS=yes and PYDISTUTILS_AUTOPLIST=yes"
+.endif
+
+.if defined(USE_OPENAL)
+DEV_ERROR+=	"USE_OPENAL is unsupported, please use USES=openal"
+.endif
+
+.if defined(USE_FAM)
+DEV_ERROR+=	"USE_FAM is unsupported, please use USES=fam"
 .endif

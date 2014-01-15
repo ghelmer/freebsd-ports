@@ -10,19 +10,125 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20140111:
+AUTHOR: mva@FreeBSD.org
+
+  New USES=uniquefiles to make files or directories unique
+  by adding a prefix or suffix to them.
+
+  Files listed in UNIQUE_PREFIX_FILES will receive the prefix
+  set via UNIQUE_PREFIX. The same applies to UNIQUE_SUFFIX_FILES,
+  but with the chosen UNIQUE_SUFFIX. UNIQUE_PREFIX and
+  UNIQUE_SUFFIX are set to PKGNAMEPREFIX and PKGNAMESUFFIX by
+  default.
+  The uniquefiles USES enables ports to name files in special
+  ways, e.g. by outlining that the port does not support X11
+  (-nox11). A binary named bin/foo thus can be easily renamed
+  to bin/foo-featureA via
+
+  USES=			uniquefiles
+  UNIQUE_SUFFIX=	-featureA
+  UNIQUE_SUFFIX_FILES=	bin/foo
+
+  The uniquefiles USES automatically adjusts the plist at
+  installation time. There is no need to consider the prefix
+  or suffix in the pkg-plist file itself. If the original name
+  of the renamed file is bin/foo, this exact name should be put
+  into pkg-plist.
+
+  The dirs argument to USES=uniquefiles will cause certain
+  standard directories, such as DOCSDIR or EXAMPLESDIR to be
+  prepended with the UNIQUE_PREFIX. The change to the directories
+  will hapen prior to configuring or building the port, so that
+  the port Makefile as well as the port's build logic are aware
+  of the changed name.
+
+  Since the uniquefiles USES effectively manipulates the port's
+  installation and file layout, it will only be available for
+  stagedir-aware ports. Ports with NO_STAGE=yes will be unable
+  to use the uniquefiles USES.
+
+20131218:
+AUTHOR: mva@FreeBSD.org
+
+  lang/python (and as such the 'python' binary and accomplices)
+  has been removed as default dependency for the USE_PYTHON,
+  USE_PYTHON_BUILD and USE_PYTHON_RUN knobs.
+
+  Ports need to use a designated (default) python interpreter
+  to build and install and in most cases for execution in the user
+  environment. Ports that install python scripts, which are not
+  limited to a certain python version (or version range), can
+  include lang/python as build and/or run dependency.
+
+  USE_PYTHON=yes and similar knobs will only pull in the
+  default python version (e.g. lang/python27), but none
+  of the meta ports or lang/python itself.
+
+  Please use lang/python as build or run-time dependency only,
+  if there is no other way to get a port working properly, since
+  the usage of lang/python complicates package builds for different
+  python versions.
+
+20131213:
+AUTHOR: tijl@FreeBSD.org
+
+  New USES=fortran to replace USE_FORTRAN.
+
+  USE_FORTRAN=yes can be replaced with USES=fortran or USES=fortran:gcc.
+  USE_FORTRAN=ifort can be replaced with USES=fortran:ifort.
+  USE_FORTRAN=f77 is deprecated and the version of gcc it depends
+  on (lang/gcc34) is scheduled to be removed.
+
+  Note that USE_FORTRAN=yes also makes GCC the C/C++ compiler while
+  USES=fortran only sets the Fortran compiler and can be used together
+  with Clang as C/C++ compiler.
+
+20131208:
+AUTHOR: mva@FreeBSD.org
+
+  New USES=twisted, to replace the old USE_TWISTED knob.
+
+  twisted can be configured with the arguments run or build to replace
+  the previous USE_TWISTED_RUN and USE_TWISTED_BUILD knobs. The twisted
+  components can be added as comma-separated arguments. If you previously
+  wrote
+    USE_TWISTED=	yes
+    USE_TWISTED=	conch names
+    USE_TWISTED_RUN=	yes
+  you now would write
+    USES=	twisted
+    USES=	twisted:conch,names
+    USES=	twisted:run
+  
+20131119:
+AUTHOR: kwm@FreeBSD.org
+
+  The USE_GNOME component ltverhack no longer has a hard dependancy on 
+  libtool.
+  
+  If USE_AUTOTOOLS=libtool isn't defined it will try to patch ltmain.sh
+  and or libtool in ${WRKSRC}. If those files are located somewhere else
+  in ${WRKSRC} then it is possible to overwrite ltverhack_PATCH_FILES
+  with there new locations. configure script --distable-static will work also
+  after using the "new" ltverhack.
+
+  Please keep in mind that USE_AUTOTOOLS implies GNU_CONFIGURE so you might
+  need to add that back for the port to work.
+
 20131031:
 AUTHOR: rene@FreeBSD.org
 
-Add a new USES for kernel module ports.
+  Add a new USES for kernel module ports.
 
-USES=kmod takes no arguments and:
-- adds kld to CATEGORIES
-- sets SSP_UNSAFE
-- sets IGNORE if the kernel sources are not found
-- defines KMODDIR to /boot/modules by default, add it to
-  PLIST_SUB and MAKE_ENV, and create it upon installation
-- handles cross-referencing kernel modules upon installation and
-  deinstallation
+  USES=kmod takes no arguments and:
+  - adds kld to CATEGORIES
+  - sets SSP_UNSAFE
+  - sets IGNORE if the kernel sources are not found
+  - defines KMODDIR to /boot/modules by default, add it to
+    PLIST_SUB and MAKE_ENV, and create it upon installation
+  - handles cross-referencing kernel modules upon installation and
+    deinstallation
 
 20131021:
 AUTHOR: amdmi3@FreeBSD.org

@@ -1,7 +1,7 @@
 # Created by: David O'Brien <obrien@cs.ucdavis.edu>
 # $FreeBSD$
 
-PORTNAME?=	vim
+PORTNAME=	vim
 #		! _NEVER_ reduce or lower PATCHLEVEL, even if the PATCHLEVEL
 #		! value # is added to BADPATCHES.  Doing otherwise will cause
 #		! PORTEPOCH to be needed, which we do NOT want.
@@ -10,65 +10,59 @@ PORTNAME?=	vim
 #		! Doing so is dis-genuine.  It implies we're at a level we are
 #		! not.  The "PATCHLEVEL" patch needs to apply before bumping
 #		! PATCHLEVEL to that level.
-PATCHLEVEL=	1314
-PORTVERSION=	7.3.${PATCHLEVEL}
-RELEASE=	vim-${PORTVERSION:C/\.[0-9a-z]*$//}
-PORTREVISION?=	0
+PATCHLEVEL=	110
+PORTVERSION=	7.4.${PATCHLEVEL}
+PORTREVISION?=	3
 CATEGORIES?=	editors
-MASTER_SITES=	${MASTER_SITE_VIM}
-DISTFILES=	${RELEASE}${EXTRACT_SUFX}
+MASTER_SITES=	VIM
+DISTNAME=	${PORTNAME}-${PORTVERSION:R}
+DIST_SUBDIR=	${PORTNAME}
 
-PATCH_SITES=	${MASTER_SITES:S|unix|patches/${PORTVERSION:C/\.[0-9a-z]*$//}|}\
+PATCH_SITES=	${MASTER_SITES:S|unix|patches/${PORTVERSION:R}|}\
 		ftp://ftp.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/obrien/:local
 PATCHFILES!=	/usr/bin/jot -s " " -w ${PORTVERSION:C/\.[0-9]*$//}.%03d  \
 			${PATCHLEVEL} 1 ${PATCHLEVEL}
 #	bits to remove
-BADPATCHES=	527 780 796 873 890 1104 1111
+BADPATCHES=	# empty
 .for p in ${BADPATCHES}
-PATCHFILES:=	${PATCHFILES:N7.3.${p}}
+PATCHFILES:=	${PATCHFILES:N${PORTVERSION:R}.${p}}
 .endfor
 
-MAINTAINER?=	obrien@FreeBSD.org
+MAINTAINER?=	sunpoet@FreeBSD.org
 COMMENT?=	Vi "workalike", with many additional features
 
 SLAVEDIRS=	editors/vim-lite
 NO_STAGE=	yes
 
 .if !defined(LITE)
-.if defined(WITH_OPTIONS) || defined(WITH_VIM_OPTIONS)
 .include "${.CURDIR}/../vim/options"
 OPTIONS_DEFAULT+=	CSCOPE EXUBERANT_CTAGS PERL PYTHON RUBY \
 			TCL LUA X11 GTK2
-.else
-VIM_PORT_SCRIPT_LANGS?=	LUA PERL PYTHON RUBY TCL
-VIM_PORT_OPTIONS=	CSCOPE DOCS EXAMPLES EXUBERANT_CTAGS \
-			${VIM_PORT_SCRIPT_LANGS}
-PORT_OPTIONS?=	${VIM_PORT_OPTIONS}
-.endif
 .endif
 
 .include <bsd.port.options.mk>
 
 CONFLICTS=	vim6* vim*-gnome
 .if defined(LITE)
-CONFLICTS+=	vim*
+CONFLICTS_INSTALL+=	vim*
 .else
-CONFLICTS+=	vim*-lite
+CONFLICTS_INSTALL+=	vim*-lite
 .endif
 
+USES=		pkgconfig
 MAKE_JOBS_UNSAFE=	yes
 USE_BZIP2=	yes
-DIST_SUBDIR=	vim
-WRKSRC=		${WRKDIR}/vim${PORTVERSION:C/\.[0-9]*$//:S/.//g}/src
-PATCH_DIST_ARGS= -d ${WRKSRC:S/src$//} --batch --forward --quiet -E ${PATCH_DIST_STRIP}
+WRKSRC=		${WRKDIR}/vim${PORTVERSION:R:S/.//g}/src
+PATCH_DIST_ARGS=-d ${WRKSRC:S/src$//} --batch --forward --quiet -E ${PATCH_DIST_STRIP}
 # consider
 #PATCH_DIST_ARGS=	-t
 REINPLACE_ARGS=		-i ""
 MAKE_ARGS+=	CONF_ARGS="--prefix=${PREFIX} --with-tlib=termlib ${CSCOPE_ARG}"
 ALL_TARGET=	#
-_DATADIR=	${RELEASE:S/-//g:S/.//g}
+_DATADIR=	${PORTNAME}${PORTVERSION:R:S/.//g}
 DATADIR=	${PREFIX}/share/vim/${_DATADIR}
 PLIST_SUB=	VIM_VER=${_DATADIR}
+MANLANG=	""
 MAN1=		evim.1 vim.1 vimdiff.1 vimtutor.1 xxd.1
 MLINKS=		vim.1 rvim.1	vim.1 rview.1
 .if !defined(LITE)
@@ -77,8 +71,8 @@ MLINKS+=	vim.1 gvim.1	vim.1 gview.1	vimdiff.1 gvimdiff.1 \
 .endif
 
 .if ${PORT_OPTIONS:MNLS}
-MANLANG=	"" ru.KOI8-R ru.UTF-8 pl.ISO8859-2 pl.UTF-8 pl fr.ISO8859-1 \
-		fr.UTF-8 fr it.ISO8859-1 it.UTF-8 it
+MANLANG+=	fr.ISO8859-1 fr.UTF-8 it it.ISO8859-1 it.UTF-8 ja pl.ISO8859-2 \
+		pl.UTF-8 ru.KOI8-R ru.UTF-8
 USES+=		gettext
 PLIST_SUB+=	NLS=""
 .else
@@ -102,13 +96,13 @@ MAKE_ARGS+=	CONF_OPT_TCL="--enable-tclinterp --with-tclsh="${TCLSH:S/${LOCALBASE
 .endif
 
 .if ${PORT_OPTIONS:MLUA}
-USE_LUA=	yes
+USES+=		lua
 MAKE_ARGS+=	CONF_OPT_LUA="--enable-luainterp=dynamic"
 MAKE_ARGS+=	CONF_OPT_LUA_PREFIX="--with-lua-prefix=${LOCALBASE}"
 .endif
 
 .if ${PORT_OPTIONS:MPERL}
-USES=	perl5
+USES+=	perl5
 MAKE_ARGS+=	CONF_OPT_PERL="--enable-perlinterp"
 .endif
 
@@ -147,32 +141,30 @@ USE_XORG+=	xaw
 . if ${PORT_OPTIONS:MGTK2}
 USE_GNOME=	gtk20
 CONF_OPT_GUI="--enable-gui=gtk2 --with-gtk-prefix=${LOCALBASE}"
-MAKE_ARGS+=	X_LIBS="$(X_LIBS) -lXt"
+MAKE_ARGS+=	X_LIBS="$(X_LIBS) -lX11 -lXt"
 USE_XORG+=	xt
 . endif
 
 . if ${PORT_OPTIONS:MGNOME}
 USE_GNOME=	libgnomeui
 PKGNAMESUFFIX=	-gnome2
-CONF_OPT_GUI="--enable-gui=gnome2"
-MAKE_ARGS+=	X_LIBS="$(X_LIBS) -lXt"
+CONF_OPT_GUI=	"--enable-gui=gnome2"
+MAKE_ARGS+=	X_LIBS="$(X_LIBS) -lX11 -lXt"
 USE_XORG+=	xt glproto
 . endif
 
 . if ${PORT_OPTIONS:MMOTIF}
 USES+=		motif
-CONF_OPT_GUI="--enable-gui=motif --with-motif-lib=\"${MOTIFLIB}\""
+CONF_OPT_GUI=	"--enable-gui=motif --with-motif-lib=\"${MOTIFLIB}\""
 MAKE_ARGS+=	MOTIFHOME=${LOCALBASE}
 . endif
 
 .endif
 MAKE_ARGS+=	CONF_OPT_GUI=${CONF_OPT_GUI} ${I18N}
 
-
 .if exists(${LOCALBASE}/lib/libiconv.so)
 USES+=	iconv
 .endif
-
 
 post-patch:
 	@(${FIND} ${WRKSRC}/../runtime/ -name menu\*.vim -print0 | ${XARGS} -0 \
@@ -188,7 +180,7 @@ pre-configure:
 		s|\$$gtk_config_prefix/bin/gtk-config|\$${GTK_CONFIG}|g; \
 		s|\$$gtk_config_exec_prefix/bin/gtk-config|\$${GTK_CONFIG}|g; \
 		s|/usr/local|${LOCALBASE}|g; \
-		s|set dummy lua;|set dummy lua-${LUA_VER};|g' \
+		s|set dummy lua;|set dummy ${LUA_CMD};|g' \
 		${WRKSRC}/auto/configure
 .if ${PORT_OPTIONS:MXTERM_SAVE}
 	@${REINPLACE_CMD} -e ' \
@@ -234,10 +226,7 @@ post-install:
 	cd ${WRKDIR} ; ex < ex.script
 
 show-options:
-	@${MAKE} -DWITH_OPTIONS showconfig
-	@${ECHO_CMD} ""
-	@${ECHO_CMD} "Put \"WITH_OPTIONS=yes\" -or- \"WITH_VIM_OPTIONS=yes\""
-	@${ECHO_CMD} "in your /etc/make.conf or /etc/ports.conf file to enable OPTIONS processing.
+	@${MAKE} showconfig
 
 .if defined(ONT_CHECKSUM)
 checksum:

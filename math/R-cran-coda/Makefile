@@ -10,8 +10,6 @@ DISTNAME=	${PORTNAME}_${DISTVERSION}
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Output analysis and diagnostics for MCMC
 
-USE_R_MOD=		yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

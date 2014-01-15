@@ -11,8 +11,8 @@ DIST_SUBDIR=	fcitx
 MAINTAINER=	lichray@gmail.com
 COMMENT=	An alternative light weight UI for Fcitx
 
-LIB_DEPENDS=	fcitx-config.4:${PORTSDIR}/chinese/fcitx \
-		fontconfig.1:${PORTSDIR}/x11-fonts/fontconfig
+LIB_DEPENDS=	libfcitx-config.so:${PORTSDIR}/chinese/fcitx \
+		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 
 USE_BZIP2=	yes
 USE_XORG=	x11 xft xpm
@@ -20,9 +20,5 @@ USES=		cmake gettext pkgconfig
 USE_GNOME=	intltool
 
 PROJECTHOST=	fcitx
-
-NO_STAGE=	yes
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

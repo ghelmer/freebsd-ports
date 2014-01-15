@@ -11,6 +11,8 @@ PKGNAMEPREFIX=	g
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	GNU version of the traditional tape archiver
 
+LICENSE=	GPLv3
+
 INFO=		tar
 
 USES=		iconv:${STATIC_ARGS}
@@ -43,6 +45,6 @@ STATIC_ARGS=	lib
 .endif
 
 regression-test: build
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} check
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
 .include <bsd.port.mk>

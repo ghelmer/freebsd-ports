@@ -5,24 +5,22 @@ PORTNAME=	cakephp
 PORTVERSION=	2.1.3
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/tarball/${PORTVERSION}/
+PKGNAMESUFFIX=	21
 DISTNAME=	${PORTNAME}-${PORTNAME}-${PORTVERSION}-${GITVERSION}
 
 MAINTAINER=	theis@gmx.at
-COMMENT=	A framework for developing PHP web applications
+COMMENT=	Framework for developing PHP web applications
 
 LICENSE=	MIT
 
-LATEST_LINK=	cakephp21
-
 GITVERSION=	0-gc26df70
-FETCH_ARGS=	-pRr
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-4b81775
 
 PORTDOCS=	README
 
 SLAVE_PORT_MODULES=	REWRITE
 
-CONFLICTS=	cakephp-1.* cakephp-2.[23].*
+CONFLICTS=	cakephp-1?-* cakephp-2[2]-.* cakephp-2.3.*
 
 NO_BUILD=	yes
 USES=		gettext

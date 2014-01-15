@@ -16,7 +16,7 @@ RUN_DEPENDS=	${LOCALBASE}/${ISOCAT}:${PORTSDIR}/textproc/iso8879 \
 USE_ZIP=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-LATEST_LINK=	${PORTNAME}-450
+PKGNAMESUFFIX=	${PKGORIGIN:T:S/docbook-//}
 PLIST=		${WRKSRC}/pkg-plist
 
 SGMLCATBASE=	share/sgml
@@ -57,7 +57,6 @@ pre-install:
 		done;\
 	${ECHO_CMD} "@dirrm ${DOCSDIR:S,^${PREFIX}/,,}" ) >> ${PLIST}
 	${ECHO_CMD} "@dirrm ${DOCSDIR:S!^${PREFIX}/!!:S!${PORTVERSION}!!}" >> ${PLIST}
-	${ECHO_CMD} "@dirrmtry ${DOCSDIR:S!^${PREFIX}/!!:S!${PORTNAME}${PORTVERSION}!!}" >> ${PLIST}
 .endif
 	${ECHO_CMD} "@exec ${XMLCATMGR} ${REGIST_CAT_FLAGS_SGML}" >> ${PLIST}
 	${ECHO_CMD} "@unexec ${XMLCATMGR} ${UNREGIST_CAT_FLAGS_SGML}" >> ${PLIST}

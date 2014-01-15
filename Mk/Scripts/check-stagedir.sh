@@ -1,5 +1,6 @@
 #!/bin/sh
 # ports/Mk/Scripts/check-stagedir.sh - called from ports/Mk/bsd.stage.mk
+# $FreeBSD$
 
 set -e
 export LC_ALL=C
@@ -21,16 +22,17 @@ case "$1" in
 esac
 
 # validate environment
-envfault=0
+envfault=
 for i in STAGEDIR PREFIX LOCALBASE WRKDIR WRKSRC MTREE_FILE \
     TMPPLIST DATADIR DOCSDIR EXAMPLESDIR
 do
-	if eval test -z "\$$i" ; then
-		echo >&2 "Environment variable $i undefined. Aborting."
-		envfault=1
+    if ! ( eval ": \${${i}?}" ) 2>/dev/null ; then
+		envfault="${envfault}${envfault:+" "}${i}"
     fi
 done
-if [ $envfault -ne 0 ] ; then
+if [ -n "$envfault" ] ; then
+	echo "Environment variables $envfault undefined. Aborting." \
+	| fmt >&2
 	exit 1
 fi
 
@@ -85,9 +87,9 @@ fi
 
 	a=${PREFIX}
 	while :; do
+		echo ${a}
 		a=${a%/*}
 		[ -z "${a}" ] && break
-		echo ${a}
 	done
 } > ${WRKDIR}/.mtree
 
@@ -105,9 +107,9 @@ cat ${WRKDIR}/.plist-dirs-unsorted ${WRKDIR}/.mtree | sort -u >${WRKDIR}/.traced
 find ${STAGEDIR} -type d | sed -e "s,^${STAGEDIR},,;/^$/d" | sort >${WRKDIR}/.staged-dirs
 comm -13 ${WRKDIR}/.traced-dirs ${WRKDIR}/.staged-dirs \
 	| sort -r | sed \
+	-e 's,^,@dirrmtry ,' \
 	-e "s,\(.*\)${DOCSDIR},%%PORTDOCS%%\1%%DOCSDIR%%,g" \
 	-e "s,\(.*\)${EXAMPLESDIR},%%PORTEXAMPLES%%\1%%EXAMPLESDIR%%,g" \
 	-e "s,${DATADIR},%%DATADIR%%,g" \
 	-e "s,${PREFIX}/,,g" \
-	-e 's,^,@dirrmtry ,' \
 	-e 's,@dirrmtry \(/.*\),@unexec rmdir >/dev/null 2>\&1 \1 || :,' | grep -v "^@dirrmtry share/licenses" || [ $? = 1 ]

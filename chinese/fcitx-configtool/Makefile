@@ -13,7 +13,7 @@ COMMENT=	Fcitx IM framework configuration tool
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes \
 		${LOCALBASE}/libdata/pkgconfig/dbus-glib-1.pc:${PORTSDIR}/devel/dbus-glib
-LIB_DEPENDS=	fcitx-config:${PORTSDIR}/chinese/fcitx
+LIB_DEPENDS=	libfcitx-config.so:${PORTSDIR}/chinese/fcitx
 
 USE_XZ=		yes
 USE_GNOME=	intltool gnomehack
@@ -22,7 +22,6 @@ USES=		cmake gettext pkgconfig
 OPTIONS_DEFINE=	GTK2 GTK3
 OPTIONS_DEFAULT=GTK2
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTK2}

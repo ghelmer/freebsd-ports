@@ -12,36 +12,33 @@ COMMENT=	Complete front-end based on Qt4 for mplayer
 RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
 		${LOCALBASE}/share/smplayer/themes:${PORTSDIR}/multimedia/smplayer-themes
 
-USE_QT4=	gui network script xml qmake_build moc_build rcc_build uic_build \
+USE_QT4=	gui network script xml moc_build rcc_build uic_build \
 		uic3_build porting_build linguist_build
 
 ALL_TARGET=	src/smplayer
+CONFIGURE_WRKSRC=	${WRKSRC}/src
+MAKE_ARGS+=	PREFIX=${PREFIX} DESTDIR=${STAGEDIR}
 
+USES=		gmake qmake
 USE_BZIP2=	yes
-USE_GMAKE=	yes
 INSTALLS_ICONS=	yes
-
-MAN1=		smplayer.1
-MANCOMPRESSED=	yes
 
 PORTDOCS=	Changelog Copying.txt Install.txt Not_so_obvious_things.txt \
 		Readme.txt Release_notes.txt
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|qmake|${QMAKE}|g' \
-		-e 's|lrelease|${QT_PREFIX}/bin/lrelease-qt4|g' \
-		-e 's|PREFIX=/usr/local|PREFIX=${PREFIX}|g' \
+	@${REINPLACE_CMD} -e 's|&& $$(QMAKE) $$(QMAKE_OPTS)||' \
+		-e 's|lrelease|${LRELEASE}|g' \
 		-e 's,/share/man,/man,g' \
-		-e 's, make, ${GMAKE},g' \
+		-e 's, make, ${MAKE_CMD},g' \
 		${WRKSRC}/Makefile
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${DOCSDIR}/
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

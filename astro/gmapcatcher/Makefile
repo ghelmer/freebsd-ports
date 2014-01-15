@@ -17,8 +17,10 @@ NO_STAGE=	yes
 USE_GNOME=	pygtk2
 USE_PYTHON=	yes
 USE_PYDISTUTILS=yes
-PYDISTUTILS_NOEGGINFO=	yes
-PLIST_SUB=	PORTVERSION="${PORTVERSION}" PYTHON_VER="${PYTHON_VER}"
+PYDISTUTILS_AUTOPLIST=	yes
+PLIST_SUB=	PORTVERSION="${PORTVERSION}"
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/share/pixmaps,${PREFIX}/share/pixmaps,g' \
@@ -27,7 +29,7 @@ post-patch:
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/mapcatcher ${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/mapdownloader ${PREFIX}/bin
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 	${INSTALL_MAN} ${WRKSRC}/README ${DOCSDIR}
 	${INSTALL_MAN} ${WRKSRC}/changelog ${DOCSDIR}

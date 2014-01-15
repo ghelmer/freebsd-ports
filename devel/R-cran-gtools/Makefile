@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gtools
-PORTVERSION=	3.1.0
-PORTREVISION=	2
+PORTVERSION=	3.2.1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -12,8 +11,6 @@ COMMENT=	Various R programming tools
 
 LICENSE=	LGPL21
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

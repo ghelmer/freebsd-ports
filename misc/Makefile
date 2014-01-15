@@ -120,9 +120,7 @@
     SUBDIR += freebsd-doc-zh_tw
     SUBDIR += freecode-submit
     SUBDIR += freeguide
-    SUBDIR += freeswitch-pizzademo
     SUBDIR += freeswitch-pizzademo-devel
-    SUBDIR += freeswitch-scripts
     SUBDIR += freeswitch-scripts-devel
     SUBDIR += ftdi-eeprom
     SUBDIR += fxload
@@ -423,6 +421,7 @@
     SUBDIR += susv2
     SUBDIR += susv3
     SUBDIR += sword
+    SUBDIR += sword17
     SUBDIR += table.el
     SUBDIR += talkfilters
     SUBDIR += tcb

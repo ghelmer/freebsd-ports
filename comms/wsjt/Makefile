@@ -15,8 +15,8 @@ COMMENT=	Weak signal ham radio communication package
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinter \
 		${PYTHON_SITELIBDIR}/PIL.pth:${PORTSDIR}/graphics/py-imaging
-LIB_DEPENDS=	fftw3f:${PORTSDIR}/math/fftw3-float \
-		samplerate:${PORTSDIR}/audio/libsamplerate
+LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float \
+		libsamplerate.so:${PORTSDIR}/audio/libsamplerate
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/scipy:${PORTSDIR}/science/py-scipy \
 		${LOCALBASE}/lib/portaudio2/libportaudio.so:${PORTSDIR}/audio/portaudio2 \
 		${PYNUMPY}
@@ -31,7 +31,7 @@ CONFIGURE_ARGS=	--enable-gfortran --prefix=${LOCALBASE} \
 		--with-portaudio-lib-dir=${LOCALBASE}/lib/portaudio2
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 USE_AUTOTOOLS=	libtool
 PLIST_SUB=	PYVER=${PYTHON_VERSION:S/python//} \
 		VERSION=${VERSION}
@@ -62,7 +62,7 @@ do-fetch:
 .endif
 
 post-install:
-.if	!defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 .for d in ${WRKSRC}/WSJT_Quick_Reference.pdf  ${WRKSRC}/WSJT_Source_Code.txt \
 	${WRKSRC}/WSJT_User_600.pdf ${WRKSRC}/UpdateHistory.txt \

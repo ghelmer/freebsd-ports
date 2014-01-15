@@ -3,6 +3,7 @@
 
 PORTNAME=	wtf
 PORTVERSION=	20130928
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/bsdwtf
 
@@ -10,6 +11,7 @@ MAINTAINER=	lifanov@mail.lifanov.com
 COMMENT=	Translates common Internet acronyms
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/misc|${DATADIR}|g' ${WRKSRC}/wtf*

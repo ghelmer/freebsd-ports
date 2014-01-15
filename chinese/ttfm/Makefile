@@ -12,7 +12,7 @@ COMMENT=	A Big5/GB enhanced TrueType Font Manager
 
 RUN_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
 		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
-LIB_DEPENDS=	freetype.9:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 
 MAKE_ARGS=	FREETYPE_BASE=${LOCALBASE:Q} CC="${CC}"
 
@@ -20,6 +20,9 @@ PORTDOCS=	README USAGE
 MAN1=		ttfm.sh.1
 
 NO_STAGE=	yes
+
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},' \
 		-e 's,%%PREFIX%%,${PREFIX},' \
@@ -30,7 +33,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ttfinfo ${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${WRKSRC}/ttfm.sh ${PREFIX}/bin/
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 .for doc in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${DOCSDIR}/

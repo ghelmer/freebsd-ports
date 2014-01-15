@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Rcpp
-PORTVERSION=	0.10.5
-PORTREVISION=	2
+PORTVERSION=	0.10.6
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -13,8 +12,6 @@ COMMENT=	Seamless R and C++ Integration
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

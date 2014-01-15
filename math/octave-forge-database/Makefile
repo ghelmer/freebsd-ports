@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-database
-PORTVERSION=	2.2.0
-PORTREVISION=	1
+PORTVERSION=	2.3.0
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
+
+LICENSE=	GPLv3
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
@@ -19,7 +20,6 @@ GNU_CONFIGURE=	yes
 USE_PGSQL=	yes
 ALL_TARGET=
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 
 post-build:

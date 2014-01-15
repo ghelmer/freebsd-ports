@@ -11,7 +11,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	An indexing search engine for use on small websites
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/ax_check_gnu_make.m4:${PORTSDIR}/devel/autoconf-archive
 
@@ -20,9 +20,8 @@ USE_OPENSSL=	yes
 CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
 .endif
 
-USES=		perl5
+USES=		gmake perl5
 USE_BZIP2=	yes
-USE_GMAKE=	yes
 USE_AUTOTOOLS=	aclocal:env automake:env autoconf:env
 
 HAS_CONFIGURE=	yes
@@ -32,7 +31,6 @@ MAKEFILE=	GNUmakefile
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-NO_STAGE=	yes
 pre-configure:
 	cd ${WRKSRC}; ${SH} autogen.sh
 

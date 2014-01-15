@@ -15,7 +15,7 @@ USE_AUTOTOOLS=	libtool
 USE_KDE4=	# Used below if KWallet support is enabled
 USES+=		pkgconfig
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 CONFLICTS_INSTALL+=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}-1.[^6].[0-9]*
 
@@ -34,7 +34,7 @@ CONFIGURE_ARGS+=	--without-swig \
 CONFLICTS_BUILD+=	${PORTNAME}-1.[^6].[0-9]*
 LIB_DEPENDS+=		libsvn_client-1.so:${PORTSDIR}/devel/subversion16
 OPTIONSFILE=		${PORT_DBDIR}/${PORTNAME}16/options
-OPTIONS=		# Dirty hack: if OPTIONS is not defined, OPTIONSFILE will not be included
+OPTIONS_NAME=		devel_subversion16
 .endif
 
 # ===============================================================

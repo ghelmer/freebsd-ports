@@ -12,12 +12,11 @@ DIST_SUBDIR=	apache2
 MAINTAINER=	ports@christianserving.org
 COMMENT=	Allows setting environment variables based on request attributes
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 USE_APACHE=	22+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 SRC_FILE=	${WRKSRC}/apache2/${MODULENAME}.c
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

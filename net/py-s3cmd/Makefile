@@ -12,11 +12,9 @@ MAINTAINER=	clsung@FreeBSD.org
 COMMENT=	Unix-like tools to manipulate stored files from the command line
 
 USE_PYDISTUTILS=	yes
-USE_PYTHON=	2.5-2.7
+USE_PYTHON=	2
 
 MAN1=		s3cmd.1
-
-FETCH_ARGS=	-Fpr
 
 NO_STAGE=	yes
 post-patch:

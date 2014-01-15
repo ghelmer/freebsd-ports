@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openttd
-PORTVERSION=	1.3.2
+PORTVERSION=	1.3.3
 CATEGORIES=	games
 MASTER_SITES=	http://ftp.snt.utwente.nl/pub/games/openttd/binaries/releases/${PORTVERSION}/ \
 		http://us.binaries.openttd.org/binaries/releases/${PORTVERSION}/
@@ -21,7 +21,10 @@ USE_XZ=		yes
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	STRIP="${STRIP_CMD} ${STRIP}"
 CONFIGURE_ARGS=	--prefix-dir="${PREFIX}" --data-dir="${DATADIR_REL}"
-MAKE_ARGS=	VERBOSE=1		# We want to see what's going on
+
+.if defined(BATCH) || defined(PACKAGE_BUILDING)
+MAKE_ARGS=	VERBOSE=1
+.endif
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 CXXFLAGS=	# Set to empty as OpenTTD treats it as an addition to CFLAGS
@@ -85,13 +88,9 @@ post-patch:
 	@${REINPLACE_CMD} -e '/-O2 -fomit-frame-pointer/d ; \
 		s,/usr/local,${LOCALBASE},' ${WRKSRC}/config.lib
 # Use custom liblzma.pc for when we use liblzma from base
-.if ${OSVERSION} >= 900012 || (${OSVERSION} >= 800505 && ${OSVERSION} < 900000)
 	@${REINPLACE_CMD} -e \
 		's,pkg-config liblzma,pkg-config ${FILESDIR}/liblzma.pc,' \
 			${WRKSRC}/config.lib
-.else
-LIB_DEPENDS+=	liblzma.so:${PORTSDIR}/archivers/xz
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

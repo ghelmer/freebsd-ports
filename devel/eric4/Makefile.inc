@@ -6,7 +6,7 @@
 # french/eric4, german/eric4, russian/eric4
 
 PORTNAME=	eric4
-PORTVERSION=	4.5.16
+PORTVERSION=	4.5.18
 MASTER_SITES=	SF/eric-ide/${PORTNAME}/stable/${PORTVERSION}
 DISTNAME?=	${PORTNAME}-i18n-${I18N_LANG}-${PORTVERSION}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -21,7 +21,7 @@ RUN_DEPENDS?=	${PREFIX}/bin/eric4:${PORTSDIR}/devel/eric4
 I18N_LANG?=	ru
 INSTALL_CMD?=	install-i18n.py -p ${STAGEDIR}
 
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 NO_BUILD=	yes
 PLIST_FILES?=	%%DATADIR%%/i18n/${PORTNAME}_${I18N_LANG}.qm
 EXTRA_PATCHES?=	${.CURDIR}/../../devel/eric4/files/extra-patch-install-i18n.py

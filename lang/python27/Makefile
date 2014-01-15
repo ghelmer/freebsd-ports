@@ -2,33 +2,38 @@
 # $FreeBSD$
 
 PORTNAME=	python27
-PORTVERSION=	2.7.5
-PORTREVISION=	4
+PORTVERSION=	2.7.6
+PORTREVISION=	1
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON
 MASTER_SITE_SUBDIR=	${PYTHON_MASTER_SITE_SUBDIR}
 DISTFILES=	${PYTHON_DISTFILE}
+DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Interpreted object-oriented programming language
 
-DIST_SUBDIR=	python
-WRKSRC=		${PYTHON_WRKSRC}/portbld.static
-PATCH_WRKSRC=	${PYTHON_WRKSRC}
-GNU_CONFIGURE=	yes
+LICENSE=	PSFL
+
+GNU_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	../configure # must be relative
-CONFIGURE_ENV=	SVNVERSION="echo freebsd"
-MAKE_ENV=	VPATH="${PYTHON_WRKSRC}"
-USE_LDCONFIG=	yes
+CONFIGURE_ENV=		SVNVERSION="echo freebsd" ac_cv_opt_olimit_ok=no
+MAKE_ENV=		VPATH="${PYTHON_WRKSRC}"
+
 INSTALL_TARGET=	altinstall
 MAN1=		${PYTHON_VERSION}.1
 
+USE_LDCONFIG=	yes
 USE_PYTHON=	yes
 USE_XZ=		yes
-PYTHON_VERSION=	python2.7
+
+PYTHON_VERSION=		python2.7
 PYTHON_NO_DEPENDS=	yes
 
+WRKSRC=		${PYTHON_WRKSRC}/portbld.static
 SHARED_WRKSRC=	${PYTHON_WRKSRC}/portbld.shared
+PATCH_WRKSRC=	${PYTHON_WRKSRC}
+
 PLIST=		${WRKDIR}/PLIST
 PLIST_TEMPLATE?=${PKGDIR}/pkg-plist
 PLIST_SUB=	PYVER=${PYTHON_VERSION:S/python//} \
@@ -87,7 +92,7 @@ SUB_LIST=	SEM=${SEM_MSG}
 PLIST_SUB+=	THREADS=""
 .if ${PORT_OPTIONS:MPTH}
 CONFIGURE_ARGS+=	--with-pth --with-system-ffi
-EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-configure-pth
+CONFIGURE_ENV+=		ac_cv_pthread=no
 LIB_DEPENDS+=		pth:${PORTSDIR}/devel/pth \
 			ffi:${PORTSDIR}/devel/libffi
 _PTH_CPPFLAGS=		"-I${LOCALBASE}/include/pth"

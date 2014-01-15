@@ -327,6 +327,7 @@
     SUBDIR += p5-Data-Validate-Email
     SUBDIR += p5-Email-Abstract
     SUBDIR += p5-Email-Address
+    SUBDIR += p5-Email-Address-List
     SUBDIR += p5-Email-Address-Loose
     SUBDIR += p5-Email-AddressParser
     SUBDIR += p5-Email-Date
@@ -413,7 +414,6 @@
     SUBDIR += p5-Mail-RBL
     SUBDIR += p5-Mail-RFC822-Address
     SUBDIR += p5-Mail-SPF
-    SUBDIR += p5-Mail-SPF-Query
     SUBDIR += p5-Mail-SRS
     SUBDIR += p5-Mail-SendEasy
     SUBDIR += p5-Mail-Sender
@@ -449,6 +449,7 @@
     SUBDIR += p5-SES
     SUBDIR += p5-Sendmail-AccessDB
     SUBDIR += p5-Sendmail-Milter
+    SUBDIR += p5-Test-Email
     SUBDIR += p5-URI-imap
     SUBDIR += p5-URI-imaps
     SUBDIR += p5-WWW-GMail
@@ -673,7 +674,6 @@
     SUBDIR += squirrelmail-askuserinfo-plugin
     SUBDIR += squirrelmail-avelsieve-plugin
     SUBDIR += squirrelmail-calendar_file_backend-plugin
-    SUBDIR += squirrelmail-calendar_sql_backend-plugin
     SUBDIR += squirrelmail-change_ldappass-plugin
     SUBDIR += squirrelmail-change_sqlpass-plugin
     SUBDIR += squirrelmail-check_quota-plugin

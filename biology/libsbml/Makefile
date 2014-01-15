@@ -11,12 +11,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	API Library for Working with SBML File
 
-LIB_DEPENDS=	xml2.5:${PORTSDIR}/textproc/libxml2
+LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
 
 OPTIONS_DEFINE=	PYTHON RUBY
 
 USE_GMAKE=	yes
 USE_ZIP=	yes
+USE_GCC=	any
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

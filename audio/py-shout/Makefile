@@ -11,13 +11,13 @@ DISTNAME=	${PORTNAME}-python-${PORTVERSION}
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python bindings for libshout2
 
-LIB_DEPENDS=	shout.5:${PORTSDIR}/audio/libshout2
+LIB_DEPENDS=	libshout.so:${PORTSDIR}/audio/libshout2
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 
 USES=			pkgconfig
 NO_STAGE=	yes
-USE_PYTHON=		2.5+
+USE_PYTHON=		yes
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_PKGNAME=	${PORTNAME}-python
 

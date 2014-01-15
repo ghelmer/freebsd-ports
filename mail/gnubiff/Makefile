@@ -10,11 +10,12 @@ MASTER_SITES=	SF
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	A mail notification program for Gnome
 
+OPTIONS_DEFINE=	NLS
+
 LIB_DEPENDS=	popt.0:${PORTSDIR}/devel/popt
 
 USE_GNOME=	intlhack libglade2 esound
-USES=		gmake pkgconfig
-USE_FAM=	yes
+USES=		fam gmake pkgconfig
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -26,11 +27,13 @@ CXXFLAGS+=	"-Wno-long-long"
 MAN1=		gnubiff.1
 INFO=		gnubiff
 
+.include <bsd.port.options.mk>
+
 .ifdef(WITH_GNUBIFF_PASSWORD)
 CONFIGURE_ARGS+=	--with-password
 .endif
 
-.ifndef(WITHOUT_NLS)
+.if ${PORT_OPTIONS:MNLS}
 CONFIGURE_ARGS+=	--enable-nls
 PLIST_SUB+=		NLS=""
 USES+=		gettext

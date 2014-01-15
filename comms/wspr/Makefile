@@ -14,9 +14,9 @@ COMMENT=	Weak signal for HF ham radio communication package
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinter \
 		${PYTHON_SITELIBDIR}/PIL.pth:${PORTSDIR}/graphics/py-imaging
-LIB_DEPENDS=	hamlib:${PORTSDIR}/comms/hamlib \
-		fftw3f:${PORTSDIR}/math/fftw3-float \
-		samplerate:${PORTSDIR}/audio/libsamplerate
+LIB_DEPENDS=	libhamlib.so:${PORTSDIR}/comms/hamlib \
+		libfftw3f.so:${PORTSDIR}/math/fftw3-float \
+		libsamplerate.so:${PORTSDIR}/audio/libsamplerate
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/scipy:${PORTSDIR}/science/py-scipy \
 		${LOCALBASE}/lib/portaudio2/libportaudio.so:${PORTSDIR}/audio/portaudio2 \
 		${PYNUMPY}
@@ -31,18 +31,20 @@ CONFIGURE_ARGS=	--enable-gfortran --prefix=${LOCALBASE} \
 		--with-portaudio-lib-dir=${LOCALBASE}/lib/portaudio2
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 USE_AUTOTOOLS=	libtool
 PLIST_SUB=	PYVER=${PYTHON_VERSION:S/python//} \
 		VERSION=${VERSION}
 VERSION=	3.00
 
 NO_STAGE=	yes
+
+.include <bsd.port.pre.mk>
 post-configure:
 	cp ${FILESDIR}/wspr ${WRKSRC}
 
 post-install:
-.if	!defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 .for d in ${WRKSRC}/LICENSE.TXT ${WRKSRC}/WSPR_Announcement.TXT \
 	${WRKSRC}/WSPR0_Instructions.TXT ${WRKSRC}/WSPR_Quick_Start.TXT \
@@ -55,7 +57,6 @@ post-install:
 .endif
 	@${CAT} ${PKGMESSAGE}
 
-.include <bsd.port.pre.mk>
 .if defined(BOOTSTRAP)
 SVN_REV!=	svn info http://svn.code.sf.net/p/wsjt/code/branches/wspr | ${GREP} Revision | cut -d' ' -f2
 .else

@@ -14,6 +14,7 @@ COMMENT?=	Mozc Japanese Input Method, Server
 LICENSE=	BSD
 LICENSE_FILE=	${WRKSRC}/third_party/gyp/LICENSE
 
+BUILD_DEPENDS=	python:${PORTSDIR}/lang/python
 EXTRACT_DEPENDS=${PYTHON_CMD}:${PYTHON_PORTSDIR}
 LIB_DEPENDS=	protobuf:${PORTSDIR}/devel/protobuf \
 		zinnia:${PORTSDIR}/japanese/zinnia
@@ -82,6 +83,7 @@ BUILD_GYP_CMD=	cd ${WRKSRC}/third_party/gyp && \
 post-patch:
 	${MKDIR} ${WRKSRC}/mozc_build_tools/linux
 	${LN} -sf ${LOCALBASE}/bin/protoc ${WRKSRC}/mozc_build_tools/linux/
+	${REINPLACE_CMD} 's,-liconv,${ICONV_LIB},g' ${WRKSRC}/gui/qt_libraries.gypi
 .if ${BUILD_MOZC_LIST:Mfcitx_mozc} == "fcitx_mozc"
 	${REINPLACE_CMD} 's,/po/mo},%po}mo,g' \
 		${WRKSRC}/unix/fcitx/gen_fcitx_mozc_i18n.sh

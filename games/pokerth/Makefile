@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	pokerth
-PORTVERSION=	1.0.1
-PORTREVISION=	1
+PORTVERSION=	1.1
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.0
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
 DISTNAME=	PokerTH-${PORTVERSION}-src
 
 MAINTAINER=	madpilot@FreeBSD.org
-COMMENT=	A poker game written in C++/QT4
+COMMENT=	Poker game written in C++/Qt4
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,10 +24,10 @@ BUILD_DEPENDS=	${LOCALBASE}/include/libircclient.h:${PORTSDIR}/irc/libircclient
 
 USES=		iconv gmake qmake
 USE_BZIP2=	yes
-USE_QT4=	gui corelib network sql sql-sqlite3 qmake_build \
+USE_QT4=	gui corelib network sql sql-sqlite3 \
 		moc_build rcc_build uic_build
 USE_SDL=	mixer
-QMAKE_PRO=	pokerth.pro
+QMAKE_SOURCE_PATH=	pokerth.pro
 
 PORTDOCS=	server_setup_howto.txt
 

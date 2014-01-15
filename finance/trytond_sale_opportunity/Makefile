@@ -1,3 +1,4 @@
+# Created by: Matthias Petermann <matthias@petermann-it.de>
 # $FreeBSD$
 
 PORTNAME=	trytond_sale_opportunity
@@ -13,7 +14,7 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	trytond>=2.4.0:${PORTSDIR}/finance/trytond \
 		trytond_sale>=2.4.0:${PORTSDIR}/finance/trytond_sale
 
-CONFLICTS=	trytond_sale_opportunity-2.[68].*
+CONFLICTS=	trytond28_sale_opportunity-2.8.*
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=easy_install

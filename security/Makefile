@@ -51,7 +51,6 @@
     SUBDIR += bsdsfv
     SUBDIR += bsmtrace
     SUBDIR += bsp_upektfmess
-    SUBDIR += bubblegum
     SUBDIR += bugs
     SUBDIR += burpsuite
     SUBDIR += ca_root_nss
@@ -100,9 +99,9 @@
     SUBDIR += cryptstring
     SUBDIR += cvm
     SUBDIR += cyrus-sasl2
+    SUBDIR += cyrus-sasl2-gssapi
     SUBDIR += cyrus-sasl2-ldapdb
     SUBDIR += cyrus-sasl2-saslauthd
-    SUBDIR += dazuko
     SUBDIR += dcetest
     SUBDIR += ddos_scan
     SUBDIR += denyhosts
@@ -249,6 +248,7 @@
     SUBDIR += kpcli
     SUBDIR += krb5
     SUBDIR += krb5-appl
+    SUBDIR += krb5-maint
     SUBDIR += kripp
     SUBDIR += kwallet
     SUBDIR += l0pht-watch
@@ -268,6 +268,7 @@
     SUBDIR += libident
     SUBDIR += libkpass
     SUBDIR += libksba
+    SUBDIR += libmatekeyring
     SUBDIR += libmcrypt
     SUBDIR += libntlm
     SUBDIR += libotr
@@ -307,6 +308,7 @@
     SUBDIR += manipulate_data
     SUBDIR += masscan
     SUBDIR += massh
+    SUBDIR += mate-keyring
     SUBDIR += matrixssl
     SUBDIR += mcrypt
     SUBDIR += md4coll
@@ -371,7 +373,6 @@
     SUBDIR += openvpn-beta
     SUBDIR += openvpn-devel
     SUBDIR += ophcrack
-    SUBDIR += opieprint
     SUBDIR += orthrus
     SUBDIR += osiris
     SUBDIR += ossec-hids-client
@@ -474,6 +475,7 @@
     SUBDIR += p5-Crypt-PBKDF2
     SUBDIR += p5-Crypt-PGPSimple
     SUBDIR += p5-Crypt-PassGen
+    SUBDIR += p5-Crypt-Passwd-XS
     SUBDIR += p5-Crypt-PasswdMD5
     SUBDIR += p5-Crypt-Password-Util
     SUBDIR += p5-Crypt-Primes
@@ -637,7 +639,6 @@
     SUBDIR += pbc
     SUBDIR += pbnj
     SUBDIR += pcsc-tools
-    SUBDIR += pdfcrack
     SUBDIR += pear-Auth
     SUBDIR += pear-Auth_HTTP
     SUBDIR += pear-Auth_OpenID
@@ -670,6 +671,7 @@
     SUBDIR += pear-Net_Portscan
     SUBDIR += pear-Text_Password
     SUBDIR += pecl-crack
+    SUBDIR += pecl-crypto
     SUBDIR += pecl-gnupg
     SUBDIR += pecl-pam
     SUBDIR += pecl-scrypt
@@ -826,7 +828,6 @@
     SUBDIR += radiusniff
     SUBDIR += rainbowcrack
     SUBDIR += ranpwd
-    SUBDIR += rarcrack
     SUBDIR += ratproxy
     SUBDIR += rats
     SUBDIR += razorback-api
@@ -927,7 +928,6 @@
     SUBDIR += snort-rep
     SUBDIR += snortreport
     SUBDIR += snortsam
-    SUBDIR += snortsms
     SUBDIR += snortsnarf
     SUBDIR += softhsm
     SUBDIR += spass
@@ -935,7 +935,6 @@
     SUBDIR += spybye
     SUBDIR += sqlmap
     SUBDIR += sqlninja
-    SUBDIR += squidclamav
     SUBDIR += srm
     SUBDIR += srp
     SUBDIR += ssdeep

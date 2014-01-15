@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	tinymce
-PORTVERSION=	4.0.10
+PORTVERSION=	4.0.12
 CATEGORIES=	www
 MASTER_SITES=	http://download.moxiecode.com/${PORTNAME}/ \
 		LOCAL/sunpoet
 DISTNAME=	${PORTNAME}_${PORTVERSION}
+EXTRACT_SUFX=	.zip
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Open source JavaScript HTML WYSIWYG editor for web sites
@@ -16,7 +17,6 @@ LICENSE=	LGPL21
 CONFLICTS_INSTALL=	tinymce-[0-35-9]* tinymce3-[0-9]*
 
 NO_BUILD=	yes
-USE_ZIP=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 do-install:
@@ -36,7 +36,9 @@ genplist: do-clean extract
 		${ECHO} "@group www" >> ${MS_PLIST} && \
 		${FIND} -s * -type f | ${SED} 's|^|%%WWWDIR%%/|' >> ${MS_PLIST} && \
 		${FIND} -s * -type d | ${TAIL} -r | ${SED} 's|^|@dirrm %%WWWDIR%%/|' >> ${MS_PLIST} && \
-		${ECHO} '@dirrmtry %%WWWDIR%%' >> ${MS_PLIST}
+		${ECHO} '@dirrmtry %%WWWDIR%%' >> ${MS_PLIST} && \
+		${ECHO} "@owner" > ${MS_PLIST} && \
+		${ECHO} "@group" >> ${MS_PLIST}
 #.for dir in ${MS_DIRRMTRY}
 #	${REINPLACE_CMD} '/^@dirrm %%WWWDIR%%\/${dir:C/\//\\\//g}$$/ s|@dirrm|&try|' ${MS_PLIST}
 #.endfor

@@ -3,6 +3,7 @@
 
 PORTNAME=	libvirt-glib
 PORTVERSION=	0.1.7
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	ftp://libvirt.org/libvirt/glib/
 
@@ -16,6 +17,7 @@ USES=	pathfix pkgconfig gmake
 USE_LDCONFIG=	yes
 USE_AUTOTOOLS=	libtool
 USE_GNOME=	intltool introspection
+USE_PYTHON=	2
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -fstack-protector
 CONFIGURE_ARGS+=	--enable-introspection

@@ -9,11 +9,14 @@ MASTER_SITES=	LOCAL/vanilla
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Google\'s open source JavaScript engine
 
+BUILD_DEPENDS=	python:${PORTSDIR}/lang/python
 LIB_DEPENDS=	execinfo:${PORTSDIR}/devel/libexecinfo
+
+CONFLICTS=      v8-devel-*
 
 USES=		gmake
 USE_XZ=		yes
-USE_PYTHON=	2.6+
+USE_PYTHON=	2
 USE_LDCONFIG=	yes
 ALL_TARGET=	native
 MAKE_ARGS=	library=shared
@@ -37,6 +40,7 @@ ONLY_FOR_ARCHS=	i386 amd64
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/build/common.gypi ${WRKSRC}/tools/gyp/v8.gyp
+	@${REINPLACE_CMD} -e '1 s|${SETENV} python|&2|' ${WRKSRC}/build/gyp/gyp
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/out/native/d8 ${STAGEDIR}/${PREFIX}/bin/d8

@@ -18,7 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0:${PORTSDIR}/devel/py-xdg \
 INSTALLS_ICONS=	yes
 USES=		gettext desktop-file-utils
 USE_GNOME=	gtk20 pygtk2 pygobject
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_PYDISTUTILS=	yes
 
 MAN1=		zim.1
@@ -64,7 +64,10 @@ RUN_DEPENDS+=	ditaa:${PORTSDIR}/graphics/ditaa
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|share/man|man|' ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} \
+		-e 's|share/man|man|' \
+		-e 's,distutils\.command\.install ,setuptools\.command\.install ,' \
+		${WRKSRC}/setup.py
 	@${REINPLACE_CMD} -e "s|decode('utf-8')|decode('utf-8','replace')|g" ${WRKSRC}/zim/utils.py
 
 post-install:

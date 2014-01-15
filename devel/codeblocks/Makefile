@@ -14,13 +14,12 @@ LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip
-LIB_DEPENDS=	boost_system:${PORTSDIR}/devel/boost-libs \
-		hunspell:${PORTSDIR}/textproc/hunspell \
-		rsync:${PORTSDIR}/net/librsync
+LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
+		libhunspell-1.3.so:${PORTSDIR}/textproc/hunspell \
+		librsync.so:${PORTSDIR}/net/librsync
 RUN_DEPENDS=	update-mime-database:${PORTSDIR}/misc/shared-mime-info
 
-USES=		pkgconfig
-USE_FAM=	yes
+USES=		fam pkgconfig
 USE_WX=		2.8
 WANT_UNICODE=	yes
 USE_GNOME=	gnomehack desktopfileutils

@@ -1,20 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	poudriere
-PORTVERSION=	3.0.99.20131028
+PORTVERSION=	3.0.99.20140113
+PORTREVISION=	2
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://fossil.etoilebsd.net/poudriere/tarball/ \
 		LOCAL/bdrewery/${PORTNAME}/
 PKGNAMESUFFIX=	-devel
 DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.gz?uuid=${FSL_CHKIN}
 
-# Also maintained by bdrewery@FreeBSD.org
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Port build and test system
 
 LICENSE=	BSD
 
-FSL_CHKIN=	6da5271386
+FSL_CHKIN=	105ef35755
 
 OPTIONS_DEFINE=	ZSH
 
@@ -71,13 +71,12 @@ PLIST_FILES=	etc/poudriere.conf.sample \
 		share/poudriere/pkgclean.sh \
 		share/poudriere/ports.sh \
 		share/poudriere/processonelog.sh \
+		share/poudriere/processonelog2.sh \
 		share/poudriere/queue.sh \
 		share/poudriere/status.sh \
 		share/poudriere/testport.sh
 
 PLIST_DIRS=	libexec/poudriere \
-		etc/poudriere.d/hooks \
-		etc/poudriere.d \
 		share/poudriere/awk \
 		share/poudriere/html/assets/bootstrap/css \
 		share/poudriere/html/assets/bootstrap/img \
@@ -90,6 +89,8 @@ PLIST_DIRS=	libexec/poudriere \
 		share/poudriere/html/assets \
 		share/poudriere/html \
 		share/poudriere
+PLIST_DIRSTRY=	etc/poudriere.d/hooks \
+		etc/poudriere.d
 
 .include <bsd.port.options.mk>
 

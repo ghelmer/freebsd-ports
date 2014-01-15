@@ -5,15 +5,335 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20140114:
+  AFFECTS: users of www/mod_authnz_external
+  AUTHOR: ohauer@FreeBSD.org
+
+  www/mod_authnz_external was moved to www/mod_authnz_external22
+  Please do the following according to package manager used.
+
+  # portmaster -o www/mod_authnz_external22 www/mod_authnz_external
+    or
+  # portupgrade -fo www/mod_authnz_external22 www/mod_authnz_external
+    or
+  # pkg set -o www/mod_authnz_external:www/mod_authnz_external22
+
+20140113:
+  AFFECTS: users of net/samba41
+  AUTHOR: timur@FreeBSD.org
+
+  With the introduction of Samba 4.1 corresponding port lost SWAT support
+  and made WINBIND support mandatory. As samba4 introduced additional 'samba'
+  daemon to the tripplet of nmbd/smbd/winbindd to avoid confusion startup
+  script for samba41 was renamed to 'samba_server'. To start the whole band
+  up it's enough to add to the rc.conf:
+
+  samba_server_enable="YES"
+
+  Startup script tries it's best to guess which out of samba/nmbd/smbd/winbindd
+  daemons have to be started, but you can fine tune this by specifying them in
+  rc.conf, just make sure that samba_server_enable is enabled(see entry for 20121022).
+
+20140112:
+  AFFECTS: users of devel/libical
+  AUTHOR: kwm@FreeBSD.org
+
+  The libical ports was updated to 1.0.0. Due to the shared library bump
+  and the removal of the .la file. All ports that use libical need to be
+  rebuild.
+
+  # portmaster -r libical
+   or
+  # portupgrade -fr libical
+   or
+  # pkg install -fR libical
+
+20140111:
+  AFFECTS: users of lang/go
+  AUTHOR: jlaffaye@FreeBSD.org
+
+  Third party Go packages installed via the ports tree are no longer installed
+  in GOROOT (PREFIX/go) but in a specific path: PREFIX/share/go
+
+  Affected ports had their PORTREVISION bumped.
+  To reinstall these packages via the ports tree, it is needed to deinstall
+  them first (the build will fail if the `go` command detects that they
+  already exists in GOROOT).
+
+  If you are using these third party Go packages for local Go development,
+  you have to add this new path to your GOPATH environment variable.
+
+20140107:
+  AFFECTS: users of Qt 4 ports
+  AUTHOR: makc@FreeBSD.org
+
+  Qt 4 ports framework has been reworked, several ports have been renamed.
+  To ease upgrading run the following set of commands:
+
+  # pkg set -o devel/qt4-declarative:x11-toolkits/qt4-declarative
+  # pkg set -o devel/qt4-qtestlib:devel/qt4-testlib
+  # pkg set -o textproc/qt4-clucene:textproc/clucene-qt4
+  # pkg set -o www/qt4-webkit:www/webkit-qt4
+  # pkg set -o x11/qt4-opengl:graphics/qt4-opengl
+
+20140102:
+  AFFECTS: users of archivers/p7zip
+  AUTHOR: rakuco@FreeBSD.org
+
+  The MINIMAL and MODULES options have been removed from archivers/p7zip,
+  which now unconditionally installs the 7z, 7za and 7zr, as if the MINIMAL
+  option was previously unset.
+
+  The RAR decompression codec, whose source code has a more restrictive
+  license that forbids its use for creating RAR archives, has been moved to
+  a separate port, archivers/p7zip-codec-rar.
+
+20131230:
+  AFFECTS: ports using Apache Software License 2.0
+  AUTHOR: ohauer@FreeBSD.org
+
+  The acronym for Apache Software License 2.0 was renamed to APACHE20
+
+20131226:
+  AFFECTS: users of security/cyrus-sasl2
+  AUTHOR: ume@FreeBSD.org
+
+  The SASL GSSAPI authentication plugin was removed from
+  security/cyrus-sasl2 port and divided into new
+  security/cyrus-sasl2-gssapi port.
+
+  If you are using the SASL GSSAPI authentication, please install
+  security/cyrus-sasl2-gssapi port, in addition to upgrading
+  security/cyrus-sasl2 port.
+
+20131218:
+  AFFECTS: users of news/cnews
+  AUTHOR: dinoex@FreeBSD.org
+
+  The default path for overview files has changed.
+  Rebuild your overview files after the update with:
+  su - news /usr/local/libexec/cnews/nov/initov
+
+20131217:
+  AFFECTS: users of databases/ruby-bdb or ports-mgmt/portupgrade and databases/db5 or databases/db6
+  AUTHOR: mandree@FreeBSD.org
+
+  databases/db5 and databases/db6 have recently been updated to fix
+  bugs. This changed their patchlevel version.
+
+  However, ruby-bdb used to break during the db[56] upgrade due to a bug
+  described in <http://www.freebsd.org/cgi/query-pr.cgi?pr=184921>.
+
+  THEREFORE, YOU MUST MANUALLY UPGRADE databases/ruby-bdb INDIVIDUALLY
+  TO 0.6.6_2 OR NEWER WHEN USING portupgrade AGAINST databases/db[56]
+  PORTS. To achieve that, type:
+
+  # portupgrade databases/ruby-bdb
+  or
+  # portmaster -x 'db*' databases/ruby-bdb
+
+  before proceeding with other upgrades.
+
+  Should you have corrupted the portupgrade databases, or if ruby-bdb
+  refuses to work with the upgraded db* port with errors such as "DB
+  needs compatible versions of libdb & db.h", then rebuild the ruby-bdb
+  port manually, and fix the portupgrade databases:
+
+  # make -C /usr/ports/databases/ruby-bdb all deinstall install clean
+  # pkgdb -fu
+  # portupgrade -f db5 db6
+
+  This should return portupgrade to normal operation.
+
+20131216:
+  AFFECTS: users of x11/xorg, graphics/libGL, graphics/dri, all xorg ports
+  AUTHOR: zeising@FreeBSD.org
+
+  The default xorg version has been switched on FreeBSD CURRENT.
+
+  To upgrade graphics/libGL, graphics/dri and related MESA ports, it is
+  neccessary to first remove the old versions of those ports.
+  No special upgrade procedure is needed for xorg port but it is
+  necessary to recompile all xorg drivers (xf86-*) and other ports that
+  depend on the xserver version, including
+  emulators/virtualbox-ose-additions.  Portrevisions have been bumped
+  where needed, but users of drivers not in the ports tree will need to
+  recompile those.
+
+  If it is important to stay on the old versions, it is possible to
+  specify WITHOUT_NEW_XORG= in /etc/make.conf to get the old xorg
+  distribution.
+
+  To update:
+
+  # pkg_delete -f libGL-\* dri-\*
+    or
+  # pkg delete -f libGL dri
+    followed by
+  # portmaster graphics/dri graphics/libGL
+    or
+  # portupgrade graphics/dri graphics/libGL
+    and then
+  # portmaster -a
+    or
+  # portupgrade -a
+
+20131216:
+  AFFECTS: users of databases/db4*
+  AUTHOR: mandree@FreeBSD.org
+
+  Berkeley DB versions before and excluding 4.8 have been marked deprecated.
+  New port installations should be based on Berkeley DB 5 or 6.
+
+  Note that Oracle Berkeley DB 6 is under the more restrictive Affero GPL v3
+  license, be sure to review if using that fits your requirements.
+
+  You can add WITH_BDB_VER=5 or WITH_BDB_VER=6 to /etc/make.conf to have all
+  applications that get rebuilt use Oracle Berkeley DB 5 or 6, respectively.
+
+  DO NOT FORCE DELETE older BerkeleyDB packages, that breaks the upgrade
+  tools.  Instead, first rebuild the ports that depend on it, then
+  remove the old Berkeley DB versions.
+
+  Berkeley DB ports should be able to build/install with an older and a
+  newer version version both installed if WITH_BDB_VER is set.  If a
+  port then grabs the old Berkeley DB version, that is an issue with the
+  port that requires Berkeley DB, and should be reported to the
+  maintainer.
+
+  If you are interested in upgrading now already, we have instructions
+  at <https://wiki.freebsd.org/Ports/BerkeleyDBCleanup>.
+
+20131209:
+  AFFECTS: users of dns/bind96, dns/bind98 and bind99 on FreeBSD 10.0
+  AUTHOR: erwin@FreeBSD.org
+
+  Bind versions before 9.6.3.2.ESV.R10_2, 9.8.6_2, and 9.9.4_2 on
+  FreeBSD 10.0 will replace named.conf on upgrade.  Make sure to
+  backup any local changes before upgrading to the _2 versions.
+
+20131208:
+  AFFECTS: users of java/subversion-java
+  AUTHOR: ohauer@FreeBSD.org
+
+  java/subversion-java was moved to java/java-subversion.
+  Please do the following according to package manager used.
+
+  # portmaster -o java/java-subversion java/subversion-java
+    or
+  # portupgrade -fo java/java-subversion java/subversion-java
+    or
+  # pkg set -o java/subversion-java:java/java-subversion
+
+20131208:
+  AFFECTS: users of x11-toolkits/vte
+  AUTHOR: kwm@FreeBSD.org
+
+  The gnome-pty-helper program has been split off from the vte package
+  to allow both vte and vte3 to be installed at the same time. To update
+  after this change please do the following:
+
+  # pkg_delete -f vte\*
+   or
+  # pkg delete -fg vte\*
+   followed by
+  # portmaster x11-toolkits/vte
+   or
+  # portupgrade x11-toolkits/vte
+
+20131207:
+  AFFECTS: users of mail/opensmtpd
+  AUTHOR: ashish@FreeBSD.org
+
+  There has been changes to the OpenSMTPD configuration. Please refer to
+  smtpd.conf(5), and use "smtpd -nf smtpd.conf" to validate.
+
+20131203:
+  AFFECTS: users of graphics/opencv, graphics/opencv-core
+  AUTHOR: jhale@FreeBSD.org
+
+  OpenCV has been updated to 2.4.7.  Due to movement of files between the
+  opencv port and the opencv-core port, it will be necessary to remove
+  both packages before updating.
+
+  # pkg_delete -f opencv\*
+    or
+  # pkg delete -fg opencv\*
+    followed by
+  # portmaster -a
+    or
+  # portupgrade -a
+
+20131127:
+  AFFECTS: users of devel/py-distribute (i.e you)
+  AUTHOR: wg@FreeBSD.org
+
+  devel/py-distribute was replaced with devel/py-setuptools. Please do
+  the following according to package manager used. py-distribute port
+  will be removed shortly.
+
+  # portmaster -o devel/py-setuptools devel/py-distribute
+    or
+  # portupgrade -fo devel/py-setuptools devel/py-distribute
+    or
+  # pkg set -o devel/py-distribute:devel/py-setuptools
+  # pkg install -f devel/py-setuptools
+
+20131125:
+  AFFECTS: users of www/mod_wsgi
+  AUTHOR: ohauer@FreeBSD.org
+
+  The port www/mod_wsgi moved to www/mod_wsgi2 to reflect the port version.
+
+  # portmaster -o www/mod_wsgi2 www/mod_wsgi
+    or
+  # portupgrade -fo www/mod_wsgi2 www/mod_wsgi
+    or
+  # pkg set -o www/mod_wsgi:www/mod_wsgi2
+
+20131120:
+  AFFECTS: users of lang/perl5.12 lang/perl5.14 lang/perl5.16 and lang/perl5.18
+  AUTHOR: mat@FreeBSD.org
+
+  The THREADS option has been enabled by default in all Perl. If you're using
+  binary packages you need to do :
+
+    # pkg install -Rf perl5
+
+  If you're not using binary packages, and want to switch from non threaded
+  Perl to threaded Perl, you need to recompile and reinstall most ports
+  depending on Perl. Supposing you have Perl 5.16, you would do:
+
+  Portupgrade users:
+    0) Fix pkgdb.db (for safety):
+	pkgdb -Ff
+
+    1) Change the option in lang/perl5.16:
+        make -C /usr/ports/lang/perl5.16 config
+
+    2) Reinstall everything that depends on Perl:
+	portupgrade -fr lang/perl5.16
+
+  Portmaster users:
+    1) Change the option in lang/perl5.16:
+        make -C /usr/ports/lang/perl5.16 config
+
+    2) Reinstall everything that depends on Perl:
+	portmaster -r perl5-
+
+  Note: The installed Perl package was named perl and is now named perl5, if
+	you have not updated your installation in a long time, you may need to
+	use "perl-" here.
+
 20131112:
   AFFECTS: users of dns/nsd
   AUTHOR: erwin@FreeBSD.org
 
   dns/nsd was updated to the new 4.0.0 major release.
 
-  This version replaces the nsdc control program with nsd-control. 
+  This version replaces the nsdc control program with nsd-control.
   This requires some manual setup with nsd-control-setup and editing
-  of the config files. nsd-control is incompatible with nsdc so when 
+  of the config files. nsd-control is incompatible with nsdc so when
   that is used in scripts, these should be adapted.  More information:
   http://www.nlnetlabs.nl/svn/nsd/tags/NSD_4_0_0_REL/doc/NSD-4-features
 
@@ -115,10 +435,10 @@ you update your ports collection, before attempting any port upgrades.
 	pkgdb -Ff
 
     1) Reinstall new version of Perl (5.16):
-	portupgrade -o lang/perl5.16 -f perl-5.14.\*
+	portupgrade -o lang/perl5.16 -f lang/perl5.14
 
     2) Reinstall everything that depends on Perl:
-	portupgrade -fr perl
+	portupgrade -fr lang/perl5.16
 
   Portmaster users:
 	portmaster -o lang/perl5.16 lang/perl5.14
@@ -2044,7 +2364,7 @@ you update your ports collection, before attempting any port upgrades.
 
   When using Firefox or SeaMonkey compiled with ALSA option ON it may
   crash on assert in alsa_refill_stream as described in ports/170473.
-  To workaround disable ARIFF_OSS in audio/alsa-plugins or use PULSEAUDIO.
+  To workaround enable BUFSZ_P2 in audio/alsa-plugins or use PULSEAUDIO.
 
 20121010:
   AFFECTS: users of CURRENT (OSVERSION >= 1000017)

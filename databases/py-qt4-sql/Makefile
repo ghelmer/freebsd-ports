@@ -17,7 +17,7 @@ RUN_DEPENDS=	${PKGNAMEPREFIX}gui>=${PYQT4_VERSION}:${PORTSDIR}/x11-toolkits/py-q
 
 DISTINFO_FILE=	${PYQT4_DISTINFO_FILE}
 HAS_CONFIGURE=	yes
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 USE_QT4=	moc_build sql qmake_build
 
 OPTIONS_DEFINE=	API
@@ -45,7 +45,7 @@ ARGS=		-b ${PREFIX}/bin \
 ARGS+=		--no-qsci-api
 PLIST_SUB+=	API="@comment "
 .else
-LIB_DEPENDS+=	qscintilla2:${PORTSDIR}/devel/qscintilla2
+LIB_DEPENDS+=	libqscintilla2.so:${PORTSDIR}/devel/qscintilla2
 ARGS+=		--qsci-api --qsci-api-destdir=${QSCIDIR}
 PLIST_SUB+=	API=""
 .endif

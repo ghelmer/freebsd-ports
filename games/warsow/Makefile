@@ -14,6 +14,9 @@ COMMENT=	Futuristic, fast-paced first person shooter
 
 LICENSE=	GPLv2
 
+DEPRECATED=	depends on expired games/warsow-data
+EXPIRATION_DATE=2014-01-22
+
 LIB_DEPENDS=	curl:${PORTSDIR}/ftp/curl
 RUN_DEPENDS=	${DATADIR}/basewsw/data0_06.pk3:${PORTSDIR}/games/warsow-data
 
@@ -40,6 +43,9 @@ OPENAL_DESC=	Build OpenAL sound module
 IRC_DESC=	Build IRC client module
 TV_SRV_DESC=	Build Warsow TV server
 
+# USES needs to be before bsd.port.pre.mk
+OPENAL_USES=	openal:al
+
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
@@ -63,7 +69,6 @@ PLIST_FILES+=	%%DATADIR%%/libs/snd_qf_${ARCH}.so
 . endif
 
 . if ${PORT_OPTIONS:MOPENAL}
-USE_OPENAL=	al
 ALL_TARGET+=	openal
 PLIST_FILES+=	%%DATADIR%%/libs/snd_openal_${ARCH}.so
 . endif

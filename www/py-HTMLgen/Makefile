@@ -11,16 +11,19 @@ MASTER_SITE_SUBDIR=	dryice
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	HTMLgen
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	A Python library for the generation of HTML documents
 
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 NO_BUILD=	yes
 NO_STAGE=	yes
 
 .if !defined(NOPORTDOCS)
 PORTDOCS=	*
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|python |${PYTHON_CMD} |' ${WRKSRC}/Makefile
 
 .if !defined(NOPORTDOCS)
 post-install:

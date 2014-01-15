@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnutls
-PORTVERSION=	3.1.16
-PORTREVISION=	1
+PORTVERSION=	3.1.18
 CATEGORIES=	security net
 MASTER_SITES=	ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/
 PKGNAMESUFFIX=	${GNUTLS_SUFFIX}
@@ -15,16 +14,18 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:${PORTSDIR}/print/texinfo
 LIB_DEPENDS=	libgpg-error.so:${PORTSDIR}/security/libgpg-error \
 		libnettle.so:${PORTSDIR}/security/nettle \
 		libp11-kit.so:${PORTSDIR}/security/p11-kit \
-		libidn.so:${PORTSDIR}/dns/libidn
+		libidn.so:${PORTSDIR}/dns/libidn \
+		libunbound.so:${PORTSDIR}/dns/unbound \
+		libtspi.so:${PORTSDIR}/security/trousers
 
-GNUTLS_SUFFIX=3
+GNUTLS_SUFFIX=	3
 
 USES=		gmake iconv pkgconfig
 USE_AUTOTOOLS=	libtool
 USE_GNOME=	ltverhack
 USE_LDCONFIG=	${PREFIX}/lib/gnutls3
 USE_XZ=		yes
-CPPFLAGS=	-I${LOCALBASE}/include -fPIC
+CPPFLAGS+=	-I${LOCALBASE}/include -fPIC
 LDFLAGS=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=		MAKEINFO=${PREFIX}/bin/makeinfo
@@ -34,7 +35,8 @@ CONFIGURE_ARGS=	--program-suffix=${GNUTLS_SUFFIX} \
 			--disable-guile \
 			--disable-nls \
 			--disable-silent-rules \
-			--disable-hardware-acceleration
+			--disable-hardware-acceleration \
+			--enable-local-libopts
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${GNUTLS_SUFFIX}
 EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}${GNUTLS_SUFFIX}
@@ -61,12 +63,19 @@ EXAMPLES=	doc/examples/*.c
 
 #INFO=	gnutls
 
+post-patch:
+	@${MV} ${WRKSRC}/libdane/gnutls-dane.pc.in \
+		${WRKSRC}/libdane/gnutls${GNUTLS_SUFFIX}-dane.pc.in
+
 pre-configure:
 	@${CP} ${WRKSRC}/lib/gnutls.pc.in ${WRKSRC}/lib/gnutls${GNUTLS_SUFFIX}.pc.in
 	@${REINPLACE_CMD} \
 		-e 's,(libdir)/pkgconfig,(prefix)/libdata/pkgconfig,' \
 		-e 's,gnutls\.pc,gnutls${GNUTLS_SUFFIX}\.pc,g' \
-		${WRKSRC}/lib/Makefile.in ${WRKSRC}/configure
+		-e 's,gnutls-dane\.pc,gnutls${GNUTLS_SUFFIX}-dane\.pc,g' \
+		${WRKSRC}/lib/Makefile.in \
+		${WRKSRC}/libdane/Makefile.in \
+		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's,(top_builddir)$$,(top_builddir) -I$$(top_builddir)/lib/includes -I$$(top_builddir)/libextra/includes,' \
 		${WRKSRC}/doc/Makefile.in
 

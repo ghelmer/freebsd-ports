@@ -69,6 +69,8 @@ OPTIONS_DEFINE=	CACA ESOUND JACK GNOMEVFS2 PULSEAUDIO XVMC SMB AALIB \
 		IMAGEMAGICK GTK2 WAVPACK VAAPI LIBBLURAY
 
 DOCSDIR=	${PREFIX}/share/doc/xine-lib
+# Please sync with XINE_PLUGINSDIR in multimedia/xine
+# and multimedia/vdr-plugin-xineliboutput
 PLIST_SUB=	PLUGINSDIR="lib/xine/plugins/2.3"
 
 # DVDCSS version hardcoded in src/input/input_dvd.c misc/cdda_server.c
@@ -191,14 +193,18 @@ CONFIGURE_ARGS+=	--without-wavpack
 
 .if ${PORT_OPTIONS:MVAAPI}
 LIB_DEPENDS+=	libva.so:${PORTSDIR}/multimedia/libva
+PLIST_SUB+=	VAAPI=""
+CONFIGURE_ARGS+=	--enable-vaapi
+.else
+PLIST_SUB+=	VAAPI="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MLIBBLURAY}
-CONFIGURE_OPTS+=	--enable-bluray
+CONFIGURE_ARGS+=	--enable-bluray
 LIB_DEPENDS+=	libbluray.so:${PORTSDIR}/multimedia/libbluray
 PLIST_SUB+=	LIBBLURAY=""
 .else
-CONFIGURE_OPTS+=	--disable-bluray
+CONFIGURE_ARGS+=	--disable-bluray
 PLIST_SUB+=	LIBBLURAY="@comment "
 .endif
 
@@ -217,7 +223,8 @@ CONFIGURE_ARGS+=	--disable-vidix
 
 post-patch:
 .if ${PORT_OPTIONS:MVAAPI}
-	#@${PATCH} ${PATCH_DIST_ARGS} <${FILESDIR}/ffmpeg-vaapi_xine-lib-1.2.2-defaultoff.diff
+	@${REINPLACE_CMD} -e 's|-ldl||' \
+		${WRKSRC}/src/video_out/Makefile.in
 .endif
 .for f in libtool ltmain.sh
 	@${REINPLACE_CMD} -e \

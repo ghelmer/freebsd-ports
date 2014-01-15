@@ -13,12 +13,11 @@ COMMENT=	Gigasampler file loader library
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	FLAC:${PORTSDIR}/audio/flac \
-		sndfile.1:${PORTSDIR}/audio/libsndfile \
-		uuid.1:${PORTSDIR}/misc/e2fsprogs-libuuid
+LIB_DEPENDS=	libFLAC.so:${PORTSDIR}/audio/flac \
+		libsndfile.so:${PORTSDIR}/audio/libsndfile \
+		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
 
 USE_BZIP2=	yes
-NO_STAGE=	yes
 USES=		gmake pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -26,7 +25,5 @@ MAKE_JOBS_UNSAFE=yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-MAN1=		dlsdump.1 gigdump.1 gigextract.1 rifftree.1
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xcb-proto
-PORTVERSION=	1.8
+PORTVERSION=	1.9
 CATEGORIES=	x11 python
 MASTER_SITES=	http://xcb.freedesktop.org/dist/
 
@@ -13,8 +13,9 @@ BUILD_DEPENDS=	xmllint:${PORTSDIR}/textproc/libxml2
 
 USE_BZIP2=	yes
 USES=		pathfix
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 
 DATADIR=	${PREFIX}/share/xcb
+
 .include <bsd.port.mk>

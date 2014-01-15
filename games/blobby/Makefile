@@ -21,23 +21,16 @@ BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
 USE_XORG=	ice x11 xext xxf86vm xdamage xfixes xau xdmcp xrandr xrender
 USE_SDL=	sdl
 USE_GL=		glu
-USES=		cmake
+
+USES=		dos2unix cmake
+DOS2UNIX_REGEX=	.*\.(c|h|cpp)
 CMAKE_ARGS+=	-DDATADIR:PATH="${DATADIR}"
 WRKSRC=		${WRKDIR}/blobby-1.0rc3
 
-USE_DOS2UNIX=	yes
-DOS2UNIX_REGEX=	.*\.(c|h|cpp)
-
 PORTDOCS=	AUTHORS ChangeLog INSTALL NEWS README TODO
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR}  ${STAGEDIR}${DOCSDIR}
-.for doc in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${doc}  ${STAGEDIR}${DOCSDIR}
-.endfor
-.endif
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

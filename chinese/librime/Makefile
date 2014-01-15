@@ -12,11 +12,11 @@ COMMENT=	Rime Input Method Engine
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	boost_thread:${PORTSDIR}/devel/boost-libs \
-		glog:${PORTSDIR}/devel/glog \
-		kyotocabinet:${PORTSDIR}/databases/kyotocabinet \
-		opencc:${PORTSDIR}/chinese/opencc \
-		yaml-cpp:${PORTSDIR}/devel/yaml-cpp
+LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
+		libglog.so:${PORTSDIR}/devel/glog \
+		libkyotocabinet.so:${PORTSDIR}/databases/kyotocabinet \
+		libopencc.so:${PORTSDIR}/chinese/opencc \
+		libyaml-cpp.so:${PORTSDIR}/devel/yaml-cpp
 
 USES=		cmake pkgconfig gettext perl5
 USE_PERL5=	build patch
@@ -30,7 +30,6 @@ post-patch:     .SILENT
 	${FIND} ${WRKSRC} \( -name '*.cc' -or -name '*.h' \) \
 		-exec ${PERL} -i -pe '$$. == 1 && s/^\xef\xbb\xbf//;' '{}' \;
 
-NO_STAGE=	yes
 post-build:
 	@echo "building rime data."
 	@${MKDIR} ${DATASRC}
@@ -39,8 +38,8 @@ post-build:
 	${WRKSRC}/bin/rime_deployer --build ${DATASRC}
 
 post-install:
-	${MKDIR} ${DATADIR}/data
-	${INSTALL_DATA} ${DATASRC}/*.kct ${DATASRC}/*.bin ${DATADIR}/data/
+	${MKDIR} ${STAGEDIR}${DATADIR}/data
+	${INSTALL_DATA} ${DATASRC}/*.kct ${DATASRC}/*.bin ${STAGEDIR}${DATADIR}/data/
 
 PROJECTHOST=	rimeime
 DATA_VER=	0.16

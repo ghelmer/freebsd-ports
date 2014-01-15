@@ -128,12 +128,15 @@
     SUBDIR += kde4-windeco-dekorator
     SUBDIR += kde4-windeco-nitrogen
     SUBDIR += kdeartwork4
-    SUBDIR += lila-xfwm4
     SUBDIR += linux-f10-hicolor-icon-theme
     SUBDIR += linux-f10-qtcurve-gtk2
     SUBDIR += linux-hicolor-icon-theme
     SUBDIR += lxappearance
     SUBDIR += lxde-icon-theme
+    SUBDIR += mate-backgrounds
+    SUBDIR += mate-icon-theme
+    SUBDIR += mate-icon-theme-faenza
+    SUBDIR += mate-themes
     SUBDIR += metacity-aluminumalloy-cryogenic-theme
     SUBDIR += metacity-aluminumalloy-smog-theme
     SUBDIR += metacity-aluminumalloy-toxic-theme
@@ -148,6 +151,7 @@
     SUBDIR += metacity-themes
     SUBDIR += murrine-configurator
     SUBDIR += nimbus
+    SUBDIR += numix-theme
     SUBDIR += openbox-themes
     SUBDIR += qt4-style-float
     SUBDIR += qt4-style-phase

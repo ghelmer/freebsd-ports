@@ -5,18 +5,20 @@
 
 PORTNAME=	chromium
 DISTVERSIONPREFIX=	courgette-redacted-
-DISTVERSION=	30.0.1599.101
+DISTVERSION=	31.0.1650.63
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/:testdata \
 		http://download.goodking.org/downloads/:browser \
 		ftp://rene-ladan.nl/pub/distfiles/:browser \
+		${MASTER_SITE_LOCAL}:browser \
 		http://files.etoilebsd.net/goodking/:browser
+MASTER_SITE_SUBDIR=rene
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:browser
 
 MAINTAINER=	chromium@FreeBSD.org
 COMMENT=	Mostly BSD-licensed web browser based on WebKit and Gtk+
 
-LICENSE=	BSD LGPL21 MPL
+LICENSE=	BSD3CLAUSE LGPL21 MPL
 LICENSE_COMB=	multi
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
@@ -46,9 +48,10 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:${PORTSDIR}/a
 
 ONLY_FOR_ARCHS=	i386 amd64
 USE_XZ=		yes
-USES=		bison desktop-file-utils pkgconfig perl5 shebangfix
+USES=		bison compiler:c++11-lang desktop-file-utils pkgconfig \
+		perl5 shebangfix
 USE_PERL5=	build
-USE_PYTHON_BUILD=	2.6-2.7
+USE_PYTHON_BUILD=	2
 USE_XORG=	scrnsaverproto x11 xproto xscrnsaver xtst
 USE_GNOME=	glib20 gtk20 dconf libxslt
 
@@ -87,16 +90,16 @@ GYP_DEFINES+=	google_api_key=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8 \
 		google_default_client_id=996322985003.apps.googleusercontent.com \
 		google_default_client_secret=IR1za9-1VK0zZ0f_O8MVFicn
 
-SUB_FILES=	chromium-browser.desktop
-SUB_LIST=	COMMENT="${COMMENT}" \
-		DATADIR=${DATADIR}
+SUB_FILES=	chromium-browser.desktop chrome
+SUB_LIST+=	COMMENT="${COMMENT}"
 
-OPTIONS_DEFINE=	CODECS GCONF PULSEAUDIO GCC TEST DEBUG
-
+OPTIONS_DEFINE=	CODECS GCONF PULSEAUDIO TEST DEBUG
 CODECS_DESC=	Compile and enable patented codecs like H.264
-GCC_DESC=	Build Chromium with GCC 4.6+
 
 OPTIONS_DEFAULT=	CODECS GCONF
+
+GCONF_USE=	GNOME=gconf2
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 
 .include <bsd.port.options.mk>
 
@@ -108,14 +111,11 @@ GYP_DEFINES+=	ffmpeg_branding=Chromium
 GYP_DEFINES+=	proprietary_codecs=0
 .endif
 
-.if ${PORT_OPTIONS:MGCONF}
-USE_GNOME+=	gconf2
-.else
+.if ! ${PORT_OPTIONS:MGCONF}
 GYP_DEFINES+=	use_gconf=0
 .endif
 
 .if ${PORT_OPTIONS:MPULSEAUDIO}
-LIB_DEPENDS+=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 GYP_DEFINES+=	use_pulseaudio=1
 .else
 GYP_DEFINES+=	use_pulseaudio=0
@@ -123,24 +123,6 @@ GYP_DEFINES+=	use_pulseaudio=0
 
 .if ! ${MACHINE_CPU:Msse2}
 GYP_DEFINES+=	disable_sse2=1
-.endif
-
-.if ${PORT_OPTIONS:MGCC}
-USE_GCC?=	yes
-GYP_DEFINES+=	gcc_version=${CXX:S/g++//}
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gcc
-.else
-.if ${OSVERSION} < 902000
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang32:${PORTSDIR}/lang/clang32
-CC=		${LOCALBASE}/bin/clang32
-CXX=		${LOCALBASE}/bin/clang++32
-.else
-CC=		clang
-CXX=		clang++
-.endif
-GYP_DEFINES+=	clang=1
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
-CONFIGURE_ENV+=	AR=/usr/bin/ar
 .endif
 
 .if ${OSVERSION} >= 1000052 && !exists(${LOCALBASE}/include/execinfo.h)
@@ -163,12 +145,11 @@ TEST_TARGETS=	base_unittests \
 		content_unittests
 EXCLUDED_TESTS=	GpuDriverBugListTest.CurrentDriverBugListValidation
 NINJA_TARGETS+=	${TEST_TARGETS}
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:browser \
-		${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}:testdata
+DISTFILES+=	${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}:testdata
 .endif
 
+DEBUG_MAKE_ENV=	V=1
 .if ${PORT_OPTIONS:MDEBUG}
-MAKE_ENV+=	V=1
 BUILDTYPE=	Debug
 GYP_DEFINES+=	remove_webcore_debug_symbols=1
 .else
@@ -182,7 +163,7 @@ CONFIGURE_ENV+=	CC=${CC} \
 		GYP_DEFINES="${GYP_DEFINES}"
 # according to portlint the below is passed via bsd.port.mk,
 # but 'make -V CONFIGURE_ENV' does not show it:
-CONFIGURE_ENV+= CFLAGS="${CFLAGS}" \
+CONFIGURE_ENV+=	CFLAGS="${CFLAGS}" \
 		CPPFLAGS="${CPPFLAGS}" \
 		CXXFLAGS="${CXXFLAGS}" \
 		LDFLAGS="${LDFLAGS}"
@@ -190,6 +171,15 @@ MAKE_ENV+=	BUILDTYPE=${BUILDTYPE} \
 		GPERF=${LOCALBASE}/bin/gperf
 
 .include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+GYP_DEFINES+=	gcc_version=${CXX:S/g++//}
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gcc
+.else
+GYP_DEFINES+=	clang=1
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
+CONFIGURE_ENV+=	AR=/usr/bin/ar
+.endif
 
 pre-everything::
 	@${ECHO_MSG}
@@ -205,10 +195,13 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|/usr/local|${LOCALBASE}|" \
 		${WRKSRC}/base/base.gypi \
 		${WRKSRC}/build/common.gypi \
-		${WRKSRC}/third_party/libvpx/libvpx.gyp \
 		${WRKSRC}/crypto/crypto.gyp \
+		${WRKSRC}/third_party/libvpx/libvpx.gyp \
+		${WRKSRC}/third_party/WebKit/Source/testing/testing.gyp \
 		${WRKSRC}/v8/tools/gyp/v8.gyp \
 		${WRKSRC}/v8/build/toolchain.gypi
+	@${REINPLACE_CMD} -e "s|/usr/local|${PREFIX}|" \
+		${WRKSRC}/chrome/common/chrome_paths.cc
 	@${REINPLACE_CMD} -e "s|/usr/bin/gcc|${CC}|" \
 		${WRKSRC}/third_party/WebKit/Source/core/core.gypi
 	@${REINPLACE_CMD} -e "s|'../courgette/courgette.gyp:courgette_lib',||" \
@@ -257,6 +250,6 @@ do-install:
 		${COPYTREE_SHARE} "locales resources" ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKDIR}/chromium-browser.desktop ${STAGEDIR}${DESKTOPDIR}
-	${LN} -sf ${DATADIR}/chrome ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKDIR}/chrome ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.post.mk>

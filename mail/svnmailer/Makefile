@@ -15,7 +15,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>0:${PORTSDIR}/devel/py-subversi
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USE_BZIP2=	yes
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_PKGVERSION=	${DISTVERSION}
 
@@ -31,7 +31,10 @@ PYDISTUTILS_INSTALLARGS+=	--no-install-docs
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e "1s|^.*|#!${PYTHON_CMD}|" ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} \
+		-e "1s|^.*|#!${PYTHON_CMD}|" \
+		-e 's,distutils\.command import install ,setuptools\.command import install ,' \
+		${WRKSRC}/setup.py
 	@${REINPLACE_CMD} -e "1s|^.*|#!${PYTHON_CMD}|" ${WRKSRC}/src/svn-mailer
 
 .include <bsd.port.mk>

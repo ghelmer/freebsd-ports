@@ -3,6 +3,7 @@
 
 PORTNAME=	nmap
 DISTVERSION=	6.40
+PORTREVISION=	2
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://nmap.org/dist/ \
 		LOCAL/ohauer
@@ -18,36 +19,34 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
-USE_LUA=	5.1 5.2
-LUA_COMPS=	lua
-USE_BZIP2=	yes
 USES=		gmake
+USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	DOCS IPV6 SSL
 OPTIONS_DEFAULT=IPV6 SSL
 
+SSL_USE=		OPENSSL=yes
 SSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
 SSL_CONFIGURE_OFF=	--without-openssl
 SSL_CFLAGS=		-I${OPENSSLINC}
 
+IPV6_CONFIGURE_OFF=	--with-libpcap=${LOCALBASE}/IPv6
+
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MSSL}
-USE_OPENSSL=	yes
-.else
-PKGNAMESUFFIX=	-nossl
+# PR: ports/159376  Workaround if OS is build with WITHOUT_INET6
+.if ! ${PORT_OPTIONS:MIPV6}
+LIB_DEPENDS+=		libpcap.so:${PORTSDIR}/net/libpcap
 .endif
 
 CONFIGURE_ARGS+=--without-localdirs \
 		--without-zenmap \
 		--without-ndiff \
 		--with-libpcre=${LOCALBASE} \
-		--with-liblua=${LOCALBASE} \
+		--with-liblua=included \
 		--without-nmap-update
-
-CONFIGURE_ENV=	LUA_INCDIR="${LUA_INCDIR}" LUA_LIBDIR="${LUA_LIBDIR}"
 
 # fix for gcc from ports
 .if ${CC} != "cc" && ${CC} !="clang"
@@ -57,12 +56,6 @@ NDCC=	true
 .endif
 
 PORTDOCS=	CHANGELOG HACKING
-
-# PR: ports/159376  Workaround if OS is build with WITHOUT_INET6
-.if ! ${PORT_OPTIONS:MIPV6}
-LIB_DEPENDS+=		libpcap.so:${PORTSDIR}/net/libpcap
-CONFIGURE_ARGS+=	--with-libpcap=${LOCALBASE}
-.endif
 
 # XXX limit results if we do a grep in the sources!
 post-extract:
@@ -78,10 +71,8 @@ post-configure:
 	@${REINPLACE_CMD} -e "s|^DESTDIR *=|& ${DESTDIR}|" ${WRKSRC}/Makefile
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-.endif
 
 # gcc from ports is in use
 .if defined(NDCC)

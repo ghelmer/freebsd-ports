@@ -22,7 +22,7 @@ OPTIONS_DEFINE=	DOCS
 USE_XORG=	xmu xext x11
 USE_GL=		yes
 USE_LDCONFIG=	${PREFIX}/lib/ayam
-USES+=		tk:84
+USES=		gmake tk:84
 WRKSRC=		${WRKDIR}/${PORTNAME}/src
 MAKEFILE=	Makefile.shared
 MAKE_ENV=	PTHREAD_LIBS="${PTHREAD_LIBS}"
@@ -42,7 +42,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|^MF3DCFLAGS =|MF3DCFLAGS = -fPIC|g' \
 		${WRKSRC}/MF3D/Makefile.mf3d
 	@${REINPLACE_CMD} -e \
-	   's|%%TCL_INCLUDEDIR%%|${TCL_INCLUDEDIR}|g; \
+	   's|%%TCL_INCLUDEDIR%%|${TCL_INCLUDEDIR}|g; s|make|$$(MAKE)|g; \
 	    s|%%TCL_LIBDIR%%|${LOCALBASE}/lib|g; s|%%TCL_SHLIB_VER%%|${TCL_SHLIB_VER}|g; \
 	    s|%%TK_INCLUDEDIR%%|${TK_INCLUDEDIR}|g; \
 	    s|%%TK_LIBDIR%%|${LOCALBASE}/lib|g; s|%%TK_SHLIB_VER%%|${TK_SHLIB_VER}|g' \

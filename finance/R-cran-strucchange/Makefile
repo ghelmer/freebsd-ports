@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strucchange
-DISTVERSION=	1.4-7
-PORTREVISION=	6
+DISTVERSION=	1.5-0
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -15,8 +14,6 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	R-cran-zoo>0:${PORTSDIR}/math/R-cran-zoo \
 		R-cran-sandwich>0:${PORTSDIR}/math/R-cran-sandwich
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -10,13 +10,13 @@ MASTER_SITES=	SF/worldforge/${PORTNAME}%20%28server%29/${PORTVERSION}
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Server for WorldForge games
 
-LIB_DEPENDS=	Atlas-0.6.1:${PORTSDIR}/devel/atlas-devel \
-		varconf-1.0.8:${PORTSDIR}/devel/varconf \
-		wfmath-1.0.1:${PORTSDIR}/math/wfmath \
-		mercator-0.3.3:${PORTSDIR}/devel/mercator \
-		skstream-0.3.7:${PORTSDIR}/net/skstream \
-		gcrypt:${PORTSDIR}/security/libgcrypt \
-		boost_regex:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libAtlas-0.6.so:${PORTSDIR}/devel/atlas-devel \
+		libvarconf-1.0.so:${PORTSDIR}/devel/varconf \
+		libwfmath-1.0.so:${PORTSDIR}/math/wfmath \
+		libmercator-0.3.so:${PORTSDIR}/devel/mercator \
+		libskstream-0.3.so:${PORTSDIR}/net/skstream \
+		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
+		libboost_regex.so:${PORTSDIR}/devel/boost-libs
 
 CONFIGURE_ARGS=	--with-python=${LOCALBASE}
 
@@ -25,7 +25,7 @@ USE_BZIP2=	yes
 USES=		gmake pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_PGSQL=	yes
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_GCC=	4.7+
 
 CFLAGS+=	-I${LOCALBASE}/include

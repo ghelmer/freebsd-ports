@@ -15,17 +15,14 @@ LICENSE=	GPLv2
 
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
 
-NO_STAGE=	yes
-MAN1=		lbrate.1
 PORTDOCS=	ChangeLog README TODO
-PLIST_FILES=	bin/lbrate
+PLIST_FILES=	bin/lbrate \
+		man/man1/lbrate.1.gz
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/lbrate ${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/lbrate.1 ${MANPREFIX}/man/man1
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR})
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/lbrate ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/lbrate.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

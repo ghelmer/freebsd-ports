@@ -13,8 +13,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	lichray@gmail.com
 COMMENT=	The libpinyin support for Fcitx
 
-LIB_DEPENDS=	fcitx-config:${PORTSDIR}/chinese/fcitx \
-		pinyin:${PORTSDIR}/chinese/libpinyin
+LIB_DEPENDS=	libfcitx-config.so:${PORTSDIR}/chinese/fcitx \
+		libpinyin.so:${PORTSDIR}/chinese/libpinyin
 
 USE_LDCONFIG=	${PREFIX}/lib/fcitx/
 USE_XZ=		yes
@@ -22,7 +22,6 @@ USES=		cmake gettext pkgconfig
 USE_GNOME=	intltool
 INSTALLS_ICONS=	yes
 
-NO_STAGE=	yes
 post-patch:
 	@${LN} -s ${_DISTDIR}/model.text.${MDVER}.tar.gz ${WRKSRC}/data
 

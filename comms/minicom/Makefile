@@ -2,19 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	minicom
-PORTVERSION=	2.6.2
-PORTREVISION=	1
+PORTVERSION=	2.7
 CATEGORIES=	comms
-MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3869/ \
-		http://alioth.debian.org/frs/download.php/file/3869/ \
+MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3977/ \
+		http://alioth.debian.org/frs/download.php/file/3977/ \
 		http://fossies.org/linux/misc/
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	An MS-DOS Telix serial communication program "workalike"
 
-OPTIONS_DEFINE=	DOCS NLS LRZSZ
-OPTIONS_DEFAULT=LRZSZ
+RUN_DEPENDS=	lrz:${PORTSDIR}/comms/lrzsz
+
+OPTIONS_DEFINE=	DOCS NLS
+OPTIONS_SUB=	yes
 LRZSZ_DESC=	Install X/Y/ZMODEM protocol handlers
+NLS_USES=	gettext
+NLS_CONFIGURE_ENABLE=	nls
 
 USES=		iconv
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -26,23 +29,6 @@ CONFIGURE_ARGS+=	--enable-dfl-baud=57600 \
 			--enable-dfl-port=/dev/cuau0
 MAKE_ARGS+=	LIBS+="${ICONV_LIB} -lcurses"
 
-MAN1=		minicom.1 runscript.1 ascii-xfr.1 xminicom.1
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLRZSZ}
-RUN_DEPENDS+=	lrz:${PORTSDIR}/comms/lrzsz
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
 .include <bsd.port.pre.mk>
 
 post-patch:
@@ -53,18 +39,18 @@ post-patch:
 		${WRKSRC}/Makefile.in
 
 post-install:
-	${CHOWN} uucp:dialer ${PREFIX}/bin/minicom
-	${CHMOD} 4511 ${PREFIX}/bin/minicom
-	${INSTALL} -d -o root -g wheel -m 0755 ${PREFIX}/etc/minicom
-	${CHOWN} uucp ${PREFIX}/etc/minicom
+	${CHOWN} uucp:dialer ${STAGEDIR}${PREFIX}/bin/minicom
+	${CHMOD} 4511 ${STAGEDIR}${PREFIX}/bin/minicom
+	${INSTALL} -d -o root -g wheel -m 0755 ${STAGEDIR}${PREFIX}/etc/minicom
+	${CHOWN} uucp ${STAGEDIR}${PREFIX}/etc/minicom
 .if ${PORT_OPTIONS:MDOCS}
-	${INSTALL} -d -o root -g wheel -m 0755 ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${DOCSDIR}/
-	${INSTALL_DATA} ${WRKSRC}/COPYING ${DOCSDIR}/
-	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${DOCSDIR}/
+	${INSTALL} -d -o root -g wheel -m 0755 ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${STAGEDIR}${DOCSDIR}/
 	(umask 022 && cd ${WRKSRC} && ${TAR} --exclude '*/Makefile*' \
 		 --exclude '*.orig' -chf - extras doc | ${TAR}  -xf - -C \
-		${DOCSDIR})
+		${STAGEDIR}${DOCSDIR})
 .endif
 
 .include <bsd.port.post.mk>

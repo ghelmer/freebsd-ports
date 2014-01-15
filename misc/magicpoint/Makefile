@@ -10,8 +10,8 @@ MASTER_SITES=	ftp://sh.wide.ad.jp/WIDE/free-ware/mgp/
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	An X11-based presentation tool
 
-LIB_DEPENDS+=	png15:${PORTSDIR}/graphics/png \
-		mng:${PORTSDIR}/graphics/libmng
+LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png \
+		libmng.so:${PORTSDIR}/graphics/libmng
 RUN_DEPENDS+=	pnmscale:${PORTSDIR}/graphics/netpbm
 
 MAKE_JOBS_UNSAFE=	yes
@@ -46,23 +46,17 @@ NO_OPTIONS_SORT=yes
 
 FREETYPE_CONFIGURE_ENABLE=	freetype
 XFT_USES=	iconv
+XFT_USE=	XORG=xft
 XFT_LIB_DEPENDS=	libttf.so:${PORTSDIR}/print/freetype
 XFT_CONFIGURE_ENABLE=	xft2
 XFT_CONFIGURE_ON=	--enable-freetype-charset16
 GIF_CONFIGURE_ENABLE=	gif
 GIF_LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib
 GIF_CPPFLAGS=		-I${LOCALBASE}/include
+IMLIB_USE=	GNOME=imlib
 IMLIB_CONFIGURE_ENABLE=	imlib
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MXFT}
-USE_XORG+=	xft
-.endif
-
-.if ${PORT_OPTIONS:MIMLIB}
-USE_GNOME+=	imlib
-.endif
 
 post-patch:
 	${REINPLACE_CMD} -e 's|-lungif|-lgif|' \
@@ -74,6 +68,8 @@ post-configure:
 		${SETENV} ${MAKE_ENV} ${XMKMF} ${XMKMF_ARGS}
 	cd ${WRKSRC}/contrib/xmindpath && \
 		${SH} ${CONFIGURE_SCRIPT} --prefix=${PREFIX}
+	${REINPLACE_CMD} -e 's|freetype1/freetype|freetype1|g' \
+		${WRKSRC}/Makefile ${WRKSRC}/image/Makefile
 
 post-build:
 	cd ${WRKSRC}/contrib/xmindpath && \
@@ -84,7 +80,7 @@ post-install:
 		${STAGEDIR}${MANPREFIX}/man/man1/
 	${INSTALL} ${WRKSRC}/contrib/xmindpath/xmindpath \
 		${STAGEDIR}${PREFIX}/bin/
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && \
 		${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}/

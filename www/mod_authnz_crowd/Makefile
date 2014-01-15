@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mod_authnz_crowd
-PORTVERSION=	2.0.2
+PORTVERSION=	2.2.2
 CATEGORIES=	www
 MASTER_SITES=	http://downloads.atlassian.com/software/crowd/downloads/cwdapache/
 DIST_SUBDIR=	apache2
@@ -10,7 +10,7 @@ DIST_SUBDIR=	apache2
 MAINTAINER=	vivek@khera.org
 COMMENT=	Apache 2.2.x module to use Atlassian Crowd for authentication
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 LIB_DEPENDS=	libsvn_client-1.so:${PORTSDIR}/devel/subversion \
 		libcurl.so:${PORTSDIR}/ftp/curl

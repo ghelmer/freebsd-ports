@@ -3,7 +3,7 @@
 
 PORTNAME=	wings
 PORTVERSION=	1.4.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DIST_SUBDIR=	erlang
@@ -15,8 +15,6 @@ BUILD_DEPENDS=	erlc:${PORTSDIR}/lang/erlang \
 		${LOCALBASE}/lib/erlang/lib/esdl/include/sdl.hrl:${PORTSDIR}/devel/esdl
 RUN_DEPENDS=	erl:${PORTSDIR}/lang/erlang \
 		${LOCALBASE}/lib/erlang/lib/esdl/include/sdl.hrl:${PORTSDIR}/devel/esdl
-
-CONFLICTS=	${PORTNAME}-devel-[0-9]*
 
 MAKE_ENV=	ESDL_PATH=${LOCALBASE}/lib/erlang/lib/esdl
 PLIST_SUB=	VERSION="${PORTVERSION}"
@@ -39,11 +37,12 @@ DESKTOP_ENTRIES="Wings" \
 post-patch:
 	@${REINPLACE_CMD} -e 's|$$(GCC)|${CC} -I${LOCALBASE}/include -L${LOCALBASE}/lib|g' \
 		${WRKSRC}/plugins_src/accel/Makefile
+	@${FIND} ${WRKSRC} -name "*.orig" -delete
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "src ebin fonts plugins textures shaders patches" \
 		${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}
+	${LN} -sf ${DISTNAME} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_DATA} ${WRKSRC}/src/${PORTNAME}.icon ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico
 

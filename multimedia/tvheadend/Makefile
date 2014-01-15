@@ -6,6 +6,7 @@ PORTVERSION=	3.4.0.20130726.3
 PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	http://people.freebsd.org/~decke/distfiles/
+DISTNAME=	decke-${PORTNAME}-8a8c1a8
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} dvb-scan-tables-20130714.tar.gz
 
 MAINTAINER=	decke@FreeBSD.org
@@ -18,11 +19,6 @@ BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
 
 LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 		libcurl.so:${PORTSDIR}/ftp/curl
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	decke
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	8a8c1a8
 
 USES=		pkgconfig gmake
 USE_PYTHON=	yes

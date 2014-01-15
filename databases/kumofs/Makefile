@@ -10,11 +10,11 @@ MASTER_SITE_SUBDIR=	kuriyama
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Scalable and highly available distributed key-value store
 
-LIB_DEPENDS=	msgpack:${PORTSDIR}/devel/msgpack \
-		tokyocabinet:${PORTSDIR}/databases/tokyocabinet
+LIB_DEPENDS=	libmsgpack.so:${PORTSDIR}/devel/msgpack \
+		libtokyocabinet.so:${PORTSDIR}/databases/tokyocabinet
 RUN_DEPENDS=	rubygem-msgpack>0:${PORTSDIR}/devel/rubygem-msgpack
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 USE_AUTOTOOLS=	libtool autoheader autoconf automake aclocal
 ACLOCAL_ARGS=	# empty
 AUTOMAKE_ARGS=	--add-missing --copy

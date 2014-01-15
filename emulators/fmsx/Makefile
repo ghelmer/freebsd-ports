@@ -16,12 +16,13 @@ DIST_SUBDIR=	fmsx351
 EXTRACT_ONLY=	fMSX351.zip
 
 MAINTAINER=	dk@farm.org
-COMMENT=	The Portable MSX/MSX2/MSX2+ Emulator
+COMMENT=	Portable MSX/MSX2/MSX2+ Emulator
 
 USE_XORG=	xi x11
 USE_ZIP=	yes
-USE_GMAKE=	yes
-USE_DOS2UNIX=	EMULib/NetUnix.c EMULib/Rules.Unix
+USES=		gmake dos2unix
+DOS2UNIX_FILES= EMULib/LibUnix.c EMULib/NetUnix.c EMULib/Rules.gcc \
+		EMULib/Rules.Unix
 RESTRICTED=	Legal status of distributed ROM images unclear
 WRKSRC=		${WRKDIR}
 

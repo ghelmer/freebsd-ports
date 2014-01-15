@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mikutter
-PORTVERSION=	0.2.2.1410
+PORTVERSION=	0.2.2.1476
 CATEGORIES=	net-im ruby
 MASTER_SITES=	http://mikutter.hachune.net/bin/ \
 		LOCAL
@@ -29,15 +29,15 @@ WRKSRC=	${WRKDIR}/${PORTNAME}
 USE_RUBY=	yes
 NO_BUILD=	yes
 
-RUBY_REQUIRE=	Ruby >= 193
 RUBY_SHEBANG_FILES=	mikutter.rb \
 			core/miku/miku.rb \
 			devel/makechi.rb
 
+PORTDOCS=	README
 SUB_FILES=	mikutter.desktop
 SUB_LIST=	RUBY_SITELIBDIR=${RUBY_SITELIBDIR}
 
-PORTDOCS=	README
+REINPLACE_ARGS=	-i ''
 
 OPTIONS_DEFINE=		HTTPCLIENT NOTIFY
 HTTPCLIENT_DESC=	httpclient support
@@ -56,7 +56,7 @@ RUN_DEPENDS+=	notify-send:${PORTSDIR}/devel/libnotify
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -i '' -e "s|%%RUBY_SITELIBDIR%%|${RUBY_SITELIBDIR}|" \
+	@${REINPLACE_CMD} -e "s|%%RUBY_SITELIBDIR%%|${RUBY_SITELIBDIR}|" \
 		${WRKSRC}/mikutter.rb
 	@${RM} -r ${WRKSRC}/vendor
 
@@ -71,10 +71,11 @@ do-install:
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 .endif
 
-x-generate-plist:
+x-generate-plist: stage
 	${ECHO} bin/mikutter > pkg-plist.new
-	${FIND} ${RUBY_SITELIBDIR}/mikutter -type f | ${SORT} | ${SED} -e 's,${RUBY_SITELIBDIR},%%RUBY_SITELIBDIR%%,' >> pkg-plist.new
+	${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/mikutter -type f | ${SORT} | ${SED} -e 's,${STAGEDIR}${RUBY_SITELIBDIR},%%RUBY_SITELIBDIR%%,' >> pkg-plist.new
 	${ECHO} share/applications/mikutter.desktop >> pkg-plist.new
-	${FIND} ${RUBY_SITELIBDIR}/mikutter -type d -depth | ${SORT} -r | ${SED} -e 's,${RUBY_SITELIBDIR},@dirrm %%RUBY_SITELIBDIR%%,' >> pkg-plist.new
+	${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/mikutter -type d -depth | ${SORT} -r | ${SED} -e 's,${STAGEDIR}${RUBY_SITELIBDIR},@dirrm %%RUBY_SITELIBDIR%%,' >> pkg-plist.new
+	${REINPLACE_CMD} -E 's|@dirrm (%%RUBY_SITELIBDIR%%/mikutter/plugin)|@dirrmtry \1|' pkg-plist.new
 
 .include <bsd.port.mk>

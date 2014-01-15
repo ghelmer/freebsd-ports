@@ -15,7 +15,7 @@ Python_Include_MAINTAINER=	python@FreeBSD.org
 # the ports' makefile. If your port requires only some set of Python
 # versions, you can define USE_PYTHON as [min]-[max] or min+ or -max
 # or as an explicit version or as a meta port version (eg. 3.1-3.2
-# for [min]-[max], 2.7+ or -3.2 for min+ and -max, 2.6 for an
+# for [min]-[max], 2.7+ or -3.2 for min+ and -max, 2.7 for an
 # explicit version or 3 for a meta port version).
 #
 # The variables:
@@ -192,22 +192,9 @@ Python_Include_MAINTAINER=	python@FreeBSD.org
 #
 # PYEASYINSTALL_CMD - Full file path to easy_install command.
 #					  default: ${LOCALBASE}/bin/easy_install-${PYTHON_VER}
-#
-# USE_TWISTED		- If this option is just yes then build and run
-#					  the dependence to twistedCore is added. Alternatively
-#					  here can be listed specific components of twisted
-#					  framework, available components are: conch, lore,
-#					  mail, names, news, runner, web, web2 and words.
-#					  Note that core component is required for any of
-#					  this optional components.
-#
-# USE_TWISTED_BUILD	- Same as previous but add only build dependency.
-#
-# USE_TWISTED_RUN	- Same as USE_TWISTED but add only run dependency.
-#
 
 _PYTHON_PORTBRANCH=		2.7
-_PYTHON_ALLBRANCHES=	2.7 2.6 3.3 3.2 3.1	# preferred first
+_PYTHON_ALLBRANCHES=	2.7 3.3 3.2 3.1	# preferred first
 
 # Determine version number of Python to use
 .include "${PORTSDIR}/Mk/bsd.default-versions.mk"
@@ -348,9 +335,9 @@ PYTHON_PORTVERSION=	${PYTHON_DEFAULT_PORTVERSION}
 
 # Python-3.3
 .if ${PYTHON_VERSION} == "python3.3"
-PYTHON_PORTVERSION?=	3.3.2
+PYTHON_PORTVERSION?=	3.3.3
 PYTHON_PORTSDIR=	${PORTSDIR}/lang/python33
-PYTHON_REL=		332
+PYTHON_REL=		333
 PYTHON_SUFFIX=		33
 PYTHON_VER=		3.3
 .if exists(${PYTHON_CMD}-config)
@@ -378,19 +365,11 @@ PYTHON_VER=		3.1
 
 # Python-2.7
 .elif ${PYTHON_VERSION} == "python2.7"
-PYTHON_PORTVERSION?=	2.7.5
+PYTHON_PORTVERSION?=	2.7.6
 PYTHON_PORTSDIR=	${PORTSDIR}/lang/python27
-PYTHON_REL=		275
+PYTHON_REL=		276
 PYTHON_SUFFIX=		27
 PYTHON_VER=		2.7
-
-# Python-2.6
-.elif ${PYTHON_VERSION} == "python2.6"
-PYTHON_PORTVERSION?=	2.6.9
-PYTHON_PORTSDIR=	${PORTSDIR}/lang/python26
-PYTHON_REL=		269
-PYTHON_SUFFIX=		26
-PYTHON_VER=		2.6
 
 # Python versions in development
 .elif defined(FORCE_PYTHON_VERSION)
@@ -406,7 +385,6 @@ PYTHON_VER!=		${PYTHON_CMD} -c 'import sys; print(sys.version[:3])'
 check-makevars::
 	@${ECHO} "Makefile error: bad value for PYTHON_VERSION: ${PYTHON_VERSION}."
 	@${ECHO} "Legal values are:"
-	@${ECHO} "  python2.6"
 	@${ECHO} "  python2.7 (default)"
 	@${ECHO} "  python3.1"
 	@${ECHO} "  python3.2"
@@ -433,10 +411,14 @@ PYTHONPREFIX_INCLUDEDIR=	${PYTHON_INCLUDEDIR:S;${PYTHONBASE};${PREFIX};}
 PYTHONPREFIX_LIBDIR=		${PYTHON_LIBDIR:S;${PYTHONBASE};${PREFIX};}
 PYTHONPREFIX_SITELIBDIR=	${PYTHON_SITELIBDIR:S;${PYTHONBASE};${PREFIX};}
 
+_CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}
+.if defined(USE_PYDISTUTILS) && ${_CURRENTPORT} != ${PYTHON_PKGNAMEPREFIX}setuptools
+BUILD_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}setuptools>0:${PORTSDIR}/devel/py-setuptools
+.endif
+
 # setuptools support
 .if defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} == "easy_install"
-BUILD_DEPENDS+=		${PYEASYINSTALL_CMD}:${PORTSDIR}/devel/py-distribute
-RUN_DEPENDS+=		${PYEASYINSTALL_CMD}:${PORTSDIR}/devel/py-distribute
+RUN_DEPENDS+=		${PYEASYINSTALL_CMD}:${PORTSDIR}/devel/py-setuptools
 
 PYDISTUTILS_BUILD_TARGET?=		bdist_egg
 PYDISTUTILS_INSTALL_TARGET?=	easy_install
@@ -500,33 +482,47 @@ post-install: stage-python-compileall
 
 # distutils support
 PYSETUP?=				setup.py
+PYDISTUTILS_SETUP?=	-c "import setuptools; __file__='${PYSETUP}'; exec(compile(open(__file__).read().replace('\\r\\n', '\\n'), __file__, 'exec'))"
 PYDISTUTILS_CONFIGUREARGS?=
 PYDISTUTILS_BUILDARGS?=
 PYDISTUTILS_INSTALLARGS?=	-c -O1 --prefix=${PREFIX}
-.if !defined(NO_STAGE) && defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} != "easy_install"
+.if defined(USE_PYDISTUTILS) && ${USE_PYDISTUTILS} != "easy_install"
+. if !defined(PYDISTUTILS_INSTALLNOSINGLE)
+PYDISTUTILS_INSTALLARGS+=	--single-version-externally-managed
+. endif
+. if !defined(NO_STAGE)
 PYDISTUTILS_INSTALLARGS+=	--root=${STAGEDIR}
+. endif
 .endif
+_PYTHONPKGLIST=				${WRKDIR}/.PLIST.pymodtmp
+PYDISTUTILS_INSTALLARGS:=	--record ${_PYTHONPKGLIST} \
+		${PYDISTUTILS_INSTALLARGS}
+
 PYDISTUTILS_PKGNAME?=	${PORTNAME}
 PYDISTUTILS_PKGVERSION?=${PORTVERSION}
 PYDISTUTILS_EGGINFO?=	${PYDISTUTILS_PKGNAME:C/[^A-Za-z0-9.]+/_/g}-${PYDISTUTILS_PKGVERSION:C/[^A-Za-z0-9.]+/_/g}-py${PYTHON_VER}.egg-info
-PYDISTUTILS_EGGINFODIR?=${PYTHONPREFIX_SITELIBDIR}
+PYDISTUTILS_EGGINFODIR?=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
+add-plist-egginfo:
 .if !defined(PYDISTUTILS_NOEGGINFO) && \
 	!defined(PYDISTUTILS_AUTOPLIST) && \
 	(defined(INSTALLS_EGGINFO) ||	\
 		(defined(USE_PYDISTUTILS) && \
 		 ${USE_PYDISTUTILS} != "easy_install")) && \
 	 defined(PYTHON_REL)
-. for egg in ${PYDISTUTILS_EGGINFO}
-PLIST_FILES+=	${PYDISTUTILS_EGGINFODIR:S;${PREFIX}/;;}/${egg}
+. for egginfo in ${PYDISTUTILS_EGGINFO}
+	if [ -d "${PYDISTUTILS_EGGINFODIR}/${egginfo}" ]; then \
+		${LS} ${PYDISTUTILS_EGGINFODIR}/${egginfo} | while read f; do \
+			${ECHO_CMD} ${PYDISTUTILS_EGGINFODIR:S;^${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}/$${f} >> ${TMPPLIST}; \
+		done; \
+		${ECHO_CMD} "@unexec rmdir \"%D/${PYDISTUTILS_EGGINFODIR:S;${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}\" 2>/dev/null || true" >> ${TMPPLIST}; \
+	fi;
 . endfor
+.else
+	@${DO_NADA}
 .endif
 
 .if defined(PYDISTUTILS_AUTOPLIST) && defined(USE_PYDISTUTILS)
-_PYTHONPKGLIST=				${WRKDIR}/.PLIST.pymodtmp
-PYDISTUTILS_INSTALLARGS:=	--record ${_PYTHONPKGLIST} \
-							${PYDISTUTILS_INSTALLARGS}
-
 _RELSITELIBDIR=	${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}
 _RELLIBDIR=		${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;}
 
@@ -591,15 +587,13 @@ PYTHON_NO_DEPENDS?=		NO
 
 .if ${PYTHON_NO_DEPENDS} == "NO"
 .if defined(USE_PYTHON_BUILD)
-BUILD_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR} \
-				python:${PORTSDIR}/lang/python
+BUILD_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
 .if defined(_WANTS_META_PORT)
 BUILD_DEPENDS+=	python${_WANTS_META_PORT}:${PORTSDIR}/lang/python${_WANTS_META_PORT}
 .endif
 .endif
 .if defined(USE_PYTHON_RUN)
-RUN_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR} \
-				python:${PORTSDIR}/lang/python
+RUN_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
 .if defined(_WANTS_META_PORT)
 RUN_DEPENDS+=	python${_WANTS_META_PORT}:${PORTSDIR}/lang/python${_WANTS_META_PORT}
 .endif
@@ -620,79 +614,8 @@ PLIST_SUB+=		PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;} \
 				PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} \
 				PYTHON_VERSION=${PYTHON_VERSION}
 
-# Twisted specific routines
-.if defined(USE_TWISTED) || defined(USE_TWISTED_BUILD) || defined(USE_TWISTED_RUN)
-
-.if defined(USE_TWISTED_BUILD) && defined(USE_TWISTED_RUN)
-. if ${USE_TWISTED_BUILD} != ${USE_TWISTED_RUN}
-IGNORE=	: USE_TWISTED_BUILD and USE_TWISTED_RUN must have equal values
-. endif
-.endif
-
-.if defined(USE_TWISTED)
-TWISTED_BUILD_DEP=	yes
-TWISTED_RUN_DEP=	yes
-.else
-. if defined(USE_TWISTED_BUILD)
-TWISTED_BUILD_DEP=	yes
-USE_TWISTED=		${USE_TWISTED_BUILD}
-. endif
-. if defined(USE_TWISTED_RUN)
-TWISTED_RUN_DEP=	yes
-USE_TWISTED=		${USE_TWISTED_RUN}
-. endif
-.endif
-
-.if ${USE_TWISTED} == "20" || ${USE_TWISTED} == "yes"
-USE_TWISTED_VER=	${USE_TWISTED}
-. if defined(TWISTED_BUILD_DEP)
-BUILD_DEPENDS+=		${PYTHON_SITELIBDIR}/twisted/__init__.py:${PORTSDIR}/devel/py-twistedCore
-. endif
-. if defined(TWISTED_RUN_DEP)
-RUN_DEPENDS+=		${PYTHON_SITELIBDIR}/twisted/__init__.py:${PORTSDIR}/devel/py-twistedCore
-. endif
-.else
-USE_TWISTED_VER=	20
-# Checking for twisted components
-_TWISTED_COMPONENTS?=	conch lore mail names news runner web web2 words
-
-# XXX Should be here other dependencies types?
-conch_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/conch/__init__.py:${PORTSDIR}/security/py-twistedConch
-lore_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/lore/__init__.py:${PORTSDIR}/textproc/py-twistedLore
-mail_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/mail/__init__.py:${PORTSDIR}/mail/py-twistedMail
-names_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/names/__init__.py:${PORTSDIR}/dns/py-twistedNames
-news_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/news/__init__.py:${PORTSDIR}/news/py-twistedNews
-pair_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/pair/__init__.py:${PORTSDIR}/net/py-twistedPair
-runner_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/runner/__init__.py:${PORTSDIR}/devel/py-twistedRunner
-web2_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/web2/__init__.py:${PORTSDIR}/www/py-twistedWeb2
-web_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/web/__init__.py:${PORTSDIR}/www/py-twistedWeb
-words_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/words/__init__.py:${PORTSDIR}/net-im/py-twistedWords
-
-.for component in ${_TWISTED_COMPONENTS}
-_COMP_TEST=	${USE_TWISTED:M${component}}
-. if ${_COMP_TEST:S/${component}//}!=${_COMP_TEST:S/  / /g}
-.  if defined(TWISTED_BUILD_DEP)
-BUILD_DEPENDS+=	${${component}_DEPENDS}
-.  endif
-.  if defined(TWISTED_RUN_DEP)
-RUN_DEPENDS+=	${${component}_DEPENDS}
-.  endif
-. endif
-.endfor
-
-# Implicit dependency from core
-.if defined(TWISTED_BUILD_DEP)
-BUILD_DEPENDS+=	${PYTHON_SITELIBDIR}/twisted/__init__.py:${PORTSDIR}/devel/py-twistedCore
-.endif
-.if defined(TWISTED_RUN_DEP)
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/twisted/__init__.py:${PORTSDIR}/devel/py-twistedCore
-.endif
-
-.endif
-
-.endif # defined(USE_TWISTED)
-
 # XXX Hm, should I export some of the variables above to *_ENV?
+
 
 # If multiple Python versions are installed and cmake is used, it might
 # happen that a cmake-enabled port using find_package(PythonLibs) and
@@ -721,18 +644,20 @@ MAKE_ENV+=	LDSHARED="${LDSHARED}" PYTHONDONTWRITEBYTECODE= PYTHONOPTIMIZE=
 
 .if !target(do-configure) && !defined(HAS_CONFIGURE) && !defined(GNU_CONFIGURE)
 do-configure:
-	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${PYSETUP} ${PYDISTUTILS_CONFIGURE_TARGET} ${PYDISTUTILS_CONFIGUREARGS})
+	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${PYDISTUTILS_SETUP} ${PYDISTUTILS_CONFIGURE_TARGET} ${PYDISTUTILS_CONFIGUREARGS})
 .endif
 
 .if !target(do-build)
 do-build:
-	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${PYSETUP} ${PYDISTUTILS_BUILD_TARGET} ${PYDISTUTILS_BUILDARGS})
+	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${PYDISTUTILS_SETUP} ${PYDISTUTILS_BUILD_TARGET} ${PYDISTUTILS_BUILDARGS})
 .endif
 
 .if !target(do-install)
 do-install:
-	@(cd ${INSTALL_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${PYSETUP} ${PYDISTUTILS_INSTALL_TARGET} ${PYDISTUTILS_INSTALLARGS})
+	@(cd ${INSTALL_WRKSRC}; ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${PYDISTUTILS_SETUP} ${PYDISTUTILS_INSTALL_TARGET} ${PYDISTUTILS_INSTALLARGS})
 .endif
+
+add-plist-post: add-plist-egginfo
 
 .if defined(PYEASYINSTALL_ARCHDEP)
 .if !target(easyinstall-setopt)

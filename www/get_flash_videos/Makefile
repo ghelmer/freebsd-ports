@@ -12,7 +12,7 @@ EXTRACT_ONLY=
 MAINTAINER=	lioux@FreeBSD.org
 COMMENT=	Download videos from various Flash-based video hosting sites
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 RUN_DEPENDS=	\
 		p5-Crypt-Blowfish_PP>=0:${PORTSDIR}/security/p5-Crypt-Blowfish_PP \
@@ -25,7 +25,6 @@ RUN_DEPENDS=	\
 		p5-XML-Simple>=0:${PORTSDIR}/textproc/p5-XML-Simple \
 		rtmpdump>=2.4.0:${PORTSDIR}/multimedia/rtmpdump
 
-FETCH_ARGS=	-Fpr	# work around 302 redirect at github
 USES=		perl5
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

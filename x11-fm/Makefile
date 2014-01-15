@@ -15,6 +15,7 @@
     SUBDIR += gnome-commander2
     SUBDIR += gprename
     SUBDIR += krusader2
+    SUBDIR += mate-file-manager
     SUBDIR += mtoolsfm
     SUBDIR += mucommander
     SUBDIR += nautilus
@@ -37,7 +38,6 @@
     SUBDIR += xdiskusage
     SUBDIR += xfe
     SUBDIR += xfm
-    SUBDIR += xnc
     SUBDIR += xplore
 
 .include <bsd.port.subdir.mk>

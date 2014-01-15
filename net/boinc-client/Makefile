@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	boinc-client
-PORTVERSION=	7.2.28
+PORTVERSION=	7.2.33
 CATEGORIES=	net
-MASTER_SITES=	ftp://rene-ladan.nl/pub/distfiles/
+MASTER_SITES=	${MASTER_SITE_LOCAL} \
+		ftp://rene-ladan.nl/pub/distfiles/
+MASTER_SITE_SUBDIR=rene
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	Berkeley Open Infrastructure for Network Computing client
 
-USES=		gmake pkgconfig
+USES=		dos2unix gmake pkgconfig
 USE_XZ=		yes
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	autoconf:env automake:env libtoolize:env
 USE_LDCONFIG=	yes
-USE_DOS2UNIX=	yes
-DOS2UNIX_REGEX=	.*\.xpm
+DOS2UNIX_GLOB=	*.xpm
 
 USERS=		boinc
 GROUPS=		boinc
@@ -59,7 +60,7 @@ MANAGER_CONFIGURE_OFF=	--with-wx-config=false --without-x
 MANAGER_CONFIGURE_ENABLE=manager
 MANAGER_USE=		XORG=x11 WX=2.8+
 
-CLIENT_CONFIGURE_WITH=	client
+CLIENT_CONFIGURE_ENABLE=client
 CLIENT_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 CLIENT_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
 CLIENT_USE=		RC_SUBR=boinc-client
@@ -70,7 +71,7 @@ LINUX_USE=		LINUX=yes
 #OPTIMIZE_CONFIGURE_ENBABLE=	optimize
 
 X11_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
-X11_USE=		GL=glut XORG=xmu XORG=xi
+X11_USE=		GL=glut XORG=xmu,xi
 
 .include <bsd.port.options.mk>
 
@@ -155,8 +156,8 @@ post-install:
 	${COPYTREE_SHARE} Default ${STAGEDIR}${PREFIX}/share/boinc/skins/ )
 . endif
 .endif
-. for name in config.h project_specific_defines.h api/reduce.h lib/shmem.h \
-	lib/std_fixes.h
+. for name in config.h project_specific_defines.h api/reduce.h \
+	lib/opencl_boinc.h lib/shmem.h lib/std_fixes.h
 	${INSTALL_DATA} ${WRKSRC}/${name} ${STAGEDIR}${PREFIX}/include/boinc
 . endfor
 .if ${PORT_OPTIONS:MX11}

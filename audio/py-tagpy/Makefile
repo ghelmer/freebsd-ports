@@ -13,9 +13,10 @@ COMMENT=	Python bindings for Scott Wheeler's TagLib
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	boost_python:${PORTSDIR}/devel/boost-python-libs \
-		tag:${PORTSDIR}/audio/taglib
+LIB_DEPENDS=	libboost_python.so:${PORTSDIR}/devel/boost-python-libs \
+		libtag.so:${PORTSDIR}/audio/taglib
 
+USES=		shebangfix
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	configure.py
 CONFIGURE_ARGS=	--taglib-inc-dir="${LOCALBASE}/include/taglib" \
@@ -23,6 +24,9 @@ CONFIGURE_ARGS=	--taglib-inc-dir="${LOCALBASE}/include/taglib" \
 		--boost-inc-dir="${PYTHON_INCLUDEDIR},${LOCALBASE}/include" \
 		--boost-lib-dir="${PYTHON_LIBDIR},${LOCALBASE}/lib" \
 		--boost-python-libname="boost_python"
+python_OLD_CMD=	/usr/bin/env python
+python_CMD=	${PYTHON_CMD}
+SHEBANG_FILES=	configure.py
 
 PLIST_FILES=	%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
 

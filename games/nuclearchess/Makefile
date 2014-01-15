@@ -6,39 +6,34 @@ PORTVERSION=	1.0.0
 PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://www.linux-games.com/nuclearchess/ \
-		SF/nemysisfreebsdp/:icons
+		SF/nemysisfreebsdp/${CATEGORIES}/:icons
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@gmx.ch
+MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Chess variant designed to be short and fun for all players
 
 LICENSE=	GPLv2
 
 USE_SDL=	sdl image
-USE_GNOME=	desktopfileutils
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=${DATADIR}
 
 PORTDOCS=	AUTHORS ChangeLog
 
-DESKTOP_ENTRIES="NuclearChess" "${COMMENT}"  \
-		"${PREFIX}/share/pixmaps/${PORTNAME}.png" \
-		"${PORTNAME}" "Game;BoardGame;" false
+OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+DESKTOP_ENTRIES="NuclearChess" "" "${PORTNAME}" \
+		"${PORTNAME}" "Game;BoardGame;" ""
 
 post-install:
-	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png ${PREFIX}/share/pixmaps/
+	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/
 
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
-	@-update-desktop-database
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

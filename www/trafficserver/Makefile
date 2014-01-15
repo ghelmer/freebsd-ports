@@ -7,9 +7,9 @@ CATEGORIES=	www
 MASTER_SITES=	APACHE/${PORTNAME}
 
 MAINTAINER=	jnlin@csie.nctu.edu.tw
-COMMENT=	A fast, scalable and extensible HTTP proxy server
+COMMENT=	Fast, scalable and extensible HTTP proxy server
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
@@ -17,10 +17,9 @@ LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 
 USE_AUTOTOOLS=	autoconf automake libtool
 USE_BZIP2=	yes
-USES=		pkgconfig
+USES=		pkgconfig tcl
 USE_OPENSSL=	yes
 USE_SQLITE=	yes
-USE_TCL=	yes
 USE_RC_SUBR=	${PORTNAME}
 USE_LDCONFIG=	yes
 USE_GCC=	any

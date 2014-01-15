@@ -17,20 +17,16 @@ PORTSCOUT=	ignore:1
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=yes
-USE_TK=		yes
 USE_XZ=		yes
+USES=		tk
 
 DIST_SUBDIR=	python
 DISTINFO_FILE=	${PORTSDIR}/lang/python${PYTHON_SUFFIX}/distinfo
 WRKSRC=		${PYTHON_WRKSRC}/Modules
 
 PYDISTUTILS_INSTALLARGS+=	--install-lib ${PYTHON_LIBDIR}/lib-dynload
-PYDISTUTILS_NOEGGINFO=	yes
-PYDISTUTILS_PKGNAME=	Tkinter
+PYDISTUTILS_AUTOPLIST=	yes
 
-PLIST_FILES=	%%PYTHON_LIBDIR%%/lib-dynload/_tkinter.so
-
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 post-extract:

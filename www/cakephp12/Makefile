@@ -6,22 +6,20 @@ PORTVERSION=	1.2.10
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/tarball/${PORTVERSION}/ \
 		LOCAL/glarkin
+PKGNAMESUFFIX=	12
 DISTNAME=	${PORTNAME}-${PORTNAME}-${PORTVERSION}-${GITVERSION}
 
-MAINTAINER=	glarkin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A framework for developing PHP web applications
 
-LATEST_LINK=	cakephp12
-
 GITVERSION=	0-ge6e50e8
-FETCH_ARGS=	-pRr
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-da67eb8
 
 PORTDOCS=	README
 
 SLAVE_PORT_MODULES=	REWRITE
 
-CONFLICTS=	cakephp-1.[13].* cakephp-2.*
+CONFLICTS=	cakephp-1[13]-* cakephp-2?-.* cakephp-2.3.*
 
 NO_BUILD=	yes
 USES=		gettext

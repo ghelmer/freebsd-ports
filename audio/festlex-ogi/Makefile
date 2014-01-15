@@ -8,13 +8,13 @@ CATEGORIES=	audio accessibility
 MASTER_SITES=	# ${MASTER_SITE_FESTIVAL_OGI}
 DISTNAME=	OGIlexicon-2.2
 
-MAINTAINER=	araujo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Composite pronunciation dictionary from ogi.edu for Festival
 
 RUN_DEPENDS=	festival:${PORTSDIR}/audio/festival \
 		${LOCALBASE}/share/festival/lib/dicts/wsj.wp39.poslexR:${PORTSDIR}/audio/festlex-poslex
 
-RESTRICTED=	no-commercial-use
+RESTRICTED=	No commercial use
 
 WRKSRC=		${WRKDIR}/festival
 

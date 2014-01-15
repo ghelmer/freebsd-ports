@@ -229,7 +229,6 @@ x11-wm/beryl-settings-bindings||2008-08-18|Has expired: No longer supported -- u
 japanese/lyx|print/lyx|2008-08-18|No longer maintained and print/lyx now supports Unicode
 japanese/lyx-doc||2008-08-18|Obsolete
 games/blobandconquer||2008-08-20|Removed due to copyright problems
-games/blobwars||2008-08-20|Removed due to copyright problems
 games/randomshooter||2008-08-20|Removed due to copyright problems
 devel/autoconf261|devel/autoconf262|2008-08-20|Migration to autoconf-2.62
 x11-themes/enlightenment-theme-BlueSteel||2008-08-20|Deprecated by x11-themes/e16-themes
@@ -796,7 +795,6 @@ misc/xenmenu||2009-08-08|Removed: Project abandoned in 1998
 security/dns-proxy-tor||2009-08-09|Removed
 security/trans-proxy-tor||2009-08-09|Removed: trans-proxy-tor is rendered obsolete by Tor's TransPort option (currently only available in tor-devel)
 science/dft++||2009-08-11|Removed
-misc/bibletime-devel||2009-08-17|Has expired
 devel/p5-MooseX-Policy-SemiAffordanceAccessor|devel/p5-MooseX-SemiAffordanceAccessor|2009-08-18|Renamed
 www/mediawiki12|www/mediawiki112|2009-08-19|Renamed
 lang/gcc42-withgcjawt|lang/gcc42|2009-08-19|Not needed any longer, still an option for the regular lang/gcc ports
@@ -2111,7 +2109,6 @@ games/geki3||2011-05-02|Removed, Upstream disappeared and distfile is no longer 
 games/grande||2011-05-02|Removed, Upstream disappeared and distfile is no longer available
 games/spacearyarya||2011-05-02|Removed, Upstream disappeared and distfile is no longer available
 ftp/ftptool||2011-05-02|Removed, depend on this expired editors/textedit
-editors/textedit||2011-05-02|Has expired: Upstream disappeared and distfile is no longer available
 security/libfwbuilder||2011-05-02|libfwbuilder merged into fwbuilder
 games/monopd||2011-05-03|Removed, depends on an expired library: devel/libcapsinetwork
 devel/libcapsinetwork||2011-05-03|Has expired: Upstream disappeared and distfile is no longer available
@@ -3006,7 +3003,6 @@ mail/demime||2011-12-28|Has expired: No upstream development since 2007
 x11/wmmsg||2011-12-28|Has expired: No more public distfiles
 x11-toolkits/libgtkeditor||2011-12-28|Has expired: No longer supported upstream, not depended upon anymore
 misc/demoniac||2011-12-28|Has expired: No more upstream, no more public distfiles
-cad/gtkwave||2011-12-28|Has expired: No more public distfiles, no more upstream
 databases/clip||2011-12-28|Has expired: No upstream development for a long time
 x11-toolkits/gtkextra||2011-12-28|Has expired: no longer supported upstream, no more depend on
 www/xpi-mousegestures||2011-12-28|Has expired: Development has been ceased and not compatible with Firefox > 2
@@ -4119,7 +4115,6 @@ misc/splitvt||2013-03-06|Has expired: Broken for more than 6 month
 sysutils/udesc_dump||2013-03-06|Has expired: Broken for more than 6 month
 textproc/gxditview||2013-03-06|Has expired: Broken for more than 6 month
 x11/powershell||2013-03-06|Has expired: Broken for more then 6 month
-devel/py-setuptools|devel/py-distribute|2013-03-06|Replaced with distribute
 devel/ZendOptimizer|www/pecl-zendoptimizerplus|2013-03-07|Replaced with supported open-source release
 net-im/jreen|net-im/libjreen|2013-03-07|Duplicate of net-im/libjreen
 databases/ruby-dbdbd||2013-03-08|Dead project, no known users
@@ -5001,7 +4996,7 @@ net/gnome-vnc||2013-10-05|Depends on EOLed gnome1
 news/grn||2013-10-05|Depends on EOLed gnome1
 security/fpm||2013-10-05|Depends on EOLed gnome1
 sysutils/xsu||2013-10-05|Depends on EOLed gnome1
-securty/fwbuilder-devel||2013-10-05|Appears not to be actively developed any more.
+securty/fwbuilder-devel||2013-10-05|Appears not to be actively developed any more
 devel/libglade||2013-10-07|Component of the obsolete gnome1
 databases/gnome-db||2013-10-07|Component of the obsolete gnome1
 databases/libgda||2013-10-07|Component of the obsolete gnome1
@@ -5165,13 +5160,12 @@ devel/ruby-io-reactor||2013-11-03|Has expired: Does not work with Ruby 1.9
 textproc/p5-Text-Emoticon-MSN||2013-11-03|Has expired: Primary MSN Messenger service terminated 30 APR 2013
 textproc/jakarta-poi|textproc/apache-poi|2013-11-04|Replaced with apache-poi
 net-im/qutim||2013-11-05|Has expired: Old version, a new one needs to be ported from scratch
-textproc/gtkdiff||2013-11-05|Has expired: Gnome1 EOLed by upstream for a while.
+textproc/gtkdiff||2013-11-05|Has expired: Gnome1 EOLed by upstream for a while
 net-p2p/libtorrent-rasterbar-16|net-p2p/libtorrent-rasterbar|2013-11-06|Moved to net-p2p/libtorrent-rasterbar since it's a stable version
 net-p2p/libtorrent-rasterbar-python-16|net-p2p/libtorrent-rasterbar-python|2013-11-06|Moved to net-p2p/libtorrent-rasterbar-python since it's a stable version
 devel/ORBit||2013-11-07|Has expired: EOLed upstream for very long
 x11/gnome-libs||2013-11-07|Has expired: EOLed upstream for very long
 textproc/stardict2||2013-11-07|Has expired: Newer version available in ports: textproc/stardict3
-devel/pure-stldict|devel/pure-stllib|2013-11-07|Removed: Use devel/pure-stllib instead
 devel/pure-stlvec|devel/pure-stllib|2013-11-07|Removed: Use devel/pure-stllib instead
 textproc/lexxia||2013-11-07|Removed no public distfile available anymore
 textproc/docproj-nojadetex||2013-11-07|Removed
@@ -5182,12 +5176,12 @@ games/windstille||2013-11-12|Has expired: Unplayable, development ceased
 games/intensityengine||2013-11-12|Has expired: Unplayable, main server down, development ceased
 games/tmw|games/manaplus|2013-11-12|Replaced with games/manaplus
 graphics/mesagl||2013-11-14|Old unmaintained version. Use graphics/libosmesa instead
-editors/xxe||2013-11-15|Has expired: XXE becomes unfetchable every 3-4 months as distfile is replaced with new version.  This high-maintenance port requires a maintainer to avoid removal.
+editors/xxe||2013-11-15|Has expired: XXE becomes unfetchable every 3-4 months as distfile is replaced with new version.  This high-maintenance port requires a maintainer to avoid removal
 editors/xml2rfc-xxe||2013-11-15|Has expired: Depends on editors/xxe, which is due to be removed due to lack of maintainer
 devel/perltidy|devel/p5-Perl-Tidy|2013-11-15|Renamed to match upstream naming
 math/vtk|math/vtk5|2013-11-17|Removed, EOLed
 net-im/decibel||2013-11-17|Has expired: Deprecated and unsupported upstream for many years, not used by anything
-databases/postgresql-libpq++||2013-11-17|Has expired: Not maintained upstreams for 10+ years.
+databases/postgresql-libpq++||2013-11-17|Has expired: Not maintained upstreams for 10+ years
 audio/gmpeg-devel||2013-11-17|Removed, no active development since more than 8 years
 graphics/gqview-devel||2013-11-17|Removed, no active development since more than 8 years
 textproc/stardict2-dictd_mova|textproc/stardict-dictd_mova|2013-11-17|Renamed
@@ -5206,7 +5200,7 @@ security/linux-pam-docs||2013-11-18|Has expired: Broken for more than 6 month
 net-p2p/mooseekd||2013-11-18|Has expired: Broken for more than 6 month
 textproc/p5-Lucene||2013-11-18|Has expired: Broken for more than 6 month
 net-mgmt/zenpack-dellmonitor||2013-11-18|Has expired: Broken for more than 6 month
-x11-wm/fbpager||2013-11-18|Has expired: BRoken for more than 6 month
+x11-wm/fbpager||2013-11-18|Has expired: Broken for more than 6 month
 net/hf6to4||2013-11-18|Has expired: Broken for more than 6 month
 x11-themes/kde-icons-exquisite||2013-11-18|Has expired: Broken for more than 6 month
 x11-themes/kde-icons-marbles-translucent||2013-11-18|Has expired: Broken for more than 6 month
@@ -5219,7 +5213,7 @@ databases/drizzle||2013-11-18|Has expired: Broken for more than 6 month
 devel/p5-File-Lock||2013-11-18|Has expired: Broken for more than 6 month
 devel/valide||2013-11-18|Has expired: Broken for more than 6 month
 databases/gomysql||2013-11-18|Has expired: Broken for more than 6 month
-databases/p5-DBZ_File||2013-11-18|Has expired: BRoken for more than 6 month
+databases/p5-DBZ_File||2013-11-18|Has expired: Broken for more than 6 month
 devel/monodevelop-vala||2013-11-18|Has expired: Broken for more than 6 month
 devel/gonzui||2013-11-18|Has expired: Broken for more than 6 month
 devel/monodevelop-java||2013-11-18|Has expired: Broken for more than 6 month
@@ -5230,3 +5224,155 @@ devel/simulavr||2013-11-18|Has expired: Broken for more than 6 month
 japanese/mobileimap||2013-11-18|Has expired: Broken for more than 6 month
 devel/libYGP||2013-11-18|Has expired: Broken for more than 6 month
 devel/monodevelop-python||2013-11-18|Has expired: Broken for more than 6 month
+devel/lua50-app||2013-11-18|Removed, lua50 is EOLed
+devel/lua50-dfui||2013-11-18|Removed, lua50 is EOLed
+devel/lua50-filename||2013-11-18|Removed, lua50 is EOLed
+devel/lua50-gettext||2013-11-18|Removed, lua50 is EOLed
+devel/lua50-posix||2013-11-18|Removed, lua50 is EOLed
+devel/lua50-pty||2013-11-18|Removed, lua50 is EOLed
+lang/tolua++50||2013-11-18|Removed, lua50 is EOLed
+lang/tolua50||2013-11-18|Removed, lua50 is EOLed
+net/lua50-luasocket||2013-11-18|Removed, lua50 is EOLed
+devel/lua50-compat51||2013-11-18|Removed, lua50 is EOLed
+lang/lua50|lang/lua|2013-11-18|Removed, lua50 is EOLed
+security/squidclamav|www/squidclamav|2013-11-18|Has expired: Obsolete and broken with clang, use www/squidclamav instead
+multimedia/tovid||2013-11-19|Has expired: No more public distfiles
+devel/rubygem-ripper||2013-11-20|Removed: it is only for Ruby 1.8 which is removed already
+editors/mode-info||2013-11-20|Has expired: Misbuilding since 2004, not maintained since 2008
+devel/netbsd-pkgsrc-mk-files||2013-11-20|Has expired: Imported for devel/mk-configure but no longer required
+net/ptpd|net/ptpd2|2013-11-20|Protocol and software no longer supported
+audio/gstreamer1-plugins-celt||2013-11-20|Removed, audio/gstreamer1-plugins-opus can be used as replacement
+math/p5-MatrixReal|math/p5-Math-MatrixReal|2013-11-22|Rename to match upstream naming
+lang/gcc42|lang/gcc46|2013-11-23|Superseded by GCC 4.6 or later
+devel/p5-IO||2013-11-23|Removed: newer versions are included in all supported Perl releases
+www/mod_wsgi|www/mod_wsgi2|2013-11-24|Rename to match version
+net/ftelnetd||2013-11-25|Has expired: "Unfetchable due to parked MASTER_SITES"
+games/BillardGL||2013-11-25|Has expired: Unplayable, development ceased
+sysutils/rsyslog6-pgsql||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-relp||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-gnutls||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-rfc3195||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-gssapi||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-snmp||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-mysql||2013-11-25|Has expired: Use sysutils/rsyslog7
+sysutils/rsyslog6-dbi||2013-11-25|Has expired: Use sysutils/rsyslog7
+www/trac-gitplugin||2013-11-25|Removed: this plugin has been included in the Trac 1.0 distribution
+audio/mpc|audio/musicpc|2013-11-26|Renamed to avoid conflict with math/mpc
+deskutils/q4wine|emulators/q4wine|2013-11-26|Move to better category
+devel/p5-MooseX-ChainedAccessors||2013-11-27|Has expired: Marked as depreciated upstream
+devel/py-distribute|devel/py-setuptools|2013-11-27|Replaced with setuptools
+devel/zmq-devel|net/libzmq3|2013-11-28|Rename according to upstream and move to more suitable category
+devel/czmq|net/czmq|2013-11-29|Move to a more suitable category and with other libzmq ports
+lang/ruby-reference||2013-11-29|Removed: does not contain up-to-date ruby reference, upstream has disappeared
+audio/gnump3d||2013-11-30|Has expired: Development has been abandoned upstream
+audio/rubygem-ogginfo|audio/rubygem-ruby-ogginfo|2013-11-30|Rename to match upstream naming
+x11-fm/xnc||2013-12-01|Has expired: Latest release from 2005, upstream disappeared, does not build
+audio/liteamp||2013-12-01|Has expired: Dead upstream since 2004, does not build with clang
+net-im/tapioca-qt||2013-12-01|Has expired: Unmaintained upstream since 2007, not used by anything
+net-im/telepathy-qt|net-im/telepathy-qt4|2013-12-01|Has expired: Unmaintained upstream since 2007, use net-im/telepathy-qt4
+x11-toolkits/linux-f10-gtk||2013-12-01|Has expired: GTK1 is deprecated
+net-im/linux-ymessenger||2013-12-01|Has expired: Depends on deprecated Linux GTK1
+emulators/linux-pete-mesagpu||2013-12-01|Has expired: Depends on deprecated Linux GTK1
+emulators/linux-pete-xgl2gpu||2013-12-01|Has expired: Depends on deprecated Linux GTK1
+emulators/linux-peops-softgpu||2013-12-01|Has expired: Depends on deprecated Linux GTK1
+finance/eqonomize-kde4||2013-12-01|Has expired: No upstream releases since 2008, does not build on FreeBSD 10 and 11
+comms/uhso-kmod||2013-12-01|Has expired: included in base system on all supported releases
+deskutils/ecru||2013-12-01|Has expired: No longer maintained upstream
+editors/gphpedit||2013-12-01|Has expired: No longer maintaned upstream
+irc/inspircd12|irc/inspircd|2013-12-01|Has expired: No upstream support; known vulnerable. Please use irc/inspircd
+graphics/py-clutter||2013-12-01|Has expired: Broken for more than 6 month
+graphics/py-clutter-gtk||2013-12-01|Has expired: depends on expired graphics/py-clutter
+devel/zmq|net/libzmq2|2013-12-05|Rename according to upstream and move to more suitable category
+devel/rubygem-ruby-statsd|devel/rubygem-statsd|2013-12-05|Rename to match upstream naming
+x11-themes/lila-xfwm4||2013-12-05|Has expired: Upstream development dead
+science/omnetpp||2013-12-05|Has expired: depends on expired textproc/libxml
+textproc/libxml||2013-12-05|Has expired: No release since 2002, no support from upstream
+deskutils/taskjuggler|deskutils/rubygem-taskjuggler|2013-12-05|Rename to match our rubygems naming
+www/clickheat||2013-12-07|Has expired: No more activity since 2011
+security/pdfcrack||2013-12-08|Has expired: Not active since several years
+security/rarcrack||2013-12-08|Has expired: Not active since several years
+java/subversion-java|java/java-subversion|2013-12-08|Rename to reflect subversion child port naming scheme
+games/flare|games/flare-game|2013-12-10|Flare port was split into engine and game counterparts, as upstream did
+audio/liteamp||2013-12-15|Has expired: Dead upstream since 2004, does not build with clang
+security/opieprint||2013-12-15|Has expired: No more active upstream
+security/bubblegum||2013-12-15|Has expired: No more active upstream
+security/snortsms||2013-12-15|Has expired: Not active since several years.
+sysutils/hammerhead||2013-12-15|Has expired: Development no more active
+net-p2p/libtorrent-rasterbar-15-python||2013-12-15|Has expired: Unusable, development ceased
+graphics/openexr_ctl||2013-12-15|Has expired: Now distributed with ampasCTL-1.5
+net-p2p/libtorrent-rasterbar-15||2013-12-16|Has expired: Unusable, development ceased
+x11-fonts/ppantsfonts||2013-12-20|Has expired: Broken for more than 6 month
+x11-toolkits/gtksourceview-sharp||2013-12-20|Has expired: Depends on expired devel/mono-tools
+devel/mono-tools||2013-12-20|Has expired: Broken for more than 6 month
+textproc/p5-XML-SAXDriver-Sablotron||2013-12-20|Has expired: Depends on expired textproc/p5-XML-Sablotron
+textproc/p5-XML-Sablotron||2013-12-20|Has expired: Broken for more than 6 month
+net/freeswitch-core||2013-12-20|Has expired: Broken for more than 6 month
+misc/freeswitch-pizzademo||2013-12-20|Has expired: Depends on expired net/freeswitch-core
+misc/freeswitch-scripts||2013-12-20|Has expired: Depends on expired net/freeswitch-core
+www/p5-HTML-Webmake||2013-12-20|Has expired: Depends on expired textproc/p5-XML-Sablotron
+net/freeswitch||2013-12-20|Has expired: Depends on expired net/freeswitch-core
+games/blue|games/bluemoon|2013-12-21|Rename to match upstream naming
+devel/ruby-cvs||2013-12-22|Has expired: Broken for more than 6 month
+devel/hs-reactive||2013-12-22|Has expired: Broken for more than 6 month
+databases/rubygem-delayed_job_data_mapper||2013-12-22|Has expired: Broken for more than 6 month
+graphics/xmagv||2013-12-22|Has expired: Broken for more than 6 month
+lang/slib-gauche||2013-12-22|Has expired: Broken for more than 6 month
+graphics/f-spot||2013-12-22|Has expired: Broken for more than 6 month
+sysutils/linux-megamgr||2013-12-22|Has expired: Broken for more than 6 month
+games/linux-savage-samuraiwars||2013-12-22|Has expired: Broken for more than 6 month
+ftp/gftp||2013-12-22|Has expired: Broken for more than 6 month
+devel/hs-DeepArrow||2013-12-22|Has expired: Broken for more than 6 month
+converters/py-svglib||2013-12-22|Has expired: Broken for more than 6 month
+converters/p5-Unicode-Lite||2013-12-22|Has expired: Broken for more than 6 month
+mail/squirrelmail-calendar_sql_backend-plugin||2013-12-22|Has expired: Broken for more than 6 month
+finance/quantlib||2013-12-22|Has expired: Broken for more than 6 month
+games/xkobo||2013-12-22|Has expired: Broken for more than 6 month
+games/quake3-rq3||2013-12-22|Has expired: Broken for more than 6 month
+math/fbm||2013-12-22|Has expired: No new release since 2004, new supported upstream
+graphics/yukon||2013-12-22|Removed, depends on graphics/seom
+graphics/seom||2013-12-22|Has expired: Broken for more than 6 month
+deskutils/libopensync-plugin-python-devel||2013-12-22|Has expired: Broken for more than 6 month
+deskutils/libopensync-plugin-synce-devel||2013-12-22|Removed, unmaintained, depends on deskutils/libopensync-plugin-python-devel
+net-im/libmsn||2013-12-22|Has expired: Primary MSN Messenger service terminated 30 APR 2013
+lang/clang||2013-12-22|Has expired: Migrate to lang/clang32 or newer
+math/freemat-mpi||2013-12-23|Obsolete since FreeMat 3.0
+devel/py-pmock||2013-12-27|Does not work with python 2.6 and beyond
+devel/ncurses-devel|devel/ncurses|2013-12-28|regular ncurses ports is more recent
+databases/mird||2013-12-28|Has expired: No longer maintained upstream
+net-mgmt/unifi|net-mgmt/unifi3|2014-01-01|Rename to unifi3; unifi2 is coming to ports tree as well
+security/dazuko||2013-12-31|Has expired: Currently, the project has not an active development and maintainer
+mail/p5-Mail-SPF-Query||2013-12-31|Has expired: Use mail/p5-Mail-SPF instead
+x11-fonts/etlfonts||2013-12-31|Has expired: master site gone
+net/gateway6||2013-12-31|Has expired: Unsupported upstream, consider using net/gogoc
+misc/bibletime-devel|misc/bibletime|2013-12-31|Has expired: use misc/bibletime
+multimedia/linux-ov511-kmod||2013-12-31|Removed, broken and only for 6.X / 7.X
+net/pypvm||2014-01-01|Has expired: Dead upstream and suspected that there are no users of port
+www/mawstats||2014-01-01|Has expired: Upstream development dead, use www/[j]awstats instead
+devel/p5-Dialog|devel/p5-UI-Dialog|2014-01-01|Has expired
+textproc/referrercop||2014-01-01|Has expired: distfile unfetchable
+www/notftp||2014-01-01|Has expired: distfile unfetchable
+www/mod_lisp2||2014-01-01|Has expired: distfile unfetchable
+irc/xchat-gnome||2014-01-02|Has expired: broken and no release since 2009
+net-mgmt/unifi|net-mgmt/unifi3|2014-01-02|Rename to unifi3; unifi2 is coming to ports tree as well
+www/codeigniter17|www/codeigniter|2014-01-04|Unsupported upstream, consider using newer version
+net-im/xfce4-messenger-plugin||2014-01-04|Has expired: Deprecated and no update for 7 years
+multimedia/xfce4-media|multimedia/xfce4-parole|2014-01-04|Has expired: Upstream development dead, use multimedia/xfce4-parole instead
+devel/py-gevent-zeromq|devel/py-pyzmq|2014-01-06|Has expired: devel/py-pyzmq has gevent support built in
+net/erlyvideo||2014-01-06|Has expired: Development of erlyvideo is abandoned upstream. Use flussonic instead
+devel/qt4-declarative|x11-toolkits/qt4-declarative|2014-01-06|Moved to unify with Qt 5
+devel/qt4-qtestlib|devel/qt4-testlib|2014-01-06|Renamed to unify with Qt 5
+textproc/qt4-clucene|textproc/clucene-qt4|2014-01-06|Renamed to unify with Qt 5
+www/qt4-webkit|www/webkit-qt4|2014-01-06|Renamed to unify with Qt 5
+x11/qt4-opengl|graphics/qt4-opengl|2014-01-06|Moved to unify with Qt 5
+graphics/wings-devel|graphics/wings|2014-01-07|Obsoleted by the main port
+devel/llvm|devel/llvm32|2014-01-08|Has expired: Migrate to devel/llvm32 or newer
+devel/hs-hat||2014-01-09|Upstream has vanished
+devel/hs-hdoc||2014-01-09|Removed
+devel/hs-idoc||2014-01-09|Removed
+x11-toolkits/hs-frantk||2014-01-09|Outdated and bitrotted
+devel/lua-filename||2014-01-10|Abandonware
+archivers/xz||2014-01-12|Included in base system on all supported releases
+lang/python26|lang/python27|2014-01-13|Python 2.6 is now end-of-life, please migrate to lang/python27
+sysutils/lavaps||2014-01-14|Abandonware, segfaults
+www/mod_authnz_external|www/mod_authnz_external22|2014-01-14|Port was renamed to reflect the supported Apache version

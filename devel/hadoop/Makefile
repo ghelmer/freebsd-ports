@@ -12,7 +12,7 @@ DIST_SUBDIR=	hadoop
 MAINTAINER=	pfg@apache.org
 COMMENT=	Apache Map/Reduce framework
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 BUILD_DEPENDS=	gmake:${PORTSDIR}/devel/gmake \
 		gsed:${PORTSDIR}/textproc/gsed
@@ -21,7 +21,6 @@ RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 USE_JAVA=	yes
 JAVA_VERSION=	1.6
 USE_ANT=	yes
-DESTDIRNAME=	-Ddestdir
 ONLY_FOR_ARCHS= amd64 i386
 
 OPTIONS_DEFINE=	DOCS

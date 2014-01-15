@@ -20,8 +20,10 @@ PLIST_FILES=	bin/xmoontool
 .if defined(WITHOUT_LIBNOVA)
 MAKE_ENV+=	WITHOUT_LIBNOVA=yes
 .else
-LIB_DEPENDS+=	nova:${PORTSDIR}/astro/libnova
+LIB_DEPENDS+=	libnova.so:${PORTSDIR}/astro/libnova
 .endif
+
+.include <bsd.port.options.mk>
 
 pre-everything::
 .if !defined(WITHOUT_LIBNOVA)
@@ -43,7 +45,7 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/xmoontool.1 ${PREFIX}/man/man1
 
 post-install:
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}
 .for i in ${PORTDOCS}
 	${INSTALL_MAN} ${WRKSRC}/${i} ${DOCSDIR}

@@ -32,12 +32,12 @@ BUILTIN_DEBUGGER_DESC=	Builtin debugger support
 NO_WRKSUBDIR=	yes
 
 USE_ZIP=	yes
-USES=		gmake pkgconfig shebangfix
+USES=		gmake pkgconfig shebangfix dos2unix
 SHEBANG_FILES=	src/emu/cpu/m6502/m6502make.py \
 		src/emu/cpu/m6809/m6809make.py \
 		src/emu/cpu/mcs96/mcs96make.py \
 		src/emu/cpu/tms57002/tmsmake.py
-USE_DOS2UNIX=	src/osd/sdl/input.c \
+DOS2UNIX_FILES=	src/osd/sdl/input.c \
 		src/osd/sdl/testkeys.c
 USE_XORG=	xext xi xinerama xrender
 USE_GL=		gl
@@ -126,6 +126,7 @@ post-patch:
 		 s|^BUILD_JPEGLIB|# BUILD_JPEGLIB| ; \
 		 s| = @gcc| := $$(CC)| ; \
 		 s| = @g++| := $$(CXX)| ; \
+		 s| = @python| := @${PYTHON_CMD}| ; \
 		 s|-O$$(OPTIMIZE)|| ; \
 		 /--warn-common/s|= -Wl,|= $$(GCC_LDFLAGS) -Wl,| ; \
 		 /LDFLAGS/s|-s|| ; \

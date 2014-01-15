@@ -3,19 +3,17 @@
 
 PORTNAME=	squirrel_logger
 PORTVERSION=	2.3
-CATEGORIES=	mail www
-MASTER_SITES=	http://www.squirrelmail.org/plugins/
-PKGNAMEPREFIX=  squirrelmail-
-PKGNAMESUFFIX=  -plugin
+PORTREVISION=	1
+CATEGORIES=		mail www
 DISTNAME=	${PORTNAME}-${PORTVERSION}-1.2.7
-DIST_SUBDIR=	squirrelmail
 
-MAINTAINER=	morinaga@riken.jp
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Logging functionality for your webmail interface
 
 USE_SM_COMPAT=	yes
 
 NO_STAGE=	yes
-.include "${.CURDIR}/../squirrelmail/bsd.squirrelmail.mk"
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+.include "${.CURDIR}/../squirrelmail/bsd.squirrelmail.mk"
+.include <bsd.port.post.mk>

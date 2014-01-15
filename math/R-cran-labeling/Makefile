@@ -12,8 +12,6 @@ COMMENT=	Provides a range of axis labeling algorithms
 
 LICENSE=	MIT
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

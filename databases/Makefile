@@ -201,7 +201,6 @@
     SUBDIR += memcacheq
     SUBDIR += mergeant
     SUBDIR += metakit
-    SUBDIR += mird
     SUBDIR += mongodb
     SUBDIR += mrtg-mysql-load
     SUBDIR += msql
@@ -420,6 +419,7 @@
     SUBDIR += p5-DWH_File
     SUBDIR += p5-Dancer-Plugin-DBIC
     SUBDIR += p5-Dancer-Plugin-Database
+    SUBDIR += p5-Dancer-Plugin-Database-Core
     SUBDIR += p5-Dancer-Plugin-Redis
     SUBDIR += p5-Dancer-Session-Memcached
     SUBDIR += p5-Data-Page
@@ -537,6 +537,7 @@
     SUBDIR += pecl-dbase
     SUBDIR += pecl-drizzle
     SUBDIR += pecl-handlersocket
+    SUBDIR += pecl-leveldb
     SUBDIR += pecl-mdbtools
     SUBDIR += pecl-memcache
     SUBDIR += pecl-memcached
@@ -726,6 +727,7 @@
     SUBDIR += py-MySQLdb55
     SUBDIR += py-PyGreSQL
     SUBDIR += py-Pyrseas
+    SUBDIR += py-alembic
     SUBDIR += py-apsw
     SUBDIR += py-bsddb
     SUBDIR += py-bsddb3
@@ -842,7 +844,6 @@
     SUBDIR += rubygem-couchrest
     SUBDIR += rubygem-data_objects
     SUBDIR += rubygem-datamapper
-    SUBDIR += rubygem-delayed_job_data_mapper
     SUBDIR += rubygem-dm-active_model
     SUBDIR += rubygem-dm-aggregates
     SUBDIR += rubygem-dm-chunked_query
@@ -920,6 +921,7 @@
     SUBDIR += usogres
     SUBDIR += vfront
     SUBDIR += virtuoso
+    SUBDIR += vsqlite
     SUBDIR += wfb2sql
     SUBDIR += wmjsql
     SUBDIR += xapian-bindings

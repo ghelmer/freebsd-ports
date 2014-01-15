@@ -12,8 +12,8 @@ COMMENT=	Last.fm submission client for XMMS2
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	xmmsclient.6:${PORTSDIR}/audio/xmms2 \
-		curl:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libxmmsclient.so:${PORTSDIR}/audio/xmms2 \
+		libcurl.so:${PORTSDIR}/ftp/curl
 
 USES=		gmake pkgconfig
 NO_STAGE=	yes
@@ -24,11 +24,13 @@ PORTDOCS=	README
 
 SUB_FILES=	pkg-message
 
+.include <bsd.port.options.mk>
+
 post-install:
 	@${ECHO_MSG}
 	@${CAT} ${PKGMESSAGE}
 	@${ECHO_MSG}
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}; \
 	cd ${WRKSRC} && ${INSTALL_MAN} ${PORTDOCS} ${DOCSDIR}
 .endif

@@ -228,6 +228,7 @@
     SUBDIR += p5-Net-Netmask
     SUBDIR += p5-Net-SNMP
     SUBDIR += p5-Net-SNMP-Util
+    SUBDIR += p5-Net-SNMPTrapd
     SUBDIR += p5-Net-Telnet-Cisco-IOS
     SUBDIR += p5-NetAddr-IP
     SUBDIR += p5-NetAddr-IP-Lite
@@ -307,11 +308,14 @@
     SUBDIR += softflowd
     SUBDIR += spectools
     SUBDIR += ssgless
+    SUBDIR += statsd
     SUBDIR += subcalc
     SUBDIR += sysmon
     SUBDIR += tcpreplay
     SUBDIR += tcptrack
     SUBDIR += torrus
+    SUBDIR += unifi2
+    SUBDIR += unifi3
     SUBDIR += vidalia
     SUBDIR += virt-viewer
     SUBDIR += virtinst
@@ -330,6 +334,10 @@
     SUBDIR += zabbix2-frontend
     SUBDIR += zabbix2-proxy
     SUBDIR += zabbix2-server
+    SUBDIR += zabbix22-agent
+    SUBDIR += zabbix22-frontend
+    SUBDIR += zabbix22-proxy
+    SUBDIR += zabbix22-server
     SUBDIR += zenoss
     SUBDIR += zenpack-checkping
     SUBDIR += zenpack-dellmon

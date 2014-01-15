@@ -11,7 +11,7 @@ DISTNAME=	miks-${PORTNAME}-${REV}
 MAINTAINER=	miks.mikelsons@gmail.com
 COMMENT=	Airtunes emulator
 
-LIB_DEPENDS=	ao.4:${PORTSDIR}/audio/libao
+LIB_DEPENDS=	libao.so:${PORTSDIR}/audio/libao
 RUN_DEPENDS=	p5-MIME-Base64>=0:${PORTSDIR}/converters/p5-MIME-Base64 \
 		p5-Getopt-Long>=0:${PORTSDIR}/devel/p5-Getopt-Long \
 		p5-URI>=0:${PORTSDIR}/net/p5-URI \
@@ -33,6 +33,8 @@ PORTDOCS=	README.md
 
 REV=		b1cb9ea
 
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|avahi-|${LOCALBASE}/bin/avahi-|g' \
 		-e 's|$$FindBin.*|"${PREFIX}/bin/hairtunes";|' \
@@ -44,7 +46,7 @@ do-install:
 .for file in ${PORTNAME} hairtunes
 	${INSTALL_PROGRAM} ${WRKSRC}/${file} ${PREFIX}/bin
 .endfor
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 .for i in ${PORTDOCS}
 	${INSTALL_DATA} -p ${WRKSRC}/${i} ${DOCSDIR}

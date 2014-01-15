@@ -3,7 +3,8 @@
 
 PORTNAME=	openjdk6
 PORTVERSION=	b28
-PORTREVISION?=	5
+PORTREVISION?=	7
+PORTEPOCH=	1
 CATEGORIES=	java devel
 MASTER_SITES=	${MASTER_SITE_APACHE:S,%SUBDIR%/,ant/binaries/:ant,} \
 		http://download.java.net/openjdk/jtreg/promoted/4.1/b05/:jtreg \
@@ -65,7 +66,7 @@ USE_XORG=	x11 xext xi xt xtst
 
 # do not depend on devel/apache-ant to avoid circular dependency, but
 # use .tar.bz2 distfile to avoid duplicated downloads
-ANTVERSION=	1.9.2
+ANTVERSION=	1.9.3
 ANTFILE=	apache-ant-${ANTVERSION}-bin.tar.bz2
 
 JTREG_BUILD=	b05_29_nov_2012
@@ -101,7 +102,6 @@ BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk
 BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:${PORTSDIR}/java/bootstrap-openjdk
 .endif
 
-FETCH_ARGS=	-Fpr
 MAKE_ENV=	LANG=C LC_ALL=C OS= \
 		ALT_JDK_IMPORT_PATH=${BOOTSTRAPJDKDIR} \
 		ALT_BOOTDIR=${BOOTSTRAPJDKDIR} \

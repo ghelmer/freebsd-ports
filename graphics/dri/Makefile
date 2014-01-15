@@ -12,7 +12,7 @@ COMMENT=	OpenGL hardware acceleration drivers for the DRI
 LIB_DEPENDS=	libdrm.so:${PORTSDIR}/graphics/libdrm \
 		libexpat.so:${PORTSDIR}/textproc/expat2
 
-USES=		pkgconfig
+USES+=		gettext:build
 USE_XORG=	glproto x11 xext xxf86vm xdamage xfixes dri2proto
 
 .include <bsd.port.options.mk>
@@ -31,29 +31,23 @@ USE_GCC=yes
 . endif
 .endif
 
-.if ${ARCH} == ia64
-#BROKEN=		does not install on ia64
-.endif
-
 ALL_DRI_DRIVERS=I915 I965 R200 RADEON SWRAST
 
 .if !defined(WITH_NEW_XORG)
 ALL_DRI_DRIVERS+=I810 MACH64 MGA R128 R300 R600 SAVAGE SIS TDFX UNICHROME
 .endif
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../../graphics/libGL/bsd.mesalib.mk"
 
 PLIST_SUB+=	VERSION=${MESADISTVERSION}
 
-.if ${ARCH} == amd64 || ${ARCH} == i386
+.if ${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == ia64
 DRI_DRIVERS=	${ALL_DRI_DRIVERS}
 .endif
 
 .if defined(WITH_NEW_XORG)
 . if defined(WITH_GALLIUM) && (${ARCH} == i386 || ${ARCH} == amd64)
 BUILD_DEPENDS+=	llvm-config33:${PORTSDIR}/devel/llvm33
-RUN_DEPENDS+=	llvm-config33:${PORTSDIR}/devel/llvm33
 CONFIGURE_ENV+=	LLVM_CONFIG=${LOCALBASE}/bin/llvm-config33
 
 CONFIGURE_ARGS+=--enable-gallium-llvm --disable-gallium-egl
@@ -64,7 +58,7 @@ PLIST_SUB+=	GALLIUM=""
 CONFIGURE_ARGS+=--enable-gallium-llvm=no --without-gallium-drivers
 PLIST_SUB+=	GALLIUM="@comment "
 . endif
-. if ${ARCH} == powerpc || ${ARCH} == ia64
+. if ${ARCH} == powerpc
 DRI_DRIVERS=	RADEON SWRAST
 . endif
 . if ${ARCH} == sparc64
@@ -99,18 +93,6 @@ pre-everything::
 	@${ECHO_MSG} "Please define WITH_GALLIUM in /etc/make.conf"
 	@${ECHO_MSG} "Note that gallium support is highly experimental."
 	@${ECHO_MSG} ""
-.endif
-
-do-install:
-.if !defined(WITH_NEW_XORG)
-	cd ${WRKSRC}/src/mesa; ${GMAKE} install-dri
-.else
-	cd ${WRKSRC}/src/mesa/libdricore; ${GMAKE} install
-	cd ${WRKSRC}/src/mesa/drivers/dri; ${GMAKE} install
-. if defined(WITH_GALLIUM) && (${ARCH} == i386 || ${ARCH} == amd64)
-	cd ${WRKSRC}/src/gallium/drivers/radeon; ${GMAKE} install
-	cd ${WRKSRC}/src/gallium/targets; ${GMAKE} install
-. endif
 .endif
 
 .include <bsd.port.mk>

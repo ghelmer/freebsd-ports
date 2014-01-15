@@ -16,9 +16,10 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:${PORTSDIR}/graphics/opennurbs
-LIB_DEPENDS=	execinfo:${PORTSDIR}/devel/libexecinfo
+LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
-FETCH_ARGS=	-Fpr
+CONFLICTS=	texlive-base-*
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_JOBS_UNSAFE=yes
 

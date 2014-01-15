@@ -19,19 +19,17 @@ BUILD_DEPENDS=	${LOCALBASE}/include/dssi.h:${PORTSDIR}/audio/dssi \
 # Between 0.109.0 and earlier versions there was an api change in JACK.
 # However, the library version number was not changed.  The line above
 # is supposed to work around that.
-LIB_DEPENDS=	dssialsacompat.0:${PORTSDIR}/audio/libdssialsacompat \
-		lo:${PORTSDIR}/audio/liblo \
-		jack.0:${PORTSDIR}/audio/jack
+LIB_DEPENDS=	libdssialsacompat.so:${PORTSDIR}/audio/libdssialsacompat \
+		liblo.so:${PORTSDIR}/audio/liblo \
+		libjack.so:${PORTSDIR}/audio/jack
 
 USE_BZIP2=	yes
-NO_STAGE=	yes
 USE_GNOME=	gtk20
 USES=		gmake pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-jackmidi
 
-MAN1=		ghostess.1
-PLIST_FILES=	bin/ghostess bin/ghostess_universal_gui
+PLIST_FILES=	bin/ghostess bin/ghostess_universal_gui man/man1/ghostess.1.gz
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

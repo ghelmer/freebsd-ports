@@ -21,7 +21,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>=0:${PORTSDIR}/audio/py-mutagen \
 		${PYTHON_PKGNAMEPREFIX}qt4-xml>=0:${PORTSDIR}/textproc/py-qt4-xml
 
 USES=		gettext
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 USE_PYDISTUTILS=yes
 INSTALLS_ICONS=	yes
 
@@ -45,6 +45,7 @@ RUN_DEPENDS+=	metaflac:${PORTSDIR}/audio/flac \
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|'picard.plugins',|'picard.plugins', 'picard.plugins.lastfm', 'picard.plugins.lastfmplus', 'picard.plugins.replaygain',|" \
+		-e 's,distutils\.command\.install ,setuptools\.command\.install ,' \
 		${WRKSRC}/setup.py
 	@${CP} -R ${WRKSRC}/contrib/plugins/ ${WRKSRC}/picard/plugins
 

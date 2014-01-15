@@ -10,17 +10,15 @@ MAINTAINER=	jwbacon@tds.net
 COMMENT=	Unified framework for finite element assembly
 
 BUILD_DEPENDS=	swig2.0:${PORTSDIR}/devel/swig20
-LIB_DEPENDS=	boost_math_c99:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_math_c99.so:${PORTSDIR}/devel/boost-libs
 
 # LICENSE=	public domain
 
 USES=		cmake
-USE_PYTHON=	-2.7
+USE_PYTHON=	2
 PYDISTUTILS_PKGNAME=	ufc
 
 CMAKE_ARGS+=	-DUFC_PKGCONFIG_DIR=${PREFIX}/libdata/pkgconfig
-
-FETCH_ARGS=	-F
 
 MMVERSION=	2.2
 

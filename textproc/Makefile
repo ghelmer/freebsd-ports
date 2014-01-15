@@ -72,6 +72,7 @@
     SUBDIR += cl-ppcre-sbcl
     SUBDIR += clit
     SUBDIR += clucene
+    SUBDIR += clucene-qt4
     SUBDIR += coccigrep
     SUBDIR += coco
     SUBDIR += code2html
@@ -211,6 +212,7 @@
     SUBDIR += gnome-translate
     SUBDIR += gnugrep
     SUBDIR += go-text
+    SUBDIR += go.text
     SUBDIR += goldendict
     SUBDIR += google-ctemplate
     SUBDIR += gpp
@@ -338,6 +340,7 @@
     SUBDIR += jrefentry
     SUBDIR += jshon
     SUBDIR += kdiff3
+    SUBDIR += kibana
     SUBDIR += kmfl-european-latin
     SUBDIR += kmfl-khmer
     SUBDIR += kmfl-sil-ezra
@@ -388,7 +391,6 @@
     SUBDIR += libwpd
     SUBDIR += libwps
     SUBDIR += libxdiff
-    SUBDIR += libxml
     SUBDIR += libxml++26
     SUBDIR += libxml++26-reference
     SUBDIR += libxml2
@@ -405,6 +407,7 @@
     SUBDIR += linux-f10-scim-libs
     SUBDIR += linuxdoc
     SUBDIR += localize
+    SUBDIR += loook
     SUBDIR += lt-aspell
     SUBDIR += lt-hyphen
     SUBDIR += lttoolbox
@@ -421,6 +424,7 @@
     SUBDIR += manued.el
     SUBDIR += markdown
     SUBDIR += markdown-mode.el
+    SUBDIR += mate-doc-utils
     SUBDIR += mathml-xsd
     SUBDIR += mdocml
     SUBDIR += meld
@@ -867,6 +871,7 @@
     SUBDIR += p5-Text-WikiCreole
     SUBDIR += p5-Text-WikiFormat
     SUBDIR += p5-Text-WordDiff
+    SUBDIR += p5-Text-WrapI18N
     SUBDIR += p5-Text-Wrapper
     SUBDIR += p5-Text-Xslate
     SUBDIR += p5-Text-Xslate-Bridge-TT2Like
@@ -920,6 +925,7 @@
     SUBDIR += p5-XML-DOMHandler
     SUBDIR += p5-XML-DT
     SUBDIR += p5-XML-DTDParser
+    SUBDIR += p5-XML-Declare
     SUBDIR += p5-XML-Descent
     SUBDIR += p5-XML-DifferenceMarkup
     SUBDIR += p5-XML-Directory
@@ -1000,9 +1006,7 @@
     SUBDIR += p5-XML-SAX-Writer
     SUBDIR += p5-XML-SAXDriver-CSV
     SUBDIR += p5-XML-SAXDriver-Excel
-    SUBDIR += p5-XML-SAXDriver-Sablotron
     SUBDIR += p5-XML-STX
-    SUBDIR += p5-XML-Sablotron
     SUBDIR += p5-XML-Schematron
     SUBDIR += p5-XML-SemanticDiff
     SUBDIR += p5-XML-Simple
@@ -1173,8 +1177,10 @@
     SUBDIR += py-markdown2
     SUBDIR += py-openpyxl
     SUBDIR += py-paragrep
+    SUBDIR += py-pdfminer
     SUBDIR += py-pss
     SUBDIR += py-pyctpp2
+    SUBDIR += py-pyelasticsearch
     SUBDIR += py-pygments
     SUBDIR += py-pysrt
     SUBDIR += py-pystache
@@ -1222,7 +1228,6 @@
     SUBDIR += pystemmer
     SUBDIR += qprint
     SUBDIR += qstardict
-    SUBDIR += qt4-clucene
     SUBDIR += qt4-xml
     SUBDIR += qt4-xmlpatterns
     SUBDIR += qt4-xmlpatterns-tool
@@ -1240,7 +1245,6 @@
     SUBDIR += redland-bindings
     SUBDIR += redland-bindings-python
     SUBDIR += refdb
-    SUBDIR += referrercop
     SUBDIR += reflex
     SUBDIR += replaceit
     SUBDIR += resume
@@ -1349,6 +1353,7 @@
     SUBDIR += rubygem-xslt
     SUBDIR += rubygem-ya2yaml
     SUBDIR += rubygem-yard
+    SUBDIR += rubygem-yard-chef
     SUBDIR += rubygem-zmq
     SUBDIR += rw-aspell
     SUBDIR += rxp

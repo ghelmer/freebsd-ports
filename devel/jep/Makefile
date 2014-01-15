@@ -15,9 +15,12 @@ MAKE_ENV=	JAVA_HOME=${JAVA_HOME}
 CONFIGURE_ARGS=	--prefix=${PREFIX} --exec-prefix=${PREFIX}
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
-USE_PYTHON=	2.2+
+USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+# Necessary, since the configure script does the LIBS and
+# LDFLAGS detection wrong
+LDFLAGS=	-L${LOCALBASE}/lib
 
 MAN1=	jep.1
 

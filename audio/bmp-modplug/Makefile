@@ -16,10 +16,9 @@ DISTNAME=	${PORTNAME}${PKGNAMEPREFIX}2.05
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ModPlug-based plugin for beep-media-player
 
-LIB_DEPENDS?=	beep:${PORTSDIR}/multimedia/beep-media-player
-LIB_DEPENDS+=	modplug:${PORTSDIR}/audio/libmodplug
+LIB_DEPENDS=	libbeep.so:${PORTSDIR}/multimedia/beep-media-player \
+		libmodplug.so:${PORTSDIR}/audio/libmodplug
 
-NO_STAGE=	yes
 USES=		pkgconfig
 USE_AUTOTOOLS=	libtool
 USE_BZIP2=	yes
@@ -27,9 +26,13 @@ HAS_CONFIGURE=	yes
 PLUGDIR?=	lib/bmp/Input
 PLIST_FILES=	${PLUGDIR}/libmodplugbmp.so
 
+post-patch:
+	@${REINPLACE_CMD} 's|-lstdc++||' ${WRKSRC}/modplugbmp/Makefile.in \
+		${WRKSRC}/modplugplay/Makefile.in
+
 do-install:
-	@${MKDIR} ${PREFIX}/${PLUGDIR}
-	${INSTALL_PROGRAM} ${WRKSRC}/modplugbmp/.libs/libmodplugbmp.so \
-		${PREFIX}/${PLUGDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${PLUGDIR}
+	${INSTALL_LIB} ${WRKSRC}/modplugbmp/.libs/libmodplugbmp.so \
+		${STAGEDIR}${PREFIX}/${PLUGDIR}
 
 .include <bsd.port.mk>

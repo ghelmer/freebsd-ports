@@ -2,17 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	bro
-PORTVERSION=	2.1
-PORTREVISION=	3
+PORTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	http://www.bro-ids.org/downloads/release/
+MASTER_SITES=	http://www.bro.org/downloads/release/
 
 MAINTAINER=	leres@ee.lbl.gov
 COMMENT=	System for detecting network intruders in real-time
 
-BUILD_DEPENDS=	bison:${PORTSDIR}/devel/bison \
-		swig:${PORTSDIR}/devel/swig13
-LIB_DEPENDS=	GeoIP:${PORTSDIR}/net/GeoIP
+LICENSE=	BSD3CLAUSE
+
+BUILD_DEPENDS=	${LOCALBASE}/bin/bison:${PORTSDIR}/devel/bison \
+		${LOCALBASE}/bin/swig:${PORTSDIR}/devel/swig13
+LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
 
 USES=		cmake:outsource perl5
 USE_PYTHON=	yes
@@ -23,6 +25,10 @@ NO_MTREE=	yes
 .if defined(BRO_PREFIX)
 PREFIX=${BRO_PREFIX}
 PLIST_SUB+=	CLEANUP_PREFIX=""
+.if ! defined(WITH_PKGNG) && ! exists(${BRO_PREFIX})
+NEED_ROOT=      yes
+.endif
+NO_MTREE=	yes
 .else
 PLIST_SUB+=	CLEANUP_PREFIX="@comment "
 .endif
@@ -50,11 +56,19 @@ PERFTOOLS_DESC=	Use Perftools to improve memory & CPU usage
 
 OPTIONS_EXCLUDE=NLS DOCS
 
-NO_STAGE=	yes
+.include <bsd.port.pre.mk>
+
+# Bro 2.2 requires libmagic >= 5.04
+# Cannot use LIB_DEPENDS since misc/compat5x also installs a libmagic.so.1
+.if ${OSVERSION} < 901000
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libmagic.so:${PORTSDIR}/sysutils/file
+RUN_DEPENDS+=	${LOCALBASE}/lib/libmagic.so:${PORTSDIR}/sysutils/file
+.endif
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MBROCCOLI}
-LIB_DEPENDS+=	broccoli:${PORTSDIR}/security/broccoli
+LIB_DEPENDS+=	libbroccoli.so:${PORTSDIR}/security/broccoli
 .endif
 
 .if ${PORT_OPTIONS:MBROCTL}
@@ -64,35 +78,35 @@ IGNORE=		the BROCTL option requires BROCCOLI
 .if empty(PORT_OPTIONS:MIPSUMDUMP)
 IGNORE=		the BROCTL option requires IPSUMDUMP
 .endif
-BUILD_DEPENDS+=		bash:${PORTSDIR}/shells/bash
-RUN_DEPENDS+=		bash:${PORTSDIR}/shells/bash
-PLIST_SUB+=		BROCTL=""
-USE_LDCONFIG=		yes
-CMAKE_ARGS+=		-D INSTALL_BROCTL:BOOL=true
+BUILD_DEPENDS+=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS+=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
+PLIST_SUB+=	BROCTL=""
+USE_LDCONFIG=	yes
+CMAKE_ARGS+=	-D INSTALL_BROCTL:BOOL=true
 .else
-CMAKE_ARGS+=		-D INSTALL_BROCTL:BOOL=false
-PLIST_SUB+=		BROCTL="@comment "
+CMAKE_ARGS+=	-D INSTALL_BROCTL:BOOL=false
+PLIST_SUB+=	BROCTL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
-CMAKE_ARGS+=		-D ENABLE_DEBUG:BOOL=true
+CMAKE_ARGS+=	-D ENABLE_DEBUG:BOOL=true
 .else
-CMAKE_ARGS+=		-D ENABLE_DEBUG:BOOL=false
+CMAKE_ARGS+=	-D ENABLE_DEBUG:BOOL=false
 .endif
 
 .if ${PORT_OPTIONS:MLBL_HF}
-RUN_DEPENDS+=	hf:${PORTSDIR}/sysutils/lbl-hf
+RUN_DEPENDS+=	${LOCALBASE}/bin/hf:${PORTSDIR}/sysutils/lbl-hf
 .endif
 
 .if ${PORT_OPTIONS:MLBL_CF}
-RUN_DEPENDS+=	cf:${PORTSDIR}/sysutils/lbl-cf
+RUN_DEPENDS+=	${LOCALBASE}/bin/cf:${PORTSDIR}/sysutils/lbl-cf
 .endif
 
 .if ${PORT_OPTIONS:MPERFTOOLS}
-CMAKE_ARGS+=		-D ENABLE_PERFTOOLS:BOOL=true
-RUN_DEPENDS+=	pprof:${PORTSDIR}/devel/google-perftools
+CMAKE_ARGS+=	-D ENABLE_PERFTOOLS:BOOL=true
+RUN_DEPENDS+=	${LOCALBASE}/bin/pprof:${PORTSDIR}/devel/google-perftools
 .else
-CMAKE_ARGS+=		-D ENABLE_PERFTOOLS:BOOL=false
+CMAKE_ARGS+=	-D ENABLE_PERFTOOLS:BOOL=false
 .endif
 
 .if ${PORT_OPTIONS:MIPSUMDUMP}
@@ -100,17 +114,20 @@ BUILD_DEPENDS+=	ipsumdump:${PORTSDIR}/net/ipsumdump
 RUN_DEPENDS+=	ipsumdump:${PORTSDIR}/net/ipsumdump
 .endif
 
-post-install:
 .if ${PORT_OPTIONS:MBROCTL}
-	@${MKDIR} ${PREFIX}/logs
-.for i in broctl.cfg networks.cfg node.cfg
-	@${MKDIR} ${PREFIX}/etc
-	@if [ ! -f ${PREFIX}/etc/${i} ]; then \
-		${CP} ${PREFIX}/etc/${i}.sample ${PREFIX}/etc/${i}; \
-	fi
-.endfor
-	@${PREFIX}/bin/broctl install
+post-install:
+.if defined(BRO_PREFIX) && !defined(WITH_PKGNG) && !exists(${BRO_PREFIX})
+	# pkg_install needs PREFIX in order to make a package from STAGEDIR/PREFIX
+	@${MKDIR} ${PREFIX}
 .endif
-	@${CAT} ${PKGMESSAGE}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/spool/installed-scripts-do-not-touch/auto
+	@${MKDIR} ${STAGEDIR}${PREFIX}/spool/installed-scripts-do-not-touch/site
+.for F in broctl.cfg
+	@${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/aux/broctl/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.example
+.endfor
+.for F in networks.cfg node.cfg
+	@${MV} ${WRKSRC}/aux/broctl/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.example
+.endfor
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

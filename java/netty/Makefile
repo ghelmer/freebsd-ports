@@ -10,9 +10,7 @@ MASTER_SITES=	https://github.com/downloads/netty/netty/
 MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Java NIO client server framework
 
-LICENSE=	AL2
-
-FETCH_ARGS=	-Fpr
+LICENSE=	APACHE20
 
 USE_JAVA=	yes
 USE_BZIP2=	yes

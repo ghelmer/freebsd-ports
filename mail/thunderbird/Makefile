@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird
-DISTVERSION=	24.1.0
-CATEGORIES=	mail ipv6
-MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
-		https://ftp.mozilla.org/pub/mozilla.org/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source/
+DISTVERSION=	24.2.0
+CATEGORIES=	mail news net-im ipv6
+MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source
 DISTFILES=	${PORTNAME}-${DISTVERSION}.source${EXTRACT_SUFX}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}.source${EXTRACT_SUFX}
 
@@ -22,11 +21,11 @@ BUILD_DEPENDS=	nspr>=4.10:${PORTSDIR}/devel/nspr \
 LIB_DEPENDS=	libv4l2.so:${PORTSDIR}/multimedia/libv4l
 
 EM_VERSION=	1.6
-L_VERSION=	2.6.2
+L_VERSION=	2.6.4
 
 SSP_UNSAFE=	yes
 USE_AUTOTOOLS=	autoconf213:env
-USE_PYTHON_BUILD=-2.7
+USE_PYTHON_BUILD=2
 OBJDIR_BUILD=	# in-tree build broken after bug 789837
 USE_GECKO=	gecko
 USE_MOZILLA=	# empty
@@ -72,11 +71,6 @@ WRKSRC=		${WRKDIR}/comm-esr24
 MOZSRC:=	${WRKSRC}/mozilla
 
 XPI_LIBDIR=	${PREFIX}/lib/xpi
-
-# libprldap60.so: Undefined symbol "PR_GetCurrentThread"
-.if ${ARCH} == i386
-USE_GCC?=	yes
-.endif
 
 .if ${PORT_OPTIONS:MENIGMAIL}
 MASTER_SITES+=	https://www.enigmail.net/download/source/:enigmail

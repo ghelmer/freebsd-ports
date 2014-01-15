@@ -3,7 +3,7 @@
 
 PORTNAME=	virt-manager
 PORTVERSION=	0.9.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils net-mgmt
 MASTER_SITES=	http://virt-manager.et.redhat.com/download/sources/${PORTNAME}/ \
 		LOCAL/jgh/deskutils/${PORTNAME}/
@@ -13,15 +13,13 @@ COMMENT=	Toolkit to interact with virtualization capabilities
 
 LICENSE=	LGPL3
 
-LIB_DEPENDS=	virt.1001:${PORTSDIR}/devel/libvirt
+LIB_DEPENDS=	libvirt.so:${PORTSDIR}/devel/libvirt
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0.83.2:${PORTSDIR}/devel/py-dbus \
 		${PYTHON_PKGNAMEPREFIX}libxml2>=2.7.8:${PORTSDIR}/textproc/py-libxml2 \
 		${PYTHON_PKGNAMEPREFIX}virtinst>=0.600.4:${PORTSDIR}/net-mgmt/virtinst \
 		${PYTHON_PKGNAMEPREFIX}vte>=0.26.2:${PORTSDIR}/x11-toolkits/py-vte \
 		gtk-vnc>=0.3.10:${PORTSDIR}/net/gtk-vnc \
 		librsvg2>=2.32.1:${PORTSDIR}/graphics/librsvg2
-
-FETCH_ARGS?=	-Fpr
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>

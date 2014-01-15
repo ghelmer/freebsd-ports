@@ -15,7 +15,6 @@ COMMENT=	Enhanced X11 screen locker
 LICENSE=	MIT
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE
 
-FETCH_ARGS=	"-Fpr"
 USE_BZIP2=	yes
 USE_XORG=	x11 xt xproto xext xpm
 
@@ -23,13 +22,12 @@ OPTIONS_DEFINE=	IMLIB2 XFT ULTRAGETOPT
 OPTIONS_DEFAULT=	IMLIB2 XFT ULTRAGETOPT
 ULTRAGETOPT_DESC=	Use Ultragetopt
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 MAKE_ARGS=	PREFIX="${LOCALBASE}" DEST_PREFIX="${PREFIX}" CC="${CC}"
 
 .if ${PORT_OPTIONS:MULTRAGETOPT}
-LIB_DEPENDS+=	ultragetopt.0:${PORTSDIR}/devel/ultragetopt
+LIB_DEPENDS+=	libultragetopt.so:${PORTSDIR}/devel/ultragetopt
 MAKE_ARGS+=	USE_ULTRAGETOPT=yes
 .else
 MAKE_ARGS+=	USE_ULTRAGETOPT=no

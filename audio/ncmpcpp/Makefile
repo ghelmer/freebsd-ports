@@ -11,12 +11,12 @@ MASTER_SITES=	http://unkart.ovh.org/ncmpcpp/ \
 MAINTAINER=	dhn@FreeBSD.org
 COMMENT=	A ncurses mpd client, clone of ncmpc with some new features
 
-LIB_DEPENDS=	mpdclient:${PORTSDIR}/audio/libmpdclient \
-		fftw3:${PORTSDIR}/math/fftw3
+LIB_DEPENDS=	libmpdclient.so:${PORTSDIR}/audio/libmpdclient \
+		libfftw3.so:${PORTSDIR}/math/fftw3
 
 USES=		iconv ncurses pkgconfig
-NO_STAGE=	yes
 USE_BZIP2=	yes
+USE_GCC=	any
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 USE_AUTOTOOLS=	automake aclocal libtool
@@ -46,7 +46,7 @@ PLIST_FILES=	bin/ncmpcpp \
 PLIST_DIRS=	%%DOCSDIR%%
 
 .if ${PORT_OPTIONS:MCURL}
-LIB_DEPENDS+=	curl:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
 CONFIGURE_ARGS+=	--with-curl
 .else
 CONFIGURE_ARGS+=	--with-curl=no
@@ -65,7 +65,7 @@ CONFIGURE_ARGS+=	--disable-unicode
 .endif
 
 .if ${PORT_OPTIONS:MTAGLIB}
-LIB_DEPENDS+=	tag:${PORTSDIR}/audio/taglib
+LIB_DEPENDS+=	libtag.so:${PORTSDIR}/audio/taglib
 CONFIGURE_ARGS+=	--with-taglib
 .else
 CONFIGURE_ARGS+=	--with-taglib=no
@@ -90,15 +90,15 @@ CONFIGURE_ARGS+=	NCURSES_CONFIG=/usr/bin/true
 .endif
 
 post-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/ncmpcpp ${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${WRKSRC}/src/ncmpcpp ${STAGEDIR}${PREFIX}/bin/
 .if ${PORT_OPTIONS:MDOCS}
-	@${ECHO_MSG} "installing additional documentation to ${DOCSDIR}"
+	@${ECHO_MSG} "installing additional documentation to ${STAGEDIR}${DOCSDIR}"
 	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/NEWS ${DOCSDIR}/NEWS
-	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${DOCSDIR}/AUTHORS
-	${INSTALL_DATA} ${WRKSRC}/COPYING ${DOCSDIR}/COPYING
-	${INSTALL_DATA} ${WRKSRC}/doc/config ${DOCSDIR}/config
-	${INSTALL_DATA} ${WRKSRC}/doc/keys ${DOCSDIR}/keys
+	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}/NEWS
+	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${STAGEDIR}${DOCSDIR}/AUTHORS
+	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}/COPYING
+	${INSTALL_DATA} ${WRKSRC}/doc/config ${STAGEDIR}${DOCSDIR}/config
+	${INSTALL_DATA} ${WRKSRC}/doc/keys ${STAGEDIR}${DOCSDIR}/keys
 .endif
 
 	@${ECHO_MSG} ""

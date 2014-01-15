@@ -27,7 +27,7 @@ USE_BDB=	46+
 INVALID_BDB_VER=51
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-CONFLICTS_INSTALL=	rpm-[35].*
+CONFLICTS_INSTALL=	rpm-[35].* rpm5-*
 SHEBANG_FILES=	scripts/brp-python-bytecompile scripts/check-prereqs \
 		scripts/check-rpaths-worker scripts/pythondeps.sh \
 		scripts/mono-find-requires scripts/mono-find-provides \
@@ -55,7 +55,7 @@ PLIST_SUB+=	VERSION=${PORTVERSION}
 
 .if ${PORT_OPTIONS:MPYTHON}
 CONFIGURE_ARGS+=--enable-python
-USE_PYTHON=	2.6+
+USE_PYTHON=	yes
 PLIST_SUB+=	PYTHON=""
 CPPFLAGS+=	-I${PYTHON_INCLUDEDIR}
 LDFLAGS+=	-L${PYTHON_LIBDIR}

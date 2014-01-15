@@ -7,7 +7,9 @@
     SUBDIR += amule-devel
     SUBDIR += azureus2
     SUBDIR += bitcoin
+    SUBDIR += bitcoin-daemon
     SUBDIR += bitflu
+    SUBDIR += bitmessage
     SUBDIR += bittyrant
     SUBDIR += bnbt
     SUBDIR += btpd
@@ -19,6 +21,7 @@
     SUBDIR += ctorrent
     SUBDIR += dclib
     SUBDIR += deluge
+    SUBDIR += dogecoin
     SUBDIR += ed2k
     SUBDIR += edonkey-tool-hash
     SUBDIR += eiskaltdcpp-cli
@@ -45,12 +48,11 @@
     SUBDIR += libtorrent
     SUBDIR += libtorrent-devel
     SUBDIR += libtorrent-rasterbar
-    SUBDIR += libtorrent-rasterbar-15
-    SUBDIR += libtorrent-rasterbar-15-python
     SUBDIR += libtorrent-rasterbar-python
     SUBDIR += linux-jigdo
     SUBDIR += linuxdcpp
     SUBDIR += litecoin
+    SUBDIR += litecoin-daemon
     SUBDIR += lopster
     SUBDIR += microdc2
     SUBDIR += minder

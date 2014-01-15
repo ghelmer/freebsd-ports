@@ -14,11 +14,9 @@ LICENSE=	LGPL3
 
 RUN_DEPENDS=	swig2.0:${PORTSDIR}/devel/swig20
 
-USE_PYTHON=		-2.7
+USE_PYTHON=		2
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_PKGNAME=	instant
-
-FETCH_ARGS=	-F
 
 MAN1=		instant-clean.1 \
 		instant-showcache.1

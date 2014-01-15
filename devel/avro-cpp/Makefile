@@ -13,7 +13,7 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Data serialization system for C++
 
-LIB_DEPENDS=	boost_regex:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_regex.so:${PORTSDIR}/devel/boost-libs
 
 USES=		cmake
 USE_LDCONFIG=	yes
@@ -22,4 +22,9 @@ USE_PYTHON=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}/lang/c++
 
 NO_STAGE=	yes
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|COMMAND python|COMMAND "${PYTHON_CMD}"|' \
+		${WRKSRC}/CMakeLists.txt
+
 .include <bsd.port.mk>

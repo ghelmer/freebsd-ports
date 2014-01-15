@@ -9,7 +9,6 @@
     SUBDIR += 3dpong
     SUBDIR += 4stattack
     SUBDIR += 54321
-    SUBDIR += BillardGL
     SUBDIR += CaribbeanStud
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
@@ -82,13 +81,14 @@
     SUBDIR += blinkensisters
     SUBDIR += blobby
     SUBDIR += bloboats
+    SUBDIR += blobwars
     SUBDIR += block
     SUBDIR += blockade
     SUBDIR += blockout
     SUBDIR += blockrage
     SUBDIR += blokish
     SUBDIR += bloodfrontier
-    SUBDIR += blue
+    SUBDIR += bluemoon
     SUBDIR += bogged
     SUBDIR += bomber
     SUBDIR += bomberclone
@@ -97,6 +97,7 @@
     SUBDIR += bombz
     SUBDIR += bomns
     SUBDIR += boswars
+    SUBDIR += bouncy
     SUBDIR += bovo
     SUBDIR += braincurses
     SUBDIR += brainparty
@@ -131,8 +132,8 @@
     SUBDIR += cgoban
     SUBDIR += chanta
     SUBDIR += chapping
-    SUBDIR += chessx
     SUBDIR += cheech
+    SUBDIR += chessx
     SUBDIR += childsplay
     SUBDIR += childsplay_plugins
     SUBDIR += chocolate-doom
@@ -183,6 +184,7 @@
     SUBDIR += dangerdeep
     SUBDIR += dangerdeep-data
     SUBDIR += darkplaces
+    SUBDIR += dcross
     SUBDIR += deal
     SUBDIR += defendguin
     SUBDIR += deng
@@ -227,6 +229,7 @@
     SUBDIR += endgame-singularity-music
     SUBDIR += enigma
     SUBDIR += ensemblist
+    SUBDIR += entombed
     SUBDIR += enygma
     SUBDIR += epiar
     SUBDIR += etracer
@@ -249,11 +252,13 @@
     SUBDIR += fbg2
     SUBDIR += fgkicker
     SUBDIR += fgrun
+    SUBDIR += fightorperish
     SUBDIR += fillets-ng
     SUBDIR += filters
     SUBDIR += fishsupper
     SUBDIR += fkiss
-    SUBDIR += flare
+    SUBDIR += flare-engine
+    SUBDIR += flare-game
     SUBDIR += flightgear
     SUBDIR += flightgear-aircraft
     SUBDIR += flightgear-data
@@ -278,6 +283,8 @@
     SUBDIR += freedoko
     SUBDIR += freedroid
     SUBDIR += freedroidrpg
+    SUBDIR += freeminer
+    SUBDIR += freeminer-default
     SUBDIR += freera
     SUBDIR += freesweep
     SUBDIR += freesynd
@@ -530,7 +537,6 @@
     SUBDIR += linux-quake4-demo
     SUBDIR += linux-rtcw
     SUBDIR += linux-savage
-    SUBDIR += linux-savage-samuraiwars
     SUBDIR += linux-skulltag
     SUBDIR += linux-sof
     SUBDIR += linux-spheresofchaos-demo
@@ -619,9 +625,9 @@
     SUBDIR += nethack34-nox11
     SUBDIR += netherearth
     SUBDIR += netpanzer
+    SUBDIR += netradiant
     SUBDIR += netrek-BRMH-bin
     SUBDIR += netrek-client-cow
-    SUBDIR += netradiant
     SUBDIR += netris
     SUBDIR += netspades
     SUBDIR += nettoe
@@ -652,6 +658,7 @@
     SUBDIR += odamex
     SUBDIR += oldrunner
     SUBDIR += omega
+    SUBDIR += oneisenough
     SUBDIR += oneko
     SUBDIR += oneko-sakura
     SUBDIR += oolite
@@ -726,8 +733,10 @@
     SUBDIR += poker-engine
     SUBDIR += poker-eval
     SUBDIR += pokerth
+    SUBDIR += polyglot
     SUBDIR += polypuzzle
     SUBDIR += pongix
+    SUBDIR += popstar
     SUBDIR += pouetchess
     SUBDIR += powder
     SUBDIR += powermanga
@@ -761,6 +770,8 @@
     SUBDIR += pysycache-lang
     SUBDIR += pysycache-themes
     SUBDIR += pythonchess
+    SUBDIR += pythonsudoku
+    SUBDIR += pytowerdefense
     SUBDIR += q2p
     SUBDIR += q2pro
     SUBDIR += q3cellshading
@@ -801,7 +812,6 @@
     SUBDIR += quake3-freezetag
     SUBDIR += quake3-osp
     SUBDIR += quake3-ra3
-    SUBDIR += quake3-rq3
     SUBDIR += quake3-ut
     SUBDIR += quake3-wfa
     SUBDIR += quakeforge
@@ -835,6 +845,8 @@
     SUBDIR += sarien
     SUBDIR += sauerbraten
     SUBDIR += scare
+    SUBDIR += schiff
+    SUBDIR += schwarzweiss
     SUBDIR += scid
     SUBDIR += scorched3d
     SUBDIR += scourge
@@ -876,8 +888,8 @@
     SUBDIR += sokoban
     SUBDIR += sol
     SUBDIR += solarconquest
-    SUBDIR += solarwolf
     SUBDIR += solarus
+    SUBDIR += solarwolf
     SUBDIR += sopwith
     SUBDIR += spacejunk
     SUBDIR += speak
@@ -900,9 +912,11 @@
     SUBDIR += stransball2
     SUBDIR += stratagus
     SUBDIR += sudoku
+    SUBDIR += sudoku-sensei
     SUBDIR += sudoku_solver
     SUBDIR += sudsol
     SUBDIR += sumwars
+    SUBDIR += super_mario_bros_python
     SUBDIR += super_methane_brothers
     SUBDIR += supertux
     SUBDIR += supertux-devel
@@ -1069,7 +1083,6 @@
     SUBDIR += xjig
     SUBDIR += xjump
     SUBDIR += xjumpx
-    SUBDIR += xkobo
     SUBDIR += xkoules
     SUBDIR += xlaby
     SUBDIR += xlife

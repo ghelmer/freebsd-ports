@@ -2,32 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	pytsk
-DISTVERSION=	2013-09-10
-PORTREVISION=	1
+DISTVERSION=	2013-12-30
 CATEGORIES=	sysutils security devel python
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiScUxsUm54cG02RDA/ \
+		LOCAL/antoine
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python bindings for the Sleuthkit
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 LIB_DEPENDS=	libtsk.so:${PORTSDIR}/sysutils/sleuthkit
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_PYTHON=	-2.7
+USES=		shebangfix
+SHEBANG_FILES=	samples/*.py
+python_OLD_CMD=	.*
+python_CMD=	${PYTHON_CMD}
+USE_PYTHON=	2
 USE_PYDISTUTILS=yes
-PYDISTUTILS_PKGNAME=pytsk3
-PYDISTUTILS_PKGVERSION=0.1
+PYDISTUTILS_AUTOPLIST=yes
 
 post-patch:
-	${REINPLACE_CMD} -e '/socket\.h/ { h; s|socket|types|; G; }' ${WRKSRC}/misc.h
-	${REINPLACE_CMD} -e 's|/usr/local/include/tsk/|${LOCALBASE}/include/tsk/|' \
-		-e "s|LIBRARY_DIRS = \[\]|LIBRARY_DIRS = ['${LOCALBASE}/lib']|" \
-		-e "s|= \[CONFIG\['TSK_HEADERS_LOCATION'\]\]|= ['${LOCALBASE}/include']|" \
+	${REINPLACE_CMD} -e "s|'/', 'usr', 'local'|'${LOCALBASE}'|" \
 		${WRKSRC}/setup.py
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
@@ -35,8 +35,6 @@ PORTDOCS=	README
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 PORTEXAMPLES=	*
-
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/pytsk3.so
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -49,7 +47,7 @@ post-install:
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/samples/*.py ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/samples/*.py ${STAGEDIR}${EXAMPLESDIR}
 .endif
 
 .include <bsd.port.mk>

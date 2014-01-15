@@ -9,7 +9,7 @@ MASTER_SITES=	http://opensource.apple.com/tarballs/${PORTNAME}/
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bonjour (zero-configuration networking) by Apple
 
-LICENSE=	AL2 BSD
+LICENSE=	APACHE20 BSD3CLAUSE
 LICENSE_COMB=	dual
 
 CONFLICTS=	avahi-libdns-[0-9]*
@@ -17,7 +17,7 @@ CONFLICTS=	avahi-libdns-[0-9]*
 BUILD_WRKSRC=	${WRKSRC}/mDNSPosix
 INSTALL_WRKSRC=	${WRKSRC}/mDNSPosix
 MAKE_ARGS=	LOCALBASE=${PREFIX} MANPATH=${MANPREFIX}/man os=freebsd
-USES=		bison gmake
+USES=		gmake
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	mdnsd mdnsresponder
 

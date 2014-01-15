@@ -19,13 +19,12 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 USE_PYTHON=	yes
 USE_PYDISTUTILS=yes
 USE_GL=		gl glu
-USE_OPENAL=	al
+USES=		openal:al
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-OPTIONS_DEFAULT=DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
@@ -34,7 +33,7 @@ IGNORE=		crashes or doesn't work on !i386
 .endif
 
 post-install:
-	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}/
+	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/
+	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/
 
 .include <bsd.port.mk>

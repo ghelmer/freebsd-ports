@@ -11,48 +11,39 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast 2D tank arcade game with multiplayer and split-screen modes
 
 BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip
-LIB_DEPENDS=	sigc-2.0.0:${PORTSDIR}/devel/libsigc++20 \
-		expat.6:${PORTSDIR}/textproc/expat2 \
-		vorbisfile.6:${PORTSDIR}/audio/libvorbis \
-		smpeg.1:${PORTSDIR}/multimedia/smpeg
+LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
+		libexpat.so:${PORTSDIR}/textproc/expat2 \
+		libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
+		libsmpeg.so:${PORTSDIR}/multimedia/smpeg
 
-USES=		pkgconfig
+USES=		openal:al pkgconfig
 USE_BZIP2=	yes
-USE_GCC=	yes
 USE_LDCONFIG=	yes
 USE_LUA=	5.0+
-USE_OPENAL=	al
 USE_SDL=	image sdl
 USE_SCONS=	yes
-SCONS_ARGS=	prefix=${PREFIX} resources_dir=${DATADIR}
+USE_PYTHON_BUILD=	yes
+SCONS_ARGS=	prefix=${PREFIX} resources_dir=${DATADIR} \
+		--install-sandbox=${STAGEDIR}
 SCONS_BUILDENV=	CC="${CC}" CXX="${CXX}" \
 		CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS} -fpermissive" \
 		LDFLAGS="${LDFLAGS} ${PTHREAD_LIBS}" \
 		CPPPATH="${LOCALBASE}/include" LIBPATH="${LOCALBASE}/lib"
 
-MAN6=		${PORTNAME}.6
-
 PORTDOCS=	LICENSE LICENSE.EXCEPTION README-en.txt README-linux.txt \
 		donate.url homepage.url project_page.url video.txt
 
-DESKTOP_ENTRIES="Battle Tanks" "${COMMENT}" "" "${PORTNAME}" \
-		"Game;ArcadeGame;" false
+DESKTOP_ENTRIES="Battle Tanks" "" "" "${PORTNAME}" "Game;ArcadeGame;" ""
 
-NO_STAGE=	yes
 pre-build:
 # Regenerate `sl08.h' after we patch `sl08.py' (as patching the header itself
 # would have resulted in a larger diff and gratuitous difference with Debian)
-	@cd ${WRKSRC} && python engine/sl08/sl08.py > engine/sl08/sl08.h
+	@cd ${WRKSRC} && ${PYTHON_CMD} engine/sl08/sl08.py > engine/sl08/sl08.h
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/build/release/clunk/libclunk.so \
-		${WRKSRC}/build/release/engine/libbtanks_engine.so \
-		${WRKSRC}/build/release/mrt/libmrt.so \
-		${WRKSRC}/build/release/sdlx/libsdlx.so ${PREFIX}/lib
-	${INSTALL_MAN} ${FILESDIR}/${MAN6} ${MANPREFIX}/man/man6
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${DOCSDIR}
-.endif
+	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}.6 \
+		${STAGEDIR}${MANPREFIX}/man/man6
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

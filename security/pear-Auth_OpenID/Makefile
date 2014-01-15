@@ -15,7 +15,7 @@ BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 CONFLICTS=	php-Auth_OpenID-1.*
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_BZIP2=	yes
@@ -31,7 +31,6 @@ USE_PHP=	curl dom
 USE_PYTHON_BUILD=	yes
 PEAR_AUTOINSTALL=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/pear/bsd.pear.mk"
 EXTRACT_SUFX=	.tar.bz2

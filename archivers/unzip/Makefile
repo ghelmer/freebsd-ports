@@ -14,9 +14,9 @@ MAINTAINER?=	ehaupt@FreeBSD.org
 COMMENT?=	List, test, and extract compressed files in a ZIP archive
 
 LICENSE=	Info-ZIP
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_NAME=	Info-ZIP license
 LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS?=	unzip-iconv-[0-9]* zh-unzip-[0-9]* ko-unzip-[0-9]* ru-unzip-[0-9]*
 
@@ -29,7 +29,7 @@ UNZIP_NAME=	unzip
 .endif
 PLIST_FILES=	bin/${UNZIP_NAME} bin/funzip bin/unzipsfx bin/zipgrep bin/zipinfo
 PORTDOCS=	README WHERE
-MAN1=		${UNZIP_NAME}.1 funzip.1 unzipsfx.1 zipgrep.1 zipinfo.1
+MANPAGES=		${UNZIP_NAME}.1 funzip.1 unzipsfx.1 zipgrep.1 zipinfo.1
 
 LOCAL_UNZIP=	${CFLAGS} -DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR \
 		-DUNICODE_SUPPORT -DUTF8_MAYBE_NATIVE -D_MBCS \
@@ -58,6 +58,8 @@ MAKE_ENV=	LOCAL_UNZIP="${LOCAL_UNZIP}" \
 .error You have `USE_UNZIP' variable defined either in environment or in make(1) arguments. Please undefine and try again.
 .endif
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
@@ -66,7 +68,7 @@ ALL_TARGET=	freebsd
 ALL_TARGET=	bsd
 .endif
 
-.for m in ${MAN1}
+.for m in ${MANPAGES}
 PLIST_FILES+=	man/man1/${m}.gz
 .endfor
 
@@ -88,16 +90,16 @@ pre-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/unzip ${STAGEDIR}${PREFIX}/bin/${UNZIP_NAME}
-.for file in funzip unzipsfx
-	${INSTALL_PROGRAM} ${WRKSRC}/${file} ${STAGEDIR}${PREFIX}/bin
+.for f in funzip unzipsfx
+	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
 	${LN} -sf ${UNZIP_NAME} ${STAGEDIR}${PREFIX}/bin/zipinfo
 	${INSTALL_SCRIPT} ${WRKSRC}/unix/zipgrep ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/man/unzip.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${UNZIP_NAME}.1
-.for f in ${MAN1:Nunzip.1:Ninfo-unzip.1}
+.for f in ${MANPAGES:Nunzip.1:Ninfo-unzip.1}
 	${INSTALL_MAN} ${WRKSRC}/man/${f} ${STAGEDIR}${MAN1PREFIX}/man/man1
 .endfor
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}

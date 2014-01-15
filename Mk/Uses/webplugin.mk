@@ -179,6 +179,4 @@ webplugin-post-install:
 	@${ECHO_CMD} "@unexec rmdir ${_WEBPLUGIN_SLDIR:S,^${LOCALBASE},%D,} 2>/dev/null || true" >> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec rmdir ${_WEBPLUGIN_LIBDIR:S,^${LOCALBASE},%D,} 2>/dev/null || true" >> ${TMPPLIST}
 
-post-install: webplugin-post-install
-
 .endif

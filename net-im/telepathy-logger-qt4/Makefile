@@ -21,14 +21,13 @@ LIB_DEPENDS=	dbus-1:${PORTSDIR}/devel/dbus \
 USE_GNOME=	glib20 libxml2
 USE_GSTREAMER=	qt4
 USE_KDE4=	# empty
-USE_PYTHON_BUILD=	2.5+
+USE_PYTHON_BUILD=	yes
 USE_QT4=	corelib dbus moc_build qmake_build rcc_build uic_build
 USES=		bison:build cmake pkgconfig
 USE_BZIP2=	yes
 CMAKE_ARGS=	-DUSE_COMMON_CMAKE_PACKAGE_CONFIG_DIR:BOOL=True
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e '/FIND_PROGRAM/ s,qmake ,,' \
 		${WRKSRC}/cmake/modules/FindQt.cmake

@@ -8,18 +8,20 @@ CATEGORIES=	audio
 MASTER_SITES=	http://plugin.org.uk/releases/alienwah/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Paul Nasca's AlienWah LADSPA Plugin
+COMMENT=	Paul Nasca's AlienWah LADSPA plugin
+
+LICENSE=	GPLv2
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:${PORTSDIR}/audio/ladspa
 
-NO_STAGE=	yes
 USES=		gmake
 MAKE_ARGS=	CPP="${CXX}" CXXFLAGS="${CXXFLAGS} -I${LOCALBASE}/include -fPIC"
 
 PLIST_FILES=	lib/ladspa/aw.so
+PLIST_DIRSTRY=	lib/ladspa
 
 do-install:
-	@${MKDIR} ${PREFIX}/lib/ladspa
-	${INSTALL_DATA} ${WRKSRC}/aw.so ${PREFIX}/lib/ladspa
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/ladspa
+	${INSTALL_LIB} ${WRKSRC}/aw.so ${STAGEDIR}${PREFIX}/lib/ladspa
 
 .include <bsd.port.mk>

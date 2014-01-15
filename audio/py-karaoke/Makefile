@@ -15,8 +15,8 @@ COMMENT=	Python karaoke application (Plays CD+G, MP3+G, OGG+G files)
 LICENSE=	LGPL21 # (or later)
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
-LIB_DEPENDS=	pthread-stubs:${PORTSDIR}/devel/libpthread-stubs \
-		aa:${PORTSDIR}/graphics/aalib
+LIB_DEPENDS=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
+		libaa.so:${PORTSDIR}/graphics/aalib
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game \
 		dejavu>0:${PORTSDIR}/x11-fonts/dejavu \
 		${PYNUMPY}
@@ -32,7 +32,7 @@ USE_XORG=	x11 xau xcb xdmcp
 USE_WX=		2.6+
 WX_COMPS=	python:lib
 
-USE_PYTHON=		-2.7
+USE_PYTHON=		2
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_PKGNAME=	py${PORTNAME}
 

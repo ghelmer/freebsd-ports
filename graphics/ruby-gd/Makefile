@@ -14,9 +14,10 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Ruby extension library to use Thomas Boutell's gd library
 
-LIB_DEPENDS=	freetype:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libgd.so:${PORTSDIR}/graphics/gd
 
-NO_STAGE=	yes
+NEED_ROOT=	yes
 
 USE_RUBY=	yes
 USE_RUBY_EXTCONF=	yes
@@ -26,14 +27,13 @@ RUBY_MODNAME=	${PORTNAME:L}
 CONFIGURE_ARGS=	--with-gd-lib="${LOCALBASE}/lib" \
 		--with-jpeg \
 		--with-ttf \
-		--with-freetype
+		--with-freetype \
+		--enable-gd2_0 \
+		--with-gd-include="${LOCALBASE}/include"
+
 INSTALL_TARGET=	site-install
 
-CONFIGURE_ARGS+=	--enable-gd2_0 \
-		--with-gd-include="${LOCALBASE}/include"
-LIB_DEPENDS+=	gd:${PORTSDIR}/graphics/gd
-
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 # Hmm, GREP and TRUE seem to be defined in the bsd.port.post.mk stage.
 .if exists(${LOCALBASE}/bin/gd2topng)
@@ -65,21 +65,26 @@ post-patch:
 	${RUBY} -i -pe 'sub %r:/win98/windows/FONTS:, "${LOCALBASE}/lib/X11/fonts/TrueType"' ${WRKSRC}/sample/gdtestttf.rb
 	${RUBY} -i -pe 'sub %r:%%GD%%:, "gd"' ${WRKSRC}/extconf.rb
 
+post-configure:
+	${REINPLACE_CMD} -e 's|^V = 0|V = 1|' \
+		-e 's|^libdir = .*|libdir = ${PREFIX}/lib|' \
+		${WRKSRC}/Makefile
+
 post-install:
-.if !defined(NOPORTEXAMPLES)
-	${MKDIR} ${RUBY_MODEXAMPLESDIR}
-.for f in ${EXAMPLES_EN}
-	${INSTALL_DATA} ${WRKSRC}/sample/${f} ${RUBY_MODEXAMPLESDIR}/
-.endfor
-.endif
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${RUBY_MODDOCDIR}/ja
+.if ${PORT_OPTIONS:MDOCS}
+	${MKDIR} ${STAGEDIR}${RUBY_MODDOCDIR}/ja
 .for f in ${DOCS_EN}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${RUBY_MODDOCDIR}/
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/
 .endfor
 .for f in ${DOCS_JA}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${RUBY_MODDOCDIR}/ja/
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/ja/
+.endfor
+.endif
+.if ${PORT_OPTIONS:MEXAMPLES}
+	${MKDIR} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}
+.for f in ${EXAMPLES_EN}
+	${INSTALL_DATA} ${WRKSRC}/sample/${f} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}/
 .endfor
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

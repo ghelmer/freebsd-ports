@@ -13,7 +13,7 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	t.hiroaki.209@gmail.com
 COMMENT=	A Ruby library wrapping the Taglib library
 
-LIB_DEPENDS=    tag:${PORTSDIR}/audio/taglib
+LIB_DEPENDS=    libtag.so:${PORTSDIR}/audio/taglib
 
 USE_RUBY=	yes
 NO_STAGE=	yes
@@ -25,10 +25,12 @@ NO_BUILD=	yes
 
 DOCS=		README
 
+.include <bsd.port.options.mk>
+
 do-install:
 	${MKDIR} ${RUBY_SITELIBDIR}/
 	${INSTALL_DATA} ${WRKSRC}/lib/taglib.rb ${RUBY_SITELIBDIR}/
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${RUBY_MODDOCDIR}
 	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/,} ${RUBY_MODDOCDIR}/
 .endif

@@ -3,7 +3,7 @@
 
 PORTNAME=	qtcreator
 DISTVERSION=	2.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITE_QT:S/$/:qtcreator/} \
 		${MASTER_SITE_QT}
@@ -17,26 +17,23 @@ DIST_SUBDIR=	KDE
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	C++ and QML IDE for Qt development
 
-LIB_DEPENDS=	Imath:${PORTSDIR}/graphics/ilmbase \
-		IlmImf:${PORTSDIR}/graphics/OpenEXR \
-		jasper:${PORTSDIR}/graphics/jasper \
-		jpeg:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS=	libImath.so:${PORTSDIR}/graphics/ilmbase \
+		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
+		libjasper.so:${PORTSDIR}/graphics/jasper \
+		libjpeg.so:${PORTSDIR}/graphics/jpeg
 
-USE_QT4=	qmake_build moc_build rcc_build uic_build \
+USE_QT4=	moc_build rcc_build uic_build \
 		linguist_build assistant_run qt3support \
 		dbus designer gui help-tools_build network script \
-		sql svg xml webkit qdoc3_build
-HAS_CONFIGURE=	yes
+		corelib sql svg testlib xml webkit qdoc3_build
+USES=		qmake:outsource
 MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	all docs
 INSTALL_TARGET=	install install_docs
 MAKE_ENV=	XDG_CONFIG_HOME=/dev/null
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
 
-QMAKE_ARGS=	-recursive CONFIG+="configure" QTC_PREFIX=${PREFIX} ${QMAKE_PRO}
-QMAKE_PRO=	${WRKSRC}/${PORTNAME}.pro
-# stage support
-DESTDIRNAME=	INSTALL_ROOT
+QMAKE_ARGS=	CONFIG+="configure" QTC_PREFIX=${PREFIX}
 
 # Build Qt Quick Designer (requires update on every Qt update).
 QT_DISTNAME=	qt-everywhere-opensource-src-${QT4_VERSION}
@@ -47,12 +44,8 @@ EXTRACT_AFTER_ARGS+=	--exclude '${QT_DISTNAME}/${dne}'
 .endfor
 QMAKE_ARGS+=	QT_PRIVATE_HEADERS="${WRKDIR}/${QT_DISTNAME}/include"
 
-CONFIGURE_WRKSRC=	${WRKDIR}/build
-BUILD_WRKSRC=		${CONFIGURE_WRKSRC}
-INSTALL_WRKSRC=		${CONFIGURE_WRKSRC}
-
-DESKTOP_ENTRIES=	"Qt Creator" "${COMMENT}" "QtProject-qtcreator" \
-			"${PREFIX}/bin/${PORTNAME}" "Development;Qt;" true
+DESKTOP_ENTRIES="Qt Creator" "" "QtProject-qtcreator" \
+		"${PREFIX}/bin/${PORTNAME}" "Development;Qt;" true
 
 post-patch:
 	${REINPLACE_CMD} -e 's|lrelease|lrelease-qt4|' \
@@ -63,12 +56,6 @@ post-patch:
 		${WRKSRC}/share/qtcreator/dumper/gbridge.py
 	${REINPLACE_CMD} -e 's|/usr/bin/ant|${LOCALBASE}/ant|' \
 		${WRKSRC}/src/plugins/android/androidsettingswidget.cpp
-
 	${RM} ${WRKSRC}/share/qtcreator/dumper/gbridge.py.bak
-
-do-configure:
-	${MKDIR} ${CONFIGURE_WRKSRC}
-	cd ${CONFIGURE_WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
-		${QMAKE} ${QMAKEFLAGS} ${QMAKE_ARGS}
 
 .include <bsd.port.mk>

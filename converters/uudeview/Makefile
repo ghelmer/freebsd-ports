@@ -11,7 +11,7 @@ COMMENT=	A program for uu/xx/Base64/BinHex/yEnc de-/encoding
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	uu.3:${PORTSDIR}/converters/uulib
+LIB_DEPENDS=	libuu.so:${PORTSDIR}/converters/uulib
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-tcl
@@ -37,13 +37,11 @@ CONFIGURE_ARGS+=	--enable-inews=${PREFIX}/news/lib/inews
 post-install:
 	@${STRIP_CMD} ${PREFIX}/bin/uudeview
 	@${STRIP_CMD} ${PREFIX}/bin/uuenview
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${ECHO_MSG} "===>  Installing documents to ${DOCSDIR}"
 	@${MKDIR} ${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/HISTORY ${DOCSDIR}
 	@${INSTALL_DATA} ${FILESDIR}/porting.notes ${DOCSDIR}
-.else
-	@${ECHO_MSG} "===>  Not installing available documents"
 .endif
 
 .include <bsd.port.post.mk>

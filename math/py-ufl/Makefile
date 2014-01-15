@@ -13,11 +13,9 @@ COMMENT=	Unified Form Language for finite element discretizations
 
 LICENSE=	LGPL3
 
-USE_PYTHON=		-2.7
+USE_PYTHON=		2
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_PKGNAME=	UFL
-
-FETCH_ARGS=	-F
 
 MAN1=		form2ufl.1 \
 		ufl-analyse.1 \

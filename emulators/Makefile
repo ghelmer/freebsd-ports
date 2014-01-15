@@ -72,9 +72,6 @@
     SUBDIR += libdsk
     SUBDIR += libspectrum
     SUBDIR += linux-geepee32
-    SUBDIR += linux-peops-softgpu
-    SUBDIR += linux-pete-mesagpu
-    SUBDIR += linux-pete-xgl2gpu
     SUBDIR += linux-systemsimcell
     SUBDIR += linux_base-c6
     SUBDIR += linux_base-f10
@@ -129,6 +126,7 @@
     SUBDIR += prodosemu
     SUBDIR += psim-freebsd
     SUBDIR += pyxmame
+    SUBDIR += q4wine
     SUBDIR += qemu
     SUBDIR += qemu-devel
     SUBDIR += qemu-launcher
@@ -180,6 +178,7 @@
     SUBDIR += wine-gecko
     SUBDIR += wine-gecko-devel
     SUBDIR += wine-mono
+    SUBDIR += wine-mono-devel
     SUBDIR += wxmupen64plus
     SUBDIR += x48
     SUBDIR += xbraitenberg

@@ -8,7 +8,7 @@ MASTER_SITES=	SF
 DISTNAME=	syncmail
 EXTRACT_SUFX=
 
-MAINTAINER=	glarkin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CVS notification tool
 
 .if defined(WITH_CVSNT)
@@ -18,7 +18,7 @@ RUN_DEPENDS=	${LOCALBASE}/bin/cvsnt:${PORTSDIR}/devel/cvsnt
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-USE_PYTHON=	2.0+
+USE_PYTHON=	yes
 
 PLIST_FILES=	bin/${DISTNAME}
 

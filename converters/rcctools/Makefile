@@ -10,7 +10,7 @@ MASTER_SITES=	SF/rusxmms/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	admin@lissyara.su
 COMMENT=	Charset conversion utility with language and encoding autodetection
 
-LIB_DEPENDS=	rcc.2:${PORTSDIR}/devel/librcc
+LIB_DEPENDS=	librcc.so:${PORTSDIR}/devel/librcc
 
 USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
@@ -20,5 +20,4 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 
 PLIST_FILES=	bin/rcc-recode
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

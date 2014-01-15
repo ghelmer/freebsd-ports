@@ -62,6 +62,7 @@
     SUBDIR += hamlib
     SUBDIR += hcidump
     SUBDIR += hf
+    SUBDIR += hidapi
     SUBDIR += hylafax
     SUBDIR += ibp
     SUBDIR += java-commapi
@@ -150,7 +151,6 @@
     SUBDIR += twpsk
     SUBDIR += uarduno
     SUBDIR += uartlirc
-    SUBDIR += uhso-kmod
     SUBDIR += uird
     SUBDIR += unixcw
     SUBDIR += usbmuxd

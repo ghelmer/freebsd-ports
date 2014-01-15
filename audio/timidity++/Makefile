@@ -12,8 +12,8 @@ MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Software MIDI player
 
 .if !defined(PKGNAMESUFFIX)
-LIB_DEPENDS=	vorbis:${PORTSDIR}/audio/libvorbis	\
-		arc:${PORTSDIR}/archivers/libarc
+LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis	\
+		libarc.so:${PORTSDIR}/archivers/libarc
 RUN_DEPENDS=	${LOCALBASE}/share/timidity/timidity.cfg:${PORTSDIR}/audio/eawpats
 
 CONFLICTS=	timidity-0.*
@@ -54,7 +54,7 @@ CONFIGURE_ARGS+=--without-x --disable-spectrogram --disable-wrd --disable-dynami
 .else
 CONFIGURE_ARGS+=--with-x    --enable-spectrogram  --enable-wrd  --enable-dynamic
 USE_XORG=	x11 xext
-LIB_DEPENDS+=	png15:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
 CPPFLAGS+=	-I${LOCALBASE}/include/libpng15
 .endif
 
@@ -80,7 +80,7 @@ post-install::
 .endif # !defined(PKGNAMESUFFIX)
 
 post-install::
-.if !defined(NOPORTDOCS) && defined(DOCFILES)
+.if ${PORT_OPTIONS:MDOCS} && defined(DOCFILES)
 .for lang in ${DOCLANG}
 	${MKDIR} ${PREFIX}/share/doc/${lang:C,^C$,,:C,ja_.*,ja/,}timidity++
 	cd ${WRKSRC}/doc/${lang} && ${INSTALL_DATA} ${DOCFILES}	\

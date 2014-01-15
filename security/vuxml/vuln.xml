@@ -51,6 +51,1127 @@ Note:  Please add new entries to the beginning of this file.
 
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="3d95c9a7-7d5c-11e3-a8c1-206a8a720317">
+    <topic>ntpd DRDoS / Amplification Attack using ntpdc monlist command</topic>
+    <affects>
+      <package>
+	<name>ntp</name>
+	<range><lt>4.2.7p26</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>ntp.org reports:</p>
+	<blockquote cite="http://support.ntp.org/bin/view/Main/SecurityNotice#DRDoS_Amplification_Attack_using">
+	  <p>Unrestricted access to the monlist feature in
+	    ntp_request.c in ntpd in NTP before 4.2.7p26 allows remote
+	    attackers to cause a denial of service (traffic
+	    amplification) via forged (1) REQ_MON_GETLIST or (2)
+	    REQ_MON_GETLIST_1 requests, as exploited in the wild in
+	    December 2013</p>
+	  <p>Use noquery to your default restrictions to block all
+	    status queries.</p>
+	  <p>Use disable monitor to disable the ``ntpdc -c monlist''
+	    command while still allowing other status queries.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-5211</cvename>
+      <freebsdsa>SA-14:02.ntpd</freebsdsa>
+      <url>http://support.ntp.org/bin/view/Main/SecurityNotice#DRDoS_Amplification_Attack_using</url>
+    </references>
+    <dates>
+      <discovery>2014-01-01</discovery>
+      <entry>2014-01-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="ba04a373-7d20-11e3-8992-00132034b086">
+    <topic>nagios -- denial of service vulnerability</topic>
+    <affects>
+      <package>
+	<name>nagios</name>
+	<range><lt>3.5.1_3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Eric Stanley reports:</p>
+	<blockquote cite="http://sourceforge.net/p/nagios/nagioscore/ci/d97e03f32741a7d851826b03ed73ff4c9612a866/">
+	  <p>Most CGIs previously incremented the input variable counter twice
+	    when it encountered a long key value. This could cause the CGI to
+	    read past the end of the list of CGI variables.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-7108</cvename>
+      <cvename>CVE-2013-7205</cvename>
+      <url>http://sourceforge.net/p/nagios/nagioscore/ci/d97e03f32741a7d851826b03ed73ff4c9612a866/</url>
+      <url>https://bugzilla.redhat.com/show_bug.cgi?id=1046113</url>
+    </references>
+    <dates>
+      <discovery>2013-12-20</discovery>
+      <entry>2014-01-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cb252f01-7c43-11e3-b0a6-005056a37f68">
+    <topic>bind -- denial of service vulnerability</topic>
+    <affects>
+      <package>
+	<name>bind99</name>
+	<name>bind99-base</name>
+	<range><lt>9.9.4.2</lt></range>
+      </package>
+      <package>
+	<name>bind98</name>
+	<name>bind98-base</name>
+	<range><lt>9.8.6.2</lt></range>
+      </package>
+      <package>
+	<name>bind96</name>
+	<name>bind96-base</name>
+	<range><lt>9.6.3.2.ESV.R10.2</lt></range>
+      </package>
+      <package>
+	<name>FreeBSD</name>
+	<range><gt>9.2</gt><lt>9.2_3</lt></range>
+	<range><gt>9.1</gt><lt>9.1_10</lt></range>
+	<range><gt>8.4</gt><lt>8.4_7</lt></range>
+	<range><gt>8.3</gt><lt>8.3_14</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>ISC reports:</p>
+	<blockquote cite="https://kb.isc.org/article/AA-01078/74/">
+	  <p>Because of a defect in handling queries for NSEC3-signed zones,
+	    BIND can crash with an "INSIST" failure in name.c when processing
+	    queries possessing certain properties. By exploiting this defect
+	    an attacker deliberately constructing a query with the right
+	    properties could achieve denial of service against an authoritative
+	    nameserver serving NSEC3-signed zones.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2014-0591</cvename>
+      <freebsdsa>SA-13:07.bind</freebsdsa>
+      <url>https://kb.isc.org/article/AA-01078/74/</url>
+    </references>
+    <dates>
+      <discovery>2014-01-08</discovery>
+      <entry>2014-01-13</entry>
+      <modified>2014-01-15</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="28c575fa-784e-11e3-8249-001cc0380077">
+    <topic>libXfont -- Stack buffer overflow in parsing of BDF font files in libXfont</topic>
+    <affects>
+      <package>
+	<name>libXfont</name>
+	<range><lt>1.4.7,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>freedesktop.org reports:</p>
+	<blockquote cite="http://lists.x.org/archives/xorg-announce/2014-January/002389.html">
+	  <p>A BDF font file containing a longer than expected string can cause
+	    a buffer overflow on the stack.  Testing in X servers built with
+	    Stack Protector restulted in an immediate crash when reading a
+	    user-proveded specially crafted font.</p>
+	  <p>As libXfont is used to read user-specified font files in all X
+	    servers distributed by X.Org, including the Xorg server which is
+	    often run with root privileges or as setuid-root in order to access
+	    hardware, this bug may lead to an unprivileged user acquiring root
+	    privileges in some systems.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-6462</cvename>
+      <url>http://lists.x.org/archives/xorg-announce/2014-January/002389.html</url>
+    </references>
+    <dates>
+      <discovery>2013-12-24</discovery>
+      <entry>2014-01-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="5aaa257e-772d-11e3-a65a-3c970e169bc2">
+    <topic>openssl -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>openssl</name>
+	<range><lt>1.0.1_9</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenSSL development team reports:</p>
+	<blockquote cite="http://www.openssl.org/news/openssl-1.0.1-notes.html">
+	  <p>Major changes between OpenSSL 1.0.1e and OpenSSL 1.0.1f [6 Jan 2014]:</p>
+	  <ul>
+	    <li>Fix for TLS record tampering bug [CVE-2013-4353]</li>
+	    <li>Fix for TLS version checking bug [CVE-2013-6449]</li>
+	    <li>Fix for DTLS retransmission bug [CVE-2013-6450]</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4353</cvename>
+      <cvename>CVE-2013-6449</cvename>
+      <cvename>CVE-2013-6450</cvename>
+      <url>http://www.openssl.org/news/openssl-1.0.1-notes.html</url>
+    </references>
+    <dates>
+      <discovery>2014-01-06</discovery>
+      <entry>2014-01-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3e33a0bb-6b2f-11e3-b042-20cf30e32f6d">
+    <topic>OpenX -- SQL injection vulnerability</topic>
+    <affects>
+      <package>
+	<name>openx</name>
+	<range><lt>3.0.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Revive reports:</p>
+	<blockquote cite="http://www.revive-adserver.com/security/revive-sa-2013-001/">
+	  <p>An SQL-injection vulnerability was recently discovered and reported
+	    to the Revive Adserver team by Florian Sander. The vulnerability is
+	    known to be already exploited to gain unauthorised access to the
+	    application using brute force mechanisms, however other kind of
+	    attacks might be possible and/or already in use. The risk is rated
+	    to be critical as the most common end goal of the attackers is to
+	    spread malware to the visitors of all the websites and ad networks
+	    that the ad server is being used on.</p>
+	  <p>The vulnerability is also present and exploitable in OpenX Source
+	    2.8.11 and earlier versions, potentially back to phpAdsNew 2.0.x.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://www.revive-adserver.com/security/revive-sa-2013-001/</url>
+      <url>http://www.kreativrauschen.com/blog/2013/12/18/zero-day-vulnerability-in-openx-source-2-8-11-and-revive-adserver-3-0-1/</url>
+      <cvename>CVE-2013-7149</cvename>
+    </references>
+    <dates>
+      <discovery>2013-12-20</discovery>
+      <entry>2013-12-22</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4e1f4abc-6837-11e3-9cda-3c970e169bc2">
+    <topic>cURL library -- cert name check ignore with GnuTLS</topic>
+    <affects>
+      <package>
+	<name>curl</name>
+	<range><ge>7.21.4</ge><lt>7.33.0_2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>cURL project reports:</p>
+	<blockquote cite="http://curl.haxx.se/docs/adv_20131217.html">
+	  <p>libcurl is vulnerable to a case of missing out the checking
+	    of the certificate CN or SAN name field when the digital
+	    signature verification is turned off.</p>
+	  <p>libcurl offers two separate and independent options for
+	    verifying a server's TLS certificate. CURLOPT_SSL_VERIFYPEER
+	    and CURLOPT_SSL_VERIFYHOST. The first one tells libcurl to
+	    verify the trust chain using a CA cert bundle, while the
+	    second tells libcurl to make sure that the name fields in
+	    the server certificate meets the criteria. Both options are
+	    enabled by default.</p>
+	  <p>This flaw had the effect that when an application disabled
+	    CURLOPT_SSL_VERIFYPEER, libcurl mistakenly also skipped the
+	    CURLOPT_SSL_VERIFYHOST check. Applications can disable
+	    CURLOPT_SSL_VERIFYPEER and still achieve security by doing
+	    the check on its own using other means.</p>
+	  <p>The curl command line tool is not affected by this problem
+	    as it either enables both options or disables both at the
+	    same time.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://curl.haxx.se/docs/adv_20131217.html</url>
+      <cvename>CVE-2013-6422</cvename>
+    </references>
+    <dates>
+      <discovery>2013-12-17</discovery>
+      <entry>2013-12-18</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="2e5715f8-67f7-11e3-9811-b499baab0cbe">
+    <topic>gnupg -- RSA Key Extraction via Low-Bandwidth Acoustic Cryptanalysis attack</topic>
+    <affects>
+      <package>
+	<name>gnupg</name>
+	<name>gnupg1</name>
+	<range><lt>1.4.16</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Werner Koch reports:</p>
+	<blockquote cite="http://lists.gnupg.org/pipermail/gnupg-announce/2013q4/000337.html">
+	  <p>CVE-2013-4576 has been assigned to this security bug.</p>
+	  <p>The paper describes two attacks.  The first attack allows
+	    to distinguish keys: An attacker is able to notice which key is
+	    currently used for decryption.  This is in general not a problem but
+	    may be used to reveal the information that a message, encrypted to a
+	    commonly not used key, has been received by the targeted machine.  We
+	    do not have a software solution to mitigate this attack.</p>
+	  <p>The second attack is more serious.  It is an adaptive
+	    chosen ciphertext attack to reveal the private key.  A possible
+	    scenario is that the attacker places a sensor (for example a standard
+	    smartphone) in the vicinity of the targeted machine.  That machine is
+	    assumed to do unattended RSA decryption of received mails, for example
+	    by using a mail client which speeds up browsing by opportunistically
+	    decrypting mails expected to be read soon.  While listening to the
+	    acoustic emanations of the targeted machine, the smartphone will send
+	    new encrypted messages to that machine and re-construct the private
+	    key bit by bit.  A 4096 bit RSA key used on a laptop can be revealed
+	    within an hour.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4576</cvename>
+      <url>http://lists.gnupg.org/pipermail/gnupg-announce/2013q4/000337.html</url>
+    </references>
+    <dates>
+      <discovery>2013-12-18</discovery>
+      <entry>2013-12-18</entry>
+      <modified>2013-12-18</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="0c39bafc-6771-11e3-868f-0025905a4771">
+    <topic>asterisk -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>asterisk10</name>
+	<range><lt>10.12.4</lt></range>
+      </package>
+      <package>
+	<name>asterisk11</name>
+	<range><lt>11.6.1</lt></range>
+      </package>
+      <package>
+	<name>asterisk18</name>
+	<range><lt>1.8.24.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Asterisk project reports:</p>
+	<blockquote cite="https://www.asterisk.org/security">
+	  <p>A 16 bit SMS message that contains an odd message length value will
+	    cause the message decoding loop to run forever. The message buffer is
+	    not on the stack but will be overflowed resulting in corrupted memory
+	    and an immediate crash.</p>
+	  <p>External control protocols, such as the Asterisk Manager Interface,
+	    often have the ability to get and set channel variables; this allows
+	    the execution of dialplan functions. Dialplan functions within
+	    Asterisk are incredibly powerful, which is wonderful for building
+	    applications using Asterisk. But during the read or write execution,
+	    certain diaplan functions do much more. For example, reading the SHELL()
+	    function can execute arbitrary commands on the system Asterisk is
+	    running on.  Writing to the FILE() function can change any file that
+	    Asterisk has write access to.  When these functions are executed from an
+	    external protocol, that execution could result in a privilege escalation.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-7100</cvename>
+      <url>http://downloads.asterisk.org/pub/security/AST-2013-006.pdf</url>
+      <url>http://downloads.asterisk.org/pub/security/AST-2013-007.pdf</url>
+      <url>https://www.asterisk.org/security</url>
+    </references>
+    <dates>
+      <discovery>2013-12-16</discovery>
+      <entry>2013-12-17</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="3b86583a-66a7-11e3-868f-0025905a4771">
+    <topic>phpmyfaq -- arbitrary PHP code execution vulnerability</topic>
+    <affects>
+      <package>
+	<name>phpmyfaq</name>
+	<range><lt>2.8.4</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The phpMyFAQ team reports:</p>
+	<blockquote cite="http://www.phpmyfaq.de/advisory_2013-11-26.php">
+	  <p>Secunia noticed while analysing the advisory that authenticated
+	    users with "Right to add attachments" are able to exploit an already
+	    publicly known issue in the bundled Ajax File Manager of phpMyFAQ version
+	    2.8.3, which leads to arbitrary PHP code execution for authenticated
+	    users with the permission "Right to add attachments".</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://en.securitylab.ru/lab/PT-2013-41</url>
+      <url>http://www.phpmyfaq.de/advisory_2013-11-26.php</url>
+    </references>
+    <dates>
+      <discovery>2013-11-26</discovery>
+      <entry>2013-12-16</entry>
+      <modified>2013-12-17</modified>
+    </dates>
+  </vuln>
+
+  <vuln vid="44d0f8dc-6607-11e3-bb11-0025900931f8">
+    <topic>zabbix -- shell command injection vulnerability</topic>
+    <affects>
+      <package>
+	<name>zabbix2-agent</name>
+	<range><lt>2.0.10</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Recurity Labs Team project reports:</p>
+	<blockquote cite="https://support.zabbix.com/browse/ZBX-7479">
+	  <p>Zabbix agent is vulnerable to remote command execution
+	    from the Zabbix server in some cases.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-6824</cvename>
+      <url>https://support.zabbix.com/browse/ZBX-7479</url>
+    </references>
+    <dates>
+      <discovery>2013-12-03</discovery>
+      <entry>2013-12-16</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="47b4e713-6513-11e3-868f-0025905a4771">
+    <topic>PHP5 -- memory corruption in openssl_x509_parse()</topic>
+    <affects>
+      <package>
+	<name>php5</name>
+	<range><ge>5.4.0</ge><lt>5.4.23</lt></range>
+      </package>
+      <package>
+	<name>php53</name>
+	<range><lt>5.3.28</lt></range>
+      </package>
+      <package>
+	<name>php55</name>
+	<range><ge>5.5.0</ge><lt>5.5.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Stefan Esser reports:</p>
+	<blockquote cite="https://www.sektioneins.de/advisories/advisory-012013-php-openssl_x509_parse-memory-corruption-vulnerability.html">
+	  <p>The PHP function openssl_x509_parse() uses a helper function
+	    called asn1_time_to_time_t() to convert timestamps from ASN1
+	    string format into integer timestamp values. The parser within
+	    this helper function is not binary safe and can therefore be
+	    tricked to write up to five NUL bytes outside of an allocated
+	    buffer.</p>
+	  <p>This problem can be triggered by x509 certificates that contain
+	    NUL bytes in their notBefore and notAfter timestamp fields and
+	    leads to a memory corruption that might result in arbitrary
+	    code execution.</p>
+	  <p>Depending on how openssl_x509_parse() is used within a PHP
+	    application the attack requires either a malicious cert signed
+	    by a compromised/malicious CA or can be carried out with a
+	    self-signed cert.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-6420</cvename>
+      <url>https://www.sektioneins.de/advisories/advisory-012013-php-openssl_x509_parse-memory-corruption-vulnerability.html</url>
+    </references>
+    <dates>
+      <discovery>2013-12-13</discovery>
+      <entry>2013-12-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="dd116b19-64b3-11e3-868f-0025905a4771">
+    <topic>mozilla -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>firefox</name>
+	<range><gt>25.0,1</gt><lt>26.0,1</lt></range>
+	<range><lt>24.2.0,1</lt></range>
+      </package>
+      <package>
+	<name>linux-firefox</name>
+	<range><lt>26.0,1</lt></range>
+      </package>
+      <package>
+	<name>linux-seamonkey</name>
+	<range><lt>2.23</lt></range>
+      </package>
+      <package>
+	<name>linux-thunderbird</name>
+	<range><lt>24.2.0</lt></range>
+      </package>
+      <package>
+	<name>seamonkey</name>
+	<range><lt>2.23</lt></range>
+      </package>
+      <package>
+	<name>thunderbird</name>
+	<range><lt>24.2.0</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Mozilla Project reports:</p>
+	<blockquote cite="http://www.mozilla.org/security/known-vulnerabilities/">
+	  <p>MFSA 2013-116 JPEG information leak</p>
+	  <p>MFSA 2013-105 Application Installation doorhanger persists on
+	    navigation</p>
+	  <p>MFSA 2013-106 Character encoding cross-origin XSS attack</p>
+	  <p>MFSA 2013-107 Sandbox restrictions not applied to nested object
+	    elements</p>
+	  <p>MFSA 2013-108 Use-after-free in event listeners</p>
+	  <p>MFSA 2013-109 Use-after-free during Table Editing</p>
+	  <p>MFSA 2013-110 Potential overflow in JavaScript binary search
+	    algorithms</p>
+	  <p>MFSA 2013-111 Segmentation violation when replacing ordered list
+	    elements</p>
+	  <p>MFSA 2013-112 Linux clipboard information disclosure though
+	    selection paste</p>
+	  <p>MFSA 2013-113 Trust settings for built-in roots ignored during EV
+	    certificate validation</p>
+	  <p>MFSA 2013-114 Use-after-free in synthetic mouse movement</p>
+	  <p>MFSA 2013-115 GetElementIC typed array stubs can be generated
+	    outside observed typesets</p>
+	  <p>MFSA 2013-116 JPEG information leak</p>
+	  <p>MFSA 2013-117 Mis-issued ANSSI/DCSSI certificate</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+	<cvename>CVE-2013-5609</cvename>
+	<cvename>CVE-2013-5610</cvename>
+	<cvename>CVE-2013-5611</cvename>
+	<cvename>CVE-2013-5612</cvename>
+	<cvename>CVE-2013-5613</cvename>
+	<cvename>CVE-2013-5614</cvename>
+	<cvename>CVE-2013-5615</cvename>
+	<cvename>CVE-2013-5616</cvename>
+	<cvename>CVE-2013-5618</cvename>
+	<cvename>CVE-2013-5619</cvename>
+	<cvename>CVE-2013-6629</cvename>
+	<cvename>CVE-2013-6630</cvename>
+	<cvename>CVE-2013-6671</cvename>
+	<cvename>CVE-2013-6672</cvename>
+	<cvename>CVE-2013-6673</cvename>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-104.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-105.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-106.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-107.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-108.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-109.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-110.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-111.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-112.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-113.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-114.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-115.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-116.html</url>
+	<url>https://www.mozilla.org/security/announce/2013/mfsa2013-117.html</url>
+	<url>http://www.mozilla.org/security/known-vulnerabilities/</url>
+    </references>
+    <dates>
+      <discovery>2013-12-09</discovery>
+      <entry>2013-12-14</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="613e45d1-6154-11e3-9b62-000c292e4fd8">
+    <topic>samba -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>samba34</name>
+	<range><gt>0</gt></range>
+      </package>
+      <package>
+	<name>samba35</name>
+	<range><gt>0</gt></range>
+      </package>
+      <package>
+	<name>samba36</name>
+	<range><gt>3.6.*</gt><lt>3.6.22</lt></range>
+      </package>
+      <package>
+	<name>samba4</name>
+	<range><gt>4.0.*</gt><lt>4.0.13</lt></range>
+      </package>
+      <package>
+	<name>samba41</name>
+	<range><gt>4.1.*</gt><lt>4.1.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Samba project reports:</p>
+	<blockquote cite="http://www.samba.org/samba/latest_news.html#4.1.3">
+	  <p>These are security releases in order to address CVE-2013-4408
+	    (DCE-RPC fragment length field is incorrectly checked) and CVE-2012-6150
+	    (pam_winbind login without require_membership_of restrictions).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2012-6150</cvename>
+      <cvename>CVE-2013-4408</cvename>
+      <url>http://www.samba.org/samba/security/CVE-2012-6150</url>
+      <url>http://www.samba.org/samba/security/CVE-2013-4408</url>
+    </references>
+    <dates>
+      <discovery>2012-06-12</discovery>
+      <entry>2013-12-11</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="6a806960-3016-44ed-8575-8614a7cb57c7">
+    <topic>rails -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>rubygem-actionmailer</name>
+	<name>rubygem-actionpack</name>
+	<name>rubygem-activemodel</name>
+	<name>rubygem-activerecord</name>
+	<name>rubygem-activeresource</name>
+	<name>rubygem-activesupport</name>
+	<name>rubygem-rails</name>
+	<name>rubygem-railties</name>
+	<range><lt>3.2.16</lt></range>
+      </package>
+      <package>
+	<name>rubygem-actionpack4</name>
+	<name>rubygem-activesupport4</name>
+	<range><lt>4.0.2</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Rails weblog:</p>
+	<blockquote cite="http://weblog.rubyonrails.org/2013/12/3/Rails_3_2_16_and_4_0_2_have_been_released/">
+	  <p>Rails 3.2.16 and 4.0.2 have been released! These two
+	    releases contain important security fixes, so please upgrade
+	    as soon as possible! In order to make upgrading as smooth as
+	    possible, we've only included commits directly related to
+	    each security issue.</p>
+	  <p>The security fixes in 3.2.16 are:</p>
+	  <ul>
+	    <li>CVE-2013-4491</li>
+	    <li>CVE-2013-6414</li>
+	    <li>CVE-2013-6415</li>
+	    <li>CVE-2013-6417</li>
+	  </ul>
+	  <p>The security fixes in 4.0.2 are:</p>
+	  <ul>
+	    <li>CVE-2013-4491</li>
+	    <li>CVE-2013-6414</li>
+	    <li>CVE-2013-6415</li>
+	    <li>CVE-2013-6416</li>
+	    <li>CVE-2013-6417</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4491</cvename>
+      <cvename>CVE-2013-6414</cvename>
+      <cvename>CVE-2013-6415</cvename>
+      <cvename>CVE-2013-6416</cvename>
+      <cvename>CVE-2013-6417</cvename>
+      <url>http://weblog.rubyonrails.org/2013/12/3/Rails_3_2_16_and_4_0_2_have_been_released/</url>
+    </references>
+    <dates>
+      <discovery>2013-12-03</discovery>
+      <entry>2013-12-08</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d9649816-5e0d-11e3-8d23-3c970e169bc2">
+    <topic>drupal -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>drupal6</name>
+	<range><lt>6.29</lt></range>
+      </package>
+      <package>
+	<name>drupal7</name>
+	<range><lt>7.24</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Drupal Security Team reports:</p>
+	<blockquote cite="https://drupal.org/SA-CORE-2013-003">
+	  <p>Multiple vulnerabilities were fixed in the supported Drupal
+	    core versions 6 and 7.</p>
+	  <ul>
+	    <li>Multiple vulnerabilities due to optimistic cross-site
+	      request forgery protection (Form API validation - Drupal 6
+	      and 7)</li>
+	    <li>Multiple vulnerabilities due to weakness in pseudorandom
+	      number generation using mt_rand() (Form API, OpenID and
+	      random password generation - Drupal 6 and 7)</li>
+	    <li>Code execution prevention (Files directory .htaccess for
+	      Apache - Drupal 6 and 7)</li>
+	    <li>Access bypass (Security token validation - Drupal 6 and 7)</li>
+	    <li>Cross-site scripting (Image module - Drupal 7)</li>
+	    <li>Cross-site scripting (Color module - Drupal 7)</li>
+	    <li>Open redirect (Overlay module - Drupal 7)</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://drupal.org/SA-CORE-2013-003</url>
+    </references>
+    <dates>
+      <discovery>2013-11-20</discovery>
+      <entry>2013-12-06</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="79356040-5da4-11e3-829e-00262d5ed8ee">
+    <topic>chromium -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>chromium</name>
+	<range><lt>31.0.1650.63</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Google Chrome Releases reports:</p>
+	<blockquote cite="http://googlechromereleases.blogspot.nl/">
+	  <p>15 security fixes in this release, including:</p>
+	  <ul>
+	    <li>[307159] Medium CVE-2013-6634: Session fixation in sync related
+	      to 302 redirects. Credit to Andrey Labunets.</li>
+	    <li>[314469] High CVE-2013-6635: Use-after-free in editing. Credit
+	      to cloudfuzzer.</li>
+	    <li>[322959] Medium CVE-2013-6636: Address bar spoofing related to
+	      modal dialogs. Credit to Bas Venis.</li>
+	    <li>[325501] CVE-2013-6637: Various fixes from internal audits,
+	      fuzzing and other initiatives.</li>
+	    <li>[319722] Medium CVE-2013-6638: Buffer overflow in v8. This
+	      issue was fixed in v8 version 3.22.24.7. Credit to Jakob Kummerow
+	      of the Chromium project.</li>
+	    <li>[319835] High CVE-2013-6639: Out of bounds write in v8. This
+	      issue was fixed in v8 version 3.22.24.7. Credit to Jakob Kummerow
+	      of the Chromium project.</li>
+	    <li>[319860] Medium CVE-2013-6640: Out of bounds read in v8. This
+	      issue was fixed in v8 version 3.22.24.7. Credit to Jakob Kummerow
+	      of the Chromium project.</li>
+	  </ul>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-6634</cvename>
+      <cvename>CVE-2013-6635</cvename>
+      <cvename>CVE-2013-6636</cvename>
+      <cvename>CVE-2013-6637</cvename>
+      <cvename>CVE-2013-6638</cvename>
+      <cvename>CVE-2013-6639</cvename>
+      <cvename>CVE-2013-6640</cvename>
+      <url>http://googlechromereleases.blogspot.nl/</url>
+    </references>
+    <dates>
+      <discovery>2013-12-04</discovery>
+      <entry>2013-12-05</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="4158c57e-5d39-11e3-bc1e-6cf0490a8c18">
+    <topic>Joomla! -- Core XSS Vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>joomla2</name>
+	<name>joomla3</name>
+	<range><ge>2.5.*</ge><le>2.5.14</le></range>
+	<range><ge>3.0.*</ge><le>3.1.5</le></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The JSST and the Joomla! Security Center report:</p>
+	<blockquote cite="http://developer.joomla.org/security/570-core-xss-20131101.html">
+	<h2>[20131101] Core XSS Vulnerability</h2>
+	  <p>Inadequate filtering leads to XSS vulnerability in com_contact.</p>
+	</blockquote>
+	<blockquote cite="http://developer.joomla.org/security/571-core-xss-20131102.html">
+	  <h2>[20131102] Core XSS Vulnerability</h2>
+	  <p>Inadequate filtering leads to XSS vulnerability in com_contact, com_weblinks, com_newsfeeds.</p>
+	</blockquote>
+	<blockquote cite="http://developer.joomla.org/security/572-core-xss-20131103.html">
+	  <h2>[20131103] Core XSS Vulnerability</h2>
+	  <p>Inadequate filtering leads to XSS vulnerability in com_contact.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://developer.joomla.org/security/570-core-xss-20131101.html</url>
+      <url>http://developer.joomla.org/security/571-core-xss-20131102.html</url>
+      <url>http://developer.joomla.org/security/572-core-xss-20131103.html</url>
+    </references>
+    <dates>
+      <discovery>2013-11-01</discovery>
+      <entry>2013-12-04</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="d2073237-5b52-11e3-80f7-c86000cbc6ec">
+    <topic>OpenTTD -- Denial of service using forcefully crashed aircrafts</topic>
+    <affects>
+      <package>
+	<name>openttd</name>
+	<range><ge>0.3.6</ge><lt>1.3.3</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The OpenTTD Team reports:</p>
+	<blockquote cite="https://security.openttd.org/en/CVE-2013-6411">
+	  <p>The problem is caused by incorrectly handling the fact that
+	    the aircraft circling the corner airport will be outside of the
+	    bounds of the map.  In the 'out of fuel' crash code the height
+	    of the tile under the aircraft is determined.  In this case
+	    that means a tile outside of the allocated map array, which
+	    could occasionally trigger invalid reads.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-6411</cvename>
+      <url>https://security.openttd.org/en/CVE-2013-6411</url>
+      <url>http://bugs.openttd.org/task/5820</url>
+      <url>http://vcs.openttd.org/svn/changeset/26134</url>
+    </references>
+    <dates>
+      <discovery>2013-11-28</discovery>
+      <entry>2013-11-28</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="620cf713-5a99-11e3-878d-20cf30e32f6d">
+    <topic>monitorix -- serious bug in the built-in HTTP server</topic>
+    <affects>
+      <package>
+	<name>monitorix</name>
+	<range><lt>3.3.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Monitorix Project reports:</p>
+	<blockquote cite="http://www.monitorix.org/news.html#N331">
+	  <p>A serious bug in the built-in HTTP server. It was discovered that the
+	    handle_request() routine did not properly perform input sanitization
+	    which led into a number of security vulnerabilities.  An unauthenticated,
+	    remote attacker could exploit this flaw to execute arbitrary commands on
+	    the remote host.  All users still using older versions are advised to
+	    upgrade to this version, which resolves this issue.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>http://www.monitorix.org/news.html#N331</url>
+      <url>https://github.com/mikaku/Monitorix/issues/30</url>
+    </references>
+    <dates>
+      <discovery>2013-11-21</discovery>
+      <entry>2013-12-01</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="e3244a7b-5603-11e3-878d-20cf30e32f6d">
+    <topic>subversion -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>subversion</name>
+	<range><ge>1.8.0</ge><lt>1.8.5</lt></range>
+	<range><ge>1.7.0</ge><lt>1.7.14</lt></range>
+	<range><ge>1.6.0</ge><lt>1.6.24</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Subversion Project reports:</p>
+	<blockquote cite="http://subversion.apache.org/security/">
+	  <p>mod_dontdothat does not restrict requests from serf based clients</p>
+	  <p>mod_dontdothat allows you to block update REPORT requests against certain
+	    paths in the repository.  It expects the paths in the REPORT request
+	    to be absolute URLs.  Serf based clients send relative URLs instead
+	    of absolute URLs in many cases.  As a result these clients are not blocked
+	    as configured by mod_dontdothat.</p>
+	  <p>mod_dav_svn assertion triggered by non-canonical URLs in autoversioning commits</p>
+	  <p>When SVNAutoversioning is enabled via SVNAutoversioning on
+	    commits can be made by single HTTP requests such as MKCOL and
+	    PUT.  If Subversion is built with assertions enabled any such
+	    requests that have non-canonical URLs, such as URLs with a
+	    trailing /, may trigger an assert.  An assert will cause the
+	    Apache process to abort.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4505</cvename>
+      <cvename>CVE-2013-4558</cvename>
+      <url>http://subversion.apache.org/security/CVE-2013-4505-advisory.txt</url>
+      <url>http://subversion.apache.org/security/CVE-2013-4558-advisory.txt</url>
+    </references>
+    <dates>
+      <discovery>2013-11-15</discovery>
+      <entry>2013-11-25</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="742eb9e4-e3cb-4f5a-b94e-0e9a39420600">
+    <topic>ruby-gems -- Algorithmic Complexity Vulnerability</topic>
+    <affects>
+      <package>
+	<name>ruby19-gems</name>
+	<range><lt>1.8.27</lt></range>
+      </package>
+      <package>
+	<name>ruby20-gems</name>
+	<range><lt>1.8.27</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Ruby Gem developers report:</p>
+	<blockquote cite="http://blog.rubygems.org/2013/09/24/CVE-2013-4363.html">
+	  <p>The patch for CVE-2013-4363 was insufficiently verified so the
+	    combined regular expression for verifying gem version remains
+	    vulnerable following CVE-2013-4363.</p>
+	  <p>RubyGems validates versions with a regular expression that is
+	    vulnerable to denial of service due to backtracking. For specially
+	    crafted RubyGems versions attackers can cause denial of service
+	    through CPU consumption.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4363</cvename>
+    </references>
+    <dates>
+      <discovery>2013-09-24</discovery>
+      <entry>2013-11-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="54237182-9635-4a8b-92d7-33bfaeed84cd">
+    <topic>ruby-gems -- Algorithmic Complexity Vulnerability</topic>
+    <affects>
+      <package>
+	<name>ruby19-gems</name>
+	<range><lt>1.8.26</lt></range>
+      </package>
+      <package>
+	<name>ruby20-gems</name>
+	<range><lt>1.8.26</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Ruby Gem developers report:</p>
+	<blockquote cite="http://blog.rubygems.org/2013/09/09/CVE-2013-4287.html">
+	  <p>RubyGems validates versions with a regular expression that is
+	    vulnerable to denial of service due to backtracking. For specially
+	    crafted RubyGems versions attackers can cause denial of service
+	    through CPU consumption.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4287</cvename>
+    </references>
+    <dates>
+      <discovery>2013-09-09</discovery>
+      <entry>2013-11-24</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="cc9043cf-7f7a-426e-b2cc-8d1980618113">
+    <topic>ruby -- Heap Overflow in Floating Point Parsing</topic>
+    <affects>
+      <package>
+	<name>ruby19</name>
+	<range><lt>1.9.3.484,1</lt></range>
+      </package>
+      <package>
+	<name>ruby20</name>
+	<range><lt>2.0.0.353,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>Ruby developers report:</p>
+	<blockquote cite="https://www.ruby-lang.org/en/news/2013/11/22/heap-overflow-in-floating-point-parsing-cve-2013-4164/">
+	  <p>Any time a string is converted to a floating point value, a
+	    specially crafted string can cause a heap overflow. This can lead
+	    to a denial of service attack via segmentation faults and possibly
+	    arbitrary code execution. Any program that converts input of
+	    unknown origin to floating point values (especially common when
+	    accepting JSON) are vulnerable.
+	  </p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.ruby-lang.org/en/news/2013/11/22/ruby-1-9-3-p484-is-released/</url>
+      <url>https://www.ruby-lang.org/en/news/2013/11/22/ruby-2-0-0-p353-is-released/</url>
+      <cvename>CVE-2013-4164</cvename>
+    </references>
+    <dates>
+      <discovery>2013-11-22</discovery>
+      <entry>2013-11-23</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="479efd57-516e-11e3-9b62-000c292e4fd8">
+    <topic>samba -- Private key in key.pem world readable</topic>
+    <affects>
+      <package>
+	<name>samba4</name>
+	<range><gt>4.0.*</gt><lt>4.0.11</lt></range>
+      </package>
+      <package>
+	<name>samba41</name>
+	<range><gt>4.1.*</gt><lt>4.1.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Samba project reports:</p>
+	<blockquote cite="http://www.samba.org/samba/security/CVE-2013-4476">
+	  <p>Samba 4.0.x before 4.0.11 and 4.1.x before 4.1.1, when LDAP or HTTP is
+	    provided over SSL, uses world-readable permissions for a private key,
+	    which allows local users to obtain sensitive information by reading the
+	    key file, as demonstrated by access to the local filesystem on an AD
+	    domain controller.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4476</cvename>
+      <url>http://www.samba.org/samba/security/CVE-2013-4476</url>
+    </references>
+    <dates>
+      <discovery>2013-06-12</discovery>
+      <entry>2013-11-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="a4f08579-516c-11e3-9b62-000c292e4fd8">
+    <topic>samba -- ACLs are not checked on opening an alternate data stream on a file or directory</topic>
+    <affects>
+      <package>
+	<name>samba34</name>
+	<range><gt>0</gt></range>
+      </package>
+      <package>
+	<name>samba35</name>
+	<range><gt>0</gt></range>
+      </package>
+      <package>
+	<name>samba36</name>
+	<range><gt>3.6.*</gt><lt>3.6.20</lt></range>
+      </package>
+      <package>
+	<name>samba4</name>
+	<range><gt>4.0.*</gt><lt>4.0.11</lt></range>
+      </package>
+      <package>
+	<name>samba41</name>
+	<range><gt>4.1.*</gt><lt>4.1.1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Samba project reports:</p>
+	<blockquote cite="http://www.samba.org/samba/security/CVE-2013-4475">
+	  <p>Samba versions 3.2.0 and above (all versions of 3.2.x, 3.3.x,
+	    3.4.x, 3.5.x, 3.6.x, 4.0.x and 4.1.x) do not check the underlying
+	    file or directory ACL when opening an alternate data stream.</p>
+	    <p>According to the SMB1 and SMB2+ protocols the ACL on an underlying
+	    file or directory should control what access is allowed to alternate
+	    data streams that are associated with the file or directory.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4475</cvename>
+      <url>http://www.samba.org/samba/security/CVE-2013-4475</url>
+    </references>
+    <dates>
+      <discovery>2013-06-12</discovery>
+      <entry>2013-11-19</entry>
+    </dates>
+  </vuln>
+
+  <vuln vid="94b6264a-5140-11e3-8b22-f0def16c5c1b">
+    <topic>nginx -- Request line parsing vulnerability</topic>
+    <affects>
+      <package>
+	<name>nginx</name>
+	<range><ge>0.8.41</ge><lt>1.4.4,1</lt></range>
+      </package>
+      <package>
+	<name>nginx-devel</name>
+	<range><ge>0.8.41</ge><lt>1.5.7</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The nginx project reports:</p>
+	<blockquote cite="http://mailman.nginx.org/pipermail/nginx-announce/2013/000125.html">
+	  <p>Ivan Fratric of the Google Security Team discovered a bug in nginx, which might
+	   allow an attacker to bypass security restrictions in certain configurations by
+	   using a specially crafted request, or might have potential other impact
+	   (CVE-2013-4547).</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2013-4547</cvename>
+      <url>http://mailman.nginx.org/pipermail/nginx-announce/2013/000125.html</url>
+    </references>
+    <dates>
+      <discovery>2013-11-19</discovery>
+      <entry>2013-11-19</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="e62ab2af-4df4-11e3-b0cf-00262d5ed8ee">
     <topic>chromium -- multiple memory corruption issues</topic>
     <affects>
@@ -188,18 +1309,15 @@ Note:  Please add new entries to the beginning of this file.
 	  <p>A memory corruption vulnerability exists in the post-
 	    authentication sshd process when an AES-GCM cipher
 	    (aes128-gcm@openssh.com or aes256-gcm@openssh.com) is
-	    selected during kex exchange.
-
-	    If exploited, this vulnerability might permit code execution
+	    selected during kex exchange.</p>
+	  <p>If exploited, this vulnerability might permit code execution
 	    with the privileges of the authenticated user and may
 	    therefore allow bypassing restricted shell/command
 	    configurations.</p>
 	  <p>Either upgrade to 6.4 or disable AES-GCM in the server
 	    configuration. The following sshd_config option will disable
-	    AES-GCM while leaving other ciphers active:
-
-	    Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc
-	  </p>
+	    AES-GCM while leaving other ciphers active:</p>
+	  <p>Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,aes192-cbc,aes256-cbc</p>
 	</blockquote>
       </body>
     </description>
@@ -226,9 +1344,9 @@ Note:  Please add new entries to the beginning of this file.
 	<p>Quassel IRC developers report:</p>
 	<blockquote cite="http://www.quassel-irc.org/node/120">
 	  <p>SQL injection vulnerability in Quassel IRC before 0.9.1,
-	     when Qt 4.8.5 or later and PostgreSQL 8.2 or later are used,
-	     allows remote attackers to execute arbitrary SQL commands via
-	     a \ (backslash) in a message.</p>
+	    when Qt 4.8.5 or later and PostgreSQL 8.2 or later are used,
+	    allows remote attackers to execute arbitrary SQL commands via
+	    a \ (backslash) in a message.</p>
 	</blockquote>
       </body>
     </description>
@@ -338,10 +1456,10 @@ Note:  Please add new entries to the beginning of this file.
 	<p>mod_pagespeed developers report:</p>
 	<blockquote cite="https://groups.google.com/forum/#!msg/mod-pagespeed-announce/oo015UHRxMc/JcAuf1hE8L8J">
 	  <p>Various versions of mod_pagespeed are subject to critical
-	     cross-site scripting (XSS) vulnerability, CVE-2013-6111. This
-	     permits a hostile third party to execute JavaScript in users'
-	     browsers in context of the domain running mod_pagespeed, which
-	     could permit theft of users' cookies or data on the site.</p>
+	    cross-site scripting (XSS) vulnerability, CVE-2013-6111. This
+	    permits a hostile third party to execute JavaScript in users'
+	    browsers in context of the domain running mod_pagespeed, which
+	    could permit theft of users' cookies or data on the site.</p>
 	</blockquote>
       </body>
     </description>
@@ -371,8 +1489,8 @@ Note:  Please add new entries to the beginning of this file.
 	<p>Salvatore Bonaccorso reports:</p>
 	<blockquote cite="http://www.gnutls.org/security.html#GNUTLS-SA-2013-3">
 	  <p>This vulnerability affects the DANE library of gnutls 3.1.x and
-	     gnutls 3.2.x. A server that returns more 4 DANE entries could
-	     corrupt the memory of a requesting client.</p>
+	    gnutls 3.2.x. A server that returns more 4 DANE entries could
+	    corrupt the memory of a requesting client.</p>
 	</blockquote>
       </body>
     </description>
@@ -401,9 +1519,9 @@ Note:  Please add new entries to the beginning of this file.
 	<p>Alan Coopersmith reports:</p>
 	<blockquote cite="http://lists.x.org/archives/xorg-announce/2013-October/002332.html">
 	  <p>Pedro Ribeiro (pedrib at gmail.com) reported an issue to the X.Org
-	     security team in which an authenticated X client can cause an X
-	     server to use memory after it was freed, potentially leading to
-	     crash and/or memory corruption.</p>
+	    security team in which an authenticated X client can cause an X
+	    server to use memory after it was freed, potentially leading to
+	    crash and/or memory corruption.</p>
 	</blockquote>
       </body>
     </description>
@@ -471,16 +1589,16 @@ Note:  Please add new entries to the beginning of this file.
 	<blockquote cite="http://wordpress.org/news/2013/09/wordpress-3-6-1/">
 	  <ul>
 	    <li>Block unsafe PHP unserialization that could occur in limited
-		situations and setups, which can lead to remote code
-		execution.</li>
+	      situations and setups, which can lead to remote code
+	      execution.</li>
 	    <li>Prevent a user with an Author role, using a specially crafted
-		request, from being able to create a post "written by" another
-		user.</li>
+	      request, from being able to create a post "written by" another
+	      user.</li>
 	    <li>Fix insufficient input validation that could result in
-		redirecting or leading a user to another website.</li>
+	      redirecting or leading a user to another website.</li>
 	  </ul>
 	<p>Additionally, we've adjusted security restrictions around file
-	   uploads to mitigate the potential for cross-site scripting.</p>
+	  uploads to mitigate the potential for cross-site scripting.</p>
 	</blockquote>
       </body>
     </description>
@@ -11841,7 +12959,7 @@ executed in your Internet Explorer while displaying the email.</p>
     </affects>
     <description>
       <body xmlns="http://www.w3.org/1999/xhtml">
-	<p>OpenTTD reports:</p>
+	<p>The OpenTTD Team reports:</p>
 	<blockquote cite="http://security.openttd.org/en/CVE-2012-3436">
 	  <p>Denial of service (server) using ships on half tiles and
 	    landscaping.</p>
@@ -28103,7 +29221,7 @@ executed in your Internet Explorer while displaying the email.</p>
     </affects>
     <description>
       <body xmlns="http://www.w3.org/1999/xhtml">
-	<p>OpenTTD project reports:</p>
+	<p>The OpenTTD Team reports:</p>
 	<blockquote cite="http://security.openttd.org/en/CVE-2010-2534">
 	  <p>When multiple commands are queued (at the server) for execution
 	    in the next game tick and an client joins the server can get into

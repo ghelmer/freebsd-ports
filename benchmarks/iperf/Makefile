@@ -9,38 +9,24 @@ MASTER_SITES=	SF/${PORTNAME}
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool to measure maximum TCP and UDP bandwidth
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 OPTIONS_DEFINE=	DOCS IPV6 THREADS
 OPTIONS_DEFAULT=THREADS
 
 GNU_CONFIGURE=	yes
 
-MAN1=		iperf.1
-PLIST_FILES=	bin/iperf
+PLIST_FILES=	bin/iperf \
+		man/man1/iperf.1.gz
 PORTDOCS=	*
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MIPV6}
-CATEGORIES+=	ipv6
-CONFIGURE_ARGS+=--enable-ipv6
-.else
-CONFIGURE_ARGS+=--disable-ipv6
-.endif
-
-.if ${PORT_OPTIONS:MTHREADS}
-CONFIGURE_ARGS+=--enable-threads
-LDFLAGS+=	${PTHREAD_LIBS}
-.else
-CONFIGURE_ARGS+=--disable-threads
-.endif
+IPV6_CATEGORIES=	ipv6
+IPV6_CONFIGURE_ENABLE=	ipv6
+THREADS_CONFIGURE_ENABLE=	threads
+THREADS_LDFLAGS=	-pthread
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} README doc/*.gif doc/*.html ${DOCSDIR}/
-.endif
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/
+	cd ${WRKSRC}/ && ${INSTALL_DATA} README doc/*.gif doc/*.html ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

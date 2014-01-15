@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	php5
-PORTVERSION=	5.4.21
+PORTVERSION=	5.4.23
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	${MASTER_SITE_PHP}
@@ -169,6 +169,7 @@ CONFIGURE_ARGS+=--disable-ipv6
 
 post-patch:
 	@${TOUCH} ${WRKSRC}/ext/php_config.h
+#	@${REINPLACE_CMD} -e 's|freetype/||g' ${WRKSRC}/config.m4
 	@${REINPLACE_CMD} "s|^\(extension_dir\)|; \1|" ${WRKSRC}/php.ini-*
 .if ${PORT_OPTIONS:MFPM}
 	@${REINPLACE_CMD} -e "s|^;\(pid\)|\1|;s|^;\(pm\.[a-z_]*_servers\)|\1|" \

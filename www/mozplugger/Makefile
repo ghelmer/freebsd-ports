@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	mozplugger
-PORTVERSION=	2.1.3
+PORTVERSION=	2.1.4
 CATEGORIES=	www
-MASTER_SITES=	http://www.ringofsaturn.com/distfiles/
+MASTER_SITES=	http://mozplugger.mozdev.org/files/
 
 MAINTAINER=	rnejdl@ringofsaturn.com
 COMMENT=	Framework for loading web content in external viewers
 
 GNU_CONFIGURE=	yes
 USE_XORG=	x11 xt
-USE_GMAKE=	yes
+USES=		gmake
 MAN7=		mozplugger.7
 SUB_FILES=	pkg-message
 
@@ -24,7 +24,6 @@ NO_STAGE=	yes
 .include "${PORTSDIR}/www/firefox/Makefile.webplugins"
 
 post-patch:
-
 	@${REINPLACE_CMD} -e 's|"/etc|"${PREFIX}/etc|g' \
 		${WRKSRC}/mozplugger.c
 

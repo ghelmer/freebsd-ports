@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openldap
-DISTVERSION=		2.4.37
+DISTVERSION=		2.4.38
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
@@ -46,6 +46,7 @@ LATEST_LINK?=		${PKGNAMEPREFIX}openldap24${PKGNAMESUFFIX}
 USE_OPENSSL=		yes
 USE_AUTOTOOLS=		libtool
 .if !defined(CLIENT_ONLY)
+USE_AUTOTOOLS+=		autoconf
 USERS=			ldap
 GROUPS=			ldap
 .endif
@@ -56,7 +57,7 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 .endif
 
 PORTREVISION_CLIENT=	0
-PORTREVISION_SERVER=	0
+PORTREVISION_SERVER=	1
 OPENLDAP_SHLIB_MAJOR=	8
 
 OPTIONS_DEFINE=	FETCH
@@ -343,7 +344,7 @@ INVALID_BDB_VER=	42
 USE_BDB=		yes
 
 # XXX Can BDB 5.x use XY instead of X as version?
-.if ${WITH_BDB_VER} >= 43 || ${WITH_BDB_VER} == 5
+.if ${WITH_BDB_VER} >= 43 || ${WITH_BDB_VER} == 5 || ${WITH_BDB_VER} == 6
 CONFIGURE_ARGS+=	--enable-bdb=${BACKEND_ENABLE} \
 			--enable-hdb=${BACKEND_ENABLE}
 PLIST_SUB+=		BACK_BDB=${BACKEND_PLIST} \

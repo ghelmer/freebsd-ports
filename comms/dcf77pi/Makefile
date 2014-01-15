@@ -2,31 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	dcf77pi
-PORTVERSION=	1.0.5
+PORTVERSION=	1.1.2
 CATEGORIES=	comms
 
 MAINTAINER=	rene@FreeBSD.org
 COMMENT=	DCF77 receiver/logger/analyzer for the Raspberry Pi
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rene0
-GH_COMMIT=	f5b0c0d
+GH_COMMIT=	c13fd2c
 
 MAKE_ARGS=	FULLPREFIX="${STAGEDIR}${PREFIX}"
 
-OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
+PORTDOCS=	README.md
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/dcf77pi
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/readpin
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
-.endif
+.for f in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
+.endfor
 	if [ ! -f ${ETCDIR}/config.txt ] ; then \
 		${CP} -p ${STAGEDIR}${ETCDIR}/config.txt.sample ${STAGEDIR}${ETCDIR}/config.txt ; \
 	fi

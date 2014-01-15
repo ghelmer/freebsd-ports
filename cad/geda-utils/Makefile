@@ -15,14 +15,14 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The gEDA's utilities
 
 RUN_DEPENDS=	${LOCALBASE}/share/geda/sym:${PORTSDIR}/cad/geda-symbols
-LIB_DEPENDS=	geda.33:${PORTSDIR}/cad/libgeda
+LIB_DEPENDS=	libgeda.so:${PORTSDIR}/cad/libgeda
 
 DOCSDIR=	${PREFIX}/share/doc/geda
 DATADIR=	${PREFIX}/share/geda
 
-USES=		perl5 pkgconfig
+USES=		gmake perl5 pkgconfig shebangfix
+SHEBANG_FILES=	scripts/gnet_hier_verilog.sh
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
 USE_GNOME=	gtk20
 USE_PERL5=	run
 USE_PYTHON_RUN=	yes
@@ -30,9 +30,6 @@ CONFIGURE_ARGS=	--with-docdir=${DOCSDIR}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-MAN1=		grenum.1
-
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -E \
 		-e "s,^(DATADIR[[:space:]]*=[[:space:]]*)gEDA,\1geda," \

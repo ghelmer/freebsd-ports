@@ -11,15 +11,14 @@ MASTER_SITE_SUBDIR=mod-authn-sasl/mod-authn-sasl/${PORTVERSION}
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Allows user authentication based on libsasl2 mechanisms on apache 2.2
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
-LIB_DEPENDS=	sasl2:${PORTSDIR}/security/cyrus-sasl2
-
+LIB_DEPENDS=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
 
 OPTIONS_DEFINE=	SASLAUTHD
 SASLAUTHD_DESC=	cyrus-sasl2-saslauthd support
 
-NO_STAGE=	yes
+SASLAUTHD_RUN_DEPENDS=	saslauthd:${PORTSDIR}/security/cyrus-sasl2-saslauthd
 .include <bsd.port.options.mk>
 
 USE_BZIP2=	yes
@@ -31,18 +30,10 @@ AP_LIB=		${LOCALBASE}/lib -lsasl2
 PORTDOCS1=	AUTHORS LICENSE
 PORTDOCS=	*
 
-.if ${PORT_OPTIONS:MSASLAUTHD}
-RUN_DEPENDS+=	saslauthd:${PORTSDIR}/security/cyrus-sasl2-saslauthd
-.endif
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}/
-	@${FIND} ${WRKSRC}/doc \( -name "*.in" -o -name "*.am" \) -delete
-.   for f in ${PORTDOCS1}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}/
-.   endfor
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} doc ${DOCSDIR})
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS1:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} doc ${STAGEDIR}${DOCSDIR} \
+		"! ( -name *\.in -o -name *\.am )" )
 
 .include <bsd.port.mk>

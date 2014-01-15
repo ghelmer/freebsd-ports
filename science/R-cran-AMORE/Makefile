@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	AMORE
-PORTVERSION=	0.2.12
-PORTREVISION=	13
+PORTVERSION=	0.2.14
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${PORTVERSION:C/\./-/g:C/-/\./1}
 
 MAINTAINER=	wen@FreeBSD.org
-COMMENT=	A MORE flexible neural network package
+COMMENT=	MORE flexible neural network package
 
-USE_R_MOD=  		yes
-R_MOD_AUTOPLIST=	yes
+LICENSE=	GPLv2 GPLv3
+LICENSE_COMB=	dual
 
-NO_STAGE=	yes
+USES=		cran:auto-plist
+
 .include <bsd.port.mk>

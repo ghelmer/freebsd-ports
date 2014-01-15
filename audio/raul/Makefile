@@ -13,7 +13,7 @@ COMMENT=	C++ utility library primarily aimed at audio/musical applications
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	boost_date_time:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs
 
 USES=		pkgconfig
 NO_STAGE=	yes
@@ -39,12 +39,12 @@ post-patch:
 			${WRKSRC}/autowaf/autowaf.py
 
 do-configure:
-	@(cd ${WRKSRC} && ./waf ${WAF_VERBOSE} --prefix=${PREFIX} configure)
+	@(cd ${WRKSRC} && ${PYTHON_CMD} waf ${WAF_VERBOSE} --prefix=${PREFIX} configure)
 
 do-build:
-	@(cd ${WRKSRC} && ./waf ${WAF_VERBOSE} ${WAF_JOBS} build)
+	@(cd ${WRKSRC} && ${PYTHON_CMD} waf ${WAF_VERBOSE} ${WAF_JOBS} build)
 
 do-install:
-	@(cd ${WRKSRC} && ./waf ${WAF_VERBOSE} install)
+	@(cd ${WRKSRC} && ${PYTHON_CMD} waf ${WAF_VERBOSE} install)
 
 .include <bsd.port.post.mk>

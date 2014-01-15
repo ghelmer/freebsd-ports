@@ -14,8 +14,6 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	R-cran-zoo>0:${PORTSDIR}/math/R-cran-zoo
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

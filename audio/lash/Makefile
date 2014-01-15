@@ -13,15 +13,14 @@ COMMENT=	Session management system for JACK audio applications
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	jack:${PORTSDIR}/audio/jack \
-		dssialsacompat:${PORTSDIR}/audio/libdssialsacompat \
-		uuid:${PORTSDIR}/misc/e2fsprogs-libuuid
+LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack \
+		libdssialsacompat.so:${PORTSDIR}/audio/libdssialsacompat \
+		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
 
 OPTIONS_DEFINE=	READLINE DOCS
 OPTIONS_DEFAULT=READLINE
 
 USES=		gmake pathfix pkgconfig
-NO_STAGE=	yes
 USE_GNOME=	gtk20 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-alsa-midi
@@ -54,9 +53,9 @@ post-patch:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC}/docs/lash-manual-html-one-page \
-		&& ${INSTALL_DATA} lash-manual.html ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/lash-manual-html-one-page/lash-manual.html \
+		${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

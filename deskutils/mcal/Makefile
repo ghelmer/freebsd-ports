@@ -9,7 +9,10 @@ MASTER_SITES=	SF/lib${PORTNAME}/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	thierry@pompo.net
 COMMENT=	A libmcal powered cal replacement
 
-LIB_DEPENDS=	mcal.0:${PORTSDIR}/misc/libmcal
+DEPRECATED=	Depends on expired misc/libmcal
+EXPIRATION_DATE=2014-02-01
+
+LIB_DEPENDS=	libmcal.so:${PORTSDIR}/misc/libmcal
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

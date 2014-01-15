@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	jQuery-File-Upload
-PORTVERSION=	0.16
+PORTVERSION=	0.20
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -19,7 +19,4 @@ BUILD_DEPENDS=	${RUN_DEPENDS}
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=	jQuery::File::Upload.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -1,3 +1,4 @@
+# Created by: Matthias Petermann <matthias@petermann-it.de>
 # $FreeBSD$
 
 PORTNAME=	trytond_company
@@ -14,7 +15,7 @@ RUN_DEPENDS=	trytond>=2.4.0:${PORTSDIR}/finance/trytond \
 		trytond_party>=2.4.0:${PORTSDIR}/finance/trytond_party \
 		trytond_currency>=2.4.0:${PORTSDIR}/finance/trytond_currency
 
-CONFLICTS=	trytond_company-2.[68].*
+CONFLICTS=	trytond28_company-2.8.*
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=easy_install

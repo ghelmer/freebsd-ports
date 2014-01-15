@@ -1,6 +1,6 @@
---- configure.orig	2013-03-03 11:29:18.000000000 +0100
-+++ configure	2013-03-22 17:20:44.452775673 +0100
-@@ -668,7 +668,7 @@
+--- configure.orig	2013-11-08 17:59:55.000000000 +0100
++++ configure	2013-11-09 14:34:53.996868923 +0100
+@@ -640,7 +640,7 @@
  _iwmmxt=auto
  _mtrr=auto
  _altivec=auto
@@ -9,7 +9,7 @@
  _ranlib=ranlib
  _windres=windres
  _cc=cc
-@@ -1534,7 +1534,6 @@
+@@ -1452,7 +1452,6 @@
  
    *)
      echo "Unknown parameter: $ac_option"
@@ -17,8 +17,8 @@
      ;;
  
    esac
-@@ -1669,7 +1668,7 @@
-   case "$(uname -m 2>&1)" in
+@@ -1689,7 +1688,7 @@
+   case "$1" in
        x86_64|amd64|i[3-9]86*|i86pc|x86|x86pc|k5|k6|k6_2|k6_3|k6-2|k6-3|pentium*|athlon*|i586_i686|i586-i686) host_arch=i386 ;;
        ia64) host_arch=ia64 ;;
 -      macppc|ppc*|Power*) host_arch=ppc ;;
@@ -26,15 +26,7 @@
        alpha) host_arch=alpha ;;
        sun4*|sparc*) host_arch=sparc ;;
        parisc*|hppa*|9000*) host_arch=hppa ;;
-@@ -1709,6 +1708,7 @@
- fi
- 
- extra_cflags="-I. -Iffmpeg $extra_cflags"
-+extra_ldflags="$extra_ldflags -L$_prefix/lib"
- _timer=timer-linux.c
- _getch=getch2.c
- 
-@@ -3765,7 +3765,7 @@
+@@ -3822,7 +3821,7 @@
  if linux ; then
    THREAD_CFLAGS=-D_REENTRANT
  elif freebsd || netbsd || openbsd || bsdos ; then
@@ -43,7 +35,7 @@
  fi
  if test "$_pthreads" = auto ; then
  cat > $TMPC << EOF
-@@ -3775,7 +3775,7 @@
+@@ -3832,7 +3831,7 @@
  EOF
  _pthreads=no
  if ! hpux ; then
@@ -52,7 +44,16 @@
      # for crosscompilation, we cannot execute the program, be happy if we can link statically
      cc_check $THREAD_CFLAGS $ld_tmp && (tmp_run || test "$ld_static") && ld_pthread="$ld_tmp" && _pthreads=yes && break
    done
-@@ -5904,7 +5904,7 @@
+@@ -3979,7 +3978,7 @@
+   # NOTE: -L/usr/lib is a hack to avoid issues due to a
+   # broken libiconv that e.g. macports installs into /opt/local/lib
+   # which might get addded to the search path later by e.g. SDL
+-  for ld_tmp in "" "-L/usr/lib -liconv" "-liconv" "-liconv $ld_dl" ; do
++  for ld_tmp in "" "-L$_prefix/lib -liconv" "-liconv" "-liconv $ld_dl" ; do
+     cc_check $ld_tmp && extra_ldflags="$extra_ldflags $ld_tmp" &&
+       ld_iconv="$ld_tmp" && _iconv=yes && break
+   done
+@@ -5903,7 +5902,7 @@
  elif dragonfly ; then
    default_cdrom_device="/dev/cd0"
  elif freebsd ; then
@@ -61,7 +62,7 @@
  elif openbsd ; then
    default_cdrom_device="/dev/rcd0c"
  elif sunos ; then
-@@ -5917,7 +5917,7 @@
+@@ -5916,7 +5915,7 @@
    default_cdrom_device="/dev/cdrom"
  fi
  
@@ -70,7 +71,7 @@
    default_dvd_device=$default_cdrom_device
  elif darwin ; then
    default_dvd_device="/dev/rdiskN"
-@@ -6470,7 +6470,7 @@
+@@ -6514,7 +6513,7 @@
  echocheck "libgsm"
  if test "$_libgsm" = auto ; then
    _libgsm=no
@@ -79,7 +80,7 @@
  fi
  if test "$_libgsm" = yes ; then
    def_libgsm='#define CONFIG_LIBGSM 1'
-@@ -6954,6 +6954,16 @@
+@@ -6999,6 +6998,16 @@
    nolibrtmp=no
    def_librtmp='#define CONFIG_LIBRTMP 1'
    inputmodules="librtmp $inputmodules"
@@ -96,7 +97,7 @@
  else
    nolibrtmp=yes
    _librtmp=no
-@@ -7346,7 +7356,7 @@
+@@ -7391,7 +7400,7 @@
  echocheck "mencoder"
  if test "$_mencoder" = no ; then
    # mpeg1video for vf_lavc, snow for vf_uspp / vf_mcdeint,
@@ -105,7 +106,7 @@
  fi
  echores "$_mencoder"
  
-@@ -7684,8 +7694,11 @@
+@@ -7729,8 +7738,11 @@
  if test "$_gui" = yes ; then
  
    # Required libraries
@@ -119,7 +120,7 @@
      die "The GUI requires libavcodec with PNG support (needs zlib)."
    fi
    test "$_freetype" = no && test "$_bitmap_font" = no &&
-@@ -8271,7 +8284,7 @@
+@@ -8318,7 +8330,7 @@
  EXESUF      = $_exesuf
  EXESUFS_ALL = .exe
  

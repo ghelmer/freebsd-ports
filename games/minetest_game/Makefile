@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	minetest_game
-PORTVERSION=	0.4.4
+PORTVERSION=	0.4.9
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -14,15 +14,19 @@ RUN_DEPENDS=	minetest:${PORTSDIR}/games/minetest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	minetest
-GH_TAGNAME=	0.4.4
-GH_COMMIT=	3928ecc
+GH_COMMIT=	1a9362a
 
 NO_BUILD=	yes
 DATADIR=	${PREFIX}/share/minetest/games/${PORTNAME}
+PORTDATA=	*
+PORTDOCS=	*
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 do-install:
-	${MKDIR} ${DATADIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} '*' ${DATADIR}/
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "game.conf menu mods" ${STAGEDIR}${DATADIR}/
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

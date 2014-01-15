@@ -17,8 +17,9 @@ BUILD_DEPENDS=	${JAVALIBDIR}/log4j.jar:${PORTSDIR}/devel/log4j \
 		${JAVALIBDIR}/${SWT}.jar:${PORTSDIR}/x11-toolkits/${SWT}
 RUN_DEPENDS=	${JAVALIBDIR}/${SWT}.jar:${PORTSDIR}/x11-toolkits/${SWT}
 
+USES=		dos2unix
 USE_ZIP=	yes
-USE_DOS2UNIX=	build.xml \
+DOS2UNIX_FILES=	build.xml \
 		org/gudy/azureus2/ui/swt/test/PrintTransferTypes.java \
 		org/gudy/azureus2/platform/macosx/access/jnilib/OSXAccess.java
 USE_JAVA=	yes
@@ -47,9 +48,7 @@ SUB_LIST=	JARFILE="${PORTNAME}.jar" \
 NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == "amd64"
 BROKEN=		Does not build
-.endif
 
 .if ${PORT_OPTIONS:MSWTDEVEL}
 SWT=		swt-devel

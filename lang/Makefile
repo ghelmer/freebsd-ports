@@ -31,11 +31,11 @@
     SUBDIR += cfortran
     SUBDIR += chicken
     SUBDIR += cint
-    SUBDIR += clang
     SUBDIR += clang-devel
     SUBDIR += clang31
     SUBDIR += clang32
     SUBDIR += clang33
+    SUBDIR += clang34
     SUBDIR += clay
     SUBDIR += clisp
     SUBDIR += clojure
@@ -90,7 +90,6 @@
     SUBDIR += gcc-aux
     SUBDIR += gcc-ecj45
     SUBDIR += gcc34
-    SUBDIR += gcc42
     SUBDIR += gcc44
     SUBDIR += gcc46
     SUBDIR += gcc47
@@ -154,7 +153,6 @@
     SUBDIR += logo
     SUBDIR += lua
     SUBDIR += lua-mode.el
-    SUBDIR += lua50
     SUBDIR += lua52
     SUBDIR += luajit
     SUBDIR += lush
@@ -168,6 +166,7 @@
     SUBDIR += ml-pnet
     SUBDIR += mlton
     SUBDIR += mmix
+    SUBDIR += modula3
     SUBDIR += mono
     SUBDIR += mono-basic
     SUBDIR += moscow_ml
@@ -279,7 +278,6 @@
     SUBDIR += python-doc-pdf-letter
     SUBDIR += python-doc-text
     SUBDIR += python-mode.el
-    SUBDIR += python26
     SUBDIR += python27
     SUBDIR += python31
     SUBDIR += python32
@@ -300,7 +298,6 @@
     SUBDIR += ruby-doc-stdlib
     SUBDIR += ruby-man
     SUBDIR += ruby-programmingruby
-    SUBDIR += ruby-reference
     SUBDIR += ruby-usersguide
     SUBDIR += ruby19
     SUBDIR += ruby20
@@ -325,7 +322,6 @@
     SUBDIR += sisc
     SUBDIR += sketchy
     SUBDIR += slib
-    SUBDIR += slib-gauche
     SUBDIR += slib-guile
     SUBDIR += slisp
     SUBDIR += smalltalk
@@ -336,6 +332,7 @@
     SUBDIR += spidermonkey17
     SUBDIR += spidermonkey170
     SUBDIR += spidermonkey185
+    SUBDIR += spidermonkey24
     SUBDIR += spl
     SUBDIR += squeak
     SUBDIR += squirrel
@@ -358,8 +355,6 @@
     SUBDIR += tinypy
     SUBDIR += tolua
     SUBDIR += tolua++
-    SUBDIR += tolua++50
-    SUBDIR += tolua50
     SUBDIR += treecc
     SUBDIR += tuareg-mode.el
     SUBDIR += twelf

@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_pagespeed
 PORTVERSION=	1.2.24.2
-PORTREVISION=	0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	${MASTER_SITE_LOCAL}
@@ -13,7 +13,8 @@ DISTNAME=	mod_pagespeed_source_${PORTVERSION}
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	An Apache module that automatically optimizes web pages
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
+BUILD_DEPENDS=	python:${PORTSDIR}/lang/python \
+		bash:${PORTSDIR}/shells/bash \
 		greadlink:${PORTSDIR}/sysutils/coreutils \
 		gsed:${PORTSDIR}/textproc/gsed \
 		svn:${PORTSDIR}/devel/subversion \
@@ -28,7 +29,7 @@ USES=		gmake pkgconfig
 USE_XZ=		yes
 USE_BINUTILS=	yes
 USE_APACHE=	22
-USE_PYTHON=	2.6+
+USE_PYTHON=	yes
 
 # debugging
 #MAKE_ENV+=     V=1

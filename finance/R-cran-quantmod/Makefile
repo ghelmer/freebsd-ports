@@ -17,8 +17,6 @@ RUN_DEPENDS=	R-cran-Defaults>0:${PORTSDIR}/devel/R-cran-Defaults \
 		R-cran-zoo>0:${PORTSDIR}/math/R-cran-zoo \
 		R-cran-TTR>=0.2:${PORTSDIR}/finance/R-cran-TTR
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

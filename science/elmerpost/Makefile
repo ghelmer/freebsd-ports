@@ -21,16 +21,13 @@ CXXFLAGS+=	-Wno-deprecated
 USE_GL=		yes
 USE_XORG=	x11 xt xi
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-USE_FORTRAN=	g77
+USES=		gmake fortran
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64"
-BROKEN=		Does not compile on amd64
-.elif ${OSVERSION} >= 900035
-BROKEN=		Does not compile on recent FreeBSD-9
+CFLAGS+=	-fPIC
 .endif
 
 .include <bsd.port.post.mk>

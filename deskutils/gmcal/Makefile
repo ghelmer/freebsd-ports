@@ -10,7 +10,10 @@ MASTER_SITES=	SF/libmcal/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	thierry@pompo.net
 COMMENT=	GMCAL is a GTK+ frontend for the libmcal package
 
-LIB_DEPENDS=	mcal.0:${PORTSDIR}/misc/libmcal
+DEPRECATED=	Depends on expired misc/libmcal
+EXPIRATION_DATE=2014-02-01
+
+LIB_DEPENDS=	libmcal.so:${PORTSDIR}/misc/libmcal
 RUN_DEPENDS=	${LOCALBASE}/mcal/mcal:${PORTSDIR}/deskutils/mcal
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

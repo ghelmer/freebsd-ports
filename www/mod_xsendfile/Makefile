@@ -9,12 +9,12 @@ MASTER_SITES=	https://tn123.org/mod_xsendfile/ \
 		http://cloud.github.com/downloads/potatosalad/mod_xsendfile/
 
 MAINTAINER=	potatosaladx@gmail.com
-COMMENT=	An Apache2 module that processes X-SENDFILE headers
+COMMENT=	Apache2 module that processes X-SENDFILE headers
 
+LICENSE=	APACHE20
 
 USE_APACHE=	22+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

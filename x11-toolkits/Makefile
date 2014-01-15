@@ -33,6 +33,7 @@
     SUBDIR += girara
     SUBDIR += gnocl
     SUBDIR += gnome-desktop-sharp20
+    SUBDIR += gnome-pty-helper
     SUBDIR += gnome-sharp20
     SUBDIR += gnomemm
     SUBDIR += gnustep-back
@@ -63,7 +64,6 @@
     SUBDIR += gtkmm30-reference
     SUBDIR += gtksourceview
     SUBDIR += gtksourceview-reference
-    SUBDIR += gtksourceview-sharp
     SUBDIR += gtksourceview2
     SUBDIR += gtksourceview2-reference
     SUBDIR += gtksourceview3
@@ -75,7 +75,6 @@
     SUBDIR += hs-GLUT
     SUBDIR += hs-OpenGL
     SUBDIR += hs-OpenGLRaw
-    SUBDIR += hs-frantk
     SUBDIR += hs-gtk
     SUBDIR += hs-gtk2hs
     SUBDIR += hs-gtkglext
@@ -104,6 +103,7 @@
     SUBDIR += libgnomeuimm26
     SUBDIR += libgtk-java
     SUBDIR += libgtksourceviewmm
+    SUBDIR += libmatewnck
     SUBDIR += libpanelappletmm
     SUBDIR += libsexy
     SUBDIR += libsexymm
@@ -114,7 +114,6 @@
     SUBDIR += libxfce4gui
     SUBDIR += libzvt
     SUBDIR += linux-f10-blt
-    SUBDIR += linux-f10-gtk
     SUBDIR += linux-f10-gtk2
     SUBDIR += linux-f10-openmotif
     SUBDIR += linux-f10-pango
@@ -213,6 +212,7 @@
     SUBDIR += py-wxPython28-unicode
     SUBDIR += py-xlib
     SUBDIR += py31-tkinter
+    SUBDIR += qt4-declarative
     SUBDIR += qt4-gui
     SUBDIR += qt4pas
     SUBDIR += qtada
@@ -264,6 +264,7 @@
     SUBDIR += vdkbuilder
     SUBDIR += viewklass
     SUBDIR += vte
+    SUBDIR += vte3
     SUBDIR += vte-reference
     SUBDIR += vtkfox
     SUBDIR += wmapp

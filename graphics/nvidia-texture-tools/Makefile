@@ -3,7 +3,7 @@
 
 PORTNAME=	nvidia-texture-tools
 DISTVERSION=	2.0.8-1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	GOOGLE_CODE \
 		http://mirror.amdmi3.ru/distfiles/
@@ -27,7 +27,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 PORTDOCS=	NVIDIA_Texture_Tools_README.txt ChangeLog
 
 OPTIONS_DEFINE=	COMPRESSUI DOCS
-OPTIONS_DEFAULT=DOCS
 
 COMPRESSUI_DESC=Build compressor UI (requires Qt4)
 

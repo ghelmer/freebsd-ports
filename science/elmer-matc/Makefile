@@ -14,7 +14,7 @@ COMMENT=	MatC language library used by ELMER FEM package
 CXXFLAGS+=	-Wno-deprecated
 
 GNU_CONFIGURE=	yes
-USE_FORTRAN=	g77
+USES=		fortran
 
 PLIST_SUB=	ARCH=${MACHINE_ARCH}
 

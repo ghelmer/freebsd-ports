@@ -12,11 +12,9 @@ MASTER_SITE_SUBDIR=	ImageMagick/delegates
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	An implementation of the codec specified in the JPEG-2000 standard
 
-LIB_DEPENDS=	jpeg:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
 
 LICENSE=	MIT
-
-NO_STAGE=	yes
 
 USE_AUTOTOOLS=	libtool
 USE_ZIP=	yes
@@ -50,17 +48,10 @@ PLIST_SUB+=	OPENGL="@comment "
 EXTRA_PATCHES+=	${FILESDIR}/uuid.patch
 .endif
 
-.if !defined(NO_INSTALL_MANPAGES)
-MAN1=		imgcmp.1 imginfo.1 jasper.1 jiv.1
-.endif
-
+.if ${PORT_OPTIONS:MDOCS}
 post-install:
-.if !defined(NO_INSTALL_MANPAGES)
-	@cd ${WRKSRC}/src/appl && make install-man
-.endif
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/doc/* ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}/
 .endif
 
 .include <bsd.port.mk>

@@ -11,7 +11,7 @@ DIST_SUBDIR=	varkon
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free CAD system and applications development tool
 
-LIB_DEPENDS=	tiff:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
 RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
 
 WRKSRC=		${WRKDIR}/Varkon_${PORTVERSION}
@@ -27,6 +27,9 @@ MAKE_JOBS_UNSAFE=	yes
 VARKON_PREFIX=	${PREFIX}/lib/${PORTNAME}
 
 NO_STAGE=	yes
+
+.include <bsd.port.options.mk>
+
 post-extract:
 	@${FIND} ${WRKSRC} -name "*.o" -delete
 
@@ -58,7 +61,7 @@ do-install:
 	@${MKDIR} ${VARKON_PREFIX}/cnf/ini
 	(cd ${WRKSRC}/cnf/ini/english && ${INSTALL_DATA} linux \
 		${VARKON_PREFIX}/cnf/ini/freebsd)
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}	#Varkon Manual
 	@(cd ${WRKSRC}/man && ${COPYTREE_SHARE} . ${DOCSDIR})
 .endif

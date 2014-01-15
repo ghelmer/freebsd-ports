@@ -6,19 +6,21 @@ PORTVERSION=	0.1.9
 PORTREVISION=	6
 DISTVERSIONPREFIX=	python-
 CATEGORIES=	x11-toolkits python
-MASTER_SITES=	http://releases.chipx86.com/libsexy/sexy-python/ CENKES
+MASTER_SITES=	http://releases.chipx86.com/libsexy/sexy-python/ \
+		CENKES
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Libsexy bindings for Python
 
-LIB_DEPENDS=	sexy.2:${PORTSDIR}/x11-toolkits/libsexy
+LICENSE=	LGPL21
 
-USE_AUTOTOOLS=	libtool
-USE_GNOME=	pygtk2
-USE_PYTHON=	yes
+LIB_DEPENDS=	libsexy.so:${PORTSDIR}/x11-toolkits/libsexy
+
 USES=		pkgconfig
+USE_GNOME=	pygtk2
 GNU_CONFIGURE=	yes
+USE_AUTOTOOLS=	libtool
+USE_PYTHON=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

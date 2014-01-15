@@ -14,7 +14,6 @@ COMMENT=	A sample multi-channel audio mixer library
 LICENSE=	ZLIB
 
 USE_AUTOTOOLS=	libtool
-NO_STAGE=	yes
 USE_SDL=	sdl
 USES=		gmake pathfix pkgconfig
 GNU_CONFIGURE=	yes
@@ -40,13 +39,13 @@ MIKMOD_CONFIGURE_ENABLE=	music-mod
 MODPLUG_LIB_DEPENDS=		libmodplug.so:${PORTSDIR}/audio/libmodplug
 MODPLUG_CONFIGURE_ENABLE=	music-mod-modplug
 
-FLAC_LIB_DEPENDS=		FLAC:${PORTSDIR}/audio/flac
+FLAC_LIB_DEPENDS=		libFLAC.so:${PORTSDIR}/audio/flac
 FLAC_CONFIGURE_ENABLE=		music-flac
 
-SMPEG_LIB_DEPENDS=		smpeg:${PORTSDIR}/multimedia/smpeg
+SMPEG_LIB_DEPENDS=		libsmpeg.so:${PORTSDIR}/multimedia/smpeg
 SMPEG_CONFIGURE_ENABLE=		music-mp3
 
-VORBIS_LIB_DEPENDS=		vorbis:${PORTSDIR}/audio/libvorbis
+VORBIS_LIB_DEPENDS=		libvorbis.so:${PORTSDIR}/audio/libvorbis
 VORBIS_CONFIGURE_ENABLE=	music-ogg
 
 .include <bsd.port.pre.mk>
@@ -60,6 +59,8 @@ CONFIG_FILE=	${LOCALBASE}/lib/timidity/timidity.cfg
 .endif
 
 post-patch:
+	@${REINPLACE_CMD} -e 's|\($$(prefix)/libdata/pkgconfig\)|$$(DESTDIR)\1|' \
+		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e 's|%%CONFIG_FILE%%|${CONFIG_FILE}|g' \
 		${WRKSRC}/timidity/config.h
 

@@ -11,7 +11,7 @@ MASTER_SITES=	http://evolution.genetics.washington.edu/lamarc/download/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Package of programs for computing population parameters
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
 OPTIONS_DEFINE=	WXGTK DOCS
 
@@ -30,10 +30,6 @@ WX_CONF_ARGS=	absolute
 PLIST_FILES+=	bin/lam_conv
 .else
 CONFIGURE_ARGS+=	--disable-converter
-.endif
-
-.if empty(PORT_OPTIONS:MDOCS)
-INSTALL_TARGET=	install-exec-am
 .endif
 
 post-patch:

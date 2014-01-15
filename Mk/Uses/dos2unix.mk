@@ -15,8 +15,6 @@ _INCLUDE_USES_DOS2UNIX_MK=	yes
 _DOS2UNIX_ALL=	yes
 .endif
 
-pre-patch: dos2unix
-
 dos2unix:
 	@${ECHO_MSG} "===>   Converting DOS text files to UNIX text files"
 .if defined(_DOS2UNIX_ALL)
@@ -31,7 +29,7 @@ dos2unix:
 		${XARGS} -0 ${SED} -i '' -e 's/$$//'
 .else
 .for f in ${DOS2UNIX_GLOB}
-	@${FIND} ${SRCSRC} -type f -name '${f}' -print0 | \
+	@${FIND} ${WRKSRC} -type f -name '${f}' -print0 | \
 		${XARGS} -0 ${SED} -i '' -e 's/$$//'
 .endfor
 .endif

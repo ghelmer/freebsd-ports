@@ -6,7 +6,7 @@ PORTVERSION=	1.1.8
 CATEGORIES=	devel
 MASTER_SITES=	http://launchpad.net/gearmand/1.2/${PORTVERSION}/+download/
 
-MAINTAINER=	glarkin@FreeBSD.org
+MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Gearman C Server and Library
 
 BUILD_DEPENDS=	boost-libs>=0:${PORTSDIR}/devel/boost-libs \
@@ -31,7 +31,6 @@ PKGNAMESUFFIX=	-devel
 USERS=		gearmand
 GROUPS=		gearmand
 
-FETCH_ARGS=	-pRr
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USES=		pathfix perl5 gmake

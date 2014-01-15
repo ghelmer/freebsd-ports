@@ -19,20 +19,10 @@ TEST_DEPENDS=	p5-Test-Pod>=1:${PORTSDIR}/devel/p5-Test-Pod
 USE_PERL5=	configure
 USES=		perl5
 
-.include <bsd.port.pre.mk>
-
-.if (${ARCH} == "sparc64")
-LZMA_DEPEND=	xz
-.endif
-
-.if (${OSVERSION} > 900012) || ((${OSVERSION} > 800505) && (${OSVERSION} < 900000))
 LZMA_DEPEND?=	sys
-.else
-LZMA_DEPEND?=	xz
-.endif
 
-.if (${LZMA_DEPEND} == "xz") || (${LZMA_DEPEND} == "lzmalib")
-LIB_DEPENDS+=	lzma:${PORTSDIR}/archivers/${LZMA_DEPEND}
+.if ${LZMA_DEPEND} == "lzmalib"
+LIB_DEPENDS+=	liblzma.so.1:${PORTSDIR}/archivers/lzmalib
 .endif
 
 pre-build:
@@ -40,4 +30,4 @@ pre-build:
 	@${REINPLACE_CMD} -e "/^LDDLFLAGS/ s|${LOCALBASE}/lib|${LIBDIR}|" ${WRKSRC}/Makefile
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

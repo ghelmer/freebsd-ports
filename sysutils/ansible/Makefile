@@ -1,40 +1,44 @@
 # $FreeBSD$
 
 PORTNAME=	ansible
-PORTVERSION=	1.3.4
+PORTVERSION=	1.4.4
 CATEGORIES=	sysutils python
-MASTER_SITES=	http://ansibleworks.com/releases/
+MASTER_SITES=	http://ansibleworks.com/releases/ \
+		http://releases.ansible.com/ansible/
 
 MAINTAINER=	lifanov@mail.lifanov.com
 COMMENT=	Simple ssh-based configuration management and orchestration system
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=0:${PORTSDIR}/devel/py-yaml \
-		${PYTHON_PKGNAMEPREFIX}paramiko>=0:${PORTSDIR}/security/py-paramiko \
-		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:${PORTSDIR}/devel/py-Jinja2
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml \
+		${PYTHON_PKGNAMEPREFIX}paramiko>0:${PORTSDIR}/security/py-paramiko \
+		${PYTHON_PKGNAMEPREFIX}Jinja2>0:${PORTSDIR}/devel/py-Jinja2
 
-OPTIONS_DEFINE=	ACCELERATE EXAMPLES
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=		ACCELERATE EXAMPLES
 OPTIONS_DEFAULT=	ACCELERATE
 
-ACCELERATE_DESC=	Enable accelerate mode
-ACCELERATE_RUN_DEPENDS=${PYTHON_PKGNAMEPREFIX}pycrypto>=0:${PORTSDIR}/security/py-pycrypto \
-		${PYTHON_PKGNAMEPREFIX}keyczar>=0:${PORTSDIR}/security/py-keyczar
+ACCELERATE_DESC=	Enable Accelerated Mode (Uses pycrypto and keyczar)
+ACCELERATE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>0:${PORTSDIR}/security/py-pycrypto \
+			${PYTHON_PKGNAMEPREFIX}keyczar>0:${PORTSDIR}/security/py-keyczar
 
 USE_PYTHON=		2
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_AUTOPLIST=	yes
 
 USES=		shebangfix
-SHEBANG_FILES=	${WRKSRC}/library/*/*
+SHEBANG_FILES=	library/*/* \
+		lib/ansible/runner/action_plugins/synchronize.py
 
 SUB_FILES=	pkg-message
 
 PORTEXAMPLES=	ansible.cfg hosts
 
-post-patch-script:
+post-patch:
 	@${REINPLACE_CMD} -i -e "s|/etc/ansible|${ETCDIR}|" \
+		${WRKSRC}/bin/ansible-galaxy \
 		${WRKSRC}/docs/man/man1/ansible-playbook.1 \
 		${WRKSRC}/docs/man/man1/ansible.1 \
 		${WRKSRC}/examples/ansible.cfg \
@@ -50,6 +54,7 @@ post-patch-script:
 		${WRKSRC}/lib/ansible/constants.py \
 		${WRKSRC}/lib/ansible/playbook/__init__.py \
 		${WRKSRC}/lib/ansible/runner/__init__.py
+	@${RM}	${WRKSRC}/library/system/setup-e
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${MAN1PREFIX}/man/man1

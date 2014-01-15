@@ -3,7 +3,7 @@
 
 PORTNAME=	blender
 PORTVERSION=	2.69
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics games
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -172,7 +172,7 @@ CMAKE_ARGS+=	-DWITH_HEADLESS:BOOL=OFF
 
 .if ${PORT_OPTIONS:MOPENAL}
 .if ${PORT_OPTIONS:MSAMPLERATE}
-USE_OPENAL=	al alut
+USES+=		openal:al,alut
 CMAKE_ARGS+=	-DWITH_OPENAL:BOOL=ON
 .else
 BROKEN=		OPENAL requires SAMPLERATE

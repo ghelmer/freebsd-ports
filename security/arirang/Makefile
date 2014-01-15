@@ -8,12 +8,12 @@ CATEGORIES=	security www
 MASTER_SITES=	http://monkey.org/~pilot/arirang/
 MASTER_SITE_SUBDIR=	UNIX/cgi-scanners
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful webserver security scanner for network
 
 LICENSE=	BSD
 
-USE_RUBY=	1.8+
+USE_RUBY=	yes
 USE_RUBY_EXTCONF=	yes
 USE_LIBRUBY=	yes
 

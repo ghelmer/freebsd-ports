@@ -10,24 +10,17 @@ MASTER_SITES=	http://opensource.confusticate.com/rbl-milter/
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	A milter that adds mail header warnings on mail from open-relays
 
-NO_STAGE=	yes
-
-USE_RC_SUBR=	rblmilter
+USES=		gmake
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-
 CONFIGURE_ENV+=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" PTHREAD_LIBS="${PTHREAD_LIBS}"
 
+USE_RC_SUBR=	rblmilter
 PLIST_FILES=	sbin/rbl-milter
 
 .if defined(NO_WERROR)
 pre-configure:
-	@${CP} ${WRKSRC}/configure ${WRKSRC}/configure.sed
-	@${SED} 's!-Werror!!' ${WRKSRC}/configure.sed >${WRKSRC}/configure
+	${REINPLACE_CMD} -e 's!-Werror!!' ${WRKSRC}/configure
 .endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.pre.mk>
 

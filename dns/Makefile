@@ -7,6 +7,7 @@
     SUBDIR += adsuck
     SUBDIR += ares
     SUBDIR += autotrust
+    SUBDIR += bind10
     SUBDIR += bind96
     SUBDIR += bind98
     SUBDIR += bind99
@@ -124,6 +125,7 @@
     SUBDIR += p5-POE-Filter-DNS-TCP
     SUBDIR += p5-Stanford-DNSserver
     SUBDIR += p5-Tie-DNS
+    SUBDIR += p5-URBL-Prepare
     SUBDIR += p5-pgeodns
     SUBDIR += pdnsd
     SUBDIR += pear-File_DNS
@@ -165,6 +167,7 @@
     SUBDIR += validns
     SUBDIR += vizone
     SUBDIR += walker
+    SUBDIR += yadifa
     SUBDIR += zkt
     SUBDIR += zonecheck
     SUBDIR += zonenotify

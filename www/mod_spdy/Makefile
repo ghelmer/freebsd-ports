@@ -14,9 +14,10 @@ EXTRACT_ONLY=	mod_spdy_source_${PORTVERSION}.tar.xz
 MAINTAINER=	masaki@club.kyutech.ac.jp
 COMMENT=	SPDY module for the Apache HTTP server v2.2
 
-LICENSE=	AL2
+LICENSE=	APACHE20
 
-BUILD_DEPENDS=	greadlink:${PORTSDIR}/sysutils/coreutils \
+BUILD_DEPENDS=	python:${PORTSDIR}/lang/python \
+		greadlink:${PORTSDIR}/sysutils/coreutils \
 		flock:${PORTSDIR}/sysutils/flock \
 		svn:${PORTSDIR}/devel/subversion \
 		curl:${PORTSDIR}/ftp/curl \
@@ -26,7 +27,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 USE_XZ=		yes
 USE_OPENSSL=	yes
 USE_APACHE=	22
-USE_PYTHON=	2.6-2.7
+USE_PYTHON=	2
 USE_GMAKE=	yes
 REINPLACE_ARGS=	-i ""
 

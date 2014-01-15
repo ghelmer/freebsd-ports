@@ -22,19 +22,16 @@ LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 		libpolarssl.so:${PORTSDIR}/security/polarssl
 
 USE_SDL=	sdl
-USE_OPENAL=	yes
 USE_XORG=	ice xext x11 xrandr xi
 USE_WX=		2.9+
 WX_UNICODE=	yes
 USE_GL=	gl glew glu
 
-USE_DOS2UNIX=	yes
-DOS2UNIX_REGEX=	.*\.(h|c|cpp)
-
 USE_GCC=	yes
 
-USES=		cmake pkgconfig iconv
-CMAKE_BUILD_TYPE=	Release
+USES=		dos2unix cmake iconv openal pkgconfig
+DOS2UNIX_REGEX=	.*\.(h|c|cpp)
+
 # Disable ALSA (emulated) and ao (buggy)
 CMAKE_ARGS+=	-DOPENMP:BOOL=OFF \
 		-DDISABLE_ALSA:BOOL=ON \
@@ -60,9 +57,6 @@ PLIST_SUB+=	NLS="@comment "
 
 .if ${PORT_OPTIONS:MDEBUG}
 CMAKE_ARGS+=	-DFASTLOG:BOOL=ON
-INSTALL_TARGET=	install
-CFLAGS+=	-g
-CXXFLAGS+=	-g
 MAKE_ENV+=	VERBOSE=yes
 .endif
 

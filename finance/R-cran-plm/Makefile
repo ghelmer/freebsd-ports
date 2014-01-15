@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	plm
-DISTVERSION=	1.3-1
-PORTREVISION=	5
+DISTVERSION=	1.4-0
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -18,8 +17,6 @@ RUN_DEPENDS=	R-cran-bdsmatrix>0:${PORTSDIR}/math/R-cran-bdsmatrix \
 		R-cran-sandwich>0:${PORTSDIR}/math/R-cran-sandwich \
 		R-cran-zoo>0:${PORTSDIR}/math/R-cran-zoo
 
-USE_R_MOD=	yes
-R_MOD_AUTOPLIST=	yes
+USES=	cran:auto-plist
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

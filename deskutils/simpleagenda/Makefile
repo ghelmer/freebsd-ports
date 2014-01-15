@@ -2,7 +2,7 @@
 
 PORTNAME=	simpleagenda
 PORTVERSION=	0.43
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	http://coyote.octets.fr/pub/gnustep/
 DISTNAME=	SimpleAgenda-${PORTVERSION}
@@ -10,7 +10,7 @@ DISTNAME=	SimpleAgenda-${PORTVERSION}
 MAINTAINER=	theraven@FreeBSD.org
 COMMENT=	simple calendar and agenda application
 
-LIB_DEPENDS+=	ical:${PORTSDIR}/devel/libical
+LIB_DEPENDS+=	libical.so:${PORTSDIR}/devel/libical
 
 LICENSE=	GPLv2
 

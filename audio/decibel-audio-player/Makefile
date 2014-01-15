@@ -14,7 +14,7 @@ RUN_DEPENDS=	py*-dbus>=0.80:${PORTSDIR}/devel/py-dbus \
 
 LICENSE=	GPLv2
 
-USE_PYTHON=	2.5+
+USE_PYTHON=	yes
 USE_GNOME=	pygnome2 pygtk2
 USE_GSTREAMER=	python good bad
 USES=		gmake gettext
@@ -53,12 +53,12 @@ USE_GSTREAMER+=	mp3
 .endif
 
 .if ${PORT_OPTIONS:MMPEG4IP}
-LIB_DEPENDS+=	mp4v2.10:${PORTSDIR}/multimedia/mp4v2
+LIB_DEPENDS+=	libmp4v2.so:${PORTSDIR}/multimedia/mp4v2
 USE_GSTREAMER+=	faad
 .endif
 
 .if ${PORT_OPTIONS:MOGG}
-USE_GSTREAMER+=	ogg
+USE_GSTREAMER+=	libogg.so
 .endif
 
 .if ${PORT_OPTIONS:MSPEEX}
@@ -70,7 +70,7 @@ USE_GSTREAMER+=	vorbis
 .endif
 
 .if ${PORT_OPTIONS:MWAVPACK}
-LIB_DEPENDS+=	wavpack.2:${PORTSDIR}/audio/wavpack
+LIB_DEPENDS+=	libwavpack.so:${PORTSDIR}/audio/wavpack
 USE_GSTREAMER+=	wavpack
 .endif
 

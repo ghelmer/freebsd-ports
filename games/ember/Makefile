@@ -15,13 +15,13 @@ COMMENT=	Ember is a WorldForge 3D client using the OGRE 3D library
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so.1.8.1:${PORTSDIR}/graphics/ogre3d
 RUN_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so.1.8.1:${PORTSDIR}/graphics/ogre3d
-LIB_DEPENDS=	sigc-2.0:${PORTSDIR}/devel/libsigc++20 \
-		eris-1.3:${PORTSDIR}/devel/eris \
-		varconf-1.0.8:${PORTSDIR}/devel/varconf \
-		mercator-0.3.3:${PORTSDIR}/devel/mercator \
-		wfut-0.2:${PORTSDIR}/devel/libwfut \
-		boost_thread:${PORTSDIR}/devel/boost-libs \
-		CEGUIBase-0.7.9.0:${PORTSDIR}/graphics/cegui
+LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
+		liberis-1.3.so:${PORTSDIR}/devel/eris \
+		libvarconf-1.0.so:${PORTSDIR}/devel/varconf \
+		libmercator-0.3.so:${PORTSDIR}/devel/mercator \
+		libwfut-0.2.so:${PORTSDIR}/devel/libwfut \
+		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
+		libCEGUIBase-0.7.9.so:${PORTSDIR}/graphics/cegui
 
 CONFIGURE_ARGS=	--with-png-prefix=${LOCALBASE} --enable-binreloc \
 		--program-transform-name= --disable-cppunit --disable-debug \
@@ -35,10 +35,10 @@ GNU_CONFIGURE=	YES
 USE_LDCONFIG=	YES
 USE_LUA=	5.1
 LUA_COMPS=	toluaxx
-USE_OPENAL=	al alut
-USES=	pathfix pkgconfig
+USES=		openal:al,alut pathfix pkgconfig
 USE_BZIP2=	YES
 CPPFLAGS+=	-DBR_NO_MACROS
+USE_GCC=	4.7+
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>
@@ -55,6 +55,8 @@ post-patch:
 		s|,Plugin_CgProgramManager||g' \
 		${WRKSRC}/ember.conf
 	@${REINPLACE_CMD} -e 's|/bash|/sh|g' ${WRKSRC}/ember.in
+	@${REINPLACE_CMD} -e 's|BOOST_THREAD_LIB =|& -L${_GCC_RUNTIME} -lstdc++ |g' \
+		${WRKSRC}/src/main/Makefile.in
 
 post-install:
 	(cd ${WRKDIR}/ember-media-${PORTVERSION}/media && ${FIND} . -type f -print | \

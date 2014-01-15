@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libXfont
-PORTVERSION=	1.4.6
+PORTVERSION=	1.4.7
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
 
@@ -16,5 +16,4 @@ USE_XORG=	xproto:both xtrans fontsproto:both fontenc
 
 CONFIGURE_ARGS=--without-xmlto --disable-devel-docs
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

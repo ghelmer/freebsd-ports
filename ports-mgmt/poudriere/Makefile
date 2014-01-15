@@ -1,14 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	poudriere
-PORTVERSION=	3.0.12
+PORTVERSION=	3.0.13
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://fossil.etoilebsd.net/poudriere/tarball/ \
 		LOCAL/bdrewery/${PORTNAME}/
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}?uuid=${PORTVERSION}
 
-# Also maintained by bdrewery@FreeBSD.org
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Port build and test system
 
 LICENSE=	BSD
@@ -22,6 +21,7 @@ USES=		uidfix
 PLIST_FILES=	etc/poudriere.conf.sample \
 		bin/poudriere \
 		man/man8/poudriere.8.gz \
+		libexec/poudriere/cpdup \
 		libexec/poudriere/dirwatch \
 		libexec/poudriere/dirempty \
 		libexec/poudriere/make_index \

@@ -11,15 +11,17 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	lx@redundancy.redundancy.org
 COMMENT=	A program to listen for and record sound activity
 
-LIB_DEPENDS=	sndfile.1:${PORTSDIR}/audio/libsndfile
+LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile
 
 NO_STAGE=	yes
 PORTDOCS=	manual.html
 PLIST_FILES=	bin/setlistener bin/listener bin/listenersoundpipe \
 		etc/listener.conf.sample
 
+.include <bsd.port.options.mk>
+
 post-install:
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} ${DOCSDIR}
 .endif

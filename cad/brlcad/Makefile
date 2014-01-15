@@ -11,13 +11,13 @@ COMMENT=	CSG modelling system from the US Ballistic Research Laboratory
 
 BUILD_DEPENDS=	${LOCALBASE}/include/tnt/jama_lu.h:${PORTSDIR}/math/jama	\
 		xsltproc:${PORTSDIR}/textproc/libxslt
-LIB_DEPENDS=	pthread-stubs:${PORTSDIR}/devel/libpthread-stubs \
-		drm:${PORTSDIR}/graphics/libdrm \
-		png15:${PORTSDIR}/graphics/png \
-		rle:${PORTSDIR}/graphics/urt \
-		freetype:${PORTSDIR}/print/freetype2 \
-		expat:${PORTSDIR}/textproc/expat2 \
-		fontconfig:${PORTSDIR}/x11-fonts/fontconfig
+LIB_DEPENDS=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
+		libdrm.so:${PORTSDIR}/graphics/libdrm \
+		libpng15.so:${PORTSDIR}/graphics/png \
+		librle.so:${PORTSDIR}/graphics/urt \
+		libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libexpat.so:${PORTSDIR}/textproc/expat2 \
+		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 
 USE_BZIP2=	yes
 USE_GL=		gl glu
@@ -39,21 +39,7 @@ CFLAGS+=	-I${LOCALBASE}/include
 CMAKE_ARGS=	-DBRLCAD_ENABLE_STRICT:BOOL=OFF
 MANPREFIX=	${PREFIX}/share
 
-OPTIONS_DEFINE=		OPTIMIZATION
-OPTIMIZATION_DESC=	Build with optimizations
-OPTIONS_DEFAULT=	OPTIMIZATION
-
-.include <bsd.port.pre.mk>
-
-EXTRA_LIBS=	-pthread
-
-.if ${PORT_OPTIONS:MOPTIMIZATION}
-CMAKE_BUILD_TYPE=Release
-.endif
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64: invokes i386 assembler
-.endif
+BROKEN_sparc64=	does not compile: invokes i386 assembler
 
 post-patch:
 	@${REINPLACE_CMD} "s+-exact Tcl 8\.5\.1+Tcl 8.5+" ${WRKSRC}/src/other/tcl/library/init.tcl
@@ -73,4 +59,4 @@ post-install:
 regression-test: build
 	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${GMAKE} test)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

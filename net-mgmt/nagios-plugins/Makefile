@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	nagios-plugins
-PORTVERSION=	1.4.16
-PORTREVISION=	3
+PORTVERSION=	1.5
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF/nagiosplug/nagiosplug/${PORTVERSION}
+MASTER_SITES=	https://www.nagios-plugins.org/download/
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Plugins for Nagios
@@ -18,8 +18,8 @@ USE_AUTOTOOLS=	libtool aclocal autoconf automake
 ACLOCAL_ARGS=	-I m4 -I gl/m4
 AUTOMAKE_ARGS=	--add-missing
 
-OPTIONS_DEFINE=	QSTAT FPING NETSNMP RADIUS MYSQL PGSQL LDAP IPV6 JAIL NLS
-OPTIONS_DEFAULT=IPV6
+OPTIONS_DEFINE=	QSTAT FPING NETSNMP RADIUS MYSQL PGSQL LDAP IPV6 JAIL NLS DBI EXTRAOPTS
+OPTIONS_DEFAULT=IPV6 EXTRAOPTS
 
 QSTAT_DESC=	Game server query support (check_game)
 FPING_DESC=	Support for non-flooding fast ping (check_fping)
@@ -29,6 +29,10 @@ MYSQL_DESC=	MySQL support (check_mysql)
 PGSQL_DESC=	PostgreSQL support (check_pgsql)
 LDAP_DESC=	OpenLDAP support (check_ldap)
 JAIL_DESC=	Compilation within jail(8) (see Makefile)
+DBI_DESC=	Check database using DBI
+EXTRAOPTS_DESC=	Parsing of plugins ini config files for extra options
+
+EXTRAOPTS_CONFIGURE_ENABLE=	extra-opts
 
 GNU_CONFIGURE=	yes
 
@@ -43,10 +47,9 @@ NAGIOSCGIURL?=	${NAGIOSHTMURL}/cgi-bin
 NAGIOSPOLLIP?=	127.0.0.1
 NAGIOSPOLLIP6?=	::1
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
-CONFIGURE_ARGS=	--with-nagios-user=${NAGIOSUSER} \
+CONFIGURE_ARGS+=--with-nagios-user=${NAGIOSUSER} \
 		--with-nagios-group=${NAGIOSGROUP} \
 		--with-cgiurl=${NAGIOSCGIURL} \
 		--sbindir=${PREFIX}/${NAGIOSWWWDIR}/cgi-bin \
@@ -97,10 +100,10 @@ PLIST_SUB+=	SUB_SNMP="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MRADIUS}
-LIB_DEPENDS+=	radiusclient-ng:${PORTSDIR}/net/radiusclient
-CONFIGURE_ARGS+=	--enable-radius
+LIB_DEPENDS+=	libradiusclient-ng.so:${PORTSDIR}/net/radiusclient
 PLIST_SUB+=	SUB_RADIUS=""
 .else
+CONFIGURE_ARGS+=	--without-radius
 PLIST_SUB+=	SUB_RADIUS="@comment "
 .endif
 
@@ -118,15 +121,15 @@ USE_PGSQL=	YES
 CONFIGURE_ARGS+=	--with-pgsql=${LOCALBASE}
 PLIST_SUB+=	SUB_PGSQL=""
 .else
-CONFIGURE_ARGS+=	--with-pgsql=${NONEXISTENT}
+CONFIGURE_ARGS+=	--without-pgsql
 PLIST_SUB+=	SUB_PGSQL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MLDAP}
 USE_OPENLDAP=	YES
-CONFIGURE_ARGS+=	--enable-ldap
 PLIST_SUB+=	SUB_LDAP=""
 .else
+CONFIGURE_ARGS+=	--without-ldap
 PLIST_SUB+=	SUB_LDAP="@comment "
 .endif
 
@@ -138,9 +141,26 @@ CONFIGURE_ARGS+=	--disable-nls
 PLIST_SUB+=	NLS="@comment "
 .endif
 
-# Restore check_users from 1.4.15 for hosts without getutxent(3)
-.if ${OSVERSION} < 900007
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-plugins__check_users.c
+.if ${PORT_OPTIONS:MDBI}
+PLIST_SUB+=	SUB_DBI=""
+LIB_DEPENDS+=	libdbi.so:${PORTSDIR}/databases/libdbi
+.else
+CONFIGURE_ARGS+=	--without-dbi
+PLIST_SUB+=	SUB_DBI="@comment "
+.endif
+
+.if ${OSVERSION} > 1000055
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-dig-to-drill.diff
+CONFIGURE_ARGS+=--with-dig-command=/usr/bin/drill
+PLIST_SUB+=	SUB_DNS="@comment "
+.else
+PLIST_SUB+=	SUB_DNS=""
+.endif
+
+.if !exists(/usr/bin/ssh)
+PLIST_SUB+=	SUB_SSH="@comment "
+.else
+PLIST_SUB+=	SUB_SSH=""
 .endif
 
 post-patch:
@@ -150,6 +170,7 @@ post-patch:
 	check_users.c
 	@${REINPLACE_CMD} -e 's|setlocale (LC_ALL, "");|setlocale (LC_ALL, ""); setlocale(LC_NUMERIC, "C");|g' ${WRKSRC}/plugins/${file}
 .endfor
+	@${REINPLACE_CMD} -e 's|chown root|${TRUE}|g' ${WRKSRC}/plugins-root/Makefile.am
 .if ${PORT_OPTIONS:MJAIL}
 	@${REINPLACE_CMD} -e 's# 127.0.0.1 # ${NAGIOSPOLLIP} #g' ${WRKSRC}/configure.in
 	@${REINPLACE_CMD} -e 's# ::1 # ${NAGIOSPOLLIP6} #g' ${WRKSRC}/configure.in
