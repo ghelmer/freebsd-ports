@@ -14,9 +14,6 @@ COMMENT=	Perl extension for managing a uniq list of values
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		Uniq.3
-
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

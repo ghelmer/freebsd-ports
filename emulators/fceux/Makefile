@@ -3,7 +3,7 @@
 
 PORTNAME=	fceux
 PORTVERSION=	2.2.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF/fceultra/Source%20Code/${PORTVERSION:R}%20src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -129,7 +129,6 @@ post-install:
 .endfor
 	@${MV} ${WRKSRC}/documentation/tech ${DOCSDIR}
 .endif
-	${MKDIR} ${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/fceux.desktop \
 		${PREFIX}/share/applications/fceux.desktop
 	@${INSTALL_DATA} ${WRKSRC}/fceux.png \

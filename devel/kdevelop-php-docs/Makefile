@@ -14,10 +14,9 @@ LIB_DEPENDS=	kdevplatforminterfaces:${PORTSDIR}/devel/kdevplatform
 
 USE_KDE4=	kdehier kdelibs kdeprefix automoc4
 USE_QT4=	moc_build qmake_build rcc_build uic_build
-USE_BZIP2=	yes
+USE_XZ=		yes
 USES=		cmake
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

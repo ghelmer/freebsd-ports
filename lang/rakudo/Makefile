@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rakudo
-PORTVERSION=	2013.09
+PORTVERSION=	2013.10
 PORTEPOCH=	4
 CATEGORIES=	lang
 MASTER_SITES=	http://rakudo.org/downloads/star/
@@ -55,7 +55,7 @@ MANCOMPRESSED=	no
 PLIST_SUB=	PARROT_VERSION=${PARROT_VERSION}
 PORTDOCS=	*
 
-PARROT_VERSION=	5.5.0
+PARROT_VERSION=	5.9.0
 
 NOT_FOR_ARCHS=	ia64 powerpc sparc64
 NOT_FOR_ARCHS_REASON=	does not compile
@@ -81,7 +81,7 @@ do-install:
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/perl6.1 ${MAN1PREFIX}/man/man1/perl6.1
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}/
+	@${MKDIR} ${DOCSDIR}/
 	cd ${WRKSRC}/docs/ && ${INSTALL_DATA} ${EXTRA_DOCS} ${DOCSDIR}/
 .endif
 

@@ -53,7 +53,7 @@
 # "make config".
 #
 # OPTIONS_SET				- List of options to enable for all ports.
-# OPTIONS_UNSET				- List of options to disable for all ports. 
+# OPTIONS_UNSET				- List of options to disable for all ports.
 # ${OPTIONS_NAME}_SET		- List of options to enable for a specific port.
 # ${OPTIONS_NAME}_UNSET		- List of options to disable for a specific port.
 #
@@ -87,7 +87,7 @@
 # ${opt}_CONFIGURE_WITH		Will add to CONFIGURE_ARGS:
 #							Option enabled  --with-${content}
 #							Option disabled --without-${content}
-#			
+#
 # ${opt}_CMAKE_ON			When option is enabled, it will add its content to
 #							the CMAKE_ARGS.
 # ${opt}_CMAKE_OFF			When option is disabled, it will add its content to
@@ -95,6 +95,8 @@
 #
 # ${opt}_USE=	FOO=bar		When option is enabled, it will  enable
 #							USE_FOO+= bar
+#							If you need more than one option, you can do
+#							FOO=bar,baz and you'll get USE_FOO=bar baz
 #
 # For each of CFLAGS CPPFLAGS CXXFLAGS LDFLAGS CONFIGURE_ENV MAKE_ARGS MAKE_ENV
 # ALL_TARGET INSTALL_TARGET USES DISTFILES PLIST_FILES PLIST_DIRS PLIST_DIRSTRY
@@ -236,18 +238,14 @@ NEW_OPTIONS:=	${NEW_OPTIONS:N${opt}}
 .  if exists(${OPTIONSFILE}) && !make(rmconfig)
 .  include "${OPTIONSFILE}"
 .  endif
-.  if exists(${OPTIONSFILE}.local)
-.  include "${OPTIONSFILE}.local"
-.  endif
+.  sinclude "${OPTIONSFILE}.local"
 # XXX to remove once UNIQUENAME is removed
 
 ## options files (from dialog)
 .  if exists(${OPTIONS_FILE}) && !make(rmconfig)
 .  include "${OPTIONS_FILE}"
 .  endif
-.  if exists(${OPTIONS_FILE}.local)
-.  include "${OPTIONS_FILE}.local"
-.  endif
+.  sinclude "${OPTIONS_FILE}.local"
 
 ### convert WITH and WITHOUT found in make.conf or reloaded from old optionsfile
 .for opt in ${ALL_OPTIONS}
@@ -387,14 +385,18 @@ PLIST_SUB:=	${PLIST_SUB} ${opt}="@comment "
 .    if defined(${opt}_USE)
 .      for option in ${${opt}_USE}
 _u=		${option:C/=.*//g}
-USE_${_u:U}+=	${option:C/.*=//g}
+USE_${_u:U}+=	${option:C/.*=//g:C/,/ /g}
 .      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_ENABLE)
-CONFIGURE_ARGS+=	--enable-${${opt}_CONFIGURE_ENABLE}
+.      for iopt in ${${opt}_CONFIGURE_ENABLE}
+CONFIGURE_ARGS+=	--enable-${iopt}
+.      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_WITH)
-CONFIGURE_ARGS+=	--with-${${opt}_CONFIGURE_WITH}
+.      for iopt in ${${opt}_CONFIGURE_WITH}
+CONFIGURE_ARGS+=	--with-${iopt}
+.      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_ON)
 CONFIGURE_ARGS+=	${${opt}_CONFIGURE_ON}
@@ -402,9 +404,9 @@ CONFIGURE_ARGS+=	${${opt}_CONFIGURE_ON}
 .    if defined(${opt}_CMAKE_ON)
 CMAKE_ARGS+=	${${opt}_CMAKE_ON}
 .    endif
-.    for flags in CFLAGS CPPFLAGS CXXFLAGS LDFLAGS CONFIGURE_ENV MAKE_ARGS MAKE_ENV \
-                  ALL_TARGET INSTALL_TARGET USES DISTFILES PLIST_FILES PLIST_DIRS PLIST_DIRSTRY \
-                  EXTRA_PATCHES PATCHFILES PATCH_SITES CATEGORIES
+.    for flags in CFLAGS CPPFLAGS CXXFLAGS LDFLAGS CONFIGURE_ENV MAKE_ARGS \
+         MAKE_ENV ALL_TARGET INSTALL_TARGET USES DISTFILES PLIST_FILES \
+         PLIST_DIRS PLIST_DIRSTRY EXTRA_PATCHES PATCHFILES PATCH_SITES CATEGORIES
 .      if defined(${opt}_${flags})
 ${flags}+=	${${opt}_${flags}}
 .      endif
@@ -416,10 +418,14 @@ ${deptype}_DEPENDS+=	${${opt}_${deptype}_DEPENDS}
 .    endfor
 .  else
 .    if defined(${opt}_CONFIGURE_ENABLE)
-CONFIGURE_ARGS+=	--disable-${${opt}_CONFIGURE_ENABLE}
+.      for iopt in ${${opt}_CONFIGURE_ENABLE}
+CONFIGURE_ARGS+=	--disable-${iopt}
+.      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_WITH)
-CONFIGURE_ARGS+=	--without-${${opt}_CONFIGURE_WITH}
+.      for iopt in ${${opt}_CONFIGURE_WITH}
+CONFIGURE_ARGS+=	--without-${iopt}
+.      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_OFF)
 CONFIGURE_ARGS+=	${${opt}_CONFIGURE_OFF}
@@ -429,6 +435,5 @@ CMAKE_ARGS+=	${${opt}_CMAKE_OFF}
 .    endif
 .  endif
 .endfor
-
 
 .endif

@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	elementary
-PORTVERSION=	1.7.8
+PORTVERSION=	1.7.9
 CATEGORIES=	x11-toolkits enlightenment
-MASTER_SITES=	http://download.enlightenment.fr/releases/ \
+MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
 
 MAINTAINER=	gblach@FreeBSD.org
@@ -48,11 +48,6 @@ post-patch:
 	@${LN} -s base.src ${WRKSRC}/config/default/base.cfg
 	@${LN} -s base.src ${WRKSRC}/config/mobile/base.cfg
 	@${LN} -s base.src ${WRKSRC}/config/standard/base.cfg
-
-post-install:
-.if empty(PORT_OPTIONS:MEXAMPLES)
-	@${RMDIR} ${EXAMPLESDIR}
-.endif
 
 .if ${ARCH} == "sparc64"
 BROKEN=		Does not install on sparc64: signal 10

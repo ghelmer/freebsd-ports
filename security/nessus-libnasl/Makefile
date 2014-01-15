@@ -11,23 +11,19 @@ MASTER_SITES=	ftp://ftp.nessus.org/pub/nessus/nessus-${PORTVERSION}/src/ \
 		ftp://sunsite.cnlab-switch.ch/mirror/nessus/nessus-${PORTVERSION}/src/ \
 		ftp://ftp.ayamura.org/pub/nessus/nessus-${PORTVERSION}/src/
 DISTNAME=	libnasl-${PORTVERSION}
+DIST_SUBDIR=	nessus
 
 MAINTAINER=	udo.schweigert@siemens.com
 COMMENT=	Nessus Attack Scripting Language
 
-BROKEN=		Does not build
+LICENSE=	GPLv2
 
-LIB_DEPENDS=	nessus.4:${PORTSDIR}/security/nessus-libraries
+LIB_DEPENDS=	libnessus.so:${PORTSDIR}/security/nessus-libraries
 
-DIST_SUBDIR=	nessus
 WRKSRC=		${WRKDIR}/libnasl
-
 USE_AUTOTOOLS=	libtool
 USES=		bison
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	YES
 
-MAN1=		nasl.1 nasl-config.1
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

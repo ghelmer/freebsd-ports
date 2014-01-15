@@ -7,7 +7,7 @@ CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A fast, secure, and very extensible implementation of eRuby
+COMMENT=	Fast, secure, and extensible implementation of eRuby
 
 RUN_DEPENDS=	rubygem-abstract>=1.0.0:${PORTSDIR}/devel/rubygem-abstract
 
@@ -16,5 +16,4 @@ USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 PLIST_FILES=	bin/erubis
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

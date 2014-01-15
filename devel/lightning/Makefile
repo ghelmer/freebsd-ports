@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lightning
-PORTVERSION=	2.0.1
+PORTVERSION=	2.0.2
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 MASTER_SITE_SUBDIR=	${PORTNAME}
@@ -22,7 +22,7 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-disassembler=no
 
-PLIST_SUB+=	JIT_ARCH=${ARCH:S/i386/x86/:S/amd64/x86/:S/sparc64/sparc/:S/powerpc/ppc/}
+PLIST_SUB+=	JIT_ARCH=${ARCH:S/i386/x86/:S/amd64/x86/:S/x86_64/x86/:S/sparc64/sparc/:S/powerpc/ppc/}
 
 regression-test: build
 	(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} \

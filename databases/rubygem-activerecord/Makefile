@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	activerecord
-PORTVERSION=	3.2.13
+PORTVERSION=	3.2.15
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -26,7 +26,6 @@ OPTIONSFILE=	${PORT_DBDIR}/rubygem-${PORTNAME}/options
 
 GEM_ENV+=	LANG=en_US.UTF-8
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}

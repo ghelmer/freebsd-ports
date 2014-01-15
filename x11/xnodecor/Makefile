@@ -15,7 +15,6 @@ NO_WRKSUBDIR=	yes
 USE_XORG=	x11
 PLIST_FILES=	bin/xnodecor
 
-NO_STAGE=	yes
 do-extract:
 	@${MKDIR} ${WRKDIR}
 	@${CP} ${FILESDIR}/Makefile ${WRKDIR}

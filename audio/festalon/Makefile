@@ -17,7 +17,6 @@ LICENSE=	GPLv2
 LIB_DEPENDS+=	samplerate:${PORTSDIR}/audio/libsamplerate
 
 USES=		pkgconfig
-NO_STAGE=	yes
 USE_AUTOTOOLS=	libtool
 USE_BZIP2=	yes
 
@@ -29,6 +28,10 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
+.if ${OSVERSION} >= 1000000
+BROKEN=		does not build on FreeBSD 10.x and later
+.endif
+
 .if ${PKGNAMEPREFIX} == ""
 
 USE_SDL=	yes
@@ -37,16 +40,14 @@ PLIST_FILES=	bin/festalon
 PORTDOCS=	README
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} ${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 .endif
 
 .endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

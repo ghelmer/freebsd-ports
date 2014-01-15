@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hsflowd
-PORTVERSION=	1.23.3
+PORTVERSION=	1.23.4
 CATEGORIES=	net
 MASTER_SITES=	SF/host-sflow/Latest/ \
 		http://mirrors.rit.edu/zi/
@@ -10,6 +10,7 @@ MASTER_SITES=	SF/host-sflow/Latest/ \
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Agent that exports metrics using the sFlow protocol
 
+USES=		fmake
 SUB_FILES=	pkg-message
 USE_RC_SUBR=	${PORTNAME}
 MAKE_ENV=	BINDIR=${PREFIX}/sbin INITDIR=${PREFIX}/etc/rc.d \

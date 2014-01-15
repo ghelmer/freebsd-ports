@@ -177,7 +177,6 @@
     SUBDIR += dfc
     SUBDIR += di
     SUBDIR += dim
-    SUBDIR += dircomp
     SUBDIR += dirdiff
     SUBDIR += dirvish
     SUBDIR += diskcheckd
@@ -196,6 +195,7 @@
     SUBDIR += dtpstree
     SUBDIR += du2ps
     SUBDIR += duff
+    SUBDIR += dunst
     SUBDIR += duplicity
     SUBDIR += duply
     SUBDIR += dupmerge
@@ -242,6 +242,7 @@
     SUBDIR += filetype
     SUBDIR += filewatcherd
     SUBDIR += finfo
+    SUBDIR += firstboot-freebsd-update
     SUBDIR += flasher
     SUBDIR += flashrom
     SUBDIR += flexbackup
@@ -349,6 +350,8 @@
     SUBDIR += graveman
     SUBDIR += grok
     SUBDIR += grub2
+    SUBDIR += grub2-bhyve
+    SUBDIR += grub2-efi
     SUBDIR += gsmartcontrol
     SUBDIR += gstopd
     SUBDIR += gstreamer-plugins-cdio
@@ -390,7 +393,6 @@
     SUBDIR += i2c-tools
     SUBDIR += i7z
     SUBDIR += iat
-    SUBDIR += iextract
     SUBDIR += installwatch
     SUBDIR += iogen
     SUBDIR += iograph
@@ -510,13 +512,13 @@
     SUBDIR += metalog
     SUBDIR += mfid
     SUBDIR += mgeupsd
+    SUBDIR += minimunin
     SUBDIR += minirsyslogd
     SUBDIR += mixer
     SUBDIR += mkfile
     SUBDIR += mkfwimage
     SUBDIR += mkntpwd
     SUBDIR += mksunbootcd
-    SUBDIR += mktool
     SUBDIR += mmore
     SUBDIR += modules
     SUBDIR += monit
@@ -553,6 +555,7 @@
     SUBDIR += nepomuk-widgets
     SUBDIR += netident
     SUBDIR += news
+    SUBDIR += nfsping
     SUBDIR += nitrogen
     SUBDIR += no-login
     SUBDIR += npadmin
@@ -573,6 +576,7 @@
     SUBDIR += p5-BSD-Jail-Object
     SUBDIR += p5-BSD-Process
     SUBDIR += p5-BSD-Sysctl
+    SUBDIR += p5-BackupPC-XS
     SUBDIR += p5-Brackup
     SUBDIR += p5-Dir-Purge
     SUBDIR += p5-File-DirCompare
@@ -640,6 +644,7 @@
     SUBDIR += pacman
     SUBDIR += paicc
     SUBDIR += pam_mount
+    SUBDIR += panicmail
     SUBDIR += parallel
     SUBDIR += password-store
     SUBDIR += patchelf
@@ -726,6 +731,7 @@
     SUBDIR += py-ezjailremote
     SUBDIR += py-filelike
     SUBDIR += py-glances
+    SUBDIR += py-halite 
     SUBDIR += py-iowait
     SUBDIR += py-nagiosplugin
     SUBDIR += py-psutil

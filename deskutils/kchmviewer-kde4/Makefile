@@ -16,9 +16,8 @@ USES=		cmake
 USE_KDE4=	kdeprefix kdelibs automoc4
 USE_QT4=	webkit qmake_build moc_build rcc_build uic_build
 
-NO_STAGE=	yes
 post-install:
-	${MKDIR} ${PREFIX}/share/pixmaps
-	${INSTALL_DATA} ${WRKSRC}/packages/kchmviewer.png ${PREFIX}/share/pixmaps
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${INSTALL_DATA} ${WRKSRC}/packages/kchmviewer.png ${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

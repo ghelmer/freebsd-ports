@@ -6,17 +6,18 @@ PORTVERSION=	1.2
 PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	${MASTER_SITE_NETBSD}
+PKGNAMESUFFIX=	12
 
 MAINTAINER=	jgreco@ns.sol.net
 COMMENT=	File system security and verification program
 
-LATEST_LINK=	tripwire12
 MAN5=		tw.config.5
 MAN8=		siggen.8 tripwire.8
 NO_CDROM=	cannot be redistributed for more than the cost of duplication
 NO_PACKAGE=	requires local database to be built
 USES=		perl5
 USE_PERL5=	build
+MAKE_JOBS_UNSAFE=yes
 
 TWCONFIG?=	${FILESDIR}/tw.conf.freebsd8
 
@@ -31,7 +32,7 @@ post-patch:
 	    's|bs_ntohl|ntohl|g;s|bs_htonl|htonl|g'
 
 pre-configure:
-	@ ${CP} ${FILESDIR}/conf-freebsd2.h ${WRKSRC}/configs
+	@ ${CP} ${FILESDIR}/conf-freebsd8.h ${WRKSRC}/configs
 	@ ${CP} ${TWCONFIG} ${WRKSRC}/configs/tw.conf.freebsd8
 
 post-install:

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	edje
-PORTVERSION=	1.7.8
+PORTVERSION=	1.7.9
 PORTEPOCH=	2
 CATEGORIES=	graphics enlightenment
-MASTER_SITES=	http://download.enlightenment.fr/releases/ \
+MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
 
 MAINTAINER=	gblach@FreeBSD.org
@@ -17,7 +17,7 @@ DIST_SUBDIR=	e17
 USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
 USES=		pathfix pkgconfig shared-mime-info
-USE_EFL=	eet evas ecore embryo libtool_hack librt_hack
+USE_EFL=	eina eet evas ecore eio embryo libtool_hack librt_hack
 USE_EFL_EVAS_LOADERS=	eet jpeg png
 USE_EFL_ECORE=	evas file imf imf_evas
 USE_LUA=	5.1+

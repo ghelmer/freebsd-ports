@@ -3,8 +3,10 @@
 PORTNAME=	mythes
 PORTVERSION=	2.3
 CATEGORIES=	french textproc
-MASTER_SITES=	http://www.dicollecte.org/download/fr/
+MASTER_SITES=	http://www.dicollecte.org/download/fr/ \
+		LOCAL/sunpoet/${PORTNAME}
 DISTNAME=	thesaurus-v${PORTVERSION}
+EXTRACT_SUFX=	.zip
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
@@ -12,7 +14,6 @@ COMMENT=	French thesaurus
 
 LICENSE=	LGPL21
 
-USE_ZIP=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
@@ -26,14 +27,13 @@ PLIST_FILES+=	%%DATADIR%%/th_${ALIAS}_v2.dat \
 		%%DATADIR%%/th_${ALIAS}_v2.idx
 .endfor
 
-NO_STAGE=	yes
 do-install:
-	${MKDIR} ${DATADIR}/
-	${INSTALL_DATA} ${WRKSRC}/thes_fr.dat ${DATADIR}/th_fr_FR_v2.dat
-	${INSTALL_DATA} ${WRKSRC}/thes_fr.idx ${DATADIR}/th_fr_FR_v2.idx
+	${MKDIR} ${STAGEDIR}${DATADIR}/
+	${INSTALL_DATA} ${WRKSRC}/thes_fr.dat ${STAGEDIR}${DATADIR}/th_fr_FR_v2.dat
+	${INSTALL_DATA} ${WRKSRC}/thes_fr.idx ${STAGEDIR}${DATADIR}/th_fr_FR_v2.idx
 .for ALIAS in ${FRALIASES}
-	${LN} -s th_fr_FR_v2.dat ${DATADIR}/th_${ALIAS}_v2.dat
-	${LN} -s th_fr_FR_v2.idx ${DATADIR}/th_${ALIAS}_v2.idx
+	${LN} -s th_fr_FR_v2.dat ${STAGEDIR}${DATADIR}/th_${ALIAS}_v2.dat
+	${LN} -s th_fr_FR_v2.idx ${STAGEDIR}${DATADIR}/th_${ALIAS}_v2.idx
 .endfor
 
 .include <bsd.port.mk>

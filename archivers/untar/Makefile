@@ -10,10 +10,9 @@ DISTNAME=	${PORTNAME}
 EXTRACT_SUFX=	.c
 EXTRACT_ONLY=
 
-MAINTAINER=	c.petrik.sosa@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lists/Extracts files from a "*.tgz" or "*.gz" archive
 
-NO_STAGE=	yes
 MAKEFILE=	/usr/share/mk/bsd.prog.mk
 NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/untar
@@ -26,6 +25,6 @@ pre-patch:
 	@${CP} ${DISTDIR}/untar.c ${WRKSRC}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

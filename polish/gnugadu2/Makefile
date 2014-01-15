@@ -3,7 +3,7 @@
 
 PORTNAME=	gnugadu2
 PORTVERSION=	2.3.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	polish net-im
 MASTER_SITES=	SF/ggadu/gg2/${PORTVERSION}
 DISTNAME=	gg2-${PORTVERSION}
@@ -12,7 +12,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gadu-Gadu IM network client
 
 LIB_DEPENDS=	gadu.3:${PORTSDIR}/polish/libgadu \
-		audiofile.0:${PORTSDIR}/audio/libaudiofile
+		libaudiofile.so:${PORTSDIR}/audio/libaudiofile
 
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
@@ -152,7 +152,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' ${WRKSRC}/src/plugins/GUI/gtkimhtml.c
 
 post-install:
-	@${MKDIR} ${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/gg2.desktop ${PREFIX}/share/applications/
 
 # vim: set ts=8 sw=8:

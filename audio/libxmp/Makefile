@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libxmp
-PORTVERSION=	4.1.5
+PORTVERSION=	4.2.0
 CATEGORIES=	audio
 MASTER_SITES=	SF/xmp/${PORTNAME}/${PORTVERSION}
 
@@ -10,7 +10,6 @@ MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Module rendering library for xmp
 
 USES=		gmake
-NO_STAGE=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 

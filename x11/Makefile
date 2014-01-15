@@ -78,7 +78,6 @@
     SUBDIR += gnome-clipboard-daemon
     SUBDIR += gnome-desktop
     SUBDIR += gnome-desktop-reference
-    SUBDIR += gnome-libs
     SUBDIR += gnome-menus
     SUBDIR += gnome-panel
     SUBDIR += gnome-panel-reference
@@ -172,7 +171,6 @@
     SUBDIR += libgnome-java
     SUBDIR += libgnome-reference
     SUBDIR += libgnomekbd
-    SUBDIR += libgnomemm
     SUBDIR += libgnomemm26
     SUBDIR += libkonq
     SUBDIR += liboldX

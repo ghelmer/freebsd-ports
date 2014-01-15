@@ -2,6 +2,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	3.2
+PORTREVISION=	2
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -16,6 +17,7 @@ LLVM_SUFFIX=	${PORTVERSION:S/.//g}
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
+UNIQUENAME=	${PORTNAME}${LLVM_SUFFIX}
 
 USES=		gmake perl5
 GNU_CONFIGURE=	yes
@@ -73,12 +75,20 @@ COMMANDS=	bugpoint \
 		opt
 FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
 
+STRIP_LIBS=	BugpointPasses.so \
+		LLVMHello.so \
+		libLLVM-${PORTVERSION}.so.0 \
+		libLTO.so \
+		libprofile_rt.so
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MASSERTS}
 CONFIGURE_ARGS+=	--enable-assertions
+RELEASE_TYPE=		Release+Asserts
 .else
 CONFIGURE_ARGS+=	--disable-assertions
+RELEASE_TYPE=		Release
 .endif
 
 .if ${PORT_OPTIONS:MCMAKE}
@@ -168,6 +178,7 @@ post-install:
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME} \
 	    ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME}.0
 	${LN} -sf ${LIBNAME}.0 ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME}
+	${STRIP_CMD} ${STRIP_LIBS:S|^|${STAGEDIR}${LLVM_PREFIX}/lib/|}
 	${INSTALL_SCRIPT} ${WRKDIR}/llvm-wrapper.sh \
 	    ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX}
 .for command in ${COMMANDS:C/^/XXXX/1:NXXXX*}
@@ -198,7 +209,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX}
 	${INSTALL_DATA} ${WRKSRC}/utils/lit/lit/*.py \
 	    ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX}
-	${INSTALL_PROGRAM} ${WRKSRC}/Release/bin/FileCheck \
+	${INSTALL_PROGRAM} ${WRKSRC}/${RELEASE_TYPE}/bin/FileCheck \
 	    ${STAGEDIR}${LLVM_PREFIX}/bin/
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/FileCheck \
 	    ${STAGEDIR}${PREFIX}/bin/FileCheck${LLVM_SUFFIX}

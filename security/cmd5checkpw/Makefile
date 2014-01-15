@@ -11,13 +11,10 @@ COMMENT=	Checkpassword compatible authentication program that uses CRAM-MD5
 
 OPTIONS_DEFINE=	DOCS
 
-MAN8=		cmd5checkpw.8
-
 PORTDOCS=	CHANGES CREDITS INSTALL README rfc1321.txt rfc2104.txt
-PLIST_FILES=	bin/cmd5checkpw etc/poppasswd.dist
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+PLIST_FILES=	bin/cmd5checkpw \
+		etc/poppasswd.dist \
+		man/man8/cmd5checkpw.8.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/poppasswd|${LOCALBASE}/etc/poppasswd|' \
@@ -27,14 +24,12 @@ post-patch:
 		${WRKSRC}/Makefile
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/cmd5checkpw ${PREFIX}/bin
-	@${INSTALL_DATA} ${WRKSRC}/poppasswd ${PREFIX}/etc/poppasswd.dist
-	@${INSTALL_MAN}	${WRKSRC}/cmd5checkpw.8 ${MANPREFIX}/man/man8
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-.    for f in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
-.    endfor
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/cmd5checkpw ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/poppasswd ${STAGEDIR}${PREFIX}/etc/poppasswd.dist
+	${INSTALL_MAN}	${WRKSRC}/cmd5checkpw.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for f in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
+.endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

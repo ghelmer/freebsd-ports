@@ -3,7 +3,7 @@
 
 PORTNAME=	openyahtzee
 PORTVERSION=	1.9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Open%20Yahtzee/Open%20Yahtzee%20${PORTVERSION}
 
@@ -28,7 +28,6 @@ MAN6=		openyahtzee.6
 PLIST_FILES=	bin/openyahtzee \
 		share/applications/openyahtzee.desktop \
 		share/pixmaps/openyahtzee.png
-PLIST_DIRSTRY=	share/applications
 
 NO_STAGE=	yes
 .include <bsd.port.mk>

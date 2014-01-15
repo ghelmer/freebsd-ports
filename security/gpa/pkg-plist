@@ -1,4 +1,5 @@
 bin/gpa
+man/man1/gpa.1.gz
 share/applications/gpa.desktop
 share/gpa/gpa-logo.ppm
 share/gpa/gpa.png
@@ -17,4 +18,3 @@ share/gpa/gpa.png
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/gpa.mo
 share/pixmaps/gpa.png
 @dirrm share/gpa
-@dirrmtry share/applications

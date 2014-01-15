@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	phpDox
-PORTVERSION=	0.4.0
+PORTVERSION=	0.5.0
 CATEGORIES=	devel pear
 MASTER_SITES=	http://pear.netpirates.net/get/
 PKGNAMEPREFIX=	pear-TheSeer_
@@ -31,7 +31,6 @@ PEAR_AUTOINSTALL=	yes
 
 IGNORE_WITH_PHP=52
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/pear/bsd.pear.mk"
 .include <bsd.port.post.mk>

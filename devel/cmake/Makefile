@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cmake
-PORTVERSION=	2.8.11.2
+PORTVERSION=	2.8.12.1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.cmake.org/files/v2.8/
 
@@ -23,21 +23,9 @@ INSTALL_TARGET=	install/strip
 
 .if !defined(CMAKE_MODULES)
 HAS_CONFIGURE=	yes
-RUN_DEPENDS=	${DATADIR}/Modules/CMake.cmake:${PORTSDIR}/devel/cmake-modules
-
-MAN1=		ccmake.1 \
-		cmake.1 \
-		cmakecommands.1 \
-		cmakecompat.1 \
-		cmakemodules.1 \
-		cmakepolicies.1	\
-		cmakeprops.1 \
-		cmakevars.1 \
-		cpack.1 \
-		ctest.1
+RUN_DEPENDS=	${LOCALBASE}/share/cmake/Modules/CMake.cmake:${PORTSDIR}/devel/cmake-modules
 .endif
 
-NO_STAGE=	yes
 post-patch:
 	@(${FIND} ${WRKSRC}/Modules -name "*.cmake" -print0; \
 		${FIND} ${WRKSRC}/Tests -name "CMakeLists.txt" -print0 ) | \
@@ -55,7 +43,7 @@ post-patch:
 
 .if !defined(CMAKE_MODULES)
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/Docs/cmake-mode.el ${PREFIX}/share/emacs/site-lisp
+	${INSTALL_DATA} ${WRKSRC}/Docs/cmake-mode.el ${STAGEDIR}${PREFIX}/share/emacs/site-lisp
 .endif
 
 .include <bsd.port.mk>

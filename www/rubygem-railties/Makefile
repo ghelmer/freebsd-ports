@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	railties
-PORTVERSION=	3.2.13
-PORTREVISION=	1
+PORTVERSION=	3.2.15
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -21,5 +20,4 @@ RUBYGEM_AUTOPLIST=	yes
 
 PLIST_FILES=	bin/rails
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

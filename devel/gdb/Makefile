@@ -3,7 +3,7 @@
 
 PORTNAME=	gdb
 PORTVERSION=	7.6.1
-#PORTREVISION=	1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -18,7 +18,7 @@ USES=		iconv gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CONFIGURED_M4=m4 CONFIGURED_BISON=byacc
 CONFIGURE_ARGS=	--program-suffix=${PORTVERSION:S/.//g} \
-		--with-gdb-datadir=${STAGEDIR}${PREFIX}/share/gdb${PORTVERSION:S/.//g} \
+		--with-gdb-datadir=${PREFIX}/share/gdb${PORTVERSION:S/.//g} \
 		${ICONV_CONFIGURE_ARG} \
 		--without-libunwind-ia64 \
 		--enable-targets=all
@@ -85,14 +85,14 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gdb/gdb ${STAGEDIR}${PREFIX}/bin/gdb${VER}
 	${INSTALL_MAN} ${WRKSRC}/gdb/gdb.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/gdb${VER}.1
 .if ${PORT_OPTIONS:MTUI}
-	${LN} -sf ${STAGEDIR}${PREFIX}/bin/gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdbtui${VER}
+	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdbtui${VER}
 .endif
 .if ${PORT_OPTIONS:MGDB_LINK}
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdb
 .endif
 .if ${PORT_OPTIONS:MPYTHON}
-	(cd ${WRKSRC}/gdb; ${GMAKE} install-python )
-	(cd ${WRKSRC}/gdb/data-directory; ${GMAKE} install-python )
+	(cd ${WRKSRC}/gdb; ${GMAKE} DESTDIR=${STAGEDIR} install-python )
+	(cd ${WRKSRC}/gdb/data-directory; ${GMAKE} DESTDIR=${STAGEDIR} install-python )
 .endif
 
 post-install:

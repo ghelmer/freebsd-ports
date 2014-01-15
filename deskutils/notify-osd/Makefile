@@ -3,7 +3,7 @@
 
 PORTNAME=	notify-osd
 PORTVERSION=	0.9.29
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	deskutils
 MASTER_SITES=	http://launchpadlibrarian.net/43419242/ \
 		CRITICAL
@@ -24,5 +24,4 @@ USES=		gmake pkgconfig
 USE_GNOME=	libwnck gconf2
 USE_GCC=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

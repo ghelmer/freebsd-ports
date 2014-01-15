@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	newsbeuter
-PORTVERSION=	2.6
-PORTREVISION=	2
+PORTVERSION=	2.7
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://newsbeuter.org/downloads/
 
@@ -12,20 +12,20 @@ COMMENT=	An RSS feed reader for the text console
 
 LIB_DEPENDS=	stfl.1:${PORTSDIR}/devel/stfl \
 		curl:${PORTSDIR}/ftp/curl \
-		json.0:${PORTSDIR}/devel/json-c
+		libjson.so:${PORTSDIR}/devel/json-c
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gettext ncurses gmake pkgconfig perl5
+USES=		gettext iconv ncurses gmake pkgconfig perl5
 USE_PERL5=	build
 USE_SQLITE=	yes
 USE_GNOME=	libxml2
+USE_GCC=	any
 
 MAN1=	newsbeuter.1 podbeuter.1
 
 NO_STAGE=	yes
-.include <bsd.port.pre.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e "s,share/man,man,; \
@@ -36,5 +36,7 @@ post-patch:
 		${WRKSRC}/src/controller.cpp ${WRKSRC}/src/view.cpp
 	${REINPLACE_CMD} -e 's,fail "ncursesw5",true,; s,fail "libcrypto",true,' \
 		${WRKSRC}/config.sh
+	${REINPLACE_CMD} -e 's|-liconv|${ICONV_LIB} -lcrypto -lncursesw|' \
+		${WRKSRC}/Makefile
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

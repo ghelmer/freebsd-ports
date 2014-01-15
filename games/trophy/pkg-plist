@@ -1,4 +1,5 @@
 bin/trophy
+man/man6/trophy.6.gz
 share/applications/trophy.desktop
 share/pixmaps/trophy.png
 %%DATADIR%%/cars/dust.tga
@@ -159,4 +160,3 @@ share/pixmaps/trophy.png
 @dirrm %%DATADIR%%/cars/flash2
 @dirrm %%DATADIR%%/cars
 @dirrm %%DATADIR%%
-@dirrmtry share/applications

@@ -92,6 +92,7 @@
     SUBDIR += gnu-unifont-ttf
     SUBDIR += gohufont
     SUBDIR += hanazono-fonts-ttf
+    SUBDIR += inconsolata-lgc-ttf
     SUBDIR += inconsolata-ttf
     SUBDIR += indic-ttf
     SUBDIR += intlfonts
@@ -136,6 +137,7 @@
     SUBDIR += profont
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
+    SUBDIR += py-bdflib
     SUBDIR += roboto-fonts-ttf
     SUBDIR += sgifonts
     SUBDIR += sharefonts

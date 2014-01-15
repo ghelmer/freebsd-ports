@@ -23,7 +23,6 @@ OPTIONS_DEFINE=	DVD
 OPTIONS_DEFAULT=DVD
 DVD_DESC=	Include DVD related plugins
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 # Audio plugins
@@ -44,9 +43,7 @@ USE_GSTREAMER1+=	a52dec dvdread resindvd dts
 .endif
 
 do-install:
-	if [ ! -d ${PREFIX}/${GST_DIR} ]; then \
-		${MKDIR} ${PREFIX}/${GST_DIR} ; \
-	fi
-	${TOUCH} -f ${PREFIX}/${GST_DIR}/.gstreamer-plugins-core.keep
+	${MKDIR} ${STAGEDIR}${PREFIX}/${GST_DIR}
+	${TOUCH} -f ${STAGEDIR}${PREFIX}/${GST_DIR}/.gstreamer-plugins-core.keep
 
 .include <bsd.port.mk>

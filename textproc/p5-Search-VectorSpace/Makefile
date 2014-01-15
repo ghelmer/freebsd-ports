@@ -3,7 +3,7 @@
 
 PORTNAME=	Search-VectorSpace
 PORTVERSION=	0.02
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -17,7 +17,5 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
-MAN3=		Search::VectorSpace.3
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

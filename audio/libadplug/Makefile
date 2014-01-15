@@ -15,7 +15,6 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	binio:${PORTSDIR}/devel/libbinio
 
 USES=		pkgconfig
-NO_STAGE=	yes
 USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -24,7 +23,6 @@ USE_CSTD=	gnu89
 CPPFLAGS+=	-I${LOCALBASE}/include
 
 INFO=		libadplug
-MAN1=		adplugdb.1
 
 post-patch:
 	@${REINPLACE_CMD} -E 's#<(binfile.h|binio.h|binstr.h)>#<libbinio/\1>#' \

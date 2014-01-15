@@ -71,6 +71,7 @@
     SUBDIR += p5-Convert-TNEF
     SUBDIR += p5-Convert-UU
     SUBDIR += p5-Convert-UUlib
+    SUBDIR += p5-Cpanel-JSON-XS
     SUBDIR += p5-Cstools
     SUBDIR += p5-Data-AMF
     SUBDIR += p5-Encode
@@ -87,7 +88,9 @@
     SUBDIR += p5-JSON
     SUBDIR += p5-JSON-Any
     SUBDIR += p5-JSON-DWIW
+    SUBDIR += p5-JSON-MaybeXS
     SUBDIR += p5-JSON-PP
+    SUBDIR += p5-JSON-Tiny
     SUBDIR += p5-JSON-XS
     SUBDIR += p5-JSON-XS-VersionOneAndTwo
     SUBDIR += p5-JSON1

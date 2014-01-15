@@ -111,7 +111,6 @@
     SUBDIR += digest
     SUBDIR += dirbuster
     SUBDIR += dirmngr
-    SUBDIR += dissembler
     SUBDIR += distcache
     SUBDIR += distcache-devel
     SUBDIR += dmitry
@@ -165,6 +164,7 @@
     SUBDIR += gnupg1
     SUBDIR += gnutls
     SUBDIR += gnutls-devel
+    SUBDIR += gnutls3
     SUBDIR += go.crypto
     SUBDIR += gorilla
     SUBDIR += gpa
@@ -239,6 +239,7 @@
     SUBDIR += kc
     SUBDIR += kedpm
     SUBDIR += keepassx
+    SUBDIR += keepassx2
     SUBDIR += keychain
     SUBDIR += keynote
     SUBDIR += keyprint
@@ -293,7 +294,6 @@
     SUBDIR += linux-f10-libtasn1
     SUBDIR += linux-f10-nss
     SUBDIR += linux-f10-openssl
-    SUBDIR += linux-pam-docs
     SUBDIR += lockdown
     SUBDIR += log2timeline
     SUBDIR += logcheck
@@ -305,6 +305,7 @@
     SUBDIR += mailzu
     SUBDIR += makepasswd
     SUBDIR += manipulate_data
+    SUBDIR += masscan
     SUBDIR += massh
     SUBDIR += matrixssl
     SUBDIR += mcrypt
@@ -474,12 +475,14 @@
     SUBDIR += p5-Crypt-PGPSimple
     SUBDIR += p5-Crypt-PassGen
     SUBDIR += p5-Crypt-PasswdMD5
+    SUBDIR += p5-Crypt-Password-Util
     SUBDIR += p5-Crypt-Primes
     SUBDIR += p5-Crypt-RC4
     SUBDIR += p5-Crypt-RC5
     SUBDIR += p5-Crypt-RC6
     SUBDIR += p5-Crypt-RIPEMD160
     SUBDIR += p5-Crypt-RSA
+    SUBDIR += p5-Crypt-RSA-Yandex
     SUBDIR += p5-Crypt-Rabbit
     SUBDIR += p5-Crypt-RandPasswd
     SUBDIR += p5-Crypt-Random
@@ -507,6 +510,7 @@
     SUBDIR += p5-Crypt-X509
     SUBDIR += p5-Crypt-xDBM_File
     SUBDIR += p5-CryptX
+    SUBDIR += p5-Dancer-Plugin-Auth-Extensible
     SUBDIR += p5-Dancer-Plugin-Passphrase
     SUBDIR += p5-Data-Entropy
     SUBDIR += p5-Data-Password
@@ -593,6 +597,7 @@
     SUBDIR += p5-Text-Password-Pronounceable
     SUBDIR += p5-Tie-EncryptedHash
     SUBDIR += p5-Tree-Authz
+    SUBDIR += p5-Unix-Passwd-File
     SUBDIR += p5-Yahoo-BBAuth
     SUBDIR += p5-dicewaregen
     SUBDIR += p5-openxpki
@@ -667,6 +672,7 @@
     SUBDIR += pecl-crack
     SUBDIR += pecl-gnupg
     SUBDIR += pecl-pam
+    SUBDIR += pecl-scrypt
     SUBDIR += pecl-ssh2
     SUBDIR += pecl-taint
     SUBDIR += pecl-tcpwrap
@@ -711,6 +717,7 @@
     SUBDIR += pkcs11-dump
     SUBDIR += pkcs11-gateway
     SUBDIR += pkcs11-helper
+    SUBDIR += pkesh
     SUBDIR += pks
     SUBDIR += pktsuckers
     SUBDIR += please
@@ -865,10 +872,15 @@
     SUBDIR += rubygem-net-ssh-gateway
     SUBDIR += rubygem-net-ssh-multi
     SUBDIR += rubygem-nmap-parser
+    SUBDIR += rubygem-omniauth
     SUBDIR += rubygem-origami
+    SUBDIR += rubygem-pyu-ruby-sasl
     SUBDIR += rubygem-razorback-scriptNugget
     SUBDIR += rubygem-rc4
     SUBDIR += rubygem-roauth
+    SUBDIR += rubygem-ruby-hmac
+    SUBDIR += rubygem-six
+    SUBDIR += rubygem-sshkit
     SUBDIR += rubygem-twitter_oauth
     SUBDIR += safesh
     SUBDIR += saint

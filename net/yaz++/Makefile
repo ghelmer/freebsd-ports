@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	yaz++
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.2
 CATEGORIES=	net
 MASTER_SITES=	http://ftp.indexdata.dk/pub/yazpp/
 DISTNAME=	yazpp-${PORTVERSION}
@@ -16,7 +16,4 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-shared --with-yaz=${LOCALBASE}/bin
 USE_LDCONFIG=	yes
 
-MAN1=		yazpp-config.1
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

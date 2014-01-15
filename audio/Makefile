@@ -232,7 +232,6 @@
     SUBDIR += gogglesmm
     SUBDIR += goobox
     SUBDIR += gqmpeg
-    SUBDIR += gqmpeg-devel
     SUBDIR += gqradio
     SUBDIR += gramofile
     SUBDIR += grip
@@ -344,6 +343,7 @@
     SUBDIR += kaudiocreator
     SUBDIR += kexis
     SUBDIR += kid3-kde4
+    SUBDIR += kid3-qt4
     SUBDIR += kio-audiocd
     SUBDIR += kmix
     SUBDIR += kscd

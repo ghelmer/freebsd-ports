@@ -30,8 +30,9 @@ STRIP=	#none
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-max-performance \
-					--disable-clpbn-bp
+			--disable-clpbn-bp
 USES=	gmake
+USE_GCC=	any
 
 EXTRACT_CMD=	${GZIP_CMD}
 EXTRACT_BEFORE_ARGS=	-dc

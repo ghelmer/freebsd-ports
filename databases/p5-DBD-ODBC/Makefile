@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DBD-ODBC
-PORTVERSION=	1.43
+PORTVERSION=	1.45
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MJEVANS
@@ -26,23 +26,22 @@ USES=		perl5
 USE_PERL5=	configure
 CONFIGURE_ARGS=	-o ${LOCALBASE}
 
-MAN3=		DBD::ODBC.3
 PORTDOCS=	Changes README README.adabas README.informix
 
-NO_STAGE=	yes
+IODBC_LIB_DEPENDS=	libiodbc.so:${PORTSDIR}/databases/libiodbc
+UNIXODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC
+
 .include <bsd.port.options.mk>
 
-.if empty(PORT_OPTIONS:MODBC)
+.if !${PORT_OPTIONS:MODBC}
 IGNORE=		an ODBC driver (iODBC or unixODBC) is required
 .endif
 
 .if ${PORT_OPTIONS:MIODBC}
-LIB_DEPENDS+=	iodbc:${PORTSDIR}/databases/libiodbc
 MYODBC=		iodbc
 .endif
 
 .if ${PORT_OPTIONS:MUNIXODBC}
-LIB_DEPENDS+=	odbc:${PORTSDIR}/databases/unixODBC
 MYODBC=		unixodbc
 .endif
 
@@ -60,8 +59,8 @@ post-configure:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}/
-	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR}/
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/
+	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 	@${ECHO_MSG} "===> Documentation installed in ${DOCSDIR}."
 .endif
 

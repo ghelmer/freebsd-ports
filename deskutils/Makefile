@@ -14,7 +14,6 @@
     SUBDIR += basket
     SUBDIR += bigyear
     SUBDIR += bitcollider
-    SUBDIR += blogtk
     SUBDIR += bmp-docklet
     SUBDIR += cairo-dock
     SUBDIR += cairo-dock-plugins
@@ -76,7 +75,6 @@
     SUBDIR += gnotime
     SUBDIR += gnustep-notebook
     SUBDIR += gnustep-wrapper
-    SUBDIR += google-gadgets
     SUBDIR += gourmet
     SUBDIR += griffith
     SUBDIR += growl-for-linux
@@ -119,6 +117,7 @@
     SUBDIR += kdeplasma-addons
     SUBDIR += kruler
     SUBDIR += ksshaskpass
+    SUBDIR += kupfer
     SUBDIR += labyrinth
     SUBDIR += launchy
     SUBDIR += libgcal

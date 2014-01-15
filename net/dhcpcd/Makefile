@@ -2,20 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	dhcpcd
-PORTVERSION=	3.2.3
+PORTVERSION=	5.5.6
+PORTREVISION=	2
 CATEGORIES=	net
-MASTER_SITES=	http://roy.marples.name/dhcpcd/ \
-		http://critical.ch/distfiles/ \
-		http://energy.critical.ch/distfiles/
+MASTER_SITES=	http://roy.marples.name/downloads/dhcpcd/ \
+		LOCAL/delphij
 
 MAINTAINER=	roy@marples.name
 COMMENT=	DHCP client
 
+GNU_CONFIGURE=	yes
 USE_BZIP2=	yes
 USE_RC_SUBR=	dhcpcd
 
-MAN8=		dhcpcd.8
-PLIST_FILES=	sbin/dhcpcd
-
 NO_STAGE=	yes
+
+CONFIGURE_ARGS+= --mandir=${PREFIX}/man
+
+MAN5=		dhcpcd.conf.5
+MAN8=		dhcpcd.8 dhcpcd-run-hooks.8
+
 .include <bsd.port.mk>

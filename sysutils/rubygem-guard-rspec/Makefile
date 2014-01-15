@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	guard-rspec
-PORTVERSION=	4.0.2
+PORTVERSION=	4.0.4
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
@@ -11,10 +11,9 @@ COMMENT=	Guard::RSpec automatically run your specs (much like autotest)
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-guard>=2:${PORTSDIR}/sysutils/rubygem-guard \
+RUN_DEPENDS=	rubygem-guard>=2.1.1:${PORTSDIR}/sysutils/rubygem-guard \
 		rubygem-rspec>=2.14:${PORTSDIR}/devel/rubygem-rspec
 
-NO_STAGE=	yes
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes

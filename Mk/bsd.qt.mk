@@ -95,9 +95,9 @@ QT_INCDIR_REL=	include/qt4
 QT_LIBDIR_REL=	lib/qt4
 QT_PLUGINDIR_REL=	lib/qt4/plugins
 
-PLIST_SUB+=	QT_INCDIR_REL=${QT_INCDIR_REL} \
-		QT_LIBDIR_REL=${QT_LIBDIR_REL} \
-		QT_PLUGINDIR_REL=${QT_PLUGINDIR_REL}
+PLIST_SUB+=	QT_INCDIR=${QT_INCDIR_REL} \
+		QT_LIBDIR=${QT_LIBDIR_REL} \
+		QT_PLUGINDIR=${QT_PLUGINDIR_REL}
 
 QT_PREFIX?=	${LOCALBASE}
 QT_INCDIR?=	${QT_PREFIX}/${QT_INCDIR_REL}
@@ -337,6 +337,9 @@ QMAKESPEC?=	${QT_PREFIX}/share/qt4/mkspecs/freebsd-${QMAKE_COMPILER}
 .else
 # If something went wrong, default to the base configuration.
 QMAKESPEC?=	${QT_PREFIX}/share/qt4/mkspecs/freebsd-${QMAKE_BASE_COMPILER}
+QMAKE_ARGS+=	QMAKE_CC="${CC}" QMAKE_CXX="${CXX}" \
+		QMAKE_LINK="${CXX}" QMAKE_LINK_SHLIB="${CXX}" \
+		QMAKE_LINK_C="${CC}" QMAKE_LINK_C_SHLIB="${CC}"
 .endif
 
 .for component in ${_USE_QT4_ALL}

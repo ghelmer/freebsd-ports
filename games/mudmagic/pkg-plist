@@ -1,5 +1,6 @@
 bin/mudmagic
 bin/mudmagic-bin
+man/man1/mudmagic.1.gz
 lib/libmudmagic.a
 lib/libmudmagic.la
 lib/libmudmagic.so
@@ -113,6 +114,5 @@ share/pixmaps/mudmagic.png
 @dirrm %%DATADIR%%/doc/grafix
 @dirrm %%DATADIR%%/doc
 @dirrm %%DATADIR%%
-@dirrmtry share/applications
 @dirrm lib/mudmagic/libs
 @dirrm lib/mudmagic

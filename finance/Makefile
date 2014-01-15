@@ -93,6 +93,7 @@
     SUBDIR += pear_Payment_DTA
     SUBDIR += php-tclink
     SUBDIR += prestashop
+    SUBDIR += py-stripe
     SUBDIR += py-vatnumber
     SUBDIR += qhacc
     SUBDIR += quantlib
@@ -160,6 +161,7 @@
     SUBDIR += trytond_stock_supply_forecast
     SUBDIR += trytond_stock_supply_production
     SUBDIR += trytond_timesheet
+    SUBDIR += vanitygen
     SUBDIR += venice
     SUBDIR += weberp
     SUBDIR += wmstock

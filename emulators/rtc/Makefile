@@ -4,7 +4,7 @@
 PORTNAME=	rtc
 PORTVERSION=	2004.02.24.1
 PORTREVISION=	8
-CATEGORIES=	emulators linux kld
+CATEGORIES=	emulators linux
 MASTER_SITES=	# none
 DISTFILES=	# none
 
@@ -13,7 +13,6 @@ COMMENT=	Kernel module which provides /dev/rtc device support
 
 WRKSRC=		${WRKDIR}/files
 
-SSP_UNSAFE=	kernel module does not support ssp
 NO_FETCH=	yes
 USE_LINUX=	yes	# because of ${DEVDIR}
 
@@ -27,14 +26,7 @@ MAKE_ARGS=	KMODDIR="${KMODDIR}" CDEV_MAJOR="${CDEV_MAJOR}"
 PLIST_SUB=	DEVDIR="${DEVDIR}" CDEV_MAJOR="${CDEV_MAJOR}" \
 		RTC_H_DIR="${RTC_H_DIR}"
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-SRC_BASE?=	/usr/src
-
-.if !exists(${SRC_BASE}/sys/Makefile)
-IGNORE=		needs kernel source files
-.endif
+USES=		kmod
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
@@ -42,14 +34,11 @@ do-extract:
 		${FILESDIR}/${STARTUP} > ${WRKDIR}/${STARTUP}
 	@cd ${FILESDIR} && ${CP} Makefile *.[ch] ${WRKSRC}/
 
-pre-install:
-	${MKDIR} ${KMODDIR}
-
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/rtc.h ${PREFIX}/include/
-	${MKDIR} ${PREFIX}/share/examples/rtc
-	${INSTALL_DATA} ${WRKSRC}/test.c ${PREFIX}/share/examples/rtc/
+	${INSTALL_DATA} ${WRKSRC}/rtc.h ${STAGEDIR}${PREFIX}/include
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/test.c ${STAGEDIR}${EXAMPLESDIR}
 	@${ECHO} "Installing ${PREFIX}/etc/rc.d/${STARTUP} startup file.";
-	${INSTALL_SCRIPT} ${WRKDIR}/${STARTUP} ${PREFIX}/etc/rc.d/
+	${INSTALL_SCRIPT} ${WRKDIR}/${STARTUP} ${STAGEDIR}${PREFIX}/etc/rc.d
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

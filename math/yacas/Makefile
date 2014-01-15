@@ -13,15 +13,12 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	TESTS DOCS
-OPTIONS_DEFAULT=	TESTS
+OPTIONS_DEFAULT=TESTS
 TESTS_DESC=	Run bundled self-tests after build
 
-USES=		gmake perl5
-USE_PERL5=	build
-#USE_AUTOTOOLS=	libtool
+USES=		gmake
 GNU_CONFIGURE=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "sparc64"
@@ -29,10 +26,12 @@ BROKEN=		Does not compile with GCC 4.2
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
-CONFIGURE_ARGS+=	--enable-html-doc --with-html-dir=${DOCSDIR}
+CONFIGURE_ARGS+=--enable-html-doc --with-html-dir=${DOCSDIR}
 PORTDOCS=	*
+USES+=		perl5                                                                                                                                                                   
+USE_PERL5=	build 
 .else
-CONFIGURE_ARGS+=	--disable-html-doc
+CONFIGURE_ARGS+=--disable-html-doc
 .endif
 
 .if ${PORT_OPTIONS:MTESTS}

@@ -218,9 +218,9 @@ lib/libgphoto2_port/%%VERSION_PORT%%/ptpip.so
 lib/libgphoto2_port/%%VERSION_PORT%%/serial.a
 lib/libgphoto2_port/%%VERSION_PORT%%/serial.la
 lib/libgphoto2_port/%%VERSION_PORT%%/serial.so
-lib/libgphoto2_port/%%VERSION_PORT%%/usb.a
-lib/libgphoto2_port/%%VERSION_PORT%%/usb.la
-lib/libgphoto2_port/%%VERSION_PORT%%/usb.so
+lib/libgphoto2_port/%%VERSION_PORT%%/usb1.a
+lib/libgphoto2_port/%%VERSION_PORT%%/usb1.la
+lib/libgphoto2_port/%%VERSION_PORT%%/usb1.so
 lib/libgphoto2_port/%%VERSION_PORT%%/usbdiskdirect.a
 lib/libgphoto2_port/%%VERSION_PORT%%/usbdiskdirect.la
 lib/libgphoto2_port/%%VERSION_PORT%%/usbdiskdirect.so
@@ -237,6 +237,8 @@ lib/libgphoto2_port.so
 lib/libgphoto2_port.so.0
 libdata/pkgconfig/libgphoto2.pc
 libdata/pkgconfig/libgphoto2_port.pc
+man/man3/libgphoto2.3.gz
+man/man3/libgphoto2_port.3.gz
 share/doc/libgphoto2/ABOUT-NLS
 share/doc/libgphoto2/AUTHORS
 share/doc/libgphoto2/ChangeLog

@@ -3,7 +3,7 @@
 
 PORTNAME=	grass
 PORTVERSION=	6.4.2
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	2
 CATEGORIES=	databases geography
 MASTER_SITES=	http://grass.osgeo.org/%SUBDIR%/ \
@@ -36,8 +36,6 @@ RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 USES=		gettext gmake iconv readline perl5 tk
 USE_XORG=	sm ice xi x11 xt xmu xext
 USE_GL=		glut
-USE_TCL=	yes
-USE_TCL_BUILD=	yes
 USE_PYTHON=	yes
 USE_WX=		2.8
 WX_COMPS=	wx:build python:run

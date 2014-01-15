@@ -2,6 +2,7 @@
 
 PORTNAME=	comfortaa-ttf
 PORTVERSION=	2.004
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://openfontlibrary.org/assets/downloads/comfortaa/38318a69b56162733bf82bc0170b7521/
 DISTNAME=	comfortaa
@@ -9,10 +10,7 @@ DISTNAME=	comfortaa
 MAINTAINER=	rakuco@FreeBSD.org
 COMMENT=	Stylish, modern and free sans-serif true type font
 
-LICENSE=	OFL
-LICENSE_NAME=	SIL OPEN FONT LICENSE Version 1.1
-LICENSE_FILE=	${WRKSRC}/OFL.txt
-LICENSE_PERMS=	${_LICENSE_PERMS_DEFAULT}
+LICENSE=	OFL11
 
 BUILD_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
 		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale

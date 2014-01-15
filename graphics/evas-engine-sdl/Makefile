@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	engine-sdl
-PORTVERSION=	1.7.8
+PORTVERSION=	1.7.9
 CATEGORIES=	graphics enlightenment
-MASTER_SITES=	http://download.enlightenment.fr/releases/ \
+MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
 PKGNAMEPREFIX=	evas-
 DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}

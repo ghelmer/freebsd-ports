@@ -3,7 +3,7 @@
 
 PORTNAME=	gxine
 PORTVERSION=	0.5.907
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/xine/${PORTNAME}/${PORTVERSION}
 
@@ -11,6 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	An alternative GUI for the Xine media player
 
 LICENSE=	GPLv2
+
+BROKEN=		Does not build with recent libxul
 
 LIB_DEPENDS=	nspr4.1:${PORTSDIR}/devel/nspr \
 		xine.2:${PORTSDIR}/multimedia/libxine

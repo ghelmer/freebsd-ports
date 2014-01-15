@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ExtUtils-MakeMaker
-PORTVERSION=	6.80
+PORTVERSION=	6.82
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,6 +12,9 @@ COMMENT=	Designed to write a Makefile for an extension module
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
+
+BUILD_DEPENDS=	p5-JSON-PP>=2.27203:${PORTSDIR}/converters/p5-JSON-PP
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
@@ -41,5 +44,6 @@ post-patch:
 	@${RM} -fr ${WRKSRC}/bundled/
 	@[ -e ${LOCALBASE}/lib/perl5/${PERL_VER}/mach/CORE/cc_runtime.h ] || \
 		${SED} -i '' -e '/cc_runtime.h/d' ${WRKSRC}/lib/ExtUtils/MM_Unix.pm
+	@${RM} ${WRKSRC}/lib/ExtUtils/MM_Unix.pm.orig
 
 .include <bsd.port.post.mk>

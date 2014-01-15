@@ -10,6 +10,8 @@ EXTRACT_ONLY=
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Twitter script to irssi
 
+LICENSE=	GPLv2
+
 RUN_DEPENDS=	p5-Net-Twitter>=0:${PORTSDIR}/net/p5-Net-Twitter \
 		p5-WWW-Shorten>=0:${PORTSDIR}/www/p5-WWW-Shorten \
 		p5-WWW-Shorten-Bitly>=0:${PORTSDIR}/www/p5-WWW-Shorten-Bitly
@@ -20,7 +22,6 @@ OPTIONS_DEFAULT=PROD
 PROD_DESC=	Use production irc/irssi port
 DEVEL_DESC=	Use development irc/irssi-devel port
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MPROD}
@@ -43,8 +44,7 @@ post-extract:
 		${WRKSRC}/${PORTNAME}.pl
 
 do-install:
-	@${MKDIR} ${DATADIR}
-	@${INSTALL_SCRIPT} -v ${WRKSRC}/${PORTNAME}.pl ${DATADIR}
-	@${CAT} ${PKGMESSAGE}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	@${INSTALL_SCRIPT} -v ${WRKSRC}/${PORTNAME}.pl ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.post.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	apvlv
 PORTVERSION=	0.1.4
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://cloud.github.com/downloads/naihe2010/apvlv/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-Source
@@ -21,6 +22,8 @@ CMAKE_ARGS+=	-DSYSCONFDIR=${PREFIX}/etc \
 		-DDOCDIR=${DOCSDIR} \
 		-DAPVLV_WITH_UMD=OFF \
 		-DAPVLV_WITH_TXT=ON
+CFLAGS+=	-pthread
+LDFLAGS+=	-pthread
 
 OPTIONS_DEFINE=	DJVU WEBKIT
 

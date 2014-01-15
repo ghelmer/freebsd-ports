@@ -53,7 +53,6 @@
     SUBDIR += dmd
     SUBDIR += dmd2
     SUBDIR += dragonegg-devel46
-    SUBDIR += dragonegg46
     SUBDIR += dragonegg46-33
     SUBDIR += dragonegg47-33
     SUBDIR += ecl
@@ -155,7 +154,6 @@
     SUBDIR += logo
     SUBDIR += lua
     SUBDIR += lua-mode.el
-    SUBDIR += lua4
     SUBDIR += lua50
     SUBDIR += lua52
     SUBDIR += luajit
@@ -186,10 +184,11 @@
     SUBDIR += newlisp-devel
     SUBDIR += nhc98
     SUBDIR += nickle
+    SUBDIR += nimrod
     SUBDIR += nml
     SUBDIR += nqc
     SUBDIR += nwcc
-    SUBDIR += objc
+    SUBDIR += nx
     SUBDIR += ocaml
     SUBDIR += ocaml-autoconf
     SUBDIR += ocaml-camlidl
@@ -303,7 +302,6 @@
     SUBDIR += ruby-programmingruby
     SUBDIR += ruby-reference
     SUBDIR += ruby-usersguide
-    SUBDIR += ruby18
     SUBDIR += ruby19
     SUBDIR += ruby20
     SUBDIR += runawk
@@ -361,7 +359,6 @@
     SUBDIR += tolua
     SUBDIR += tolua++
     SUBDIR += tolua++50
-    SUBDIR += tolua4
     SUBDIR += tolua50
     SUBDIR += treecc
     SUBDIR += tuareg-mode.el

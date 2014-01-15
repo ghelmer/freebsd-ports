@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tdiary
-PORTVERSION=	4.0.0
-PORTREVISION=	1
+PORTVERSION=	4.0.1
 CATEGORIES?=	www ruby
 MASTER_SITES=	http://www.tdiary.org/download/
 DISTNAME=	${PORTNAME}-full-v${PORTVERSION}
@@ -37,8 +36,8 @@ DOCFILES=	HOWTO-authenticate-in-rack HOWTO-make-io \
 		HOWTO-make-plugin HOWTO-make-theme \
 		HOWTO-testing-tDiary HOWTO-use-plugin \
 		HOWTO-write-tDiary.en HOWTO-write-tDiary \
-		INSTALL-cgi INSTALL-paas INSTALL-rack INSTALL \
-		README.en README UPGRADE
+		INSTALL-paas INSTALL README.en \
+		README UPGRADE
 HTML=	${DOCFILES:S/$/.html/}
 MD=	${DOCFILES:S/$/.md/}
 PORTDOCS=	ChangeLog doc.css ${HTML} ${MD}
@@ -64,12 +63,6 @@ OPTIONS_DEFINE=	DOCS
 .include <bsd.port.pre.mk>
 
 .if ${RUBY_VER} == 1.9
-.if !defined(RUBY_PROVIDED)
-IGNORE=	requires Ruby 1.9.3 or later
-.endif
-.endif
-
-.if ${RUBY_VER} == 1.8
 .if !defined(RUBY_PROVIDED)
 IGNORE=	requires Ruby 1.9.3 or later
 .endif
@@ -107,7 +100,6 @@ do-install:
 	@${INSTALL_SCRIPT} ${WRKDIR}/${TDIARY_SCRIPT} ${STAGEDIR}${PREFIX}/bin
 	@-${MKDIR} ${STAGEDIR}${WWWDIR}
 	@${TAR} --exclude "doc" -C ${WRKSRC} -cf - . | ${TAR} --unlink -C ${STAGEDIR}${WWWDIR} -xf -
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
 
 post-install:
 	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} ${WWWDIR}' >> ${TMPPLIST}

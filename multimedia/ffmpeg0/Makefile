@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ffmpeg
-PORTVERSION=	0.7.15
-PORTREVISION=	2
+PORTVERSION=	0.7.16
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -275,7 +274,7 @@ CONFIGURE_ARGS+=	--disable-libopenjpeg
 
 # rtmp
 .if ${PORT_OPTIONS:MRTMP}
-LIB_DEPENDS+=	librtmp.so:${PORTSDIR}/multimedia/rtmpdump
+LIB_DEPENDS+=	librtmp.so:${PORTSDIR}/multimedia/librtmp
 CONFIGURE_ARGS+=	--enable-librtmp
 . if ${OPENSSLBASE} != "/usr"
 FFMPEG_CFLAGS+=		-I${OPENSSLINC}

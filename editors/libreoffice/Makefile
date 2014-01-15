@@ -1,9 +1,8 @@
 # $FreeBSD$
 
-NO_STAGE=	yes
 .include "${.CURDIR}/Makefile.common"
 
-PORTREVISION=	0
+PORTREVISION=	1
 
 COMMENT=	Full integrated office productivity suite
 
@@ -68,7 +67,7 @@ USE_PYTHON=	yes
 USE_QT4=	# empty but required
 USE_XORG=	xaw xrandr
 USE_XZ=		yes
-USES=		bison gmake perl5 pkgconfig
+USES=		bison compiler:c++11-lang gmake perl5 pkgconfig
 WANT_GNOME=	yes
 
 DISTFILES+=	${PORTNAME}-${LOVERSION}${EXTRACT_SUFX}
@@ -159,22 +158,8 @@ CONFIGURE_ARGS+=	--disable-epm \
 			--without-myspell-dicts \
 			--without-system-mozilla
 
-MAN1=	libreoffice.1 \
-	lobase.1 \
-	localc.1 \
-	lodraw.1 \
-	loffice.1 \
-	lofromtemplate.1 \
-	loimpress.1 \
-	lomath.1 \
-	loweb.1 \
-	lowriter.1 \
-	unopkg.1
-
-MANCOMPRESSED=	yes
-
 OPTIONS_DEFINE=	CUPS DEBUG GNOME GTK2 GTK3 JAVA KDE4 MMEDIA PGSQL SDK \
-		SYSTRAY TEST WEBDAV
+		SYSTRAY TEST VERBOSE WEBDAV
 OPTIONS_DEFAULT=CUPS GTK2
 
 JAVA_DESC=	Add java support (XML Filters, macros)
@@ -183,6 +168,7 @@ PGSQL_DESC=	Build with PostgreSQL-SDBC driver
 SDK_DESC=	Build with SDK
 SYSTRAY_DESC=	Enable systemtray quickstarter
 TEST_DESC=	Run all regression tests
+VERBOSE_DESC=	Increase build verbosity
 WEBDAV_DESC=	Enable webdav protocol
 
 .include <bsd.port.options.mk>
@@ -198,10 +184,15 @@ CONFIGURE_ARGS+=	--disable-cups
 IGNORE=			known as broken
 CONFIGURE_ARGS+=	--enable-debug \
 			--enable-dbgutil \
-			--enable-verbose \
 			--enable-crashdump
 .else
 CONFIGURE_ARGS+=	--enable-release-build
+.endif
+
+.if ${PORT_OPTIONS:MDEBUG} || ${PORT_OPTIONS:MVERBOSE}
+CONFIGURE_ARGS+=	--enable-verbose
+.else
+CONFIGURE_ARGS+=	--disable-verbose
 .endif
 
 .if ${PORT_OPTIONS:MGNOME}
@@ -335,27 +326,13 @@ CONFIGURE_ARGS+=	--disable-neon
 
 .include <bsd.port.pre.mk>
 
-.if defined(WITH_GCC)
-USE_GCC=	yes
-CONFIGURE_ENV+=	CXXCPP="${CPP}"
-.else
-.if exists(/usr/bin/clang) && ${OSVERSION} > 901502
-CC=		/usr/bin/clang
-CPP=		/usr/bin/clang-cpp
-CXX=		/usr/bin/clang++
-CONFIGURE_ENV+=	CXXCPP="${CPP}"
-.if ${OSVERSION} > 100054
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-libc++
-.endif
-.else
-# XXX Clang PR13308 (http://llvm.org/bugs/show_bug.cgi?id=13308)
-BUILD_DEPENDS+=	clang>=3.2_4:${PORTSDIR}/lang/clang
+.if ${CXX:M${LOCALBASE}/bin/clang++*}
 USE_BINUTILS=	yes
-CC=		${LOCALBASE}/bin/clang
-CPP=		${CC} -E
-CXX=		${LOCALBASE}/bin/clang++
-CONFIGURE_ENV+=	CXXCPP="${CXX} -E"
+LDFLAGS=	-B${LOCALBASE}/bin
 .endif
+
+.if ${COMPILER_FEATURES:Mlibc++}
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-libc++
 .endif
 
 .if ${OSVERSION} < 900506
@@ -364,9 +341,9 @@ CONFIGURE_ARGS+=	--with-linker-hash-style=sysv
 
 ACLOCAL_ARGS=	-I "${WRKSRC}/m4"
 CPPFLAGS=	-I${LOCALBASE}/include
-LDFLAGS=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib
 
-MAKE_ENV+=	ENVCFLAGS="${CFLAGS}" ENVCXXFLAGS="${CXXFLAGS}"
+MAKE_ENV+=	ENVCFLAGS="${CFLAGS}" ENVCFLAGSCXX="${CXXFLAGS}"
 MAKE_ENV+=	ENVLINKFLAGS="${LDFLAGS}"
 MAKE_ENV+=	LANG=C LC_ALL=C
 MAKE_ENV+=	SED="${LOCALBASE}/bin/gsed" USE_GMAKE=1
@@ -377,41 +354,43 @@ pre-configure:
 post-configure:
 	@${TOUCH} ${WRKSRC}/src.downloaded
 
+do-build:
+	@cd ${WRKSRC} && ${SETENV} DESTDIR="" ${MAKE_ENV} ${GMAKE}
+
 do-install:
 	@cd ${WRKSRC} && ${SETENV} DESTDIR="${LODESTDIR}" \
 	    ${GMAKE} distro-pack-install
 
-post-install:
 	@${RM} -f ${PLISTF} ${PLISTD}
 	# It seems that the empty directories are necessary for libreoffice keep them for now
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -d lib/libreoffice -type d \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -d lib/libreoffice -type d \
 	    -empty -exec ${ECHO_CMD} "@exec ${MKDIR} %D/{}" \; >> ${PLISTD}
 
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -H -s bin lib \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -H -s bin lib man \
 	    \( -type f -o -type l \) -print >> ${PLISTF}
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -d lib/libreoffice -type d \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -d lib/libreoffice -type d \
 	    -exec ${ECHO_CMD} "@dirrm {}" \; >> ${PLISTD}
 
 	@${ECHO_CMD} etc/bash_completion.d/libreoffice.sh >> ${PLISTF}
 	@${ECHO_CMD} "@dirrmtry etc/bash_completion.d" >> ${PLISTD}
 
 .for subdir in applications icons mime mimelnk
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -H -s share/${subdir} \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -H -s share/${subdir} \
 	    \( -type f -o -type l \) -print >> ${PLISTF}
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -d share/${subdir} -type d \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -d share/${subdir} -type d \
 	    -exec ${ECHO_CMD} "@dirrmtry {}" \; >> ${PLISTD}
 .endfor
 # do not add the subdir itself as dirrmtry
 .for subdir in application-registry mime-info
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -H -s share/${subdir} \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -H -s share/${subdir} \
 	    \( -type f -o -type l \) -print >> ${PLISTF}
 .endfor
 
 .if ${PORT_OPTIONS:MSDK}
 .for subdir in include share share/doc share/idl
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -H -s ${subdir}/libreoffice \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -H -s ${subdir}/libreoffice \
 	    \( -type f -o -type l \) -print >> ${PLISTF}
-	@cd ${LODESTDIR}/${PREFIX} && ${FIND} -d ${subdir}/libreoffice \
+	@cd ${LODESTDIR}${PREFIX} && ${FIND} -d ${subdir}/libreoffice \
 	    -type d -exec echo "@dirrm {}" \; >> ${PLISTD}
 .endfor
 	@${ECHO_CMD} "@dirrmtry share/idl" >> ${PLISTD}
@@ -423,9 +402,9 @@ post-install:
 	@${GREP} '^@dirrmtry ' ${PLISTD} | ${SORT} -ru | \
 	    ${SED} -e '${PLIST_REINPLACE_DIRRMTRY}' >> ${TMPPLIST}
 
-	@cd ${LODESTDIR}/${PREFIX} ; ${PAX} -rw . ${PREFIX}
-	@${MKDIR} ${PREFIX}/etc/bash_completion.d
+	@cd ${LODESTDIR}${PREFIX} ; ${PAX} -rw . ${STAGEDIR}${PREFIX}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	@${INSTALL_SCRIPT} ${LODESTDIR}/etc/bash_completion.d/libreoffice.sh \
-	    ${PREFIX}/etc/bash_completion.d
+	    ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 
 .include <bsd.port.post.mk>

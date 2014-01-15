@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xmlrpc-c
-PORTVERSION=	1.33.2
-PORTREVISION=	1
+PORTVERSION=	1.36.0
 CATEGORIES=	net
 MASTER_SITES=	LOCAL/garga/xmlrpc-c
 PKGNAMESUFFIX=	-devel
@@ -22,39 +21,24 @@ CPLUSPLUS_DESC=	 Build xmlrpc-c c++ libs and tools
 CONFLICTS=	xmlrpc-epi-0.* xmlrpc-c-[0-9]*
 
 USES=		gmake
+OPTIONS_SUB=	yes
 USE_XZ=		yes
 GNU_CONFIGURE=	yes
 MAKEFILE=	GNUmakefile
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
+CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+CURL_CONFIGURE_ENABLE=	curl-client
+LIBWWW_LIB_DEPENDS=	libwwwcore.so:${PORTSDIR}/www/libwww
+LIBWWW_CONFIGURE_ENABLE=libwww-client
+LIBWWW_CONFIGURE_WITH=	libwww-ssl
+CPLUSPLUS_CONFIGURE_ENABLE=	cplusplus
+
 .include <bsd.port.pre.mk>
 
 .if empty(PORT_OPTIONS:MDEBUG)
 CFLAGS+=	-DNDEBUG
-.endif
-
-.if ${PORT_OPTIONS:MCURL}
-LIB_DEPENDS+=	curl:${PORTSDIR}/ftp/curl
-CONFIGURE_ARGS+=	--enable-curl-client
-.else
-CONFIGURE_ARGS+=	--disable-curl-client
-.endif
-
-.if ${PORT_OPTIONS:MLIBWWW}
-LIB_DEPENDS+=	wwwcore:${PORTSDIR}/www/libwww
-CONFIGURE_ARGS+=	--enable-libwww-client --with-libwww-ssl
-.else
-CONFIGURE_ARGS+=	--disable-libwww-client
-.endif
-
-.if ${PORT_OPTIONS:MCPLUSPLUS}
-CONFIGURE_ARGS+=	--enable-cplusplus
-PLIST_SUB+=	CPLUSPLUS=""
-.else
-CONFIGURE_ARGS+=	--disable-cplusplus
-PLIST_SUB+=	CPLUSPLUS="@comment "
 .endif
 
 .if empty(PORT_OPTIONS:MLIBWWW) && empty(PORT_OPTIONS:MCURL)

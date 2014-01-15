@@ -20,5 +20,6 @@ RUBYGEM_AUTOPLIST=yes
 
 PLIST_FILES=	bin/sequel
 
-NO_STAGE=	yes
+PKGNAMESUFFIX=	3
+
 .include <bsd.port.mk>

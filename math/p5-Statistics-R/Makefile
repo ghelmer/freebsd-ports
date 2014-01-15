@@ -3,7 +3,7 @@
 
 PORTNAME=	Statistics-R
 PORTVERSION=	0.31
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:FANGLY
@@ -20,9 +20,4 @@ RUN_DEPENDS=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R \
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		Statistics::R::Legacy.3 \
-		Statistics::R::Win32.3 \
-		Statistics::R.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

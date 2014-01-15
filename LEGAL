@@ -102,6 +102,7 @@ festlex-ogi		audio/festlex-ogi	No commercial use
 fmsx*/*			emulators/fmsx		Unclear legal status of distributed ROMs
 foiltex*		textproc/foiltex	Redistribution on a not-for-profit basis only
 fp-freebsd-ws-*		security/f-prot		Free for personal use only
+fuse-emulator-roms* Opus-22.rom	emulators/fuse-roms	No explicit permission to redistribute
 freefonts-*		x11-fonts/freefonts	Some of the fonts are shareware.  Some are freeware.  Permission must be obtained before distributing at least four (mazama.license, muriel.license, roosthea.license, shf_____.license).  Two have inconsistent licenses (tempofon.license and tempoita.license say "placed into the public domain and may [not be] sold")
 freqship/*		sysutils/freqsdwn	License agreement is required to download
 fretsonfire/FretsOnFire-*-linux* games/fretsonfire-data	Only Unreal Voodoo site is allowed to distribute the music
@@ -293,7 +294,6 @@ xmdiary-*		deskutils/xmdiary	Do not sell for profit
 xrisk-*			games/xrisk		Possible copyright/trademark violation
 xtr1.50e*		japanese/xtr		Need to obtain permission for commercial redistribution
 xtris-*.tar.gz		games/xtris		Possible trademark infringement
-xxe-*.tar.gz		editors/xxe		Redistribution forbidden by license
 xzx-pro-*.tar.gz	emulators/xzx		Redistribution forbidden by license
 yasou-fpw*		japanese/yasou-fpw	No commercial use, and no redistribution allowed with fee except media and/or shipping cost
 yEd*			graphics/yed		Must acknowledge license

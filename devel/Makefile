@@ -6,7 +6,6 @@
     SUBDIR += 9base
     SUBDIR += ChipmunkPhysics
     SUBDIR += ElectricFence
-    SUBDIR += ORBit
     SUBDIR += ORBit2
     SUBDIR += ORBit2-reference
     SUBDIR += R-cran-Defaults
@@ -273,6 +272,7 @@
     SUBDIR += cproto
     SUBDIR += cpuflags
     SUBDIR += creduce
+    SUBDIR += critcl
     SUBDIR += cross-binutils
     SUBDIR += cross-gcc
     SUBDIR += cross-gdb
@@ -410,6 +410,7 @@
     SUBDIR += eris
     SUBDIR += esdl
     SUBDIR += etcd
+    SUBDIR += etcdctl
     SUBDIR += etl
     SUBDIR += eventxx
     SUBDIR += evolution-gconf-tools
@@ -491,7 +492,6 @@
     SUBDIR += gccmakedep
     SUBDIR += gconf2
     SUBDIR += gconf2-reference
-    SUBDIR += gconfmm
     SUBDIR += gconfmm26
     SUBDIR += gcvs
     SUBDIR += gdb
@@ -589,7 +589,6 @@
     SUBDIR += gobject-introspection
     SUBDIR += goffice
     SUBDIR += goffice010
-    SUBDIR += gonzui
     SUBDIR += google-gdata
     SUBDIR += google-perftools
     SUBDIR += google-sparsehash
@@ -907,7 +906,6 @@
     SUBDIR += kdevelop-php-docs
     SUBDIR += kdevplatform
     SUBDIR += kimwitu
-    SUBDIR += klee
     SUBDIR += kyra
     SUBDIR += kyua
     SUBDIR += kyua-atf-compat
@@ -920,8 +918,6 @@
     SUBDIR += lfcxml
     SUBDIR += libIDL
     SUBDIR += libPropList
-    SUBDIR += libXGP
-    SUBDIR += libYGP
     SUBDIR += libafterbase
     SUBDIR += libarena
     SUBDIR += libassa
@@ -1005,7 +1001,6 @@
     SUBDIR += libglade-java
     SUBDIR += libglade2
     SUBDIR += libglade2-reference
-    SUBDIR += libglademm
     SUBDIR += libglademm24
     SUBDIR += libgpc
     SUBDIR += libgsf
@@ -1243,9 +1238,6 @@
     SUBDIR += mono-tools
     SUBDIR += monodevelop
     SUBDIR += monodevelop-database
-    SUBDIR += monodevelop-java
-    SUBDIR += monodevelop-python
-    SUBDIR += monodevelop-vala
     SUBDIR += monotone
     SUBDIR += monotone-viz
     SUBDIR += motor
@@ -1392,6 +1384,7 @@
     SUBDIR += p5-Algorithm-Permute
     SUBDIR += p5-Algorithm-SVM
     SUBDIR += p5-Alias
+    SUBDIR += p5-Alien-SDL
     SUBDIR += p5-Alzabo
     SUBDIR += p5-Alzabo-GUI-Mason
     SUBDIR += p5-Any-Moose
@@ -1419,6 +1412,7 @@
     SUBDIR += p5-App-Cache
     SUBDIR += p5-App-Cmd
     SUBDIR += p5-App-Control
+    SUBDIR += p5-App-FatPacker
     SUBDIR += p5-App-GitGot
     SUBDIR += p5-App-GitHub
     SUBDIR += p5-App-Info
@@ -1486,6 +1480,7 @@
     SUBDIR += p5-CPAN-Reporter
     SUBDIR += p5-CPAN-Reporter-Smoker
     SUBDIR += p5-CPAN-SQLite
+    SUBDIR += p5-CPAN-Site
     SUBDIR += p5-CPAN-Testers-Report
     SUBDIR += p5-CPAN-Uploader
     SUBDIR += p5-CPAN-YACSmoke
@@ -1575,6 +1570,7 @@
     SUBDIR += p5-Class-MethodMaker
     SUBDIR += p5-Class-MethodMapper
     SUBDIR += p5-Class-Mix
+    SUBDIR += p5-Class-Mixin
     SUBDIR += p5-Class-MixinFactory
     SUBDIR += p5-Class-Multimethods
     SUBDIR += p5-Class-Multimethods-Pure
@@ -1598,6 +1594,7 @@
     SUBDIR += p5-Class-StrongSingleton
     SUBDIR += p5-Class-Tangram
     SUBDIR += p5-Class-Throwable
+    SUBDIR += p5-Class-Tiny
     SUBDIR += p5-Class-Tom
     SUBDIR += p5-Class-Trigger
     SUBDIR += p5-Class-Unload
@@ -1803,6 +1800,7 @@
     SUBDIR += p5-DateTime-Format-Oracle
     SUBDIR += p5-DateTime-Format-Pg
     SUBDIR += p5-DateTime-Format-RFC3339
+    SUBDIR += p5-DateTime-Format-RSS
     SUBDIR += p5-DateTime-Format-Roman
     SUBDIR += p5-DateTime-Format-SQLite
     SUBDIR += p5-DateTime-Format-Strptime
@@ -1854,6 +1852,7 @@
     SUBDIR += p5-Devel-Hide
     SUBDIR += p5-Devel-KYTProf
     SUBDIR += p5-Devel-Leak
+    SUBDIR += p5-Devel-Leak-Cb
     SUBDIR += p5-Devel-Leak-Object
     SUBDIR += p5-Devel-LeakGuard-Object
     SUBDIR += p5-Devel-LeakTrace
@@ -1986,7 +1985,6 @@
     SUBDIR += p5-File-HomeDir-PathClass
     SUBDIR += p5-File-Iterator
     SUBDIR += p5-File-LibMagic
-    SUBDIR += p5-File-Lock
     SUBDIR += p5-File-MMagic
     SUBDIR += p5-File-MMagic-XS
     SUBDIR += p5-File-Map
@@ -2013,6 +2011,7 @@
     SUBDIR += p5-File-ShareDir-PathClass
     SUBDIR += p5-File-ShareDir-ProjectDistDir
     SUBDIR += p5-File-Slurp
+    SUBDIR += p5-File-Slurp-Tiny
     SUBDIR += p5-File-Slurp-Tree
     SUBDIR += p5-File-Spec-Native
     SUBDIR += p5-File-Stream
@@ -2060,6 +2059,7 @@
     SUBDIR += p5-Getopt-Long-Descriptive
     SUBDIR += p5-Git-PurePerl
     SUBDIR += p5-Git-Repository
+    SUBDIR += p5-Git-Repository-Plugin-Log
     SUBDIR += p5-Git-Wrapper
     SUBDIR += p5-Glib-Object-Introspection
     SUBDIR += p5-Glib2
@@ -2149,6 +2149,7 @@
     SUBDIR += p5-IPC-ShareLite
     SUBDIR += p5-IPC-Shareable
     SUBDIR += p5-IPC-SharedCache
+    SUBDIR += p5-IPC-ShellCmd
     SUBDIR += p5-IPC-Signal
     SUBDIR += p5-IPC-System-Simple
     SUBDIR += p5-Import-Into
@@ -2176,12 +2177,14 @@
     SUBDIR += p5-JSON-RPC-Dispatcher
     SUBDIR += p5-Java
     SUBDIR += p5-Jonk
+    SUBDIR += p5-LV
     SUBDIR += p5-Lexical-Alias
     SUBDIR += p5-Lexical-Import
     SUBDIR += p5-Lexical-Persistence
     SUBDIR += p5-Lexical-SealRequireHints
     SUBDIR += p5-Lexical-Var
     SUBDIR += p5-Lingua-JA-Fold
+    SUBDIR += p5-Lingua-Translit
     SUBDIR += p5-List-AllUtils
     SUBDIR += p5-List-Cycle
     SUBDIR += p5-List-Gen
@@ -2208,6 +2211,7 @@
     SUBDIR += p5-Log-Agent-Logger
     SUBDIR += p5-Log-Any
     SUBDIR += p5-Log-Any-Adapter
+    SUBDIR += p5-Log-Any-Adapter-Callback
     SUBDIR += p5-Log-Any-Adapter-Dispatch
     SUBDIR += p5-Log-Any-Adapter-Log4perl
     SUBDIR += p5-Log-Any-Adapter-Syslog
@@ -2297,6 +2301,7 @@
     SUBDIR += p5-Module-Pluggable
     SUBDIR += p5-Module-Pluggable-Fast
     SUBDIR += p5-Module-Pluggable-Ordered
+    SUBDIR += p5-Module-Reader
     SUBDIR += p5-Module-Recursive-Require
     SUBDIR += p5-Module-Refresh
     SUBDIR += p5-Module-Release
@@ -2318,6 +2323,7 @@
     SUBDIR += p5-MooX-Options
     SUBDIR += p5-MooX-Types-MooseLike
     SUBDIR += p5-MooX-Types-MooseLike-Numeric
+    SUBDIR += p5-MooX-late
     SUBDIR += p5-Moos
     SUBDIR += p5-Moose
     SUBDIR += p5-Moose-Autobox
@@ -2514,6 +2520,7 @@
     SUBDIR += p5-Path-Class-File-Lockable
     SUBDIR += p5-Path-Dispatcher
     SUBDIR += p5-Path-Dispatcher-Declarative
+    SUBDIR += p5-Path-IsDev
     SUBDIR += p5-Path-Iterator-Rule
     SUBDIR += p5-Path-Resource
     SUBDIR += p5-Path-Tiny
@@ -2525,6 +2532,7 @@
     SUBDIR += p5-Perl-Metrics-Simple
     SUBDIR += p5-Perl-OSType
     SUBDIR += p5-Perl-PrereqScanner
+    SUBDIR += p5-Perl-Tidy
     SUBDIR += p5-Perl-Unsafe-Signals
     SUBDIR += p5-Perl-Version
     SUBDIR += p5-Perl6-Builtins
@@ -2551,10 +2559,12 @@
     SUBDIR += p5-Pod-Tests
     SUBDIR += p5-Pragmatic
     SUBDIR += p5-Proc-Background
+    SUBDIR += p5-Proc-BackOff
     SUBDIR += p5-Proc-Daemon
     SUBDIR += p5-Proc-Fork
     SUBDIR += p5-Proc-Guard
     SUBDIR += p5-Proc-PID-File
+    SUBDIR += p5-Proc-Pidfile
     SUBDIR += p5-Proc-ProcessTable
     SUBDIR += p5-Proc-Queue
     SUBDIR += p5-Proc-Reliable
@@ -2563,6 +2573,7 @@
     SUBDIR += p5-Proc-Wait3
     SUBDIR += p5-Proc-WaitStat
     SUBDIR += p5-Project-Gantt
+    SUBDIR += p5-Project-Libs
     SUBDIR += p5-Qudo
     SUBDIR += p5-RRDTool-OO
     SUBDIR += p5-Range-String
@@ -2625,7 +2636,9 @@
     SUBDIR += p5-Scalar-String
     SUBDIR += p5-Scope-Guard
     SUBDIR += p5-Scope-Upper
+    SUBDIR += p5-Script-isAperlScript
     SUBDIR += p5-Search-Binary
+    SUBDIR += p5-Sentinel
     SUBDIR += p5-Sepia
     SUBDIR += p5-Set-Array
     SUBDIR += p5-Set-ConsistentHash
@@ -2701,6 +2714,7 @@
     SUBDIR += p5-Sys-Mmap
     SUBDIR += p5-Sys-RunAlone
     SUBDIR += p5-Sys-RunAlways
+    SUBDIR += p5-Sys-Sendfile
     SUBDIR += p5-Sys-Sendfile-FreeBSD
     SUBDIR += p5-Sys-Sig
     SUBDIR += p5-Sys-SigAction
@@ -2789,6 +2803,7 @@
     SUBDIR += p5-Test-HasVersion
     SUBDIR += p5-Test-HexString
     SUBDIR += p5-Test-Identity
+    SUBDIR += p5-Test-If
     SUBDIR += p5-Test-InDistDir
     SUBDIR += p5-Test-Inline
     SUBDIR += p5-Test-Inter
@@ -2950,6 +2965,7 @@
     SUBDIR += p5-Tree-Simple-VisitorFactory
     SUBDIR += p5-Type-Tie
     SUBDIR += p5-Type-Tiny
+    SUBDIR += p5-Types-Serialiser
     SUBDIR += p5-UDCode
     SUBDIR += p5-UI-Dialog
     SUBDIR += p5-UNIVERSAL-can
@@ -2959,6 +2975,8 @@
     SUBDIR += p5-UNIVERSAL-require
     SUBDIR += p5-UNIVERSAL-which
     SUBDIR += p5-UUID
+    SUBDIR += p5-UUID-Random
+    SUBDIR += p5-UUID-Random-Patch-UseMRS
     SUBDIR += p5-UUID-Tiny
     SUBDIR += p5-Uniq
     SUBDIR += p5-Unix-Statgrab
@@ -2971,6 +2989,7 @@
     SUBDIR += p5-VCS-CVS
     SUBDIR += p5-VCS-Lite
     SUBDIR += p5-Validation-Class
+    SUBDIR += p5-Variable-Eject
     SUBDIR += p5-Variable-Magic
     SUBDIR += p5-Want
     SUBDIR += p5-WeakRef
@@ -3175,8 +3194,10 @@
     SUBDIR += pear-PhpDocumentor
     SUBDIR += pear-Pirum
     SUBDIR += pear-SebastianBergmann_FinderFacade
+    SUBDIR += pear-SebastianBergmann_Git
     SUBDIR += pear-SebastianBergmann_PHPCPD
     SUBDIR += pear-SebastianBergmann_PHPLOC
+    SUBDIR += pear-SebastianBergmann_Version
     SUBDIR += pear-Structure_LinkedList
     SUBDIR += pear-Structures_DataGrid
     SUBDIR += pear-Structures_DataGrid_Renderer_Console
@@ -3234,6 +3255,7 @@
     SUBDIR += pecl-dio
     SUBDIR += pecl-eio
     SUBDIR += pecl-ev
+    SUBDIR += pecl-event
     SUBDIR += pecl-expect
     SUBDIR += pecl-gearman
     SUBDIR += pecl-hidef
@@ -3241,9 +3263,12 @@
     SUBDIR += pecl-inclued
     SUBDIR += pecl-inotify
     SUBDIR += pecl-intl
+    SUBDIR += pecl-jsmin
+    SUBDIR += pecl-jsonc
     SUBDIR += pecl-judy
     SUBDIR += pecl-libevent
     SUBDIR += pecl-mcve
+    SUBDIR += pecl-msgpack
     SUBDIR += pecl-ncurses
     SUBDIR += pecl-newt
     SUBDIR += pecl-operator
@@ -3259,6 +3284,7 @@
     SUBDIR += pecl-svn
     SUBDIR += pecl-test_helpers
     SUBDIR += pecl-uploadprogress
+    SUBDIR += pecl-uri_template
     SUBDIR += pecl-uuid
     SUBDIR += pecl-vld
     SUBDIR += pecl-xhprof
@@ -3267,9 +3293,9 @@
     SUBDIR += pep8
     SUBDIR += performance
     SUBDIR += perlconsole
-    SUBDIR += perltidy
     SUBDIR += php-java-bridge
     SUBDIR += php-libawl
+    SUBDIR += php-memoize
     SUBDIR += php-xdebug
     SUBDIR += php5-blitz
     SUBDIR += php5-blitz-devel
@@ -3371,8 +3397,7 @@
     SUBDIR += pure-ffi
     SUBDIR += pure-gen
     SUBDIR += pure-readline
-    SUBDIR += pure-stldict
-    SUBDIR += pure-stlvec
+    SUBDIR += pure-stllib
     SUBDIR += pushmi
     SUBDIR += pwlib
     SUBDIR += py-Acquisition
@@ -3460,6 +3485,7 @@
     SUBDIR += py-async
     SUBDIR += py-avro
     SUBDIR += py-babel
+    SUBDIR += py-babelfish
     SUBDIR += py-bcdoc
     SUBDIR += py-billiard
     SUBDIR += py-binplist
@@ -3512,6 +3538,8 @@
     SUBDIR += py-distribute
     SUBDIR += py-distutils-extra
     SUBDIR += py-docopt
+    SUBDIR += py-dogpile.cache
+    SUBDIR += py-dogpile.core
     SUBDIR += py-durus
     SUBDIR += py-dynrules
     SUBDIR += py-eggtestinfo
@@ -3529,6 +3557,7 @@
     SUBDIR += py-five.globalrequest
     SUBDIR += py-five.localsitemanager
     SUBDIR += py-flake8
+    SUBDIR += py-futures
     SUBDIR += py-paver
     SUBDIR += py-pyflakes
     SUBDIR += py-flask-babel
@@ -3554,6 +3583,7 @@
     SUBDIR += py-gitdb
     SUBDIR += py-gitosis
     SUBDIR += py-gitpython
+    SUBDIR += py-glob2
     SUBDIR += py-gobject
     SUBDIR += py-gobject3
     SUBDIR += py-grab
@@ -3573,10 +3603,12 @@
     SUBDIR += py-instant
     SUBDIR += py-interface
     SUBDIR += py-ipaddr
+    SUBDIR += py-ipdb
     SUBDIR += py-isodate
     SUBDIR += py-iterpipes
     SUBDIR += py-itools
     SUBDIR += py-jcc
+    SUBDIR += py-jellyfish
     SUBDIR += py-jira
     SUBDIR += py-jmespath
     SUBDIR += py-jsmin
@@ -3733,11 +3765,13 @@
     SUBDIR += py-sqlcc
     SUBDIR += py-statgrab
     SUBDIR += py-stevedore
+    SUBDIR += py-stsci.distutils
     SUBDIR += py-subversion
     SUBDIR += py-subvertpy
     SUBDIR += py-sysctl
     SUBDIR += py-sysv_ipc
     SUBDIR += py-tables
+    SUBDIR += py-tarantool-queue
     SUBDIR += py-tconfpy
     SUBDIR += py-tempstorage
     SUBDIR += py-termcolor
@@ -3985,7 +4019,6 @@
     SUBDIR += ruby-gio2
     SUBDIR += ruby-glib2
     SUBDIR += ruby-intl
-    SUBDIR += ruby-io-reactor
     SUBDIR += ruby-korundum
     SUBDIR += ruby-krossruby
     SUBDIR += ruby-langscan
@@ -4001,7 +4034,6 @@
     SUBDIR += ruby-rbprof
     SUBDIR += ruby-robjectteam
     SUBDIR += ruby-rreadline
-    SUBDIR += ruby-sdl
     SUBDIR += ruby-setup.rb
     SUBDIR += ruby-statgrab
     SUBDIR += ruby-subversion
@@ -4011,6 +4043,7 @@
     SUBDIR += rubygem-active_scaffold
     SUBDIR += rubygem-activemessaging
     SUBDIR += rubygem-activesupport
+    SUBDIR += rubygem-activesupport4
     SUBDIR += rubygem-allison
     SUBDIR += rubygem-analogger
     SUBDIR += rubygem-annoy
@@ -4018,6 +4051,7 @@
     SUBDIR += rubygem-app_config
     SUBDIR += rubygem-arrayfields
     SUBDIR += rubygem-ascii85
+    SUBDIR += rubygem-atomic
     SUBDIR += rubygem-atoulme-antwrap
     SUBDIR += rubygem-attic
     SUBDIR += rubygem-authlogic
@@ -4031,6 +4065,8 @@
     SUBDIR += rubygem-bson
     SUBDIR += rubygem-bugspots
     SUBDIR += rubygem-builder
+    SUBDIR += rubygem-builder31
+    SUBDIR += rubygem-builder32
     SUBDIR += rubygem-caesars
     SUBDIR += rubygem-cairo-gobject
     SUBDIR += rubygem-capybara
@@ -4051,14 +4087,20 @@
     SUBDIR += rubygem-cool.io
     SUBDIR += rubygem-crack
     SUBDIR += rubygem-cri
+    SUBDIR += rubygem-cucumber
     SUBDIR += rubygem-daemon_controller
     SUBDIR += rubygem-daemons
+    SUBDIR += rubygem-debugger
+    SUBDIR += rubygem-debugger-linecache
+    SUBDIR += rubygem-debugger-xml
     SUBDIR += rubygem-deeptest
     SUBDIR += rubygem-delayed_job
     SUBDIR += rubygem-dep_selector
     SUBDIR += rubygem-deprecated
     SUBDIR += rubygem-deprecated2
+    SUBDIR += rubygem-descendants_tracker
     SUBDIR += rubygem-devise
+    SUBDIR += rubygem-devise-async
     SUBDIR += rubygem-directory_watcher
     SUBDIR += rubygem-ditz
     SUBDIR += rubygem-docile
@@ -4066,6 +4108,7 @@
     SUBDIR += rubygem-echoe
     SUBDIR += rubygem-edavis10-object_daddy
     SUBDIR += rubygem-elif
+    SUBDIR += rubygem-enumerize
     SUBDIR += rubygem-errand
     SUBDIR += rubygem-eventmachine
     SUBDIR += rubygem-excon
@@ -4081,10 +4124,13 @@
     SUBDIR += rubygem-file-tail
     SUBDIR += rubygem-filemagic
     SUBDIR += rubygem-fog
+    SUBDIR += rubygem-font-awesome-rails
+    SUBDIR += rubygem-foreman
     SUBDIR += rubygem-formatador
     SUBDIR += rubygem-gdata
     SUBDIR += rubygem-gem_plugin
     SUBDIR += rubygem-gemcutter
+    SUBDIR += rubygem-generator_spec
     SUBDIR += rubygem-georuby
     SUBDIR += rubygem-getopt
     SUBDIR += rubygem-gettext
@@ -4092,9 +4138,14 @@
     SUBDIR += rubygem-gio2
     SUBDIR += rubygem-git
     SUBDIR += rubygem-github_api
+    SUBDIR += rubygem-gitlab-pygments.rb
+    SUBDIR += rubygem-gitlab_git
+    SUBDIR += rubygem-gitlab_meta
     SUBDIR += rubygem-glib2
     SUBDIR += rubygem-gobject-introspection
     SUBDIR += rubygem-graf
+    SUBDIR += rubygem-grape
+    SUBDIR += rubygem-grape-entity
     SUBDIR += rubygem-grit
     SUBDIR += rubygem-hashery
     SUBDIR += rubygem-hashie
@@ -4118,7 +4169,6 @@
     SUBDIR += rubygem-jquery-ui-themes
     SUBDIR += rubygem-kgio
     SUBDIR += rubygem-launchy
-    SUBDIR += rubygem-linecache
     SUBDIR += rubygem-listen
     SUBDIR += rubygem-little_plugger
     SUBDIR += rubygem-locale
@@ -4133,6 +4183,7 @@
     SUBDIR += rubygem-metaid
     SUBDIR += rubygem-method_source
     SUBDIR += rubygem-minitest
+    SUBDIR += rubygem-minitest4
     SUBDIR += rubygem-mirror
     SUBDIR += rubygem-mixlib-authentication
     SUBDIR += rubygem-mixlib-cli
@@ -4146,6 +4197,7 @@
     SUBDIR += rubygem-msgpack
     SUBDIR += rubygem-mspec
     SUBDIR += rubygem-multi_json
+    SUBDIR += rubygem-multi_test
     SUBDIR += rubygem-murmurhash3
     SUBDIR += rubygem-mutter
     SUBDIR += rubygem-needle
@@ -4168,18 +4220,21 @@
     SUBDIR += rubygem-pygments.rb
     SUBDIR += rubygem-r18n-core
     SUBDIR += rubygem-racc
+    SUBDIR += rubygem-rack-raw-upload
     SUBDIR += rubygem-railsless-deploy
     SUBDIR += rubygem-rainbow
     SUBDIR += rubygem-rake
     SUBDIR += rubygem-rake-compiler
     SUBDIR += rubygem-rapt
-    SUBDIR += rubygem-rascut
     SUBDIR += rubygem-rash
     SUBDIR += rubygem-rb-inotify
     SUBDIR += rubygem-rb-kqueue
     SUBDIR += rubygem-rcov
     SUBDIR += rubygem-rdoc
+    SUBDIR += rubygem-redis-activesupport
+    SUBDIR += rubygem-redis-store
     SUBDIR += rubygem-redmine_plugin_support
+    SUBDIR += rubygem-ref
     SUBDIR += rubygem-require_all
     SUBDIR += rubygem-rgl
     SUBDIR += rubygem-ripper
@@ -4189,11 +4244,9 @@
     SUBDIR += rubygem-rspec-core
     SUBDIR += rubygem-rspec-expectations
     SUBDIR += rubygem-rspec-mocks
+    SUBDIR += rubygem-rspec-spies
     SUBDIR += rubygem-rubigen
     SUBDIR += rubygem-ruby-bugzilla
-    SUBDIR += rubygem-ruby-debug
-    SUBDIR += rubygem-ruby-debug-base
-    SUBDIR += rubygem-ruby-debug-ide
     SUBDIR += rubygem-ruby-ole
     SUBDIR += rubygem-ruby-prof
     SUBDIR += rubygem-ruby-sdl-ffi
@@ -4209,11 +4262,14 @@
     SUBDIR += rubygem-safe_yaml
     SUBDIR += rubygem-sequel
     SUBDIR += rubygem-sequel3
+    SUBDIR += rubygem-settingslogic
     SUBDIR += rubygem-sexp_processor
     SUBDIR += rubygem-shoulda
     SUBDIR += rubygem-shoulda-context
     SUBDIR += rubygem-shoulda-matchers
     SUBDIR += rubygem-simple_form
+    SUBDIR += rubygem-simplecov
+    SUBDIR += rubygem-slim
     SUBDIR += rubygem-slop
     SUBDIR += rubygem-soap4r
     SUBDIR += rubygem-sprockets
@@ -4234,10 +4290,12 @@
     SUBDIR += rubygem-sysinfo
     SUBDIR += rubygem-systemu
     SUBDIR += rubygem-templater
+    SUBDIR += rubygem-temple
     SUBDIR += rubygem-term-ansicolor
     SUBDIR += rubygem-test
     SUBDIR += rubygem-test-unit
     SUBDIR += rubygem-thor
+    SUBDIR += rubygem-thread_safe
     SUBDIR += rubygem-thrift
     SUBDIR += rubygem-tilt
     SUBDIR += rubygem-timers
@@ -4253,12 +4311,12 @@
     SUBDIR += rubygem-uuidtools
     SUBDIR += rubygem-validatable
     SUBDIR += rubygem-versionomy
+    SUBDIR += rubygem-virtus
     SUBDIR += rubygem-warbler
     SUBDIR += rubygem-warden
     SUBDIR += rubygem-webby
     SUBDIR += rubygem-xpath
     SUBDIR += rubygem-yajl-ruby
-    SUBDIR += rubygem-yajl-ruby077
     SUBDIR += rubygem-yui-compressor
     SUBDIR += rubygem-zentest
     SUBDIR += rudeconfig
@@ -4305,7 +4363,6 @@
     SUBDIR += simgear
     SUBDIR += simian
     SUBDIR += simpletest
-    SUBDIR += simulavr
     SUBDIR += skalibs
     SUBDIR += slf4j
     SUBDIR += smack
@@ -4339,6 +4396,7 @@
     SUBDIR += subclipse
     SUBDIR += subcommander2
     SUBDIR += subversion
+    SUBDIR += subversion-book
     SUBDIR += subversion-static
     SUBDIR += subversion16
     SUBDIR += subversion17
@@ -4376,6 +4434,7 @@
     SUBDIR += tclreadline
     SUBDIR += tclthread
     SUBDIR += tcltls
+    SUBDIR += tclvfs
     SUBDIR += tclxml
     SUBDIR += tdl
     SUBDIR += terminality
@@ -4383,6 +4442,8 @@
     SUBDIR += tex-kpathsea
     SUBDIR += tex-web2c
     SUBDIR += thrift
+    SUBDIR += thrift-c_glib
+    SUBDIR += thrift-cpp
     SUBDIR += thunar-vcs-plugin
     SUBDIR += tide
     SUBDIR += tig
@@ -4425,7 +4486,6 @@
     SUBDIR += uthash
     SUBDIR += valgrind
     SUBDIR += valgrind-devel
-    SUBDIR += valide
     SUBDIR += varconf
     SUBDIR += vera++
     SUBDIR += viewvc

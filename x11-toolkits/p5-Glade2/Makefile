@@ -11,10 +11,11 @@ PKGNAMEPREFIX=	p5-
 PKGNAMESUFFIX=	2
 DISTNAME=	Gtk2-GladeXML-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	5u623l20@gmail.com
 COMMENT=	Gtk2-Perl bindings to libglade2
 
-EXTRACT_DEPENDS=p5-ExtUtils-Depends>=0:${PORTSDIR}/devel/p5-ExtUtils-Depends
+LICENSE=	GPLv2
+
 BUILD_DEPENDS=	p5-ExtUtils-Depends>=0:${PORTSDIR}/devel/p5-ExtUtils-Depends \
 		p5-Cairo>=0:${PORTSDIR}/graphics/p5-Cairo \
 		p5-Gtk2>=0:${PORTSDIR}/x11-toolkits/p5-Gtk2 \
@@ -25,7 +26,4 @@ USE_GNOME=	libglade2
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=	Gtk2::GladeXML.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

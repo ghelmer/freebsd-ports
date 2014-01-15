@@ -3,6 +3,7 @@
 
 PORTNAME=	cw
 PORTVERSION=	1.0.16
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://cwrapper.sourceforge.net/ \
 		http://www.fakehalo.us/cw/
@@ -10,23 +11,27 @@ MASTER_SITES=	http://cwrapper.sourceforge.net/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Non-intrusive color wrapper for common commands
 
-GNU_CONFIGURE=	yes
+LICENSE=	GPLv2
 
-MANCOMPRESSED=	yes
-MAN1=		cw.1 cwe.1 cwu.1
+USES=		shebangfix
+
+SHEBANG_FILES=	def/*
+SHEBANG_LANG=	cw
+cw_OLD_CMD=	/cw
+cw_CMD=		${PREFIX}/bin/cw
+
+GNU_CONFIGURE=	yes
+ALL_TARGET=	local
+
+PORTDOCS=	CHANGES CONTRIB FILES INSTALL PLATFORM README VERSION
 
 OPTIONS_DEFINE=	DOCS
-PORTDOCS=	*
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-.  for file in CHANGES CONTRIB FILES INSTALL PLATFORM README VERSION
-	${INSTALL_DATA} ${WRKSRC}/${file} ${DOCSDIR}
-.  endfor
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+.for file in cw cwu
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${file}
+.endfor
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	ros_comm
 PORTVERSION=	1.4.8
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://code.ros.org/svn/release/download/stacks/${STACKNAME}/${STACKNAME}-${PORTVERSION}/
 DIST_SUBDIR=	ros
@@ -10,14 +11,9 @@ DIST_SUBDIR=	ros
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Robot Operating System - communication-related utilities
 
-DEPRECATED=	Broken for more than 6 month
-EXPIRATION_DATE=	2013-11-18
+LICENSE=	BSD
 
-#LICENSE=       BSD LGPL #which?
-
-BROKEN=		does not build
-
-STACKNAME=	${PORTNAME:S/ros-//}
+STACKNAME=	${PORTNAME}
 
 CFLAGS+=	-I${LOCALBASE}/include
 LIB_DEPENDS=	log4cxx.10:${PORTSDIR}/devel/log4cxx

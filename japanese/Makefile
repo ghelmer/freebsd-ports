@@ -98,7 +98,6 @@
     SUBDIR += gedy
     SUBDIR += gimp-help
     SUBDIR += gjiten
-    SUBDIR += gorua
     SUBDIR += gqmpeg
     SUBDIR += grep
     SUBDIR += groff
@@ -184,7 +183,6 @@
     SUBDIR += mikachan-ttfonts
     SUBDIR += mime_pls
     SUBDIR += ming
-    SUBDIR += mobileimap
     SUBDIR += monafonts
     SUBDIR += monafonts-ttf
     SUBDIR += mozc-additions

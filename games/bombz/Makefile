@@ -3,6 +3,7 @@
 
 PORTNAME=	bombz
 PORTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	games python
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}/ \
 		SF/nemysisfreebsdp/:icons
@@ -51,7 +52,6 @@ do-install:
 .endfor
 
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png ${STAGEDIR}${PREFIX}/share/pixmaps/
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/applications/
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.desktop ${STAGEDIR}${PREFIX}/share/applications/
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	owncloud
-PORTVERSION=	5.0.12
+PORTVERSION=	5.0.13
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://download.owncloud.org/community/
 
@@ -14,29 +15,25 @@ BUILD_DEPENDS=	mp3info:${PORTSDIR}/audio/mp3info
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USE_BZIP2=	yes
-USE_PHP=	ctype curl dom fileinfo filter gd hash iconv json mbstring \
-		mysql openssl pdo pdo_mysql pdo_sqlite session simplexml \
-		sqlite3 xml xmlreader xsl wddx zip zlib
+USE_PHP=	ctype curl dom fileinfo filter gd hash iconv json ldap \
+		mbstring openssl pdo session simplexml xml xmlreader \
+		xsl wddx zip zlib
 WANT_PHP_WEB=	yes
 DEFAULT_PHP_VER=5
-
-WWWDOCROOT?=	www
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
-do-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}
-	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
-	${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
+OPTIONS_MULTI=	DB
+OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
+OPTIONS_DEFAULT=	SQLITE
+MYSQL_USE=	MYSQL=client PHP=mysql,pdo_mysql
+PGSQL_USE=	PGSQL=yes PHP=pdo_pgsql,pgsql
+SQLITE_USE=	PHP=pdo_sqlite,sqlite3
 
-post-install:
-	@cd ${WRKSRC} && \
-	    ${FIND} -s -d . -type f -print | \
-		${SED} -e "s#^\.#${WWWDIR_REL}#" >> ${TMPPLIST}
-	@cd ${WRKSRC} && \
-	    ${FIND} -s -d . -type d  -print | \
-		${SED} -e "s#^\.#@dirrm ${WWWDIR_REL}#" >> ${TMPPLIST}
+do-install:
+	@${MKDIR} -m 0755 ${STAGEDIR}${WWWDIR}
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}
 
 .include <bsd.port.mk>

@@ -5,14 +5,173 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20131112:
+  AFFECTS: users of dns/nsd
+  AUTHOR: erwin@FreeBSD.org
+
+  dns/nsd was updated to the new 4.0.0 major release.
+
+  This version replaces the nsdc control program with nsd-control. 
+  This requires some manual setup with nsd-control-setup and editing
+  of the config files. nsd-control is incompatible with nsdc so when 
+  that is used in scripts, these should be adapted.  More information:
+  http://www.nlnetlabs.nl/svn/nsd/tags/NSD_4_0_0_REL/doc/NSD-4-features
+
+  NSD version 3 is still supported in dns/nsd3.  To keep the old
+  version:
+  # portmaster -o dns/nsd3 dns/nsd
+    or
+  # portupgrade -fo dns/nsd3 dns/nsd
+    or
+  # pkg set -o dns/nsd:dns/nsd3
+
+20131112:
+  AFFECTS: users of dns/bind9*
+  AUTHOR: erwin@FreeBSD.org
+
+  All bind9 ports have been updated to support FreeBSD 10.x after
+  BIND was removed from the base system.  It is now self-contained
+  in ${PREFIX}/etc/namedb, and chroot and symlinking options are
+  no longer supported out of the box.
+
+  For users of FreeBSD 9.x and earlier, the LINKS option is no longer
+  enabled by default, but still supported.  No other changes should
+  affect those users, and updating without changing already set options
+  will keep the system in the same state.
+
+20131103:
+  AFFECTS: users of security/libtasn1 and any port that depends on it
+  AUTHOR: novel@FreeBSD.org
+
+  libtasn1 has been updated to 3.3 and all shared libraries versions have
+  been bumped. So you need to rebuild all applications that depend on
+  libtasn1.
+
+  # portmaster -r libtasn1
+    or
+  # portupgrade -fr security/libtasn1
+    or
+  # pkg install -fR security/libtasn1
+
+20131031:
+  AFFECTS: users of multimedia/rtmpdump
+  AUTHOR: hrs@FreeBSD.org
+
+  The library part of multimedia/rtmpdump is split into multimedia/librtmp.
+  multimedia/rtmpdump now depends on the library port.
+
+  A build error can occur if you built and installed old rtmpdump by
+  using stock OpenSSL, and then install security/openssl and try to build
+  multimedia/rtmpdump without deinstalling the installed one.  Please
+  make sure if the old rtmpdump is removed before building the new version.
+
+20131028:
+  AFFECTS: users of comms/dcf77pi
+  AUTHOR: rene@FreeBSD.org
+
+  As of version 1.0.5 the configuration file was renamed from
+  hardware.txt to config.txt and the format has been made more flexible.
+
+  If you have customized any parameters, be sure to copy them to
+  config.txt after which hardware.txt can be removed.
+
+20131028:
+  AFFECTS: users of multimedia/ffmpeg1 and multimedia/ffmpeg-devel
+  AUTHOR: wg@FreeBSD.org
+
+  The port ffmpeg was updated, ffmpeg1 and ffmpeg-devel were removed in
+  favor of ffmpeg.
+
+  # portmaster -o multimedia/ffmpeg multimedia/ffmpeg1
+    or
+  # portupgrade -fo multimedia/ffmpeg multimedia/ffmpeg1
+    or
+  # pkg set -o multimedia/ffmpeg1:multimedia/ffmpeg
+
+  and
+
+  # portmaster -o multimedia/ffmpeg multimedia/ffmpeg-devel
+    or
+  # portupgrade -fo multimedia/ffmpeg multimedia/ffmpeg-devel
+    or
+  # pkg set -o multimedia/ffmpeg-devel:multimedia/ffmpeg
+
+20131023:
+  AFFECTS: users of lang/perl5.12 lang/perl5.14
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl has been switched to lang/perl5.16.  These examples
+  are for switching from lang/perl5.14, if you are running another
+  version, replace lang/perl5.14 with the origin of the Perl you have
+  installed.
+
+  Pkgng users:
+
+    # pkg set -o lang/perl5.14:lang/perl5.16
+    # pkg install -Rf lang/perl5.16
+
+  Portupgrade users:
+    0) Fix pkgdb.db (for safety):
+	pkgdb -Ff
+
+    1) Reinstall new version of Perl (5.16):
+	portupgrade -o lang/perl5.16 -f perl-5.14.\*
+
+    2) Reinstall everything that depends on Perl:
+	portupgrade -fr perl
+
+  Portmaster users:
+	portmaster -o lang/perl5.16 lang/perl5.14
+
+	Conservative:
+	portmaster p5-
+
+	Comprehensive (but perhaps overkill):
+	portmaster -r perl-
+
+  Note: If the "perl-" glob matches more than one port you will need to specify
+        the name of the Perl directory in /var/db/pkg explicitly.
+
+20131020:
+  AFFECTS: users of mail/squirrelmail
+  AUTHOR: adamw@adamw.org
+
+  The default location for user data files and attachments has changed.
+  This will only affect new installations, and upgrading SquirrelMail
+  WILL NOT break your current installation.
+
+  To make use of the new locations, do the following:
+
+  # cp -rp /var/spool/squirrelmail/pref/* /usr/local/www/squirrelmail/data
+  # cp -rp /var/spool/squirrelmail/attach/* /usr/local/www/squirrelmail/attach
+
+  and then run /usr/local/www/squirrelmail/configure and tell SM about
+  it ("Data Directory" and "Attachment Directory" under "General Options").
+
+  This version of SquirrelMail is a SNAPSHOT that brings in PHP 5.4 and 5.5
+  compatibility.
+
+20131020:
+  AFFECTS: users of security/gpgme
+  AUTHOR: jhale@FreeBSD.org
+
+  The library version of security/gpgme has changed, and PORTREVISION has
+  been bumped in all dependent ports.  If you have external software that
+  depends on gpgme, this software needs to be recompiled.
+  To recompile all software dependent on gpgme, run:
+
+  # portmaster -r gpgme
+    or
+  # portupgrade -rf gpgme
+
 20131008:
-  AFFECT: all users
+  AFFECTS: all users
   AUTHOR: bapt@FreeBSD.org
 
   A new USES has been added: compiler.mk, this uses allows porters to
   select a compiler for a given port based on the features the port needs
-  By default this will always try to find clang > 3.3.
-  If the user prefers using gcc then the following macro should be added
+  By default this will always try to find Clang > 3.3.
+  If the user prefers using GCC then the following macro should be added
   to user's make.conf: FAVORITE_COMPILER=gcc
 
 20131004:
@@ -20,7 +179,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: ohauer@FreeBSD.org
 
   The port nrpe2 was updated and moved to nrpe
-  
+
   # portmaster -o net-mgmt/nrpe net-mgmt/nrpe2
     or
   # portupgrade -fo net-mgmt/nrpe net-mgmt/nrpe2
@@ -44,13 +203,13 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of x11/pixman
   AUTHOR: zeising@FreeBSD.org
 
-  The library version of x11/pixman has changed, and portrevision has
+  The library version of x11/pixman has changed, and PORTREVISION has
   been bumped in all dependent ports.  If you have external software that
   depends on pixman, this software needs to be recompiled.
   To recompile all software dependent on pixman, run:
-  
+
   # portmaster -r pixman
-  or
+    or
   # portupgrade -rf pixman
 
 20130929:
@@ -62,14 +221,14 @@ you update your ports collection, before attempting any port upgrades.
   to remove the old versions of both ports before updating.
 
   # pkg_delete -f libGL-\* dri-\*
-  or
+    or
   # pkg delete -f libGL dri
-  followed by
+    followed by
   # portmaster -a
 
 20130925
   AFFECTS: Users of print/qpdf
-  AUTHOR:  d.y.kazarov@mail.ru
+  AUTHOR: d.y.kazarov@mail.ru
 
   Due to the changes in libqpdf.so, please deinstall qpdf first if you
   are updating from 4.0.0 to 4.0.1+
@@ -78,7 +237,7 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: Users of ptlib, opal and/or ekiga
   AUTHOR: kwm@FreeBSD.org
 
-  The ptlib26, opal3 and ekiga3 ports where updated to the lastest version
+  The ptlib26, opal3 and ekiga3 ports where updated to the latest version
   and moved to the location of the old ports. If the ekiga (2.0) port is
   installed the same line as for ekiga3 can be used except without the 3 at
   the end.
@@ -107,9 +266,10 @@ you update your ports collection, before attempting any port upgrades.
 
   For example, to declare specific versions for Perl, Ruby and Tcl/Tk,
   it would be defined as:
-  DEFAULT_VERSIONS=	perl5=5.18 ruby=2.0 tcltk=8.6
 
-  Today, this only is supported by Perl, Ruby and Tcl/Tk.
+	DEFAULT_VERSIONS=	perl5=5.18 ruby=2.0 tcltk=8.6
+
+  Today, this only is supported by Perl, Ruby, and Tcl/Tk.
 
 20130920:
   AFFECTS: Users of ports
@@ -130,9 +290,7 @@ you update your ports collection, before attempting any port upgrades.
   ports.
 
   # portmaster -af
-
-  or
-
+    or
   # portupgrade -af
 
   [1] https://en.wikipedia.org/wiki/Buffer_overflow_protection
@@ -178,7 +336,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: dinoex@FreeBSD.org
 
   The on disk format has changed.
-  Please make sure the queue is empty before you update.
+  Please make sure that queue is empty before you update.
 
 20130817:
   AFFECTS: users of lang/python*
@@ -231,7 +389,7 @@ you update your ports collection, before attempting any port upgrades.
   # pkg_delete gio-fam-backend-\* (for pkgng: pkg delete gio-fam-backend)
   # portmaster -a
 
-  or
+    or
 
   # portupgrade -rf gio-fam-backend
   # pkg_delete gio-fam-backend-\* (for pkgng: pkg delete gio-fam-backend)
@@ -313,13 +471,13 @@ you update your ports collection, before attempting any port upgrades.
   be necessary to remove the avahi-gtk port before updating.
   Users of pkg packages can skip this step.
 
-   pkg_delete -f avahi-gtk\*
-  or
-   pkg delete -f avahi-gtk
-  followed by
-   portmaster net/avahi-gtk
-  or
-   portupgrade net/avahi-gtk
+  # pkg_delete -f avahi-gtk\*
+    or
+  # pkg delete -f avahi-gtk
+    followed by
+  # portmaster net/avahi-gtk
+    or
+  # portupgrade net/avahi-gtk
 
 20130711:
   AFFECTS: users of dns/py-ldns
@@ -367,13 +525,13 @@ you update your ports collection, before attempting any port upgrades.
 
   APR was updated to 1.4.8 and APR-util was updated to 1.5.2.
 
-  Please rebuild all ports which are using functions from
-  APR/APR-util such as apache, subversion ...
+  Please rebuild all ports which are using functions from APR/APR-util
+  such as Apache, Subversion, etc.
 
   # portmaster -r apr
-  or
+    or
   # portupgrade -r devel/apr1
-  or
+    or
   # pkg install -fR devel/apr1
 
 20130705:
@@ -522,9 +680,7 @@ you update your ports collection, before attempting any port upgrades.
   and use the following command
 
   # pkg set -o devel/subversion:devel/subversion17
-
-  or
-
+    or
   # portmaster -o devel/subversion17 devel/subversion
 
 20130614:
@@ -590,9 +746,9 @@ you update your ports collection, before attempting any port upgrades.
   commands:
 
   # portmaster -w -r ghc
-  or
+    or
   # portupgrade -fr lang/ghc
-  or
+    or
   # pkg install -fR lang/ghc
 
   Note that prefixes used for hs- ports (Cabal packages) have been
@@ -822,9 +978,7 @@ you update your ports collection, before attempting any port upgrades.
   depend on libgcrypt. Do something like:
 
   # portmaster -r libgcrypt
-
-  or
-
+    or
   # portupgrade -rf libgcrypt
 
   Alternatively, you may install sysutils/bsdadminscripts, run pkg_libchk and
@@ -895,7 +1049,9 @@ you update your ports collection, before attempting any port upgrades.
   # portupgrade -o mail/thunderbird mail/thunderbird-esr
   # portupgrade -o mail/thunderbird-i18n \
     mail/thunderbird-esr-i18n (if installed)
-  or
+
+    or
+
   # portmaster -o mail/thunderbird mail/thunderbird-esr
   # portmaster -o mail/thunderbird-i18n \
     mail/thunderbird-esr-i18n (if installed)
@@ -1229,9 +1385,9 @@ you update your ports collection, before attempting any port upgrades.
   by one of the following commands:
 
   # portmaster -w -r ghc
-  or
+    or
   # portupgrade -fr lang/ghc
-  or
+    or
   # pkg install -fR lang/ghc
 
 20130205:
@@ -1395,11 +1551,11 @@ you update your ports collection, before attempting any port upgrades.
   security/openvpn22 retains the prior OpenVPN 2.2.2 version.
   If you want to continue using this version, use one of these commands:
 
-    # portmaster -o security/openvpn22 security/openvpn
-  or
-    # portupgrade -o security/openvpn22 security/openvpn
-  or
-    # pkg set -o security/openvpn:security/openvpn22
+  # portmaster -o security/openvpn22 security/openvpn
+    or
+  # portupgrade -o security/openvpn22 security/openvpn
+    or
+  # pkg set -o security/openvpn:security/openvpn22
 
   security/openvpn20 has been marked deprecated and to be removed
   in half a year's time.  Please migrate to a newer version soonish.
@@ -1443,9 +1599,9 @@ you update your ports collection, before attempting any port upgrades.
   the new port, for example:
 
   # portmaster -o sysutils/cfengine sysutils/cfengine33
-  or
+    or
   # portupgrade -fo sysutils/cfengine sysutils/cfengine33
-  or
+    or
   # pkg set -o sysutils/cfengine33:sysutils/cfengine
 
   Users that switch their port origin and later wish to remain on
@@ -1551,9 +1707,9 @@ you update your ports collection, before attempting any port upgrades.
   dependencies.
 
   # portmaster -o databases/p5-DBD-mysql databases/p5-DBD-mysql55
-  or
+    or
   # portupgrade -fo databases/p5-DBD-mysql databases/p5-DBD-mysql55
-  or
+    or
   # pkg set -o databases/p5-DBD-mysql55:databases/p5-DBD-mysql
 
 20121220:
@@ -1567,9 +1723,9 @@ you update your ports collection, before attempting any port upgrades.
   following commands, depending on the tool used:
 
   # portmaster -w -r ghc
-  or
+    or
   # portupgrade -fr lang/ghc
-  or
+    or
   # pkg install -fR lang/ghc
 
 
@@ -1811,7 +1967,7 @@ you update your ports collection, before attempting any port upgrades.
   following commands:
 
   # portmaster -o www/squid32 www/squid31
-  or
+    or
   # portupgrade -fo www/squid32 www/squid31
 
 20121025:
@@ -1903,14 +2059,14 @@ you update your ports collection, before attempting any port upgrades.
 
   To make the switch:
 
-  1/ Set WITHOUT_PKGNG=yes in make.conf and upgrade all your ports to
+  1) Set WITHOUT_PKGNG=yes in make.conf and upgrade all your ports to
   the latest available versions using your favourite tools.
 
-  2/ Install ports-mgmt/pkg
+  2) Install ports-mgmt/pkg
 
-  3/ Remove WITHOUT_PKGNG from make.conf and run:
+  3) Remove WITHOUT_PKGNG from make.conf and run:
 
-      # pkg2ng
+	# pkg2ng
 
 20121009:
   AFFECTS: users of multimedia/vdpau-video
@@ -1922,9 +2078,9 @@ you update your ports collection, before attempting any port upgrades.
   Please update the port origins as follows:
 
   # portmaster -o multimedia/libva-vdpau-driver multimedia/vdpau-video
-  or
+    or
   # portupgrade -fo multimedia/libva-vdpau-driver multimedia/vdpau-video
-  or
+    or
   # pkg set -o multimedia/vdpau-video:multimedia/libva-vdpau-driver
 
 20121008:
@@ -1965,9 +2121,9 @@ you update your ports collection, before attempting any port upgrades.
   Update your port origins as follows:
 
   # portmaster -o devel/clanlib1 devel/clanlib
-  or
+    or
   # portupgrade -fo devel/clanlib1 devel/clanlib
-  or
+    or
   # pkg set -o devel/clanlib:devel/clanlib1
 
 20120928:
@@ -2008,16 +2164,17 @@ you update your ports collection, before attempting any port upgrades.
   Update your port origins as follows:
 
   # portmaster -o net-mgmt/percona-monitoring-plugins net-mgmt/better-cacti-templates
-  or
+    or
   # portupgrade -fo net-mgmt/percona-monitoring-plugins net-mgmt/better-cacti-templates
-  or
+    or
   # pkg set -o net-mgmt/better-cacti-templates:net-mgmt/percona-monitoring-plugins
 
 20120916:
   AFFECTS: users of german/webalizer2, japanese/webalizer, polish/webalizer2, portuguese/webalizer-pt_BR, portuguese/webalizer-pt_PT, ukrainian/webalizer, www/geolizer, www/webalizer
   AUTHOR: dinoex@FreeBSD.org
 
-  The default Berkeley DB has changed, so existing DNS caches needs to be rebuild or choose the option BDB1 in the port.
+  The default Berkeley DB has changed, so existing DNS caches needs to be
+  rebuild or choose the option BDB1 in the port.
 
 20120913:
   AFFECTS: users of sysutils/bacula-server, sysutils/bacula-client
@@ -2036,9 +2193,9 @@ you update your ports collection, before attempting any port upgrades.
   If you want to stay with 1.9.2 please run the following command:
 
   # portmaster -o www/libxul19 www/libxul
-  or
+    or
   # portupgrade -o www/libxul19 www/libxul
-  or
+    or
   # pkg set -o www/libxul:www/libxul19
 
 20120909:
@@ -2064,10 +2221,10 @@ you update your ports collection, before attempting any port upgrades.
   Then:
   # portmaster -o security/libotr3 security/libotr
   # portmaster -r libotr
-  or
+    or
   # portugrade -o security/libotr3 security/libotr
   # portugrade -r libotr
-  or
+    or
   # pkg set -o security/libotr:security/libotr3
 
 20120902:
@@ -2125,9 +2282,9 @@ you update your ports collection, before attempting any port upgrades.
   after that you can run one of the following
 
   # portmaster -o net/asterisk net/asterisk16
-  or
+    or
   # portupgrade -o net/asterisk net/asterisk16
-  or
+    or
   # pkg set -o net/asterisk16:net/asterisk
 
   After that you need to update your configuration. Take a look at the following
@@ -2193,7 +2350,7 @@ you update your ports collection, before attempting any port upgrades.
   the new environment:
 
   # portmaster -r erlang
-  or
+    or
   # portupgrade -r lang/erlang
 
 20120815:
@@ -2211,7 +2368,7 @@ you update your ports collection, before attempting any port upgrades.
   to update your dependencies.
 
   # portmaster -o lang/erlang lang/erlang-lite
-  or
+    or
   # portupgrade -fo lang/erlang erlang-lite
 
 20120810:
@@ -2235,9 +2392,9 @@ you update your ports collection, before attempting any port upgrades.
   This requires dependent ports to be rebuilt.
 
   # portmaster -r libmicrohttpd
-  or
+    or
   # portupgrade -r www/libmicrohttpd
-  or
+    or
   # pkg install -fR www/libmicrohttpd
 
 20120804:
@@ -2250,10 +2407,10 @@ you update your ports collection, before attempting any port upgrades.
 
   # portmaster -o graphics/freeglut graphics/libglut
   # portmaster -r freeglut
-  or
+    or
   # env DISABLE_CONFLICTS=1 portupgrade -fo graphics/freeglut libglut\*
   # portupgrade -frx freeglut freeglut
-  or
+    or
   # pkg set -o graphics/libglut:graphics/freeglut
   # pkg install -Rf graphics/freeglut
 
@@ -2291,7 +2448,7 @@ you update your ports collection, before attempting any port upgrades.
   devel/pkg-config has been replaced by devel/pkgconf
 
   # portmaster -o devel/pkgconf devel/pkg-config
-  or
+    or
   # portupgrade -fo devel/pkgconf pkg-config-\*
 
   pkgng:
@@ -2447,7 +2604,7 @@ you update your ports collection, before attempting any port upgrades.
   please run the following command:
 
   # portmaster -o net-im/mikutter003 net-im/mikutter
-  or
+    or
   # portupgrade -o net-im/mikutter003 net-im/mikutter
 
 20120630:
@@ -2510,9 +2667,9 @@ you update your ports collection, before attempting any port upgrades.
   To upgrade the packages that need Berkeley DB 5, please
   issue one of the following commands (depending on your preferred tool):
 
-    # portmaster -r db5-5
-  or
-    # portupgrade -fr databases/db5
+  # portmaster -r db5-5
+    or
+  # portupgrade -fr databases/db5
 
 20120616:
   AFFECTS: users of www/lighttpd
@@ -2613,7 +2770,7 @@ you update your ports collection, before attempting any port upgrades.
   (depending on the tool used):
 
   # portmaster -r ghc
-  or
+    or
   # portupgrade -fr lang/ghc
 
 
@@ -2947,7 +3104,7 @@ you update your ports collection, before attempting any port upgrades.
 
   To stick with version 2.2.x run:
   # portupgrade -o mail/dbmail22 mail/dbmail
-  or
+    or
   # portmaster -o mail/dbmail22 mail/dbmail
 
 20120313:
@@ -2986,7 +3143,7 @@ you update your ports collection, before attempting any port upgrades.
   This requires dependent ports to be rebuilt.
 
   # portmaster -r libarchive
-  or
+    or
   # portupgrade -r archivers/libarchive
 
 20120221:
@@ -3008,7 +3165,7 @@ you update your ports collection, before attempting any port upgrades.
 
   # portmaster -o graphics/giflib graphics/libungif
   # portmaster -r giflib
-  or
+    or
   # portupgrade -o graphics/giflib graphics/libungif
   # portupgrade -rf giflib
 
@@ -3020,7 +3177,7 @@ you update your ports collection, before attempting any port upgrades.
   This requires dependencies to be rebuilt.
 
   # portmaster -r libvpx
-  or
+    or
   # portupgrade -r multimedia/libvpx
 
 20120214:
@@ -3031,7 +3188,7 @@ you update your ports collection, before attempting any port upgrades.
   This requires dependencies to be rebuilt.
 
   # portmaster -r libexosip2
-  or
+    or
   # portupgrade -rf libexosip2-3.\*
 
 20120214:
@@ -3042,7 +3199,7 @@ you update your ports collection, before attempting any port upgrades.
   a manner that will preserve its old shared library. For example:
 
   # portmaster -w devel/pcre
-  or
+    or
   # portupgrade devel/pcre
 
 20120213:
@@ -3056,7 +3213,7 @@ you update your ports collection, before attempting any port upgrades.
   To update all affected ports:
 
   # portmaster -r lang/ghc
-  or
+    or
   # portupgrade -r lang/ghc
 
 20120210:
@@ -3448,7 +3605,7 @@ you update your ports collection, before attempting any port upgrades.
   # cd /usr/ports/devel/subversion && make config
   <deselect first three options described above, if you want it>
   # portupgrade -r devel/subversion
-  or
+    or
   # portmaster -R -r subversion-1.6
 
   (b) You use devel/subversion-freebsd and, maybe, some
@@ -3460,7 +3617,7 @@ you update your ports collection, before attempting any port upgrades.
   <make sure that first three options are selected>
   # portupgrade -o devel/subversion devel/subversion-freebsd
   # portupgrade -r devel/subversion
-  or
+    or
   # portmaster -o devel/subversion devel/subversion-freebsd
   # portmaster -R -r subversion-1.7
 
@@ -3473,7 +3630,7 @@ you update your ports collection, before attempting any port upgrades.
   <deselect first three options described above, if you want it>
   # portupgrade -o devel/subversion16 devel/subversion
   # portupgrade -m "WITH_SUBVERSION_VER=16" -r devel/subversion16
-  or
+    or
   # portmaster -o devel/subversion16 devel/subversion
   # portmaster -m "WITH_SUBVERSION_VER=16" -R -r subversion-1.6
 
@@ -3485,7 +3642,7 @@ you update your ports collection, before attempting any port upgrades.
   <make sure, that first three options are selected>
   # portupgrade -o devel/subversion16 devel/subversion-freebsd
   # portupgrade -m "WITH_SUBVERSION_VER=16" -r devel/subversion16
-  or
+    or
   # portmaster -o devel/subversion16 devel/subversion-freebsd
   # portmaster -m "WITH_SUBVERSION_VER=16" -R -r subversion-1.6
 
@@ -3826,7 +3983,7 @@ or
   the old stable version please run
 
   # portmaster -o www/typo345 www/typo3
-  or
+    or
   # portupgrade -o www/typo345 www/typo3
 
   Please remember to change the path of your config files too.
@@ -3850,7 +4007,7 @@ or
   If you want to use old gcc-3.4.4, run command:
 
   # portmaster -o devel/msp430-gcc3 devel/msp430-gcc
-  or
+    or
   # portupgrade -o devel/msp430-gcc3 devel/msp430-gcc
 
   before updating devel/msp430-libc port.
@@ -3884,7 +4041,7 @@ or
   To update the installed port run the command
 
   # portmaster -o textproc/hunspell hungarian/hunspell
-  or
+    or
   # portupgrade -o textproc/hunspell hungarian/hunspell
 
 20110711:
@@ -3941,9 +4098,7 @@ or
   depend on libgcrypt. Do something like:
 
   # portmaster -r libgcrypt
-
-  or
-
+    or
   # portupgrade -rf libgcrypt
 
 20110703:
@@ -3974,7 +4129,7 @@ or
 
   # portupgrade -o mail/thunderbird3 mail/thunderbird
   # portupgrade -o mail/thunderbird3-i18n mail/thunderbird-i18n (if installed)
-  or
+    or
   # portmaster -o mail/thunderbird3 mail/thunderbird
   # portmaster -o mail/thunderbird3-i18n mail/thunderbird-i18n (if installed)
 
@@ -4033,7 +4188,7 @@ or
   To update the installed port run the command
 
   # portmaster -o databases/py-sqlalchemy06 databases/py-sqlalchemy
-  or
+    or
   # portupgrade -o databases/py-sqlalchemy06 databases/py-sqlalchemy
 
 20110622:
@@ -4071,7 +4226,7 @@ or
   If you run irc/ezbounce-devel you need to run one of the following commands:
 
   # portmaster -o irc/ezbounce irc/ezbounce-devel
-  or
+    or
   # portupgrade -o irc/ezbounce irc/ezbounce-devel
 
 20110619:
@@ -4227,7 +4382,7 @@ or
 
   # portmaster -o emulators/virtualbox-ose-kmod-legacy emulators/virtualbox-ose-kmod
   # portmaster -o emulators/virtualbox-ose-legacy emulators/virtualbox-ose
-  or
+    or
   # portupgrade -o emulators/virtualbox-ose-kmod-legacy emulators/virtualbox-ose-kmod
   # portupgrade -o emulators/virtualbox-ose-legacy emulators/virtualbox-ose
 
@@ -4348,7 +4503,7 @@ or
   To update all affected ports:
 
   # portmaster -r lang/ghc
-  or
+    or
   # portupgrade -r lang/ghc
 
 20110506:
@@ -4374,14 +4529,14 @@ or
   it, please run one of the following commands to update its origin:
 
   # portmaster -o www/codeigniter17 www/codeigniter
-  or
+    or
   # portupgrade -o www/codeigniter17 www/codeigniter
 
   If you have Codeigniter 2.0.x installed, please run one of the following
   commands to update its origin:
 
   # portmaster -o www/codeigniter www/codeigniter-devel
-  or
+    or
   # portupgrade -o www/codeigniter www/codeigniter-devel
 
 20110427:
@@ -4412,8 +4567,9 @@ or
 
   The japanese/asterisk-sounds has been updated to 1.8.
   If you want to stay with ja-asterisk14-sounds, please run:
+
   # portmaster -o japanese/asterisk14-sounds japanese/asterisk-sounds
-  or
+    or
   # portupgrade -o japanese/asterisk14-sounds japanese/asterisk-sounds
 
   See also 20101128 net/asterisk entry.
@@ -4490,7 +4646,7 @@ or
 
   # portupgrade -o www/firefox36 www/firefox
   # portupgrade -o www/firefox36-i18n www/firefox-i18n (if installed)
-  or
+    or
   # portmaster -o www/firefox36 www/firefox
   # portmaster -o www/firefox36-i18n www/firefox-i18n (if installed)
 
@@ -4514,7 +4670,7 @@ or
   This can be achieved with:
 
   # portmaster -r mysql-client-5.5
-  or
+    or
   # portupgrade -fr mysql-client-5.5
 
 20110318:
@@ -4530,7 +4686,7 @@ or
   you must run one of the following commands to upgrade:
 
   # portmaster -o www/node www/node-devel
-  or
+    or
   # portupgrade -o www/node www/node-devel
 
 20110317:
@@ -4664,9 +4820,9 @@ or
   version bump.  Therefore, you need to reinstall all ports that depend on
   it.  Please do something like:
 
-	# portupgrade -fr net/openldap24-client
-  or
-	# portmaster -r net/openldap24-client
+  # portupgrade -fr net/openldap24-client
+    or
+  # portmaster -r net/openldap24-client
 
 20110224:
   AFFECTS: Nobody
@@ -4869,7 +5025,7 @@ or
 
   Note that devel/icu4 is now deprecated consider replacing it by devel/icu
   # portmaster -o devel/icu devel/icu4
-  or
+    or
   # env DISABLE_CONFLICTS=1 portupgrade -o devel/icu -f icu-4\*
 
 20101211:
@@ -4998,7 +5154,7 @@ or
   after that you can run one of the following
 
   # portmaster asterisk
-  or
+    or
   # portupgrade asterisk
 
   You need to update your config files as the step from 1.4.x to 1.8.x is
@@ -5015,7 +5171,7 @@ or
 
   # portmaster -o net/asterisk14 net/asterisk
   # portmaster -o net/asterisk14-addons net/asterisk-addons
-  or
+    or
   # portupgrade -o net/asterisk14 net/asterisk
   # portupgrade -o net/asterisk14-addons net/asterisk-addons
 
@@ -5180,7 +5336,7 @@ or
   the old stable version please run
 
   # portmaster -o www/typo343 www/typo3
-  or
+    or
   # portupgrade -o www/typo343 www/typo3
 
   Please remember to change the path of your config files too.

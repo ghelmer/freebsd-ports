@@ -3,7 +3,7 @@
 
 PORTNAME=	kdevelop
 PORTVERSION=	1.0.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel kde
 MASTER_SITES=	${MASTER_SITE_KDE}
 MASTER_SITE_SUBDIR=	stable/${PORTNAME}${PKGNAMESUFFIX}/${PORTVERSION}/src
@@ -16,11 +16,9 @@ COMMENT=	Parser-generator from KDevplatform
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
 
-USE_GCC=	yes
 USE_BZIP2=	yes
-USES=		bison cmake:outsource
+USES=		bison cmake:outsource compiler:c++11-lib
 USE_KDE4=	automoc4 kdehier kdelibs kdeprefix
 USE_QT4=	qmake_build moc_build uic_build rcc_build
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

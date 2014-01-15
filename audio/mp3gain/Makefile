@@ -8,11 +8,11 @@ MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/\./_/g}-src
 
 MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	A tool to normalize the gain of MP3 files
+COMMENT=	Tool to normalize the gain of MP3 files
 
 LICENSE=	LGPL21
 
-NO_STAGE=	yes
+USES=		uidfix
 
 USE_ZIP=	yes
 USE_DOS2UNIX=	yes

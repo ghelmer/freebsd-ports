@@ -568,7 +568,6 @@
     SUBDIR += qmail-spamcontrol
     SUBDIR += qmail-tls
     SUBDIR += qmailadmin
-    SUBDIR += qmailadmin-devel
     SUBDIR += qmailanalog
     SUBDIR += qmailmrtg7
     SUBDIR += qmhandle
@@ -689,7 +688,6 @@
     SUBDIR += squirrelmail-notify-plugin
     SUBDIR += squirrelmail-password_forget-plugin
     SUBDIR += squirrelmail-plugins
-    SUBDIR += squirrelmail-postfixadmin-plugin
     SUBDIR += squirrelmail-pupdate-plugin
     SUBDIR += squirrelmail-qmailadmin_login-plugin
     SUBDIR += squirrelmail-quota_usage-plugin

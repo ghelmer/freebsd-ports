@@ -15,7 +15,7 @@ NO_STAGE=	yes
 NO_WRKSUBDIR=	yes
 ALL_TARGET=
 
-CFLAGS+=	-Wno-implicit
+CFLAGS+=	-Wno-implicit -Wno-return-type
 
 do-install:
 	-cd ${WRKSRC}; \

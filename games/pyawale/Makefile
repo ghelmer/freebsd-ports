@@ -3,7 +3,7 @@
 
 PORTNAME=	pyawale
 PORTVERSION=	0.4.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games python
 MASTER_SITES=	http://download.gna.org/pyawale/
 
@@ -19,7 +19,6 @@ USE_PYTHON=	yes
 PLIST_FILES=	bin/${PORTNAME} \
 		share/applications/${PORTNAME}.desktop \
 		share/pixmaps/${PORTNAME}.png
-PLIST_DIRSTRY=	share/applications
 
 PORTDATA=	*
 PORTDOCS=	*
@@ -50,7 +49,6 @@ do-install:
 	${MKDIR} ${DATADIR}
 	@(cd ${WRKSRC}/src && ${COPYTREE_SHARE} \* ${DATADIR})
 	${INSTALL_DATA} ${WRKSRC}/docs/${PORTNAME}.png ${PREFIX}/share/pixmaps
-	${MKDIR} ${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/docs/${PORTNAME}.desktop ${PREFIX}/share/applications
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${DOCSDIR}

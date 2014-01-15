@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	input
-PORTVERSION=	1.7.8
+PORTVERSION=	1.7.9
 CATEGORIES=	x11 enlightenment
-MASTER_SITES=	http://download.enlightenment.fr/releases/ \
+MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
 PKGNAMEPREFIX=	ecore-
 DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}

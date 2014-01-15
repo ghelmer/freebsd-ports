@@ -9,8 +9,8 @@ MASTER_SITES=	CRITICAL
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command-line Atari(TM) .sap player
 
+USES=		compiler
 USE_DOS2UNIX=	yes
-NO_STAGE=	yes
 
 SOURCES=	sapPokey pokey1 sapCpu sapEngine main pokey0
 
@@ -23,11 +23,8 @@ PLIST_FILES=	bin/sap
 
 .include <bsd.port.pre.mk>
 
-_CLANG!=	${CXX} --version | ${HEAD} -1 | ${SED} -e 's/.*clang version \([0-9]\)\.\([0-9]\).*/\1\2/'
-ISCLANG=	${_CLANG:M[34][0-9]}
-
 # clang can build this without -fno-exceptions
-.if empty(ISCLANG)
+.if ${COMPILER_TYPE} == "gcc"
 CXXFLAGS+=	-fno-exceptions
 .endif
 
@@ -45,9 +42,6 @@ do-build:
 		-o ${WRKSRC}/sap
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/sap ${PREFIX}/bin
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+	${INSTALL_PROGRAM} ${WRKSRC}/sap ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.post.mk>

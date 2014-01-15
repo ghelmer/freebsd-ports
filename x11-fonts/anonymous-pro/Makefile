@@ -10,10 +10,7 @@ DISTNAME=	AnonymousPro-${PORTVERSION}
 MAINTAINER=	nlopes.ml@gmail.com
 COMMENT=	A fixed width sans designed especially for coders
 
-LICENSE=	OFL
-LICENSE_NAME=	Open Font License (OFL)
-LICENSE_FILE=	${WRKSRC}/OFL.txt
-LICENSE_PERMS=	auto-accept
+LICENSE=	OFL11
 
 RUN_DEPENDS=	fc-cache:${PORTSDIR}/x11-fonts/fontconfig
 

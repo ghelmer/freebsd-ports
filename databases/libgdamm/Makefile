@@ -8,6 +8,7 @@ PORTREVISION=	1
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
+PKGNAMESUFFIX=	-legacy
 
 MAINTAINER=	bland@FreeBSD.org
 COMMENT=	C++ wrapper for libgda4 library

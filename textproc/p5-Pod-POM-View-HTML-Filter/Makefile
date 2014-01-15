@@ -12,14 +12,11 @@ COMMENT=	Use filters on sections of your pod documents
 
 BUILD_DEPENDS=	p5-Pod-POM>=0:${PORTSDIR}/textproc/p5-Pod-POM \
 		p5-Syntax-Highlight-Shell>=0:${PORTSDIR}/www/p5-Syntax-Highlight-Shell \
-		perltidy>=0:${PORTSDIR}/devel/perltidy \
+		perltidy:${PORTSDIR}/devel/p5-Perl-Tidy \
 		p5-Syntax-Highlight-HTML>=0:${PORTSDIR}/www/p5-Syntax-Highlight-HTML
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=	Pod::POM::View::HTML::Filter.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

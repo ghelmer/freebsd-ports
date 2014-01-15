@@ -3,7 +3,7 @@
 
 PORTNAME=	wkhtmltopdf
 DISTVERSION=	0.11.0_rc1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	converters
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}:wkhtmltopdf \
 		${MASTER_SITE_LOCAL}
@@ -52,6 +52,10 @@ MAKE_ARGS+=	INSTALL_ROOT="${PREFIX}"
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
+.if ${OSVERSION} > 1000000
+USE_GCC=	yes
+.endif
+
 .if ${OSVERSION} < 800000
 BROKEN=		fails to extract on FreeBSD 7.X
 .endif
@@ -76,6 +80,8 @@ post-patch:
 		-e 's|/usr/X11R6/include|${LOCALBASE}/include/X11|g' \
 		-e 's|/usr/X11R6/lib|${LOCALBASE}/lib|g' \
 		${WRKSRC}/mkspecs/freebsd-g++/qmake.conf
+	@${REINPLACE_CMD} -e "s|gcc|${CC}|g" -e "s|g++|${CXX}|g" \
+		${WRKSRC}/mkspecs/common/g++-base.conf
 
 post-build:
 	@cd ${WRKSRC} && \

@@ -1,4 +1,4 @@
-# Created by: alepulver
+# Created by: alepulver@FreeBSD.org
 # $FreeBSD$
 
 PORTNAME=	menumaker
@@ -15,5 +15,4 @@ GNU_CONFIGURE=	yes
 
 INFO=		mmaker
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

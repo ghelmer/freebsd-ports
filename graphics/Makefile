@@ -307,7 +307,6 @@
     SUBDIR += gplot
     SUBDIR += gpsmanshp
     SUBDIR += gqview
-    SUBDIR += gqview-devel
     SUBDIR += gracula
     SUBDIR += grads
     SUBDIR += grafx2
@@ -508,7 +507,6 @@
     SUBDIR += libgltext
     SUBDIR += libgnomecanvas
     SUBDIR += libgnomecanvas-reference
-    SUBDIR += libgnomecanvasmm
     SUBDIR += libgnomecanvasmm26
     SUBDIR += libgphoto2
     SUBDIR += libimg
@@ -558,11 +556,9 @@
     SUBDIR += linux-f10-libGLU
     SUBDIR += linux-f10-libmng
     SUBDIR += linux-f10-png
-    SUBDIR += linux-f10-png10
     SUBDIR += linux-f10-sdl_image
     SUBDIR += linux-f10-tiff
     SUBDIR += linux-f10-ungif
-    SUBDIR += linux-panorama-tools
     SUBDIR += linux-sdl_ttf
     SUBDIR += linux_glide
     SUBDIR += lprof-devel
@@ -579,7 +575,6 @@
     SUBDIR += maverik
     SUBDIR += megapov
     SUBDIR += mesa-demos
-    SUBDIR += mesagl
     SUBDIR += meshviewer
     SUBDIR += metacam
     SUBDIR += metapixel
@@ -610,6 +605,7 @@
     SUBDIR += ogre3d
     SUBDIR += okular
     SUBDIR += openclipart
+    SUBDIR += opencollada
     SUBDIR += opencolorio
     SUBDIR += opencolorio-tools
     SUBDIR += opencsg
@@ -642,6 +638,7 @@
     SUBDIR += p5-Chart-Clicker
     SUBDIR += p5-Chart-Graph
     SUBDIR += p5-Chart-PNGgraph
+    SUBDIR += p5-Color-Calc
     SUBDIR += p5-Color-Library
     SUBDIR += p5-Color-Palette
     SUBDIR += p5-Color-Rgb
@@ -907,7 +904,6 @@
     SUBDIR += ruby-image_size
     SUBDIR += ruby-imlib2
     SUBDIR += ruby-ming
-    SUBDIR += ruby-opengl
     SUBDIR += ruby-rmagick
     SUBDIR += ruby-rsvg2
     SUBDIR += ruby-svg
@@ -950,6 +946,7 @@
     SUBDIR += scr2png
     SUBDIR += scrot
     SUBDIR += scwm-icons
+    SUBDIR += sdl2_gfx
     SUBDIR += sdl2_image
     SUBDIR += sdl2_ttf
     SUBDIR += sdl_gfx

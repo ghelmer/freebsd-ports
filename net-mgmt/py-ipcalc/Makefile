@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ipcalc
-PORTVERSION=	1.0.0
+PORTVERSION=	1.1.1
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	${MASTER_SITE_CHEESESHOP}
 MASTER_SITE_SUBDIR=	source/i/ipcalc
@@ -14,5 +14,4 @@ COMMENT=	Module to perform IP subnet calculations
 USE_PYTHON=	yes
 USE_PYDISTUTILS=yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

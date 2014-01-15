@@ -3,6 +3,7 @@
 
 PORTNAME=	cloog
 PORTVERSION=	0.18.1
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://www.bastoul.net/cloog/pages/download/
 
@@ -17,9 +18,7 @@ CONFIGURE_ARGS+=	--with-gmp-prefix=${PREFIX}
 CONFIGURE_ENV=	pkgconfig_libdir=${PREFIX}/libdata/pkgconfig/
 
 post-install:
-	${LN} -s ${STAGEDIR}${PREFIX}/lib/libcloog-isl.so.4 \
-		${STAGEDIR}${PREFIX}/lib/libcloog-isl.so.0
-	${LN} -s ${STAGEDIR}${PREFIX}/lib/libisl.so.12 \
-		${STAGEDIR}${PREFIX}/lib/libisl.so.0
+	${LN} -s libcloog-isl.so.4 ${STAGEDIR}${PREFIX}/lib/libcloog-isl.so.0
+	${LN} -s libisl.so.12 ${STAGEDIR}${PREFIX}/lib/libisl.so.0
 
 .include <bsd.port.mk>

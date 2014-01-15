@@ -24,6 +24,7 @@
     SUBDIR += affenspiel
     SUBDIR += afternoonstalker
     SUBDIR += agame
+    SUBDIR += airstrike
     SUBDIR += alephone
     SUBDIR += alephone-data
     SUBDIR += alephone-scenarios
@@ -41,6 +42,7 @@
     SUBDIR += aop
     SUBDIR += apoolGL
     SUBDIR += apricots
+    SUBDIR += arkanoidsb
     SUBDIR += armagetron
     SUBDIR += arx-libertatis
     SUBDIR += asc
@@ -286,7 +288,7 @@
     SUBDIR += frobtads
     SUBDIR += frogatto
     SUBDIR += frotz
-    SUBDIR += frozenbubble
+    SUBDIR += frozen-bubble
     SUBDIR += fteqw
     SUBDIR += ftjava
     SUBDIR += fuhquake
@@ -399,7 +401,6 @@
     SUBDIR += inform
     SUBDIR += inform7
     SUBDIR += instead
-    SUBDIR += intensityengine
     SUBDIR += interlogic
     SUBDIR += ioquake3
     SUBDIR += ioquake3-devel
@@ -564,10 +565,10 @@
     SUBDIR += madbomber
     SUBDIR += maelstrom
     SUBDIR += magiccube4d
-    SUBDIR += magicmaze
     SUBDIR += magicor
     SUBDIR += mahjong
     SUBDIR += maitretarot
+    SUBDIR += manaplus
     SUBDIR += mangband
     SUBDIR += mangos
     SUBDIR += marsnomercy
@@ -631,7 +632,6 @@
     SUBDIR += nexuiz
     SUBDIR += nibbles
     SUBDIR += nighthawk
-    SUBDIR += nil
     SUBDIR += nimuh
     SUBDIR += ninix-aya
     SUBDIR += njam
@@ -932,7 +932,6 @@
     SUBDIR += tinymux
     SUBDIR += tkmoo
     SUBDIR += tksol
-    SUBDIR += tmw
     SUBDIR += tomatoes
     SUBDIR += tomenet
     SUBDIR += tong
@@ -1009,7 +1008,6 @@
     SUBDIR += wesnoth
     SUBDIR += whichwayisup
     SUBDIR += widelands
-    SUBDIR += windstille
     SUBDIR += wizznic
     SUBDIR += wmeyes
     SUBDIR += wmfortune

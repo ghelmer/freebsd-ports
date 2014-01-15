@@ -17,7 +17,4 @@ USES=		perl5
 USE_PERL5=	configure
 NO_BUILD=	yes
 
-MAN3=	PDFLib.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

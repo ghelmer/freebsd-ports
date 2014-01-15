@@ -94,7 +94,5 @@ lib/ocp/playxm.so
 %%XORG%%@dirrmtry share/icons
 %%PORTDOCS%%@dirrm %%DOCSDIR%%/html
 %%PORTDOCS%%@dirrm %%DOCSDIR%%
-%%XORG%%@dirrmtry share/applications
 @dirrm lib/ocp/autoload
 @dirrm lib/ocp
-%%XORG%%@dirrmtry etc/X11

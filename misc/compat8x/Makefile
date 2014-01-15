@@ -2,7 +2,7 @@
 
 PORTNAME=	compat8x
 PORTVERSION=	8.4.804000.201310
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	garga/compat
@@ -11,6 +11,8 @@ DISTNAME=	${PORTNAME}-${ARCH}-${PORTVERSION}
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	A convenience package to install the compat8x libraries
+
+LICENSE=	BSD
 
 USE_XZ=		yes
 NO_BUILD=	yes
@@ -28,7 +30,7 @@ IGNORE=		is for FreeBSD 8.x and newer
 
 # libstdc++.so.6 could be necessary to run an 8.x binary
 .if ${OSVERSION} >= 1000054
-LIB_DEPENDS=	libstdc++.so:${PORTSDIR}/misc/compat9x
+RUN_DEPENDS=	${LOCALBASE}/lib/compat/libstdc++.so.6:${PORTSDIR}/misc/compat9x
 .endif
 
 .if ${ARCH} == amd64

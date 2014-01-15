@@ -2,6 +2,7 @@
 
 PORTNAME=	oyranos
 PORTVERSION=	0.9.4
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/Oyranos/Oyranos%20${PORTVERSION:C|(.*)\.[0-9]*$|\1|}
 
@@ -35,7 +36,15 @@ CMAKE_ARGS+=	-DXDG_CONFIG_DIR=${PREFIX}/etc/xdg
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 MAKE_JOBS_UNSAFE=yes
 
+PORTDOCS=	*
+
 .include <bsd.port.pre.mk>
+
+PLIST_SUB+=	VER=${PORTVERSION}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|lib|libdata|' \
+		${WRKSRC}/extras/CMakeLists.txt
 
 .if exists(/usr/bin/clang) && ${OSVERSION} > 901502
 CC=		/usr/bin/clang

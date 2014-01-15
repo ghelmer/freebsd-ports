@@ -11,7 +11,7 @@
 
 PORTNAME=	afni
 PORTVERSION=	2012.04.17.2129
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	science biology graphics
 MASTER_SITES=	http://personalpages.tds.net/~jwbacon/Ports/distfiles/AFNI/${PORTVERSION}/ \
 		http://www.acadix.biz/Ports/distfiles/AFNI/${PORTVERSION}/
@@ -34,6 +34,8 @@ RUN_DEPENDS=	cjpeg:${PORTSDIR}/graphics/jpeg \
 USES=		gettext iconv gmake motif
 
 NO_STAGE=	yes
+BROKEN=	R_io.so fails to build with R-3.0.2
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "sparc64"

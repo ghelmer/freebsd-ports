@@ -1,24 +1,23 @@
 # $FreeBSD$
 
 PORTNAME=	relayd
-PORTVERSION=	5.2.20121122
+PORTVERSION=	5.3.20131024
 CATEGORIES=	net
-MASTER_SITES=	https://github.com/downloads/mmatuska/relayd/
-
-FETCH_ARGS=	-pRr
-MASTER_SITE_SUBDIR=	mm
+MASTER_SITES=	GH
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	OpenBSD relay daemon
 
 LICENSE=	BSD
 
-USE_BZIP2=	yes
+GH_ACCOUNT=	mmatuska
+GH_COMMIT=	d6a05fb
 MANCOMPRESSED=	yes
 
-WRKSRC=		${WRKDIR}/src/usr.sbin
+WRKSRC=		${WRKDIR}/${GH_ACCOUNT}-${GH_PROJECT}-${GH_COMMIT}/src/usr.sbin
 MAN5=		relayd.conf.5
 MAN8=		relayctl.8 relayd.8
+USE_GITHUB=	yes
 USE_RC_SUBR=	relayd
 
 CFLAGS+=	-I${PREFIX}/include -Wall
@@ -33,10 +32,6 @@ LIBEVENT_STATIC_DESC=	Build with static libevent
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} > 1000017
-BROKEN=		needs fixing with recent pf changes
-.endif
 
 .if ${PORT_OPTIONS:MLIBEVENT_STATIC}
 BUILD_DEPENDS=	${LOCALBASE}/lib/libevent.a:${PORTSDIR}/devel/libevent

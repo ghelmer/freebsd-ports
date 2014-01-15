@@ -18,11 +18,16 @@ USES=		pkgconfig
 USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-NO_STAGE=	yes
 
 PLIST_FILES=	lib/bmp/Input/libfc.so lib/bmp/Input/libfc.la
+
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} >= 1000000
+BROKEN=		does not build on FreeBSD 10.x and later
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|\(objformat=\).*|\1elf|' ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

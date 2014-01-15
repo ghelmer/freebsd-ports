@@ -2,6 +2,7 @@
 
 PORTNAME=	knemo
 PORTVERSION=	0.7.6
+PORTREVISION=	1
 CATEGORIES=	net kde
 MASTER_SITES=	http://kde-apps.org/CONTENT/content-files/
 DISTNAME=	12956-${PORTNAME}-${PORTVERSION}
@@ -15,7 +16,5 @@ USE_QT4=	qmake_build moc_build uic_build rcc_build
 USE_KDE4=	kdeprefix kdelibs workspace automoc4
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-NO_STAGE=	yes
 
 .include <bsd.port.mk>

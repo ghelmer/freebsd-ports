@@ -2,15 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	enlightenment
-PORTVERSION=	0.17.4
-PORTREVISION=	1
+PORTVERSION=	0.17.5
 PORTEPOCH=	2
 CATEGORIES=	x11-wm enlightenment
-MASTER_SITES=	http://download.enlightenment.fr/releases/ \
+MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
 
 MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	A very artistic X window manager
+COMMENT=	Artistic X window manager
 
 LICENSE=	BSD
 

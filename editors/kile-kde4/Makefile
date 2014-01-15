@@ -3,6 +3,7 @@
 
 PORTNAME=	kile
 PORTVERSION=	2.1.3
+PORTREVISION=	1
 CATEGORIES=	editors kde
 MASTER_SITES=	SF/${PORTNAME}/stable/${PORTNAME}-${DISTVERSION}
 
@@ -20,7 +21,5 @@ USE_TEX=	latex
 OPTIONS_DEFINE=	OKULAR
 OKULAR_DESC=	Use Okular for viewing
 OKULAR_USE=	KDE4=okular_run
-
-NO_STAGE=	yes
 
 .include <bsd.port.mk>

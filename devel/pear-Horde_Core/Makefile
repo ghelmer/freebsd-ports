@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Core
-PORTVERSION=	2.9.0
+PORTVERSION=	2.11.0
 CATEGORIES=	devel www pear
 PKGNAMEPREFIX=	pear-
 
@@ -63,7 +63,6 @@ USE_HORDE_RUN=	Horde_Role \
 # Not required but wanted
 USE_HORDE_RUN+=	Horde_Routes
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if defined(WITH_KOLAB)

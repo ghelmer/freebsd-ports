@@ -3,7 +3,7 @@
 
 PORTNAME=	tribler
 PORTVERSION=	6.0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 #MASTER_SITES=	http://dl.tribler.org/
 MASTER_SITES=	GENTOO/distfiles \
@@ -104,7 +104,6 @@ post-install:
 	@${MKDIR} ${DESKTOPDIR}
 	(cd ${WRKDIR}/usr/share/applications \
 		&& ${INSTALL_DATA} tribler.desktop ${DESKTOPDIR})
-	@${MKDIR} ${PREFIX}/share/pixmaps
 	(cd ${WRKDIR}/usr/share/pixmaps \
 		&& ${INSTALL_DATA} tribler.xpm ${PREFIX}/share/pixmaps)
 .if ${PORT_OPTIONS:MDOCS}

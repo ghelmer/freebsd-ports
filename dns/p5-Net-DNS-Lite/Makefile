@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net-DNS-Lite
-PORTVERSION=	0.10
+PORTVERSION=	0.11
 CATEGORIES=	dns perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,7 +21,4 @@ TEST_DEPENDS=	p5-Cache-LRU>=0:${PORTSDIR}/devel/p5-Cache-LRU \
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		Net::DNS::Lite.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

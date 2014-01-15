@@ -3,11 +3,11 @@
 
 PORTNAME=	mumble
 PORTVERSION=	1.2.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/Mumble/${PORTVERSION}
 
-MAINTAINER=	marius@nuenneri.ch
+MAINTAINER=	feld@FreeBSD.org
 COMMENT=	A voice chat software primarily intended for use while gaming
 
 LIB_DEPENDS+=	libspeex.so:${PORTSDIR}/audio/speex \
@@ -64,7 +64,6 @@ do-install:
 	${LN} -s ${PREFIX}/lib/libmumble.so.1.2.4 ${STAGEDIR}${PREFIX}/lib/libmumble.so.1.2
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/services
 	${INSTALL_DATA} ${WRKSRC}/scripts/mumble.protocol ${STAGEDIR}${PREFIX}/share/services
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/scripts/mumble.desktop ${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/icons/mumble.xpm ${STAGEDIR}${PREFIX}/share/pixmaps
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/128x128/apps ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps

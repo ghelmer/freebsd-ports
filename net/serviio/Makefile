@@ -3,7 +3,7 @@
 
 PORTNAME=	serviio
 PORTVERSION=	1.3.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net multimedia java www
 MASTER_SITES=	http://download.serviio.org/releases/
 EXTRACT_SUFX=	-linux.tar.gz
@@ -11,7 +11,7 @@ EXTRACT_SUFX=	-linux.tar.gz
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Transcoding DLNA-server implemented in Java
 
-RUN_DEPENDS=	ffmpeg1:${PORTSDIR}/multimedia/ffmpeg1
+RUN_DEPENDS=	ffmpeg:${PORTSDIR}/multimedia/ffmpeg
 
 NO_BUILD=	yes
 USE_JAVA=	yes
@@ -35,12 +35,12 @@ do-install:
 	${MKDIR} ${PREFIX}/etc/${PORTNAME}
 .for f in application-profiles profiles log4j
 	${INSTALL_DATA} ${WRKSRC}/config/$f.xml ${ETCDIR}/$f.dist.xml
-	${TEST} -e ${ETCDIR}/$f.xml ||
+	${TEST} -e ${ETCDIR}/$f.xml || \
 		${INSTALL_DATA} ${WRKSRC}/config/$f.xml ${ETCDIR}/
 .endfor
 	${INSTALL_DATA} ${FILESDIR}/console-log4j.properties	\
 		${ETCDIR}/console-log4j.dist.properties
-	${TEST} -e ${ETCDIR}/console-log4.dist.properties ||
+	${TEST} -e ${ETCDIR}/console-log4.dist.properties || \
 		${INSTALL_DATA} ${FILESDIR}/console-log4j.properties ${ETCDIR}/
 	${INSTALL_SCRIPT} ${WRKDIR}/serviiod ${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${WRKDIR}/serviio-console ${PREFIX}/bin

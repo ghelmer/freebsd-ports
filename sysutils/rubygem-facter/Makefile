@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	facter
-PORTVERSION=	1.6.18
-PORTREVISION=	2
+PORTVERSION=	1.7.3
+PORTREVISION=	1
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG \
 		http://downloads.puppetlabs.com/facter/
@@ -17,7 +17,6 @@ RUBYGEM_AUTOPLIST=	yes
 
 PLIST_FILES=	bin/facter
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 # Restrict dmidecode dependency to i386 and amd64 systems

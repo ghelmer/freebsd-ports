@@ -3,6 +3,7 @@
 
 PORTNAME=	Bucardo
 PORTVERSION=	4.5.0
+PORTREVISION=	1
 CATEGORIES=	databases perl5
 MASTER_SITES=	http://bucardo.org/downloads/ ${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	mat/
@@ -31,6 +32,6 @@ post-patch:
 		${WRKSRC}/bucardo_ctl ${WRKSRC}/scripts/bucardo_ctl.rc
 
 post-install:
-	@${INSTALL_SCRIPT} ${WRKSRC}/scripts/bucardo_ctl.rc ${STAGEDIR}${PREFIX}/etc/rc.d/bucardo
+	${INSTALL_SCRIPT} ${WRKSRC}/scripts/bucardo_ctl.rc ${STAGEDIR}${PREFIX}/etc/rc.d/bucardo
 
 .include <bsd.port.mk>

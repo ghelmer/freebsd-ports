@@ -58,7 +58,6 @@
     SUBDIR += dbow
     SUBDIR += dbtool
     SUBDIR += dbview
-    SUBDIR += drizzle
     SUBDIR += emma
     SUBDIR += epgsql
     SUBDIR += erlang-mysql
@@ -97,7 +96,6 @@
     SUBDIR += gnats4
     SUBDIR += gnatsweb4
     SUBDIR += godis
-    SUBDIR += gomysql
     SUBDIR += gosqlite3
     SUBDIR += gqlplus
     SUBDIR += grass
@@ -185,6 +183,7 @@
     SUBDIR += liquibase
     SUBDIR += lmdb
     SUBDIR += lsdb
+    SUBDIR += luadbi
     SUBDIR += luasql-mysql
     SUBDIR += luasql-postgres
     SUBDIR += luasql-sqlite3
@@ -263,6 +262,7 @@
     SUBDIR += p5-AnyEvent-BDB
     SUBDIR += p5-AnyEvent-CouchDB
     SUBDIR += p5-AnyEvent-DBD-Pg
+    SUBDIR += p5-AnyEvent-Memcached
     SUBDIR += p5-AnyEvent-Redis
     SUBDIR += p5-AsciiDB-TagFile
     SUBDIR += p5-BDB
@@ -314,7 +314,6 @@
     SUBDIR += p5-DBD-Excel
     SUBDIR += p5-DBD-FrontBase
     SUBDIR += p5-DBD-Google
-    SUBDIR += p5-DBD-InterBase
     SUBDIR += p5-DBD-LDAP
     SUBDIR += p5-DBD-Mock
     SUBDIR += p5-DBD-Multi
@@ -416,7 +415,6 @@
     SUBDIR += p5-DBIx-XHTML_Table
     SUBDIR += p5-DBIx-XML_RDB
     SUBDIR += p5-DBM-Deep
-    SUBDIR += p5-DBZ_File
     SUBDIR += p5-DMOZ-ParseRDF
     SUBDIR += p5-DR-Tarantool
     SUBDIR += p5-DWH_File
@@ -517,6 +515,7 @@
     SUBDIR += pear-Horde_HashTable
     SUBDIR += pear-Horde_Imsp
     SUBDIR += pear-Horde_Memcache
+    SUBDIR += pear-Horde_Mongo
     SUBDIR += pear-MDB
     SUBDIR += pear-MDB2
     SUBDIR += pear-MDB2_Driver_mysql
@@ -599,6 +598,7 @@
     SUBDIR += php5-redis
     SUBDIR += php5-sqlite3
     SUBDIR += php5-sybase_ct
+    SUBDIR += php5-tarantool
     SUBDIR += php52-dba
     SUBDIR += php52-dbase
     SUBDIR += php52-interbase
@@ -661,7 +661,6 @@
     SUBDIR += postgis-jdbc
     SUBDIR += postgresql-jdbc
     SUBDIR += postgresql-libpgeasy
-    SUBDIR += postgresql-libpq++
     SUBDIR += postgresql-libpqxx
     SUBDIR += postgresql-libpqxx3
     SUBDIR += postgresql-odbc
@@ -726,6 +725,7 @@
     SUBDIR += py-MySQLdb51
     SUBDIR += py-MySQLdb55
     SUBDIR += py-PyGreSQL
+    SUBDIR += py-Pyrseas
     SUBDIR += py-apsw
     SUBDIR += py-bsddb
     SUBDIR += py-bsddb3
@@ -783,6 +783,7 @@
     SUBDIR += py-swift
     SUBDIR += py-swiftclient
     SUBDIR += py-sybase
+    SUBDIR += py-tarantool
     SUBDIR += py-umemcache
     SUBDIR += py-whisper
     SUBDIR += pydbdesigner
@@ -820,7 +821,6 @@
     SUBDIR += ruby-dbi
     SUBDIR += ruby-frontbase
     SUBDIR += ruby-gdbm
-    SUBDIR += ruby-memcache
     SUBDIR += ruby-msql
     SUBDIR += ruby-mysql
     SUBDIR += ruby-o_dbm
@@ -874,8 +874,10 @@
     SUBDIR += rubygem-pg
     SUBDIR += rubygem-rbase
     SUBDIR += rubygem-redis
+    SUBDIR += rubygem-redis-actionpack
     SUBDIR += rubygem-redis-namespace
     SUBDIR += rubygem-rubyrep
+    SUBDIR += rubygem-seed-fu
     SUBDIR += rubygem-sqlite3
     SUBDIR += rubygem-sqlite3-ruby
     SUBDIR += rubygem-tarantool

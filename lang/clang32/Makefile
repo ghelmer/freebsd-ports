@@ -2,6 +2,7 @@
 
 PORTNAME=	clang
 DISTVERSION=	3.2
+PORTREVISION=	2
 CATEGORIES=	lang devel
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -77,6 +78,17 @@ RELTYPE=		Release
 BROKEN=		Does not compile on sparc64
 .endif
 
+.if ${PORT_OPTIONS:MASSERTS}
+pre-fetch:
+	@if [ "`llvm-config${LLVM_SUFFIX} --build-mode`" != ${RELTYPE} ]; then \
+		${ECHO_MSG}	;\
+		${ECHO_MSG} ASSERTS option enabled, but devel/llvm${LLVM_SUFFIX} was compiled without ASSERTS. ;\
+		${ECHO_MSG} Correct options mismatch to proceed. ;\
+		${ECHO_MSG}	;\
+		false	;\
+	fi
+.endif
+
 post-extract:
 	${RM} -f ${BUILD_WRKSRC}
 	${MV} ${WRKDIR}/${CLANG_NAME} ${BUILD_WRKSRC}
@@ -108,16 +120,19 @@ post-build:
 .endif
 
 post-install:
-	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/clang ${STAGEDIR}${LLVM_PREFIX}/bin/clang-cpp
+	${STRIP_CMD} ${STAGEDIR}${LLVM_PREFIX}/lib/libclang.so
+	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/clang \
+	    ${STAGEDIR}${LLVM_PREFIX}/bin/clang-cpp
 	${INSTALL_SCRIPT} ${WRKDIR}/llvm-wrapper.sh \
-	     ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX}
+	    ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX}
 .for command in ${COMMANDS:C/^/XXXX/1:NXXXX*}
 	test -e ${STAGEDIR}${LLVM_PREFIX}/bin/${command}
 	${LN} -f ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX} \
 	    ${STAGEDIR}${PREFIX}/bin/${command}${LLVM_SUFFIX}
 .endfor
 .if ${PORT_OPTIONS:MDOCS}
-	cd ${WRKSRC}/tools/clang/docs/tools && ${GMAKE} DESTDIR=${STAGEDIR}/ install-html install-ps
+	cd ${WRKSRC}/tools/clang/docs/tools && \
+	    ${GMAKE} DESTDIR=${STAGEDIR}/ install-html install-ps
 .endif
 	${INSTALL_MAN} ${WRKSRC}/tools/clang/docs/tools/clang.1 \
 	    ${STAGEDIR}${MANPREFIX}/man/man1/clang${LLVM_SUFFIX}.1

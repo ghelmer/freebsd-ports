@@ -54,9 +54,7 @@
     SUBDIR += emotion
     SUBDIR += emovix
     SUBDIR += ffmpeg
-    SUBDIR += ffmpeg-devel
     SUBDIR += ffmpeg0
-    SUBDIR += ffmpeg1
     SUBDIR += ffmpeg2theora
     SUBDIR += ffmpegthumbnailer
     SUBDIR += flvmeta
@@ -180,6 +178,7 @@
     SUBDIR += libquicktime-lame
     SUBDIR += libquvi
     SUBDIR += libquvi-scripts
+    SUBDIR += librtmp
     SUBDIR += libsmacker
     SUBDIR += libtheora
     SUBDIR += libtuner
@@ -315,6 +314,7 @@
     SUBDIR += shell-fm
     SUBDIR += smile
     SUBDIR += smpeg
+    SUBDIR += smpeg2
     SUBDIR += smplayer
     SUBDIR += smplayer-skins
     SUBDIR += smplayer-themes

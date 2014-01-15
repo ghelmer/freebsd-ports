@@ -3,6 +3,7 @@
 
 PORTNAME=	dolphin-emu
 PORTVERSION=	4.0.0
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	http://contribs.martymac.org/FreeBSD-ports/distfiles/ \
 		LOCAL/martymac
@@ -30,7 +31,7 @@ USE_GL=	gl glew glu
 USE_DOS2UNIX=	yes
 DOS2UNIX_REGEX=	.*\.(h|c|cpp)
 
-USE_GCC=	4.6+
+USE_GCC=	yes
 
 USES=		cmake pkgconfig iconv
 CMAKE_BUILD_TYPE=	Release
@@ -79,10 +80,10 @@ CMAKE_ARGS+=	-DDISABLE_PORTAUDIO:BOOL=ON
 
 .if ${PORT_OPTIONS:MFRAMEDUMPS}
 CMAKE_ARGS+=	-DENCODE_FRAMEDUMPS:BOOL=ON
-LIB_DEPENDS+=	libavcodec1.so:${PORTSDIR}/multimedia/ffmpeg1 \
-		libavformat1.so:${PORTSDIR}/multimedia/ffmpeg1 \
-		libswscale1.so:${PORTSDIR}/multimedia/ffmpeg1 \
-		libavutil1.so:${PORTSDIR}/multimedia/ffmpeg1
+LIB_DEPENDS+=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
+		libavformat.so:${PORTSDIR}/multimedia/ffmpeg \
+		libswscale.so:${PORTSDIR}/multimedia/ffmpeg \
+		libavutil.so:${PORTSDIR}/multimedia/ffmpeg
 .else
 CMAKE_ARGS+=	-DENCODE_FRAMEDUMPS:BOOL=OFF
 .endif

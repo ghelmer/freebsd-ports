@@ -56,6 +56,7 @@
     SUBDIR += e3
     SUBDIR += e93
     SUBDIR += edith
+    SUBDIR += editorconfig-core-c
     SUBDIR += elvis
     SUBDIR += emacs
     SUBDIR += emacs-devel
@@ -289,10 +290,8 @@
     SUBDIR += xemacs-mule-packages
     SUBDIR += xemacs-packages
     SUBDIR += xemacs21-mule
-    SUBDIR += xml2rfc-xxe
     SUBDIR += xmlcopyeditor
     SUBDIR += xvile
-    SUBDIR += xxe
     SUBDIR += yasnippet
     SUBDIR += yudit
     SUBDIR += yui

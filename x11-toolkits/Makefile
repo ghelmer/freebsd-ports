@@ -15,6 +15,7 @@
     SUBDIR += fl_editor
     SUBDIR += flowcanvas
     SUBDIR += fltk
+    SUBDIR += fltk-devel
     SUBDIR += flvw
     SUBDIR += fox14
     SUBDIR += fox16
@@ -100,7 +101,6 @@
     SUBDIR += libgnomeprintuimm
     SUBDIR += libgnomeui
     SUBDIR += libgnomeui-reference
-    SUBDIR += libgnomeuimm
     SUBDIR += libgnomeuimm26
     SUBDIR += libgtk-java
     SUBDIR += libgtksourceviewmm
@@ -224,7 +224,6 @@
     SUBDIR += ruby-fox16
     SUBDIR += ruby-goocanvas
     SUBDIR += ruby-gstreamer
-    SUBDIR += ruby-gtk
     SUBDIR += ruby-gtk2
     SUBDIR += ruby-gtksourceview2
     SUBDIR += ruby-pango

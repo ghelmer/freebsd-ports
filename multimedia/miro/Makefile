@@ -3,12 +3,13 @@
 
 PORTNAME=	miro
 PORTVERSION=	6.0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	ftp://ftp.osuosl.org/pub/pculture.org/miro/src/ \
 		http://ftp.osuosl.org/pub/pculture.org/miro/src/
 
 MAINTAINER=	swills@FreeBSD.org
-COMMENT=	A video player to get internet TV broadcasts
+COMMENT=	Video player to get internet TV broadcasts
 
 LICENSE=	GPLv2
 
@@ -17,13 +18,13 @@ BUILD_DEPENDS=	pyrexc:${PORTSDIR}/devel/pyrex \
 		update-mime-database:${PORTSDIR}/misc/shared-mime-info \
 		${LOCALBASE}/include/boost/numeric/ublas/matrix.hpp:${PORTSDIR}/devel/boost-libs \
 		${LOCALBASE}/include/taglib/taglib.h:${PORTSDIR}/audio/taglib
-LIB_DEPENDS=	avutil1:${PORTSDIR}/multimedia/ffmpeg1 \
-		sqlite3:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS=	libavutil.so:${PORTSDIR}/multimedia/ffmpeg \
+		libsqlite3.so:${PORTSDIR}/databases/sqlite3
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsddb>0:${PORTSDIR}/databases/py-bsddb \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		${PYTHON_SITELIBDIR}/dbus/glib.py:${PORTSDIR}/devel/py-dbus \
 		${PYTHON_SITELIBDIR}/gtk-2.0/pynotify/_pynotify.so:${PORTSDIR}/devel/py-notify \
-		${PYTHON_SITELIBDIR}/libtorrent.so:${PORTSDIR}/net-p2p/libtorrent-rasterbar-16-python \
+		${PYTHON_SITELIBDIR}/libtorrent.so:${PORTSDIR}/net-p2p/libtorrent-rasterbar-python \
 		${PYTHON_SITELIBDIR}/webkit/webkit.so:${PORTSDIR}/www/py-webkitgtk \
 		${PYTHON_SITELIBDIR}/gtk-2.0/gconf.so:${PORTSDIR}/x11-toolkits/py-gnome2 \
 		${PYTHON_SITELIBDIR}/pycurl.so:${PORTSDIR}/ftp/py-curl \

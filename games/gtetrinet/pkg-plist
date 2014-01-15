@@ -1,4 +1,5 @@
 bin/gtetrinet
+man/man6/gtetrinet.6.gz
 share/applications/gtetrinet.desktop
 share/gtetrinet/themes/default/blocks.png
 share/gtetrinet/themes/default/theme.cfg
@@ -51,4 +52,3 @@ share/locale/zh_TW/LC_MESSAGES/gtetrinet.mo
 @dirrm share/gtetrinet/themes
 @dirrm share/gtetrinet
 @dirrm share/pixmaps/gtetrinet
-@dirrmtry share/applications
