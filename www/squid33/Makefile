@@ -44,7 +44,6 @@ SQUID_STABLE_VER=	12
 
 CONFLICTS_INSTALL=	squid-2.[0-9].* squid32-* cacheboy-[0-9]* lusca-head-[0-9]*
 USES=		perl5
-USE_GCC=	any
 GNU_CONFIGURE=	yes
 USE_BZIP2=	yes
 USE_RC_SUBR=	squid
