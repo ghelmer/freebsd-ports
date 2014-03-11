@@ -40,7 +40,7 @@ COMMENT=	HTTP Caching Proxy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-SQUID_STABLE_VER=	2
+SQUID_STABLE_VER=	4
 
 CONFLICTS_INSTALL=	squid-2.[0-9].* squid32-* squid33-* cacheboy-[0-9]* lusca-head-[0-9]*
 USES=		perl5
