@@ -2,13 +2,13 @@
 #
 # Use the Comprehensive R Archive Network 
 #
-# MAINTAINER=	wen@FreeBSD.org
-#
 # Feature:	cran
 # Usage:	USES=cran or USES=cran:ARGS
 # Valid ARGS:	auto-plist
 #
 # auto-plist	The pkg-plist can be automatically compiled
+#
+# MAINTAINER=	wen@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_CRAN_MK)
 _INCLUDE_USES_CRAN_MK=	yes
@@ -30,7 +30,7 @@ MASTER_SITE_CRAN_ARCHIVE+=	${MASTER_SITE_CRAN:S,$,Archive/${PORTNAME}/,}
 
 MASTER_SITES?=	${MASTER_SITE_CRAN} ${MASTER_SITE_CRAN_ARCHIVE}
 
-USE_FORTRAN=	yes
+USES+=		fortran
 BUILD_DEPENDS+=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R
 RUN_DEPENDS+=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R
 

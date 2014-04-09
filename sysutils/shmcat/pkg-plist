@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 bin/ftok
 bin/shmcat
 %%NLS%%share/locale/de/LC_MESSAGES/shmcat.mo
@@ -10,3 +9,7 @@ bin/shmcat
 %%NLS%%@dirrmtry share/locale/en@boldquot/LC_MESSAGES
 %%NLS%%@dirrmtry share/locale/en@quot
 %%NLS%%@dirrmtry share/locale/en@quot/LC_MESSAGES
+man/de/man1/ftok.1.gz
+man/de/man1/shmcat.1.gz
+man/man1/ftok.1.gz
+man/man1/shmcat.1.gz

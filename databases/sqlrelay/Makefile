@@ -12,6 +12,7 @@ COMMENT=	Persistent DB connection pooling/proxying/load balancing system
 
 LIB_DEPENDS=	librudiments.so:${PORTSDIR}/devel/rudiments
 
+BROKEN=		Does not build
 WANT_GNOME=	yes
 USES=		gmake
 USE_AUTOTOOLS=	autoconf libtool
@@ -27,7 +28,6 @@ CONFIGURE_ARGS=		${SQLRELAY_CONFIGURE_ARGS} \
 			--disable-zope
 MAKE_JOBS_UNSAFE=yes
 USE_LDCONFIG=	yes
-NO_STAGE=	yes
 
 PORTDOCS=	*
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	syslog-ng
-PORTVERSION=	3.5.2
+PORTVERSION=	3.5.4.1
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
 DISTVERSION=	$(PORTVERSION:S/a/alpha/:S/b/beta/:S/r/rc/)
@@ -11,6 +11,7 @@ MASTER_SITES=	http://www.balabit.com/downloads/files/syslog-ng/open-source-editi
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	A powerful syslogd replacement
+IGNORE=		No longer in development status (use syslog-ng port instead)
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
@@ -34,18 +35,19 @@ JSON_DESC=		Build with JSON-C support
 GEOIP_DESC=		Build with GeoIP support
 REDIS_DESC=		Build with Redis support
 
-LIB_DEPENDS=	evtlog.0:${PORTSDIR}/sysutils/eventlog
+LIB_DEPENDS=	libevtlog.so:${PORTSDIR}/sysutils/eventlog
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig pathfix
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 GNU_CONFIGURE=	yes
-USE_GNOME=	glib20 gnomehack
+USE_GNOME=	glib20
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc --localstatedir=/var/db \
 		--enable-dynamic-linking \
-		--enable-debug
+		--enable-debug \
+		--datadir=${PREFIX}/share/syslog-ng/
 
 .include <bsd.port.options.mk>
 
@@ -93,14 +95,14 @@ CONFIGURE_ARGS+=	--disable-ipv6
 
 .if ${PORT_OPTIONS:MPCRE}
 CONFIGURE_ARGS+=	--enable-pcre
-LIB_DEPENDS+=		pcre:${PORTSDIR}/devel/pcre
+LIB_DEPENDS+=		libpcre.so:${PORTSDIR}/devel/pcre
 .else
 CONFIGURE_ARGS+=	--disable-pcre
 .endif
 
 .if ${PORT_OPTIONS:MGEOIP}
 CONFIGURE_ARGS+=	--enable-geoip
-LIB_DEPENDS+=		GeoIP.5:${PORTSDIR}/net/GeoIP
+LIB_DEPENDS+=		libGeoIP.so:${PORTSDIR}/net/GeoIP
 CONFIGURE_ENV+=		GEOIP_LIBS="-lGeoIP"
 PLIST_FILES+=		lib/syslog-ng/libtfgeoip.la lib/syslog-ng/libtfgeoip.so
 .else
@@ -109,7 +111,7 @@ CONFIGURE_ARGS+=	--disable-geoip
 
 .if ${PORT_OPTIONS:MREDIS}
 CONFIGURE_ARGS+=        --enable-redis
-LIB_DEPENDS+=           hiredis.0:${PORTSDIR}/databases/hiredis
+LIB_DEPENDS+=           libhiredis.so:${PORTSDIR}/databases/hiredis
 PLIST_FILES+=           lib/syslog-ng/libredis.so lib/syslog-ng/libredis.la
 .else
 CONFIGURE_ARGS+=        --disable-redis
@@ -118,14 +120,14 @@ CONFIGURE_ARGS+=        --disable-redis
 
 .if ${PORT_OPTIONS:MSMTP}
 CONFIGURE_ARGS+=	--with-libesmtp=/usr/local/
-LIB_DEPENDS+=		esmtp.7:${PORTSDIR}/mail/libesmtp
+LIB_DEPENDS+=		libesmtp.so:${PORTSDIR}/mail/libesmtp
 PLIST_FILES+=		lib/syslog-ng/libafsmtp.la lib/syslog-ng/libafsmtp.so
 .else
 CONFIGURE_ARGS+=	--disable-smtp
 .endif
 
 .if ${PORT_OPTIONS:MSQL}
-LIB_DEPENDS+=		dbi.1:${PORTSDIR}/databases/libdbi
+LIB_DEPENDS+=		libdbi.so:${PORTSDIR}/databases/libdbi
 CONFIGURE_ENV+=		LIBDBI_LIBS="-ldbi"
 CONFIGURE_ARGS+=	--enable-sql
 PLIST_FILES+=		lib/syslog-ng/libafsql.la lib/syslog-ng/libafsql.so
@@ -134,7 +136,7 @@ CONFIGURE_ARGS+=	--disable-sql
 .endif
 
 .if ${PORT_OPTIONS:MJSON}
-LIB_DEPENDS+=		json:${PORTSDIR}/devel/json-c
+LIB_DEPENDS+=		libjson.so:${PORTSDIR}/devel/json-c
 CONFIGURE_ARGS+=	--enable-json
 PLIST_FILES+= 		lib/syslog-ng/libjson-plugin.la lib/syslog-ng/libjson-plugin.so
 .else
@@ -157,8 +159,12 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}
 .endif
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.1 ${STAGEDIR}${PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.5 ${STAGEDIR}${PREFIX}/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/doc/man/*.8 ${STAGEDIR}${PREFIX}/man/man8/
 	${INSTALL_DATA} ${FILESDIR}/syslog-ng.conf.sample ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} ${WRKSRC}/scl/syslog-ng.conf.dist ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} ${WRKSRC}/scl/scl.conf.dist ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_DATA} ${WRKSRC}/lib/ivykis/src/include/iv*.h ${STAGEDIR}${PREFIX}/include/syslog-ng/
 
 .include <bsd.port.post.mk>

@@ -8,17 +8,16 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://mirror.crc.net.nz/pub/srg/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A Squid Report Generator
+COMMENT=	Squid Report Generator
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 
-MAN1=		srg.1
+OPTIONS_DEFINE=	EXAMPLES
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 post-patch:
@@ -27,11 +26,9 @@ post-patch:
 		 /LDFLAGS/s|-L/usr/local/lib||' ${WRKSRC}/configure
 
 post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for ex in srg.daily srg.monthly srg.weekly
-	${INSTALL_DATA} ${WRKSRC}/examples/${ex} ${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/examples/${ex} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

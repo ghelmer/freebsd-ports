@@ -9,7 +9,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:HINRIK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	milki@rescomp.berkeley.edu
+MAINTAINER=	milki@FreeBSD.org
 COMMENT=	A pluggable Markov engine analogous to MegaHAL
 
 LICENSE=	ART10 GPLv1
@@ -46,31 +46,9 @@ TEST_DEPENDS=	p5-DBD-SQLite>=1.29:${PORTSDIR}/databases/p5-DBD-SQLite \
 USES=		perl5
 USE_PERL5=	configure
 
-MAN1=		hailo.1
-
-MAN3=		Hailo.3 \
-		Hailo::Command.3 \
-		Hailo::Engine::Default.3 \
-		Hailo::Engine::Scored.3 \
-		Hailo::Role::Arguments.3 \
-		Hailo::Role::Engine.3 \
-		Hailo::Role::Storage.3 \
-		Hailo::Role::Tokenizer.3 \
-		Hailo::Role::UI.3 \
-		Hailo::Storage.3 \
-		Hailo::Storage::MySQL.3 \
-		Hailo::Storage::PostgreSQL.3 \
-		Hailo::Storage::SQLite.3 \
-		Hailo::Storage::Schema.3 \
-		Hailo::Tokenizer::Chars.3 \
-		Hailo::Tokenizer::Words.3 \
-		Hailo::UI::ReadLine.3
-
 OPTIONS_DEFINE=	SQLITE PGSQL MYSQL
 OPTIONS_DEFAULT=	SQLITE
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSQLITE}
@@ -84,10 +62,4 @@ RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
 RUN_DEPENDS+=	p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql
 .endif
 
-.if ${PERL_LEVEL} < 501400
-BUILD_DEPENDS+=	p5-autodie>=2.08:${PORTSDIR}/devel/p5-autodie
-RUN_DEPENDS+=	p5-autodie>=2.08:${PORTSDIR}/devel/p5-autodie
-TEST_DEPENDS+=	p5-Test-Simple>=0.94:${PORTSDIR}/devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

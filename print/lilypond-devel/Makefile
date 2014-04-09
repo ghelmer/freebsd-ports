@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-PORTVERSION=	2.19.0
+PORTVERSION=	2.19.3
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -39,6 +39,7 @@ INFO=		internals \
 		lilypond-internals \
 		lilypond-learning \
 		lilypond-notation \
+		lilypond-snippets \
 		lilypond-usage \
 		lilypond-web \
 		music-glossary
@@ -65,6 +66,8 @@ ALL_TARGET=	all
 NO_CCACHE=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+OPTIONS_DEFINE=	NLS
 
 .include <bsd.port.options.mk>
 

@@ -6,15 +6,14 @@ PORTVERSION=	0.1.4
 CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/1041/
 DISTNAME=	${PORTNAME:S/-plugin-/-/}-${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	nox@FreeBSD.org
 COMMENT=	Video Disk Recorder - MarkAd plugin
 
-LIB_DEPENDS+=	avcodec:${PORTSDIR}/multimedia/ffmpeg \
-		execinfo:${PORTSDIR}/devel/libexecinfo
+LIB_DEPENDS+=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
+		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
-USES=		pkgconfig
+USES=		pkgconfig tar:tgz
 PATCH_STRIP=	-p1
 HAVE_CONFIGURE=	yes
 PORTDOCS=	COPYING README HISTORY
@@ -24,12 +23,9 @@ VDR_PLUGIN_MAKEFILES=	${WRKSRC}/command/Makefile ${WRKSRC}/plugin/Makefile
 DEFINES+=	-DDATADIR=\\\"${DATADIR}\\\" -DPREFIX=\\\"${PREFIX}\\\"
 MAKE_ARGS+=	DATADIR=${DATADIR} FREEBSD=1
 MAKE_ENV+=	DEFINES="${DEFINES}"
-MANCOMPRESSED=	yes
-MAN1=		markad.1
 
 RESTRICTED=	Installs station logos
 
-NO_STAGE=	yes
 .include	"${.CURDIR}/../vdr/Makefile.plugins"
 
 # for libexecinfo: (so that __builtin_frame_address() finds the top
@@ -42,10 +38,11 @@ CPPFLAGS+=	-fno-omit-frame-pointer
 post-patch: post-patch-plugin
 	@${LN} -s ../lib ../locale ${WRKSRC}
 
+pre-install:
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/vdr
+
 post-install: post-install-pluginlocales
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR})
-.endif
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

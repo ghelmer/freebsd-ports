@@ -3,13 +3,15 @@
 
 PORTNAME=	visionworkbench
 PORTVERSION=	2.2.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	http://ti.arc.nasa.gov/m/project/nasa-vision-workbench/
 DISTNAME=	VisionWorkbench-${PORTVERSION}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	A general purpose image processing and computer vision library
+
+BROKEN=		Fails to configure
 
 LICENSE=	NOSA
 LICENSE_GROUPS=	OSI
@@ -18,9 +20,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig
+USES=		fortran pkgconfig
 USE_QT4=	moc_build qmake_build
-USE_FORTRAN=	yes
 USE_LDCONFIG=	yes
 USE_PYTHON=	yes
 
@@ -46,7 +47,7 @@ CFLAGS+=	-Dtgammaf=tgamma
 CFLAGS+=	${PTHREAD_CFLAGS}
 LDFLAGS+=	${PTHREAD_LIBS}
 
-CONFIGURE_ENV=	CFLAGS="-I${LOCALBASE}/include ${CFLAGS}" \
+CONFIGURE_ENV+=	CFLAGS="-I${LOCALBASE}/include ${CFLAGS}" \
 		LIBS="-L${LOCALBASE}/lib ${LDFLAGS}"
 
 post-patch:
@@ -54,7 +55,7 @@ post-patch:
 
 pre-configure:
 	echo "HAVE_PKG_FLAPACK=yes" >> ${WRKSRC}/config.options
-	echo "PKG_FLAPACK_LDFLAGS=-L${LOCALBASE}/lib/${CC}" >> ${WRKSRC}/config.options
+	echo "PKG_FLAPACK_LDFLAGS=${LDFLAGS}" >> ${WRKSRC}/config.options
 	echo "HAVE_PKG_PYTHON=yes" >> ${WRKSRC}/config.options
 	echo "PYTHON_LDFLAGS=-L${PYTHON_LIBDIR} -lboost_python -l${PYTHON_VERSION} ${PTHREAD_LIBS}" >> ${WRKSRC}/config.options
 	echo "PYTHON_CPPFLAGS=-I${PYTHON_INCLUDEDIR}" >> ${WRKSRC}/config.options

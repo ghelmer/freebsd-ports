@@ -7,13 +7,14 @@ CATEGORIES=	lang lisp
 MASTER_SITES=	http://www.sigala.it/sandro/files/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A simple Lisp interpreter
+COMMENT=	Simple Lisp interpreter
+
+LICENSE=	BSD2CLAUSE
 
 GNU_CONFIGURE=	yes
 
-MAN1=		${PORTNAME}.1
 INFO=		slisp
-PLIST_FILES=	bin/slisp
+PLIST_FILES=	bin/slisp \
+		man/man1/slisp.1.gz
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

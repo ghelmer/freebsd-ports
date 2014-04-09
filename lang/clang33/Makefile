@@ -2,7 +2,7 @@
 
 PORTNAME=	clang
 DISTVERSION=	3.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	lang devel
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -34,7 +34,7 @@ GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
 USES=		gmake perl5
 USE_LDCONFIG=	yes
-USE_PYTHON_BUILD=	yes
+USE_PYTHON_BUILD=	-2.9
 
 MAKE_ARGS=	CLANG_TBLGEN=${WRKSRC}/${RELTYPE}/bin/clang-tblgen \
 		LLVMIncDir=${LLVM_PREFIX}/include \
@@ -103,6 +103,8 @@ post-patch:
 	    ${WRKSRC}/Makefile.config.in
 	${REINPLACE_CMD} -e 's|/usr/local/|${LOCALBASE}/|g' \
 	    ${WRKSRC}/tools/clang/lib/Frontend/InitHeaderSearch.cpp
+	${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}/|g' \
+	    ${WRKSRC}/tools/clang/tools/scan-build/scan-build
 
 pre-build:
 	${LN} -sf ${LLVM_PREFIX}/include/llvm/IR/Intrinsics.gen \

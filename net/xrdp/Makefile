@@ -3,7 +3,7 @@
 
 PORTNAME=	xrdp
 PORTVERSION=	0.6.1
-PORTREVISION=	1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	GH
@@ -13,7 +13,6 @@ MAINTAINER=	meta+ports@vmeta.jp
 COMMENT=	Open source Remote Desktop Protocol (RDP) server
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		pkgconfig
 USE_XORG=	x11 xfixes
@@ -22,28 +21,28 @@ GNU_CONFIGURE=	yes
 USE_RC_SUBR=	xrdp
 USE_LDCONFIG=	${STAGEDIR}${PREFIX}/lib/xrdp
 USE_GITHUB=	yes
-GH_ACCOUNT=	FreeRDP
+GH_ACCOUNT=	neutrinolabs
 GH_PROJECT=	xrdp
 GH_COMMIT=	5d53758
 GH_TAGNAME=	${GH_COMMIT}
 
-CONFIGURE_ARGS=	--localstatedir=/var \
-		--enable-freerdp1
+CONFIGURE_ARGS=	--localstatedir=/var
 LDFLAGS+=	-L${LOCALBASE}/lib
 CPPFLAGS+=	-I${LOCALBASE}/include
-CONFLICTS=	xrdp-devel-[0-9]*
-BUILD_DEPENDS+=	freerdp>=1.0.2:${PORTSDIR}/net/freerdp
+CONFLICTS_INSTALL=	xrdp-devel-[0-9]* x11rdp-devel-[0-9]*
 
 OPTIONS_DEFINE=	DEBUG
-OPTIONS_DEFAULT=	JP106 TIGERVNC
-OPTIONS_GROUP=	KEYMAP
+OPTIONS_DEFAULT=	JP106 X11RDP
+OPTIONS_GROUP=	KEYMAP XSERVER
 OPTIONS_GROUP_KEYMAP= JP106
+OPTIONS_GROUP_XSERVER= X11RDP
 OPTIONS_RADIO=	XVNC
 OPTIONS_RADIO_XVNC=	REALVNC TIGERVNC TIGHTVNC TRIDIAVNC
 REALVNC_DESC=	Use RealVNC
 TIGERVNC_DESC=	Use TigerVNC (recommended)
 TIGHTVNC_DESC=	Use TightVNC
 TRIDIAVNC_DESC=	Use TridiaVNC
+X11RDP_DESC=	Use X11rdp (most recommended)
 JP106_DESC=	Install Japanese JP106 keymap
 
 .include <bsd.port.options.mk>
@@ -60,6 +59,11 @@ RUN_DEPENDS=	Xvnc:${PORTSDIR}/net/tightvnc
 .endif
 .if ${PORT_OPTIONS:MTRIDIAVNC}
 RUN_DEPENDS=	Xvnc:${PORTSDIR}/net/tridiavnc
+.endif
+# X11rdp
+.if ${PORT_OPTIONS:MX11RDP} || exists(${LOCALBASE}/bin/X11rdp)
+RUN_DEPENDS+=	X11rdp:${PORTSDIR}/x11-servers/x11rdp
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-x11rdp_xrdp.ini
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}

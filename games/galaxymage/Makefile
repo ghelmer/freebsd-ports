@@ -3,7 +3,7 @@
 
 PORTNAME=	galaxymage
 PORTVERSION=	0.3.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games python
 MASTER_SITES=	http://download.gna.org/tactics/
 
@@ -19,6 +19,8 @@ USES=		gettext twisted
 NO_BUILD=	yes
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

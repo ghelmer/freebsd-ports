@@ -3,7 +3,7 @@
 
 PORTNAME=	x12arima
 PORTVERSION=	0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math finance
 MASTER_SITES=	http://www.census.gov/ts/x12a/v03/unix/
 DISTFILES=	omegav03src.tar.gz
@@ -12,7 +12,7 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	jh@jameshoward.us
 COMMENT=	X-12-ARIMA seasonal adjustment program
 
-USE_FORTRAN=	yes
+USES=		fortran
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile.lnx
 NO_STAGE=	yes

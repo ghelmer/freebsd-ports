@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	amazon-ecs
-PORTVERSION=	2.2.4
+PORTVERSION=	2.2.5
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	tota@FreeBSD.org
-COMMENT=	A generic Amazon E-commerce REST API written in Ruby
+MAINTAINER=	ruby@FreeBSD.org
+COMMENT=	Generic Amazon E-commerce REST API written in Ruby
 
 LICENSE=	MIT
 
@@ -18,5 +18,4 @@ USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

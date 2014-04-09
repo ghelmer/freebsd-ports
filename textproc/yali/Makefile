@@ -3,8 +3,8 @@
 
 PORTNAME=	yali
 PORTVERSION=	1.1
-CATEGORIES=	textproc
 PORTREVISION=	1
+CATEGORIES=	textproc
 MASTER_SITES=	http://mirror.appliedops.net/distfiles/ \
 		http://1.618034.com/blog_data/files/
 DISTNAME=	yali.v1.1.pl.txt
@@ -17,20 +17,19 @@ COMMENT=	YALI: Yet Another LOLCODE Interpreter
 RUN_DEPENDS=	p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
 		p5-Parse-RecDescent>=0:${PORTSDIR}/devel/p5-Parse-RecDescent
 
-USES=		perl5
+USES=		perl5 dos2unix shebangfix
 USE_PERL5=	run
-
-USE_DOS2UNIX=	yes
+SHEBANG_FILES=	${DISTFILES}
 
 NO_BUILD=	yes
+NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/yali
 
-NO_STAGE=	yes
 post-extract:
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/${DISTFILES} ${WRKSRC}
 
 do-install:
-	@${INSTALL_SCRIPT} ${WRKSRC} ${PREFIX}/bin/yali
+	${INSTALL_SCRIPT} ${WRKSRC}/${DISTFILES} ${STAGEDIR}${PREFIX}/bin/yali
 
 .include <bsd.port.mk>

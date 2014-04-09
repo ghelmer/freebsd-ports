@@ -16,6 +16,9 @@ COMMENT=	Graphics module for AOLserver
 
 LICENSE=	GPLv2
 
+DEPRECATED=	abandonware, messing up on clusters
+EXPIRATION_DATE=	2014-04-03
+
 WRKSRC=		${WRKDIR}
 
 AOLSERVERBASE?=	aolserver
@@ -25,7 +28,7 @@ RUN_DEPENDS+=	${LOCALBASE}/${AOLSERVERBASE}/bin/nsd:${PORTSDIR}/www/aolserver
 
 USE_GMAKE=	yes
 
-USE_TCL=	84+
+USES=		tcl
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>

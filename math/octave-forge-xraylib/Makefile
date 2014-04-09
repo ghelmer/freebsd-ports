@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-xraylib
 PORTVERSION=	1.0.8
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -12,7 +12,6 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-MAKE_ARGS=	CC="${CC}"
 
 BUILD_DEPENDS+=	bash:${PORTSDIR}/shells/bash
 

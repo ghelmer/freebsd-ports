@@ -14,6 +14,8 @@ COMMENT=	Packet sniffer that grabs ARP packets on any ethernet devices
 LICENSE=	BSD
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=	Unmaintained since 2002
+EXPIRATION_DATE=	2014-04-17
 USE_GMAKE=	yes
 GNU_CONFIGURE=	yes
 
@@ -22,6 +24,9 @@ PORTDOCS=	*
 PLIST_FILES=	bin/echolot
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-install:

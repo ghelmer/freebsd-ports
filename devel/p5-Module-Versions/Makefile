@@ -9,11 +9,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Perl extension to handle versions of loaded modules
 
-USE_ZIP=	yes
-USES=		perl5
+USES=		perl5 zip
 USE_PERL5=	configure
 
-MAN3=	Module::Versions.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

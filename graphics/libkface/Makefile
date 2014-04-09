@@ -8,7 +8,6 @@ CATEGORIES=	graphics kde
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE4 library for face recognition
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../digikam-kde4/Makefile.common"
 
 USES+=		pkgconfig

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sleuthkit
-PORTVERSION=	4.1.2
-PORTREVISION=	1
+PORTVERSION=	4.1.3
 CATEGORIES=	sysutils security
 MASTER_SITES=	SF
 
@@ -26,7 +25,7 @@ CONFLICTS=	ja-ls-[0-9]* icat-[0-9]*
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_PERL="${PERL}"
-USES=		perl5
+USES=		libtool perl5
 USE_LDCONFIG=	yes
 DATADIR=	${PREFIX}/share/tsk
 
@@ -40,12 +39,8 @@ LIBEWF_LIB_DEPENDS=	libewf.so:${PORTSDIR}/devel/libewf
 LIBEWF_CONFIGURE_ON=	--with-libewf=${LOCALBASE}
 LIBEWF_CONFIGURE_OFF=	--without-libewf
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

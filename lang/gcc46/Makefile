@@ -13,6 +13,9 @@ DISTNAME=	gcc-${DISTVERSION}
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.6
 
+LICENSE=	GPLv3 GPLv3RLE
+LICENSE_COMB=	multi
+
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libmpfr.so:${PORTSDIR}/math/mpfr \
 		libmpc.so:${PORTSDIR}/math/mpc
@@ -61,7 +64,6 @@ WRKSRC=		${WRKDIR}/build
 TARGLIB=	${PREFIX}/lib/gcc${SUFFIX}
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
-CFLAGS+=	-I${LOCALBASE}/include
 .if empty(PORT_OPTIONS:MBOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
 .else
@@ -127,6 +129,7 @@ full-regression-test: build
 
 post-install:
 	${RM} -f ${STAGEDIR}${TARGLIB}/*.la
+	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
 	# Add target libraries and include files to packaging list.
 	${RM} -f ${WRKDIR}/PLIST.lib
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
@@ -137,8 +140,5 @@ post-install:
 	fi
 .endfor
 	cd ${WRKDIR} ; ${SED} -i -e "/PLIST.lib/ r PLIST.lib" ${TMPPLIST}
-	@if type ccache-update-links >/dev/null 2>&1; then \
-	    ccache-update-links -v; \
-	fi
 
 .include <bsd.port.post.mk>

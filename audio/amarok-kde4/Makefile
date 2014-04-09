@@ -3,7 +3,7 @@
 
 PORTNAME=	amarok
 PORTVERSION=	2.7.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio kde
 MASTER_SITES=	${MASTER_SITE_KDE}
 MASTER_SITE_SUBDIR=	stable/${PORTNAME}/${PORTVERSION}/src
@@ -26,14 +26,14 @@ RUN_DEPENDS=	${LOCALBASE}/lib/qt4/plugins/script/libqtscript_core.so.1.0.0:${POR
 LATEST_LINK=	${PORTNAME}-kde4
 
 USE_KDE4=	kdehier kdelibs kdeprefix libkcddb libkcompactdisc \
-		nepomuk-core runtime automoc4 sharedmime strigi
+		nepomuk-core runtime automoc4 strigi
 USE_MYSQL=	embedded
 USE_QT4=	corelib dbus designer gui network opengl \
 		phonon script sql svg webkit xml \
 		qmake_build moc_build rcc_build uic_build
 USE_XORG=	x11
 USE_BZIP2=	yes
-USES=		cmake pkgconfig
+USES=		cmake pkgconfig shared-mime-info
 USE_LDCONFIG=	yes
 
 BROKEN_sparc64=	does not build (GCC-related error)
@@ -56,7 +56,7 @@ MP3TUNES_LIB_DEPENDS=	libloudmouth-1.so:${PORTSDIR}/net-im/loudmouth \
 MP3TUNES_USE=		GNOME=glib20,libxml2
 MP3TUNES_CMAKE_OFF=	-DWITH_MP3tunes:BOOL=Off
 
-MTP_LIB_DEPENDS=	libmtp.so:${PORTSDIR}/audio/libmtp
+MTP_LIB_DEPENDS=	libmtp.so:${PORTSDIR}/multimedia/libmtp
 MTP_CMAKE_OFF=		-DWITH_Mtp:BOOL=Off
 
 NLS_USES=		gettext

@@ -10,6 +10,8 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ANSI C library for CGI programming
 
+DEPRECATED=	Unmaintained since 2000
+EXPIRATION_DATE=	2014-04-11
 MAKE_ENV=	SHLIB_MAJOR="${SHLIB_MAJOR}"
 MAKEFILE=	${FILESDIR}/Makefile.lib
 PLIST_SUB=	SHLIB_MAJOR="${SHLIB_MAJOR}"
@@ -19,6 +21,9 @@ MAKE_ENV+=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
 SHLIB_MAJOR=	${PORTVERSION:R}
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-install:

@@ -10,8 +10,9 @@ MASTER_SITES=	ftp://ftp.monshouwer.eu/pub/linux/mod_antiloris/
 MAINTAINER=	alex@vts.su.ac.rs
 COMMENT=	Protect Apache 2.x against the Slowloris HTTP DoS attack
 
+LICENSE=	APACHE20
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_APACHE=	22
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
@@ -27,11 +28,10 @@ PLIST_FILES+=	${APACHEETCDIR}/Includes/mod_antiloris.conf
 SUB_FILES+=	pkg-message.rules
 .endif
 
-NO_STAGE=	yes
 post-install:
 .if !defined(SKIP_RULES)
-	@${INSTALL_DATA} ${WRKDIR}/mod_antiloris.conf ${PREFIX}/${APACHEETCDIR}/Includes/
-	@${CAT} ${PKGMESSAGE}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/Includes
+	@${INSTALL_DATA} ${WRKDIR}/mod_antiloris.conf ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/Includes
 .endif
 
 .include <bsd.port.mk>

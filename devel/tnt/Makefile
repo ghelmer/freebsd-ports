@@ -6,32 +6,25 @@ PORTVERSION=	1.2.6
 CATEGORIES=	devel math
 MASTER_SITES=	http://math.nist.gov/tnt/
 DISTNAME=	${PORTNAME}_126
-.ifndef NOPORTDOCS
-DISTFILES=${DISTNAME}${EXTRACT_SUFX} tnt120doc.zip
-.endif
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} tnt120doc.zip
 DIST_SUBDIR=	tnt
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	Template Numerical Toolkit
 
-BUILD_DEPENDS=	unzip:${PORTSDIR}/archivers/unzip
-
-USE_ZIP=	yes
+USES=		zip:infozip
 NO_BUILD=	yes
 
-.ifndef NOPORTDOCS
-PORTDOCS=	*
-.endif
+OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
+PORTDOCS=	*
+
 do-install:
-	${MKDIR} ${PREFIX}/include/tnt
-	${INSTALL_DATA} ${WRKDIR}/*.h ${PREFIX}/include/tnt
-.ifndef NOPORTDOCS
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/tnt
+	${INSTALL_DATA} ${WRKDIR}/*.h ${STAGEDIR}${PREFIX}/include/tnt
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${EXTRACT_CMD} ${DISTDIR}/${DIST_SUBDIR}/tnt120doc \
-		-d ${DOCSDIR}
-.endif
+		-d ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

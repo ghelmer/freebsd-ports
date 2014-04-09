@@ -14,7 +14,7 @@ LICENSE=	LGPL21
 RUN_DEPENDS=	GeoIP>=1.4.8:${PORTSDIR}/net/GeoIP
 
 PKGNAMESUFFIX:=	-java
-USE_ZIP=	YES
+USES=		zip
 
 USE_JAVA=	YES
 JAVA_VERSION=	1.6+
@@ -25,7 +25,8 @@ PLIST_FILES=	%%JAVAJARDIR%%/maxmind-geoip-${PORTVERSION}.jar
 PORTDOCS=	*
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 pre-build:
@@ -38,10 +39,11 @@ post-build-script:
 .endif
 
 do-install:
-	${INSTALL_DATA} ${WRKSRC}/maxmind-geoip.jar ${JAVAJARDIR}/maxmind-geoip-${PORTVERSION}.jar
+	${INSTALL_DATA} ${WRKSRC}/maxmind-geoip.jar \
+		${STAGEDIR}${JAVAJARDIR}/maxmind-geoip-${PORTVERSION}.jar
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC}/javadoc && ${COPYTREE_SHARE} \* ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/javadoc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 .endif
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	PGPLOT
 PORTVERSION=	2.21
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:KGB
@@ -17,8 +17,7 @@ LIB_DEPENDS=	pgplot.5:${PORTSDIR}/graphics/pgplot
 
 INSTALL_TARGET=	pure_install
 SCRIPTS_ENV=	PERL=${PERL}
-USE_FORTRAN=	yes
-USES=		perl5
+USES=		fortran perl5
 
 .if !defined(NOPORTEXAMPLES)
 post-install:

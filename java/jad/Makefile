@@ -8,9 +8,9 @@ MASTER_SITES=	http://www.varaneckas.com/sites/default/files/jad/
 DISTNAME=	jad158c.freebsd
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A Java Decompiler
+COMMENT=	Java Decompiler
 
-USE_ZIP=	yes
+USES=		zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 
@@ -20,12 +20,11 @@ PORTDOCS=	*
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/jad ${PREFIX}/bin/
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/Readme.txt ${DOCSDIR}/
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/jad ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/Readme.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

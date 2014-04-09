@@ -8,11 +8,9 @@
     SUBDIR += ekg
     SUBDIR += ekg2
     SUBDIR += fortunepl
-    SUBDIR += gimp-help
     SUBDIR += gnugadu2
     SUBDIR += hunspell
     SUBDIR += hyphen
-    SUBDIR += ispell
     SUBDIR += kadu
     SUBDIR += kde4-l10n
     SUBDIR += libgadu

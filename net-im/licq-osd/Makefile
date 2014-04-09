@@ -3,6 +3,7 @@
 
 PORTNAME=	osd
 PORTVERSION=	1.8.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net-im
 
@@ -15,8 +16,6 @@ RUN_DEPENDS=	${LOCALBASE}/lib/licq/licq_qt4-gui.so:${PORTSDIR}/${LICQ_PORT}-qt-g
 # run dependency may be too strict, delete it if you use another
 # plugin (gtk+) and wish run osd with it. i've not tested with
 # plugins other than qt-gui
-
-NO_STAGE=	yes
 
 USES=		cmake
 

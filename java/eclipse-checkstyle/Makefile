@@ -15,16 +15,13 @@ COMMENT=	Integrates the Checkstyle Java code auditor into Eclipse
 
 RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse
 
+USES=		zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
-USE_ZIP=	yes
 
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${PREFIX}/lib/eclipse
-	@${MKDIR} ${PREFIX}/lib/eclipse/plugins
-	@${CP} -r ${WRKSRC}/com.atlassw.tools.eclipse.checkstyle_${PORTVERSION} ${PREFIX}/lib/eclipse/plugins
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} com.atlassw.tools.eclipse.checkstyle_${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/eclipse/plugins
 
 .include <bsd.port.mk>

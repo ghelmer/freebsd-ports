@@ -3,7 +3,7 @@
 
 PORTNAME=	clementine
 PORTVERSION=	1.2.1
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	GOOGLE_CODE
 PKGNAMESUFFIX=	-player
@@ -27,7 +27,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost
 LATEST_LINK=	${PORTNAME}${PKGNAMESUFFIX}
 PROJECTHOST=	${PORTNAME}${PKGNAMESUFFIX}
 
-USES=		compiler:c++11-lib cmake pkgconfig
+USES=		compiler:c++11-lib cmake pkgconfig desktop-file-utils
 USE_GL=		glew
 USE_QT4=	dbus gui xml qmake_build uic_build moc_build rcc_build \
 		linguist_build network sql opengl qtestlib corelib webkit \
@@ -37,6 +37,8 @@ INSTALLS_ICONS=	yes
 USE_GSTREAMER=	gio ogg mp3 flac soup vorbis
 CONFLICTS_BUILD=	qt-3.*
 
+CFLAGS+=	-Wno-deprecated-register
+
 CMAKE_ARGS+=	-DCMAKE_LIBRARY_PATH:PATH="${LOCALBASE}/lib:${PREFIX}/lib" \
 		-DENABLE_DBUS=ON -DENABLE_SPARKLE=OFF \
 		-DENABLE_SOUNDMENU=OFF -DENABLE_SPOTIFY_BLOB=OFF \
@@ -44,6 +46,8 @@ CMAKE_ARGS+=	-DCMAKE_LIBRARY_PATH:PATH="${LOCALBASE}/lib:${PREFIX}/lib" \
 
 OPTIONS_DEFINE=		AUDIOCD BREAKPAD DEVICEKIT DROPBOX BOX GIO GOOGLE_DRIVE \
 			GPOD LASTFM MTP VISUALISATION WIIMOTEDEV MOODBAR
+
+OPTIONS_SUB=		VISUALISATION
 
 AUDIOCD_DESC=		Devices: Audio CD support
 BREAKPAD_DESC=		Crash reporting
@@ -131,7 +135,7 @@ CMAKE_ARGS+=	-DENABLE_LIBLASTFM=OFF
 
 .if ${PORT_OPTIONS:MMTP}
 CMAKE_ARGS+=	-DENABLE_LIBMTP=ON
-LIB_DEPENDS+=	libmtp.so:${PORTSDIR}/audio/libmtp
+LIB_DEPENDS+=	libmtp.so:${PORTSDIR}/multimedia/libmtp
 .else
 CMAKE_ARGS+=	-DENABLE_LIBMTP=OFF
 .endif

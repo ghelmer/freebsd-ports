@@ -3,6 +3,7 @@
 
 PORTNAME?=	R
 PORTVERSION=	3.0.2
+PORTREVISION=	2
 CATEGORIES=	math lang
 MASTER_SITES=	http://cran.r-project.org/%SUBDIR%/ \
 		ftp://cran.r-project.org/pub/R/%SUBDIR%/ \
@@ -107,7 +108,8 @@ R_SOVERSION=		1
 RBLAS_SOVERSION=	2
 RLAPACK_SOVERSION=	4
 RMATH_SOVERSION=	0
-USE_FORTRAN=		yes
+USES+=			fortran
+USE_GCC=		yes
 
 .include <bsd.port.options.mk>
 

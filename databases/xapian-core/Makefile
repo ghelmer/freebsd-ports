@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xapian-core
-PORTVERSION=	1.2.16
+PORTVERSION=	1.2.17
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -21,7 +21,7 @@ PORTSCOUT=	limitw:1,even
 GNU_CONFIGURE=	yes
 MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 USE_LDCONFIG=	yes
-USE_XZ=		yes
+USES=		tar:xz
 
 PORTDOCS=	*
 

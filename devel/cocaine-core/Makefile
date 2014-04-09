@@ -3,7 +3,7 @@
 
 PORTNAME=	cocaine-core
 PORTVERSION=	0.10
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	GH GHC
 
@@ -11,6 +11,8 @@ MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Cocaine Application Engine
 
 LICENSE=	GPLv3
+
+BROKEN=		Does not build
 
 LIB_DEPENDS=	libboost_iostreams.so:${PORTSDIR}/devel/boost-libs \
 		libev.so:${PORTSDIR}/devel/libev \

@@ -7,7 +7,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tjs@cdpa.nsysu.edu.tw
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DHCP set of classes designed to handle basic DHCP handling
 
 LICENSE=	ART10 GPLv1
@@ -18,8 +18,4 @@ TEST_DEPENDS=	p5-Test-Warn>=0:${PORTSDIR}/devel/p5-Test-Warn
 USES=		perl5
 USE_PERL5=	modbuild
 
-MAN3=		Net::DHCP::Constants.3 \
-		Net::DHCP::Packet.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

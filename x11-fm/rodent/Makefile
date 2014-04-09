@@ -6,7 +6,7 @@ PORTVERSION=	4.8.0
 CATEGORIES=	x11-fm
 MASTER_SITES=	SF/xffm/${PORTVERSION}/
 
-MAINTAINER=	rodrigo@bebik.net
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Fast, small and powerful file manager
 
 LICENSE=	GPLv3
@@ -32,6 +32,9 @@ PORTDOCS=	*
 MAN1=		fgr.1
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

@@ -251,6 +251,12 @@ share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-173/ports-list
 share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-173/pkg-desc
 share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-173/pkg-icon.png
 share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-173/post-install.sh
+share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304/pkg-desc
+share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304/pkg-icon.png
+share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304/pkg-parent
+share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304/ports-list
+share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304/post-install.sh
+share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304/post-remove.sh
 share/pcbsd/metaset/pcbsd/I3/pkg-icon.png
 share/pcbsd/metaset/pcbsd/I3/pkg-desc
 share/pcbsd/metaset/pcbsd/I3/pkg-parent
@@ -280,9 +286,6 @@ share/pcbsd/metaset/pcbsd/XFCE/pkg-desc
 share/pcbsd/metaset/pcbsd/XFCE/pkg-parent
 share/pcbsd/metaset/pcbsd/XFCE/ports-list
 share/pcbsd/metaset/pcbsd/XFCE/pkg-icon.png
-share/pcbsd/metaset/pcbsd/Development-IDE/pkg-parent
-share/pcbsd/metaset/pcbsd/Development-IDE/pkg-icon.png
-share/pcbsd/metaset/pcbsd/Development-IDE/pkg-desc
 share/pcbsd/metaset/pcbsd/XBMC/pkg-icon.png
 share/pcbsd/metaset/pcbsd/XBMC/pkg-parent
 share/pcbsd/metaset/pcbsd/XBMC/ports-list
@@ -334,10 +337,6 @@ share/pcbsd/metaset/pcbsd/Cinnamon/pkg-parent
 share/pcbsd/metaset/pcbsd/Cinnamon/desktop
 share/pcbsd/metaset/pcbsd/Cinnamon/pkg-icon.png
 share/pcbsd/metaset/pcbsd/Cinnamon/pkg-desc
-share/pcbsd/metaset/pcbsd/Compiz/pkg-icon.png
-share/pcbsd/metaset/pcbsd/Compiz/ports-list
-share/pcbsd/metaset/pcbsd/Compiz/pkg-parent
-share/pcbsd/metaset/pcbsd/Compiz/pkg-desc
 share/pcbsd/metaset/pcbsd/Rekonq/pkg-desc
 share/pcbsd/metaset/pcbsd/Rekonq/pkg-icon.png
 share/pcbsd/metaset/pcbsd/Rekonq/ports-list
@@ -460,13 +459,6 @@ share/pcbsd/metaset/pcbsd/KDE-Network/pkg-icon.png
 share/pcbsd/metaset/pcbsd/KDE-Network/pkg-desc
 share/pcbsd/metaset/pcbsd/KDE-Network/pkg-parent
 share/pcbsd/metaset/pcbsd/KDE-Network/ports-list
-share/pcbsd/metaset/pcbsd/MythTV/pkg-parent
-share/pcbsd/metaset/pcbsd/MythTV/ports-list
-share/pcbsd/metaset/pcbsd/MythTV/pkg-desc
-share/pcbsd/metaset/pcbsd/MythTV/pkg-icon.png
-share/pcbsd/metaset/pcbsd/MythTV/post-remove.sh
-share/pcbsd/metaset/pcbsd/MythTV/post-install.sh
-share/pcbsd/metaset/pcbsd/MythTV/dl-only
 share/pcbsd/metaset/pcbsd/Misc/pkg-desc
 share/pcbsd/metaset/pcbsd/Misc/pkg-icon.png
 share/pcbsd/pc-xdgutil/applications.menu
@@ -542,15 +534,19 @@ share/pcbsd/pc-thinclient/resources/webui/login.php
 share/pcbsd/de-profiles/lxde.profile
 share/pcbsd/de-profiles/kde.profile
 share/pcbsd/de-profiles/gnome.profile
+share/pcbsd/de-profiles/mate.profile
+share/pcbsd/de-profiles/cinnamon.profile
 share/pcbsd/de-profiles/xfce.profile
 share/pcbsd/pc-updatemanager/conf/sysupdate.conf
 share/pcbsd/pc-updatemanager/conf/security.key
+share/pcbsd/pc-updatemanager/etcmerge
 share/pcbsd/scripts/functions.sh
 share/pcbsd/scripts/mkzfsdir.sh
 share/pcbsd/scripts/reset-firewall
 share/pcbsd/scripts/rmzfsdir.sh
 share/pcbsd/scripts/sys-init.sh
-etc/warden.conf
+share/pcbsd/version
+etc/warden.conf.dist
 etc/pc-activedirectory.conf
 etc/pc-ldap.conf
 etc/rc.activedirectory
@@ -590,8 +586,10 @@ etc/man.d/pbi.conf
 etc/rc.d/pbid
 share/pbi-manager/.pbime
 share/pbi-manager/.pbimount
+share/pbi-manager/.pbisyscmd
+share/pbi-manager/.pbisyslisten
 share/pbi-manager/.ldconfig
-share/pbi-manager/.mount_nullfs
+share/pbi-manager/.pbifs
 share/pbi-manager/.pbiwrapper-i386
 share/pbi-manager/.pbiwrapper-amd64
 share/pbi-manager/module-examples/gimp/xdg-menu/gimp.desktop
@@ -707,7 +705,6 @@ man/man8/pc-sysinstall.8.gz
 @dirrm share/pcbsd/metaset/pcbsd/KDE-Calligra
 @dirrm share/pcbsd/metaset/pcbsd/IceWM
 @dirrm share/pcbsd/metaset/pcbsd/XFCE
-@dirrm share/pcbsd/metaset/pcbsd/Development-IDE
 @dirrm share/pcbsd/metaset/pcbsd/XBMC
 @dirrm share/pcbsd/metaset/pcbsd/Awesome
 @dirrm share/pcbsd/metaset/pcbsd/Hardware-Drivers
@@ -719,7 +716,6 @@ man/man8/pc-sysinstall.8.gz
 @dirrm share/pcbsd/metaset/pcbsd/Mate
 @dirrm share/pcbsd/metaset/pcbsd/GNOME
 @dirrm share/pcbsd/metaset/pcbsd/KDE
-@dirrm share/pcbsd/metaset/pcbsd/Compiz
 @dirrm share/pcbsd/metaset/pcbsd/Rekonq
 @dirrm share/pcbsd/metaset/pcbsd/KDE-L10N
 @dirrm share/pcbsd/metaset/pcbsd/Development
@@ -742,12 +738,12 @@ man/man8/pc-sysinstall.8.gz
 @dirrm share/pcbsd/metaset/pcbsd/KDE-SDK
 @dirrm share/pcbsd/metaset/pcbsd/KDE-Graphics
 @dirrm share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-96
+@dirrm share/pcbsd/metaset/pcbsd/NVIDIA-Legacy-304
 @dirrm share/pcbsd/metaset/pcbsd/KDE-Toys
 @dirrm share/pcbsd/metaset/pcbsd/Ratpoison
 @dirrm share/pcbsd/metaset/pcbsd/Development-VCS
 @dirrm share/pcbsd/metaset/pcbsd/Desktops
 @dirrm share/pcbsd/metaset/pcbsd/KDE-Network
-@dirrm share/pcbsd/metaset/pcbsd/MythTV
 @dirrm share/pcbsd/metaset/pcbsd/Misc
 @dirrm share/pcbsd/metaset/pcbsd
 @dirrm share/pcbsd/metaset

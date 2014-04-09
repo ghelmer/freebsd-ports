@@ -15,8 +15,6 @@ PORTDOCS=	COPYING ChangeLog README
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -E '/^(CC|CFLAGS)/d' \
 		${WRKSRC}/${MAKEFILE} \
@@ -24,14 +22,11 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bsflite ${STAGEDIR}${PREFIX}/bin
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/config-example ${STAGEDIR}${EXAMPLESDIR}
-
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

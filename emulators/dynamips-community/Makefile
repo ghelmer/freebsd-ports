@@ -2,77 +2,71 @@
 # $FreeBSD$
 
 PORTNAME=	dynamips
-PORTVERSION=	0.2.8
+PORTVERSION=	0.2.11
 CATEGORIES=	emulators
-MASTER_SITES=	SF/gns-3/Dynamips/${PORTVERSION}-RC3${PKGNAMESUFFIX}
+MASTER_SITES=	SF/gns-3/Dynamips/${PORTVERSION}
 PKGNAMESUFFIX=	-community
-DISTNAME=	${PORTNAME}-${PORTVERSION}-RC3${PKGNAMESUFFIX}
+DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
-MAINTAINER=	pavelivolkov@googlemail.com
+MAINTAINER=	pavelivolkov@gmail.com
 COMMENT=	Cisco 1700/2600/3600/3700/7200 Simulator
-
-LIB_DEPENDS=	elf.0:${PORTSDIR}/devel/libelf \
-		uuid.1:${PORTSDIR}/misc/e2fsprogs-libuuid
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libelf.so:${PORTSDIR}/devel/libelf \
+		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
+
 CONFLICTS=	dynamips-[0-9]* dynamips-devel-[0-9]*
 
-USE_GMAKE=	yes
+USES=		gmake zip
 MAKE_JOBS_UNSAFE=	yes
 
-OPTIONS_DEFINE=	UNSTABLE
+OPTIONS_DEFINE=	DOCS UNSTABLE
 UNSTABLE_DESC=	development code (x64 Mac)
 
 LDFLAGS+=	-luuid
-MAKE_ENV=	\
-		DYNAMIPS_CODE=${DYNAMIPS_CODE} \
+MAKE_ENV=	DYNAMIPS_CODE=${DYNAMIPS_CODE} \
 		DYNAMIPS_ARCH=${DYNAMIPS_ARCH} \
 		PTHREAD_CFLAGS=${PTHREAD_CFLAGS} \
 		PTHREAD_LIBS=${PTHREAD_LIBS}
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
-PLIST_FILES=	bin/${PORTNAME} bin/nvram_export
+PLIST_FILES=	bin/${PORTNAME} bin/nvram_export \
+		man/man1/${PORTNAME}.1.gz man/man1/nvram_export.1.gz \
+		man/man7/hypervisor_mode.7.gz
+
 PORTDOCS=	*
-.if !defined(NO_INSTALL_MANPAGES)
-MAN1=		${PORTNAME}.1 nvram_export.1
-MAN7=		hypervisor_mode.7
-.endif
 
 .if ${PORT_OPTIONS:MUNSTABLE}
-DYNAMIPS_CODE=	"unstable"
+DYNAMIPS_CODE=	unstable
 .else
-DYNAMIPS_CODE=	"stable"
+DYNAMIPS_CODE=	stable
 .endif
 
-.if ${ARCH} == "i386"
-DYNAMIPS_ARCH=	"x86"
-.elif ${ARCH} == "amd64"
-DYNAMIPS_ARCH=	"amd64"
-.elif ${ARCH} == "sparc64"
-BROKEN=		Does not compile
-.elif ${ARCH} == "powerpc"
-DYNAMIPS_ARCH=	"ppc32"
-BROKEN=		Does not compile: uses i386 asm
-.else
-DYNAMIPS_ARCH=	"nojit"
+.if ${ARCH} == powerpc && ${DYNAMIPS_CODE} == unstable
+DYNAMIPS_ARCH=	ppc32
 .endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
+DYNAMIPS_ARCH=	nojit
+.endif
+
+#BROKEN_ia64=	does not compile: invokes i386 assembler
+#BROKEN_sparc64=	${BROKEN_ia64}
+#BROKEN_powerpc=	${BROKEN_ia64}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME}.${DYNAMIPS_CODE} ${PREFIX}/bin/${PORTNAME}
-	${INSTALL_PROGRAM} ${WRKSRC}/${DYNAMIPS_CODE}/nvram_export ${PREFIX}/bin
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.community ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.hypervisor ${DOCSDIR}
-.endif
-.if !defined(NO_INSTALL_MANPAGES)
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/nvram_export.1 ${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/hypervisor_mode.7 ${PREFIX}/man/man7
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME}.${DYNAMIPS_CODE} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_PROGRAM} ${WRKSRC}/nvram_export.${DYNAMIPS_CODE} ${STAGEDIR}${PREFIX}/bin/nvram_export
+	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/nvram_export.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/hypervisor_mode.7 ${STAGEDIR}${MANPREFIX}/man/man7
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for file in README README.hypervisor RELEASE-NOTES ChangeLog MAINTAINERS
+	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
+.endfor
 
 .include <bsd.port.post.mk>

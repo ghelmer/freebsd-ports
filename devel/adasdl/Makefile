@@ -8,8 +8,11 @@ CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/AdaSDL_${PORTVERSION}/AdaSDL_${PORTVERSION}
 DISTNAME=	AdaSDL_${PORTVERSION}
 
-MAINTAINER=	david@realityrift.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ada thin binding to SDL
+
+DEPRECATED=	Ancient, does not build on amd64; use devel/sdl_gnat instead
+EXPIRATION_DATE=2014-04-01
 
 ONLY_FOR_ARCHS=	i386
 

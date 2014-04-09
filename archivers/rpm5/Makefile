@@ -11,6 +11,8 @@ PKGNAMESUFFIX=	5
 MAINTAINER=	afb@rpm5.org
 COMMENT=	The RPM Package Manager
 
+BROKEN=		Does not package
+
 LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3 \
 		libpopt.so:${PORTSDIR}/devel/popt \
 		libbeecrypt.so:${PORTSDIR}/security/beecrypt \
@@ -108,9 +110,8 @@ post-build:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	# Install documentation
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/apidocs/html
-	cd ${WRKSRC}/apidocs/html && ${COPYTREE_SHARE} . ${DOCSDIR}/apidocs/html/
+	cd ${WRKSRC}/apidocs/html && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/apidocs/html/
 .endif
 
 .include <bsd.port.mk>

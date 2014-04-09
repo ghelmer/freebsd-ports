@@ -3,6 +3,7 @@
 
 PORTNAME=	oo2c
 PORTVERSION=	2.1.11
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	SF/ooc/ooc2/${PORTVERSION}
 DISTNAME=	${PORTNAME}_${BITS}-${PORTVERSION}
@@ -11,22 +12,25 @@ MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Optimizing Oberon-2 compiler of University of Kaiserslautern, Germany
 
 BUILD_DEPENDS=	xsltproc:${PORTSDIR}/textproc/libxslt
-LIB_DEPENDS=	gc.1:${PORTSDIR}/devel/boehm-gc
+LIB_DEPENDS=	libgc.so:${PORTSDIR}/devel/boehm-gc
 
 DOCSDIR=	lib/${PORTNAME}
+USES=		gmake
 USE_BZIP2=	yes
 USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
 USE_LDCONFIG=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include -DGC_PTR='void*'
+USE_CSTD=	gnu89
+USE_GCC=	any
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-MAN1=		oo2c.1 oob.1 ooef.1 oowhereis.1
 
 ONLY_FOR_ARCHS=	i386 amd64 ia64
 
-NO_STAGE=	yes
+post-patch:
+	@${REINPLACE_CMD} 's/dir=@/dir=$${DESTDIR}@/' \
+		 ${WRKSRC}/Makefile.config.in
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == i386

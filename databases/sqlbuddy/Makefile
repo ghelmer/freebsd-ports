@@ -10,7 +10,9 @@ DISTNAME=	${PORTNAME}_1_3_3
 MAINTAINER=	horus.li@gmail.com
 COMMENT=	Web based MySQL administration with a set of PHP scripts
 
-USE_ZIP=	yes
+BROKEN=		Fails to check-sanity
+
+USES=		zip
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

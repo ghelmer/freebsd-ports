@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc47
-PORTVERSION=	4.7.4.20131214
+PORTVERSION=	4.7.4.20140329
 CATEGORIES=	lang java
 MASTER_SITES=	${MASTER_SITE_GCC}
 MASTER_SITE_SUBDIR=	snapshots/${DISTVERSION}
@@ -10,6 +10,9 @@ DISTNAME=	gcc-${DISTVERSION}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.7
+
+LICENSE=	GPLv3 GPLv3RLE
+LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libmpfr.so:${PORTSDIR}/math/mpfr \
@@ -21,6 +24,8 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
 BUILD_DEPENDS+=	runtest:${PORTSDIR}/misc/dejagnu
 .endif
 
+CONFLICTS=	gcc-4.7.*
+
 # DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.  A PORTVERSION of
 # 4.Y.2.s20130808 results in values of 4.Y-20130808, 4.Y.2, and 4Y
@@ -29,9 +34,8 @@ DISTVERSION=	${PORTVERSION:C/([0-9]+\.[0-9]+).*\.([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64
-USES=		gmake iconv perl5
+USES=		gmake iconv perl5 tar:bzip2
 USE_BINUTILS=	yes
-USE_BZIP2=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
 
@@ -70,6 +74,7 @@ CONFIGURE_ARGS+=--disable-bootstrap
 ALL_TARGET=	bootstrap-lean
 .endif
 CONFIGURE_ARGS+=--disable-nls \
+		--enable-gnu-indirect-function \
 		--libdir=${TARGLIB} \
 		--libexecdir=${LIBEXEC} \
 		--program-suffix=${SUFFIX} \
@@ -92,8 +97,8 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/gccint \
 		gcc${SUFFIX}/gfortran \
 		gcc${SUFFIX}/libgomp
-.if ${ARCH} == "i386" || ${ARCH} == "amd64" || ${ARCH} == "alpha"
-INFO+=		gcc${SUFFIX}/libquadmath	\
+.if ${ARCH} == "i386" || ${ARCH} == "amd64"
+INFO+=		gcc${SUFFIX}/libquadmath \
 		gcc${SUFFIX}/libitm
 .endif
 
@@ -129,6 +134,7 @@ full-regression-test: build
 
 post-install:
 	${RM} -f ${STAGEDIR}${TARGLIB}/*.la
+	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
 	# Add target libraries and include files to packaging list.
 	${RM} -f ${WRKDIR}/PLIST.lib
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
@@ -139,8 +145,5 @@ post-install:
 	fi
 .endfor
 	cd ${WRKDIR} ; ${SED} -i -e "/PLIST.lib/ r PLIST.lib" ${TMPPLIST}
-	@if type ccache-update-links >/dev/null 2>&1; then \
-	    ccache-update-links -v; \
-	fi
 
 .include <bsd.port.post.mk>

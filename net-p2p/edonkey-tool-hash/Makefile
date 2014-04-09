@@ -8,7 +8,7 @@ MASTER_SITES=	SF/ed2k-tools/ed2k_hash/${PORTVERSION}
 PKGNAMESUFFIX=	-tool-hash
 DISTNAME=	ed2k_hash-${PORTVERSION}
 
-MAINTAINER=	lioux@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Both calculates 'eDonkey/Overnet hashes' producing ed2k:// file links
 
 LICENSE=	GPLv2
@@ -19,7 +19,6 @@ GNU_CONFIGURE=	yes
 
 WRKSRC=	${WRKDIR}/ed2k_hash-${PORTVERSION}
 
-NO_STAGE=	yes
 post-patch:
 # respect CFLAGS
 	@${REINPLACE_CMD} -E -e \
@@ -29,6 +28,6 @@ post-patch:
 do-install:
 # uphold POLA, do not change binary name
 	@${INSTALL_PROGRAM} ${WRKSRC}/ed2k_hash/ed2k_hash \
-		${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}${PKGNAMESUFFIX}
 
 .include <bsd.port.mk>

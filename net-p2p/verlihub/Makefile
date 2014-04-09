@@ -20,7 +20,7 @@ RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
 LDFLAGS+=	-L/usr/local/lib
 USE_RC_SUBR=	verlihub
-USE_GCC=	4.2+
+USE_GCC=	any
 USE_AUTOTOOLS=	libtool
 USE_MYSQL=	yes
 GNU_CONFIGURE=	yes
@@ -28,11 +28,7 @@ USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 SUB_FILES+=	pkg-message
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|for libpath in /|for libpath in ${PREFIX} /|g' ${WRKSRC}/config_geoip
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

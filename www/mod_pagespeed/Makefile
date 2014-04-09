@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_pagespeed
 PORTVERSION=	1.2.24.2
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	${MASTER_SITE_LOCAL}
@@ -13,17 +13,19 @@ DISTNAME=	mod_pagespeed_source_${PORTVERSION}
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	An Apache module that automatically optimizes web pages
 
+BROKEN=		Does not link
+
 BUILD_DEPENDS=	python:${PORTSDIR}/lang/python \
 		bash:${PORTSDIR}/shells/bash \
 		greadlink:${PORTSDIR}/sysutils/coreutils \
 		gsed:${PORTSDIR}/textproc/gsed \
 		svn:${PORTSDIR}/devel/subversion \
 		flock:${PORTSDIR}/sysutils/flock
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
-		jpeg:${PORTSDIR}/graphics/jpeg \
-		icutu:${PORTSDIR}/devel/icu \
-		opencv_legacy:${PORTSDIR}/graphics/opencv \
-		execinfo:${PORTSDIR}/devel/libexecinfo
+LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
+		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+		libicutu.so:${PORTSDIR}/devel/icu \
+		libopencv_legacy.so:${PORTSDIR}/graphics/opencv \
+		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
 USES=		gmake pkgconfig
 USE_XZ=		yes

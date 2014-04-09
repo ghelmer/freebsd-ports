@@ -11,6 +11,8 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Collection of tools for internationalizing Python applications
 
+LICENSE=	BSD3CLAUSE
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytz>0:${PORTSDIR}/devel/py-pytz
 
 USE_PYTHON=		yes
@@ -19,14 +21,12 @@ PYDISTUTILS_AUTOPLIST=	yes
 
 PORTDOCS=	docs/*
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docfile in ${PORTDOCS}
 	${CP} -r ${WRKSRC}/${docfile} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

@@ -13,17 +13,15 @@ COMMENT=	Advanced QuakeC compiler/decompiler
 
 LICENSE=	GPLv2
 
-USE_ZIP=	yes
+USES=		zip
 
 MAKEFILE=	${FILESDIR}/Makefile
 
 PLIST_FILES=	bin/frikqcc bin/frikqcdec
 
-NO_STAGE=	yes
 do-install:
-.for p in ${PLIST_FILES:T}
-	${INSTALL_PROGRAM} ${WRKSRC}/${p} ${PREFIX}/bin
-.endfor
+	${INSTALL_PROGRAM} ${WRKSRC}/frikqcc ${WRKSRC}/frikqcdec \
+		${STAGEDIR}${PREFIX}/bin
 
 .include "${.CURDIR}/../quake-source/Makefile.include"
 .include <bsd.port.mk>

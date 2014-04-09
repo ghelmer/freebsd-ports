@@ -3,7 +3,7 @@
 
 PORTNAME=	wizd
 PORTVERSION=	24
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net multimedia
 MASTER_SITES=	SF/${PORTNAME}/Sources/Sources%20v${PORTVERSION}
 DISTFILES=	wizd_sources_v${PORTVERSION}.zip simplicity_v1-2.zip
@@ -15,10 +15,10 @@ LIB_DEPENDS=	libdvdread.so:${PORTSDIR}/multimedia/libdvdread \
 		libjpeg.so:${PORTSDIR}/graphics/jpeg
 RUN_DEPENDS=	nkf:${PORTSDIR}/japanese/nkf
 
-USE_DOS2UNIX=	Makefile nkfwrap/Makefile nkfwrap/nkfwrap_test.c \
+DOS2UNIX_FILES=	Makefile nkfwrap/Makefile nkfwrap/nkfwrap_test.c \
 		wizd_http.c wizd_menu.c
 USE_RC_SUBR=	wizd
-USE_ZIP=	yes
+USES=		dos2unix zip:infozip
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 
 post-patch:

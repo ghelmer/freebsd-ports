@@ -3,7 +3,7 @@
 
 PORTNAME=	sceptre
 PORTVERSION=	2012.061
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	http://alpha.fh-friedberg.de/iem/fileadmin/user_upload/novender/sceptre/
 
@@ -12,7 +12,7 @@ COMMENT=	General-purpose circuit analysis program
 
 LICENSE=	GPLv2
 
-USE_FORTRAN=	yes
+USES=		fortran
 
 MAKE_JOBS_UNSAFE=	yes
 NO_WRKSUBDIR=		yes

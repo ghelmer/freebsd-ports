@@ -3,11 +3,15 @@
 
 PORTNAME=	aws
 PORTVERSION=	3.1.0.0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 
 MAINTAINER=	marino@FreeBSD.org
 COMMENT=	Adacore Ada Web Server and framework
+
+LICENSE=	GPLv3 GPLv3RLE
+LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	gprbuild>=20120510:${PORTSDIR}/devel/gprbuild \
 		xmlada>=3.2:${PORTSDIR}/textproc/xmlada \
@@ -128,7 +132,7 @@ post-install:
 #	additive.  Trying to capture every permutation is error prone and
 #	tedious, so a generated PLIST is the way to go.
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} * \( -type f -or -type l \) | \
-	   ${SORT} > ${TMPPLIST}
+	   ${SORT} >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} * -type d | ${AWK} '/\//' | ${SORT} -r | \
 	   ${SED} -e '/lib\/gnat$$/d' -e '/share\/doc$$/d' -e '/share\/gps/d' \
 	   -e '/share\/examples$$/d' -e 's/^/@dirrm /g' >> ${TMPPLIST}

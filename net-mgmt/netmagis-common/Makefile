@@ -11,7 +11,7 @@ PKGNAMESUFFIX?=	-common
 MAINTAINER?=	pdagog@gmail.com
 COMMENT?=	Netmagis common infrastructure
 
-USE_TCL=	85+
+USES=		tcl:85+
 
 USE_PGSQL=	pgtcl
 WANT_PGSQL_VER=	91+
@@ -45,7 +45,7 @@ RUN_DEPENDS+=	rancid-run:${PORTSDIR}/net-mgmt/rancid \
 .endif
 
 .if ${PKGNAMESUFFIX} == -metro
-USES=		perl5
+USES+=		perl5
 
 RUN_DEPENDS+=	p5-DBD-Pg>0:${PORTSDIR}/databases/p5-DBD-Pg \
 		p5-Net-SNMP>=0:${PORTSDIR}/net-mgmt/p5-Net-SNMP \
@@ -66,7 +66,6 @@ ALL_TARGET=nothing
 INSTALL_TARGET=	install${PKGNAMESUFFIX}
 
 # Change "cd foo; make" into "$(MAKE) -C foo" to unbreak parallel builds
-NO_STAGE=	yes
 post-patch:
 	@${FIND} ${WRKSRC} -type f -name Makefile -print0 | ${XARGS} -0 \
 		${REINPLACE_CMD} -E 's,cd(.+) (;|&&) make,$$(MAKE) -C\1,'

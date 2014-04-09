@@ -3,7 +3,7 @@
 
 PORTNAME=	flare
 PORTVERSION=	1.0.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	databases
 MASTER_SITES=	http://labs.gree.jp/data/source/
 PKGNAMESUFFIX=	-db
@@ -11,6 +11,8 @@ EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flare - distributed and persistent key-value storage
+
+BROKEN=		Does not build
 
 LIB_DEPENDS=	libboost_program_options.so:${PORTSDIR}/devel/boost-libs \
 		libtokyocabinet.so:${PORTSDIR}/databases/tokyocabinet

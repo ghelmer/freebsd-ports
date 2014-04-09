@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.0
-PORTREVISION=	2
+DISTVERSION=	3.0.2
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -18,8 +17,8 @@ COMMENT=	A free RADIUS server implementation
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	gdbm:${PORTSDIR}/databases/gdbm \
-		talloc:${PORTSDIR}/devel/talloc
+LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
+		libtalloc.so:${PORTSDIR}/devel/talloc
 
 LOGDIR?=	/var/log
 KRB5_CONFIG?=	/usr/bin/krb5-config --libs
@@ -40,12 +39,11 @@ MAKE_JOBS_SAFE=	yes
 PLIST_SUB=	PORTVERSION=${DISTVERSION} LIBVER=0${PORTVERSION:C/\./0/g}
 
 OPTIONS_DEFINE=	USER KERBEROS HEIMDAL HEIMDAL_PORT LDAP MYSQL \
-		PGSQL UNIXODBC FIREBIRD REDIS PYTHON RUBY DHCP \
+		PGSQL UNIXODBC FIREBIRD REDIS PYTHON RUBY \
 		EXPERIMENTAL UDPFROMTO DEVELOPER EDIR PERL REST \
 		FREETDS IDN SSL_PORT
 OPTIONS_DEFAULT=USER PERL
 
-DHCP_DESC=		With DHCP support (EXPERIMENTAL)
 USER_DESC=		Run as user freeradius, group freeradius
 HEIMDAL_DESC=		With Heimdal Kerberos support
 HEIMDAL_PORT_DESC=	With Heimdal Kerberos from ports
@@ -85,11 +83,11 @@ ${UNIQUENAME}_SET+=	KERBEROS
 .if ${PORT_OPTIONS:MKERBEROS}
 .if ${PORT_OPTIONS:MHEIMDAL}
 .if ${PORT_OPTIONS:MHEIMDAL_PORT}
-LIB_DEPENDS+=	krb5:${PORTSDIR}/security/heimdal
+LIB_DEPENDS+=	libkrb5.so:${PORTSDIR}/security/heimdal
 .endif
-CONFIGURE_ARGS+=--enable-heimdal-krb5
+CONFIGURE_ARGS+=--enable-heimdal-krb5 --enable-pthread-support
 .else
-LIB_DEPENDS+=	krb5:${PORTSDIR}/security/krb5
+LIB_DEPENDS+=	libkrb5.so:${PORTSDIR}/security/krb5
 .endif
 CONFIGURE_ARGS+=--with-rlm_krb5
 .if ${PORT_OPTIONS:MHEIMDAL} && empty(PORT_OPTIONS:MHEIMDAL_PORT)
@@ -148,7 +146,7 @@ PLIST_SUB+=	PGSQL="@comment "
 .if ${PORT_OPTIONS:MUNIXODBC}
 CONFIGURE_ARGS+=--with-rlm_sql_unixodbc
 PLIST_SUB+=	UNIXODBC=""
-LIB_DEPENDS+=	odbc:${PORTSDIR}/databases/unixODBC
+LIB_DEPENDS+=	libodbc.so:${PORTSDIR}/databases/unixODBC
 .else
 CONFIGURE_ARGS+=--without-rlm_sql_unixodbc
 PLIST_SUB+=	UNIXODBC="@comment "
@@ -202,37 +200,8 @@ PLIST_SUB+=	RLMRUBY="@comment "
 EXPM=		yes
 .endif
 
-.if ${PORT_OPTIONS:MDHCP}
-IGNORE=		currently fails to build properly with DHCP support
-CONFIGURE_ARGS+=--with-dhcp
-.else
-CONFIGURE_ARGS+=--without-dhcp --without-rlm_dhcp --without-proto_dhcp
-.endif
-
-# DHCP is still experimental
-.if ${PORT_OPTIONS:MDHCP} && empty(PORT_OPTIONS:MEXPERIMENTAL)
-EXPM=		yes
-.endif
-
-# No SMB option yet; rlm_smb is still unbuildable
-.if ${PORT_OPTIONS:MSMB}
-LIB_DEPENDS=	smbclient:${PORTSDIR}/net/samba-libsmbclient
-CONFIGURE_ARGS+=--with-rlm_smb
-CONFIGURE_ARGS+=--with-rlm-smb-lib-dir=${LOCALBASE}/lib
-CONFIGURE_ARGS+=--with-rlm-smb-include-dir=${LOCALBASE}/include
-PLIST_SUB+=	SMB=""
-.else
-CONFIGURE_ARGS+=--without-rlm_smb
-PLIST_SUB+=	SMB="@comment "
-.endif
-
-# SMB module is still experimental
-.if ${PORT_OPTIONS:MSMB} && empty(PORT_OPTIONS:MEXPERIMENTAL)
-EXPM=		yes
-.endif
-
 .if ${PORT_OPTIONS:MREDIS}
-LIB_DEPENDS+=	hiredis:${PORTSDIR}/databases/hiredis
+LIB_DEPENDS+=	libhiredis.so:${PORTSDIR}/databases/hiredis
 CONFIGURE_ARGS+=--with-rlm_redis --with-rlm_rediswho
 PLIST_SUB+=	RLMREDIS=""
 .else
@@ -247,8 +216,8 @@ EXPM=		yes
 
 .if ${PORT_OPTIONS:MREST}
 IGNORE=		requires devel/json-c to be updated to 0.11 to build with RESTful support
-LIB_DEPENDS+=	json:${PORTSDIR}/devel/json-c \
-    		curl:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=	libjson.so:${PORTSDIR}/devel/json-c \
+    		libcurl.so:${PORTSDIR}/ftp/curl
 CONFIGURE_ARGS+=--with-rlm_rest \
 		--with-libcurl=${LOCALBASE} \
 		--with-jsonc-lib-dir=${LOCALBASE}/lib \
@@ -265,7 +234,7 @@ EXPM=		yes
 .endif
 
 .if ${PORT_OPTIONS:MFREETDS}
-LIB_DEPENDS+=	tds:${PORTSDIR}/databases/freetds
+LIB_DEPENDS+=	libtds.so:${PORTSDIR}/databases/freetds
 CONFIGURE_ARGS+=--with-rlm_freetds
 PLIST_SUB+=	RLMFREETDS=""
 .else
@@ -279,7 +248,7 @@ EXPM=		yes
 .endif
 
 .if ${PORT_OPTIONS:MIDN}
-LIB_DEPENDS+=	idn:${PORTSDIR}/dns/libidn
+LIB_DEPENDS+=	libidn.so:${PORTSDIR}/dns/libidn
 CONFIGURE_ARGS+=--with-rlm_idn
 PLIST_SUB+=	RLMIDN=""
 .else
@@ -410,17 +379,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|LIBS|KRB5LIBS|g' ${WRKSRC}/src/modules/rlm_krb5/configure
 	@${REINPLACE_CMD} -e 's|-lkrb5|$$(${KRB5_CONFIG})|g' \
 		${WRKSRC}/src/modules/rlm_krb5/configure
-.endif
-# If DHCP is enabled, enable the DHCP dictionary
-.if ${PORT_OPTIONS:MDHCP}
-	@${REINPLACE_CMD} -Ee 's:^#(.+ dictionary\.dhcp)$$:\1:g' \
-		${WRKSRC}/share/dictionary
-# Clean up (so as not to get an unwanted file in share)
-	@${FIND} -E ${WRKSRC}/share \
-		-regex '.*/dictionary\.(orig|bak)$$' \
-		-delete
-.else
-	@${RM} -fr ${WRKSRC}/src/modules/proto_dhcp/
 .endif
 .if empty(PORT_OPTIONS:MRUBY)
 	@${RM} -fr ${WRKSRC}/src/modules/rlm_ruby/

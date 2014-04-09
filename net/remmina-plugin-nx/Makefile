@@ -3,12 +3,13 @@
 
 PKGNAMESUFFIX=	-nx
 
-MAINTAINER=	meta+ports@vmeta.jp
 COMMENT=	Remmina plugin for NX
 
 USE_XORG+=	xkbfile
 
 MASTERDIR=	${.CURDIR}/../remmina-plugins
+
+LIB_DEPENDS+=	libssh_threads.so:${PORTSDIR}/security/libssh
 
 PLIST_SUB+=	ICONS="" SSH="@comment "
 

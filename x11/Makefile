@@ -209,7 +209,6 @@
     SUBDIR += menu-cache
     SUBDIR += metalock
     SUBDIR += metisse
-    SUBDIR += mgapdesk
     SUBDIR += mkcomposecache
     SUBDIR += mlterm
     SUBDIR += mrxvt
@@ -242,6 +241,7 @@
     SUBDIR += qimageblitz
     SUBDIR += qt4-graphicssystems-opengl
     SUBDIR += qt4-inputmethods
+    SUBDIR += qt5-qev
     SUBDIR += qxkb
     SUBDIR += randrproto
     SUBDIR += recordproto
@@ -255,17 +255,16 @@
     SUBDIR += rsibreak-kde4
     SUBDIR += rstart
     SUBDIR += ruby-X11
-    SUBDIR += ruby-gnome2
     SUBDIR += rubygem-gnome2
     SUBDIR += rxvt
     SUBDIR += rxvt-devel
     SUBDIR += rxvt-unicode
+    SUBDIR += sakura
     SUBDIR += sbxkb
     SUBDIR += scripts
     SUBDIR += scrnsaverproto
     SUBDIR += sessreg
     SUBDIR += setlayout
-    SUBDIR += settitle
     SUBDIR += setxkbmap
     SUBDIR += simdock
     SUBDIR += sisctrl

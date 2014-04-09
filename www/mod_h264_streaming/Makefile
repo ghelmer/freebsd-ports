@@ -13,16 +13,14 @@ DIST_SUBDIR=	apache2
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Apache H264 streaming module
 
-
 USE_APACHE=	22+
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-apxs="${APXS}"
 
-RESTRICTED=	no-commercial-use
+RESTRICTED=	No commercial use
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 PLIST_SUB=	SED=${SED}
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

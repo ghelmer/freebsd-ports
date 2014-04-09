@@ -3,7 +3,7 @@
 
 PORTNAME=	ccache
 PORTVERSION=	3.1.9
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	http://www.samba.org/ftp/ccache/ \
 		CRITICAL
@@ -21,17 +21,30 @@ SUB_FILES=	${HOWTO} world-ccache pkg-message ccache-update-links.sh
 
 PORTDOCS=	ccache-howto-freebsd.txt MANUAL.html
 
-OPTIONS_DEFINE=	CLANGLINK LLVMLINK STATIC DOCS TINDERBOX
+OPTIONS_DEFINE=	CLANGLINK LLVMLINK STATIC DOCS TINDERBOX COLORS
 
+COLORS_DESC=	Support compiler colors
 CLANGLINK_DESC=	Create clang compiler links if clang is installed
 LLVMLINK_DESC=	Create llvm compiler links if llvm is installed
 TINDERBOX_DESC=	Create tarball for tinderbox usage
+
+COLORS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-colors
+COLORS_USES=		compiler
 
 OPTIONS_SUB=	yes
 
 STATIC_LDFLAGS=	-static
 
 .include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MCOLORS}
+.  if ${COMPILER_TYPE} == clang
+CPPFLAGS+=	-DCC_IS_CLANG
+.  elif ${COMPILER_TYPE} == gcc
+CPPFLAGS+=	-DCC_IS_GCC
+.  endif
+.endif
 
 PLIST_SUB+=	CCLINKDIR="${CCLINKDIR}"
 
@@ -39,11 +52,12 @@ PLIST_SUB+=	CCLINKDIR="${CCLINKDIR}"
 CCACHE_COMPILERS+=	icc icpc
 .endif
 
-GNU_COMPILERS+=		34 42 43 44 45 46 47 48
-CCACHE_COMPILERS+=	cc c++ gcc g++ ${GNU_COMPILERS:S|^|gcc|} ${GNU_COMPILERS:S|^|g++|}
+GNU_COMPILERS+=		34 42 43 44 45 46 47 48 49
+CCACHE_COMPILERS+=	cc c++ CC gcc g++ ${GNU_COMPILERS:S|^|gcc|} ${GNU_COMPILERS:S|^|g++|}
 
 .if ${PORT_OPTIONS:MCLANGLINK}
-CCACHE_COMPILERS+=	clang clang++
+CLANG_COMPILERS+=	31 32 33 34
+CCACHE_COMPILERS+=	clang clang++ ${CLANG_COMPILERS:S|^|clang|} ${CLANG_COMPILERS:S|^|clang++|}
 .endif
 
 .if ${PORT_OPTIONS:MLLVMLINK}
@@ -89,4 +103,4 @@ post-install:
 	@${CAT} ${FILESDIR}/pkg-message-clang >> ${PKGMESSAGE}
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -10,9 +10,7 @@ MASTER_SITES=	SF
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Data exchange utility for Siemens mobile phones
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
-USES=		gettext iconv
+USES=		gettext iconv gmake tar:bzip2
 GNU_CONFIGURE=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -24,6 +22,8 @@ DOCS=		README docs/*.txt
 EXAMPLES=	sms.txt vCalendar.vcs vCard.vcf
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

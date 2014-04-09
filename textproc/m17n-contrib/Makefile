@@ -13,10 +13,11 @@ COMMENT=	User-contributed input methods for the m17n library
 BUILD_DEPENDS=	m17n-db>=1.6.4:${PORTSDIR}/devel/m17n-db
 RUN_DEPENDS=	m17n-db>=1.6.4:${PORTSDIR}/devel/m17n-db
 
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

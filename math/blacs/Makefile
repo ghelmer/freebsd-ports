@@ -3,7 +3,7 @@
 
 PORTNAME=	blacs
 PORTVERSION=	1.7
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftp.netlib.org/blacs/
 DISTNAME=	BLACS
@@ -20,6 +20,8 @@ COMMENT=	The BLACS (Basic Linear Algebra Communication Subprograms)
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message
+USES=		fortran gmake
+USE_LDCONFIG=	yes
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
@@ -37,10 +39,6 @@ LIB_DEPENDS+=	mpich:${PORTSDIR}/net/mpich2
 EXTRA_PATCHES+=	${FILESDIR}/Bmake.inc-mpich.diff
 .endif
 
-USE_LDCONFIG=	yes
-
-USE_FORTRAN=	yes
-USE_GMAKE=yes
 F77EXTRAFLAGS=	#-w -fno-globals -fugly-complex
 DEBUG_LEVEL=	0
 
@@ -92,7 +90,7 @@ post-build:
 	${MV} ${WRKSRC_SHARED}/LIB/blacsCinit_MPI-FreeBSD-${DEBUG_LEVEL}.a     ${WRKSRC_SHARED}/LIB/libblacs.a
 	${FIND} ${WRKSRC_SHARED} -name "*\.a" -exec ${MV} {} ${WRKDIR}/tmp_shared \;
 	cd ${WRKDIR}/tmp_shared ; for i in `ls *.a | ${SED}  's/\.a//' `; do \
-		ld -Bshareable -o $${i}.so.${SVERSION} -x -soname $${i}.so.${SVERSION} --whole-archive $${i}.a ;\
+		${LD} -Bshareable -o $${i}.so.${SVERSION} -x -soname $${i}.so.${SVERSION} --whole-archive $${i}.a ;\
 	${LN} -s $${i}.so.${SVERSION} $${i}.so ;\
 	done
 

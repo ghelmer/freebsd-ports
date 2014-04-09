@@ -11,6 +11,9 @@ MASTER_SITE_SUBDIR=	bmah
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sandia Internet path characterization tool
 
+DEPRECATED=	Obsolete, abandoned
+EXPIRATION_DATE=2014-05-01
+
 GNU_CONFIGURE=	yes
 MAN8=		pchar.8
 
@@ -22,6 +25,9 @@ PLIST_FILES=	sbin/pchar
 PORTDOCS=	README CHANGES FAQ
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}

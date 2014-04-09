@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Devel-Cover
-PORTVERSION=	1.08
+PORTVERSION=	1.09
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -26,21 +26,10 @@ USE_PERL5=	configure
 
 PORTDOCS=	README
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}/
-.endif
 
-.include <bsd.port.pre.mk>
-
-# Regarding JSON format, Devel::Cover will try JSON and JSON:PP.
-# Thus, users of Perl 5.14 and above use JSON:PP (core module).
-.if ${PERL_LEVEL} < 501400
-BUILD_DEPENDS+=	p5-JSON>=0:${PORTSDIR}/converters/p5-JSON
-RUN_DEPENDS+=	p5-JSON>=0:${PORTSDIR}/converters/p5-JSON
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

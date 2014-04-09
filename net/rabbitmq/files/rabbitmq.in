@@ -31,11 +31,12 @@ stop_cmd="env HOME=/var/db/rabbitmq su -m ${rabbitmq_user} -c 'sh -c \"${rabbitm
 stop_postcmd="wait_for_pids $rc_pid"
 rotate_logs_cmd="env HOME=/var/db/rabbitmq su -m ${rabbitmq_user} -c 'sh -c \"${rabbitmq_ctl} rotate_logs\"'"
 status_cmd="env HOME=/var/db/rabbitmq su -m ${rabbitmq_user} -c 'sh -c \"${rabbitmq_ctl} status\"'"
-extra_commands="rotate_logs status"
+extra_commands="rotate_logs status wait"
+wait_cmd=rabbitmq_wait
 
 rabbitmq_start()
 {
-	HOME=/var/db/rabbitmq
+	export HOME=/var/db/rabbitmq
 	unset ERL_LIBS
 	su -m ${rabbitmq_user} \
 		-c "sh -c \"${rabbitmq_server} -detached\""
@@ -44,6 +45,11 @@ rabbitmq_start()
 	su -m ${rabbitmq_user} \
 		-c "sh -c \"${rabbitmq_ctl} status\"" \
 		| sed -n 's/[^p]*pid,\([0-9]*\)[^0-9]*/\1/p' > ${pidfile}
+}
+
+rabbitmq_wait()
+{
+	$rabbitmq_ctl wait ${pidfile}
 }
 
 run_rc_command "$1"

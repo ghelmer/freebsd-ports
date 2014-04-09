@@ -20,6 +20,8 @@ MAKE_ARGS=	CFLAGS="${CFLAGS}"
 PLIST_FILES=	bin/agrep man/man1/agrep.1.gz
 PORTDOCS=	COPYRIGHT agrep.algorithms agrep.ps.1.Z agrep.ps.2.Z
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-extract:
@@ -27,7 +29,7 @@ post-extract:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/agrep ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/agrep.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/agrep.1 ${STAGEDIR}${PREFIX}/man/man1/
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/

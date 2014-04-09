@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 %%DOCSDIR%%/%%DOCLANG%%/articles/bsdl-gpl/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/building-products/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/casestudy-argentina.com/article.pdf
@@ -32,6 +31,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/new-users/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/p4-primer/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/pam/article.pdf
+%%DOCSDIR%%/%%DOCLANG%%/articles/pgpkeys/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/port-mentor-guidelines/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/portbuild/article.pdf
 %%DOCSDIR%%/%%DOCLANG%%/articles/pr-guidelines/article.pdf

@@ -3,7 +3,7 @@
 
 PORTNAME=	libyaml
 PORTVERSION=	0.1.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://pyyaml.org/download/libyaml/
 DISTNAME=	yaml-${PORTVERSION}
@@ -16,5 +16,4 @@ GNU_CONFIGURE=	yes
 USES=	pathfix
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

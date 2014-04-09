@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cppcheck
-PORTVERSION=	1.62
+PORTVERSION=	1.63
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
 
@@ -20,27 +20,31 @@ ALL_TARGET=	cppcheck
 LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ENV+=	TINYXML=-ltinyxml2
 
-OPTIONS_DEFINE=		MATCHCOMPILER RULES
-OPTIONS_DEFAULT=	MATCHCOMPILER RULES
+OPTIONS_DEFINE=		MATCHCOMPILER RULES MANPAGES
+OPTIONS_DEFAULT=	MATCHCOMPILER RULES MANPAGES
 
 MATCHCOMPILER_DESC=	Build-time optimizations via Python
 RULES_DESC=		User-defined rule support (requires PCRE)
 
 PLIST_FILES=	bin/cppcheck bin/cppcheck-htmlreport
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MDOCS}
+.ifndef(NOPORTDATA)
+MAKE_ENV+=	CFGDIR="${DATADIR}/cfg"
+PORTDATA=	*
+.endif
+
+.if ${PORT_OPTIONS:MMANPAGES}
 ALL_TARGET+=	man
 BUILD_DEPENDS+=	xsltproc:${PORTSDIR}/textproc/libxslt \
 		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl
 MAKE_ENV+=	DB2MAN="${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl"
-MAN1=		cppcheck.1
-MANCOMPRESSED=	no
+
+PLIST_FILES+=	man/man1/cppcheck.1.gz
 
 post-install:
-	@${INSTALL_MAN} ${WRKSRC}/cppcheck.1 ${PREFIX}/man/man1
+	@${INSTALL_MAN} ${WRKSRC}/cppcheck.1 ${STAGEDIR}${PREFIX}/man/man1
 .endif
 
 .if ${PORT_OPTIONS:MMATCHCOMPILER}
@@ -57,7 +61,7 @@ post-patch:
 	@${REINPLACE_CMD} \
 	-e 's|-Iexternals -Iexternals/tinyxml|-I${LOCALBASE}/include|' \
 		${WRKSRC}/Makefile
-.if ${PORT_OPTIONS:MDOCS}
+.if ${PORT_OPTIONS:MMANPAGES}
 	@${REINPLACE_CMD} -e '\|DB2MAN=|d' \
 		${WRKSRC}/Makefile
 .endif
@@ -75,12 +79,14 @@ post-patch:
 .endif
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/cppcheck ${PREFIX}/bin
-	@${INSTALL_SCRIPT} ${WRKSRC}/htmlreport/cppcheck-htmlreport ${PREFIX}/bin
+	@${INSTALL_PROGRAM} ${WRKSRC}/cppcheck ${STAGEDIR}${PREFIX}/bin
+	@${INSTALL_SCRIPT} ${WRKSRC}/htmlreport/cppcheck-htmlreport ${STAGEDIR}${PREFIX}/bin
+.ifndef(NOPORTDATA)
+	@${MKDIR} ${STAGEDIR}${DATADIR}/cfg
+	@cd ${WRKSRC}/cfg; ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/cfg/
+.endif
 
 check regression-test test: build
-	@(cd ${BUILD_WRKSRC}; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
-		${_MAKE_JOBS} ${MAKE_ARGS} test)
+	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test
 
 .include <bsd.port.mk>

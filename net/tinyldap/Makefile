@@ -15,8 +15,7 @@ BUILD_DEPENDS+=	${LOCALBASE}/lib/libowfat.a:${PORTSDIR}/${LIBOWFAT_PORT}
 LICENSE=	GPLv2
 
 SNAPSHOT=	20091122
-USES=		gmake
-USE_BZIP2=	yes
+USES=		tar:bzip2 gmake
 WRKSRC=		${WRKDIR}/${PORTNAME}
 CFLAGS+=	-DATTRIBS=512
 SBINFILES=	acl addindex bindrequest dumpacls dumpidx idx2ldif parse \
@@ -28,6 +27,8 @@ DOCFILES=	ACL FORMAT GETTING.STARTED README README.security RFCs \
 
 LIBOWFAT_PORT?=	devel/libowfat
 TINYLDAP_DATA?=	${PREFIX}/tinyldap/data
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

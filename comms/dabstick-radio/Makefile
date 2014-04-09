@@ -3,10 +3,9 @@
 
 PORTNAME=	dabstick-radio
 PORTVERSION=	0.96
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	comms audio hamradio
 MASTER_SITES=	http://www.sdr-j.tk/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	nox@FreeBSD.org
 COMMENT=	DAB/DAB+ and wideband FM receiver for RTL2832-based USB sticks
@@ -21,6 +20,7 @@ LIB_DEPENDS+=	librtlsdr.so:${PORTSDIR}/comms/rtl-sdr \
 		libfftw3.so:${PORTSDIR}/math/fftw3 \
 		libfaad.so:${PORTSDIR}/audio/faad
 
+USES=		tar:tgz
 USE_QT4=	gui qt3support qmake_build moc_build rcc_build uic_build
 
 PORTDOCS=	*
@@ -28,6 +28,8 @@ PLIST_FILES+=	bin/dabreceiver bin/fmreceiver bin/spectrum-viewer
 
 ONLY_FOR_ARCHS=		i386 amd64
 ONLY_FOR_ARCHS_REASON=	uses MMX and SSE2
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

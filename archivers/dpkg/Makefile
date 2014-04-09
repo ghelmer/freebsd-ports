@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dpkg
-PORTVERSION=	1.17.5
+PORTVERSION=	1.17.6
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	${MASTER_SITE_DEBIAN_POOL}
 DISTNAME=	dpkg_${PORTVERSION}
@@ -17,9 +17,8 @@ RUN_DEPENDS=	gtar:${PORTSDIR}/archivers/gtar \
 		gpatch:${PORTSDIR}/devel/patch \
 		gmd5sum:${PORTSDIR}/sysutils/coreutils
 
-USE_XZ=		yes
 GNU_CONFIGURE=	yes
-USES=		gmake iconv perl5 pkgconfig
+USES=		gmake iconv perl5 pkgconfig tar:xz
 WRKSRC=		${WRKDIR}/dpkg-${PORTVERSION}
 
 DPKGDIR?=	/var/db/dpkg

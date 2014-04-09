@@ -9,13 +9,15 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Searches for files with equal content
 
-USE_ZIP=	yes
+USES=		zip
 MAKE_FLAGS=
 MAKEFILE=
 LDFLAGS+=	-lroken -lcrypt
 ALL_TARGET=	dupmerge
 PLIST_FILES=	bin/dupmerge
 PORTDOCS=	readme.txt
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

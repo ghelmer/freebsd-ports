@@ -2,7 +2,7 @@
 
 PORTNAME=	terminfo
 PORTVERSION=	0.3.2.5
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

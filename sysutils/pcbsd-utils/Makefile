@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pcbsd-utils
-PORTVERSION=	1386348303
+PORTVERSION=	1394538598
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.pcbsd.org/~kris/software/ \
 		ftp://ftp.pcbsd.org/pub/software/
@@ -17,11 +17,12 @@ RUN_DEPENDS=	pkg-static:${PORTSDIR}/ports-mgmt/pkg \
 		sipcalc:${PORTSDIR}/net-mgmt/sipcalc \
 		eject:${PORTSDIR}/sysutils/eject \
 		unzip:${PORTSDIR}/archivers/unzip \
-		${PYTHON_PKGNAMEPREFIX}requests>=1.0.0:${PORTSDIR}/www/py-requests \
+		${PYTHON_PKGNAMEPREFIX}requests1>=1.0.0:${PORTSDIR}/www/py-requests1 \
 		jailme:${PORTSDIR}/sysutils/jailme
 
 WRKSRC=		${WRKDIR}/src-sh
 CONFLICTS?=	pbi-manager-[0-9]*
+USES=		pkgconfig fuse
 NO_BUILD=	yes
 USE_BZIP2=	yes
 USE_PYTHON=	yes

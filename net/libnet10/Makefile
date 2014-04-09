@@ -20,6 +20,8 @@ USE_AUTOTOOLS=	autoconf
 WRKSRC=		${WRKDIR}/Libnet-${PORTVERSION}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-patch:
@@ -30,7 +32,7 @@ post-patch:
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/libnet.3 \
-		${STAGEDIR}${MANPREFIX}/man/man3/libnet${PKGNAMESUFFIX}.3
+		${STAGEDIR}${PREFIX}/man/man3/libnet${PKGNAMESUFFIX}.3
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/ancillary ${STAGEDIR}${DOCSDIR}/examples
 .for i in CHANGELOG CHANGELOG-NEWFUNCTIONS COPYING README TODO-1.0 TODO-1.1

@@ -2,13 +2,11 @@
 
 CATEGORIES=	print
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 
 MASTERDIR?=	${.CURDIR}/../cups-base
- 
-CUPS_CLIENT=	yes
 
-NO_STAGE=	yes
+CUPS_CLIENT=	yes
 
 .sinclude "${.CURDIR}/Makefile.local"
 .include "${MASTERDIR}/Makefile"

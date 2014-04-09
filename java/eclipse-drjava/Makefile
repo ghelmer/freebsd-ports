@@ -14,10 +14,10 @@ COMMENT=	DrJava plugin for Eclipse
 
 RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:${PORTSDIR}/java/eclipse
 
+USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 USE_JAVA=	yes
-USE_ZIP=	yes
 
 JAVA_VERSION=	1.6+
 JAVA_OS=	native
@@ -28,15 +28,12 @@ EPLUGIN_ID=	edu.rice.cs.drjava
 EPLUGIN_VER=	${PORTVERSION}
 
 FIND_HERE=	${EPLUGIN_ID}_${EPLUGIN_VER}
-FIND_DIRS=	-type d
-FIND_DATA=	-type f -not \( -name "README" -or -name "LICENSE" \)
+FIND_COND=	-not ( -name README -or -name LICENSE )
 
 PLIST_SUB+=	EPLUGINID=${EPLUGIN_ID} EPLUGINVER="${PORTVERSION}" \
 		PORTVERSION=${PORTVERSION}
 
-NO_STAGE=	yes
 do-install:
-	cd ${WRKDIR} && ${FIND} ${FIND_HERE} ${FIND_DIRS} -exec ${MKDIR} ${DATADIR}/{} \;
-	cd ${WRKDIR} && ${FIND} ${FIND_HERE} ${FIND_DATA} -exec ${INSTALL_DATA} {} ${DATADIR}/{} \;
+	cd ${WRKSRC} && ${COPYTREE_SHARE} ${FIND_HERE} ${STAGEDIR}${DATADIR} "${FIND_COND}"
 
 .include <bsd.port.mk>

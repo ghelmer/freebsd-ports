@@ -3,7 +3,7 @@
 
 PORTNAME=	suitesparse
 PORTVERSION=	4.0.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://www.cise.ufl.edu/research/sparse/SuiteSparse/
 DISTNAME=	SuiteSparse-${PORTVERSION}
@@ -14,7 +14,7 @@ COMMENT=	SuiteSparse is a set of packages for sparse matrices calculation
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-USES=		gmake
+USES=		fortran gmake
 
 .if defined (WITH_METIS)
 LIB_DEPENDS=	metis.1:${PORTSDIR}/math/metis4
@@ -67,7 +67,6 @@ PICFLAG?=	-fpic
 .endif
 
 USE_LDCONFIG=	yes
-USE_FORTRAN=	yes
 WRKSRC=${WRKDIR}/SuiteSparse
 WRKSRC_SHARED=${WRKSRC}_shared
 SVERSION=1

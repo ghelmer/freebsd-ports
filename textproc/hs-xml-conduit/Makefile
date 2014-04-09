@@ -2,7 +2,7 @@
 
 PORTNAME=	xml-conduit
 PORTVERSION=	1.1.0.3
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org

@@ -3,7 +3,7 @@
 
 PORTNAME=	wsjt
 VERSION=	9.1
-PORTREVISION=	2
+PORTREVISION=	3
 DISTVERSION=	${VERSION}.r${SVN_REV}
 CATEGORIES=	comms hamradio
 MASTER_SITES=	${MASTER_SITE_LOCAL}
@@ -22,9 +22,8 @@ BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/scipy:${PORTSDIR}/science/py-scipy \
 		${PYNUMPY}
 
 ALL_TARGET=	build
+USES=		fortran gmake
 USE_BZIP2=	yes
-USE_GMAKE=	yes
-USE_FORTRAN=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gfortran --prefix=${LOCALBASE} \
 		--with-portaudio-include-dir=${LOCALBASE}/include/portaudio2 \

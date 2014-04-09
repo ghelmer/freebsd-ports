@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	newsbeuter
-PORTVERSION=	2.7
-PORTREVISION=	1
+PORTVERSION=	2.8
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://newsbeuter.org/downloads/
 
@@ -18,23 +18,15 @@ LIB_DEPENDS=	stfl:${PORTSDIR}/devel/stfl \
 		libjson.so:${PORTSDIR}/devel/json-c
 
 OPTIONS_DEFINE= PODCAST
+OPTIONS_DEFAULT=PODCAST
+OPTIONS_SUB=	yes
 PODCAST_DESC=	Podcast client (podbeuter)
 
-OPTIONS_DEFAULT= PODCAST
-
-USES=		gettext iconv ncurses gmake pkgconfig perl5
+USES=		compiler:c++11-lang gettext gmake iconv:translit ncurses perl5 pkgconfig
+USE_CXXSTD=	gnu++11
 USE_PERL5=	build
 USE_SQLITE=	yes
 USE_GNOME=	libxml2
-USE_GCC=	any
-
-.include  <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MPODCAST}
-PLIST_SUB+=	PODCAST=""
-.else
-PLIST_SUB+=	PODCAST="@comment "
-.endif
 
 post-patch:
 	${REINPLACE_CMD} -e "s,share/man,man,; \
@@ -43,7 +35,7 @@ post-patch:
 				${WRKSRC}/Makefile
 	${REINPLACE_CMD} -e 's,<ncursesw/ncurses.h>,<ncurses.h>,' \
 		${WRKSRC}/src/controller.cpp ${WRKSRC}/src/view.cpp
-	${REINPLACE_CMD} -e 's,fail "ncursesw5",true,; s,fail "libcrypto",true,' \
+	${REINPLACE_CMD} -e 's,fail "ncursesw",true,; s,fail "libcrypto",true,' \
 		${WRKSRC}/config.sh
 	${REINPLACE_CMD} -e 's|-liconv|${ICONV_LIB} -lcrypto -lncursesw|' \
 		${WRKSRC}/Makefile

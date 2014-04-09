@@ -11,6 +11,8 @@ DISTNAME=	azureus_${PORTVERSION}_source
 MAINTAINER=	rnoland@2hip.net
 COMMENT=	A BitTorrent client written in Java
 
+BROKEN=		Fails to build
+
 BUILD_DEPENDS=	${JAVALIBDIR}/log4j.jar:${PORTSDIR}/devel/log4j \
 		${JAVALIBDIR}/commons-cli.jar:${PORTSDIR}/java/jakarta-commons-cli \
 		${JAVALIBDIR}/junit.jar:${PORTSDIR}/java/junit \
@@ -22,8 +24,8 @@ JAVA_VERSION=	1.6+
 JAVA_OS=	native
 USE_ANT=	yes
 
-USE_ZIP=	yes
-USE_DOS2UNIX=	org/gudy/azureus2/ui/swt/test/PrintTransferTypes.java \
+USES=		dos2unix zip
+DOS2UNIX_FILES=	org/gudy/azureus2/ui/swt/test/PrintTransferTypes.java \
 		org/gudy/azureus2/platform/macosx/access/jnilib/OSXAccess.java
 
 NO_WRKSUBDIR=	yes

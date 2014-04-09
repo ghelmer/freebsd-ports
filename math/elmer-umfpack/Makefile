@@ -3,7 +3,7 @@
 
 PORTNAME=	umfpack
 PORTVERSION=	4.4
-PORTREVISION=	5
+PORTREVISION=	6
 PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	http://garr.dl.sourceforge.net/sourceforge/elmerfem/
@@ -12,7 +12,7 @@ PKGNAMEPREFIX=	elmer-
 MAINTAINER=	sylvio@FreeBSD.org
 COMMENT=	UMFPACK library used by ELMER FEM package
 
-USE_FORTRAN=	yes
+USES=		fortran
 GNU_CONFIGURE=	yes
 ALL_TARGET=
 

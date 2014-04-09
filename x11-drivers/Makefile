@@ -29,17 +29,14 @@
     SUBDIR += xf86-video-glint
     SUBDIR += xf86-video-i128
     SUBDIR += xf86-video-i740
-    SUBDIR += xf86-video-imstt
     SUBDIR += xf86-video-intel
     SUBDIR += xf86-video-mach64
     SUBDIR += xf86-video-mga
     SUBDIR += xf86-video-neomagic
     SUBDIR += xf86-video-newport
-    SUBDIR += xf86-video-nouveau
     SUBDIR += xf86-video-nv
     SUBDIR += xf86-video-openchrome
     SUBDIR += xf86-video-r128
-    SUBDIR += xf86-video-radeonhd
     SUBDIR += xf86-video-rdc
     SUBDIR += xf86-video-rendition
     SUBDIR += xf86-video-s3
@@ -55,7 +52,6 @@
     SUBDIR += xf86-video-trident
     SUBDIR += xf86-video-tseng
     SUBDIR += xf86-video-vesa
-    SUBDIR += xf86-video-via
     SUBDIR += xf86-video-vmware
     SUBDIR += xf86-video-voodoo
     SUBDIR += xorg-drivers

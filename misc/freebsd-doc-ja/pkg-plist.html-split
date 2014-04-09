@@ -8,6 +8,8 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/contrib-corealumni.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/contrib-derived.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/contrib-develalumni.html
+%%DOCSDIR%%/%%DOCLANG%%/articles/contributors/contrib-develinmemoriam.html
+%%DOCSDIR%%/%%DOCLANG%%/articles/contributors/contrib-portmgralumni.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/index.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/ix01.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributors/staff-committers.html
@@ -155,6 +157,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dialout.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dialup.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dirstructure.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/disk-organization.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-adding.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-encrypting.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-naming.html
@@ -240,6 +243,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/permissions.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/pgpkeys-core.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/pgpkeys-developers.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/pgpkeys-other.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/pgpkeys.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/pkgng-intro.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/ports-broken.html
@@ -285,7 +289,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/tvcard.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/updating-upgrading-documentation.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/updating-upgrading-freebsdupdate.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/updating-upgrading-portsnap.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/updating-upgrading.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/userppp.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/users-groups.html

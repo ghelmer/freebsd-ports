@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-ltfat
-PORTVERSION=	1.4.2
-PORTREVISION=	1
+PORTVERSION=	1.4.4
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -15,13 +14,13 @@ LIB_DEPENDS=	fftw3:${PORTSDIR}/math/fftw3 \
 		portaudio:${PORTSDIR}/audio/portaudio2 \
 		cblas:${PORTSDIR}/math/cblas
 
-MAKE_ARGS=	CC="${CC}"
-
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
 OCTSRC=		${OCTAVE_PKGNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
+
+MAKEFILE=	Makefile_unix
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

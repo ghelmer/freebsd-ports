@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	anyremote
-PORTVERSION=	6.3.1
+PORTVERSION=	6.3.2
 CATEGORIES=	comms
 MASTER_SITES=	SF
 
@@ -20,7 +20,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 OPTIONS_DEFINE=	DOCS DBUS X11
 OPTIONS_DEFAULT=	DBUS X11
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ! ${PORT_OPTIONS:MDBUS}
@@ -36,9 +35,6 @@ USE_XORG=	x11 xtst
 .endif
 
 MAKE_ARGS+=	LDFLAGS="-L${LOCALBASE}/lib"
-
-MAN1=		anyremote.1
-MANCOMPRESSED=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|(datadir)/man/man1|(mandir)/man1|g' ${WRKSRC}/Makefile.in

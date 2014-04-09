@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pokerth
-PORTVERSION=	1.1
+PORTVERSION=	1.1.1
+PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.1
 DISTNAME=	PokerTH-${PORTVERSION}-src
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -22,8 +23,7 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
 		libprotobuf.so:${PORTSDIR}/devel/protobuf
 BUILD_DEPENDS=	${LOCALBASE}/include/libircclient.h:${PORTSDIR}/irc/libircclient
 
-USES=		iconv gmake qmake
-USE_BZIP2=	yes
+USES=		iconv gmake qmake tar:bzip2
 USE_QT4=	gui corelib network sql sql-sqlite3 \
 		moc_build rcc_build uic_build
 USE_SDL=	mixer

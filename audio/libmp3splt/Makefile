@@ -3,6 +3,7 @@
 
 PORTNAME=	libmp3splt
 PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/mp3splt/${PORTNAME}/${PORTVERSION}
 
@@ -14,7 +15,6 @@ LICENSE=	GPLv2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-cutter --disable-doxygen_doc
 USES=	pathfix pkgconfig
-NO_STAGE=	yes
 USE_LDCONFIG=	yes
 USE_AUTOTOOLS=	libltdl
 

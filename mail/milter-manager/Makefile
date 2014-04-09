@@ -12,9 +12,9 @@ COMMENT=	A super milter that can invoke several milters selectively
 LICENSE=	AGPLv3 GFDL GPLv3 LGPL3
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${RUBY_SITEARCHLIBDIR}/glib2.so:${PORTSDIR}/devel/ruby-glib2
+BUILD_DEPENDS=	rubygem-glib2>0:${PORTSDIR}/devel/rubygem-glib2
 LIB_DEPENDS=	ev:${PORTSDIR}/devel/libev
-RUN_DEPENDS=	${RUBY_SITEARCHLIBDIR}/glib2.so:${PORTSDIR}/devel/ruby-glib2
+RUN_DEPENDS=	rubygem-glib2>0:${PORTSDIR}/devel/rubygem-glib2
 
 USE_RC_SUBR=	milter-manager
 GNU_CONFIGURE=	yes
@@ -28,6 +28,9 @@ USE_LDCONFIG=	yes
 USE_RUBY=	yes
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 MANLANG=	"" ja

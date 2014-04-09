@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nag
-PORTVERSION=	4.1.3
+PORTVERSION=	4.1.4
 CATEGORIES=	deskutils www pear
 PKGNAMEPREFIX=	horde-
 
@@ -39,7 +39,6 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Util \
 		Horde_View
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
 .include <bsd.port.post.mk>

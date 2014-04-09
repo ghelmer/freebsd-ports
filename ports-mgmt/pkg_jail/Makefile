@@ -16,13 +16,15 @@ PLIST_FILES=	bin/pkg_jail bin/pkg_update \
 PORTDOCS=	README
 MAN1=		pkg_jail.1 pkg_update.1
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 do-install:
 	${INSTALL_SCRIPT} ${FILESDIR}/pkg_jail ${FILESDIR}/pkg_update \
 		${STAGEDIR}${PREFIX}/bin/
 .for i in ${MAN1}
-	${INSTALL_MAN} ${FILESDIR}/${i} ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${FILESDIR}/${i} ${STAGEDIR}${PREFIX}/man/man1/
 .endfor
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

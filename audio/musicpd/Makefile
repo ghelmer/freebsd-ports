@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	musicpd
-PORTVERSION=	0.18.5
+PORTVERSION=	0.18.8
+PORTREVISION=	2
 CATEGORIES=	audio ipv6
 MASTER_SITES=	http://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -11,8 +12,7 @@ COMMENT=	Remote-controllable music daemon
 
 LICENSE=	GPLv2
 
-USES=		gmake pkgconfig compiler:c++11-lib
-USE_XZ=		yes
+USES=		gmake pkgconfig compiler:c++11-lib tar:xz
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 
@@ -20,7 +20,7 @@ USE_RC_SUBR=	${PORTNAME}
 CONFIGURE_ARGS+=--disable-alsa --disable-systemd-daemon --disable-roar
 CFLAGS+=	-I${PREFIX}/include
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LDFLAGS+=	-L${LOCALBASE}/lib -L${LOCALBASE}/lib/sidplay/builders
 
 PORTDOCS=	AUTHORS README COPYING NEWS UPGRADING
 
@@ -53,7 +53,7 @@ VORBISENC_DESC=	Ogg Vorbis encoder
 WAVPACK_DESC=	WavPack support
 WILDMIDI_DESC=	WildMIDI support (MIDI files)
 
-OPTIONS_DEFAULT=ID3TAG IPV6 MAD OSS FLAC VORBIS WAV FFMPEG SNDFILE
+OPTIONS_DEFAULT=ID3TAG IPV6 MAD OSS FLAC VORBIS WAV FFMPEG SNDFILE CURL
 
 AAC_CONFIGURE_ENABLE=aac
 AAC_LIB_DEPENDS=libfaad.so:${PORTSDIR}/audio/faad
@@ -62,7 +62,7 @@ ADPLUG_LIB_DEPENDS=libadplug.so:${PORTSDIR}/audio/libadplug
 AO_CONFIGURE_ENABLE=ao
 AO_LIB_DEPENDS=libao.so:${PORTSDIR}/audio/libao
 CDPARANOIA_CONFIGURE_ENABLE=cdio-paranoia
-CDPARANOIA_LIB_DEPENDS=libcdda_paranoia:${PORTSDIR}/audio/cdparanoia
+CDPARANOIA_LIB_DEPENDS=libcdda_paranoia.so:${PORTSDIR}/audio/cdparanoia
 CURL_CONFIGURE_ENABLE=curl
 CURL_LIB_DEPENDS=libcurl.so:${PORTSDIR}/ftp/curl
 FFMPEG_CONFIGURE_ENABLE=ffmpeg
@@ -105,7 +105,7 @@ PULSEAUDIO_LIB_DEPENDS=libpulse.so:${PORTSDIR}/audio/pulseaudio
 SAMPLERATE_CONFIGURE_ENABLE=lsr
 SAMPLERATE_LIB_DEPENDS=libsamplerate.so:${PORTSDIR}/audio/libsamplerate
 SIDPLAY2_CONFIGURE_ENABLE=sidplay
-SIDPLAY_LIB_DEPENDS=libsidplay2.so:${PORTSDIR}/audio/libsidplay2
+SIDPLAY2_LIB_DEPENDS=libsidplay2.so:${PORTSDIR}/audio/libsidplay2
 SNDFILE_CONFIGURE_ENABLE=sndfile
 SNDFILE_LIB_DEPENDS=libsndfile.so:${PORTSDIR}/audio/libsndfile
 SQLITE3_CONFIGURE_ENABLE=sqlite
@@ -142,8 +142,6 @@ SUB_LIST+=	MPDDIR=${MPDDIR}
 .ifdef MPDCONF
 IGNORE=Please remove the MPDCONF line from make.conf, then rename ${PREFIX}/etc/${MPDCONF} to musicpd.conf, if it exists
 .endif
-
-.include <bsd.port.pre.mk>
 
 .if exists(${PREFIX}/etc/mpd.conf)
 MSG=You still have ${PREFIX}/etc/mpd.conf in existence-- this file is no longer used by musicpd.
@@ -233,4 +231,4 @@ do-install:
 	@${INSTALL_DATA} ${WRKSRC}/doc/mpdconf.example \
 		${STAGEDIR}/${PREFIX}/etc/${PORTNAME}.conf.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

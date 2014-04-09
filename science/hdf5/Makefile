@@ -31,12 +31,11 @@ CONFIGURE_ARGS=	--disable-debug \
 ALL_TARGET=	lib progs
 MAKE_JOBS_UNSAFE=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if defined(WITH_FORTRAN)
 LIBTOOLFILES+=		fortran/configure
-USE_FORTRAN=		yes
+USES+=			fortran
 CONFIGURE_ENV+=		F9X=${FC}
 CONFIGURE_ARGS+=	--enable-fortran
 PLIST_SUB+=		FORTRAN=""
@@ -67,7 +66,7 @@ post-patch:
 
 post-install:
 .for i in gif2h5 h52gif h5debug h5diff h5dump h5import h5jam h5ls h5repack h5repart h5unjam
-	@${STRIP_CMD} ${PREFIX}/bin/${i}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${i}
 .endfor
 
 regression-test: build

@@ -26,14 +26,13 @@ PHP_MODNAME=	redis
 OPTIONS_DEFINE=	IGBINARY
 IGBINARY_DESC=	Build with Igbinary serializer
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MIGBINARY}
 USE_PHP+=	igbinary
-CONFIURE_ARGS+=	--enable-redis-igbinary
+CONFIGURE_ARGS+=--enable-redis-igbinary
 .else
-CONFIURE_ARGS+=	--disable-redis-igbinary
+CONFIGURE_ARGS+=--disable-redis-igbinary
 .endif
 
 .include <bsd.port.mk>

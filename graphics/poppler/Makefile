@@ -3,8 +3,8 @@
 #   $MCom: ports/graphics/poppler/Makefile,v 1.84 2013/03/12 14:53:49 kwm Exp $
 
 PORTNAME=	poppler
-PORTVERSION=	0.24.4
-PORTREVISION?=	0
+PORTVERSION=	0.24.5
+PORTREVISION?=	1
 CATEGORIES=	graphics print
 MASTER_SITES=	http://poppler.freedesktop.org/
 
@@ -19,8 +19,8 @@ LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
 RUN_DEPENDS=	poppler-data>0:${PORTSDIR}/graphics/poppler-data
 
 USE_XZ=		yes
-USES=		gmake pathfix pkgconfig
-USE_GNOME=	libxml2 ltverhack
+USES=		gmake libtool pathfix pkgconfig
+USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-zlib \
@@ -38,6 +38,8 @@ PORTSCOUT=	limitw:1,even
 
 OPTIONS_DEFINE=	CAIRO OPENJPEG
 OPTIONS_DEFAULT=CAIRO OPENJPEG
+
+USES+=		iconv
 .endif
 
 .include <bsd.port.options.mk>
@@ -85,9 +87,10 @@ INSTALL_WRKSRC=	${WRKSRC}/utils
 CONFIGURE_ARGS+=--disable-utils
 .endif
 
-.else
+.else # ! SLAVE options below
 CONFIGURE_ARGS+=--disable-poppler-glib \
 		--disable-poppler-qt4 \
+		--disable-poppler-qt5 \
 		--disable-utils
 
 .if ${PORT_OPTIONS:MCAIRO}
@@ -104,14 +107,11 @@ LIB_DEPENDS+=	libopenjpeg.so:${PORTSDIR}/graphics/openjpeg
 .else
 CONFIGURE_ARGS+=--disable-libopenjpeg
 .endif
-.endif
+.endif # end of options
 
 post-patch:
-.if ${CXX:M*clang*} && ${CXXFLAGS:M-stdlib=libc++}
 	@${REINPLACE_CMD} '/CXXFLAGS.*-ansi/d' ${WRKSRC}/configure
-.endif
-#	@${REINPLACE_CMD} -e 's|-version-info 35:0:0|-version-info 34:0:0|g' \
-#		${WRKSRC}/poppler/Makefile.in
+	@${REINPLACE_CMD} -e 's|-fno-check-new||g' ${WRKSRC}/configure
 .if defined(SLAVEPORT) && ${SLAVEPORT}==qt4
 	@${REINPLACE_CMD} -e 's|MOCQT4=`.*|MOCQT4="${LOCALBASE}/bin/moc-qt4"|' \
 		${WRKSRC}/configure

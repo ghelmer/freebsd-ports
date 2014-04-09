@@ -3,6 +3,7 @@
 
 PORTNAME=	uatraits
 PORTVERSION=	20130430
+PORTREVISION=	1
 CATEGORIES=	devel www
 MASTER_SITES=	http://people.freebsd.org/~demon/
 
@@ -22,7 +23,6 @@ USE_PYTHON=	yes
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if exists(${PYTHON_CMD}-config)

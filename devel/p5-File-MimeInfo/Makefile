@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	File-MimeInfo
-PORTVERSION=	0.16
-PORTREVISION=	1
+PORTVERSION=	0.22
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -18,16 +17,8 @@ RUN_DEPENDS:=	p5-File-BaseDir>=0.03:${PORTSDIR}/devel/p5-File-BaseDir \
 		${LOCALBASE}/share/mime/magic:${PORTSDIR}/misc/shared-mime-info
 
 USES=		perl5
-USE_PERL5=	modbuild
+USE_PERL5=	configure
 
-MAN1=		mimetype.1 mimeopen.1
-MAN3=		File::MimeInfo::Applications.3 \
-		File::MimeInfo::Cookbook.3 \
-		File::MimeInfo::Magic.3 \
-		File::MimeInfo::Rox.3 \
-		File::MimeInfo.3
-
-NO_STAGE=	yes
 regression-test:
 	cd ${WRKSRC} && ${PERL5} ${PL_BUILD} test
 

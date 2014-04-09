@@ -10,7 +10,7 @@ DISTNAME=	docbookide01
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emacs lisp modules for editing DocBook documents
 
-USE_ZIP=	yes
+USES=		zip
 WRKSRC=		${WRKDIR}/docbookide
 NO_BUILD=	yes
 
@@ -20,14 +20,12 @@ ELISP_FILES=	dbide-abbrev.el dbide-data.el dbide-font.el \
 EMACS_LISPDIR=	${PREFIX}/share/emacs/site-lisp/docbookide
 XEMACSLISPDIR=	${PREFIX}/lib/xemacs/site-lisp/docbookide
 
-NO_STAGE=	yes
 do-install:
-	${MKDIR} ${EMACS_LISPDIR}
-	${MKDIR} ${XEMACSLISPDIR}
+	${MKDIR} ${STAGEDIR}${EMACS_LISPDIR}
+	${MKDIR} ${STAGEDIR}${XEMACSLISPDIR}
 .for f in ${ELISP_FILES}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${EMACS_LISPDIR}/
-	${LN} -sf ${EMACS_LISPDIR}/${f} ${XEMACSLISPDIR}/
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${EMACS_LISPDIR}
+	${LN} -sf ${EMACS_LISPDIR}/${f} ${STAGEDIR}${XEMACSLISPDIR}
 .endfor
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

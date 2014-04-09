@@ -110,6 +110,7 @@
     SUBDIR += netcdf4
     SUBDIR += nifticlib
     SUBDIR += openbabel
+    SUBDIR += openkim
     SUBDIR += p5-Algorithm-SVMLight
     SUBDIR += p5-Chemistry-3DBuilder
     SUBDIR += p5-Chemistry-Bond-Find
@@ -142,7 +143,6 @@
     SUBDIR += p5-Physics-Unit
     SUBDIR += paje
     SUBDIR += paraview
-    SUBDIR += peekabot
     SUBDIR += pnetcdf
     SUBDIR += psi3
     SUBDIR += psychopy
@@ -174,6 +174,7 @@
     SUBDIR += ruby-gphys
     SUBDIR += ruby-netcdf
     SUBDIR += rubygem-ai4r
+    SUBDIR += rubygem-netcdf
     SUBDIR += sigrok-cli
     SUBDIR += silo
     SUBDIR += simlib

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pcgen
-PORTVERSION=	6.00.1
+PORTVERSION=	6.02.1
 CATEGORIES=	games java
 MASTER_SITES=	SF/${PORTNAME}/PCGen%20Stable/${PORTVERSION}
 DISTNAME=	pcgen${PORTVERSION:S/.//g}_full
@@ -11,7 +11,7 @@ COMMENT=	Java-based RPG character generator and maintenance program
 
 RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper
 
-USE_ZIP=	YES
+USES=		zip
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:S/.//g}
 USE_JAVA=	YES
 JAVA_VERSION=	1.6+
@@ -22,6 +22,8 @@ DATAFILES=	batch-convert.jar characters data filepaths.ini lib \
 		logging.properties outputsheets pcgen.jar plugins preview system
 
 SUB_FILES=	pcgen.sh
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

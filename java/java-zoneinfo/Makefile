@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zoneinfo
-DISTVERSION=	2013i
+DISTVERSION=	2014b
 CATEGORIES=	java misc
 MASTER_SITES=	${MASTER_SITE_LOCAL:S|%SUBDIR%|glewis/javazi|}
 PKGNAMEPREFIX=	java-
@@ -16,9 +16,8 @@ NO_BUILD=	yes
 
 JAVASHAREDIR=	${PREFIX}/share/java
 
-NO_STAGE=	yes
 do-install:
-	${MKDIR} ${JAVASHAREDIR}/zi
-	(cd ${WRKSRC}/zi && ${COPYTREE_SHARE} \* ${JAVASHAREDIR}/zi/)
+	${MKDIR} ${STAGEDIR}${JAVASHAREDIR}/zi
+	(cd ${WRKSRC}/zi && ${COPYTREE_SHARE} . ${STAGEDIR}${JAVASHAREDIR}/zi)
 
 .include <bsd.port.mk>

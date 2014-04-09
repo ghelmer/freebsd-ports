@@ -9,7 +9,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	A software speech synthesizer
+COMMENT=	Software speech synthesizer
 
 LICENSE=	GPLv3
 
@@ -32,10 +32,8 @@ MAKE_ENV+=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
 		AUDIO="${AUDIO}"
 
 CXXFLAGS+=	-I${LOCALBASE}/include
-USES=		gmake
-NO_STAGE=	yes
+USES=		gmake zip
 USE_LDCONFIG=	yes
-USE_ZIP=	yes
 
 WRKSRC=	${WRKDIR}/${DISTNAME}
 BUILD_WRKSRC=	${WRKSRC}/src
@@ -43,6 +41,8 @@ INSTALL_WRKSRC=	${WRKSRC}/src
 
 REINPLACE_FILES=	Makefile speech.h
 REINPLACE_ARGS=	-i.bak -e "s|%%DATADIR%%|${DATADIR}|g"
+
+BROKEN_sparc64=	Does not compile on sparc64
 
 .include <bsd.port.options.mk>
 
@@ -61,16 +61,10 @@ PULSEAUDIOLIB=
 post-patch:
 	cd ${BUILD_WRKSRC} && ${REINPLACE_CMD} ${REINPLACE_FILES}
 
-.if ${PORT_OPTIONS:MDOCS}
 post-install:
-	${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${DOCSDIR}
-.endif
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libespeak.so*
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

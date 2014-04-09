@@ -6,10 +6,13 @@ DISTVERSION=	1.5.091221
 CATEGORIES=	databases www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ak@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight alternative to phpMyAdmin
 
-USE_ZIP=	yes
+LICENSE=	GPLv2 MIT
+LICENSE_COMB=	dual
+
+USES=		zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 
@@ -20,9 +23,8 @@ PLIST_DIRS=	${WWWDIR_REL}
 USE_PHP=	mysql session pcre
 .endif
 
-NO_STAGE=	yes
 do-install:
-	${MKDIR} ${WWWDIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/phpminiadmin.php ${WWWDIR}
+	@${MKDIR} ${STAGEDIR}${WWWDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/phpminiadmin.php ${STAGEDIR}${WWWDIR}
 
 .include <bsd.port.mk>

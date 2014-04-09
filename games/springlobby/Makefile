@@ -3,6 +3,7 @@
 
 PORTNAME=	springlobby
 PORTVERSION=	0.180
+PORTREVISION=	1
 CATEGORIES=	games net
 MASTER_SITES=	http://www.springlobby.info/tarballs/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -44,5 +45,11 @@ SOUND_USES=		openal:al
 NOTIFY_CMAKE_ON=	-DOPTION_NOTIFY=ON
 NOTIFY_CMAKE_OFF=	-DOPTION_NOTIFY=OFF
 NOTIFY_LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify
+
+.include <bsd.port.options.mk>
+
+.if ${OSVERSION} < 901000
+IGNORE=		does not build (no strtoll(3) support)
+.endif
 
 .include <bsd.port.mk>

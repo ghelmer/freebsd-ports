@@ -3,7 +3,7 @@
 
 PORTNAME=	Clp
 PORTVERSION=	1.12.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://www.coin-or.org/download/source/Clp/ \
 		http://www.mavetju.org/download/adopted/
@@ -14,7 +14,7 @@ COMMENT=	Linear Programming Solver
 
 LIB_DEPENDS=	lapack.4:${PORTSDIR}/math/lapack
 
-USE_FORTRAN=	yes
+USES=		fortran
 CXXFLAGS+=	-ffast-math -fomit-frame-pointer
 
 GNU_CONFIGURE=	yes

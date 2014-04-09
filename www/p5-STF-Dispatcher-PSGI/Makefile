@@ -23,17 +23,4 @@ TEST_DEPENDS=	\
 USES=	perl5
 USE_PERL5=	modbuild
 
-MAN3=	STF::Dispatcher::Impl::File.3 \
-	STF::Dispatcher::Impl::Hash.3 \
-	STF::Dispatcher::PSGI.3 \
-	STF::Dispatcher::PSGI::HTTPException.3 \
-	STF::Dispatcher::Test.3
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-TEST_DEPENDS+=	p5-Test-Simple>=0.98:${PORTSDIR}/devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

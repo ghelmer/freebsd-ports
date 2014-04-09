@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ssdeep
-PORTVERSION=	2.9
+PORTVERSION=	2.10
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -14,10 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	libtool
-USE_GMAKE=	yes
+USES=		gmake
 USE_LDCONFIG=	yes
 
-MAN1=		ssdeep.1
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

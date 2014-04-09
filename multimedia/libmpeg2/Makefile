@@ -3,16 +3,15 @@
 
 PORTNAME=	libmpeg2
 PORTVERSION=	0.5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	http://libmpeg2.sourceforge.net/files/
 
 MAINTAINER=	multimedia@FreeBSD.org
-COMMENT=	Free library for decoding mpeg-2 and mpeg-1 video streams
+COMMENT=	Free library for decoding MPEG-2 and MPEG-1 video streams
 
-USES=		pathfix
-USE_GNOME=	ltverhack
-USE_AUTOTOOLS=	libtool
+USES=		libtool pathfix
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS=	--enable-shared
@@ -23,22 +22,22 @@ OPTIONS_DEFINE=	DOCS SDL X11
 
 SDL_USE=	SDL=yes
 SDL_CONFIGURE_ENABLE=	sdl
-X11_USE=	XORG=sm XORG=xv
+X11_USE=	XORG=sm,xv
 X11_CONFIGURE_WITH=	x
 
 .include <bsd.port.options.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-O3||;s|<termio.h>|<termios.h>|' \
+	@${REINPLACE_CMD} -e 's| -O3|| ; s|<termio|&s|' \
 		${WRKSRC}/configure
 # AMD64 prefers position independent code
 .if ${ARCH:L} == "amd64"
-	@${REINPLACE_CMD} -e 's|-prefer-non-pic||' \
+	@${REINPLACE_CMD} -e '/CFLAGS/s| -prefer-non-pic||' \
 		${WRKSRC}/configure
 .endif
 
 post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/libmpeg2.txt ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/libvo/libvo.a ${STAGEDIR}${PREFIX}/lib

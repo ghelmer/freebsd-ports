@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	puppet
-PORTVERSION=	3.3.1
-PORTREVISION=	6
+PORTVERSION=	3.4.3
 CATEGORIES=	sysutils
 MASTER_SITES=	http://downloads.puppetlabs.com/puppet/
 
 MAINTAINER=	swills@FreeBSD.org
-COMMENT=	A configuration management framework written in Ruby
+COMMENT=	Configuration management framework written in Ruby
 
 LICENSE=	APACHE20
 
@@ -27,13 +26,14 @@ USERS=		puppet
 GROUPS=		puppet
 SUB_FILES+=	pkg-message
 SUB_LIST=	RUBY=${RUBY}
+PLIST_SUB+=	RESETPREFIX=${PREFIX}
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_DEFAULT=	PACKAGE_ORIGIN
 OPTIONS_SINGLE=		PATCHES
 OPTIONS_SINGLE_PATCHES=	PACKAGE_ORIGIN PACKAGE_ROOT
 PACKAGE_ORIGIN_DESC=	Use port origin as package name
-PACKAGE_ROOT_DESC=	Use PACKAGEROOT insted of PACKAGESITE
+PACKAGE_ROOT_DESC=	Use PACKAGEROOT instead of PACKAGESITE
 PATCHES_DESC=		Optional exclusive patches
 
 .include <bsd.port.options.mk>
@@ -50,9 +50,7 @@ BROKEN=	PACKAGE_ROOT option patch is incompatable with PACKAGE_ORIGIN patch.
 
 .if ${PORT_OPTIONS:MPACKAGE_ORIGIN}
 EXTRA_PATCHES+=	${FILESDIR}/optpatch-package_origin
-.if ${RUBY_VER} == 1.9
 RUN_DEPENDS+=	rubygem-bzip2>=0:${PORTSDIR}/archivers/rubygem-bzip2
-.endif
 .endif
 
 post-patch:
@@ -69,7 +67,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|\$$confdir/ssl|/var/puppet/ssl|" \
 		${WRKSRC}/lib/puppet/defaults.rb
 	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" \
-		${WRKSRC}/ext/rack/files/config.ru
+		${WRKSRC}/ext/rack/config.ru
 
 do-install:
 	@cd ${WRKSRC} && ${SETENV} PREFIX=${PREFIX} ${RUBY} ${WRKSRC}/install.rb --no-configs --destdir=${STAGEDIR}
@@ -93,11 +91,11 @@ post-install:
 	@${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/${PORTNAME} -type d | ${SORT} -r | \
 		${SED} 's,^${STAGEDIR}${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/public
-	${INSTALL_DATA} ${WRKSRC}/ext/rack/files/config.ru ${STAGEDIR}${WWWDIR}
+	${INSTALL_DATA} ${WRKSRC}/ext/rack/config.ru ${STAGEDIR}${WWWDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/ext/rack/files/apache2.conf ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/ext/rack/example-passenger-vhost.conf ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.post.mk>

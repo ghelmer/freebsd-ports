@@ -13,7 +13,10 @@ USE_FPC=	dblib fcl-async fcl-base fcl-json fcl-xml hash ibase mysql odbc oracle 
 
 MASTERDIR=	${.CURDIR}/../../lang/fpc
 WRKUNITDIR=	${FPCSRCDIR}/packages/${PKGNAMESUFFIX:S/-//}
-EXTRACTUNITDIR+=	${WRKUNITDIR}
+EXTRACTUNITDIR=	${WRKUNITDIR}
 
-NO_STAGE=	yes
+OPT=		-Fu../base/units/* -Fu../../base/units/* -Fu../dbase -Fu../../dbase -Fu../ \
+		-Fu../sqldb -Fu../sqldb/interbase -Fu../sqldb/mysql -Fu../sqldb/odbc \
+		-Fu../sqldb/postgres -Fu../sqldb/oracle -Fu../sqldb/sqlite \
+		-Fu../datadict -Ur -CX
 .include "${MASTERDIR}/Makefile"

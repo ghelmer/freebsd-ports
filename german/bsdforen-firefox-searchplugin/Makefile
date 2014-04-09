@@ -3,7 +3,7 @@
 
 PORTNAME=	bsdforen-firefox-searchplugin
 PORTVERSION=	0.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	german www
 MASTER_SITES=	http://www.crashmail.de/files/ \
 		http://people.bsdgroup.de/~steve/files/
@@ -18,6 +18,10 @@ USE_FIREFOX=	yes
 NO_BUILD=	yes
 
 NO_STAGE=	yes
+
+DEPRECATED=	No longer works after forum software update
+EXPIRATION_DATE=2014-05-31
+
 .include <bsd.port.pre.mk>
 
 do-extract:

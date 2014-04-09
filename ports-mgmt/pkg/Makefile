@@ -1,24 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.2.5
+DISTVERSION=	1.2.7
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	http://files.etoilebsd.net/pkg/ \
+MASTER_SITES=	\
+		http://files.etoilebsd.net/${PORTNAME}/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
 		LOCAL/portmgr
 
 MAINTAINER=	portmgr@FreeBSD.org
-COMMENT=	New generation package manager
+COMMENT=	Package manager
 
 LICENSE=	BSD2CLAUSE
 
-USE_XZ=		yes
+USES=		tar:xz uidfix
 
 # Disable CCACHE support because of the chicken/egg problem pkg should always
 # With no dependency at all
 NO_CCACHE=	yes
 USE_LDCONFIG=	yes
-USES=		uidfix
 MAKE_ARGS+=	PKG_PORTSDIR=${PORTSDIR}
 
 MAKE_ENV+=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null \

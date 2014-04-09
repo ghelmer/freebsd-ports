@@ -6,14 +6,15 @@ PORTVERSION=	0.3.10
 CATEGORIES=	lang
 MASTER_SITES=	SAVANNAH/dotgnu-pnet
 
-MAINTAINER=	sylvio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Treecc is designed to assist in the development of compilers
 
-GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-MAN1=		treecc.1
-INFO=		treecc
-PLIST_FILES=	bin/treecc lib/libtreecc.a
+DEPRECATED=	PNET dependency decommissioned Dec 2012 
+EXPIRATION_DATE=2014-05-01
 
-NO_STAGE=	yes
+GNU_CONFIGURE=	yes
+USES=		gmake
+PLIST_FILES=	bin/treecc lib/libtreecc.a \
+		info/treecc.info man/man1/treecc.1.gz
+
 .include <bsd.port.mk>

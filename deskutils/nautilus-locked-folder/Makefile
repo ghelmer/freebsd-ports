@@ -12,6 +12,9 @@ MASTER_SITE_SUBDIR=	pav
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Nautilus plugin that allows you to encrypt the contents of a folder
 
+DEPRECATED=	nautilus will be updated to the 3.x version which is not compatible with 2.x
+EXPIRATION_DATE=2014-04-10
+
 USES=		pkgconfig
 USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
@@ -26,7 +29,6 @@ PLIST_FILES=	lib/nautilus/extensions-2.0/libnautilus-locked-folder.a \
 		lib/nautilus/extensions-2.0/libnautilus-locked-folder.la \
 		lib/nautilus/extensions-2.0/libnautilus-locked-folder.so
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/icons/hicolor/32x32/stock/data/|${LOCALBASE}/share/icons/hicolor/32x32/stock/data/|' \
 		${WRKSRC}/src/lockedfolder-extension.c

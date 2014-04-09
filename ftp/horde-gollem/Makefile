@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gollem
-PORTVERSION=	3.0.1
+PORTVERSION=	3.0.2
 CATEGORIES=	ftp www pear
 PKGNAMEPREFIX=	horde-
 
@@ -38,7 +38,6 @@ USE_HORDE_RUN=	Horde_Role \
 USE_HORDE_RUN+=	Horde_Db \
 		Horde_Share
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
 .include <bsd.port.post.mk>

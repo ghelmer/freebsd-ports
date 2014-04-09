@@ -3,8 +3,7 @@
 PORTNAME=	perlqt
 PORTVERSION=	${KDE4_VERSION}
 CATEGORIES=	devel kde perl5
-MASTER_SITES=	${MASTER_SITE_KDE}
-MASTER_SITE_SUBDIR=	${KDE4_BRANCH}/${PORTVERSION}/src
+MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
 PKGNAMEPREFIX=	p5-
 DIST_SUBDIR=	KDE/${PORTVERSION}
 
@@ -20,7 +19,6 @@ USE_QT4=	corelib dbus gui network xml \
 		qmake_build moc_build uic_build rcc_build
 USES=		cmake:outsource perl5
 
-
 # Respect PREFIX
 CMAKE_ARGS+=	-DCUSTOM_PERL_SITE_ARCH_DIR=${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}
 # Fix build PREFIX != KDE4_PREFIX
@@ -30,10 +28,8 @@ SUB_FILES=	perl-kdebindings-env.sh pkg-message
 SUB_LIST+=	PERL5LIBDIR="${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}:\
 				${PREFIX}/${SITE_PERL_REL}"
 
-NO_STAGE=	yes
 post-install:
-	${MKDIR} ${PREFIX}/env
-	${INSTALL_SCRIPT} ${WRKDIR}/perl-kdebindings-env.sh ${PREFIX}/env
-	@${CAT} ${PKGMESSAGE}
+	${MKDIR} ${STAGEDIR}${PREFIX}/env
+	${INSTALL_SCRIPT} ${WRKDIR}/perl-kdebindings-env.sh ${STAGEDIR}${PREFIX}/env
 
 .include <bsd.port.mk>

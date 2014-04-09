@@ -1,29 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.2.5
+DISTVERSION=	1.3.0.a7
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	http://files.etoilebsd.net/pkg/ \
+MASTER_SITES=	\
+		http://files.etoilebsd.net/pkg/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
+		http://miwibox.org/distfiles/${PORTNAME}/ \
 		LOCAL/portmgr
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	portmgr@FreeBSD.org
-COMMENT=	New generation package manager
+COMMENT=	Package manager
 
 LICENSE=	BSD2CLAUSE
-
-USE_XZ=		yes
 
 # Disable CCACHE support because of the chicken/egg problem pkg should always
 # With no dependency at all
 NO_CCACHE=	yes
+WITH_DEBUG=	yes
+CFLAGS+=	-O0 -g
 USE_LDCONFIG=	yes
-USES=		uidfix
-MAKE_ARGS+=	PKG_PORTSDIR=${PORTSDIR}
-
-MAKE_ENV+=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null \
-		PORTREVISION=${PORTREVISION}
+USES=		tar:xz
+GNU_CONFIGURE=	yes
 
 # Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
 # so that pkg-static is used from the wrkdir
@@ -88,15 +87,14 @@ LATEST_LINK=	pkg-devel
 PKG_DEPENDS=
 .undef INSTALLS_DEPENDS
 .if !exists(${LOCALBASE}/sbin/pkg)
-PKG_BIN=	${WRKSRC}/pkg/pkg-static
+PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
 .endif
-
-PERIODIC_DAILY=		400.status-pkg 411.pkg-backup 490.status-pkg-changes
-PERIODIC_SECURITY=	410.pkg-audit 460.pkg-checksum
-PERIODIC_ALL=		${PERIODIC_DAILY} ${PERIODIC_SECURITY}
 
 post-install:
-	@${INSTALL_DATA} ${WRKSRC}/pkg/pkg.conf.sample ${STAGEDIR}${PREFIX}/etc
+	@${RM} -f ${STAGEDIR}${PREFIX}/lib/*.la
+	@${MV} ${STAGEDIR}${PREFIX}/lib/libpkg_static.a \
+		${STAGEDIR}${PREFIX}/lib/libpkg.a
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpkg.so.2
 
 .include <bsd.port.post.mk>

@@ -2,33 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	log4cplus
-PORTVERSION=	1.0.4
+PORTVERSION=	1.1.2
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-stable/${PORTVERSION}
-DISTFILES=	log4cplus-${PORTVERSION}.tar.bz2
 
 MAINTAINER=	reed@reedmedia.net
-COMMENT=	A logging library for C++
+COMMENT=	Logging library for C++
 
-USE_GCC=	any
-USE_AUTOTOOLS=	libtool
+OPTIONS_DEFINE=	DOCS
+
+USES=		libtool pathfix
+USE_XZ=		yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--enable-threads=yes
+CONFIGURE_ARGS=	--enable-threads=yes
 MAKE_JOBS_UNSAFE=	yes
 
-.if !defined(NOPORTDOCS)
 PORTDOCS=	*
-.endif
 
-NO_STAGE=	yes
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/LICENSE ${PREFIX}/include/log4cplus
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/docs/*.config ${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/docs/*.html ${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/docs/doxygen.css ${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKSRC}/LICENSE ${STAGEDIR}${PREFIX}/include/log4cplus
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/docs/*.config ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/docs/*.html ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/docs/doxygen.css ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

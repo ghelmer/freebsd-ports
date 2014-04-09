@@ -17,6 +17,8 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:S/.//g}
 
 CONFLICTS=	libmorph*
 
+DEPRECATED=	Unmaintained since 2000
+EXPIRATION_DATE=	2014-04-11
 WANT_GNOME=	yes
 USE_XORG=	xbitmaps x11 xaw xext
 USE_AUTOTOOLS=	libtool
@@ -29,6 +31,9 @@ MAN1=		gtkmorph.1 xmorph.1
 INFO=		xmorph
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

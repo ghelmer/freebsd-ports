@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	whups
-DISTVERSION=	3.0.0RC2
+PORTVERSION=	3.0.0
 CATEGORIES=	devel www pear
 PKGNAMEPREFIX=	horde-
 
@@ -40,7 +40,6 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Vfs \
 		Horde_View
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
 .include <bsd.port.post.mk>

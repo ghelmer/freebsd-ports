@@ -107,7 +107,7 @@
     SUBDIR += p5-Text-Greeking-zh_TW
     SUBDIR += p5-cconv
     SUBDIR += pcmanx
-    SUBDIR += php5-cconv
+    SUBDIR += php-cconv
     SUBDIR += phpbb-tw
     SUBDIR += phpbb3-tw
     SUBDIR += pine4
@@ -121,7 +121,6 @@
     SUBDIR += scim-fcitx
     SUBDIR += scim-pinyin
     SUBDIR += scim-tables
-    SUBDIR += srecite
     SUBDIR += sunpinyin
     SUBDIR += telnet
     SUBDIR += tin
@@ -135,7 +134,6 @@
     SUBDIR += wordpress-zh_CN
     SUBDIR += wordpress-zh_TW
     SUBDIR += xemacs21
-    SUBDIR += xmms
     SUBDIR += xpdf
     SUBDIR += xsim
     SUBDIR += ydict

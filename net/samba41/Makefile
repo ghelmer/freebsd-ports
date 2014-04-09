@@ -18,7 +18,7 @@ CONFLICTS?=		*samba3[2-6]-3.* samba4-4.0.*
 
 SAMBA4_BASENAME=	samba
 SAMBA4_PORTNAME=	${SAMBA4_BASENAME}4
-SAMBA4_VERSION=		4.1.4
+SAMBA4_VERSION=		4.1.6
 SAMBA4_DISTNAME=	${SAMBA4_BASENAME}-${SAMBA4_VERSION:S|.p|pre|:S|.r|rc|:S|.t|tp|:S|.a|alpha|}
 
 WRKSRC?=		${WRKDIR}/${DISTNAME}
@@ -62,9 +62,7 @@ DESTDIRNAME=		--destdir
 CONFIGURE_ENV+=		PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
 			PTHREAD_LDFLAGS="${PTHREAD_LIBS}"
 
-USE_PYTHON_BUILD=	-2.7
-
-USE_PYTHON=		yes
+USE_PYTHON=		2
 USES=			compiler perl5 pkgconfig iconv
 USE_PERL5=		build
 USE_LDCONFIG=		${SAMBA4_LIBDIR}
@@ -146,13 +144,6 @@ OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
 OPTIONS_DEFAULT+=	AVAHI
 
 .include <bsd.port.options.mk>
-
-# !SAMBA4_SUBPORT
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if !defined(SAMBA4_SUBPORT)
 
 CONFIGURE_ARGS+=	\
 			--with-pam \
@@ -340,6 +331,13 @@ CONFIGURE_ARGS+=	--without-ldap
 PLIST_SUB+=		LDAP="@comment "
 .endif
 
+.if ! ${PORT_OPTIONS:MMANPAGES}
+CONFIGURE_ENV+=		XSLTPROC="true"
+.else
+BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl \
+			xsltproc:${PORTSDIR}/textproc/libxslt
+.endif
+
 .if defined(WANT_EXP_MODULES) && !empty(WANT_EXP_MODULES)
 SAMBA4_MODULES+=	${WANT_EXP_MODULES}
 CONFIGURE_ARGS+=	--with-shared-modules="${WANT_EXP_MODULES:Q:C|(\\\\ )+|,|g:S|\\||g}"
@@ -355,12 +353,12 @@ PLIST_REINPLACE+=	${m}
 PLIST_REINPLACE_${m:U}=	s|^@comment ${m} ||g
 .endfor
 ##############################################################################
-.if ! ${PORT_OPTIONS:MMANPAGES}
-CONFIGURE_ENV+=		XSLTPROC="true"
-.else
-BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl \
-			xsltproc:${PORTSDIR}/textproc/libxslt
+# !SAMBA4_SUBPORT
 .endif
+
+.include <bsd.port.pre.mk>
+
+.if !defined(SAMBA4_SUBPORT)
 
 SAMBA4_SUB=		SAMBA4_LOGDIR="${SAMBA4_LOGDIR}" \
 			SAMBA4_RUNDIR="${SAMBA4_RUNDIR}" \
@@ -518,12 +516,12 @@ do-install:
 			@(cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} ${INSTALL_WRKSRC}/${WAF_TOOL} ${MAKE_ARGS} ${INSTALL_TARGET})
 
 post-install:
+			@${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/man/man5/smb4.conf.5.gz
 .if ${PORT_OPTIONS:MDOCS}
 			@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .	for doc in ${PORTDOCS}
 			@${INSTALL_DATA} ${WRKDIR}/${doc} ${STAGEDIR}${DOCSDIR}
 .	endfor
-			@${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/man/man5/smb4.conf.5.gz
 .endif
 # Run post-install script
 .for dir in ${SAMBA4_LOGDIR} ${SAMBA4_RUNDIR} ${SAMBA4_LOCKDIR} ${STAGEDIR}${SAMBA4_MODULEDIR} ${SAMBA4_PRIVATEDIR}
@@ -532,7 +530,6 @@ post-install:
 .for dir in auth bind9 gensec gpext idmap ldb nss_info pdb perfcount process_model service vfs
 			@${MKDIR} "${STAGEDIR}${SAMBA4_MODULEDIR}/${dir}"
 .endfor
-
 
 .if ${PORT_OPTIONS:MDEVELOPER}
 test: build

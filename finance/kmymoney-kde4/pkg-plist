@@ -79,17 +79,18 @@ lib/kde4/kmm_csvimport.so
 lib/kde4/kmm_printcheck.so
 lib/kde4/kmm_reconciliationreport.so
 lib/libkmm_kdchart.so
-lib/libkmm_kdchart.so.5
-lib/libkmm_kdchart.so.5.0.1
+lib/libkmm_kdchart.so.4
+lib/libkmm_kdchart.so.%%KDE4_GENERIC_LIB_VERSION%%
 lib/libkmm_mymoney.so
-lib/libkmm_mymoney.so.5
-lib/libkmm_mymoney.so.5.0.1
+lib/libkmm_mymoney.so.4
+lib/libkmm_mymoney.so.%%KDE4_GENERIC_LIB_VERSION%%
 lib/libkmm_plugin.so
-lib/libkmm_plugin.so.5
-lib/libkmm_plugin.so.5.0.1
+lib/libkmm_plugin.so.4
+lib/libkmm_plugin.so.%%KDE4_GENERIC_LIB_VERSION%%
 lib/libkmm_widgets.so
-lib/libkmm_widgets.so.5
-lib/libkmm_widgets.so.5.0.1
+lib/libkmm_widgets.so.4
+lib/libkmm_widgets.so.%%KDE4_GENERIC_LIB_VERSION%%
+man/man1/kmymoney.1.gz
 share/applications/kde4/kmymoney.desktop
 share/apps/kmm_csvimport/kmm_csvimport.rc
 %%CALENDAR%%share/apps/kmm_icalendarexport/kmm_icalendarexport.rc
@@ -1342,7 +1343,6 @@ share/kde4/servicetypes/kmymoneyplugin.desktop
 %%NLS%%share/locale/uk/LC_MESSAGES/kmymoney.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/kmymoney.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/kmymoney.mo
-share/mime/application/x-kmymoney.xml
 share/mime/packages/x-kmymoney.xml
 @dirrmtry share/icons/locolor/32x32/apps
 @dirrmtry share/icons/locolor/32x32

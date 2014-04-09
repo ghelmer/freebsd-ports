@@ -11,6 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A chromatogram trace viewer
 
 BROKEN=		fails to checksum
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2014-04-18
 
 USE_LINUX?=	yes
 ONLY_FOR_ARCHS=	i386
@@ -19,6 +21,8 @@ SUB_FILES=	pkg-message
 STRIP=
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

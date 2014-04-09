@@ -3,6 +3,7 @@
 
 PORTNAME=		unittestplus
 PORTVERSION=		1.1.1
+PORTREVISION=		1
 CATEGORIES=		devel python
 MASTER_SITES=		CHEESESHOP
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
@@ -10,9 +11,9 @@ PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=		hsmtkk@gmail.com
 COMMENT=		Test utilities built on unittest
 
-USE_ZIP=		yes
+USES=		zip
 USE_PYTHON=		yes
 USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

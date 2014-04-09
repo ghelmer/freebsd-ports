@@ -2,12 +2,12 @@
 
 PORTNAME=	libtorrent-devel
 PORTVERSION=	0.13.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://libtorrent.rakshasa.no/downloads/
 DISTNAME=	${PORTNAME:S/-devel//}-${PORTVERSION}
 
-MAINTAINER=	az@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BitTorrent Library written in C++ (development version)
 
 LIB_DEPENDS=	sigc-2.0.0:${PORTSDIR}/devel/libsigc++20
@@ -26,7 +26,6 @@ OPTIONS_DEFINE=	KQUEUE IPV6
 OPTIONS_DEFAULT=	KQUEUE
 KQUEUE_DESC=	Use kqueue(2) support
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if defined(WITH_OPENSSL_BASE)

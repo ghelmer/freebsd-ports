@@ -3,7 +3,7 @@
 
 PORTNAME=	trlan
 PORTVERSION=	201009
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	https://codeforge.lbl.gov/frs/download.php/210/:1 \
 		http://crd.lbl.gov/~kewu/ps/:2 \
@@ -14,7 +14,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Thick-restart Lanczos method for eigenproblems
 
-USE_FORTRAN=	yes
+USES=		fortran
 USE_LDCONFIG=	yes
 
 ALL_TARGET=	lib

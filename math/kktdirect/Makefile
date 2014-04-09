@@ -3,7 +3,7 @@
 
 PORTNAME=	kktdirect
 PORTVERSION=	0.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://www.cs.ubc.ca/~rbridson/download/ LOCAL/bf
 DISTNAME=	KKTDirect${PORTVERSION}
@@ -11,7 +11,7 @@ DISTNAME=	KKTDirect${PORTVERSION}
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Direct solver package for saddle-point (KKT) matrices
 
-USE_FORTRAN=	yes
+USES=		fortran
 USE_LDCONFIG=	yes
 
 MAKE_JOBS_UNSAFE=yes

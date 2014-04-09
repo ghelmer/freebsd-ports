@@ -3,6 +3,7 @@
 
 PORTNAME=	requests-oauth-hook
 PORTVERSION=	0.1.4
+PORTREVISION=	2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,11 +13,14 @@ COMMENT=	This is an OAuth hook for py-requests
 
 LICENSE=	BSD
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>0:${PORTSDIR}/www/py-requests \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests1>0:${PORTSDIR}/www/py-requests1 \
 		${PYTHON_PKGNAMEPREFIX}oauth2>0:${PORTSDIR}/net/py-oauth2
 
 USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
-NO_STAGE=	yes
+post-extract:
+	${RM} -r ${WRKSRC}/tests
+
 .include <bsd.port.mk>

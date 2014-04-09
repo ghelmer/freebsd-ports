@@ -20,18 +20,4 @@ TEST_DEPENDS=	p5-Test-Requires>0:${PORTSDIR}/devel/p5-Test-Requires
 USES=		perl5
 USE_PERL5=	modbuild
 
-MAN3=		Data::Section::TestBase.3 \
-		Test::Base::Less.3 \
-		Text::TestBase.3 \
-		Text::TestBase::Block.3
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-BUILD_DEPENDS+=	p5-Test-Simple>=0.98:${PORTSDIR}/devel/p5-Test-Simple
-RUN_DEPENDS+=	p5-Test-Simple>=0.98:${PORTSDIR}/devel/p5-Test-Simple
-TEST_DEPENDS+=	p5-Test-Simple>=0.98:${PORTSDIR}/devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

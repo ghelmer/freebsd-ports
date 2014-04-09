@@ -9,7 +9,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:AVAR
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	milki@rescomp.berkeley.edu
+MAINTAINER=	milki@FreeBSD.org
 COMMENT=	Plain text training material for bots like Hailo and MegaHAL
 
 LICENSE=	ART10 GPLv1
@@ -29,8 +29,4 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		perl5
 USE_PERL5=	configure
 
-MAN1=	bot-training.1
-MAN3=	Bot::Training.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

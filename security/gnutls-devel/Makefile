@@ -12,6 +12,11 @@ PKGNAMESUFFIX=	-devel
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library
 
+BROKEN=		Does not build
+FORBIDDEN=	Vulnerable to CVE-2014-0092
+DEPRECATED=	Stale, broken and vulnerable
+EXPIRATION_DATE=	2014-04-01
+
 LIB_DEPENDS=	gpg-error.0:${PORTSDIR}/security/libgpg-error \
 		nettle.4:${PORTSDIR}/security/nettle \
 		p11-kit.0:${PORTSDIR}/security/p11-kit
@@ -32,6 +37,9 @@ CONFIGURE_ARGS+=	--disable-guile --disable-silent-rules \
 MANCOMPRESSED=	no
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS NLS
+
 .include <bsd.port.options.mk>
 
 .if (defined(WITH_LIBTASN1) || exists(${LOCALBASE}/lib/libtasn1.so.7)) && !defined(WITHOUT_LIBTASN1)

@@ -3,6 +3,7 @@
 
 PORTNAME=	bombono
 PORTVERSION=	1.2.2
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-dvd/${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-dvd-${PORTVERSION}
@@ -23,9 +24,8 @@ RUN_DEPENDS=	GraphicsMagick>=1.1.7:${PORTSDIR}/graphics/GraphicsMagick \
 		growisofs:${PORTSDIR}/sysutils/dvd+rw-tools \
 		toolame:${PORTSDIR}/audio/toolame
 
-USES=		pkgconfig scons
-USE_BZIP2=	yes
-USE_GCC=	4.2+
+USES=		pkgconfig scons tar:bzip2
+USE_GCC=	any
 INSTALLS_ICONS=	yes
 
 CXXFLAGS+=	-I${LOCALBASE}/include

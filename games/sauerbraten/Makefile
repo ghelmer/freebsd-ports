@@ -14,7 +14,7 @@ COMMENT=	First person shooter based on Cube
 LICENSE_COMB=	multi
 LICENSE=	MIT ZLIB
 
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 USE_BZIP2=	yes
 CONFIGURE_ENV=	ACLOCAL=true AUTOCONF=true AUTOMAKE=true
@@ -37,6 +37,9 @@ MASTER_DESC=	Build master server
 SUB_FILES=	sauer_client sauer_master sauer_server pkg-message
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLIENT}

@@ -3,7 +3,7 @@
 
 PORTNAME=	sdpara
 PORTVERSION=	7.2.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	math parallel
 MASTER_SITES=	http://sdpa.indsys.chuo-u.ac.jp/sdpa/files/
 DISTFILES=	${SRCFILE}#${MANUALFILE}
@@ -22,8 +22,7 @@ MANDATE=	20080618
 MANUALVER=	7.1.1
 SRCFILE=	${PORTNAME}.${PORTVERSION}.src.${SRCDATE}.tar.gz
 #MANUALFILE=	${PORTNAME}.${MANUALVER}.manual.${MANDATE}.pdf
-USE_FORTRAN=	yes
-USES=		gmake
+USES=		fortran gmake
 WRKSRC=		${WRKDIR}/${PORTNAME}.${PORTVERSION}
 
 .if exists(${LOCALBASE}/lib/libgoto2.so)

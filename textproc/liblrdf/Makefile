@@ -3,7 +3,7 @@
 
 PORTNAME=	liblrdf
 PORTVERSION=	0.5.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	GENTOO/distfiles
 
@@ -11,10 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for manipulating RDF files describing LADSPA plugins
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:${PORTSDIR}/audio/ladspa
-LIB_DEPENDS=	icuuc:${PORTSDIR}/devel/icu \
-		yajl:${PORTSDIR}/devel/yajl \
-		curl:${PORTSDIR}/ftp/curl \
-		raptor2:${PORTSDIR}/textproc/raptor2
+LIB_DEPENDS=	libicuuc.so:${PORTSDIR}/devel/icu \
+		libyajl.so:${PORTSDIR}/devel/yajl \
+		libcurl.so:${PORTSDIR}/ftp/curl \
+		libraptor2.so:${PORTSDIR}/textproc/raptor2
 
 USE_AUTOTOOLS=	libtoolize automake autoconf aclocal
 ACLOCAL_ARGS=	-I${LOCALBASE}/share/aclocal -I.
@@ -34,7 +34,6 @@ WRKSRC=		${WRKDIR}/swh-LRDF-7ebc032
 
 # XXX: work around an issue with automake-1.13 erroring out on a
 #      partially configured m4 directory before libtoolize creates it
-NO_STAGE=	yes
 pre-configure::
 	@${RM} -rf ${WRKSRC}/m4
 	@${MKDIR} ${WRKSRC}/m4

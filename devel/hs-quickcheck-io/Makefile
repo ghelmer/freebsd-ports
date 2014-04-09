@@ -2,7 +2,7 @@
 
 PORTNAME=	quickcheck-io
 PORTVERSION=	0.1.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

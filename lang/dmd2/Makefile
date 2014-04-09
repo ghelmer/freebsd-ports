@@ -3,7 +3,7 @@
 
 PORTNAME=	dmd
 PKGNAMESUFFIX=	2
-PORTVERSION=	2.064
+PORTVERSION=	2.064.2
 CATEGORIES=	lang
 MASTER_SITES=	http://ftp.digitalmars.com/
 DISTNAME=	dmd.${PORTVERSION}
@@ -11,8 +11,7 @@ DISTNAME=	dmd.${PORTVERSION}
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	D 2.0 compiler, not officially validated for FreeBSD
 
-USE_ZIP=	yes
-USE_GMAKE=	yes
+USES=		gmake zip
 MAKEFILE=	posix.mak
 EXAMPLESDIR=	${PREFIX}/share/examples/dmd2
 DOCSDIR=	${PREFIX}/share/doc/dmd2
@@ -91,6 +90,8 @@ do-install:
 	${MKDIR} ${STAGEDIR}${MODULEDIR}/etc/c
 	${INSTALL_DATA} ${WRKSRC}/../phobos/*.d ${STAGEDIR}${MODULEDIR}
 	${INSTALL_DATA} ${WRKSRC}/../phobos/etc/c/zlib.d ${STAGEDIR}${MODULEDIR}/etc/c
+	${INSTALL_DATA} ${WRKSRC}/../phobos/etc/c/curl.d ${STAGEDIR}${MODULEDIR}/etc/c
+	${INSTALL_DATA} ${WRKSRC}/../phobos/etc/c/sqlite3.d ${STAGEDIR}${MODULEDIR}/etc/c
 	cd ${WRKSRC}/../phobos && ${COPYTREE_SHARE} std ${STAGEDIR}${MODULEDIR}
 	${MKDIR} ${STAGEDIR}${MODULEDIR}/../druntime
 	cd ${WRKSRC}/../druntime && ${COPYTREE_SHARE} import ${STAGEDIR}${MODULEDIR}/../druntime

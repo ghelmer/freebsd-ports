@@ -14,7 +14,7 @@ LICENSE=	OFL11
 
 NO_ARCH=	yes
 
-USE_ZIP=	yes
+USES=		zip
 XORG_CAT=	font
 
 FONTLIBPATH=	lib/X11/fonts
@@ -33,6 +33,8 @@ SUB_FILES=	pkg-message
 DOCSLIST=	FONTLOG.txt GENTIUM-FAQ.txt OFL-FAQ.txt OFL.txt README.txt \
 		documentation/GentiumPlus-features.pdf
 PORTDOCS=	${DOCSLIST:C,^.*/,,}
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

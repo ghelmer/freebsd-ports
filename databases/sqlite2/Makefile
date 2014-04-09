@@ -8,7 +8,7 @@ CATEGORIES=	databases
 MASTER_SITES=	http://www.sqlite.org/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	An SQL database engine in a C library
+COMMENT=	SQL database engine in a C library
 
 USES=		gmake pkgconfig
 USE_AUTOTOOLS=	libtool
@@ -25,7 +25,6 @@ EXTRACT_AFTER_ARGS=	--exclude CVS
 
 OPTIONS_DEFINE=	TCL THREADS DOCS
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MTCL}
@@ -36,7 +35,6 @@ USES+=		tcl:build
 .endif
 .endif
 
-.include <bsd.port.pre.mk>
 .if ${PORT_OPTIONS:MTCL}
 CATEGORIES+=	lang tcl
 COMMENT+=	with TCL wrapper
@@ -77,14 +75,12 @@ post-build:
 
 post-install:
 .if ${PORT_OPTIONS:MTCL}
-	@(cd ${WRKSRC} && ${GMAKE} install-tcl)
-	${INSTALL_DATA} ${FILESDIR}/pkgIndex.tcl ${PREFIX}/lib/sqlite/
+	@(cd ${WRKSRC} && ${GMAKE} ${MAKE_ARGS} install-tcl)
+	${INSTALL_DATA} ${FILESDIR}/pkgIndex.tcl ${STAGEDIR}${PREFIX}/lib/sqlite
 .endif
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/* ${DOCSDIR}
-.endif
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${FILESDIR}/example.tcl ${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${FILESDIR}/example.tcl ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

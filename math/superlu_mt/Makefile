@@ -3,7 +3,7 @@
 
 PORTNAME=	superlu_mt
 PORTVERSION=	2.0.20080115
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	http://crd.lbl.gov/~xiaoye/SuperLU/ \
 		http://crd.lbl.gov/~xiaoye/:doc
@@ -17,8 +17,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Routines for performing multithreaded sparse factorization
 
-USE_FORTRAN=	yes
-USE_GMAKE=	yes
+USES=		fortran gmake
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
@@ -71,8 +70,10 @@ post-patch:
 	${CP} -r ${WRKSRC} ${WRKSRC_SHARED}
 	@${REINPLACE_CMD} -e 's+%%BLAS%%+-L${LOCALBASE}/lib ${BLAS}+ ; \
 			s+%%CC%%+${CC}+; s+%%FC%%+${FC}+; \
+			s+%%CPPFLAGS%%+${CPPFLAGS}+; \
 			s+%%CFLAGS%%+${CFLAGS}+; \
 			s+%%FFLAGS%%+${FFLAGS}+; \
+			s+%%LDFLAGS%%+${LDFLAGS}+; \
 			s+%%FPIC%%++; \
 	  s+%%PTHREAD_CFLAGS%%+${PTHREAD_CFLAGS}+ ; \
 	  s+%%PTHREAD_LIBS%%+${PTHREAD_LIBS}+ ' \
@@ -80,16 +81,18 @@ post-patch:
 
 	@${REINPLACE_CMD} -e 's+%%BLAS%%+-L${LOCALBASE}/lib ${BLAS}+ ; \
 			s+%%CC%%+${CC}+; s+%%FC%%+${FC}+; \
+			s+%%CPPFLAGS%%+${CPPFLAGS}+; \
 			s+%%CFLAGS%%+${CFLAGS} ${FPIC}+; \
 			s+%%FFLAGS%%+${FFLAGS} ${FPIC}+; \
+			s+%%LDFLAGS%%+${LDFLAGS}+; \
 			s+%%FPIC%%+${FPIC}+; \
 	  s+%%PTHREAD_CFLAGS%%+${PTHREAD_CFLAGS}+ ; \
 	  s+%%PTHREAD_LIBS%%+${PTHREAD_LIBS}+ ' \
 		${WRKSRC_SHARED}/make.inc
 
 do-build:
-	cd ${WRKSRC} ; ${GMAKE}
-	cd ${WRKSRC_SHARED} ; ${GMAKE}
+	cd ${WRKSRC} ; ${GMAKE} LDFLAGS="${LDFLAGS}"
+	cd ${WRKSRC_SHARED} ; ${GMAKE} LDFLAGS="${LDFLAGS}"
 	${RM} -rf ${WRKDIR}/tmp_static
 	${MKDIR} ${WRKDIR}/tmp_static
 	cd ${WRKDIR}/tmp_static

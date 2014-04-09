@@ -3,6 +3,7 @@
 
 PORTNAME=	scummvm-tools
 DISTVERSION=	1.6.0
+PORTREVISION=	1
 CATEGORIES=	games emulators
 MASTER_SITES=	SF/scummvm/${PORTNAME}/${DISTVERSION}
 
@@ -18,8 +19,7 @@ BUILD_DEPENDS=	lame:${PORTSDIR}/audio/lame \
 LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis
 
-USE_BZIP2=	yes
-USES=		gmake
+USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes
 
 CONFIGURE_TARGET=
@@ -31,9 +31,9 @@ OPTIONS_DEFAULT=	WXGTK
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MWXGTK}
-USE_WX=		2.4+
-WX_CONFIG=	${LOCALBASE}/bin/wxgtk2-2.8-config
+USE_WX=		3.0
 WX_COMP=	wx:lib:build
+WX_UNICODE=	yes
 GUI_BIN=	tools_gui
 PLIST_SUB=	WX=""
 .else

@@ -3,7 +3,7 @@
 
 PORTNAME=	cblas
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	NL/blas/blast-forum/ LOCAL/bf
 DISTFILES=	cblas.tgz
@@ -13,7 +13,7 @@ COMMENT=	Reference implementation of the C interface to the legacy Fortran BLAS
 
 LICENSE=	BSD
 
-USE_FORTRAN=	yes
+USES=		fortran
 
 CONFLICTS_INSTALL=	atlas-[0-9]* atlas-devel-[0-9]*
 

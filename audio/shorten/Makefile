@@ -9,12 +9,11 @@ MASTER_SITES=	http://www.etree.org/shnutils/shorten/dist/src/
 MAINTAINER=	sec@42.org
 COMMENT=	Fast and optionally lossless compression for waveform files
 
-RESTRICTED=	May not be sold, may not be used commercially.
+RESTRICTED=	May not be sold.  May not be distributed if modified
 
 GNU_CONFIGURE=	yes
-NO_STAGE=	yes
 
-MAN1=		shorten.1
-PLIST_FILES=	bin/shorten
+PLIST_FILES=	bin/shorten \
+		man/man1/shorten.1.gz
 
 .include <bsd.port.mk>

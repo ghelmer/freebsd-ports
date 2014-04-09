@@ -3,6 +3,7 @@
 
 PORTNAME=	sigrok-cli
 PORTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	science cad
 MASTER_SITES=	http://sigrok.org/download/source/sigrok-cli/
 
@@ -10,6 +11,9 @@ MAINTAINER=	uffe@uffe.org
 COMMENT=	Framework for hardware logic analyzers, CLI client
 
 LICENSE=	GPLv3
+
+DEPRECATED=		Depends on expiring lang/python31
+EXPIRATION_DATE=	2014-06-01
 
 LIB_DEPENDS=	libsigrok.so:${PORTSDIR}/devel/libsigrok \
 		libsigrokdecode.so:${PORTSDIR}/devel/libsigrokdecode

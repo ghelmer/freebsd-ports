@@ -15,16 +15,21 @@ PLIST_FILES=	bin/dtaus man/man1/dtaus.1.gz man/man5/dtaus.5.gz
 PORTDOCS=	ChangeLog README TODO dtaus.txt
 PORTEXAMPLES=	dtaus.cls sample.ctl
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include <bsd.port.options.mk>
 
 do-configure:
-	 ${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|g' \
+	${REINPLACE_CMD} -e 's|<malloc.h>|<stdlib.h>|g' \
 		${WRKSRC}/bigint.c ${WRKSRC}/dtaus.c
+	${REINPLACE_CMD} -e 's|^CC =|CC?=|' \
+		 -e 's|^CFLAGS =|CFLAGS+=|' \
+		${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/dtaus ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/dtaus.1 ${STAGEDIR}${MANPREFIX}/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/dtaus.5 ${STAGEDIR}${MANPREFIX}/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/dtaus.1 ${STAGEDIR}${PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/dtaus.5 ${STAGEDIR}${PREFIX}/man/man5/
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in ${PORTDOCS}

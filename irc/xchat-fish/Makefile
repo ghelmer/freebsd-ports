@@ -17,8 +17,7 @@ COMMENT=	An encryption plugin for XChat
 BUILD_DEPENDS=	${LOCALBASE}/lib/libmiracl.a:${PORTSDIR}/math/miracl
 RUN_DEPENDS=	xchat:${PORTSDIR}/irc/xchat
 
-USE_ZIP=	yes
-USES=		dos2unix
+USES=		dos2unix zip
 NO_WRKSUBDIR=	yes
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 CCFLAGS+=	-Wall -O2 -I${LOCALBASE}/include
@@ -28,6 +27,8 @@ MAKE_ENV+=	CCFLAGS="${CCFLAGS}"
 PLIST_FILES=	lib/xchat/plugins/xfish.so
 PORTDOCS=	FiSH-xchat.txt \
 		FiSH-xchat_History.txt
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

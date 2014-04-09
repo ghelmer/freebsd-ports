@@ -3,6 +3,7 @@
 
 PORTNAME=	bitcoin
 PORTVERSION=	0.8.6
+PORTREVISION=	1
 CATEGORIES=	net-p2p finance
 MASTER_SITES=	${MASTER_SITE_LOCAL} \
 		http://people.freebsd.org/~swills/ \
@@ -26,7 +27,7 @@ GH_PROJECT=	bitcoin
 GH_COMMIT=	15e2837
 GH_TAGNAME=	v${PORTVERSION}
 
-USE_GMAKE=	yes
+USES=		gmake
 USE_OPENSSL=	yes
 USE_BDB=	yes
 WANT_BDB_VER=	48
@@ -77,7 +78,7 @@ post-patch:
 
 do-configure:
 .if ${PORT_OPTIONS:MGUI} && !defined(WITHOUT_X11)
-	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
+	cd ${WRKSRC} && ${SETENV} ${QMAKE_ENV} \
 		${QMAKE} ${QMAKE_ARGS} USE_UPNP=${QMAKE_USE_UPNP} USE_QRCODE=${QMAKE_USE_QRCODE} \
 		QMAKE_LRELEASE=${LRELEASE} INCLUDEPATH=${BDB_INCLUDE_DIR} \
 		QMAKE_LIBDIR+=${BDB_LIB_DIR} bitcoin-qt.pro

@@ -3,6 +3,7 @@
 
 PORTNAME=	xerces-c2-devel
 PORTVERSION=	2.8.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	${MASTER_SITE_APACHE}
 MASTER_SITE_SUBDIR=	xerces/c/sources
@@ -10,6 +11,8 @@ DISTNAME=	xerces-c-src_${PORTVERSION:S/./_/g}
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Validating XML parser from the Apache XML Project
+
+CONFLICTS=	xerces_c2-[0-9]* xerces-c3-[0-9]*
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -22,7 +25,6 @@ ICONVFBSD_DESC=		Use IconvFBSD transcoder
 ICU_DESC=		Use ICU transcoder
 NATIVE_DESC=		Use native transcoder
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNATIVE}
@@ -40,15 +42,15 @@ TRANSCODER=		IconvFBSD
 .if !defined(TRANSCODER)
 USES+=			iconv
 TRANSCODER=		IconvFBSD
-ICONVROOT?=		${LOCALBASE}
-CONFIGURE_ENV+=		ICONVROOT=${ICONVROOT}
+ICONVROOT?=		${ICONV_PREFIX}
+CONFIGURE_ENV+=		ICONVROOT=${ICONVROOT} ICONV_LIB=${ICONV_LIB}
 MAKE_ENV+=		ICONVROOT=${ICONVROOT}
 PLIST_SUB+=		TRANSICONV=""
 PLIST_SUB+=		TRANSICU="@comment "
 .else
 .if (${TRANSCODER} == "icu")
 PKGNAMESUFFIX+=		-icu
-LIB_DEPENDS+=		icuuc:${PORTSDIR}/devel/icu
+LIB_DEPENDS+=		libicuuc.so:${PORTSDIR}/devel/icu
 ICUROOT?=		${LOCALBASE}
 CONFIGURE_ENV+=		ICUROOT=${ICUROOT}
 MAKE_ENV+=		ICUROOT=${ICUROOT}
@@ -61,8 +63,8 @@ PLIST_SUB+=		TRANSICU="@comment "
 .else
 USES+=			iconv
 TRANSCODER=		IconvFBSD
-ICONVROOT?=		${LOCALBASE}
-CONFIGURE_ENV+=		ICONVROOT=${ICONVROOT}
+ICONVROOT?=		${ICONV_PREFIX}
+CONFIGURE_ENV+=		ICONVROOT=${ICONVROOT} ICONV_LIB=${ICONV_LIB}
 MAKE_ENV+=		ICONVROOT=${ICONVROOT}
 PLIST_SUB+=		TRANSICONV=""
 PLIST_SUB+=		TRANSICU="@comment "
@@ -76,7 +78,7 @@ CONFIGURE_WRKSRC=	${XERCESWRKSRC}
 BUILD_WRKSRC=		${XERCESWRKSRC}
 INSTALL_WRKSRC=		${XERCESWRKSRC}
 
-USE_GMAKE=		yes
+USES+=			gmake
 MAKE_ENV+=		XERCESCROOT=${WRKSRC}
 
 HAS_CONFIGURE=		yes
@@ -171,16 +173,16 @@ post-configure:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	@${CP} -r ${WRKSRC}/doc/ ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${CP} -r ${WRKSRC}/doc/ ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for i in ${XERCES_BINS} data
-	@${CP} -r ${WRKSRC}/samples/$i ${EXAMPLESDIR}
+	@${CP} -r ${WRKSRC}/samples/$i ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 .for i in ${XERCES_BINS}
-	@${INSTALL_PROGRAM} ${WRKSRC}/bin/$i ${PREFIX}/bin
+	@${INSTALL_PROGRAM} ${WRKSRC}/bin/$i ${STAGEDIR}${PREFIX}/bin
 .endfor
 .endif
 

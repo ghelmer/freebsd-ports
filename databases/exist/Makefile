@@ -10,10 +10,9 @@ DISTNAME=	eXist-${PORTVERSION}-newcore-build4311
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=	#
 
-MAINTAINER=	contact@toha.org.ua
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source Native XML Database
 
-USE_ZIP=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 USE_RC_SUBR=	eXist

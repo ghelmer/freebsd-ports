@@ -3,6 +3,7 @@
 
 PORTNAME=	dikt
 PORTVERSION=	2l
+PORTREVISION=	1
 CATEGORIES=	textproc net kde
 MASTER_SITES=	GOOGLE_CODE
 EXTRACT_SUFX=	.txz
@@ -26,5 +27,4 @@ PLIST_FILES=	bin/dikt \
 		share/kde4/services/dict.protocol
 PLIST_DIRS=	share/apps/dikt
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc48
-PORTVERSION=	4.8.3.s20131212
+PORTVERSION=	4.8.3.s20140220
 CATEGORIES=	lang java
 MASTER_SITES=	${MASTER_SITE_GCC}
 MASTER_SITE_SUBDIR=	snapshots/${DISTVERSION}
@@ -10,6 +10,9 @@ DISTNAME=	gcc-${DISTVERSION}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.8
+
+LICENSE=	GPLv3 GPLv3RLE
+LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libmpfr.so:${PORTSDIR}/math/mpfr \
@@ -70,6 +73,7 @@ CONFIGURE_ARGS+=--disable-bootstrap
 ALL_TARGET=	bootstrap-lean
 .endif
 CONFIGURE_ARGS+=--disable-nls \
+		--enable-gnu-indirect-function \
 		--libdir=${TARGLIB} \
 		--libexecdir=${LIBEXEC} \
 		--program-suffix=${SUFFIX} \
@@ -92,8 +96,8 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/gccint \
 		gcc${SUFFIX}/gfortran \
 		gcc${SUFFIX}/libgomp
-.if ${ARCH} == "i386" || ${ARCH} == "amd64" || ${ARCH} == "alpha"
-INFO+=		gcc${SUFFIX}/libquadmath	\
+.if ${ARCH} == "i386" || ${ARCH} == "amd64"
+INFO+=		gcc${SUFFIX}/libquadmath \
 		gcc${SUFFIX}/libitm
 .endif
 
@@ -129,6 +133,7 @@ full-regression-test: build
 
 post-install:
 	${RM} -f ${STAGEDIR}${TARGLIB}/*.la
+	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
 	# Add target libraries and include files to packaging list.
 	${RM} -f ${WRKDIR}/PLIST.lib
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
@@ -139,8 +144,5 @@ post-install:
 	fi
 .endfor
 	cd ${WRKDIR} ; ${SED} -i -e "/PLIST.lib/ r PLIST.lib" ${TMPPLIST}
-	@if type ccache-update-links >/dev/null 2>&1; then \
-	    ccache-update-links -v; \
-	fi
 
 .include <bsd.port.post.mk>

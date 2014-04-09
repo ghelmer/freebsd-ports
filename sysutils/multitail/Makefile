@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	multitail
-PORTVERSION=	5.2.12
-PORTREVISION=	1
+PORTVERSION=	6.2.1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.vanheusden.com/multitail/ \
 		http://fossies.org/unix/privat/
@@ -21,7 +20,7 @@ PLIST_FILES=	bin/multitail etc/multitail.conf.sample \
 		man/man1/multitail.1.gz
 PORTDOCS=	readme.txt license.txt
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,$$(DESTDIR)/etc/multitail.conf,${PREFIX}/etc/multitail.conf,' \
@@ -32,10 +31,8 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/multitail ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_MAN} ${WRKSRC}/multitail.1 ${STAGEDIR}${MANPREFIX}/man/man1
 	${INSTALL_DATA} ${WRKSRC}/multitail.conf ${STAGEDIR}${PREFIX}/etc/multitail.conf.sample
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/readme.txt ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/license.txt ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

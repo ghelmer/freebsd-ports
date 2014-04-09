@@ -25,12 +25,13 @@ ALL_TARGET=	jar
 PLIST_FILES=	%%JAVAJARDIR%%/libvirt-${PORTVERSION}.jar
 PORTDOCS=	*
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/java|${JAVAJARDIR}|' \
 		${WRKSRC}/build.properties
-
-.include <bsd.port.options.mk>
 
 post-build-script:
 .if ${PORT_OPTIONS:MDOCS}
@@ -39,10 +40,12 @@ post-build-script:
 .endif
 
 do-install:
-	${INSTALL_DATA} ${WRKSRC}/target/libvirt-${PORTVERSION}.jar ${JAVAJARDIR}
+	${INSTALL_DATA} ${WRKSRC}/target/libvirt-${PORTVERSION}.jar \
+		${STAGEDIR}${JAVAJARDIR}
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC}/target/javadoc && ${COPYTREE_SHARE} \* ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/target/javadoc && \
+		${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

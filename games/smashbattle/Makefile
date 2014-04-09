@@ -13,10 +13,9 @@ COMMENT=	8-bit style platform battle game
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/battle/Battle
 
-USE_ZIP=	yes
 EXTRACT_AFTER_ARGS=	-d ${WRKDIR}/${DISTNAME}
-USES=		dos2unix gmake
-DOS2UNIX_FILES= *.cpp *.h Makefile
+USES=		dos2unix gmake zip:infozip
+DOS2UNIX_FILES=	*.cpp *.h Makefile
 USE_SDL=	sdl image mixer
 ALL_TARGET=	battle
 
@@ -26,12 +25,11 @@ pre-extract:
 SUB_FILES=	${PORTNAME}
 
 post-patch:
-	@${REINPLACE_CMD} \
-		-e 's|CC=|CC?=| ; \
-		s|CFLAGS=-c -Wall|CFLAGS += $$(shell sdl-config --cflags) -c -w| ; \
+	@${REINPLACE_CMD} -e 's|CC=|CC?=|; \
+		s|CFLAGS=-c -Wall|CFLAGS += $$(shell sdl-config --cflags) -c -Wall|; \
 		s|LDFLAGS=-lSDL -lSDL_mixer -lz -lstdc++|LDFLAGS += $$(shell $${SDL_CONFIG} --libs) -lSDL -lSDL_mixer -lz -lstdc++ -lm|' \
 			${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's|/usr/share/games/smashbattle/gfx/SB.png|${PORTNAME}| ; \
+	@${REINPLACE_CMD} -e 's|/usr/share/games/smashbattle/gfx/SB.png|${PORTNAME}|; \
 		s|/usr/local/bin/smashbattle|${PORTNAME}|' \
 		${WRKSRC}/linux/*.desktop
 

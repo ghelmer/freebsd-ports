@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	racktables
-DISTVERSION=	0.20.5
+DISTVERSION=	0.20.7
 CATEGORIES?=	sysutils www
 MASTER_SITES=	SF/${PORTNAME}/
 DISTNAME=	RackTables-${DISTVERSION}
@@ -29,7 +29,6 @@ PCRE_DESC=	Regular Expression Support
 PCNTL_DESC=	pcntl Support
 LANG_DESC=	Additional Language Support
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLDAP}
@@ -60,15 +59,10 @@ post-patch:
 	@${FIND} ${WRKSRC} -name \*.orig -type f -delete
 
 do-install:
-	${MKDIR} ${WWWDIR}/wwwroot ${WWWDIR}/gateways
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} wwwroot ${WWWDIR})
-	(cd ${WRKSRC} && ${COPYTREE_BIN} gateways ${WWWDIR})
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/scripts/* ${EXAMPLESDIR}
-.endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+	@${MKDIR} ${STAGEDIR}${WWWDIR}/wwwroot ${STAGEDIR}${WWWDIR}/gateways
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} wwwroot ${STAGEDIR}${WWWDIR})
+	(cd ${WRKSRC} && ${COPYTREE_BIN} gateways ${STAGEDIR}${WWWDIR})
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@${INSTALL_DATA} ${WRKSRC}/scripts/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

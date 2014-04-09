@@ -7,11 +7,11 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	perl@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Perl bindings for the libsvm Support Vector Machine library
 
 USES=		perl5
 USE_PERL5=	configure
-CC=		c++
+CC=		${CXX}
 
 .include <bsd.port.mk>

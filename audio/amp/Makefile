@@ -7,7 +7,7 @@ PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www-users.cs.umn.edu/~wburdick/ftp/
 
-MAINTAINER=	delphus@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Another mp3 player
 
 GNU_CONFIGURE=	yes
@@ -15,6 +15,10 @@ USES=		gmake
 
 PLIST_FILES=	bin/amp \
 		man/man1/amp.1.gz
+
+post-configure:
+	@${REINPLACE_CMD} -e 's|-O6 -ffast-math -fomit-frame-pointer|${CFLAGS}|' \
+		-e 's|gcc|${CC}|' ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/amp ${STAGEDIR}${PREFIX}/bin

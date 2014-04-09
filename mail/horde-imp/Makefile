@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	imp
-PORTVERSION=	6.1.6
+PORTVERSION=	6.1.7
 CATEGORIES=	mail www pear
 PKGNAMEPREFIX=	horde-
 
@@ -50,7 +50,6 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Util \
 		Horde_View
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 .include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
 .include <bsd.port.post.mk>

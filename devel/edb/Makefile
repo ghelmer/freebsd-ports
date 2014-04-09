@@ -2,7 +2,7 @@
 
 PORTNAME=	edb
 PORTVERSION=	0.9.18
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://codef00.com/projects/
 DISTNAME=	debugger-${PORTVERSION}
@@ -26,6 +26,8 @@ PORTDOCS=	*
 ONLY_FOR_ARCHS=	i386 amd64
 
 STRIP_FILES=	bin/${PORTNAME} libexec/${PORTNAME}/*.so
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

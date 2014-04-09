@@ -103,14 +103,20 @@
 #							If you need more than one option, you can do
 #							FOO=bar,baz and you'll get USE_FOO=bar baz
 #
-# For each of CFLAGS CPPFLAGS CXXFLAGS LDFLAGS CONFIGURE_ENV MAKE_ARGS MAKE_ENV
-# ALL_TARGET INSTALL_TARGET USES DISTFILES PLIST_FILES PLIST_DIRS PLIST_DIRSTRY
-# EXTRA_PATCHES PATCHFILES PATCH_SITES CATEGORIES, defining ${opt}_${variable}
-# will add its content to the actual variable when the option is enabled.
+# For each of:
+# ALL_TARGET CATEGORIES CONFIGURE_ENV CONFLICTS CONFLICTS_BUILD
+# CONFLICTS_INSTALL CPPFLAGS CXXFLAGS DISTFILES EXTRA_PATCHES FLAGS
+# INSTALL_TARGET LDFLAGS MAKE_ARGS MAKE_ENV PATCHFILES PATCH_SITES PLIST_DIRS
+# PLIST_DIRSTRY PLIST_FILES USES, defining ${opt}_${variable} will add its
+# content to the actual variable when the option is enabled.  Defining
+# ${opt}_${variable}_OFF will add its content to the actual variable when the
+# option is disabled.
 #
-# For each of the depends target PKG EXTRACT PATCH FETCH BUILD LIB RUN,
+# For each of the depends target PKG FETCH EXTRACT PATCH BUILD LIB RUN,
 # defining ${opt}_${deptype}_DEPENDS will add its content to the actual
-# dependency when the option is enabled.
+# dependency when the option is enabled.  Defining
+# ${opt}_${deptype}_DEPENDS_OFF will add its content to the actual dependency
+# when the option is enabled. 
 
 ##
 # Set all the options available for the ports, beginning with the
@@ -122,6 +128,13 @@ OPTIONSMKINCLUDED=	bsd.options.mk
 OPTIONS_NAME?=	${PKGORIGIN:S/\//_/}
 OPTIONSFILE?=	${PORT_DBDIR}/${UNIQUENAME}/options
 OPTIONS_FILE?=	${PORT_DBDIR}/${OPTIONS_NAME}/options
+
+_OPTIONS_FLAGS= ALL_TARGET CATEGORIES CFLAGS CONFIGURE_ENV CONFLICTS \
+				CONFLICTS_BUILD CONFLICTS_INSTALL CPPFLAGS CXXFLAGS DISTFILES \
+				EXTRA_PATCHES INSTALL_TARGET LDFLAGS MAKE_ARGS MAKE_ENV \
+				PATCHFILES PATCH_SITES PLIST_DIRS PLIST_DIRSTRY PLIST_FILES \
+				USES
+_OPTIONS_DEPENDS=	PKG FETCH EXTRACT PATCH BUILD LIB RUN
 
 # Set the default values for the global options, as defined by portmgr
 .if !defined(NOPORTDOCS)
@@ -253,14 +266,41 @@ NEW_OPTIONS:=	${NEW_OPTIONS:N${opt}}
 .  sinclude "${OPTIONS_FILE}.local"
 
 ### convert WITH and WITHOUT found in make.conf or reloaded from old optionsfile
-.for opt in ${ALL_OPTIONS}
+# XXX once WITH_DEBUG is not magic any more, do remove the :NDEBUG from here.
+.for opt in ${ALL_OPTIONS:NDEBUG}
 .if defined(WITH_${opt})
+OPTIONS_WARNINGS+= "WITH_${opt}"
+OPTIONS_WARNINGS_SET+=	${opt}
 PORT_OPTIONS+=	${opt}
 .endif
 .if defined(WITHOUT_${opt})
+OPTIONS_WARNINGS+= "WITHOUT_${opt}"
+OPTIONS_WARNINGS_UNSET+=	${opt}
 PORT_OPTIONS:=	${PORT_OPTIONS:N${opt}}
 .endif
 .endfor
+
+.if defined(OPTIONS_WARNINGS)
+WARNING+=	"You are using the following deprecated options: ${OPTIONS_WARNINGS}"
+WARNING+=	"If you added them on the command line, you should replace them by"
+WARNING+=	"WITH=\"${OPTIONS_WARNINGS_SET}\" WITHOUT=\"${OPTIONS_WARNINGS_UNSET}\""
+WARNING+=	""
+WARNING+=	"If they are global options set in your make.conf, you should replace them with:"
+.if defined(OPTIONS_WARNINGS_SET)
+WARNING+=	"OPTIONS_SET=${OPTIONS_WARNINGS_SET}"
+.endif
+.if defined(OPTIONS_WARNINGS_UNSET)
+WARNING+=	"OPTIONS_UNSET=${OPTIONS_WARNINGS_UNSET}"
+.endif
+WARNING+=	""
+WARNING+=	"If they are local to this port, you should use:"
+.if defined(OPTIONS_WARNINGS_SET)
+WARNING+=	"${OPTIONS_NAME}_SET=${OPTIONS_WARNINGS_SET}"
+.endif
+.if defined(OPTIONS_WARNINGS_UNSET)
+WARNING+=	"${OPTIONS_NAME}_UNSET=${OPTIONS_WARNINGS_UNSET}"
+.endif
+.endif
 
 ## Finish by using the options set by the port config dialog, if any
 .  for opt in ${OPTIONS_FILE_SET}
@@ -351,19 +391,31 @@ NOPORTDOCS=	yes
 NOPORTEXAMPLES=	yes
 .endif
 
+.if ${PORT_OPTIONS:MDEBUG}
+WITH_DEBUG=	yes
+.endif
+
 .if defined(NO_OPTIONS_SORT)
 ALL_OPTIONS=	${OPTIONS_DEFINE}
 .endif
 
-.for opt in ${COMPLETE_OPTIONS_LIST} ${OPTIONS_SLAVE}
+.for opt in ${COMPLETE_OPTIONS_LIST} ${OPTIONS_SLAVE} ${OPTIONS_EXCLUDE_${ARCH}} ${OPTIONS_EXCLUDE}
 # PLIST_SUB
 PLIST_SUB?=
+SUB_LIST?=
 .  if defined(OPTIONS_SUB)
 .    if ! ${PLIST_SUB:M${opt}=*}
 .      if ${PORT_OPTIONS:M${opt}}
-PLIST_SUB:=	${PLIST_SUB} ${opt}=""
+PLIST_SUB:=	${PLIST_SUB} ${opt}="" NO_${opt}="@comment "
 .      else
-PLIST_SUB:=	${PLIST_SUB} ${opt}="@comment "
+PLIST_SUB:=	${PLIST_SUB} ${opt}="@comment " NO_${opt}=""
+.      endif
+.    endif
+.    if ! ${SUB_LIST:M${opt}=*}
+.      if ${PORT_OPTIONS:M${opt}}
+SUB_LIST:=	${SUB_LIST} ${opt}="" NO_${opt}="@comment "
+.      else
+SUB_LIST:=	${SUB_LIST} ${opt}="@comment " NO_${opt}=""
 .      endif
 .    endif
 .  endif
@@ -390,14 +442,12 @@ CONFIGURE_ARGS+=	--with-${iopt}
 ${configure}_ARGS+=	${${opt}_${configure}_ON}
 .      endif
 .    endfor
-.    for flags in CFLAGS CPPFLAGS CXXFLAGS LDFLAGS CONFIGURE_ENV MAKE_ARGS \
-         MAKE_ENV ALL_TARGET INSTALL_TARGET USES DISTFILES PLIST_FILES \
-         PLIST_DIRS PLIST_DIRSTRY EXTRA_PATCHES PATCHFILES PATCH_SITES CATEGORIES
+.    for flags in ${_OPTIONS_FLAGS}
 .      if defined(${opt}_${flags})
 ${flags}+=	${${opt}_${flags}}
 .      endif
 .    endfor
-.    for deptype in PKG EXTRACT PATCH FETCH BUILD LIB RUN
+.    for deptype in ${_OPTIONS_DEPENDS}
 .      if defined(${opt}_${deptype}_DEPENDS)
 ${deptype}_DEPENDS+=	${${opt}_${deptype}_DEPENDS}
 .      endif
@@ -416,6 +466,16 @@ CONFIGURE_ARGS+=	--without-${iopt}
 .    for configure in CONFIGURE CMAKE QMAKE
 .      if defined(${opt}_${configure}_OFF)
 ${configure}_ARGS+=	${${opt}_${configure}_OFF}
+.      endif
+.    endfor
+.    for flags in ${_OPTIONS_FLAGS}
+.      if defined(${opt}_${flags}_OFF)
+${flags}+=	${${opt}_${flags}_OFF}
+.      endif
+.    endfor
+.    for deptype in ${_OPTIONS_DEPENDS}
+.      if defined(${opt}_${deptype}_DEPENDS_OFF)
+${deptype}_DEPENDS+=	${${opt}_${deptype}_DEPENDS_OFF}
 .      endif
 .    endfor
 .  endif

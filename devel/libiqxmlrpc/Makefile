@@ -3,7 +3,7 @@
 
 PORTNAME=	libiqxmlrpc
 PORTVERSION=	0.12.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel net
 MASTER_SITES=	SF
 
@@ -29,7 +29,6 @@ USE_OPENSSL=	yes
 
 PORTDATA=	*
 
-NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} -e 's,lib/pkgconfig,libdata/pkgconfig,' ${WRKSRC}/libiqxmlrpc/CMakeLists.txt
 	${REINPLACE_CMD} -e 's,share/doc/libiqxmlrpc-$${Libiqxmlrpc_VERSION},share/libiqxmlrpc,' ${WRKSRC}/doc/CMakeLists.txt

@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	cookiejar
-PORTVERSION=	0.3.0
+PORTVERSION=	0.3.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	tota@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Allows for parsing and returning cookies in Ruby HTTP client code
+
+LICENSE=	BSD2CLAUSE
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

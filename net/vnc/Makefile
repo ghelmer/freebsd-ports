@@ -3,7 +3,7 @@
 
 PORTNAME=	vnc
 PORTVERSION=	4.1.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://home.bluelife.at/ports/distfiles/${DIST_SUBDIR}/:vnc
 DISTNAME=	vnc-4_1_3-unixsrc
@@ -55,7 +55,7 @@ DISTFILES+=	X430src-1.tgz:x \
 		X430src-3.tgz:x
 
 .if ${OSVERSION} > 1000054
-USE_GCC=	4.6+
+USE_GCC=	yes
 MAKE_ENV=	IMAKECPP="${CPP}"
 MAKE_ARGS=	AR='ar rc'
 .endif

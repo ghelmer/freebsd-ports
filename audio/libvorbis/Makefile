@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvorbis
-PORTVERSION=	1.3.3
-PORTREVISION=	1
+PORTVERSION=	1.3.4
 PORTEPOCH=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.xiph.org/releases/vorbis/
@@ -13,10 +12,9 @@ COMMENT=	Audio compression codec library
 
 LIB_DEPENDS=	libogg.so:${PORTSDIR}/audio/libogg
 
-USES=		pathfix
+USES=		pathfix tar:xz
 USE_AUTOTOOLS=	libtool
 USE_LDCONFIG=	yes
-USE_XZ=		yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ogg=${LOCALBASE} \

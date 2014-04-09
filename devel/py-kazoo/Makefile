@@ -3,6 +3,7 @@
 
 PORTNAME=	kazoo
 PORTVERSION=	1.3.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,10 +17,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.interface>=0:${PORTSDIR}/devel/py-zope.
 		${PYTHON_PKGNAMEPREFIX}gevent>=0.13.8:${PORTSDIR}/devel/py-gevent
 
 USE_PYTHON=	yes
-USE_ZIP=	yes
-USE_PYDISTUTILS=easy_install
-USES=		gmake
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
+USES=		gmake zip
 
-NO_STAGE=	yes
 
 .include <bsd.port.mk>

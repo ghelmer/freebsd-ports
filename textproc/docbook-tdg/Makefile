@@ -10,16 +10,13 @@ DISTNAME=	tdg-en-html-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Norman Walsh's book "DocBook: The Definitive Guide"
 
-USE_ZIP=	yes
+USES=		zip
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/tdg/en
 
-NO_STAGE=	yes
 do-install:
-.for D in html/figures/callouts html/figures/admon html/figures html
-	${MKDIR} ${DOCSDIR}/${D}
-	${INSTALL_DATA} ${WRKSRC}/${D}/*.* ${DOCSDIR}/${D}/
-.endfor
-	${INSTALL_DATA} ${FILESDIR}/index.html ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${FILESDIR}/index.html ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

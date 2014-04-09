@@ -3,7 +3,7 @@
 
 PORTNAME=	qrupdate
 PORTVERSION=	1.1.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	${MASTER_SITE_SOURCEFORGE}
 MASTER_SITE_SUBDIR=	qrupdate/qrupdate/1.2
@@ -13,7 +13,7 @@ COMMENT=	Fortran library for fast updates of QR and Cholesky decomposition
 
 LIB_DEPENDS=	blas.2:${PORTSDIR}/math/blas lapack.4:${PORTSDIR}/math/lapack
 
-USES=		gmake
+USES=		fortran gmake
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
@@ -25,7 +25,6 @@ BROKEN=		Does not compile on sparc64: assertions fail
 PICFLAG?=	-fpic
 .endif
 
-USE_FORTRAN=	yes
 USE_LDCONFIG=	yes
 
 pre-build:

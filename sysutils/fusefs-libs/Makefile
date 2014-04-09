@@ -3,7 +3,7 @@
 
 PORTNAME=	fusefs
 PORTVERSION=	2.9.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/fuse/fuse-2.X/${PORTVERSION}
 PKGNAMESUFFIX=	-libs
@@ -20,12 +20,11 @@ USE_LDCONFIG=	yes
 USES=		iconv
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
-DOCS=		libs/how-fuse-works \
-		libs/kernel.txt
+PORTDOCS=	*
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/include/fuse_kernel.h ${STAGEDIR}${PREFIX}/include/fuse
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/libs
-	@cd ${WRKSRC}/doc/ && ${INSTALL_DATA} ${DOCS:S/libs\///} ${STAGEDIR}${DOCSDIR}/libs
+	${INSTALL_DATA} ${WRKSRC}/doc/how-fuse-works ${WRKSRC}/doc/kernel.txt ${STAGEDIR}${DOCSDIR}/libs
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=		radicale
 PORTVERSION=		0.8
+PORTREVISION=		1
 CATEGORIES=		www python
 MASTER_SITES=		CHEESESHOP
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +16,6 @@ LICENSE=		GPLv3
 
 USE_PYTHON=		yes
 USE_PYDISTUTILS=	yes
-NO_STAGE=		yes
 PYDISTUTILS_PKGNAME=	Radicale
 
 USERS=			radicale
@@ -29,7 +29,7 @@ HTTP_DESC=		HTTP authentication support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MHTTP}
-RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}requests>=0:${PORTSDIR}/www/py-requests
+RUN_DEPENDS+=		${PYTHON_PKGNAMEPREFIX}requests1>=0:${PORTSDIR}/www/py-requests1
 USE_PYTHON=		2
 .endif
 
@@ -43,9 +43,8 @@ post-patch:
 	${REINPLACE_CMD} 's,~/.config/radicale,${DATADIR},g' ${WRKSRC}/config
 
 post-install:
-	${MKDIR} ${ETCDIR}
-	${INSTALL} -d -o ${USERS} ${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/config ${ETCDIR}/config.sample
-	${INSTALL_DATA} ${WRKSRC}/logging ${ETCDIR}/logging.sample
+	${MKDIR} ${STAGEDIR}/${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/config ${STAGEDIR}/${ETCDIR}/config.sample
+	${INSTALL_DATA} ${WRKSRC}/logging ${STAGEDIR}/${ETCDIR}/logging.sample
 
 .include <bsd.port.mk>

@@ -37,6 +37,14 @@
 %%XPI_XPIDIR%%/chrome/locale/ar/sendReport.dtd
 %%XPI_XPIDIR%%/chrome/locale/ar/sidebar.dtd
 %%XPI_XPIDIR%%/chrome/locale/ar/subscriptionSelection.dtd
+%%XPI_XPIDIR%%/chrome/locale/ast/composer.dtd
+%%XPI_XPIDIR%%/chrome/locale/ast/filters.dtd
+%%XPI_XPIDIR%%/chrome/locale/ast/firstRun.properties
+%%XPI_XPIDIR%%/chrome/locale/ast/global.properties
+%%XPI_XPIDIR%%/chrome/locale/ast/overlay.dtd
+%%XPI_XPIDIR%%/chrome/locale/ast/sendReport.dtd
+%%XPI_XPIDIR%%/chrome/locale/ast/sidebar.dtd
+%%XPI_XPIDIR%%/chrome/locale/ast/subscriptionSelection.dtd
 %%XPI_XPIDIR%%/chrome/locale/bg/composer.dtd
 %%XPI_XPIDIR%%/chrome/locale/bg/filters.dtd
 %%XPI_XPIDIR%%/chrome/locale/bg/firstRun.properties
@@ -229,6 +237,14 @@
 %%XPI_XPIDIR%%/chrome/locale/hy-AM/sendReport.dtd
 %%XPI_XPIDIR%%/chrome/locale/hy-AM/sidebar.dtd
 %%XPI_XPIDIR%%/chrome/locale/hy-AM/subscriptionSelection.dtd
+%%XPI_XPIDIR%%/chrome/locale/id/composer.dtd
+%%XPI_XPIDIR%%/chrome/locale/id/filters.dtd
+%%XPI_XPIDIR%%/chrome/locale/id/firstRun.properties
+%%XPI_XPIDIR%%/chrome/locale/id/global.properties
+%%XPI_XPIDIR%%/chrome/locale/id/overlay.dtd
+%%XPI_XPIDIR%%/chrome/locale/id/sendReport.dtd
+%%XPI_XPIDIR%%/chrome/locale/id/sidebar.dtd
+%%XPI_XPIDIR%%/chrome/locale/id/subscriptionSelection.dtd
 %%XPI_XPIDIR%%/chrome/locale/is/composer.dtd
 %%XPI_XPIDIR%%/chrome/locale/is/filters.dtd
 %%XPI_XPIDIR%%/chrome/locale/is/firstRun.properties
@@ -439,11 +455,9 @@
 %%XPI_XPIDIR%%/chrome/locale/zh-TW/subscriptionSelection.dtd
 %%XPI_XPIDIR%%/chrome/skin/abp-icon-big.png
 %%XPI_XPIDIR%%/chrome/skin/abp-status-16.png
+%%XPI_XPIDIR%%/chrome/skin/abp-status-32.png
 %%XPI_XPIDIR%%/chrome/skin/abp-status.png
 %%XPI_XPIDIR%%/chrome/skin/ajax-loader.gif
-%%XPI_XPIDIR%%/chrome/skin/arrow-down.png
-%%XPI_XPIDIR%%/chrome/skin/arrow-up.png
-%%XPI_XPIDIR%%/chrome/skin/background-candomore.png
 %%XPI_XPIDIR%%/chrome/skin/background-main.png
 %%XPI_XPIDIR%%/chrome/skin/background-share.png
 %%XPI_XPIDIR%%/chrome/skin/background.png
@@ -478,6 +492,7 @@
 %%XPI_XPIDIR%%/lib/Public.jsm
 %%XPI_XPIDIR%%/lib/appSupport.js
 %%XPI_XPIDIR%%/lib/contentPolicy.js
+%%XPI_XPIDIR%%/lib/customizableUI.js
 %%XPI_XPIDIR%%/lib/downloader.js
 %%XPI_XPIDIR%%/lib/elemHide.js
 %%XPI_XPIDIR%%/lib/elemHideHitRegistration.js
@@ -502,6 +517,7 @@
 @dirrm %%XPI_XPIDIR%%/chrome/content/ui
 @dirrm %%XPI_XPIDIR%%/chrome/content
 @dirrm %%XPI_XPIDIR%%/chrome/locale/ar
+@dirrm %%XPI_XPIDIR%%/chrome/locale/ast
 @dirrm %%XPI_XPIDIR%%/chrome/locale/bg
 @dirrm %%XPI_XPIDIR%%/chrome/locale/ca
 @dirrm %%XPI_XPIDIR%%/chrome/locale/cs
@@ -526,6 +542,7 @@
 @dirrm %%XPI_XPIDIR%%/chrome/locale/hsb
 @dirrm %%XPI_XPIDIR%%/chrome/locale/hu
 @dirrm %%XPI_XPIDIR%%/chrome/locale/hy-AM
+@dirrm %%XPI_XPIDIR%%/chrome/locale/id
 @dirrm %%XPI_XPIDIR%%/chrome/locale/is
 @dirrm %%XPI_XPIDIR%%/chrome/locale/it
 @dirrm %%XPI_XPIDIR%%/chrome/locale/ja

@@ -3,6 +3,7 @@
 
 PORTNAME=	stdlib
 PORTVERSION=	1.9.3
+PORTREVISION=	1
 
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}doc-
 CATEGORIES=	lang ruby docs
@@ -18,7 +19,14 @@ COMMENT=	Documentation for the Ruby language standard library
 USE_RUBY=	yes
 NO_BUILD=	yes
 
+BROKEN=		Checksum and size mismatch
+DEPRECATED=	Upstream rerolls frequently, online docs work well
+EXPIRATION_DATE=	2014-04-24
+
 WRKSRC=		${WRKDIR}/${DISTNAME:S/_rdocs//}
+
+post-patch:
+	@${FIND} ${WRKSRC} -type f -name '*.orig' -delete
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${RUBY_DOCDIR}

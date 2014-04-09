@@ -14,10 +14,10 @@ USES=		charsetfix perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	YES
 
-MAN1=		hello.1
 INFO=		hello
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

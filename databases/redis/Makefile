@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	2.8.4
+DISTVERSION=	2.8.8
 CATEGORIES=	databases
 MASTER_SITES=	http://download.redis.io/releases/
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	A persistent key-value database with built-in net interface
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
@@ -19,8 +19,6 @@ OPTIONS_RADIO_EXTLUA=	LUA LUAJIT
 LUA_DESC=	Use lang/lua instead of builtin lua
 LUAJIT_DESC=	Use lang/luajit instead of builtin lua
 TESTS_DESC=	Install lang/tcl for redis unit tests
-
-NO_STAGE=	yes
 
 .include <bsd.port.options.mk>
 
@@ -39,7 +37,7 @@ LDFLAGS+=	-Wl,-E
 .endif
 
 .if ${PORT_OPTIONS:MTESTS}
-USE_TCL_BUILD=	yes
+USES+=		tcl:build
 .endif
 
 CFLAGS+=	-I${LOCALBASE}/include
@@ -47,7 +45,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS} -lm -lexecinfo
 
 CONFLICTS?=	redis-devel-2.*
 
-USE_GMAKE=	yes
+USES+=		gmake
 MAKE_ENV=	"V=yo"
 USE_RC_SUBR=	redis
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-dump \
@@ -85,14 +83,9 @@ post-build:
 		${WRKSRC}/redis.conf > ${WRKDIR}/redis.conf
 
 do-install:
-	${INSTALL_PROGRAM} ${BIN_FILES:C!^!${WRKSRC}/src/!} ${PREFIX}/bin/
-	${INSTALL_DATA} ${WRKDIR}/redis.conf ${PREFIX}/etc/redis.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/sentinel.conf ${PREFIX}/etc/sentinel.conf.sample
-
-post-install:
-.for d in ${REDIS_LOGDIR} ${REDIS_RUNDIR} ${REDIS_DBDIR}
-	[ -d ${d} ] || ${MKDIR} ${d} && ${CHOWN} ${USERS}:${GROUPS} ${d}
-.endfor
+	${INSTALL_PROGRAM} ${BIN_FILES:C!^!${WRKSRC}/src/!} ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_DATA} ${WRKDIR}/redis.conf ${STAGEDIR}${PREFIX}/etc/redis.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/sentinel.conf ${STAGEDIR}${PREFIX}/etc/sentinel.conf.sample
 
 regression-test: build
 	@cd ${WRKSRC} && ${TCLSH} tests/test_helper.tcl

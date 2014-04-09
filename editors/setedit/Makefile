@@ -3,6 +3,7 @@
 
 PORTNAME=	setedit
 PORTVERSION=	0.5.5
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-unix-devel/${PORTVERSION}%20r1244%20Tarball%20%28Source%29/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-4
@@ -12,6 +13,7 @@ COMMENT=	Programmer's editor with a nice Text User Interface (TUI)
 
 LIB_DEPENDS=	rhtv.2:${PORTSDIR}/devel/rhtvision
 
+BROKEN=		Does not build
 MAKE_JOBS_UNSAFE=	yes
 
 HAS_CONFIGURE=	yes

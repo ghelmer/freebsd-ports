@@ -3,7 +3,7 @@
 
 PORTNAME=	v_sim
 PORTVERSION=	3.6.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	http://www-drfmc.cea.fr/sp2m/L_Sim/V_Sim/download/
 
@@ -17,9 +17,8 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	cairo:${PORTSDIR}/graphics/cairo
 
-USES=		gmake pkgconfig
+USES=		fortran gmake pkgconfig
 USE_BZIP2=	yes
-USE_FORTRAN=	yes
 USE_GNOME=	gtk20
 USE_GL=		yes
 GNU_CONFIGURE=	yes
@@ -30,6 +29,9 @@ USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS NLS EXAMPLES
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}

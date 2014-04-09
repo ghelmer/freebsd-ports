@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	otrs
-PORTVERSION=	3.2.13
+PORTVERSION=	3.3.5
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://ftp.otrs.org/pub/otrs/ \
 		ftp://ftp.samurai.com/pub/otrs/ \
@@ -14,33 +15,35 @@ COMMENT=	Open Ticket Request System
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	p5-Date-Pcalc>=0:${PORTSDIR}/devel/p5-Date-Pcalc \
-		p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate \
-		p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
+BUILD_DEPENDS=	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
 		p5-Crypt-PasswdMD5>=0:${PORTSDIR}/security/p5-Crypt-PasswdMD5 \
 		p5-Digest-SHA>=0:${PORTSDIR}/security/p5-Digest-SHA \
-		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
-		p5-IO-stringy>=0:${PORTSDIR}/devel/p5-IO-stringy \
-		p5-Mail-Tools>=0:${PORTSDIR}/mail/p5-Mail-Tools \
 		p5-MIME-Tools>=5.427:${PORTSDIR}/mail/p5-MIME-Tools \
+		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
 		p5-Net-DNS>=0.66:${PORTSDIR}/dns/p5-Net-DNS \
-		p5-Algorithm-Diff>=0:${PORTSDIR}/devel/p5-Algorithm-Diff \
-		p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser \
-		p5-Text-CSV>=0:${PORTSDIR}/textproc/p5-Text-CSV \
-		p5-Text-CSV_XS>=0:${PORTSDIR}/textproc/p5-Text-CSV_XS \
-		p5-JSON>=0:${PORTSDIR}/converters/p5-JSON \
-		p5-JSON-XS>=0:${PORTSDIR}/converters/p5-JSON-XS \
 		p5-CSS-Minifier-XS>=0:${PORTSDIR}/textproc/p5-CSS-Minifier-XS \
 		p5-JavaScript-Minifier-XS>=0:${PORTSDIR}/textproc/p5-JavaScript-Minifier-XS \
-		p5-Text-Diff>=0:${PORTSDIR}/textproc/p5-Text-Diff \
-		p5-XML-FeedPP>=0:${PORTSDIR}/textproc/p5-XML-FeedPP \
+		p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate \
+		p5-Sys-Hostname-Long>=0:${PORTSDIR}/sysutils/p5-Sys-Hostname-Long \
+		p5-Proc-Daemon>=0:${PORTSDIR}/devel/p5-Proc-Daemon \
+		p5-JSON-XS>=0:${PORTSDIR}/converters/p5-JSON-XS \
+		p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser \
 		p5-IO-Interactive>=0:${PORTSDIR}/devel/p5-IO-Interactive \
+		p5-Email-Valid>=0:${PORTSDIR}/mail/p5-Email-Valid \
+		p5-JSON>=0:${PORTSDIR}/converters/p5-JSON \
 		p5-YAML>=0:${PORTSDIR}/textproc/p5-YAML \
+		p5-Date-Pcalc>=0:${PORTSDIR}/devel/p5-Date-Pcalc \
+		p5-Text-CSV>=0:${PORTSDIR}/textproc/p5-Text-CSV \
+		p5-XML-FeedPP>=0:${PORTSDIR}/textproc/p5-XML-FeedPP \
 		p5-YAML-LibYAML>=0:${PORTSDIR}/textproc/p5-YAML-LibYAML \
-		p5-Email-Valid>=0:${PORTSDIR}/mail/p5-Email-Valid
+		p5-JavaScript-Minifier>=0:${PORTSDIR}/textproc/p5-JavaScript-Minifier \
+		p5-CSS-Minifier>=0:${PORTSDIR}/textproc/p5-CSS-Minifier \
+		p5-SOAP-Lite>=0:${PORTSDIR}/net/p5-SOAP-Lite \
+		p5-Class-Inspector>=0:${PORTSDIR}/devel/p5-Class-Inspector \
+		p5-Mozilla-CA>=0:${PORTSDIR}/www/p5-Mozilla-CA
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		shebangfix
+USES=		shebangfix perl5
 SHEBANG_FILES=	bin/cgi-bin/*.pl bin/fcgi-bin/*.pl bin/*.pl \
 		scripts/auto_build/*.pl scripts/tools/*.pl scripts/*.pl
 
@@ -59,12 +62,12 @@ USE_BZIP2=	yes
 
 OTRSDIR=	${PREFIX}/otrs
 USERS=		${PORTNAME}
-GROUPS=		${USERS}
+GROUPS=		${USERS} www
 
 SUB_FILES=	pkg-install pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
-ROOT_DIRS_LIST=	Kernel bin scripts
+ROOT_DIRS_LIST=	Kernel bin scripts doc
 BIN_DIRS_LIST=	"" cgi-bin fcgi-bin
 PM_DIRS_LIST=	Kernel Kernel/Config Kernel/Config/Files Kernel/Language \
 		Modules Kernel/Output/HTML Kernel/Output/HTML/Lite \
@@ -75,14 +78,14 @@ DOCS_DIRS_LIST=	"" manual/en
 DOCS_FILES_LIST=	C[A-Z]* INSTALL.md RE* UPGRADING.md
 
 SCRIPTS_DIRS_LIST=	"" database/update test tools
+CRON_SCRIPTS=	${OTRSDIR}/var/cron/
 CLEAN_FILES=	scripts/suse* scripts/redhat* \
 		var/httpd/htdocs/js/thirdparty/ckeditor-4.0/_source \
 		var/httpd/htdocs/skins/Agent/*/img/source
 
-USES=		perl5
 USE_APACHE_RUN=	22+
 
-PLIST_SUB+=	VER_CKEDITOR="4.0"
+PLIST_SUB+=	VER_CKEDITOR="4.3"
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
@@ -97,7 +100,8 @@ RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
 USE_PGSQL=	yes
 .endif
 
-RUN_DEPENDS+=	${APACHE_PKGNAMEPREFIX}mod_perl2>=2.0.5:${PORTSDIR}/www/mod_perl2
+RUN_DEPENDS+=	${APACHE_PKGNAMEPREFIX}mod_perl2>=2.0.5:${PORTSDIR}/www/mod_perl2 \
+		p5-Apache-DBI>0:${PORTSDIR}/www/p5-Apache-DBI
 
 .if ${PORT_OPTIONS:MREPORTS_MODULES}
 RUN_DEPENDS+=	p5-GD>=0:${PORTSDIR}/graphics/p5-GD \
@@ -106,18 +110,17 @@ RUN_DEPENDS+=	p5-GD>=0:${PORTSDIR}/graphics/p5-GD \
 .endif
 
 .if ${PORT_OPTIONS:MSMTP}
-RUN_DEPENDS+=	p5-Net-SMTP-SSL>=0:${PORTSDIR}/mail/p5-Net-SMTP-SSL \
-		p5-Net-SMTP-TLS>=0:${PORTSDIR}/mail/p5-Net-SMTP-TLS \
-		p5-Authen-SASL>=0:${PORTSDIR}/security/p5-Authen-SASL
+RUN_DEPENDS+=	p5-Authen-SASL>=0:${PORTSDIR}/security/p5-Authen-SASL \
+		p5-Net-SSLGlue>=0:${PORTSDIR}/security/p5-Net-SSLGlue
 .endif
 
 .if ${PORT_OPTIONS:MPOP3}
-RUN_DEPENDS+=	p5-Mail-POP3Client>=0:${PORTSDIR}/mail/p5-Mail-POP3Client \
-		p5-IO-Socket-SSL>=0:${PORTSDIR}/security/p5-IO-Socket-SSL
+RUN_DEPENDS+=	p5-IO-Socket-SSL>=0:${PORTSDIR}/security/p5-IO-Socket-SSL \
+		p5-Net-SSLGlue>=0:${PORTSDIR}/security/p5-Net-SSLGlue
 .endif
 
 .if ${PORT_OPTIONS:MIMAP}
-RUN_DEPENDS+=	p5-Net-IMAP-Simple-SSL>=0:${PORTSDIR}/mail/p5-Net-IMAP-Simple-SSL
+RUN_DEPENDS+=	p5-Mail-IMAPClient>=0:${PORTSDIR}/mail/p5-Mail-IMAPClient
 .endif
 
 .if ${PORT_OPTIONS:MLDAP}
@@ -126,13 +129,10 @@ RUN_DEPENDS+=	p5-perl-ldap>=0:${PORTSDIR}/net/p5-perl-ldap
 
 .if ${PORT_OPTIONS:MPDF}
 RUN_DEPENDS+=	p5-PDF-API2>=0.57:${PORTSDIR}/textproc/p5-PDF-API2
-. if ${PERL_LEVEL} < 500903
-RUN_DEPENDS+=	p5-IO-Compress>=2.017:${PORTSDIR}/archivers/p5-IO-Compress
-. endif
 .endif
 
 .if ${PORT_OPTIONS:MISPELL}
-RUN_DEPENDS+=	ispell:${PORTSDIR}/textproc/ispell
+RUN_DEPENDS+=	ispell:${PORTSDIR}/textproc/aspell-ispell
 .endif
 
 .if ${PORT_OPTIONS:MASPELL}
@@ -177,6 +177,7 @@ do-install:
 		${SCRIPTS_DIRS_LIST:S!^!${OTRSDIR}/scripts/!}
 	@${INSTALL_DATA} ${WRKSRC}/.*.dist ${OTRSDIR}/
 	@${INSTALL_DATA} ${WRKSRC}/RELEASE ${OTRSDIR}/
+	@${INSTALL_DATA} ${WRKSRC}/ARCHIVE ${OTRSDIR}/
 .for D in ${BIN_DIRS_LIST}
 	@${INSTALL_SCRIPT} ${WRKSRC}/bin/${D}/*.* ${OTRSDIR}/bin/${D}/
 .endfor
@@ -203,6 +204,7 @@ do-install:
 	@${INSTALL_DATA} ${WRKSRC}/doc/${D}/*.* ${DOCSDIR}/${D}/
 .endfor
 .endif
+	@${FIND} ${CRON_SCRIPTS} -type f -name *.dist | ${SED} -e "p;s/\.dist//" | ${XARGS} -n2 ${MV}
 	@PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
 
 post-install:

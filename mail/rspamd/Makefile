@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rspamd
-PORTVERSION=	0.6.7
+PORTVERSION=	0.6.9
 CATEGORIES=	mail
 MASTER_SITES=	http://rspamd.com/downloads/
 
@@ -14,9 +14,8 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libgmime-2.4.so:${PORTSDIR}/mail/gmime24 \
 		libevent.so:${PORTSDIR}/devel/libevent
 
-OPTIONS_DEFINE=	GPERF JUDY REDIRECTOR
+OPTIONS_DEFINE=	GPERF REDIRECTOR
 GPERF_DESC=		google perf-tools profiling
-JUDY_DESC=		Judy arrays usage for performance
 REDIRECTOR_DESC=	Install HTTP redirector
 
 USE_RC_SUBR=	rspamd
@@ -34,7 +33,7 @@ CMAKE_ARGS+=	-DCONFDIR=${PREFIX}/etc/rspamd \
 				-DLIBDIR=${PREFIX}/lib \
 				-DNO_SHARED=ON
 
-USES=		cmake gettext iconv pkgconfig lua:51+
+USES=		cmake:outsource gettext iconv pkgconfig lua:51+
 USE_LDCONFIG=	yes
 
 USE_GNOME=	glib20
@@ -47,12 +46,8 @@ USE_OPENSSL=	yes
  LIB_DEPENDS+=	profiler.1:${PORTSDIR}/devel/google-perftools
 .endif
 
-.if ${PORT_OPTIONS:MJUDY}
- LIB_DEPENDS+=	Judy:${PORTSDIR}/devel/judy
-.endif
-
 .if ${PORT_OPTIONS:MREDIRECTOR}
- USE_PERL5=	yes
+ USES+=		perl5
  CMAKE_ARGS+=	-DENABLE_REDIRECTOR=ON
  PLIST_SUB+=	REDIRECTOR=""
  USE_RC_SUBR+=	rspamd_redirector

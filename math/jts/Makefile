@@ -13,7 +13,7 @@ RUN_DEPENDS=	${JAVALIBDIR}/jdom.jar:${PORTSDIR}/java/jdom		\
 		${JAVALIBDIR}/junit.jar:${PORTSDIR}/java/junit		\
 		${JAVALIBDIR}/xml-apis.jar:${PORTSDIR}/textproc/xerces-j
 
-USE_ZIP=	yes
+USES=		zip
 NO_BUILD=	yes
 USE_JAVA=	yes
 NO_WRKSUBDIR=	yes
@@ -22,6 +22,9 @@ VER=		${PORTVERSION:L}
 JARFILES=	JTS_Test acme jts-${VER}
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 do-install:

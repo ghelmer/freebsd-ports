@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sylpheed
-PORTVERSION=	3.3.0
-PORTREVISION=	3
+PORTVERSION=	3.3.1
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/  \
 		CRITICAL
@@ -11,10 +10,12 @@ MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/ 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Lightweight, featureful, and fast GTK+ based e-mail client
 
+LICENSE=	GPLv2 LGPL21
+LICENSE_COMB=	dual
+
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:${PORTSDIR}/misc/mime-support
 
-USES=		gettext iconv gmake pkgconfig
-USE_BZIP2=	yes
+USES=		gettext iconv gmake pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -122,13 +123,11 @@ post-patch:
 .endif
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ChangeLog INSTALL README TODO
 	@${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/${i}.ja ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 	@${INSTALL_DATA} ${WRKSRC}/sylpheed.png ${STAGEDIR}${PREFIX}/share/pixmaps/
 	@${INSTALL_DATA} ${WRKSRC}/sylpheed.desktop ${STAGEDIR}${PREFIX}/share/applications/
 

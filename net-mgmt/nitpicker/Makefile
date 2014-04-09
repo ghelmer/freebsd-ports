@@ -1,4 +1,4 @@
-# Created by: Michael Reifenberger
+# Created by: Michael Reifenberger <mr@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	nitpicker
@@ -8,12 +8,13 @@ CATEGORIES=	net-mgmt
 MASTER_SITES=	http://nitpicker.de/
 
 MAINTAINER=	mr@FreeBSD.org
-COMMENT=	IP flow Accounting tools
+COMMENT=	IP flow accounting tools
 
-NO_STAGE=	yes
+PLIST_FILES=	bin/dumpit bin/parse_flowfile sbin/nitpicker
+
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/nitpicker ${LOCALBASE}/sbin
-	${INSTALL_PROGRAM} ${WRKSRC}/tools/parse_flowfile/src/parse_flowfile ${LOCALBASE}/bin
-	${INSTALL_PROGRAM} ${WRKSRC}/tools/dumpit/dumpit ${LOCALBASE}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/src/nitpicker ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_PROGRAM} ${WRKSRC}/tools/parse_flowfile/src/parse_flowfile \
+		${WRKSRC}/tools/dumpit/dumpit ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

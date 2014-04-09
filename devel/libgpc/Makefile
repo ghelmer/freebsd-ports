@@ -10,7 +10,7 @@ DISTNAME=	gpc${PORTVERSION:S/.//}
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Generic Polygon Clipper
 
-USE_ZIP=	yes
+USES=		dos2unix uidfix zip
 PLIST_FILES=	lib/libgpc.so.2	\
 		lib/libgpc.so	lib/libgpc.a	\
 		include/gpc.h
@@ -19,7 +19,4 @@ NO_CDROM=	Can't be used for profit without permission
 
 MAKEFILE=	${FILESDIR}/BSDmakefile
 
-EXTRACT_BEFORE_ARGS=-qoa
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

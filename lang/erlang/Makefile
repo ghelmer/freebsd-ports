@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	16.b.03
+PORTVERSION=	16.b.03.1
 PORTEPOCH=	3
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
@@ -23,7 +23,7 @@ PATCH_SITES=	http://www.erlang.org/download
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	A functional programming language from Ericsson
 
-WRKSRC=		${WRKDIR}/otp_src_R16B03
+WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
 
 ERLANG_LIB=	${PORTNAME}
 
@@ -121,7 +121,7 @@ CONFIGURE_ARGS+=--disable-kernel-poll
 .endif
 
 .if ${PORT_OPTIONS:MGS}
-USE_TK_RUN=	yes
+USES+=		tk:run
 .endif
 
 .if ${PORT_OPTIONS:MWX}

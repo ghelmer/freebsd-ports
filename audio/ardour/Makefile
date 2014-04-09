@@ -3,7 +3,7 @@
 
 PORTNAME=	ardour
 PORTVERSION=	2.8.14
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 
@@ -26,6 +26,8 @@ SCONS_ENV+=	SYSLIBS=yes PREFIX=${PREFIX} NLS=yes
 CFLAGS+=	-I${LOCALBASE}/include
 USE_GNOME=	libxslt
 USE_LDCONFIG=	${PREFIX}/lib/ardour2 ${PREFIX}/lib/ardour2/surfaces
+
+RESTRICTED=	Redistribution of the VST PlugIns SDK is not allowed
 
 PLIST_SUB=	DISTVERSION=${DISTVERSION}
 

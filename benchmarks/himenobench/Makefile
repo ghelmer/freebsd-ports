@@ -3,7 +3,7 @@
 
 PORTNAME=	himenobench
 PORTVERSION=	2004.08.16
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://accc.riken.jp/secure/4502/:C http://accc.riken.jp/secure/4503/:C \
 		http://accc.riken.jp/secure/4504/:F90 http://accc.riken.jp/secure/4505/:F77
@@ -15,16 +15,17 @@ DIST_SUBDIR=	himeno
 MAINTAINER=	maho@FreeBSD.org
 COMMENT=	Himeno bench benchmark, solves Poisson eq. with Jacobi's method
 
+USES=		lha
 NO_WRKSUBDIR=	yes
-USE_LHA=	yes
 
 .if defined(WITH_ICC)
 BUILD_DEPENDS=	${LOCALBASE}/intel_cc_80/bin/icc:${PORTSDIR}/lang/icc
 .endif
 
-USE_FORTRAN=	yes
 .if defined(WITH_IFC)
-USE_FORTRAN=	ifort
+USES+=		fortran:ifort
+.else
+USES+=		fortran
 .endif
 
 NO_STAGE=	yes
@@ -42,7 +43,7 @@ PLIST_SUB+=	WITH_ICC=""
 .else
 PLIST_SUB+=	WITH_ICC="@comment "
 .endif
-.if ${USE_FORTRAN} == ifort
+.if defined(WITH_IFC)
 FFLAGS_IFC+=	-O3 -tpp7 -axN -Vaxlib -ipo
 IFC=		${LOCALBASE}/intel_fc_80/bin/ifort
 PLIST_SUB+=	WITH_IFC=""
@@ -50,14 +51,14 @@ PLIST_SUB+=	WITH_IFC=""
 PLIST_SUB+=	WITH_IFC="@comment "
 .endif
 
-.if ${USE_FORTRAN} != yes
+.if defined(WITH_IFC)
 PLIST_SUB+=	WITH_GFORTRAN="@comment "
 .else
 PLIST_SUB+=	WITH_GFORTRAN=""
 .endif
 
 do-build:
-.if ${USE_FORTRAN} == yes
+.if ! defined(WITH_IFC)
 	cd ${WRKSRC} ; ${FC} ${FFLAGS} -o himenobmtxp    himenobmtxp.f90
 .endif
 #	cd ${WRKSRC} ; ${FC} ${FFLAGS} -o himenobmtxp_xl himenobmtxp_xl.f #Too large
@@ -87,7 +88,7 @@ do-build:
 .endif
 do-install:
 #	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_xl          ${PREFIX}/bin #Too large
-.if ${USE_FORTRAN} == yes
+.if ! defined(WITH_IFC)
 	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp            ${PREFIX}/bin
 .endif
 	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_l           ${PREFIX}/bin

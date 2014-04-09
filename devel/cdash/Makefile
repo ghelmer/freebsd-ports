@@ -11,14 +11,13 @@ DISTNAME=	CDash-${PORTVERSION}
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	A web-based software testing server
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 OPTIONS_MULTI=	DB
 OPTIONS_MULTI_DB=	MYSQL PGSQL
 OPTIONS_DEFAULT=MYSQL
 
-USE_ZIP=	yes
-USES=		cmake:outsource
+USES=		cmake:outsource zip
 CMAKE_ARGS+=	-DCDASH_DB_NAME:STRING=cdash \
    		-DCDASH_DB_LOGIN:STRING=cdash \
    		-DCDASH_DB_TYPE:STRING=${DB_TYPE}
@@ -28,7 +27,6 @@ WRKSRC=		${WRKDIR}/${DISTNAME:S/./-/g}
 SUB_FILES=	pkg-message
 SUB_LIST+=	DB_TYPE=${DB_TYPE}
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
@@ -44,10 +42,10 @@ DB_TYPE=	pgsql
 .endif
 
 do-install:
-	${MKDIR} ${PREFIX}/www/CDash
+	${MKDIR} ${STAGEDIR}${PREFIX}/www/CDash
 	${RM} -f ${WRKSRC}/CMakeLists.txt.orig
-	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${PREFIX}/www/CDash
-	${CHOWN} www ${PREFIX}/www/CDash/backup ${PREFIX}/www/CDash/rss
+	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/www/CDash
+	${CHOWN} www ${STAGEDIR}${PREFIX}/www/CDash/backup ${STAGEDIR}${PREFIX}/www/CDash/rss
 
 post-install:
 	@${ECHO}

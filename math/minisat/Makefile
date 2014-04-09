@@ -11,7 +11,6 @@ COMMENT=	A minimalistic, open-source SAT solver
 
 USES=	gmake
 USE_LDCONFIG=	yes
-MAKE_ENV=	prefix=${PREFIX}
+MAKE_ENV=	prefix=${PREFIX} CFLAGS="-std=c++03"
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

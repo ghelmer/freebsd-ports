@@ -3,7 +3,7 @@
 
 PORTNAME=	asio
 PORTVERSION=	1.4.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20(Stable)/
 
@@ -17,5 +17,4 @@ USE_GMAKE=	yes
 
 CONFIGURE_ARGS=	--with-boost=${LOCALBASE}/include
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

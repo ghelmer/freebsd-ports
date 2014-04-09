@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 bin/xre-client
 bin/xre-hello_client
 bin/xre-hello_server
@@ -18,3 +17,4 @@ lib/libxmlrpc-epi.a
 lib/libxmlrpc-epi.la
 lib/libxmlrpc-epi.so
 lib/libxmlrpc-epi.so.0
+lib/libxmlrpc-epi.so.0.0.3

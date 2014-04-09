@@ -33,7 +33,7 @@ PATCHFILES=	c-news-patch-fileart.c c-news-patch-namelen \
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	An news server
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 MAKE_JOBS_UNSAFE=	yes

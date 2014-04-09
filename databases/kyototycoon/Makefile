@@ -3,7 +3,7 @@
 
 PORTNAME=	kyototycoon
 PORTVERSION=	0.9.56
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	http://fallabs.com/${PORTNAME}/pkg/ \
 		LOCAL/sunpoet
@@ -25,27 +25,15 @@ REINPLACE_ARGS=	-i ''
 USE_LDCONFIG=	yes
 USES=		gmake pkgconfig
 
-.include <bsd.port.pre.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lpthread|-pthread|g; s|-lstdc++ ||g' ${WRKSRC}/configure ${WRKSRC}/doc/spex.html ${WRKSRC}/example/Makefile
-.if !${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e '/DOCDIR/d' ${WRKSRC}/Makefile.in
-.endif
-
-post-build:
-	@cd ${WRKSRC}/ && ${STRIP_CMD} ktplugdbvoid.so ktplugservmemc.so \
-		ktremotemgr ktremotetest ktserver kttimedmgr kttimedtest \
-		ktutilmgr ktutilserv ktutiltest
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${FIND} ${STAGEDIR}${DOCSDIR}/ -type d -exec ${CHMOD} 755 '{}' \;
-	${FIND} ${STAGEDIR}${DOCSDIR}/ -type f -exec ${CHMOD} 444 '{}' \;
-	${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DOCSDIR}/
-.endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/libkyototycoon.so.2.19.0 ${STAGEDIR}${PREFIX}/libexec/*.so
+	${FIND} ${STAGEDIR}${DOCSDIR}/ -type d -exec ${CHMOD} ${BINMODE} '{}' \;
+	${FIND} ${STAGEDIR}${DOCSDIR}/ -type f -exec ${CHMOD} ${DOCMODE} '{}' \;
 
 regression-test test: build
-	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE} check
+	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} check
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

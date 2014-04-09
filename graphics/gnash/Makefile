@@ -3,7 +3,7 @@
 
 PORTNAME=	gnash
 PORTVERSION=	0.8.10
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	GNU/${PORTNAME}/${PORTVERSION}/
 
@@ -25,7 +25,7 @@ USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
 WANT_SDL=	yes
 WANT_GNOME=	yes
-USE_GCC=	4.2+	# triggers compiler error on gcc 3.4
+USE_GCC=	any
 WANT_GSTREAMER=	yes
 USE_GNOME=	libxml2
 USE_XORG=	x11 xau xdmcp xext xi xinerama ice sm xv
@@ -72,6 +72,10 @@ VAAPI_DESC=	VAAPI support (requires FFMPEG)
 CYGNAL_CONFIGURE_ENABLE=	cygnal
 
 .include <bsd.port.options.mk>
+
+.if ${OSVERSION} > 1000000
+BROKEN=	unable to link in libboost_system
+.endif
 
 # Cygnal option processing
 .if ${PORT_OPTIONS:MCYGNAL}

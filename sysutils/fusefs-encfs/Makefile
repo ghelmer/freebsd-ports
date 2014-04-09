@@ -3,7 +3,7 @@
 
 PORTNAME=	encfs
 PORTVERSION=	1.7.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 PKGNAMEPREFIX=	fusefs-
@@ -17,27 +17,23 @@ LIB_DEPENDS=	librlog.so:${PORTSDIR}/devel/rlog \
 
 WRKSRC=		${WRKDIR}/encfs-${PORTVERSION}
 
-USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-boost-serialization=boost_serialization \
+		--with-boost-system=boost_system \
 		--with-boost-filesystem=boost_filesystem
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-USES=		fuse
-USE_GMAKE=	yes
+USES=		fuse gmake libtool pkgconfig
 USE_LDCONFIG=	yes
+USE_OPENSSL=	yes
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
+NLS_USES=	gettext
+NLS_CONFIGURE_ENABLE=	nls
 
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-MAN1=		encfs.1 encfsctl.1
+post-patch:
+	@${FIND} ${WRKSRC}/encfs -type f | ${XARGS} ${REINPLACE_CMD} -E \
+		's/(^|[[:space:]])(shared_ptr)/\1boost::\2/g'
 
 .include <bsd.port.mk>

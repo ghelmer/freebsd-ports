@@ -2,6 +2,7 @@
 
 PORTNAME=	google-earth
 PORTVERSION=	6.0.3.2197
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	astro deskutils geography
 MASTER_SITES=	http://dl.google.com/earth/client/advanced/previous/:previous \
@@ -14,17 +15,14 @@ MAINTAINER=	nox@FreeBSD.org
 COMMENT=	Explore, Search, and Discover
 
 EXTRACT_DEPENDS=	unmakeself:${PORTSDIR}/archivers/unmakeself
-RUN_DEPENDS=	update-mime-database:${PORTSDIR}/misc/shared-mime-info
 
 RESTRICTED=	Not really sure about the redistribution terms
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/\..*//g}/
 
-NO_STAGE=	yes
 USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs
-USE_GNOME=	desktopfileutils
-USES=		perl5
+USE_LINUX_APPS=	xorglibs curl
+USES=		perl5 shared-mime-info desktop-file-utils
 USE_PERL5=	patch build
 
 .include <bsd.port.pre.mk>
@@ -56,6 +54,7 @@ post-patch:
 	@${REINPLACE_CMD} -i "" -e 's/^TMPPATH.*/exit 0/' ${WRKSRC}/postinstall.sh
 	@${REINPLACE_CMD} -i "" -e 's|\"\$$SETUP_INSTALLPATH/|\"${WRKSRC}/|' ${WRKSRC}/postinstall.sh
 	@${REINPLACE_CMD} -i "" -e 's|\$$SETUP_INSTALLPATH/googleearth |${PREFIX}/bin/googleearth |' ${WRKSRC}/postinstall.sh
+	${RM} ${WRKSRC}/libcurl.so.4
 	${PERL} -i -pe 's|/lib/ld-lsb.so.3\0\0\0|/lib/ld-linux.so.2\0|' ${WRKSRC}/googleearth-bin
 
 do-build:
@@ -67,14 +66,18 @@ pre-su-install:
 	@${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${WRKSRC}
 
 do-install:
-	${MKDIR} ${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/googleearth-mimetypes.xml ${PREFIX}/share/mime/packages/
-	${INSTALL_DATA} ${WRKSRC}/Google-googleearth.desktop ${PREFIX}/share/applications/googleearth.desktop
-	${CP} -rp ${WRKSRC}/* ${DATADIR}
-	${RM} -f ${DATADIR}/googleearth-mimetypes.xml ${DATADIR}/googleearth.desktop
-	${INSTALL_SCRIPT} ${FILESDIR}/browserwrapper ${DATADIR}/bin
-	${LN} -sf ${DATADIR}/bin/googleearth ${PREFIX}/bin/
-	-@update-mime-database ${PREFIX}/share/mime
-	-@update-desktop-database
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
+	${INSTALL_DATA} ${WRKSRC}/googleearth-mimetypes.xml \
+		${STAGEDIR}${PREFIX}/share/mime/packages/
+	${INSTALL_DATA} ${WRKSRC}/Google-googleearth.desktop \
+		${STAGEDIR}${PREFIX}/share/applications/googleearth.desktop
+	${CP} -rp ${WRKSRC}/* ${STAGEDIR}${DATADIR}
+	${RM} -f ${STAGEDIR}${DATADIR}/googleearth-mimetypes.xml \
+		${STAGEDIR}${DATADIR}/googleearth.desktop
+	${INSTALL_SCRIPT} ${FILESDIR}/browserwrapper \
+		${STAGEDIR}${DATADIR}/bin/
+	${LN} -sf ${DATADIR}/bin/googleearth \
+		${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.post.mk>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Wand
-PORTVERSION=	0.3.5
+PORTVERSION=	0.3.7
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,16 +9,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	olivierd@FreeBSD.org
 COMMENT=	MagickWand Python binding
 
-LIB_DEPENDS=	MagickWand:${PORTSDIR}/graphics/ImageMagick
+LICENSE=	MIT
+
+LIB_DEPENDS=	libMagickWand.so:${PORTSDIR}/graphics/ImageMagick
 
 USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
-
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
-
-NO_STAGE=	yes
-post-patch:
-	@${REINPLACE_CMD} -e "s|cmdclass={'upload_doc': upload_doc}||" \
-		${WRKSRC}/setup.py
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
 .include <bsd.port.mk>

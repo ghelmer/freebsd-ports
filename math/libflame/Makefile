@@ -3,7 +3,7 @@
 
 PORTNAME=	libflame
 DISTVERSION=	r7421
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://www.cs.utexas.edu/users/%SUBDIR%/:1,2 LOCAL/bf:3
 MASTER_SITE_SUBDIR=	flame/snapshots/:1 field/docs/:2
@@ -205,7 +205,7 @@ CONFIGURE_ARGS+=	--enable-supermatrix
 CONFIGURE_ARGS+=	--disable-supermatrix
 .endif
 
-.if !(defined(USE_GCC) || defined(USE_FORTRAN) || !empty(CC:M*gcc4*))
+.if !(defined(USE_GCC) || !empty(CC:M*gcc4*))
 CONFIGURE_ARGS+=	--disable-autodetect-f77-ldflags \
 			--disable-autodetect-f77-name-mangling
 .endif

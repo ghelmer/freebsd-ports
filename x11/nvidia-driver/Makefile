@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nvidia-driver
-DISTVERSION?=	331.20
+DISTVERSION?=	331.49
 # Always try to set PORTREVISION as it can be overridden by the slave ports
 PORTREVISION?=	0
 CATEGORIES=	x11
@@ -19,7 +19,7 @@ LICENSE_FILE=	${WRKSRC}/doc/license.txt
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 ARCH_SUFX=	${ARCH:S/i386//:S/amd/_/}
-USES=		kmod
+USES=		kmod uidfix
 USE_XORG=	xorg-server
 USE_GL=		gl
 USE_LDCONFIG=	yes
@@ -51,7 +51,15 @@ ONLY_FOR_ARCHS=	i386
 .endif
 
 .if ${NVVERSION} <= 1904200
-EXTRA_PATCHES=	${FILESDIR}/legacy-patch-nvidia.lib.mk
+EXTRA_PATCHES=	${FILESDIR}/legacy-patch-mk-nvidia.lib.mk
+.else
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-mk-nvidia.lib.mk
+.endif
+
+.if ${NVVERSION} >= 3312000
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-x11-driver-Makefile
+.else
+EXTRA_PATCHES+=	${FILESDIR}/legacy-patch-x11-driver-Makefile
 .endif
 
 # Fix recent arbitrary memory access vulnerability in legacy drivers
@@ -78,11 +86,15 @@ OPTIONS_DEFINE+=	WBINVD
 WBINVD_DESC=		Flush CPU caches directly with WBINVD
 .endif
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
 PLIST_SUB+=	LINUXBASE=${LINUXBASE} SHLIB_VERSION=${PORTVERSION} \
 		MODULESDIR=${MODULESDIR}
+
+.include <bsd.port.options.mk>
+
+# FreeBSD src SVN r254138 had broken 71.86.xx legacy series :(
+.if ${OSVERSION} > 1000041 && ${NVVERSION} <= 718615
+BROKEN=		does not compile
+.endif
 
 .if ${PORT_OPTIONS:MLINUX}
 CONFLICTS=	linux[-_]dri-[0-9]* linux-f10-dri-[0-9]*
@@ -92,10 +104,6 @@ PLIST_SUB+=	LINUX=""
 PLIST_SUB+=	LINUX="@comment "
 # Propagate WITHOUT_LINUX variable down to inner Makefiles
 MAKE_ENV+=	WITHOUT_LINUX=yes
-.endif
-
-.if ${OSVERSION} < 702106 && ${NVVERSION} >= 1952200
-IGNORE=		requires fairly recent FreeBSD-STABLE, or FreeBSD-CURRENT
 .endif
 
 .if ${NVVERSION} < 1952200
@@ -113,9 +121,9 @@ post-patch: .SILENT
 		s/int nprot/&, vm_memattr_t *memattr/' \
 			${WRKSRC}/src/nvidia_dev.c
 .endif
-# In the legacy drivers: remove paqe queue locking and add page locking
+# In the legacy drivers: remove page queue locking and add page locking
 # around vm_page_(un)wire() after FreeBSD src SVN r207410, r207617, and
-# r207644; also remove paqe queue locking around vm_page_wakeup() after
+# r207644; also remove page queue locking around vm_page_wakeup() after
 # FreeBSD src SVN r163622
 .if ${OSVERSION} > 900011 && ${NVVERSION} < 3046400
 	${REINPLACE_CMD} -E '/vm_page_(un)?lock_queues\(\);/d ; \
@@ -164,6 +172,11 @@ post-patch: .SILENT
 		/return SYSCTL_OUT\(req, bus_type/d' \
 			${WRKSRC}/src/nvidia_sysctl.c
 .endif
+# Unbreak the build of 173.14.xx legacy series on recent -CURRENT
+.if ${NVVERSION} < 1952200 && ${NVVERSION} >= 1690400
+	${REINPLACE_CMD} -E 's/os_(alloc|free)_contig_pages/NV_API_CALL &/' \
+		${WRKSRC}/src/nv-freebsd.h
+.endif
 # Process OPTIONS
 .if ${PORT_OPTIONS:MFREEBSD_AGP}
 	${REINPLACE_CMD} -E 's/undef (NV_SUPPORT_OS_AGP)/define \1/' \
@@ -181,7 +194,7 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -E 's/undef (NV_USE_WBINVD)/define \1/' \
 		${WRKSRC}/src/nv-freebsd.h
 .endif
-	${REINPLACE_CMD} -e '/exists/s/$$/ \&\& !defined(WITHOUT_LINUX)/' \
+	${REINPLACE_CMD} -e 's/exists(\/.*/& \&\& !defined(WITHOUT_LINUX)/' \
 		${WRKSRC}/lib/Makefile
 # Do not install VDPAU libraries which are provided by `multimedia/libvdpau'
 # port for a while now
@@ -209,18 +222,17 @@ post-patch: .SILENT
 		${WRKSRC}/lib/libGL/Makefile
 # Do not execute afterinstall target (prevent automatic module registration
 # and "smart" installation of conflicting files heuristics)
-	${REINPLACE_CMD} -e 's/afterinstall/dontexecute/' ${WRKSRC}/Makefile
-	${REINPLACE_CMD} -e 's/beforeinstall/dontexecute/' \
+	${REINPLACE_CMD} -e 's/afterinstall/&_dontexecute/' ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's/beforeinstall/&_dontexecute/' \
 		${WRKSRC}/lib/Makefile ${WRKSRC}/src/Makefile
 
-pre-su-install:
-# While this port silently assumes PREFIX == LOCALBASE, at least try to
-# pretend we support different paths thereof and make sure these directories
-# exist
-	@cd ${PREFIX}/${MODULESDIR} && ${MKDIR} drivers extensions
+pre-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${MODULESDIR}/drivers \
+		${STAGEDIR}${PREFIX}/${MODULESDIR}/extensions
 
 post-install: .SILENT
-	${INSTALL_SCRIPT} ${WRKSRC}/obj/nvidia-bug-report.sh ${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/obj/nvidia-bug-report.sh \
+		${STAGEDIR}${PREFIX}/bin
 # pkg-plist is already overbloated, so use these hacks instead of PLIST_SUB's
 .if ${NVVERSION} < 817400
 	${REINPLACE_CMD} -e '/libnvidia-cfg/d' ${TMPPLIST}
@@ -241,18 +253,31 @@ post-install: .SILENT
 .if ${NVVERSION} >= 3101900
 	${REINPLACE_CMD} -e '/libXvMCNVIDIA/d' ${TMPPLIST}
 .else	# some applications need this symlink (see PR ports/72877)
-	${LN} -sf libXvMCNVIDIA.so.1 ${PREFIX}/lib/libXvMCNVIDIA_dynamic.so.1
+	${LN} -sf libXvMCNVIDIA.so.1 \
+		${STAGEDIR}${PREFIX}/lib/libXvMCNVIDIA_dynamic.so.1
 .endif
-.if ${NVVERSION} < 3311300
+.if ${NVVERSION} < 3311300 || ${ARCH} == amd64
 	${REINPLACE_CMD} -E '/lib(nvidia-)?(EGL|eglcore|GLESv|glsi)/d' \
 		${TMPPLIST}
 .endif
 .if ${NVVERSION} >= 1952200
 	${REINPLACE_CMD} -e '/does not support PAE/,+1d' ${PKGMESSAGE}
 .endif
-	PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
-	${ECHO_MSG}
-	${CAT} ${PKGMESSAGE}
-	${ECHO_MSG}
 
-.include <bsd.port.post.mk>
+# Target below can be used instead of standard `makesum' to correctly
+# update distinfo (i.e., keeping other driver version entries intact)
+.if ${.TARGETS:Mupdate-distinfo}
+DISTINFO_FILE=	${MASTERDIR}/distinfo.new
+JOIN?=		/usr/bin/join
+.endif
+
+update-distinfo: makesum .SILENT
+	${REINPLACE_CMD} -i '' -e '/${DISTNAME:R:R}/s/^/~/' \
+		${MASTERDIR}/distinfo ${DISTINFO_FILE}
+	${SED} -e '/^~/s/(.*//' ${MASTERDIR}/distinfo | ${JOIN} -a 1 \
+		- ${DISTINFO_FILE} | ${SED} -e 's/^~//' \
+		> ${MASTERDIR}/distinfo.tmp
+	${MV} ${MASTERDIR}/distinfo.tmp ${MASTERDIR}/distinfo
+	${RM} ${DISTINFO_FILE}
+
+.include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-DISTVERSION=	4.2.20
+DISTVERSION=	4.2.22
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${DISTVERSION}/ \
 		http://tmp.chruetertee.ch/ \
@@ -16,15 +17,12 @@ COMMENT=	VirtualBox kernel module for FreeBSD
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm \
-		as86:${PORTSDIR}/devel/dev86 \
-		kmk:${PORTSDIR}/devel/kBuild
+BUILD_DEPENDS=	kmk:${PORTSDIR}/devel/kBuild
 
 UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 USE_RC_SUBR=	vboxnet
 ONLY_FOR_ARCHS=	i386 amd64
-USE_BZIP2=	yes
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-gcc="${CC}" --with-g++="${CXX}" --nofatal \
@@ -32,16 +30,13 @@ CONFIGURE_ARGS+=--with-gcc="${CC}" --with-g++="${CXX}" --nofatal \
 		--disable-alsa --disable-dbus --disable-python \
 		--build-headless
 
-CONFLICTS=	bcc-[0-9]*
 CONFLICTS_INSTALL=	virtualbox-ose-kmod-4* virtualbox-ose-kmod-devel-4*
 
 OPTIONS_DEFINE=	DEBUG VIMAGE
 DEBUG_DESC=	Debug symbols, additional logs and assertions
 VIMAGE_DESC=	VIMAGE virtual networking support
 
-NO_STAGE=	yes
-
-USES=		kmod
+USES=		kmod tar:bzip2
 .include <bsd.port.options.mk>
 
 VBOX_BIN=	${WRKSRC}/out/${KMK_ARCH}/${KMK_BUILDTYPE}/bin/src
@@ -92,13 +87,13 @@ do-build:
 	cd ${VBOX_BIN} && make ${MAKE_FLAGS}
 
 do-install:
-	${INSTALL_KLD} ${VBOX_BIN}/vboxdrv/vboxdrv.ko ${KMODDIR}
-	${INSTALL_KLD} ${VBOX_BIN}/vboxnetadp/vboxnetadp.ko ${KMODDIR}
-	${INSTALL_KLD} ${VBOX_BIN}/vboxnetflt/vboxnetflt.ko ${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxdrv/vboxdrv.ko ${STAGEDIR}${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxnetadp/vboxnetadp.ko ${STAGEDIR}${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxnetflt/vboxnetflt.ko ${STAGEDIR}${KMODDIR}
 .if ${PORT_OPTIONS:MDEBUG}
-	${INSTALL_KLD} ${VBOX_BIN}/vboxdrv/vboxdrv.ko.symbols ${KMODDIR}
-	${INSTALL_KLD} ${VBOX_BIN}/vboxnetadp/vboxnetadp.ko.symbols ${KMODDIR}
-	${INSTALL_KLD} ${VBOX_BIN}/vboxnetflt/vboxnetflt.ko.symbols ${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxdrv/vboxdrv.ko.symbols ${STAGEDIR}${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxnetadp/vboxnetadp.ko.symbols ${STAGEDIR}${KMODDIR}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxnetflt/vboxnetflt.ko.symbols ${STAGEDIR}${KMODDIR}
 .endif
 
 .include <bsd.port.post.mk>

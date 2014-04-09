@@ -12,7 +12,7 @@ COMMENT=	Mondulkiri Khmer fonts
 
 RUN_DEPENDS=	fc-cache:${PORTSDIR}/x11-fonts/fontconfig
 
-USE_ZIP=	yes
+USES=		zip
 NO_BUILD=	yes
 
 FONTSDIR=	lib/X11/fonts/Khmer/
@@ -20,13 +20,8 @@ PLIST_SUB+=	FONTSDIR=${FONTSDIR}
 
 WRKSRC=		${WRKDIR}/Opentype\ only\ fonts
 
-NO_STAGE=	yes
 do-install:
-	${MKDIR} ${PREFIX}/${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.ttf ${PREFIX}/${FONTSDIR}
-
-post-install:
-	@${ECHO_MSG} "==> Running fc-cache"
-	@-${LOCALBASE}/bin/fc-cache -f -v ${PREFIX}/${FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${PREFIX}/${FONTSDIR}
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	openvpn-auth-ldap
 PORTVERSION=	2.0.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTNAME=	auth-ldap-${PORTVERSION}
@@ -29,10 +29,10 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 .include <bsd.port.options.mk>
 
 .if ${OSVERSION} >= 900000
-# Use gcc from ports because Objective C support no longer included in base
-# and the GNU Objective-C runtime is required, lang/libobjc2 + clang
-# does not work currently.
-USE_GCC=	yes
+# Use GCC from ports because Objective-C support is no longer included
+# in base.  lang/libobjc2 + clang currently do not work, nor do newer
+# versions of GCC.
+USE_GCC=	4.6
 CONFIGURE_ENV+=	OBJC="${CC}"
 .endif
 

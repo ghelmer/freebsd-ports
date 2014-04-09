@@ -14,6 +14,8 @@ EXTRACT_SUFX=	.tar.Z
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multipurpose X11 plotting program
 
+DEPRECATED=	Unmaintained since 2001
+EXPIRATION_DATE=	2014-04-12
 USES=		imake
 USE_XORG=	x11 xext xt
 ALL_TARGET=	World
@@ -21,6 +23,9 @@ MAN1=		plotmtv.1
 MAKE_JOBS_UNSAFE=	yes
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-patch:

@@ -7,12 +7,11 @@
     SUBDIR += adsuck
     SUBDIR += ares
     SUBDIR += autotrust
+    SUBDIR += bind-tools
     SUBDIR += bind10
-    SUBDIR += bind96
     SUBDIR += bind98
     SUBDIR += bind99
     SUBDIR += bindgraph
-    SUBDIR += bind-tools
     SUBDIR += c-ares
     SUBDIR += checkdns
     SUBDIR += credns
@@ -27,7 +26,6 @@
     SUBDIR += dnrd
     SUBDIR += dns2tcp
     SUBDIR += dns_balance
-    SUBDIR += dns_mre
     SUBDIR += dnscap
     SUBDIR += dnscheck
     SUBDIR += dnscheckengine
@@ -54,6 +52,7 @@
     SUBDIR += fpdns
     SUBDIR += gdnsd
     SUBDIR += geta
+    SUBDIR += getdns
     SUBDIR += ghtool
     SUBDIR += hesiod
     SUBDIR += hostdb
@@ -62,6 +61,7 @@
     SUBDIR += inadyn
     SUBDIR += inadyn-mt
     SUBDIR += ipcheck
+    SUBDIR += ironsides
     SUBDIR += knot
     SUBDIR += ldapdns
     SUBDIR += ldns
@@ -71,6 +71,7 @@
     SUBDIR += libidn
     SUBDIR += linux-f10-libasyncns
     SUBDIR += maradns
+    SUBDIR += maradns1
     SUBDIR += mdnsd
     SUBDIR += mydns
     SUBDIR += mydns-ng
@@ -101,6 +102,7 @@
     SUBDIR += p5-Net-DNS-Check
     SUBDIR += p5-Net-DNS-Codes
     SUBDIR += p5-Net-DNS-Lite
+    SUBDIR += p5-Net-DNS-Match
     SUBDIR += p5-Net-DNS-RR-SRV-Helper
     SUBDIR += p5-Net-DNS-Resolver-Programmable
     SUBDIR += p5-Net-DNS-SEC
@@ -138,6 +140,7 @@
     SUBDIR += powerdns-recursor
     SUBDIR += py-adns
     SUBDIR += py-dns
+    SUBDIR += py-dns3
     SUBDIR += py-dnspython
     SUBDIR += py-easyzone
     SUBDIR += py-idnkit2
@@ -156,7 +159,6 @@
     SUBDIR += samba-nsupdate
     SUBDIR += scavenge
     SUBDIR += sheerdns
-    SUBDIR += skadns
     SUBDIR += sleuth
     SUBDIR += sshfp
     SUBDIR += tinystats

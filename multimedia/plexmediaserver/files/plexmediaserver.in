@@ -1,5 +1,5 @@
 #!/bin/sh
-# Created by: Created by: KalleDK <plexmaintainer@k-moeller.dk>
+# Created by: KalleDK <plexmaintainer@k-moeller.dk>
 #
 # $FreeBSD$
 #
@@ -15,6 +15,8 @@
 #
 # plexmediaserver_tmp="/tmp" # tmp directory used for the transcoding process
 #
+# plexmediaserver_maxplugins="6" # Maximum number of background plugin procs. May have to raise in rare cases.
+#
 
 . /etc/rc.subr
 
@@ -26,6 +28,7 @@ load_rc_config $name
 : ${plexmediaserver_support_path="%%SUPPORT_PATH%%"}
 : ${plexmediaserver_user="%%USERS%%"}
 : ${plexmediaserver_group="%%GROUPS%%"}
+: ${plexmediaserver_maxplugins=6}
 
 extra_commands=status
 start_precmd=plex_precmd
@@ -42,10 +45,9 @@ plex_precmd()
 	export SCRIPTPATH="%%SCRIPT_PATH%%"
 	export LD_LIBRARY_PATH="${SCRIPTPATH}"
 	export PLEX_MEDIA_SERVER_HOME="${SCRIPTPATH}"
-	export PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS=6
+	export PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS=${plexmediaserver_maxplugins}
 	export PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=${plexmediaserver_support_path}
 	export PLEX_MEDIA_SERVER_PIDFILE=${pidfile}
-	if ${plexmediaserver_tmp}; then export PLEX_MEDIA_SERVER_TMPDIR=${plexmediaserver_tmp}; fi
 	export PATH="${SCRIPTPATH}/Resources/Python/bin:${PATH}"
 	export LC_ALL="C"
 	export LANG="C"
@@ -57,6 +59,11 @@ plex_precmd()
 	
 	if [ ! -d "${plexmediaserver_support_path}/Plex Media Server" ]; then
 		install -d -g ${plexmediaserver_group} -o ${plexmediaserver_user} "${plexmediaserver_support_path}/Plex Media Server";
+	fi
+	
+	if [ ${plexmediaserver_tmp} ]; then 
+		export TMPDIR=${plexmediaserver_tmp};
+		install -d -g ${plexmediaserver_group} -o ${plexmediaserver_user} "${plexmediaserver_tmp}";
 	fi
 }
 
@@ -86,7 +93,6 @@ plex_stopcmd()
 		main_pid=$(cat ${pidfile});
 		child_pids=$(pgrep -P ${main_pid});
 		all_pids="${main_pid} ${child_pids}"
-		sig_stop=-QUIT;
 		kill ${sig_stop} ${all_pids};
 		wait_for_pids ${all_pids};
 		rm ${pidfile}

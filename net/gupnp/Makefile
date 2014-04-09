@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gupnp
-PORTVERSION=	0.20.9
+PORTVERSION=	0.20.10
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -22,9 +22,8 @@ GNU_CONFIGURE=	yes
 MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 USE_GNOME=	glib20 introspection:build
 USE_LDCONFIG=	yes
-USE_PYTHON=	yes
-USE_XZ=		yes
-USES=		gmake pathfix pkgconfig shebangfix
+USE_PYTHON_RUN=	yes
+USES=		gmake pathfix pkgconfig shebangfix tar:xz
 
 SHEBANG_FILES=	tools/gupnp-binding-tool
 python_CMD=	${PYTHON_CMD}

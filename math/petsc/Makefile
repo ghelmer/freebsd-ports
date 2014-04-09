@@ -3,7 +3,7 @@
 
 PORTNAME=	petsc
 DISTVERSION=	2.3.3-p0
-PORTREVISION=	8
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	math parallel
 MASTER_SITES=	ftp://ftp.mcs.anl.gov/pub/petsc/release-snapshots/
@@ -25,7 +25,8 @@ CONFIGURE_ENV=		PETSC_ARCH=${TARGET}	\
 CONFIGURE_ARGS=		--prefix=${PREFIX}/${PFX} --COPTFLAGS="${CFLAGS}"	\
 			--CXXOPTFLAGS="${CXXFLAGS}" --FOPTFLAGS="${FFLAGS}"	\
 			--with-shared=1 --with-cc=${CC} --with-fc=${FC}		\
-			--CPPFLAGS="-I${LOCALBASE}/include" --LDFLAGS=${PTHREAD_LIBS}
+			--CPPFLAGS="-I${LOCALBASE}/include"	\
+			--LDFLAGS="${PTHREAD_LIBS} ${LDFLAGS}"
 ALL_TARGET=		all
 MAKEFILE=		makefile
 MAKE_ENV=		PETSC_DIR=${WRKSRC}
@@ -40,7 +41,7 @@ CONFIGURE_ARGS+=	--with-x-include=${LOCALBASE}/include	\
 			--with-x-lib=${LOCALBASE}/lib/libX11.so
 .endif
 
-USE_FORTRAN=	yes
+USES=		fortran
 FFLAGS+=	-O2
 PFX=		${PORTNAME}
 TARGET=		${OPSYS:L}
@@ -55,6 +56,9 @@ CONFIGURE_ARGS+=	--with-umfpack-include="${LOCALBASE}/include/suitesparse"	\
 .endif
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}

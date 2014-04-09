@@ -7,9 +7,7 @@
     SUBDIR += ambit
     SUBDIR += bash
     SUBDIR += bash-completion
-    SUBDIR += bash-devel
     SUBDIR += bash-static
-    SUBDIR += bash-static-devel
     SUBDIR += bashc
     SUBDIR += ch
     SUBDIR += dash
@@ -42,8 +40,6 @@
     SUBDIR += v7sh
     SUBDIR += viewglob
     SUBDIR += vshnu
-    SUBDIR += wapsh
-    SUBDIR += zoidberg
     SUBDIR += zsh
 
 .include <bsd.port.subdir.mk>

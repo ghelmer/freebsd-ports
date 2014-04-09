@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-DISTVERSION=	4.2.20
-PORTREVISION=	1
+DISTVERSION=	4.2.22
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${DISTVERSION}/ \
 		http://tmp.chruetertee.ch/ \
@@ -20,7 +19,6 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm \
-		as86:${PORTSDIR}/devel/dev86 \
 		xsltproc:${PORTSDIR}/textproc/libxslt \
 		kmk:${PORTSDIR}/devel/kBuild \
 		gtar:${PORTSDIR}/archivers/gtar \
@@ -34,12 +32,11 @@ RUN_DEPENDS=	${KMODDIR}/vboxdrv.ko:${PORTSDIR}/emulators/virtualbox-ose-kmod-leg
 
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		iconv pkgconfig
+USES=		iconv pkgconfig tar:bzip2
 USE_GCC=	any
 USE_GNOME=	libidl
-USE_BZIP2=	yes
 USE_PYTHON=	2
-USE_PYDISTUTILS=	easy_install
+USE_PYDISTUTILS=	yes
 PYDISTUTILS_PKGNAME=	vboxapi
 PYDISTUTILS_PKGVERSION=	1.0
 PYDISTUTILS_NOEGGINFO=	yes
@@ -48,7 +45,6 @@ HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-gcc="${CC}" --with-g++="${CXX}" --passive-mesa
 USE_LDCONFIG=	${PREFIX}/lib/virtualbox
 
-CONFLICTS=	bcc-[0-9]*
 CONFLICTS_INSTALL=	virtualbox-ose-4* virtualbox-ose-devel-4* virtualbox-ose-additions-4* virtualbox-ose-additions-devel-4*
 
 VBOXUSER?=	vboxusers
@@ -125,7 +121,7 @@ CONFIGURE_ARGS+=--build-headless
 
 .if ${PORT_OPTIONS:MQT4}
 QT_NONSTANDARD=	yes
-USE_QT4=	gui network moc_build uic_build rcc_build linguist
+USE_QT4=	gui network moc_build opengl uic_build rcc_build linguist
 INSTALLS_ICONS=	yes
 VBOX_FRONTENDS+=VirtualBox VBoxTestOGL
 .else
@@ -213,6 +209,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|\$$KBUILDDIR_BIN/kmk_sed|${LOCALBASE}/bin/kmk_sed|g' ${WRKSRC}/configure
 .if empty(ICONV_LIB)
 	@${REINPLACE_CMD} -e 's|iconv||' ${WRKSRC}/Config.kmk ${WRKSRC}/src/VBox/Runtime/Makefile.kmk
+	@${ECHO} 'VBOX_ICONV_DEFS = LIBICONV_PLUG' >> ${WRKSRC}/LocalConfig.kmk
 .endif
 
 pre-build:

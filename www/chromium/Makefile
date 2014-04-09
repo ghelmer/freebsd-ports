@@ -4,16 +4,10 @@
 #TODO eadler: s/python/python2/g on a number of files, chromium does not build with python3
 
 PORTNAME=	chromium
-DISTVERSIONPREFIX=	courgette-redacted-
-DISTVERSION=	31.0.1650.63
+PORTVERSION=	33.0.1750.152
 CATEGORIES=	www
-MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/:testdata \
-		http://download.goodking.org/downloads/:browser \
-		ftp://rene-ladan.nl/pub/distfiles/:browser \
-		${MASTER_SITE_LOCAL}:browser \
-		http://files.etoilebsd.net/goodking/:browser
-MASTER_SITE_SUBDIR=rene
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:browser
+MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	chromium@FreeBSD.org
 COMMENT=	Mostly BSD-licensed web browser based on WebKit and Gtk+
@@ -21,14 +15,12 @@ COMMENT=	Mostly BSD-licensed web browser based on WebKit and Gtk+
 LICENSE=	BSD3CLAUSE LGPL21 MPL
 LICENSE_COMB=	multi
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
-CFLAGS+=	-fno-stack-protector -Wno-unknown-warning-option
+CFLAGS+=	-fno-stack-protector
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/gperf:${PORTSDIR}/devel/gperf \
 		bash:${PORTSDIR}/shells/bash \
 		yasm:${PORTSDIR}/devel/yasm \
 		flock:${PORTSDIR}/sysutils/flock \
-		ninja:${PORTSDIR}/devel/ninja \
 		v4l_compat>=1.0.20110603:${PORTSDIR}/multimedia/v4l_compat
 
 LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
@@ -47,16 +39,15 @@ RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:${PORTSDIR}/a
 		${LOCALBASE}/lib/X11/fonts/Droid/fonts.dir:${PORTSDIR}/x11-fonts/droid-fonts-ttf
 
 ONLY_FOR_ARCHS=	i386 amd64
-USE_XZ=		yes
-USES=		bison compiler:c++11-lang desktop-file-utils pkgconfig \
-		perl5 shebangfix
+USES=		bison compiler:c++11-lib desktop-file-utils pkgconfig \
+		perl5 shebangfix ninja tar:xz
 USE_PERL5=	build
 USE_PYTHON_BUILD=	2
 USE_XORG=	scrnsaverproto x11 xproto xscrnsaver xtst
 USE_GNOME=	glib20 gtk20 dconf libxslt
 
 SHEBANG_FILES=	chrome/tools/build/linux/chrome-wrapper
-NINJA_TARGETS=	chrome
+ALL_TARGET=	chrome
 
 # See build/common.gypi for all the available variables.
 GYP_DEFINES+=	use_cups=1 \
@@ -101,6 +92,8 @@ OPTIONS_DEFAULT=	CODECS GCONF
 GCONF_USE=	GNOME=gconf2
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 
+TEST_DISTFILES=	${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCODECS}
@@ -133,19 +126,8 @@ LIB_DEPENDS+=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 .endif
 
 .if ${PORT_OPTIONS:MTEST}
-TEST_TARGETS=	base_unittests \
-		crypto_unittests \
-		cacheinvalidation_unittests \
-		gpu_unittests \
-		sync_unit_tests \
-		media_unittests \
-		printing_unittests \
-		sql_unittests \
-		net_unittests \
-		content_unittests
-EXCLUDED_TESTS=	GpuDriverBugListTest.CurrentDriverBugListValidation
-NINJA_TARGETS+=	${TEST_TARGETS}
-DISTFILES+=	${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}:testdata
+.include "Makefile.tests"
+ALL_TARGET+=	${TEST_TARGETS}
 .endif
 
 DEBUG_MAKE_ENV=	V=1
@@ -161,25 +143,29 @@ CONFIGURE_ENV+=	CC=${CC} \
 		CXX=${CXX} \
 		GYP_GENERATORS=ninja \
 		GYP_DEFINES="${GYP_DEFINES}"
+MAKE_ENV+=	BUILDTYPE=${BUILDTYPE} \
+		GPERF=${LOCALBASE}/bin/gperf
+MAKE_ARGS+=	-C out/${BUILDTYPE}
+
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+GYP_DEFINES+=	gcc_version=${CXX:S/g++//}
+CFLAGS+=	-Wno-unknown-warning
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gcc
+.else
+GYP_DEFINES+=	clang=1
+CFLAGS+=	-Wno-unknown-warning-option
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
+CONFIGURE_ENV+=	AR=/usr/bin/ar
+.endif
+
 # according to portlint the below is passed via bsd.port.mk,
 # but 'make -V CONFIGURE_ENV' does not show it:
 CONFIGURE_ENV+=	CFLAGS="${CFLAGS}" \
 		CPPFLAGS="${CPPFLAGS}" \
 		CXXFLAGS="${CXXFLAGS}" \
 		LDFLAGS="${LDFLAGS}"
-MAKE_ENV+=	BUILDTYPE=${BUILDTYPE} \
-		GPERF=${LOCALBASE}/bin/gperf
-
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-GYP_DEFINES+=	gcc_version=${CXX:S/g++//}
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gcc
-.else
-GYP_DEFINES+=	clang=1
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
-CONFIGURE_ENV+=	AR=/usr/bin/ar
-.endif
 
 pre-everything::
 	@${ECHO_MSG}
@@ -203,11 +189,8 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|/usr/local|${PREFIX}|" \
 		${WRKSRC}/chrome/common/chrome_paths.cc
 	@${REINPLACE_CMD} -e "s|/usr/bin/gcc|${CC}|" \
-		${WRKSRC}/third_party/WebKit/Source/core/core.gypi
-	@${REINPLACE_CMD} -e "s|'../courgette/courgette.gyp:courgette_lib',||" \
-		${WRKSRC}/chrome/chrome_tests_unit.gypi
-	@${REINPLACE_CMD} -e "s|linux|freebsd|" \
-		${WRKSRC}/tools/gyp/pylib/gyp/generator/make.py
+		${WRKSRC}/third_party/WebKit/Source/build/scripts/preprocessor.pm \
+		${WRKSRC}/third_party/WebKit/Source/build/scripts/scripts.gypi
 	@${REINPLACE_CMD} -e "s|is_linux|(is_linux or is_bsd)|" \
 		${WRKSRC}/chrome/browser/browser_resources.grd \
 		${WRKSRC}/chrome/app/theme/theme_resources.grd \
@@ -224,14 +207,10 @@ do-configure:
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/gyp_chromium chrome/chrome.gyp --depth .
 
-do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${LOCALBASE}/bin/ninja \
-		${_MAKE_JOBS} -C out/${BUILDTYPE} ${NINJA_TARGETS}
-
 test regression-test: build
 .for t in ${TEST_TARGETS}
 	cd ${WRKSRC}/out/${BUILDTYPE} && ${SETENV} LC_ALL=en_US.UTF-8 \
-		./${t} --gtest_filter=-${EXCLUDED_TESTS}
+		./${t} --gtest_filter=-${EXCLUDE_${t}:ts:} || ${TRUE}
 .endfor
 
 do-install:

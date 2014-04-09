@@ -2,7 +2,7 @@
 
 PORTNAME=	kmymoney
 PORTVERSION=	4.6.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	finance kde
 MASTER_SITES=	SF/${PORTNAME}2/KMyMoney-KDE4/${PORTVERSION}
 
@@ -14,16 +14,13 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libboost_graph.so:${PORTSDIR}/devel/boost-libs \
 		libalkimia.so:${PORTSDIR}/finance/libalkimia
 
-USE_XZ=		yes
-USES=		cmake pkgconfig
+USES=		cmake pkgconfig shared-mime-info shebangfix tar:xz
 USE_QT4=	gui dbus network phonon sql svg xml \
 		qmake_build moc_build rcc_build uic_build
-USE_KDE4=	kdehier kdeprefix automoc4 kdelibs pimlibs sharedmime
+USE_KDE4=	kdehier kdeprefix automoc4 kdelibs pimlibs
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
-
-MAN1=		kmymoney.1
+SHEBANG_FILES=	kmymoney/misc/financequote.pl
 
 OPTIONS_DEFINE=		NLS CALENDAR KBANKING OFX QUOTES
 OPTIONS_DEFAULT=	CALENDAR

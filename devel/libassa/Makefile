@@ -8,8 +8,8 @@ CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/3.4.2
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/\.([[:digit:]])$/-\1/}
 
-MAINTAINER=	rodrigo@bebik.net
-COMMENT=	An C++ networking library and application framework
+MAINTAINER=	rodrigo@FreeBSD.org
+COMMENT=	C++ networking library and application framework
 
 GNU_CONFIGURE=	yes
 USES=	pathfix pkgconfig
@@ -18,13 +18,10 @@ PLIST_SUB=	ASSA_VERSION=${PORTVERSION:R:R}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/(\.[[:digit:]])$//}
 
-MAN1=		assa-genesis.1
-
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS/s: doc : :g' ${WRKSRC}/Makefile.in
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/debian/assa-genesis.1 ${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/debian/assa-genesis.1 ${STAGEDIR}${PREFIX}/man/man1
 
 .include <bsd.port.mk>

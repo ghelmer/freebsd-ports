@@ -84,8 +84,10 @@ ventrilo:*:146:
 kdm:*:147:
 ipv6mon:*:148:
 avenger:*:149:
+cbsd:*:150:
 rbldns:*:153:
 trircd:*:154:
+xorp:*:155:
 sfs:*:171:
 agk:*:172:
 polipo:*:173:
@@ -99,6 +101,7 @@ icinga:*:183:
 dnscache:*:184:
 tinydns:*:185:
 dnslog:*:186:
+swift:*:187:
 moinmoin:*:192:
 cups:*:193:
 saned:*:194:
@@ -141,6 +144,7 @@ prelude:*:281:
 spread:*:282:
 devmon:*:283:
 vnstat:*:284:
+exaddos:*:285:exaddos
 backuppc:*:300:
 _sphinx:*:312:
 dkfilter:*:325:
@@ -165,12 +169,14 @@ slurm:*:468:
 _bbstored:*:505:
 radmind:*:506:
 skkserv:*:507:
+pwhois:*:512:
 nullmail:*:522:
 dkimproxy:*:525:
 pgbouncer:*:534:
 redis:*:535:
 _flowd:*:542:
 ejabberd:*:543:
+knot:*:553:
 qtss:*:554:
 ircdru:*:555:
 messagebus:*:556:
@@ -194,6 +200,7 @@ riak:*:667:
 bnetd:*:700:
 bopm:*:717:
 openxpki:*:777:
+foreman_proxy:*:812:
 puppet:*:814:
 jenkins:*:818:
 openacs:*:820:

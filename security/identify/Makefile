@@ -15,14 +15,11 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libident.a:${PORTSDIR}/security/libident
 PORTDOCS=	README
 PLIST_FILES=	libexec/identify
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/identify ${PREFIX}/libexec
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/identify ${STAGEDIR}${PREFIX}/libexec
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

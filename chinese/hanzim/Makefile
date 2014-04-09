@@ -24,6 +24,9 @@ ALL_TARGET=	${PORTNAME}
 MAN1=		hanzim.1
 
 NO_STAGE=	yes
+BROKEN_powepc=	Does not install on powerpc: signal 11
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
@@ -41,10 +44,4 @@ do-install:
 .endif
 	${PREFIX}/bin/hanzim -port-install
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "powerpc"
-BROKEN=		Does not install on powerpc: signal 11
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -6,13 +6,17 @@ PORTVERSION=	0.9.7
 PORTREVISION=	13
 CATEGORIES=	x11-wm lisp
 MASTER_SITES=	SAVANNAH
-DISTFILES=	${DISTNAME}.tgz
+EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A tiling, keyboard driven Window Manager written in Common Lisp
+COMMENT=	Tiling, keyboard driven Window Manager written in Common Lisp
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Broken 4 months already, will not build with either lisp compiler
+DEPRECATED=	Broken for more than 4 months
+EXPIRATION_DATE=	2014-05-01
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-contrib-dir=${DATADIR}
@@ -25,7 +29,7 @@ PORTEXAMPLES=	sample-stumpwmrc.lisp
 PORTDATA=	*
 
 OPTIONS_DEFINE=	SBCL EXAMPLES
-OPTIONS_DEFAULT=	SBCL
+OPTIONS_DEFAULT=
 SBCL_DESC=	Build with lang/sbcl (otherwise with lang/clisp)
 
 NO_STAGE=	yes
@@ -47,7 +51,7 @@ BUILD_DEPENDS+=	clisp:${PORTSDIR}/lang/clisp
 
 .if empty(PORT_OPTIONS:MSBCL)
 .if exists(${LOCALBASE}/bin/clisp) && \
-    !exists(${LOCALBASE}/lib/clisp/full/clx.o)
+    !exists(${LOCALBASE}/lib/clisp/clx/new-clx/clx.o)
 IGNORE=		requires lang/clisp built with CLX_NEW option ON
 .endif
 .endif

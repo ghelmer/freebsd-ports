@@ -3,6 +3,7 @@
 
 PORTNAME=	bddsolve
 PORTVERSION=	1.03
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=	http://www.win.tue.nl/~wieger/bddsolve/_downloads/
 DISTNAME=	${PORTNAME}-source-${PORTVERSION}
@@ -13,10 +14,11 @@ COMMENT=	BDD-based satisfiability and reachability solver
 LIB_DEPENDS+=	libbdd.so:${PORTSDIR}/science/buddy \
 		libboost_program_options.so:${PORTSDIR}/devel/boost-libs
 
-USE_ZIP=	yes
+USES=		zip
 NO_WRKSUBDIR=	yes
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	EXAMPLES
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "powerpc"
@@ -29,11 +31,9 @@ do-build:
 		-o ${WRKSRC}/bddsolve ${WRKSRC}/src/bddsolve.cpp
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bddsolve ${LOCALBASE}/bin/
-.if !defined(NOPORTEXAMPLES)
-	${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/example/reach.b ${EXAMPLESDIR}/
-	${INSTALL_DATA} ${WRKSRC}/example/sat.b ${EXAMPLESDIR}/
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/bddsolve ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/example/reach.b ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/example/sat.b ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.post.mk>

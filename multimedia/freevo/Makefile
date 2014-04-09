@@ -3,7 +3,7 @@
 
 PORTNAME=	freevo
 PORTVERSION=	1.9.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/Freevo%20releases/${PORTVERSION}
 
@@ -56,6 +56,9 @@ DATADIR=	${PREFIX}/share/${PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-pdb
 PORTVERSION=	1.0.7
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org

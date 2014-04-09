@@ -7,13 +7,11 @@ CATEGORIES=	devel
 MASTER_SITES+=	${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	alfred
 
-MAINTAINER=	flo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Helper for multiple CVS repositories
+
+USES=		desthack
 
 GNU_CONFIGURE=	yes
 
-MAN1=		cvswrap.1
-MAN5=		cvswrap.conf.5
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

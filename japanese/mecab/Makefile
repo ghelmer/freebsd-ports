@@ -9,8 +9,8 @@ MASTER_SITES=	GOOGLE_CODE
 MAINTAINER=	yasu@utahime.org
 COMMENT=	Yet Another Part-of-Speech and Morphological Analyzer
 
-LICENSE=	BSD GPLv2 LGPL21
-LICENSE_COMB=	dual
+LICENSE=	BSD3CLAUSE GPLv2 LGPL21
+LICENSE_COMB=	multi
 
 USE_AUTOTOOLS=	autoconf autoheader automake aclocal libtool
 USES=		iconv gettext:build perl5
@@ -29,8 +29,6 @@ PORTDOCS=	AUTHORS README *.html
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	${REINPLACE_CMD} -e 's/-lpthread/${PTHREAD_LIBS}/g' \
 			 -e 's/-O3/${CFLAGS}/' ${WRKSRC}/${CONFIGURE_SCRIPT}.in
@@ -43,10 +41,9 @@ pre-install:
 	${CHMOD} a+x ${WRKSRC}/install-sh
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:N*.html:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/*.html ${STAGEDIR}${DOCSDIR}
-.endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmecab.so
 
 .include <bsd.port.mk>

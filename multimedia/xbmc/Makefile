@@ -1,18 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	xbmc
-DISTVERSION=	13.0.alpha11
+DISTVERSION=	13.0.beta1
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 MAINTAINER=	mickael.maillot@gmail.com
 COMMENT=	Award winning media center application
 
 LICENSE=	GPLv2
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	xbmc
-GH_COMMIT=	8eb49b3
-GH_TAGNAME=	Gotham_alpha11
 
 BUILD_DEPENDS=	enca:${PORTSDIR}/converters/enca \
 		gawk:${PORTSDIR}/lang/gawk \
@@ -56,7 +52,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}imaging>0:${PORTSDIR}/graphics/py-imaging \
 		xdpyinfo:${PORTSDIR}/x11/xdpyinfo
 
-USES=		gmake iconv pkgconfig
+USE_GITHUB=	yes
+GH_ACCOUNT=	xbmc
+GH_COMMIT=	128426f
+GH_TAGNAME=	Gotham-beta1
+
+USES=		gmake iconv:wchar_t pkgconfig
 USE_AUTOTOOLS=	autoconf libtool automake libltdl
 GNU_CONFIGURE=	yes
 USE_XORG=	xt xmu xtst
@@ -76,6 +77,7 @@ DESKTOP_ENTRIES="XBMC" \
 		"AudioVideo;Video;" \
 		true
 
+OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	AIRPLAY AIRTUNES AVAHI CEC LAME \
 		LIBBLURAY HAL LIRC MYSQL NONFREE PULSEAUDIO RTMP SFTP \
 		SMB VAAPI VDPAU VORBIS WEBSERVER XRANDR
@@ -86,7 +88,7 @@ NONFREE_DESC=	Enable non-free components (rar, ccx, ffmpeg)
 SFTP_DESC=	SSH SFTP support via libssh
 VORBIS_DESC=	Ogg Vorbis audio encoder
 
-OPTIONS_DEFAULT=	AIRPLAY AVAHI CEC LIBBLURAY HAL LIRC MYSQL \
+OPTIONS_DEFAULT=	AIRPLAY AIRTUNES AVAHI CEC LIBBLURAY HAL LIRC MYSQL \
 			RTMP SFTP SMB VAAPI VDPAU VORBIS WEBSERVER XRANDR
 
 AIRPLAY_LIB_DEPENDS=	libplist.so:${PORTSDIR}/devel/libplist
@@ -110,8 +112,12 @@ HAL_CONFIGURE_ENABLE=	hal
 LAME_LIB_DEPENDS=	libmp3lame.so:${PORTSDIR}/audio/lame
 LAME_CONFIGURE_ENABLE=	libmp3lame
 
+LIRC_RUN_DEPENDS=	lircd:${PORTSDIR}/comms/lirc
+
 MYSQL_USE=	MYSQL=yes
 MYSQL_CONFIGURE_ENABLE=	mysql
+
+NONFREE_CONFIGURE_ENABLE=	non-free
 
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=	pulse
@@ -125,7 +131,7 @@ SMB_CONFIGURE_ENABLE=	samba
 VAAPI_LIB_DEPENDS=	libva.so:${PORTSDIR}/multimedia/libva
 VAAPI_CONFIGURE_ENABLE=	vaapi
 
-VDPAU_BUILD_DEPENDS=	${LOCALBASE}/include/vdpau/vdpau.h:${PORTSDIR}/multimedia/libvdpau
+VDPAU_LIB_DEPENDS=	libvdpau.so:${PORTSDIR}/multimedia/libvdpau
 VDPAU_CONFIGURE_ENABLE=	vdpau
 
 VORBIS_LIB_DEPENDS=	libvorbisenc.so:${PORTSDIR}/audio/libvorbis
@@ -137,6 +143,9 @@ WEBSERVER_CONFIGURE_ENABLE=	webserver
 SFTP_BUILD_DEPENDS=	${LOCALBASE}/lib/libssh.so:${PORTSDIR}/security/libssh
 SFTP_RUN_DEPENDS=	${LOCALBASE}/lib/libssh.so:${PORTSDIR}/security/libssh
 SFTP_CONFIGURE_ENABLE=	ssh
+
+XRANDR_USE=	XORG=xrandr
+XRANDR_CONFIGURE_ENABLE=	xrandr
 
 CONFIGURE_ARGS+=	--disable-debug --disable-nfs --disable-alsa
 
@@ -154,25 +163,9 @@ CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 .endif
 
-.if ${PORT_OPTIONS:MLIRC}
-RUN_DEPENDS+=	lircd:${PORTSDIR}/comms/lirc
-.endif
-
 .if ${PORT_OPTIONS:MNONFREE}
-CONFIGURE_ARGS+=	--enable-non-free
 NO_CDROM=	Restricted binary distribution
 NO_PACKAGE=	${NO_CDROM}
-.else
-CONFIGURE_ARGS+=	--disable-non-free
-.endif
-
-.if ${PORT_OPTIONS:MXRANDR}
-CONFIGURE_ARGS+=	--enable-xrandr
-USE_XORG+=	xrandr
-PLIST_SUB+=	XRANDR=""
-.else
-CONFIGURE_ARGS+=	--disable-xrandr
-PLIST_SUB+=	XRANDR="@comment "
 .endif
 
 post-patch:
@@ -190,9 +183,8 @@ post-patch:
 		${WRKSRC}/xbmc/cores/dvdplayer/DVDCodecs/Video/VAAPI.cpp
 
 run-autotools:
-	cd ${WRKSRC}/lib/cpluff && ${SH} ./autogen.sh
-	${REINPLACE_CMD} '/lib\/cpluff/d' ${WRKSRC}/bootstrap.mk
 	cd ${WRKSRC} && ${SH} ./bootstrap
+	${REINPLACE_CMD} "s;'' iconv;iconv;" ${WRKSRC}/configure
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/docs/manpages/xbmc.bin.1 ${STAGEDIR}${MAN1PREFIX}/man/man1

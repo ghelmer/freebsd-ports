@@ -2,6 +2,7 @@
 
 PORTNAME=	kipi-plugin-${KIPI_PLUGIN}
 PORTVERSION=	${DIGIKAM_VER}
+PORTREVISION=	1
 CATEGORIES=	graphics kde
 
 MAINTAINER=	kde@FreeBSD.org
@@ -11,6 +12,5 @@ USE_GL=		glu
 USE_XORG=	xrandr
 
 KIPI_PLUGIN=	advancedslideshow
-NO_STAGE=	yes
 .include "${.CURDIR}/../digikam-kde4/Makefile.common"
 .include <bsd.port.mk>

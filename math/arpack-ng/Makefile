@@ -3,6 +3,7 @@
 
 PORTNAME=	arpack-ng
 PORTVERSION=	3.1.4
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://forge.scilab.org/index.php/p/arpack-ng/downloads/get/ \
 		LOCAL/bf
@@ -13,7 +14,7 @@ COMMENT=	Revised Argand library for solving large-scale eigenvalue problems
 
 LICENSE=	BSD
 
-USE_FORTRAN=	yes
+USES=		fortran
 USE_LDCONFIG=	yes
 
 CONFLICTS=	arpack-[0-9]*

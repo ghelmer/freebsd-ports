@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	duplicity
-PORTVERSION=	0.6.22
+PORTVERSION=	0.6.23
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://launchpad.net/duplicity/0.6-series/${PORTVERSION}/+download/
@@ -11,12 +11,12 @@ MAINTAINER=	jase@FreeBSD.org
 COMMENT=	Backup tool that uses librsync and GnuPG
 
 LIB_DEPENDS=	librsync.so:${PORTSDIR}/net/librsync
-RUN_DEPENDS=	gpg:${PORTSDIR}/security/gnupg
-
-CONFLICTS=	duplicity-0.5.* duplicity-devel-[0-9]*
+RUN_DEPENDS=	gpg:${PORTSDIR}/security/gnupg \
+				${PYTHON_PKGNAMEPREFIX}lockfile>=0:${PORTSDIR}/devel/py-lockfile
 
 USE_PYTHON=	2
 USE_PYDISTUTILS=yes
+PYDISTUTILS_AUTOPLIST=	yes
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	NLS DOCS SSH FTP FTPS S3 GDOCS CLOUDFILES GIO U1
@@ -30,72 +30,22 @@ S3_DESC=	Install Amazon S3 backend
 SSH_DESC=	Install SSH/SCP/SFTP backend
 U1_DESC=	Install Ubuntu One backend
 
+PORTDOCS=	COPYING README README-REPO README-LOG tarfile-LICENSE \
+			tarfile-CHANGES CHANGELOG
+
+NLS_USES=			gettext
+SSH_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paramiko>=1.7.7.1:${PORTSDIR}/security/py-paramiko
+FTP_RUN_DEPENDS=	ncftp>=3.2.2:${PORTSDIR}/ftp/ncftp3
+FTPS_RUN_DEPENDS=	lftp>=3.7.15:${PORTSDIR}/ftp/lftp
+S3_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}boto>=1.6b:${PORTSDIR}/devel/py-boto
+GDOCS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdata>0:${PORTSDIR}/devel/py-gdata
+CLOUDFILES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cloudfiles>0:${PORTSDIR}/net/py-cloudfiles
+GIO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject>0:${PORTSDIR}/devel/py-gobject \
+					dbus>0:${PORTSDIR}/devel/dbus
+U1_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}httplib2>0:${PORTSDIR}/www/py-httplib2 \
+					${PYTHON_PKGNAMEPREFIX}oauthlib>0:${PORTSDIR}/security/py-oauthlib
+
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MSSH}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}paramiko>=1.7.7.1:${PORTSDIR}/security/py-paramiko
-PLIST_SUB+=	SSH=""
-.else
-PLIST_SUB+=	SSH="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MFTP}
-RUN_DEPENDS+=	ncftp>=3.2.2:${PORTSDIR}/ftp/ncftp3
-PLIST_SUB+=	FTP=""
-.else
-PLIST_SUB+=	FTP="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MFTPS}
-RUN_DEPENDS+=	lftp>=3.7.15:${PORTSDIR}/ftp/lftp
-PLIST_SUB+=	FTPS=""
-.else
-PLIST_SUB+=	FTPS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MS3}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}boto>=1.6b:${PORTSDIR}/devel/py-boto
-PLIST_SUB+=	S3=""
-.else
-PLIST_SUB+=	S3="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MGDOCS}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gdata>0:${PORTSDIR}/devel/py-gdata
-PLIST_SUB+=	GDOCS=""
-.else
-PLIST_SUB+=	GDOCS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MCLOUDFILES}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cloudfiles>0:${PORTSDIR}/net/py-cloudfiles
-PLIST_SUB+=	CLOUDFILES=""
-.else
-PLIST_SUB+=	CLOUDFILES="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MGIO}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gobject>0:${PORTSDIR}/devel/py-gobject \
-		dbus>0:${PORTSDIR}/devel/dbus
-PLIST_SUB+=	GIO=""
-.else
-PLIST_SUB+=	GIO="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MU1}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}httplib2>0:${PORTSDIR}/www/py-httplib2 \
-		${PYTHON_PKGNAMEPREFIX}oauthlib>0:${PORTSDIR}/security/py-oauthlib
-PLIST_SUB+=	U1=""
-.else
-PLIST_SUB+=	U1="@comment "
-.endif
 
 post-patch:
 .if empty(PORT_OPTIONS:MNLS)
@@ -112,13 +62,21 @@ post-patch:
 	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/ftpsbackend.py
 .endif
 .if empty(PORT_OPTIONS:MS3)
-	@${FIND} ${WRKSRC}/${PORTNAME}/backends -type f -depth 1 -name '*boto*' -delete
+.for f in botobackend _boto_multi _boto_single
+	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/${f}.py
+.endfor
 .endif
 .if empty(PORT_OPTIONS:MGDOCS)
 	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/gdocsbackend.py
 .endif
 .if empty(PORT_OPTIONS:MCLOUDFILES)
-	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/cloudfilesbackend.py
+.for f in cfbackend _cf_cloudfiles _cf_pyrax
+	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/${f}.py
+.endfor
+.else
+# Make pycloudfiles the default backend for cloudfiles, as pyrax isn't in the Ports Collection yet
+# Use --cf-backend=pyrax arg when running duplicity to manually select pyrax as the backend
+	@${REINPLACE_CMD} 's|"pyrax"|"cloudfiles"|' ${WRKSRC}/${PORTNAME}/globals.py
 .endif
 .if empty(PORT_OPTIONS:MGIO)
 	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/giobackend.py
@@ -127,22 +85,10 @@ post-patch:
 	@${RM} -f ${WRKSRC}/${PORTNAME}/backends/u1backend.py
 .endif
 
-MAN1=		duplicity.1 rdiffdir.1
-
-DOCFILES=	COPYING \
-		README \
-		README-REPO \
-		README-LOG \
-		tarfile-LICENSE \
-		tarfile-CHANGES \
-		CHANGELOG
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for file in ${DOCFILES}
-	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
+.for f in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

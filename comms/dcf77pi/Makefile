@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dcf77pi
-PORTVERSION=	1.1.2
+PORTVERSION=	2.0.2
 CATEGORIES=	comms
 
 MAINTAINER=	rene@FreeBSD.org
@@ -12,21 +12,18 @@ LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rene0
-GH_COMMIT=	c13fd2c
+GH_COMMIT=	d5b52d9
 
-MAKE_ARGS=	FULLPREFIX="${STAGEDIR}${PREFIX}"
+USES=		ncurses
 
 PORTDOCS=	README.md
 
+INSTALL_TARGET=	install-strip
+
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/dcf77pi
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/readpin
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-	if [ ! -f ${ETCDIR}/config.txt ] ; then \
-		${CP} -p ${STAGEDIR}${ETCDIR}/config.txt.sample ${STAGEDIR}${ETCDIR}/config.txt ; \
-	fi
 
 .include <bsd.port.mk>

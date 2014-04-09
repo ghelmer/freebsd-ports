@@ -3,12 +3,13 @@
 
 PORTNAME=	xsd
 PORTVERSION=	3.3.0
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-2+dep
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codesynthesis.com/download/${PORTNAME}/${PORTVERSION:R}/
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	A W3C XML Schema to C++ translator
+COMMENT=	W3C XML Schema to C++ translator
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/xsd/LICENSE
@@ -28,6 +29,8 @@ MAKE_ARGS=	install_prefix=${STAGEDIR}${PREFIX} \
 		verbose=1
 USES=		gmake
 USE_BZIP2=	yes
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 

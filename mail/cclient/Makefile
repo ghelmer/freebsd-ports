@@ -3,6 +3,7 @@
 
 PORTNAME=	cclient
 PORTVERSION=	2007f
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	mail devel ipv6
 MASTER_SITES=	ftp://ftp.cac.washington.edu/imap/%SUBDIR%/ \
@@ -25,11 +26,11 @@ MBX_DEFAULT_DESC=	Use MBX as default mailbox format
 
 MAKE_JOBS_UNSAFE=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSSL}
 USE_OPENSSL=	yes
+PKGMESSAGE=	pkg-message-ssl
 .endif
 
 .include <bsd.port.pre.mk>
@@ -47,6 +48,7 @@ MAKE_ARGS+=	SSLTYPE=unix.nopwd SSLDIR=${OPENSSLDIR}
 .endif
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
+MAKE_ARGS+=	EXTRACFLAGS="${CFLAGS}"
 
 SHLIBBASE=	c-client4
 SHLIBMAJ=	9
@@ -95,27 +97,17 @@ post-build:
 .endif
 
 do-install:
-	${MKDIR} ${PREFIX}/include/c-client
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/c-client
 .for f in ${HEADERS}
-	${INSTALL_DATA} ${WRKSRC}/c-client/${f} ${PREFIX}/include/c-client
+	${INSTALL_DATA} ${WRKSRC}/c-client/${f} ${STAGEDIR}${PREFIX}/include/c-client
 .endfor
-	${INSTALL} ${COPY} -o ${LIBOWN} -g ${LIBGRP} -m ${LIBMODE} \
-		${WRKSRC}/c-client/${SHLIBNAME} ${PREFIX}/lib
-	${LN} -sf ${SHLIBNAME} ${PREFIX}/lib/lib${SHLIBBASE}.so
+	${INSTALL_LIB} ${WRKSRC}/c-client/${SHLIBNAME} ${STAGEDIR}${PREFIX}/lib
+	${LN} -sf ${SHLIBNAME} ${STAGEDIR}${PREFIX}/lib/lib${SHLIBBASE}.so
 	${INSTALL_DATA} ${WRKSRC}/c-client/c-client.a \
-		${PREFIX}/lib/lib${SHLIBBASE}.a
-	${INSTALL_DATA} ${WRKSRC}/c-client/CFLAGS ${PREFIX}/include/c-client
-	${INSTALL_DATA} ${WRKSRC}/c-client/LDFLAGS ${PREFIX}/include/c-client
-	${INSTALL_DATA} ${WRKSRC}/c-client/OSCFLAGS ${PREFIX}/include/c-client
-
-post-install:
-	${INSTALL_DATA} ${PORTREV_H} ${PREFIX}/include/c-client
-.if ${PORT_OPTIONS:MSSL}
-	@${ECHO} "================================================================================"
-	@${ECHO} "Warning: You have chosen to include SSL support. Applications/ports that use"
-	@${ECHO} "the cclient library but do not support SSL may stop working or have problems"
-	@${ECHO} "linking. Linking them explicitly with ssl (-lssl -lcrypto) may or may not help."
-	@${ECHO} "================================================================================"
-.endif
+		${STAGEDIR}${PREFIX}/lib/lib${SHLIBBASE}.a
+	${INSTALL_DATA} ${WRKSRC}/c-client/CFLAGS ${STAGEDIR}${PREFIX}/include/c-client
+	${INSTALL_DATA} ${WRKSRC}/c-client/LDFLAGS ${STAGEDIR}${PREFIX}/include/c-client
+	${INSTALL_DATA} ${WRKSRC}/c-client/OSCFLAGS ${STAGEDIR}${PREFIX}/include/c-client
+	${INSTALL_DATA} ${PORTREV_H} ${STAGEDIR}${PREFIX}/include/c-client
 
 .include <bsd.port.post.mk>

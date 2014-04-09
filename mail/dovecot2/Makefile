@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dovecot
-PORTVERSION=	2.2.9
+PORTVERSION=	2.2.10
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://www.dovecot.org/releases/${PORTVERSION:R}/
 PKGNAMESUFFIX=	2
@@ -101,6 +101,7 @@ CONFIGURE_ARGS+=--without-ssl
 #
 .if ${PORT_OPTIONS:MGSSAPI}
 CONFIGURE_ARGS+=--with-gssapi
+LDFLAGS+=	-lgssapi_krb5
 .else
 CONFIGURE_ARGS+=--without-gssapi
 .endif

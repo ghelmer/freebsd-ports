@@ -2,7 +2,7 @@
 
 PORTNAME=	openmsx
 PORTVERSION=	0.10.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF
 
@@ -24,7 +24,7 @@ MAKE_ARGS+=	INSTALL_BINARY_DIR=${PREFIX}/bin \
 
 MAKEFILE=	GNUmakefile
 USES=		gmake tcl
-USE_GCC=	4.6+
+USE_GCC=	yes
 USE_GL=		glew
 USE_SDL=	sdl ttf
 USE_PYTHON=	yes
@@ -33,11 +33,9 @@ PLIST_FILES=	bin/openmsx
 PORTDATA=	*
 PORTDOCS=	*
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
-.ifdef	NOPORTDATA
-IGNORE=		opemsx requires port data, unset NOPORTDATA to install
-.endif
+.include <bsd.port.options.mk>
 
 .if !${PORT_OPTIONS:MDOCS}
 # Use dummy target rather than rewriting makefile

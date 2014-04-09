@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Unix-Passwd-File
-PORTVERSION=	0.10
+PORTVERSION=	0.11
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,12 +22,6 @@ TEST_DEPENDS=	p5-File-Copy-Recursive>=0:${PORTSDIR}/devel/p5-File-Copy-Recursive
 		p5-File-chdir>=0:${PORTSDIR}/devel/p5-File-chdir
 
 USES=		perl5
-USE_PERL5=	modbuild
+USE_PERL5=	configure
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-TEST_DEPENDS+=	p5-Test-Simple>=0.98:${PORTSDIR}/devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

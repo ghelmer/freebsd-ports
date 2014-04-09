@@ -2,24 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	libwfut
-PORTVERSION=	0.2.2
-PORTREVISION=	1
+PORTVERSION=	0.2.3
 CATEGORIES=	devel
 MASTER_SITES=	SF/worldforge/libwfut%20%28updates%20library%29/${PORTVERSION}
 
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	WorldForge update library
 
-LIB_DEPENDS=	sigc-2.0:${PORTSDIR}/devel/libsigc++20 \
-		curl:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
+		libcurl.so:${PORTSDIR}/ftp/curl
 
 CONFIGURE_ARGS+=--without-python
 GNU_CONFIGURE=	yes
-USES=	pathfix pkgconfig
+USES=		pathfix pkgconfig compiler:c++11-lib
 USE_LDCONFIG=	yes
-MAN1=		wfut.1
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's/ python//g' ${WRKSRC}/Makefile.in
 

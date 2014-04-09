@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zenphoto
-PORTVERSION=	1.4.5
+PORTVERSION=	1.4.5.10
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/archive/
 
@@ -19,20 +19,17 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${PORTVERSION}
 
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 PKGMESSAGE=	${WRKDIR}/pkg-message
-SUB_FILES=	pkg-message pkg-deinstall
-SUB_LIST=	PORTNAME=${PORTNAME}
+SUB_FILES=	pkg-deinstall pkg-message
 
-NO_STAGE=	yes
 post-extract:
+	@${MKDIR} ${WRKSRC}/cache/
+	@${FIND} ${WRKSRC} -name .gitignore -delete
+	@${FIND} -s ${WRKSRC}/ -type d -empty | ${XARGS} -I % ${TOUCH} %/.keepme
 	@${RM} ${WRKSRC}/doc_files/Zenphoto\ license.txt ${WRKSRC}/doc_files/README.html ${WRKSRC}/zp-core/Zenphoto.package
 
 do-install:
-	${MKDIR} ${WWWDIR}/
-	cd ${WRKSRC}/ && ${COPYTREE_SHARE} \* ${WWWDIR}/
-	${CHOWN} -R ${WWWOWN}:${WWWGRP} ${WWWDIR}/
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+	${MKDIR} ${STAGEDIR}${WWWDIR}/
+	cd ${WRKSRC}/ && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}/
 
 # maintainer section:
 
@@ -40,11 +37,13 @@ MS_DIRRMTRY=	albums cache themes zp-core
 MS_PLIST=	${WRKDIR}/.ms-pkg-plist
 
 genplist: do-clean extract
-	cd ${WRKSRC}/ && \
-		${MKDIR} ${MS_DIRRMTRY} && \
-		${FIND} -s * -type f | ${SED} 's|^|%%WWWDIR%%/|' > ${MS_PLIST} && \
-		${FIND} -s * -type d | ${TAIL} -r | ${SED} 's|^|@dirrm %%WWWDIR%%/|' >> ${MS_PLIST} && \
-		${ECHO} '@dirrmtry %%WWWDIR%%' >> ${MS_PLIST}
+	${ECHO_CMD} '@owner www' > ${MS_PLIST}
+	${ECHO_CMD} '@group www' >> ${MS_PLIST}
+	cd ${WRKSRC}/ && ${FIND} -s * -type f | ${SED} 's|^|%%WWWDIR%%/|' >> ${MS_PLIST}
+	cd ${WRKSRC}/ && ${FIND} -s * -type d | ${TAIL} -r | ${SED} 's|^|@dirrm %%WWWDIR%%/|' >> ${MS_PLIST}
+	${ECHO_CMD} '@dirrmtry %%WWWDIR%%' >> ${MS_PLIST}
+	${ECHO_CMD} '@owner' >> ${MS_PLIST}
+	${ECHO_CMD} '@group' >> ${MS_PLIST}
 .for dir in ${MS_DIRRMTRY}
 	${REINPLACE_CMD} '/^@dirrm %%WWWDIR%%\/${dir:C/\//\\\//g}$$/ s|@dirrm|&try|' ${MS_PLIST}
 .endfor

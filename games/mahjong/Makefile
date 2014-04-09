@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mahjong
-PORTVERSION=	1.13
+PORTVERSION=	1.14
 CATEGORIES=	games net
 MASTER_SITES=	http://mahjong.julianbradfield.org/Source/%SUBDIR%/
 MASTER_SITE_SUBDIR=	. Old
@@ -16,6 +16,7 @@ LICENSE=	GPLv2 # (or later)
 USES=		gmake perl5 pkgconfig
 USE_GNOME=	gtk20
 USE_PERL5=	build
+MAKE_ARGS+=	LDLIBS="-lm"
 MAKE_ENV=	CCLINK="${CC}" CDEBUGFLAGS="${CFLAGS}" PERL="${PERL}" \
 		INCLUDES="-I."
 
@@ -32,6 +33,9 @@ post-patch:
 		 s|^PERL|#PERL|g ; \
 		 s|^INST|#INST|g ; \
 		 s|make |$$(MAKE) |g' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e \
+		's|"gcc"|"${CC}"| ; \
+		 s|^gcc |${CC} |' ${WRKSRC}/makedep
 	@${REINPLACE_CMD} -e \
 		's|SOL_TCP|IPPROTO_TCP|' ${WRKSRC}/sysdep.c
 

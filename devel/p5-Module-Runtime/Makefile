@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Module-Runtime
-PORTVERSION=	0.013
+PORTVERSION=	0.014
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,7 +16,4 @@ LICENSE_COMB=	dual
 USES=		perl5
 USE_PERL5=	modbuild
 
-MAN3=	Module::Runtime.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

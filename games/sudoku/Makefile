@@ -7,7 +7,7 @@ CATEGORIES=	games
 MASTER_SITES=	http://chipstips.com/download/
 EXTRACT_SUFX=	.tbz
 
-MAINTAINER=	sterling@camdensoftware.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console based Sudoku games
 
 USE_BZIP2=	yes
@@ -19,6 +19,9 @@ PLIST_DIRS=	share/sudoku
 MAN6=	sudoku.6
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}

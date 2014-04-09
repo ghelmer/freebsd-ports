@@ -15,11 +15,8 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	MAKEINFO='makeinfo --no-split'
 
-MAN1=		gsl-config.1 gsl-randist.1 gsl-histogram.1
-MAN3=		gsl.3
 INFO=		gsl-ref
 
-NO_STAGE=	yes
 post-extract:
 	@${RM} -f ${WRKSRC}/doc/gsl-ref.info*
 
@@ -33,10 +30,4 @@ check regression-test test: build
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${CORELIMIT} ${MAKE_CMD} \
 	${MAKE_ARGS} check
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "powerpc"
-BROKEN=		Does not compile on powerpc
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

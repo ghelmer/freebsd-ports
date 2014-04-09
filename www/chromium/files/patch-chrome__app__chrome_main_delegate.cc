@@ -1,15 +1,15 @@
---- chrome/app/chrome_main_delegate.cc.orig	2013-11-08 07:41:27.000000000 +0100
-+++ chrome/app/chrome_main_delegate.cc	2013-11-16 11:29:59.000000000 +0100
-@@ -96,7 +96,7 @@
+--- chrome/app/chrome_main_delegate.cc.orig	2014-02-20 21:27:29.000000000 +0100
++++ chrome/app/chrome_main_delegate.cc	2014-02-25 01:39:55.000000000 +0100
+@@ -97,7 +97,7 @@
  #include "ui/base/x/x11_util.h"
  #endif
  
 -#if defined(OS_POSIX) && !defined(OS_MACOSX)
 +#if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_BSD)
- #include "chrome/app/breakpad_linux.h"
+ #include "components/breakpad/app/breakpad_linux.h"
  #endif
  
-@@ -114,7 +114,7 @@
+@@ -115,7 +115,7 @@
      g_chrome_content_plugin_client = LAZY_INSTANCE_INITIALIZER;
  #endif
  
@@ -18,7 +18,7 @@
  base::LazyInstance<chrome::ChromeBreakpadClient>::Leaky
      g_chrome_breakpad_client = LAZY_INSTANCE_INITIALIZER;
  #endif
-@@ -234,7 +234,7 @@
+@@ -235,7 +235,7 @@
        // Mac needs them for the plugin process name.
        process_type == switches::kPluginProcess ||
  #endif
@@ -27,7 +27,7 @@
        // The zygote process opens the resources for the renderers.
        process_type == switches::kZygoteProcess ||
  #endif
-@@ -391,7 +391,7 @@
+@@ -392,7 +392,7 @@
        std::string format_str =
            command_line.GetSwitchValueASCII(switches::kDiagnosticsFormat);
        if (format_str == "machine") {
@@ -36,7 +36,7 @@
        } else if (format_str == "log") {
          format = diagnostics::DiagnosticsWriter::LOG;
        } else {
-@@ -432,7 +432,7 @@
+@@ -433,7 +433,7 @@
        std::string format_str =
            command_line.GetSwitchValueASCII(switches::kDiagnosticsFormat);
        if (format_str == "machine") {
@@ -45,7 +45,7 @@
        } else if (format_str == "human") {
          format = diagnostics::DiagnosticsWriter::HUMAN;
        } else {
-@@ -563,7 +563,7 @@
+@@ -564,7 +564,7 @@
    std::string process_type =
        command_line.GetSwitchValueASCII(switches::kProcessType);
  
@@ -54,21 +54,30 @@
    breakpad::SetBreakpadClient(g_chrome_breakpad_client.Pointer());
  #endif
  
-@@ -700,7 +700,7 @@
+@@ -703,7 +703,7 @@
  #endif
    }
  
 -#if defined(OS_POSIX) && !defined(OS_MACOSX)
-+#if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_BSD)
-   // Needs to be called after we have chrome::DIR_USER_DATA.  BrowserMain
-   // sets this up for the browser process in a different manner. Zygotes
-   // need to call InitCrashReporter() in RunZygote().
-@@ -813,7 +813,7 @@
-     SetUpProfilingShutdownHandler();
++#if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_FREEBSD)
+   // Zygote needs to call InitCrashReporter() in RunZygote().
+   if (process_type != switches::kZygoteProcess) {
+ #if defined(OS_ANDROID)
+@@ -715,7 +715,7 @@
+     breakpad::InitCrashReporter(process_type);
+ #endif  // defined(OS_ANDROID)
    }
+-#endif  // defined(OS_POSIX) && !defined(OS_MACOSX)
++#endif  // defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_FREEBSD)
  
--#if defined(OS_POSIX) && !defined(OS_MACOSX)
-+#if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_BSD)
-   // Needs to be called after we have chrome::DIR_USER_DATA.  BrowserMain sets
-   // this up for the browser process in a different manner.
-   InitCrashReporter();
+   // After all the platform Breakpads have been initialized, store the command
+   // line for crash reporting.
+@@ -800,7 +800,7 @@
+   return process_type == switches::kNaClLoaderProcess ||
+       process_type == switches::kRelauncherProcess;
+ }
+-#elif defined(OS_POSIX) && !defined(OS_ANDROID)
++#elif defined(OS_POSIX) && !defined(OS_ANDROID) && !defined(OS_BSD)
+ content::ZygoteForkDelegate* ChromeMainDelegate::ZygoteStarting() {
+ #if defined(DISABLE_NACL)
+   return NULL;

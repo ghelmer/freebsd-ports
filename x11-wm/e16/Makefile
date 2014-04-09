@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	e16
-PORTVERSION=	1.0.13.003
+PORTVERSION=	1.0.14
 CATEGORIES=	x11-wm enlightenment
-MASTER_SITES=	SF/enlightenment/${PORTNAME}/Snapshots/
+MASTER_SITES=	SF/enlightenment/${PORTNAME}/${PORTVERSION}/
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Enlightenment DR16 window manager
@@ -14,8 +14,10 @@ SOUND_DESC=	Sound support via pulseaudio/libsndfile
 
 USE_XORG=	compositeproto damageproto xextproto x11 xbitmaps xcomposite xdamage \
 		xext xfixes xft xinerama xrandr xrender xxf86vm
-USES=		gettext gmake iconv pkgconfig
+USES=		gettext gmake iconv pkgconfig shebangfix
+SHEBANG_FILES=	scripts/e_gen_menu
 USE_EFL=	imlib2
+CFLAGS+=	-Wno-unused-parameter
 USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-dependency-tracking \

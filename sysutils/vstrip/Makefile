@@ -3,7 +3,7 @@
 
 PORTNAME=	vstrip
 DISTVERSION=	0.8f
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	http://files.digital-digest.com/downloads/files/encode/
 DISTNAME=	vStrip_${DISTVERSION:C/\.//g}
@@ -19,7 +19,7 @@ LDFLAGS+=	-lm
 
 PLIST_FILES=	bin/${PORTNAME}
 
-USE_ZIP=	yes
+USES=		zip
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 post-extract:

@@ -6,7 +6,7 @@ PORTVERSION=	0.13.2
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	gogolok+freebsd@gmail.com
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Monitoring framework written in Ruby
 
 RUN_DEPENDS=	rubygem-hoe>=1.3.0:${PORTSDIR}/devel/rubygem-hoe
@@ -16,5 +16,4 @@ USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 PLIST_FILES=	bin/god
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

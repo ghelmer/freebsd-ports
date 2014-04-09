@@ -3,7 +3,7 @@
 
 PORTNAME=	sdpa
 PORTVERSION=	7.3.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://sdpa.indsys.chuo-u.ac.jp/sdpa/files/
 DISTNAME=	${PORTNAME}.${PORTVERSION}.src-${SRCDATE}
@@ -12,14 +12,13 @@ DIST_SUBDIR=	sdpa
 MAINTAINER=	maho@FreeBSD.org
 COMMENT=	Very efficient SDP (semidefinite programming) solver
 
-USES=		gmake
+USES=		fortran gmake
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 SRCDATE=	20090729
 MANUALFILE=	sdpa7-manual.pdf
-USE_FORTRAN=	yes
 GNU_CONFIGURE=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}.${PORTVERSION}.src
 

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	grub2-bhyve
-DISTVERSION=	0.21
-PORTREVISION=	1
+DISTVERSION=	0.22
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -16,11 +15,11 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex \
 
 ONLY_FOR_ARCHS=	amd64
 SSP_UNSAFE=	yes
-USE_GCC=	4.6+
+USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	grehan-freebsd
-GH_COMMIT=	aa0717f
-GH_TAGNAME=	v0.2
+GH_COMMIT=	10795f1
+GH_TAGNAME=	v0.22
 USES=		bison gettext gmake
 PLIST_FILES=	sbin/grub-bhyve
 MAKE_JOBS_UNSAFE=	yes

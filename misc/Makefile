@@ -47,6 +47,7 @@
     SUBDIR += cmatrix
     SUBDIR += color-theme.el
     SUBDIR += colortail
+    SUBDIR += compat10x
     SUBDIR += compat4x
     SUBDIR += compat5x
     SUBDIR += compat6x
@@ -59,7 +60,6 @@
     SUBDIR += cs
     SUBDIR += cstream
     SUBDIR += cuecat
-    SUBDIR += cwish
     SUBDIR += dahdi
     SUBDIR += dahdi-kmod
     SUBDIR += dahdi-kmod26
@@ -83,6 +83,7 @@
     SUBDIR += elscreen
     SUBDIR += esniper
     SUBDIR += estic
+    SUBDIR += excel-writer
     SUBDIR += explosions
     SUBDIR += fbless
     SUBDIR += felis
@@ -120,19 +121,22 @@
     SUBDIR += freebsd-doc-zh_tw
     SUBDIR += freecode-submit
     SUBDIR += freeguide
-    SUBDIR += freeswitch-pizzademo-devel
-    SUBDIR += freeswitch-scripts-devel
     SUBDIR += ftdi-eeprom
     SUBDIR += fxload
     SUBDIR += gcstar
     SUBDIR += gctpc
     SUBDIR += geekcode
     SUBDIR += getopt
+    SUBDIR += gimp-help-ca
+    SUBDIR += gimp-help-da
+    SUBDIR += gimp-help-el
     SUBDIR += gimp-help-en
+    SUBDIR += gimp-help-en_GB
     SUBDIR += gimp-help-es
     SUBDIR += gimp-help-it
     SUBDIR += gimp-help-nl
     SUBDIR += gimp-help-nn
+    SUBDIR += gimp-help-sl
     SUBDIR += gimp-help-sv
     SUBDIR += gkrellm-gamma
     SUBDIR += gkrellm-helium
@@ -176,6 +180,7 @@
     SUBDIR += hotkeys
     SUBDIR += hulgalugha
     SUBDIR += imerge
+    SUBDIR += ini_file_manager
     SUBDIR += inplace
     SUBDIR += ipa_conv
     SUBDIR += ipbt
@@ -187,7 +192,6 @@
     SUBDIR += kbdscan
     SUBDIR += kcd
     SUBDIR += kde-thumbnailer-chm
-    SUBDIR += kde-xdg-env
     SUBDIR += kde4-l10n
     SUBDIR += kde4-l10n-bg
     SUBDIR += kde4-l10n-bs
@@ -230,7 +234,6 @@
     SUBDIR += kde4-l10n-tr
     SUBDIR += kde4-l10n-ug
     SUBDIR += kde4-l10n-wa
-    SUBDIR += kde4-shared-mime-info
     SUBDIR += kde4-xdg-env
     SUBDIR += kdeedu4
     SUBDIR += kdehier4
@@ -246,8 +249,8 @@
     SUBDIR += lesspipe
     SUBDIR += libeatmydata
     SUBDIR += libhome
+    SUBDIR += libisocodes
     SUBDIR += libkdeedu
-    SUBDIR += libmcal
     SUBDIR += libmetalink
     SUBDIR += libpri
     SUBDIR += libsupertone
@@ -256,7 +259,7 @@
     SUBDIR += lingoteach
     SUBDIR += linm
     SUBDIR += localedata
-    SUBDIR += logsurfer+
+    SUBDIR += logsurfer
     SUBDIR += loop
     SUBDIR += lr
     SUBDIR += lv
@@ -343,6 +346,7 @@
     SUBDIR += p5-Locale-US
     SUBDIR += p5-Net-vCard
     SUBDIR += p5-Norge
+    SUBDIR += p5-OSSP-uuid
     SUBDIR += p5-Software-License
     SUBDIR += p5-Test-Dir
     SUBDIR += p5-Text-FIGlet
@@ -360,7 +364,6 @@
     SUBDIR += pear-Text_Figlet
     SUBDIR += pecl-timezonedb
     SUBDIR += php5-calendar
-    SUBDIR += php52-calendar
     SUBDIR += php53-calendar
     SUBDIR += php55-calendar
     SUBDIR += phraze
@@ -368,7 +371,6 @@
     SUBDIR += pipe
     SUBDIR += podsleuth
     SUBDIR += posixtestsuite
-    SUBDIR += projectionlib
     SUBDIR += proxyper
     SUBDIR += pspresent
     SUBDIR += py-YABT
@@ -402,6 +404,7 @@
     SUBDIR += rubygem-mime-types
     SUBDIR += rubygem-rabbit
     SUBDIR += rubygem-vpim
+    SUBDIR += rump
     SUBDIR += saaghar
     SUBDIR += salias
     SUBDIR += seq2
@@ -417,11 +420,9 @@
     SUBDIR += spamcalc
     SUBDIR += sshbuddy
     SUBDIR += sssnips
-    SUBDIR += stan
     SUBDIR += susv2
     SUBDIR += susv3
     SUBDIR += sword
-    SUBDIR += sword17
     SUBDIR += table.el
     SUBDIR += talkfilters
     SUBDIR += tcb
@@ -469,7 +470,6 @@
     SUBDIR += wmweather+
     SUBDIR += wmwork
     SUBDIR += wotsap
-    SUBDIR += xbiso
     SUBDIR += xd
     SUBDIR += xdelta
     SUBDIR += xdelta3

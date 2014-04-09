@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	litecoin
-PORTVERSION=	0.8.6.1
+PORTVERSION=	0.8.6.2
 CATEGORIES=	net-p2p finance
 MASTER_SITES=	LOCAL/swills \
 		GH
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	litecoin-project
-GH_COMMIT=	dab8fe6
+GH_COMMIT=	fa2cfea
 GH_TAGNAME=	v${PORTVERSION}
 
 USE_OPENSSL=	yes
@@ -23,10 +23,9 @@ WANT_BDB_VER=	48
 
 USES=		gmake
 
-OPTIONS_DEFINE=	GUI UPNP QRCODES DBUS
-OPTIONS_DEFAULT=	GUI QRCODES
+OPTIONS_DEFINE=	X11 UPNP QRCODES DBUS
+OPTIONS_DEFAULT=	X11 QRCODES
 
-GUI_DESC=	Build as a QT4 GUI
 UPNP_DESC=	Build with UPNP support
 QRCODES_DESC=	Build with QR code display
 DBUS_DESC=	Build with DBUS support
@@ -34,7 +33,6 @@ DBUS_DESC=	Build with DBUS support
 CXXFLAGS+=	-I${LOCALBASE}/include -I${BDB_INCLUDE_DIR}
 CXXFLAGS+=	-L${LOCALBASE}/lib -L${BDB_LIB_DIR}
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MUPNP}
@@ -44,8 +42,9 @@ QMAKE_USE_UPNP=	1
 QMAKE_USE_UPNP=	-
 .endif
 
-.if ${PORT_OPTIONS:MGUI} && !defined(WITHOUT_X11)
-USE_QT4=	qmake_build linguist uic moc rcc
+.if ${PORT_OPTIONS:MX11}
+USE_QT4=	network gui qmake_build linguist_build uic_build moc_build rcc_build
+
 BINARY=		litecoin-qt
 .else
 BINARY=		litecoind
@@ -56,7 +55,7 @@ MAKE_ARGS+=	-C ${WRKSRC}/src USE_UPNP=${QMAKE_USE_UPNP}
 
 PLIST_FILES=	bin/${BINARY}
 
-.if ${PORT_OPTIONS:MGUI} && !defined(WITHOUT_X11) && ${PORT_OPTIONS:MQRCODES}
+.if ${PORT_OPTIONS:MX11} && ${PORT_OPTIONS:MQRCODES}
 LIB_DEPENDS+=	libqrencode.so:${PORTSDIR}/graphics/libqrencode
 QMAKE_USE_QRCODE=1
 .else
@@ -72,12 +71,12 @@ QMAKE_USE_DBUS=	0
 
 .include <bsd.port.pre.mk>
 
-.if ${OSVERSION} >= 1000000
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-endian
+.if ${PORT_OPTIONS:MX11}
+PLIST_FILES+=	share/applications/litecoin-qt.desktop share/pixmaps/litecoin64.png
 .endif
 
 do-configure:
-.if ${PORT_OPTIONS:MGUI} && !defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MX11}
 	cd ${BUILD_WRKSRC} && \
 		${QMAKE} ${QMAKE_ARGS} \
 		QMAKE_LIBDIR+=${BDB_LIB_DIR} \
@@ -89,18 +88,23 @@ do-configure:
 .endif
 
 do-install:
-	@${MKDIR} ${PREFIX}/bin
-.if ${PORT_OPTIONS:MGUI} && !defined(WITHOUT_X11)
-	${INSTALL_PROGRAM} ${WRKSRC}/${BINARY} ${PREFIX}/bin/
+.if ${PORT_OPTIONS:MX11}
+	${INSTALL_PROGRAM} ${WRKSRC}/${BINARY} ${STAGEDIR}${PREFIX}/bin/
+	${REINPLACE_CMD} -e 's,=/usr,=${PREFIX},' \
+		-e 's,bitcoin,litecoin,g' \
+		-e 's,Bitcoin,Litecoin,g' \
+		-e 's,128,64,g' ${WRKSRC}/contrib/debian/bitcoin-qt.desktop
+	${INSTALL} ${WRKSRC}/contrib/debian/bitcoin-qt.desktop ${STAGEDIR}${PREFIX}/share/applications/litecoin-qt.desktop
+	${INSTALL} ${WRKSRC}/share/pixmaps/bitcoin64.png ${STAGEDIR}${PREFIX}/share/pixmaps/litecoin64.png
 .else
-	${INSTALL_PROGRAM} ${WRKSRC}/src/${BINARY} ${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${WRKSRC}/src/${BINARY} ${STAGEDIR}${PREFIX}/bin/
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/src/makefile.unix
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/src/makefile.unix
 
 regression-test:
-.if !${PORT_OPTIONS:MGUI} || defined(WITHOUT_X11)
+.if !${PORT_OPTIONS:MX11}
 	@${GMAKE} -C ${WRKSRC}/src -f makefile.unix USE_UPNP=${QMAKE_USE_UPNP} test_litecoin
 	(cd ${WRKSRC}/src ; ./test_litecoin)
 .endif

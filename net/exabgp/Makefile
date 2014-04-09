@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	exabgp
-PORTVERSION=	3.2.18
+PORTVERSION=	3.3.1
 CATEGORIES=	net
 MASTER_SITES=	GH GHC \
 		http://mirrors.rit.edu/zi/
@@ -16,7 +16,7 @@ LICENSE=	BSD
 USE_GITHUB=	yes
 GH_ACCOUNT=	Exa-Networks
 GH_TAGNAME=	${PORTVERSION}
-GH_COMMIT=	51d6b56
+GH_COMMIT=	2224194
 USE_PYTHON=	yes
 SUB_FILES=	pkg-message exabgp.sh
 SUB_LIST=	PYTHON_LIBDIR=${PYTHON_LIBDIR} PYTHON_CMD=${PYTHON_CMD} \
@@ -26,9 +26,8 @@ USE_RC_SUBR=	${PORTNAME}
 USERS=		_bgpd
 GROUPS=		_bgpd
 
-MAN1=		${PORTNAME}.1
+OPTIONS_DEFINE=	EXAMPLES
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 post-extract:
@@ -38,17 +37,15 @@ do-build:
 	${PYTHON_CMD} -m compileall ${WRKSRC}/lib
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${PREFIX}/sbin/${PORTNAME}
-	${INSTALL_MAN} ${WRKSRC}/debian/${PORTNAME}.1 ${PREFIX}/man/man1
-	@${MKDIR} ${PYTHON_SITELIBDIR}/${PORTNAME} ${ETCDIR}
-	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${PYTHON_SITELIBDIR})
+	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/sbin/${PORTNAME}
+	${INSTALL_MAN} ${WRKSRC}/debian/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1
+	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME} ${STAGEDIR}${ETCDIR}
+	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHON_SITELIBDIR})
 .if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
-	(cd ${WRKSRC}/etc && ${COPYTREE_SHARE} . ${EXAMPLESDIR})
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC}/etc && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 .endif
-	@if [ ! -f ${ETCDIR}/exabgp.env ]; then \
-	    	${CP} ${FILESDIR}/exabgp.env ${ETCDIR} ; \
-	fi
+	${CP} ${FILESDIR}/exabgp.env ${STAGEDIR}${ETCDIR}/exabgp.env.sample
 
 post-install:
 	@${CAT} ${PKGMESSAGE}

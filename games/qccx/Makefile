@@ -9,12 +9,12 @@ MASTER_SITES=	http://www.quakewiki.net/archives/qccx/ \
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
 
 MAINTAINER=	danfe@FreeBSD.org
-COMMENT=	Very fast optimizing QuakeC compiler
+COMMENT=	Fast optimizing QuakeC compiler
 
 LICENSE=	GPLv2
 
-USE_ZIP=	yes
-USE_DOS2UNIX=	pr_comp.cpp qcc.cpp ${PORTDOCS}
+USES=		dos2unix zip
+DOS2UNIX_FILES=	pr_comp.cpp qcc.cpp ${PORTDOCS}
 MAKEFILE=	${FILESDIR}/Makefile
 
 NO_WRKSUBDIR=	yes
@@ -22,17 +22,15 @@ PORTDOCS=	manual.txt readme.txt
 
 OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${PREFIX}/bin
-	@${MKDIR} ${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/*.qc ${WRKSRC}/progs.src ${DATADIR}
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${DOCSDIR}
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/*.qc ${WRKSRC}/progs.src \
+		${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 .include "${.CURDIR}/../quake-source/Makefile.include"
 .include <bsd.port.mk>

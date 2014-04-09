@@ -3,6 +3,7 @@
 
 PORTNAME=	vsqlite
 PORTVERSION=	0.3.12
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	kwm@FreeBSD.org
@@ -18,7 +19,8 @@ GH_PROJECT=	vsqlite--
 GH_TAGNAME=	3fa8d32
 GH_COMMIT=	3fa8d32
 
-USE_AUTOTOOLS=	libtool autoconf automake
+USE_AUTOTOOLS=	libtoolize autoconf automake
+USES=		compiler:c++0x libtool
 USE_SQLITE=	3
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

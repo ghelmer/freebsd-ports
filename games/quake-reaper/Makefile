@@ -11,8 +11,7 @@ DISTNAME=	reaprb81
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quake 1 bots
 
-USES=		dos2unix
-USE_ZIP=	yes
+USES=		dos2unix zip
 DOS2UNIX_GLOB=	${PORTDOCS}
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
@@ -21,8 +20,6 @@ DATADIR=	${Q1DIR}/${PORTNAME}
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
-
-.include "${.CURDIR}/../quake-data/Makefile.include"
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
@@ -34,4 +31,5 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/${f:L}
 .endfor
 
+.include "${.CURDIR}/../quake-data/Makefile.include"
 .include <bsd.port.mk>

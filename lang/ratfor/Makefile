@@ -3,7 +3,7 @@
 
 PORTNAME=	ratfor
 PORTVERSION=	1985.06
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	lang
 MASTER_SITES=	ftp://sepftp.stanford.edu/pub/sep-distr/  \
 		${MASTER_SITE_LOCAL}  \
@@ -20,8 +20,7 @@ EXTRACT_BEFORE_ARGS=
 EXTRACT_AFTER_ARGS=	| ${SH}
 ALL_TARGET=	all tests
 MAN1=		ratfor.1
-
-USE_FORTRAN=	yes
+USES=		fortran
 
 NO_STAGE=	yes
 post-patch:

@@ -3,6 +3,7 @@
 
 PORTNAME=	django-mezzanine
 PORTVERSION=	1.4.7
+PORTREVISION=	2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -23,11 +24,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django>=1.4:${PORTSDIR}/www/py-django \
 
 USES=			gettext
 USE_PYTHON=		2
-USE_PYDISTUTILS=	easy_install
-PYDISTUTILS_PKGNAME=	Mezzanine
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
 regression-test: build
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

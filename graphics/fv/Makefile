@@ -15,8 +15,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
 
-USES=		pkgconfig
-USE_ZIP=	yes
+USES=		pkgconfig zip
 USE_GL=		glut
 USE_GMAKE=	yes
 ALL_TARGET=	${PORTNAME}
@@ -31,6 +30,9 @@ PORTDOCS=	AUTHORS ChangeLog README
 PLIST_FILES=	bin/${PORTNAME}
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 .if !defined(WITH_DEBUG)

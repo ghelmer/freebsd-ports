@@ -16,14 +16,11 @@ COMMENT=	Examples for the Eclipse IDE
 
 RUN_DEPENDS=    ${LOCALBASE}/bin/eclipse:${PORTSDIR}/java/eclipse
 
+USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-USE_ZIP=	yes
 
-NO_STAGE=	yes
 do-install:
-		@${MKDIR} ${PREFIX}/lib/eclipse
-		@${CP} -r ${WRKSRC}/eclipse/plugins ${PREFIX}/lib/eclipse
-		@${CP} -r ${WRKSRC}/eclipse/features ${PREFIX}/lib/eclipse
+	cd ${WRKSRC}/eclipse && ${COPYTREE_SHARE} "features plugins" ${STAGEDIR}${PREFIX}/lib/eclipse
 
 .include <bsd.port.mk>

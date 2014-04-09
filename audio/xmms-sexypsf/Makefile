@@ -12,10 +12,13 @@ DISTNAME=	sexypsf-${PORTVERSION}
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	XMMS plugin for playing .psf files
 
+DEPRECATED=	Abandonware, please consider using multimedia/audacious instead
+EXPIRATION_DATE=	2014-04-27
+
 BUILD_DEPENDS=	xmms:${PORTSDIR}/multimedia/xmms
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_GNOME=	gtk12
 USE_LDCONFIG=	yes
 
@@ -31,8 +34,6 @@ PLIST_FILES=	lib/xmms/Input/libsexypsf.so
 
 OPTIONS_DEFINE=DOCS
 
-.include <bsd.port.options.mk>
-
 do-build:
 .for f in ${SOURCES}
 	${CC} ${CFLAGS} ${DEFINES} `gtk-config --cflags` -c -o ${WRKSRC}/${f}.o ${WRKSRC}/${f}.c
@@ -41,15 +42,12 @@ do-build:
 		-o ${WRKSRC}/libsexypsf.so -shared -lz
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/lib/xmms/Input
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/xmms/Input
 	${INSTALL_PROGRAM} ${WRKSRC}/libsexypsf.so \
 		${STAGEDIR}${PREFIX}/lib/xmms/Input/libsexypsf.so
-
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/Docs/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

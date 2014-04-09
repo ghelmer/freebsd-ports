@@ -23,9 +23,6 @@
     SUBDIR += gimp-help
     SUBDIR += hunspell
     SUBDIR += hyphen
-    SUBDIR += ispell
-    SUBDIR += ispell-alt
-    SUBDIR += ispell-neu
     SUBDIR += jdictionary-eng-ger
     SUBDIR += jdictionary-ger-hun
     SUBDIR += kde4-l10n
@@ -43,7 +40,6 @@
     SUBDIR += trytond28_account_de_skr03
     SUBDIR += trytond_account_de_skr03
     SUBDIR += unix-connect
-    SUBDIR += vtiger
     SUBDIR += webalizer2
     SUBDIR += wordpress
 

@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	foo2zjs
-PORTVERSION=	20131225
+PORTVERSION=	20140330
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE} \
 		${MASTER_SITE_LOCAL:S,$,bsam/${PORTNAME}/,}  \
 		ftp://ftp.wart.ru/pub/FreeBSD/ports/distfiles/
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Driver for printers that use the ZjStream wire protocol
 
-LIB_DEPENDS=	libcups.so:${PORTSDIR}/print/cups-base
+LIB_DEPENDS=	libcups.so:${PORTSDIR}/print/cups-client
 RUN_DEPENDS=	${LOCALBASE}/share/foomatic/db/oldprinterids:${PORTSDIR}/print/foomatic-db \
 		foomatic-rip:${PORTSDIR}/print/foomatic-filters
 
@@ -32,7 +33,7 @@ post-install:
 		${INSTALL_SCRIPT} ${EXTRAFILES} ${STAGEDIR}${PREFIX}/bin
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/foo2zjs-icc2ps
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for FILE in ChangeLog README manual.pdf
+.for FILE in ChangeLog INSTALL README manual.pdf
 	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}
 .endfor
 

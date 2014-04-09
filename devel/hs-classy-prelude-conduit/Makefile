@@ -2,7 +2,7 @@
 
 PORTNAME=	classy-prelude-conduit
 PORTVERSION=	0.5.3
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

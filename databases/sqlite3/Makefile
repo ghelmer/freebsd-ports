@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	sqlite3
-PORTVERSION=	3.8.2
+PORTVERSION=	3.8.4.1
 CATEGORIES=	databases
-MASTER_SITES=	http://www.sqlite.org/2013/ http://www2.sqlite.org/2013/ http://www3.sqlite.org/2013/
-DISTNAME=	sqlite-autoconf-3080200
+MASTER_SITES=	http://www.sqlite.org/2014/ http://www2.sqlite.org/2014/ http://www3.sqlite.org/2014/
+DISTNAME=	sqlite-autoconf-3080401
 
 MAINTAINER=	pavelivolkov@gmail.com
 COMMENT=	SQL database engine in a C library
@@ -65,7 +65,9 @@ RTREEG_DESC=		Index type for range queries
 RTREE_DESC=		Enable R*Tree module
 RTREE_INT_DESC=		Store 32-bit sig int (no float) coordinates
 
-OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS EXTENSION TS1
+OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS EXTENSION TS1 RTREE
+# SECURE_DELETE, UNLOCK_NOTIFY used by www/firefox, www/libxul
+# RTREE used by graphics/mapnik, databases/spatialite
 
 PLIST_FILES=	bin/sqlite3 include/sqlite3.h include/sqlite3ext.h \
 		lib/libsqlite3.a lib/libsqlite3.la lib/libsqlite3.so \
@@ -113,7 +115,7 @@ THREADS_CONFIGURE_ENABLE=	threadsafe
 THREADS_LDFLAGS=	${PTHREAD_LIBS}
 
 ICU_BUILD_DEPENDS=	${LOCALBASE}/bin/icu-config:${PORTSDIR}/devel/icu
-ICU_LIB_DEPENDS=	icudata:${PORTSDIR}/devel/icu
+ICU_LIB_DEPENDS=	libicudata.so:${PORTSDIR}/devel/icu
 ICU_CPPFLAGS=	`${LOCALBASE}/bin/icu-config --cppflags` -DSQLITE_ENABLE_ICU=1
 ICU_LDFLAGS=	`${LOCALBASE}/bin/icu-config --ldflags`
 
@@ -130,5 +132,8 @@ post-build:
 .if ${ARCH}=="i386"
 	@${ECHO_MSG} "===> WARNING: on ${ARCH} don't pass atof1-* tests"
 .endif
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsqlite3.so.8
 
 .include <bsd.port.mk>

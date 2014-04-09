@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	drush
-PORTVERSION=	6.1.0
+PORTVERSION=	6.2.0
 CATEGORIES=	www
 
 MAINTAINER=	dgeo@centrale-marseille.fr
@@ -16,12 +16,12 @@ NO_BUILD=	yes
 
 GH_ACCOUNT=	${PORTNAME}-ops
 GH_PROJECT=	${PORTNAME}
-GH_COMMIT=	d948558
+GH_TAGNAME=	${PORTVERSION}
+GH_COMMIT=	b1a8edb
 USE_GITHUB=	yes
 
 # set php requirements same as drupal itself
-USE_PHP=	gd pcre session xml mbstring ctype json hash simplexml dom pdo filter
-IGNORE_WITH_PHP=4
+USE_PHP=	gd pcre session mbstring ctype json hash simplexml dom pdo filter
 WANT_PHP_CLI=	yes
 
 PORTDOCS=	*

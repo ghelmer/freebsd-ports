@@ -8,7 +8,7 @@ CATEGORIES=	news python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	lioux@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A unified API for parsing NZB files
 
 LICENSE=	BSD
@@ -20,12 +20,6 @@ PYDISTUTILS_NOEGGINFO=	yes
 OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
 OPTIONS_DEFINE=	LXML
 LXML_DESC=	Add support for py-lxml
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLXML}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}lxml>=2.2.1:${PORTSDIR}/devel/py-lxml
-.endif
+LXML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=2.2.1:${PORTSDIR}/devel/py-lxml
 
 .include <bsd.port.mk>

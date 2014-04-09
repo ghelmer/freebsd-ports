@@ -15,7 +15,6 @@
     SUBDIR += cos
     SUBDIR += cryptix-jce
     SUBDIR += dbvis
-    SUBDIR += drexelsnmp
     SUBDIR += eclipse
     SUBDIR += eclipse-EPIC
     SUBDIR += eclipse-RDT
@@ -115,6 +114,8 @@
     SUBDIR += jump
     SUBDIR += junit
     SUBDIR += langspec
+    SUBDIR += linux-oracle-jdk18
+    SUBDIR += linux-oracle-jre18
     SUBDIR += linux-sun-jdk16
     SUBDIR += linux-sun-jdk17
     SUBDIR += linux-sun-jre16
@@ -129,6 +130,7 @@
     SUBDIR += openjdk6
     SUBDIR += openjdk6-jre
     SUBDIR += openjdk7
+    SUBDIR += openjdk8
     SUBDIR += phpeclipse
     SUBDIR += poseidon
     SUBDIR += proguard

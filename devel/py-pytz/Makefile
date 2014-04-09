@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pytz
-PORTVERSION=	2013.9
+PORTVERSION=	2014.1.1
 PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
@@ -13,10 +13,10 @@ COMMENT=	World Timezone Definitions for Python
 
 LICENSE=	MIT
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
-PYTHON_PY3K_PLIST_HACK=	yes
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|=True|=False|' ${WRKSRC}/setup.py

@@ -3,7 +3,7 @@
 
 PORTNAME=	sdts++
 PORTVERSION=	1.5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://thor-f5.er.usgs.gov/sdts/sdtsxx/ \
 		http://lychnobite.org/sdts/
@@ -24,5 +24,4 @@ USE_LDCONFIG=	yes
 
 INFO=		sdts++
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

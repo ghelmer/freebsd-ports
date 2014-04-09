@@ -4,7 +4,7 @@
 PORTNAME=	distutils-extra
 PORTVERSION=	2.38
 CATEGORIES=	devel python
-MASTER_SITES=	https://launchpadlibrarian.net/145592954/ \
+MASTER_SITES=	https://launchpad.net/${DISTNAME}/trunk/${PORTVERSION}/+download/ \
 		LOCAL/sunpoet
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-${PORTNAME}-${PORTVERSION}
@@ -14,9 +14,8 @@ COMMENT=	Add support for i18n, documentation, and icons to distutils
 
 LICENSE=	GPLv2
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=easy_install
-PYDISTUTILS_PKGNAME=	python_distutils_extra
 PYDISTUTILS_AUTOPLIST=	yes
+USE_PYDISTUTILS=yes
+USE_PYTHON=	yes
 
 .include <bsd.port.mk>

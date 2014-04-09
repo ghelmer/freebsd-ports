@@ -9,7 +9,7 @@ MASTER_SITES=	http://www.mr511.de/software/ \
 		${MASTER_SITE_SUNSITE}
 MASTER_SITE_SUBDIR=	libs
 
-MAINTAINER=	rodrigo@bebik.net
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	A public ELF file access library similar to libelf(3) in Solaris
 
 OPTIONS_DEFINE=	EXTENDED NLS SANITY
@@ -18,14 +18,12 @@ OPTIONS_DEFAULT=	EXTENDED SANITY
 EXTENDED_DESC=	ELF format extensions
 SANITY_DESC=	Avoid loading invalid ELF files
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-shared --disable-compat
 USE_LDCONFIG=	yes
-
-NOMAN=		defined
+USES=		desthack
 
 .if ${PORT_OPTIONS:MNLS}
 CPPFLAGS+=	-I${LOCALBASE}/include

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	horde
-PORTVERSION=	5.1.5
+PORTVERSION=	5.1.6
 CATEGORIES=	www pear
 PKGNAMEPREFIX=
 
@@ -56,7 +56,6 @@ USE_HORDE_RUN=	Horde_Role \
 # Optional in package but we want them in
 USE_HORDE_RUN+=	Horde_Feed
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if defined(WITH_FACEBOOK)

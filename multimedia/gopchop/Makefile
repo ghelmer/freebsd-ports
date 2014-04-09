@@ -15,6 +15,8 @@ COMMENT=	MPEG2 GOP-accurate editor
 
 LIB_DEPENDS=	mpeg2.0:${PORTSDIR}/multimedia/libmpeg2
 
+DEPRECATED=	Unmaintained since 2002
+EXPIRATION_DATE=	2014-04-17
 USE_GNOME=	gtk12 intlhack
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-sdl
@@ -24,6 +26,9 @@ CPPFLAGS+=	-I${LOCALBASE}/include -DHAVE_DECL_GETOPT
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

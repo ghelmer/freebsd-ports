@@ -10,16 +10,16 @@ MASTER_SITES=	http://www.worlddesign.com/Content/rd/mta/spampd/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Spamassassin SMTP Proxy
 
-RUN_DEPENDS=	spamc:${PORTSDIR}/mail/p5-Mail-SpamAssassin \
+RUN_DEPENDS=	spamc:${PORTSDIR}/mail/spamassassin \
 		p5-Net-Server>=0:${PORTSDIR}/net/p5-Net-Server
 
 NO_BUILD=	yes
 PLIST_FILES=	sbin/spampd
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	spampd
 USE_RC_SUBR=	spampd
 
-NO_STAGE=	yes
 do-install:
-	@${INSTALL_SCRIPT} ${WRKSRC}/spampd ${PREFIX}/sbin
+	@${INSTALL_SCRIPT} ${WRKSRC}/spampd ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>

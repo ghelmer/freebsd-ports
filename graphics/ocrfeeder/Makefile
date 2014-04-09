@@ -3,7 +3,7 @@
 
 PORTNAME=	ocrfeeder
 PORTVERSION=	0.7.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	${MASTER_SITE_GNOME}
 MASTER_SITE_SUBDIR=sources/ocrfeeder/${PORTVERSION:R}
@@ -31,6 +31,9 @@ USES=		gettext gmake pkgconfig
 USE_GHOSTSCRIPT=yes
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

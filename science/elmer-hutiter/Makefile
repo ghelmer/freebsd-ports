@@ -3,7 +3,7 @@
 
 PORTNAME=	hutiter
 PORTVERSION=	5.4.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	science
 MASTER_SITES=	http://www.nic.funet.fi/index/files/index/elmer/src/old/ \
 		http://www.bezopasnik.org/unix/ports/distfiles/
@@ -14,7 +14,7 @@ COMMENT=	HUTIter library for use in the ELMER FEM package
 
 LIB_DEPENDS=	arpack.1:${PORTSDIR}/math/arpack
 
-USE_FORTRAN=	yes
+USES=		fortran
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>

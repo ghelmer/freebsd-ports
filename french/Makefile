@@ -16,12 +16,10 @@
     SUBDIR += facturier
     SUBDIR += fortune-mod-zarathoustra
     SUBDIR += geonext
-    SUBDIR += gfaim
     SUBDIR += gimp-help
     SUBDIR += homard
     SUBDIR += hunspell
     SUBDIR += hyphen
-    SUBDIR += ispell
     SUBDIR += jdictionary-fre-hun
     SUBDIR += kde4-l10n
     SUBDIR += libreoffice

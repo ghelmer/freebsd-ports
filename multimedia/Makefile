@@ -21,12 +21,10 @@
     SUBDIR += avinfo
     SUBDIR += bangarang
     SUBDIR += banshee
-    SUBDIR += beep-media-player
     SUBDIR += bino
     SUBDIR += bombono
     SUBDIR += bsdbktr_tvtune
     SUBDIR += camserv
-    SUBDIR += castpodder
     SUBDIR += cclive
     SUBDIR += cheese
     SUBDIR += clipgrab
@@ -62,6 +60,7 @@
     SUBDIR += flvtool++
     SUBDIR += fpc-dts
     SUBDIR += fpc-matroska
+    SUBDIR += fpc-libvlc
     SUBDIR += freetuxtv
     SUBDIR += freevo
     SUBDIR += fxtv
@@ -138,9 +137,7 @@
     SUBDIR += gstreamermm
     SUBDIR += gtk-recordmydesktop
     SUBDIR += gtk-youtube-viewer
-    SUBDIR += gxanim
     SUBDIR += gxine
-    SUBDIR += gxmms
     SUBDIR += handbrake
     SUBDIR += hs-gstreamer
     SUBDIR += imagination
@@ -153,7 +150,6 @@
     SUBDIR += kdemultimedia4-ffmpegthumbs
     SUBDIR += kdemultimedia4-mplayerthumbs
     SUBDIR += kdenlive
-    SUBDIR += kino
     SUBDIR += kissdx
     SUBDIR += kmplayer-kde4
     SUBDIR += kplayer-kde4
@@ -176,6 +172,7 @@
     SUBDIR += libmovtar
     SUBDIR += libmpeg2
     SUBDIR += libmpeg3
+    SUBDIR += libmtp
     SUBDIR += libquicktime
     SUBDIR += libquicktime-lame
     SUBDIR += libquvi
@@ -194,12 +191,10 @@
     SUBDIR += libxspf
     SUBDIR += linux-f10-libtheora
     SUBDIR += linux-f10-libv4l
-    SUBDIR += linux-huludesktop
     SUBDIR += linux-realplayer
     SUBDIR += linux-tsmuxer
     SUBDIR += linux-xmovie
     SUBDIR += linux_dvbwrapper-kmod
-    SUBDIR += linux_v4l2wrapper-kmod
     SUBDIR += lives
     SUBDIR += livestreamer
     SUBDIR += lsdvd
@@ -247,7 +242,6 @@
     SUBDIR += ogmrip
     SUBDIR += ogmtools
     SUBDIR += opencinematools
-    SUBDIR += openmovieeditor
     SUBDIR += openquicktime
     SUBDIR += openshot
     SUBDIR += oqtencoder
@@ -271,6 +265,7 @@
     SUBDIR += pitivi
     SUBDIR += playd
     SUBDIR += plexmediaserver
+    SUBDIR += plexmediaserver-plexpass
     SUBDIR += podcastdl
     SUBDIR += podcatcher
     SUBDIR += poe
@@ -282,8 +277,9 @@
     SUBDIR += pwcbsd
     SUBDIR += pwcview
     SUBDIR += py-enzyme
-    SUBDIR += py-guessit
+    SUBDIR += py-ffmpeg
     SUBDIR += py-gstreamer
+    SUBDIR += py-guessit
     SUBDIR += py-kaa-base
     SUBDIR += py-kaa-imlib2
     SUBDIR += py-kaa-metadata
@@ -291,7 +287,6 @@
     SUBDIR += py-mlt
     SUBDIR += py-openlp
     SUBDIR += py-periscope
-    SUBDIR += py-pybmp
     SUBDIR += py-qt4-multimedia
     SUBDIR += py-qt4-phonon
     SUBDIR += py-subliminal
@@ -302,6 +297,7 @@
     SUBDIR += qmmp-plugin-pack
     SUBDIR += qt-faststart
     SUBDIR += qt4-multimedia
+    SUBDIR += qt5-multimedia
     SUBDIR += quark
     SUBDIR += quodlibet
     SUBDIR += quvi
@@ -316,7 +312,6 @@
     SUBDIR += sabbu
     SUBDIR += schroedinger
     SUBDIR += shell-fm
-    SUBDIR += smile
     SUBDIR += smpeg
     SUBDIR += smpeg2
     SUBDIR += smplayer
@@ -368,7 +363,6 @@
     SUBDIR += vdr-plugin-remote
     SUBDIR += vdr-plugin-skinenigmang
     SUBDIR += vdr-plugin-sleeptimer
-    SUBDIR += vdr-plugin-softdevice
     SUBDIR += vdr-plugin-softhddevice
     SUBDIR += vdr-plugin-streamdev
     SUBDIR += vdr-plugin-ttxtsubs
@@ -392,22 +386,18 @@
     SUBDIR += xawtv
     SUBDIR += xbmc
     SUBDIR += xbmc-addon-pvr
-    SUBDIR += xbmc-addon-xvdr
-    SUBDIR += xbmc-pvr
     SUBDIR += xfce4-parole
     SUBDIR += xfce4-xmms-plugin
     SUBDIR += xine
     SUBDIR += xmms
     SUBDIR += xmms-skins
     SUBDIR += xmms-skins-huge
-    SUBDIR += xmms-status-plugin
     SUBDIR += xmms-weasel
     SUBDIR += xporthdmv
     SUBDIR += xtheater
     SUBDIR += xvid
     SUBDIR += y4mscaler
     SUBDIR += yamdi
-    SUBDIR += youtube-viewer
     SUBDIR += zoneminder
 
 .include <bsd.port.subdir.mk>

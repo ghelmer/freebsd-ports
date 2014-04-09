@@ -3,7 +3,7 @@
 
 PORTNAME=	hpl
 PORTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	benchmarks
 MASTER_SITES=	${MASTER_SITE_NETLIB}
 MASTER_SITE_SUBDIR=	benchmark/hpl
@@ -14,7 +14,7 @@ COMMENT=	High Performance Computing Linpack Benchmark
 LIB_DEPENDS=	libblas.so:${PORTSDIR}/math/blas \
 		libmpich.so:${PORTSDIR}/net/mpich2
 
-USE_FORTRAN=	yes
+USES=		fortran
 USE_LDCONFIG=	yes
 HPL_ARCH?=	FreeBSD_PIV_CBLAS
 MAKE_ARGS=	arch=${HPL_ARCH}

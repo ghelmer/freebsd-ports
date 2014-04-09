@@ -21,6 +21,7 @@
     SUBDIR += ctorrent
     SUBDIR += dclib
     SUBDIR += deluge
+    SUBDIR += digitalcoin
     SUBDIR += dogecoin
     SUBDIR += ed2k
     SUBDIR += edonkey-tool-hash
@@ -38,7 +39,6 @@
     SUBDIR += gtk-gnutella
     SUBDIR += gtkhx
     SUBDIR += gtorrentviewer
-    SUBDIR += i2p
     SUBDIR += jigdo
     SUBDIR += ktorrent
     SUBDIR += libbt
@@ -63,6 +63,7 @@
     SUBDIR += mldonkey-perlreactor
     SUBDIR += mldonkey-urlslave
     SUBDIR += museekplus
+    SUBDIR += namecoin
     SUBDIR += napshare
     SUBDIR += ncdc
     SUBDIR += opendchub
@@ -113,5 +114,6 @@
     SUBDIR += vhcp
     SUBDIR += vuze
     SUBDIR += xnap
+    SUBDIR += zetacoin
 
 .include <bsd.port.subdir.mk>

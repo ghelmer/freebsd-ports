@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	transmission-remote-gui
-PORTVERSION=	4.1
-PORTREVISION=	2
+PORTVERSION=	5.0.1
 CATEGORIES=	net-p2p
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTNAME=	transgui-${PORTVERSION}-src
@@ -17,9 +16,8 @@ RUN_DEPENDS=	transmission-daemon:${PORTSDIR}/net-p2p/transmission-daemon
 
 PROJECTHOST=	transmisson-remote-gui
 
-USE_ZIP=	yes
 USE_FPC=	fcl-net
-USES=		iconv
+USES=		iconv zip
 USE_GNOME=	#
 
 WRKSRC=		${WRKDIR}/TransGUI

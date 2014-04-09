@@ -11,7 +11,7 @@ DISTNAME=	PDFlib-Lite-${PORTVERSION}p3
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	A C library for dynamically generating PDF
 
-RESTRICTED=	many odd restrictions on usage and distribution
+RESTRICTED=	Many odd restrictions on usage and distribution
 
 OPTIONS_DEFINE=	PERL JAVA
 PERL_DESC=	Build perl bindings
@@ -24,7 +24,8 @@ CONFIGURE_ARGS=	--with-py=no --with-ruby=no --with-tcl=no
 
 PORTDOCS=	*
 
-NO_STAGE=	yes
+PERL_USES=	perl5
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64" || ${ARCH} == "ia64" || ${ARCH} == "sparc64"
@@ -32,7 +33,6 @@ CONFIGURE_ARGS+=--enable-64bit
 .endif
 
 .if ${PORT_OPTIONS:MPERL}
-USES+=		perl5
 PLIST_SUB=	PERL=""
 CONFIGURE_ARGS+=--with-perl=${PERL}
 .else
@@ -52,14 +52,12 @@ PLIST_SUB+=	JAVA="@comment "
 .endif
 
 post-install:
-	${MKDIR} ${DATADIR}/fonts
-	${INSTALL_DATA} ${WRKSRC}/fonts/* ${DATADIR}/fonts
+	${MKDIR} ${STAGEDIR}${DATADIR}/fonts
+	${INSTALL_DATA} ${WRKSRC}/fonts/* ${STAGEDIR}${DATADIR}/fonts
 .if ${PORT_OPTIONS:MJAVA}
-	${INSTALL_DATA} ${WRKSRC}/bind/pdflib/java/pdflib.jar ${JAVAJARDIR}/pdflib.jar
+	${INSTALL_DATA} ${WRKSRC}/bind/pdflib/java/pdflib.jar ${STAGEDIR}${JAVAJARDIR}/pdflib.jar
 .endif
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/pdflib/* ${DOCSDIR}
-.endif
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/pdflib/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lander
-PORTVERSION=	0.6.5
-PORTREVISION=	2
+PORTVERSION=	0.6.6
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.nickg.me.uk/files/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -37,6 +37,9 @@ DESKTOP_ENTRIES="Lunar Lander" \
 		false
 
 OPTIONS_DEFINE=	DOCS
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|-R$$found_dir||g' ${WRKSRC}/configure
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

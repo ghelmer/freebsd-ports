@@ -3,7 +3,8 @@
 
 PORTNAME?=	djbdns
 PORTVERSION?=	${DJBDNS_VER}
-PORTREVISION?=	15
+PORTREVISION?=	18
+PORTEPOCH?=	1
 CATEGORIES?=	dns
 MASTER_SITES=	http://cr.yp.to/djbdns/ \
 		ftp://cr.yp.to/djbdns/
@@ -11,7 +12,7 @@ DISTNAME=	djbdns-${DJBDNS_VER}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER?=	lx@FreeBSD.org
-COMMENT?=	A collection of secure and reliable DNS tools
+COMMENT?=	Collection of secure and reliable DNS tools
 
 RUN_DEPENDS=	setuidgid:${PORTSDIR}/sysutils/daemontools \
 		tcpserver:${PORTSDIR}/sysutils/ucspi-tcp
@@ -21,6 +22,8 @@ LEGAL_TEXT=	No license -- see http://cr.yp.to/softwarelaw.html
 
 OPTIONS_DEFINE=	DUMPCACHE IP6 IGNOREIP JUMBO MAN PERSISTENT_MMAP SRV DNSCURVE ADD_USERS
 OPTIONS_DEFAULT=	MAN
+OPTIONS_SUB=	yes
+
 DUMPCACHE_DESC=	persistent cache for dnscache
 IP6_DESC=	IPv6 support by Felix von Leitner
 IGNOREIP_DESC=	ignoreip2 patch by Russell Nelson
@@ -57,9 +60,6 @@ CFLAGS+=	-DDUMPCACHE
 MANDATE=	-20031023
 MASTER_SITES+=	http://smarden.org/pape/djb/manpages/:manpages
 DISTFILES+=	${DISTNAME}-man${MANDATE}.tar.gz:manpages
-PLIST_SUB+=	WITH_MAN=""
-.else
-PLIST_SUB+=	WITH_MAN="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MIP6}
@@ -115,9 +115,9 @@ BUILD_DEPENDS+=	nacl-sha256:${PORTSDIR}/security/nacl
 .endif
 
 DJBDNS_VER=	1.05
-DJBDNS_V6_VER=	test25
+DJBDNS_V6_VER=	test23
 
-ALL_TARGET=	it
+ALL_TARGET=	prog
 INSTALL_TARGET=	setup check
 
 .if ${PORT_OPTIONS:MIP6}
@@ -129,12 +129,20 @@ PLIST_SUB+=	WITH_IP6="@comment "
 post-patch:
 	@echo "${CC} ${CFLAGS}" > ${WRKSRC}/conf-cc
 	@echo "${CC} ${STRIP} ${LDFLAGS}" > ${WRKSRC}/conf-ld
+	@echo "${PREFIX}" > ${WRKSRC}/conf-home
+
+pre-install:
+	@${MV} -f ${WRKSRC}/conf-home ${WRKSRC}/conf-home.sav
 	@echo "${STAGEDIR}${PREFIX}" > ${WRKSRC}/conf-home
+	@cd ${WRKSRC} ; ${RM} -f install instcheck install.o instcheck.o hier.o auto_home.o
+	@cd ${WRKSRC} ; ${MAKE_CMD} install instcheck
+	@${TOUCH} ${WRKSRC}/*-conf
+	@${MV} -f ${WRKSRC}/conf-home.sav ${WRKSRC}/conf-home
 
 .if ${PORT_OPTIONS:MMAN}
 post-install:
-	@${INSTALL_MAN} ${WRKDIR}/djbdns-man/*.1 ${STAGEDIR}${PREFIX}/man/man1/
-	@${INSTALL_MAN} ${WRKDIR}/djbdns-man/*.8 ${STAGEDIR}${PREFIX}/man/man8/
+	@${INSTALL_MAN} ${WRKDIR}/djbdns-man/*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	@${INSTALL_MAN} ${WRKDIR}/djbdns-man/*.8 ${STAGEDIR}${MAN8PREFIX}/man/man8/
 .endif
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	lastfm
 PORTVERSION=	2.1.30
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://cdn.last.fm/client/Linux/
 PKGNAMESUFFIX=	-desktop
@@ -11,6 +11,8 @@ DISTNAME=	Last.fm-${PORTVERSION}
 
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Official Last.fm desktop application suite
+
+BROKEN=		Does not build
 
 LICENSE=	GPLv3
 

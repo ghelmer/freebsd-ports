@@ -3,7 +3,7 @@
 
 PORTNAME=	meanwhile
 PORTVERSION=	1.0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-im
 MASTER_SITES=	SF
 
@@ -11,11 +11,11 @@ MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Open Source implementation of the Lotus Sametime protocol
 
 USE_AUTOTOOLS=	libtool
-USES=		pkgconfig
-USE_GMAKE=	yes
-USE_GNOME=	gnomehack glib20
+USES=		pkgconfig gmake pathfix
+USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+USE_GCC=	any
 CONFIGURE_ARGS=	--enable-doxygen=no \
 		--with-gmp-prefix=${LOCALBASE}
 CPPFLAGS+=	-I${LOCALBASE}/include -DGLIB_COMPILATION
@@ -23,7 +23,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-doc-${PORTVERSION}
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' \
 		${WRKSRC}/samples/*.c ${WRKSRC}/src/*.[ch]

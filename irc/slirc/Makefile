@@ -14,7 +14,7 @@ COMMENT=	A SLang-based IRC client
 
 LIB_DEPENDS=	${LIB_DEPENDS_LIBSLANG}
 
-USE_GMAKE=	yes
+USES=		gmake
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
@@ -45,6 +45,8 @@ DOCS+=		BUGS \
 NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} -e "s,/usr/local,${LOCALBASE}," ${WRKSRC}/Makefile ${WRKSRC}/scripts/init.sl
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 post-install:

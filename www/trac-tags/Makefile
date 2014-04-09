@@ -15,14 +15,13 @@ COMMENT=	Generic tags frontend for trac
 
 RUN_DEPENDS+=	tracd:${PORTSDIR}/www/trac
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_PYTHON=	2
 USE_PYDISTUTILS=	easy_install
 PYDISTUTILS_PKGNAME=	TracTags
 PYDISTUTILS_PKGVERSION=	${PORTVERSION:C/\.r.*/dev/}
 PLIST_FILES=		%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if !defined(SVN_REV)

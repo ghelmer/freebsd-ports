@@ -3,7 +3,7 @@
 
 PORTNAME=	blender
 PORTVERSION=	2.69
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics games
 MASTER_SITES=	http://download.blender.org/source/ \
 		http://mirror.cs.umn.edu/blender.org/source/ \
@@ -122,7 +122,7 @@ XINPUT_CMAKE_OFF=		-DWITH_X11_XINPUT:BOOL=OFF
 XINPUT_USE=			XORG=xi
 XF86VMODE_CMAKE_ON=		-DWITH_X11_XF86VMODE:BOOL=ON
 XF86VMODE_CMAKE_OFF=		-DWITH_X11_XF86VMODE:BOOL=OFF
-XF86VMODE_USE=			XORG=xi xxf86vm
+XF86VMODE_USE=			XORG=xi,xxf86vm
 
 .include <bsd.port.options.mk>
 

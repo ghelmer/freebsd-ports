@@ -19,7 +19,6 @@
     SUBDIR += cpmemu
     SUBDIR += cpmtools
     SUBDIR += cpmtools2
-    SUBDIR += cygne-sdl
     SUBDIR += darcnes
     SUBDIR += dboxfe
     SUBDIR += desmume
@@ -34,10 +33,10 @@
     SUBDIR += dynamips-community
     SUBDIR += dynamips-devel
     SUBDIR += e-uae
-    SUBDIR += extract-xiso
     SUBDIR += fceux
     SUBDIR += fmsx
     SUBDIR += frodo
+    SUBDIR += fs-uae
     SUBDIR += fuse
     SUBDIR += fuse-roms
     SUBDIR += fuse-utils
@@ -50,10 +49,8 @@
     SUBDIR += gns3
     SUBDIR += gnuboy
     SUBDIR += gxemul
-    SUBDIR += gxmame
     SUBDIR += hatari
     SUBDIR += hercules
-    SUBDIR += hfs
     SUBDIR += higan
     SUBDIR += hugo
     SUBDIR += i386-wine
@@ -125,7 +122,6 @@
     SUBDIR += pearpc
     SUBDIR += prodosemu
     SUBDIR += psim-freebsd
-    SUBDIR += pyxmame
     SUBDIR += q4wine
     SUBDIR += qemu
     SUBDIR += qemu-devel
@@ -135,10 +131,8 @@
     SUBDIR += quasi88
     SUBDIR += raine
     SUBDIR += rtc
-    SUBDIR += seabios-devel
     SUBDIR += sim6811
     SUBDIR += simh
-    SUBDIR += ski
     SUBDIR += skyeye
     SUBDIR += snes9express
     SUBDIR += snes9x
@@ -181,11 +175,10 @@
     SUBDIR += wine-mono-devel
     SUBDIR += wxmupen64plus
     SUBDIR += x48
+    SUBDIR += x49gp
     SUBDIR += xbraitenberg
     SUBDIR += xcpc
     SUBDIR += xhomer
-    SUBDIR += xmame
-    SUBDIR += xmess
     SUBDIR += xsystem35
     SUBDIR += xzx
     SUBDIR += yabause

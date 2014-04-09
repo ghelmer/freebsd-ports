@@ -3,7 +3,7 @@
 
 PORTNAME=	mumps
 PORTVERSION=	4.8.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://mumps.enseeiht.fr/		\
 		http://graal.ens-lyon.fr/MUMPS/		\
@@ -30,7 +30,7 @@ NO_STAGE=	yes
 
 SLAVEDIRS=	math/mumps-mpich
 
-USE_FORTRAN=	yes
+USES=		fortran
 
 FORTRANLIBS=	-lgfortran
 GCCLIBDIR=	-L`${CAT} ${WRKSRC}/LIBDIR` -L`${CAT} ${WRKSRC}/LIBDIR`/../../..

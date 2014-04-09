@@ -13,7 +13,7 @@ COMMENT=	Provides a Web Services,SOAP and WSDL engine from Apache
 
 LICENSE=	APACHE20
 
-USE_ZIP=	yes
+USES=		zip
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 NO_BUILD=	yes
 
@@ -22,6 +22,9 @@ OPTIONS_SINGLE_AS=	TOMCAT6 TOMCAT7
 OPTIONS_DEFAULT=	TOMCAT6
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	EXAMPLES
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MTOMCAT6}

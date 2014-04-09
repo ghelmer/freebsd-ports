@@ -3,7 +3,7 @@
 
 PORTNAME=	freeocl
 PORTVERSION=	0.3.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTNAME=	FreeOCL-${PORTVERSION}-src
@@ -22,7 +22,6 @@ USE_GCC=	yes
 USES=		cmake
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} -e 's:%%PREFIX%%:${PREFIX}:g' ${WRKSRC}/src/icd/icd_loader.cpp \
 		${WRKSRC}/CMakeLists.txt

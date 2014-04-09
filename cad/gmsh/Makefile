@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gmsh
-PORTVERSION=	2.8.3
-PORTREVISION=	1
+PORTVERSION=	2.8.4
+PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	http://www.geuz.org/gmsh/src/ \
 		http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
@@ -27,15 +27,11 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-source
 
 SLAVEDIRS=	cad/gmsh-occ
 
-USE_FORTRAN=	yes
-USES=		cmake
-USE_GMAKE=	yes
+USES=		cmake fortran gmake
 USE_GL=		yes
 ALL_TARGET=	all
 
 MAKE_JOBS_UNSAFE=	yes
-
-MAN1=		gmsh.1
 
 CMAKE_ARGS+=	-DCMAKE_SKIP_RPATH:BOOL=YES
 
@@ -125,7 +121,6 @@ CONFLICTS=	gmsh-occ-2.*
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 pre-everything::
@@ -202,12 +197,8 @@ post-patch:
 
 post-install:
 .if !defined(WITHOUT_METIS)
-	${MKDIR} ${DOCSDIR}/metis
-	${INSTALL_DATA} ${WRKDIR}/manual.pdf ${DOCSDIR}/metis
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/metis
+	${INSTALL_DATA} ${WRKDIR}/manual.pdf ${STAGEDIR}${DOCSDIR}/metis
 .endif
-
-	@${ECHO_MSG}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG}
 
 .include <bsd.port.post.mk>

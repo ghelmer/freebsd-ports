@@ -3,7 +3,7 @@
 
 PORTNAME=	ParMetis
 PORTVERSION=	4.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math parallel
 MASTER_SITES=	http://glaros.dtc.umn.edu/gkhome/fetch/sw/parmetis/%SUBDIR%/
 MASTER_SITE_SUBDIR=	. OLD
@@ -22,7 +22,6 @@ OPENMPI_DESC=	Use openmpi instead of mpich2
 
 USES=		cmake gmake
 
-MAKE_ARGS+=	MAKEFLAGS=MAKE=${GMAKE}
 PLIST_FILES=	include/parmetis/metis.h \
 		include/parmetis/parmetis.h \
 		lib/parmetis/libmetis.a \
@@ -47,7 +46,8 @@ MPICC=		${LOCALBASE}/bin/mpicc
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|BUILDDIR =.*|BUILDDIR = build| ; \
-		 s|make -C|${MAKE_CMD} -C|' ${WRKSRC}/Makefile
+		 s|make -C|$$(MAKE) -C| ; \
+		 s|$$(MAKEFLAGS)||' ${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e \
 		's|"-O3"|""|' ${WRKSRC}/metis/GKlib/GKlibSystem.cmake
 

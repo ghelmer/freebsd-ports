@@ -3,6 +3,7 @@
 
 PORTNAME=	octave-forge-nan
 PORTVERSION=	2.5.9
+PORTREVISION=	2
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -11,7 +12,6 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 LICENSE=	GPLv3
 
 MAKE_JOBS_UNSAFE=	yes
-MAKE_ARGS=	CC="${CC}" CXX="${CXX}"
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

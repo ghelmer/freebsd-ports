@@ -21,8 +21,7 @@ RUN_DEPENDS+=	octave:${PORTSDIR}/math/octave \
 		${LOCALBASE}/libexec/octave/load-octave-pkg:${PORTSDIR}/math/octave-forge-base
 LIB_DEPENDS+=	pcre:${PORTSDIR}/devel/pcre
 
-USE_FORTRAN=	yes
-USES+=		gmake
+USES+=		fortran gmake
 
 DIST_SUBDIR=	octave-forge
 OCTAVE_PKGNAME=	${PORTNAME:S/octave-forge-//}
@@ -30,6 +29,7 @@ TARBALLS_DIR=	${LOCALBASE}/share/octave/tarballs
 INSTALL_TARBALLS_DIR=	${STAGEDIR}${PREFIX}/share/octave/tarballs
 
 MAKE_ENV+=	PACKAGE=${WRKDIR}/${DISTNAME}.tar.gz
+MAKE_ARGS=	CC="${CC}" CXX="${CXX}" LD_CXX="${CXX}" DL_LD="${CXX}"
 
 LOAD_OCTAVE_PKG_CMD=	${LOCALBASE}/libexec/octave/load-octave-pkg
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	libmapi
 PORTVERSION=	0.9
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	SF
 MASTER_SITE_SUBDIR=openchange/openchange/openchange-${PORTVERSION}%20${CODENAME}/
@@ -11,6 +11,8 @@ DISTNAME=	openchange-${PORTVERSION}-${CODENAME}
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Open Source implementation of Microsoft Exchange protocols
+
+BROKEN=		Does not compile
 
 BUILD_DEPENDS=	${HOSTCONFIG}:${PORTSDIR}/net/samba4 \
 		pidl:${PORTSDIR}/devel/p5-Parse-Pidl

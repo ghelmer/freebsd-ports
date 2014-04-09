@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qbittorrent
-PORTVERSION=	3.1.4
+PORTVERSION=	3.1.9
 PORTREVISION?=	0
 CATEGORIES=	net-p2p ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
@@ -24,6 +24,7 @@ DESTDIRNAME=	INSTALL_ROOT
 
 .if !defined(SLAVE_PORT)
 LIB_DEPENDS+=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+USES+=		desktop-file-utils
 USE_QT4+=	gui xml
 INSTALLS_ICONS=	yes
 OPTIONS_DEFINE=	DBUS
@@ -31,8 +32,9 @@ OPTIONS_DEFINE=	DBUS
 
 PORTDOCS=	AUTHORS Changelog README TODO
 
-OPTIONS_DEFINE=	DOCS DBUS
+OPTIONS_DEFINE=	DEBUG DOCS DBUS
 
+DEBUG_CONFIGURE_ENABLE=	debug
 DBUS_CONFIGURE_ENABLE=	qt-dbus
 
 .include <bsd.port.options.mk>
@@ -51,8 +53,10 @@ do-configure:
 .endif
 
 post-install:
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+.endif
 
 .if defined(SLAVE_PORT) && ${SLAVE_PORT:L} == "no"
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qbittorrent

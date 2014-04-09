@@ -12,14 +12,4 @@ COMMENT=	Base class for error handling
 USES=		perl5
 USE_PERL5=	modbuild
 
-MAN3=	Class::ErrorHandler.3
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-BUILD_DEPENDS+=	p5-CPAN-Meta>=0:${PORTSDIR}/devel/p5-CPAN-Meta
-RUN_DEPENDS+=	p5-CPAN-Meta>=0:${PORTSDIR}/devel/p5-CPAN-Meta
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

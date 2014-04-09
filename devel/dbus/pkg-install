@@ -8,7 +8,7 @@ POST-INSTALL)
 	/usr/bin/install -d -o ${USER} -g ${GROUP} /var/run/dbus
 	/usr/bin/install -d -o ${USER} -g ${GROUP} /var/db/dbus
 	/usr/bin/chgrp ${GROUP} ${PKG_PREFIX}/libexec/dbus-daemon-launch-helper
-	${PKG_PREFIX}/bin/dbus-uuidgen --ensure
+	/bin/chmod 4750 ${PKG_PREFIX}/libexec/dbus-daemon-launch-helper
 	exit 0
 	;;
 esac

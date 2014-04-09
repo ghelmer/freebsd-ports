@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	multimarkdown
-PORTVERSION=	4.5
+PORTVERSION=	4.5.2
 CATEGORIES=	textproc
 MASTER_SITES=	https://codeload.github.com/fletcher/MultiMarkdown-4/legacy.tar.gz/${MM4_COMMIT}?dummy=/:MM4 \
 				https://codeload.github.com/fletcher/MMD-Support/legacy.tar.gz/${SUPPORT_COMMIT}?dummy=/:support \
@@ -17,9 +17,9 @@ COMMENT=	Extended Markdown processor with more features, written in C
 
 LICENSE=	MIT
 
-MM4_COMMIT=		e0e74d0
+MM4_COMMIT=		d11e8b9
 SUPPORT_COMMIT=	685c95c
-CHEAT_COMMIT=	c23d807
+CHEAT_COMMIT=	199dae8
 GREG_COMMIT=	3f11f56
 
 WRKSRC=	${WRKDIR}/fletcher-MultiMarkdown-4-${MM4_COMMIT}
@@ -34,13 +34,11 @@ HELPERS_DESC=	Helper scripts (conflicts with emulators/mtools)
 CHEAT_SHEET_DISTFILES=	human-markdown-reference-${CHEAT_COMMIT}${EXTRACT_SUFX}:cheat
 EXTRAS_DISTFILES=	MMD-Support-${SUPPORT_COMMIT}${EXTRACT_SUFX}:support
 
+HELPERS_CONFLICTS_INSTALL=	mtools-*
+
 OPTIONS_SUB=	yes
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MHELPERS}
-CONFLICTS_INSTALL=	mtools-*
-.endif
 
 post-extract:
 	@${MV} ${WRKDIR}/nddrylliog-greg-${GREG_COMMIT}/* ${WRKSRC}/greg

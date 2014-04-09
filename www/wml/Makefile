@@ -9,7 +9,7 @@ CATEGORIES=	www lang
 MASTER_SITES=	${MASTER_SITE_BERLIOS}
 MASTER_SITE_SUBDIR=thewml
 
-MAINTAINER=	rodrigo@bebik.net
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Website META Language, webdesign toolkit for HTML generation
 
 LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
@@ -25,8 +25,7 @@ BUILD_DEPENDS=	lynx:${PORTSDIR}/www/lynx \
 		${RUN_DEPENDS}
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-USES=		gettext perl5
+USES=		gettext perl5 gmake
 USE_PERL5=	run build patch
 CONFIGURE_ARGS=	--with-perl=${PERL5} --with-catdir=man \
 		--prefix=${PREFIX}

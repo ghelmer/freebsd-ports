@@ -30,6 +30,7 @@
     SUBDIR += iozone
     SUBDIR += iozone21
     SUBDIR += iperf
+    SUBDIR += iperf3
     SUBDIR += libmicro
     SUBDIR += lmbench
     SUBDIR += mdtest
@@ -57,6 +58,7 @@
     SUBDIR += postmark
     SUBDIR += pybench
     SUBDIR += raidtest
+    SUBDIR += ramspeed
     SUBDIR += randomio
     SUBDIR += rubygem-railsbench
     SUBDIR += scimark2
@@ -77,6 +79,5 @@
     SUBDIR += unixbench
     SUBDIR += webbench
     SUBDIR += wrk
-    SUBDIR += xdd
 
 .include <bsd.port.subdir.mk>

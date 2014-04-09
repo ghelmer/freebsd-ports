@@ -5,29 +5,23 @@ PORTNAME=	microdc2
 PORTVERSION=	0.15.6
 PORTREVISION=	4
 CATEGORIES=	net-p2p
-MASTER_SITES=	http://corsair626.no-ip.org/microdc/ \
-		http://corsair626.no-ip.org/microdc/archive/
+MASTER_SITES=	http://corsair626.no-ip.org/microdc/
 
 MAINTAINER=	pankov_p@mail.ru
 COMMENT=	Command-line based Direct Connect client
 
+LICENSE=	GPLv2
+
 CONFLICTS=	tthsum-[0-9]*
 
-BROKEN=		Does not link
-
-GNU_CONFIGURE=	yes
 USES=		iconv
+GNU_CONFIGURE=	yes
 USE_GNOME=	libxml2
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
 
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=	--disable-nls
-PLIST_SUB+=	 NLS="@comment "
-.endif
+NLS_USES=	gettext
+NLS_CONFIGURE_OFF=	--disable-nls
 
 .include <bsd.port.mk>

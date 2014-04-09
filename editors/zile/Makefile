@@ -2,24 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	zile
-PORTVERSION=	2.4.9
+PORTVERSION=	2.4.11
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	GNU
 
 MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Small emacs-like text editor
 
-LIB_DEPENDS=	gc:${PORTSDIR}/devel/boehm-gc
+LICENSE=	GPLv3
+
+LIB_DEPENDS=	libgc.so:${PORTSDIR}/devel/boehm-gc
 BUILD_DEPENDS=	${LOCALBASE}/bin/help2man:${PORTSDIR}/misc/help2man
 
-USE_GMAKE=	yes
-USES=		perl5
+USES=		gmake perl5 pkgconfig
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-included-regex
 
-MAN1=		${PORTNAME}.1
 PLIST_FILES=	bin/${PORTNAME} \
+		man/man1/${PORTNAME}.1.gz \
 		%%DOCSDIR%%/AUTHORS \
 		%%DOCSDIR%%/FAQ \
 		%%DOCSDIR%%/NEWS \
@@ -29,7 +31,6 @@ PLIST_DIRS=	%%DOCSDIR%%
 CPPFLAGS+=	-I${LOCALBASE}/include -isystem /usr/include/gnu
 LDFLAGS+=	-L${LOCALBASE}/lib -lgnuregex
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/need_charset_alias=/s|true|false|g' ${WRKSRC}/lib/Makefile.in

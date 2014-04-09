@@ -12,11 +12,13 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Fixes and tidies up HTML files
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${FILESDIR}/COPYRIGHT
 
 ALL_TARGET=	tidy
 DOCFILES=	Overview.html tidy.gif release-notes.html grid.gif
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
@@ -25,7 +27,7 @@ do-configure:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/tidy ${STAGEDIR}${PREFIX}/bin/tidy4
-	${INSTALL_MAN}	${WRKSRC}/man_page.txt	${STAGEDIR}${MANPREFIX}/man/man1/tidy4.1
+	${INSTALL_MAN}	${WRKSRC}/man_page.txt	${STAGEDIR}${PREFIX}/man/man1/tidy4.1
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docfile in ${DOCFILES}

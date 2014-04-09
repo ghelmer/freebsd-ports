@@ -5,7 +5,7 @@ PORTVERSION=	0.10.2
 CATEGORIES=	multimedia devel
 MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Portable ASS/SSA subtitle renderer
 
 LICENSE=	ISCL
@@ -16,8 +16,7 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libfribidi.so:${PORTSDIR}/converters/fribidi
 
-USES=	pathfix pkgconfig
-USE_XZ=	yes
+USES=	pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

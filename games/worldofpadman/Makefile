@@ -3,7 +3,7 @@
 
 PORTNAME=	worldofpadman
 PORTVERSION=	1.2.20080621
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.snt.utwente.nl/pub/games/worldofpadman/linux/:full,update \
 		${MASTER_SITE_LOCAL:S|$|alepulver/:source|}
@@ -18,8 +18,7 @@ COMMENT=	Open source FPS game inspired by the Padman comic strip
 
 NO_PACKAGE=	package will be ~600MB; set FORCE_PACKAGE if you really want it
 
-USES=		gmake
-USE_MAKESELF=	yes
+USES=		gmake makeself
 MAKE_ENV=	DEFAULT_BASEDIR="${DATADIR}" PTHREAD_LIBS="${PTHREAD_LIBS}"
 ALL_TARGET=	release
 

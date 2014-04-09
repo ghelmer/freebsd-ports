@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	freeminer
-PORTVERSION=	0.4.8.2
+PORTVERSION=	0.4.9.3
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -10,12 +11,11 @@ COMMENT=	Open source sandbox game inspired by Minecraft
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	libIrrlicht.so:${PORTSDIR}/x11-toolkits/irrlicht \
-		sqlite3:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}
-GH_COMMIT=	79bf405
+GH_COMMIT=	cfd8282
 
 USES=		cmake
 CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
@@ -24,8 +24,8 @@ CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
 PORTDATA=	*
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	CLIENT SERVER CURL NLS SOUND DOCS EXAMPLES FREETYPE LEVELDB LUAJIT
-OPTIONS_DEFAULT=CLIENT SERVER CURL SOUND
+OPTIONS_DEFINE=	CLIENT SERVER CURL SOUND FREETYPE LEVELDB LUAJIT NLS DOCS EXAMPLES
+OPTIONS_DEFAULT=CLIENT SERVER CURL SOUND FREETYPE LEVELDB LUAJIT
 OPTIONS_SUB=	yes
 
 CLIENT_DESC=	Build client
@@ -39,7 +39,8 @@ LUAJIT_DESC=	LuaJIT support
 CLIENT_CMAKE_ON=	-DBUILD_CLIENT=1
 CLIENT_CMAKE_OFF=	-DBUILD_CLIENT=0
 CLIENT_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-			libpng.so:${PORTSDIR}/graphics/png
+			libpng.so:${PORTSDIR}/graphics/png \
+			libIrrlicht.so:${PORTSDIR}/x11-toolkits/irrlicht
 CLIENT_USE=		GL=gl XORG=x11
 SERVER_CMAKE_ON=	-DBUILD_SERVER=1
 SERVER_CMAKE_OFF=	-DBUILD_SERVER=0
@@ -73,6 +74,14 @@ USERS=		minetest # reuse, as freeminer is a fork of
 GROUPS=		minetest
 .endif
 
+# hacky way to not bring irrlicht and X11 depends for server only
+.if ! ${PORT_OPTIONS:MCLIENT} && ${PORT_OPTIONS:MSERVER}
+BUILD_DEPENDS+=	${NONEXISTENT}:${PORTSDIR}/x11-toolkits/irrlicht:patch
+IRRLICHT_INCLUDE_DIR=	`${MAKE} -C ${PORTSDIR}/x11-toolkits/irrlicht -V WRKSRC`/include
+CMAKE_ARGS+=	-DIRRLICHT_INCLUDE_DIR:STRING="${IRRLICHT_INCLUDE_DIR}"
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-irrlichtdepend
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/cmake/Modules/*.cmake
@@ -82,5 +91,8 @@ post-patch:
 	@${REINPLACE_CMD} -e '/find_/ s|LUA_|NO&|g' \
 		${WRKSRC}/src/CMakeLists.txt
 .endif
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${DATADIR}/games
 
 .include <bsd.port.mk>

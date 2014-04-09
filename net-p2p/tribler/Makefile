@@ -3,7 +3,7 @@
 
 PORTNAME=	tribler
 PORTVERSION=	6.0.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-p2p
 #MASTER_SITES=	http://dl.tribler.org/
 MASTER_SITES=	GENTOO/distfiles \
@@ -47,6 +47,9 @@ APSW_DISTNAME=	apsw-3.7.14.1-r1
 APSW_DISTFILE=	${APSW_DISTNAME}.zip
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-extract:

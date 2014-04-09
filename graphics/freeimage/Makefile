@@ -11,8 +11,7 @@ DISTNAME=	FreeImage${PORTVERSION:S/.//g}
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Simple C/C++ bitmap graphics library
 
-USES=		gmake dos2unix
-USE_ZIP=	yes
+USES=		gmake dos2unix zip
 DOS2UNIX_FILES=	Source/LibOpenJPEG/opj_malloc.h
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/FreeImage
@@ -38,7 +37,7 @@ CFLAGS+=	-fPIC
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr|${PREFIX}| ; s|-g root|-g wheel|' \
+	@${REINPLACE_CMD} -e 's|/usr|${PREFIX}| ; s|-o root -g root ||' \
 		${WRKSRC}/Makefile.gnu ${WRKSRC}/Makefile.fip
 
 post-build:

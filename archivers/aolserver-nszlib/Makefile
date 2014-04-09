@@ -17,6 +17,9 @@ COMMENT=	Zlib library interface for AOLserver
 LICENSE=	MPL GPLv1
 LICENSE_COMB=	dual
 
+DEPRECATED=	abandonware, messing up on clusters
+EXPIRATION_DATE=	2014-04-03
+
 NO_STAGE=	yes
 AOLSERVERBASE?=	aolserver
 
@@ -33,6 +36,8 @@ PLIST_FILES=	${AOLSERVERBASE}/bin/nszlib.so \
 		${AOLSERVERBASE}/lib/libnszlib.so
 
 PORTDOCS=	ChangeLog README example.tcl
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 post-patch:

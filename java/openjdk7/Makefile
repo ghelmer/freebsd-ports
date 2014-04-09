@@ -26,8 +26,7 @@ LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_ZIP=	yes
-USES=		iconv gmake
+USES=		iconv gmake zip
 USE_XORG+=	x11 xext xi xrender xt xtst
 MAKE_ARGS=	CC=${CC} CXX=${CXX} HOST_CC=${CC}
 MAKE_JOBS_UNSAFE=	yes
@@ -39,12 +38,12 @@ DEBUG_DESC=		Enable extra debugging info
 POLICY_DESC=		Install the Unlimited Strength Policy Files
 TZUPDATE_DESC=		Update the time zone data
 
-PORT_MINOR_VERSION=	25
-PORT_BUILD_NUMBER=	15
+PORT_MINOR_VERSION=	51
+PORT_BUILD_NUMBER=	13
 JDK_MAJOR_VERSION=	7
-JDK_MINOR_VERSION=	6
-JDK_BUILD_NUMBER=	24
-JDK_BUILD_DATE=		09_aug_2012
+JDK_MINOR_VERSION=	40
+JDK_BUILD_NUMBER=	43
+JDK_BUILD_DATE=		26_aug_2013
 JDK_SRC_DISTFILE=	${PORTNAME}-${JDK_MAJOR_VERSION}u${JDK_MINOR_VERSION}-fcs-src-b${JDK_BUILD_NUMBER}-${JDK_BUILD_DATE}
 
 # Use our own version of ant to avoid circular dependencies
@@ -56,7 +55,7 @@ LATEST_LINK=		openjdk7
 LIB_DEPENDS+=	freetype:${PORTSDIR}/print/freetype2 \
 		asound:${PORTSDIR}/audio/alsa-lib
 BUILD_DEPENDS+=	zip:${PORTSDIR}/archivers/zip \
-		unzip:${PORTSDIR}/archivers/unzip \
+		${UNZIP_CMD}:${PORTSDIR}/archivers/unzip \
 		${LOCALBASE}/include/cups/cups.h:${PORTSDIR}/print/cups-client
 RUN_DEPENDS+=	javavm:${PORTSDIR}/java/javavmwrapper \
 		${LOCALBASE}/lib/X11/fonts/dejavu:${PORTSDIR}/x11-fonts/dejavu
@@ -104,20 +103,8 @@ BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk7 \
 		${LOCALBASE}/openjdk6 \
 		${LOCALBASE}/bootstrap-openjdk
 
-SECURITY_ICONS= security-icon-bw16.png \
-		security-icon-bw24.png \
-		security-icon-bw32.png \
-		security-icon-bw48.png \
-		security-icon-interim16.png \
-		security-icon-interim24.png \
-		security-icon-interim32.png \
-		security-icon-interim48.png \
-		security-icon-yellow16.png \
-		security-icon-yellow24.png \
-		security-icon-yellow32.png \
-		security-icon-yellow48.png
-
 NO_STAGE=	yes
+
 .include <bsd.port.options.mk>
 
 .if empty(PORT_OPTIONS:MDEBUG)
@@ -150,13 +137,11 @@ PATCH_DEPENDS+=	gpatch:${PORTSDIR}/devel/patch
 PATCH=		gpatch
 .endif
 
-post-extract:
-	# Move icons to their new home.
-	@${MKDIR} ${WRKSRC}/jdk/src/share/classes/sun/awt/resources
-.for icon in ${SECURITY_ICONS}
-	@${MV} ${WRKSRC}/jdk/src/solaris/classes/sun/awt/X11/${icon} \
-		${WRKSRC}/jdk/src/share/classes/sun/awt/resources/
-.endfor
+.include <bsd.port.pre.mk>
+
+.if empty(ICONV_LIB)
+MAKE_ENV+=	EXTRA_CFLAGS=-DLIBICONV_PLUG
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} "s|%%LOCALBASE%%|${LOCALBASE}|" \
@@ -200,4 +185,4 @@ post-install:
 	# Register the VM
 	"${LOCALBASE}/bin/registervm" "${INSTALLDIR}/bin/java # OpenJDK${JDK_MAJOR_VERSION}"
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

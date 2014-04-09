@@ -37,6 +37,7 @@ CONFIGURE_ARGS+=--with-system-pinerc=${PREFIX}/etc/alpine.conf \
 		--with-password-prog=/usr/bin/passwd \
 		--with-system-mail-directory=/var/mail \
 		--enable-background-post --without-krb5 --without-tcl
+NO_STAGE=	yes
 .endif
 CONFIGURE_ARGS+=--with-debug-level=2
 
@@ -44,7 +45,6 @@ MAKE_ARGS+=	CC="${CC}" CXX="${CXX}" GCCCFLAGS="${CFLAGS}"
 
 USE_OPENSSL=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MTHREADS}
@@ -72,8 +72,8 @@ BUILD_DEPENDS+=	aspell:${PORTSDIR}/textproc/aspell
 RUN_DEPENDS+=	aspell:${PORTSDIR}/textproc/aspell
 .else
 CONFIGURE_ARGS+=	--with-interactive-spellcheck=${LOCALBASE}/bin/ispell
-BUILD_DEPENDS+=	ispell:${PORTSDIR}/textproc/ispell
-RUN_DEPENDS+=	ispell:${PORTSDIR}/textproc/ispell
+BUILD_DEPENDS+=	ispell:${PORTSDIR}/textproc/aspell-ispell
+RUN_DEPENDS+=	ispell:${PORTSDIR}/textproc/aspell-ispell
 .endif
 .else
 CONFIGURE_ARGS+=--without-simple-spellcheck --without-interactive-spellcheck

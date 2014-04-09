@@ -10,12 +10,14 @@ MASTER_SITES=	http://www.oscommerce.com/files/
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Full-featured open source e-commerce system
 
-USE_ZIP=	yes
+USES=		zip
 USE_PHP=	mysql session pcre gd curl openssl
 WANT_PHP_WEB=	yes
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 DOCS=		CHANGELOG LICENSE STANDARD release_notes.pdf documentation.pdf
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

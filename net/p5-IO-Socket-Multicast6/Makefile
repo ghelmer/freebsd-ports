@@ -8,7 +8,7 @@ CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tjs@cdpa.nsysu.edu.tw
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Send and receive IPv4 and IPv6 multicast messages
 
 BUILD_DEPENDS=	p5-IO-Interface>=1.01:${PORTSDIR}/net/p5-IO-Interface \
@@ -20,7 +20,4 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		perl5
 USE_PERL5=	modbuild
 
-MAN3=		IO::Socket::Multicast6.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

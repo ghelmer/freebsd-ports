@@ -2,6 +2,7 @@
 
 PORTNAME=	icq
 PORTVERSION=	1.8.0
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -20,6 +21,8 @@ PLIST_FILES=	lib/licq/protocol_icq.so \
 PLIST_DIRS=	%%PORTDOCS%%%%DOCSDIR%%
 
 LICQ_PORT?=	net-im/licq
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

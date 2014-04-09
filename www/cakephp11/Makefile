@@ -11,10 +11,9 @@ PKGNAMESUFFIX=	11
 DISTNAME=	cake_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A framework for developing PHP web applications
+COMMENT=	Framework for developing PHP web applications
 
-USE_BZIP2=	yes
-
+USES=		tar:bzip2
 USE_APACHE_RUN=	22+
 SLAVE_PORT_MODULES=	REWRITE
 
@@ -24,7 +23,6 @@ NO_BUILD=	yes
 USE_PHP=	pcre session
 WANT_PHP_WEB=	yes
 DEFAULT_PHP_VER=5
-IGNORE_WITH_PHP=4
 
 SUB_FILES=	pkg-message
 

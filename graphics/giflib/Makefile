@@ -3,6 +3,7 @@
 
 PORTNAME=	giflib
 PORTVERSION=	4.2.3
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-4.x
 PKGNAMESUFFIX=	${NOX11SUFFIX}${PKGNAMESUFFIX2}
@@ -13,7 +14,7 @@ COMMENT=	Tools and library routines for working with GIF images
 CONFLICTS=	libungif-[0-9]*
 PORTSCOUT=	limit:^4\.
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -25,7 +26,7 @@ DOCBOOK_DESC=	Generate API documentation (requires DOCS)
 
 .if ${PORT_OPTIONS:MDOCBOOK} && ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	xmlto:${PORTSDIR}/textproc/xmlto \
-		${LOCALBASE}/share/xml/docbook/4.1.2:${PORTSDIR}/textproc/docbook-sk
+		${LOCALBASE}/share/xml/docbook/4.1.2:${PORTSDIR}/textproc/docbook-xml
 PLIST_SUB+=	WITH_DOCBOOK=''
 .else
 PLIST_SUB+=	WITH_DOCBOOK='@comment '

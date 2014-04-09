@@ -3,7 +3,7 @@
 
 PORTNAME=	ghemical
 PORTVERSION=	3.0.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	http://bioinformatics.org/ghemical/download/release20111012/	\
 		http://bioinformatics.org/ghemical/download/current
@@ -21,9 +21,7 @@ LIB_DEPENDS=	mpqc:${PORTSDIR}/science/mpqc \
 		oglappth:${PORTSDIR}/science/liboglappth \
 		mopac7:${PORTSDIR}/biology/mopac
 
-USES=		pkgconfig gettext
-USE_FORTRAN=	yes
-USE_GMAKE=	yes
+USES=		fortran gettext gmake pkgconfig
 USE_GNOME=	glib20 gtk20 libglade2
 USE_GL=		glut
 GNU_CONFIGURE=	yes

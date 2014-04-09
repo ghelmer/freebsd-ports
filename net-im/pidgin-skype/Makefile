@@ -46,6 +46,8 @@ mylibs=		${PTHREAD_LIBS}
 # the upstream translations and .pot file are woefully out of date.
 #OPTIONS_DEFINE=	NLS
 
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}
@@ -57,7 +59,7 @@ PLIST_SUB+=	NLS=""
 post-patch:
 	${REINPLACE_CMD} 's/#undef ENABLE_NLS//' ${WRKSRC}/libskype.c
 .else
-PLIST_SUB+=	NLS="@comment"
+PLIST_SUB+=	NLS="@comment "
 .endif
 
 do-build:

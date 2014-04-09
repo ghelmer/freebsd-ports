@@ -3,7 +3,7 @@
 
 PORTNAME=	libtsnnls
 PORTVERSION=	2.3.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://www.jasoncantarella.com/downloads/
 
@@ -11,7 +11,7 @@ MAINTAINER=	tzhuan@gmail.com
 COMMENT=	Fast Sparse Nonnegative Least Squares Solver
 
 GNU_CONFIGURE=	yes
-USE_FORTRAN=	yes
+USES=		fortran
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	GOTOBLAS ATLAS
@@ -50,6 +50,7 @@ BLAS=-lptf77blas
 LAPACK=-lalapack -lptcblas
 .endif
 
-CONFIGURE_ARGS=	--with-blas="${BLAS}" --with-lapack="${LAPACK}"
+CONFIGURE_ARGS+=--with-blas="${BLAS}" --with-lapack="${LAPACK}"
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 .include <bsd.port.mk>

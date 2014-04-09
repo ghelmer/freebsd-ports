@@ -5,8 +5,6 @@
 #
 # Make files or directories 'unique', by adding a prefix or suffix.
 #
-# MAINTAINER:	portmgr@FreeBSD.org
-#
 # Feature:		uniquefiles
 # Usage:		USES=uniquefiles or USES=uniquefiles:ARGS
 # Valid ARGS:	dirs
@@ -64,6 +62,7 @@
 # NOTE:	multiple logical instances are not supported by pkg and the original
 # pkg_tools at the moment.
 #
+# MAINTAINER:	portmgr@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_UNIQUEFILES_MK)
 _INCLUDE_USES_UNIQUEFILES_MK=	yes
@@ -100,7 +99,7 @@ _UNIQUEPKGLIST=		${WRKDIR}/.PLIST.uniquefiles
 
 .if ${UNIQUE_DEFAULT_LINKS} == yes
 _DO_CONDITIONAL_SYMLINK=	\
-	if [ ! -e ${STAGEDIR}${PREFIX}/$${fname} ]; then \
+	if [ ! -e ${STAGEDIR}${PREFIX}/$${fname} -a ! -L ${STAGEDIR}${PREFIX}/$${fname} ]; then \
 		${ECHO_MSG} "  $${newf} --> @$${fname}"; \
 		${LN} -s ${PREFIX}/$${newf} ${STAGEDIR}${PREFIX}/$${fname}; \
 		${ECHO_CMD} LINKED:$${newf}:$${fname} >> ${_UNIQUEPKGLIST}; \
@@ -116,7 +115,7 @@ move-uniquefiles:
 .endif
 .for entry in ${UNIQUE_PREFIX_FILES}
 	@fname=${entry}; \
-	if [ -e ${STAGEDIR}${PREFIX}/$${fname} ]; then \
+	if [ -e ${STAGEDIR}${PREFIX}/$${fname} -o -L ${STAGEDIR}${PREFIX}/$${fname} ]; then \
 		newf=$${fname%/*}/${UNIQUE_PREFIX}$${fname##*/} ; \
 		${ECHO_MSG} "  $${fname} --> $${newf}" ; \
 		${MV} ${STAGEDIR}${PREFIX}/$${fname} ${STAGEDIR}${PREFIX}/$${newf}; \
@@ -129,7 +128,7 @@ move-uniquefiles:
 .endfor
 .if ${UNIQUE_FIND_PREFIX_FILES}
 	@for fname in `${UNIQUE_FIND_PREFIX_FILES}`; do \
-		if [ -e ${STAGEDIR}${PREFIX}/$${fname} ]; then \
+		if [ -e ${STAGEDIR}${PREFIX}/$${fname} -o -L ${STAGEDIR}${PREFIX}/$${fname} ]; then \
 			newf=$${fname%/*}/${UNIQUE_PREFIX}$${fname##*/} ; \
 			${ECHO_MSG} "  $${fname} --> $${newf}" ; \
 			${MV} ${STAGEDIR}${PREFIX}/$${fname} ${STAGEDIR}${PREFIX}/$${newf}; \
@@ -147,7 +146,7 @@ move-uniquefiles:
 .endif
 .for entry in ${UNIQUE_SUFFIX_FILES}
 	@fname=${entry}; \
-	if [ -e ${STAGEDIR}${PREFIX}/$${fname} ]; then \
+	if [ -e ${STAGEDIR}${PREFIX}/$${fname} -o -L ${STAGEDIR}${PREFIX}/$${fname} ]; then \
 		newf=$${fname%/*}/$${fname##*/}${UNIQUE_SUFFIX}; \
 		${ECHO_MSG} "  $${fname} --> $${newf}"; \
 		${MV} ${STAGEDIR}${PREFIX}/$${fname} ${STAGEDIR}${PREFIX}/$${newf}; \
@@ -160,7 +159,7 @@ move-uniquefiles:
 .endfor
 .if ${UNIQUE_FIND_SUFFIX_FILES}
 	@for fname in `${UNIQUE_FIND_SUFFIX_FILES}`; do \
-		if [ -e ${STAGEDIR}${PREFIX}/$${fname} ]; then \
+		if [ -e ${STAGEDIR}${PREFIX}/$${fname} -o -L ${STAGEDIR}${PREFIX}/$${fname} ]; then \
 			newf=$${fname%/*}/$${fname##*/}${UNIQUE_SUFFIX}; \
 			${ECHO_MSG} "  $${fname} --> $${newf}"; \
 			${MV} ${STAGEDIR}${PREFIX}/$${fname} ${STAGEDIR}${PREFIX}/$${newf}; \

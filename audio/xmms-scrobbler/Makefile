@@ -10,7 +10,9 @@ COMMENT=	XMMS plugin for Audioscrobbler.com
 CONFLICTS=	scrobbler-*
 
 MASTERDIR=	${.CURDIR}/../scrobbler
-NO_STAGE=	yes
+
+DEPRECATED=	Abandonware, please consider using multimedia/audacious instead
+EXPIRATION_DATE=	2014-04-27
 
 WITH_XMMS=	yes
 

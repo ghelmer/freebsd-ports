@@ -14,18 +14,17 @@ COMMENT=	Commonclipse is an eclipse plugin for jakarta commons-lang users
 
 RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse
 
+USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-USE_ZIP=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 JAVA_OS=	native
 PLIST_SUB=	DISTNAME=${DISTNAME}
 
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${PREFIX}/eclipse
-	@${CP} -r ${WRKSRC}/plugins ${PREFIX}/eclipse
-	@${CP} -r ${WRKSRC}/features ${PREFIX}/eclipse
+	@${MKDIR} ${STAGEDIR}${PREFIX}/eclipse
+	@${CP} -r ${WRKSRC}/plugins ${STAGEDIR}${PREFIX}/eclipse
+	@${CP} -r ${WRKSRC}/features ${STAGEDIR}${PREFIX}/eclipse
 
 .include <bsd.port.mk>

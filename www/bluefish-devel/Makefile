@@ -21,8 +21,7 @@ INSTALLS_ICONS=	yes
 
 DATADIR=	share/${PORTNAME}-unstable
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+USES=		gmake tar:bzip2
 USE_GNOME=	gnomeprefix gtk20 gnomevfs2 gnomemimedata desktopfileutils
 WANT_GNOME=	yes
 GNU_CONFIGURE=	yes
@@ -35,6 +34,9 @@ CONFIGURE_ARGS=	--with-freedesktop_org-menu=${PREFIX}/share/applications \
 		--with-icon-path=${PREFIX}/share/pixmaps
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if !defined(WITHOUT_WEBLINT)

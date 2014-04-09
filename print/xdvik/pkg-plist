@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 bin/oxdvi
 bin/xdvi
 bin/xdvi-motif
@@ -8,11 +7,3 @@ bin/xdvi-motif
 %%TEXMFDIR%%/xdvi/pixmaps/toolbar2.xpm
 @dirrm %%TEXMFDIR%%/xdvi/pixmaps
 %%TEXMFCONFIGDIR%%/xdvi/XDvi
-%%PORTDOCS%%%%DOCSDIR%%/BUGS
-%%PORTDOCS%%%%DOCSDIR%%/CHANGES
-%%PORTDOCS%%%%DOCSDIR%%/INSTALL
-%%PORTDOCS%%%%DOCSDIR%%/README
-%%PORTDOCS%%%%DOCSDIR%%/README.CVS
-%%PORTDOCS%%%%DOCSDIR%%/README_maintainer
-%%PORTDOCS%%%%DOCSDIR%%/TODO
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

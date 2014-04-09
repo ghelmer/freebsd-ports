@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	awesome
-PORTVERSION=	3.5.2
-PORTREVISION=	3
+PORTVERSION=	3.5.3
 PORTEPOCH=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://awesome.naquadah.org/download/
@@ -20,7 +19,7 @@ BUILD_DEPENDS=	asciidoc:${PORTSDIR}/textproc/asciidoc \
 		xcb-util>=0.3.8:${PORTSDIR}/x11/xcb-util \
 		xproto>=7.0.11:${PORTSDIR}/x11/xproto \
 		${LUA_MODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:${PORTSDIR}/devel/lua-lgi \
-		${LOCALBASE}/share/xml/docbook/4.5/docbookx.dtd:${PORTSDIR}/textproc/docbook-xml-450
+		${LOCALBASE}/share/xml/docbook/4.5:${PORTSDIR}/textproc/docbook-xml
 RUN_DEPENDS=	${LUA_MODLIBDIR}/lgi/corelgilua${LUA_VER_STR}.so:${PORTSDIR}/devel/lua-lgi
 LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
 		libev.so:${PORTSDIR}/devel/libev \
@@ -33,8 +32,7 @@ LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
 		libxcb-icccm.so:${PORTSDIR}/x11/xcb-util-wm \
 		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
-USE_XZ=		yes
-USES=		cmake iconv pkgconfig lua
+USES=		cmake iconv pkgconfig lua tar:xz
 CMAKE_ARGS+=	-DSYSCONFDIR=${PREFIX}/etc
 USE_EFL=	imlib2
 USE_GNOME=	glib20 pango gdkpixbuf2

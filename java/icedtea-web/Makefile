@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	icedtea-web
-PORTVERSION=	1.4.1
-PORTREVISION=	2
+PORTVERSION=	1.4.2
+PORTREVISION=	1
 CATEGORIES=	java www
 MASTER_SITES=	http://icedtea.wildebeest.org/download/source/ \
 		http://icedtea.classpath.org/download/source/

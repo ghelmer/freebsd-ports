@@ -24,16 +24,4 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		HTML::HTML5::Parser.3 \
-		HTML::HTML5::Parser::Error.3 \
-		HTML::HTML5::Parser::UA.3
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-BUILD_DEPENDS+=	p5-HTTP-Tiny>0:${PORTSDIR}/www/p5-HTTP-Tiny
-RUN_DEPENDS+=	p5-HTTP-Tiny>0:${PORTSDIR}/www/p5-HTTP-Tiny
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

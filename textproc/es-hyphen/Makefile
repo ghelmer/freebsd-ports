@@ -3,7 +3,7 @@
 PORTNAME=	hyphen
 PORTVERSION=	2005.11.18
 PORTREVISION=	1
-CATEGORIES=	textproc
+CATEGORIES=	textproc spanish
 MASTER_SITES=	LOCAL/sunpoet/${PORTNAME}/
 PKGNAMEPREFIX=	es-
 DISTNAME=	hyph_es_ES-${PORTVERSION:C/\.//g}
@@ -12,7 +12,7 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Spanish hyphenation rules
 
-EXTRACT_SUFX=	.zip
+USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 

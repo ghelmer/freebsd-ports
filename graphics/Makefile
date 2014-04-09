@@ -62,7 +62,6 @@
     SUBDIR += blender
     SUBDIR += blender-doc
     SUBDIR += bmeps
-    SUBDIR += bmp-rootvis
     SUBDIR += bmp2html
     SUBDIR += box
     SUBDIR += boxer
@@ -145,7 +144,6 @@
     SUBDIR += enblend
     SUBDIR += ender
     SUBDIR += enesim
-    SUBDIR += enfle
     SUBDIR += entangle
     SUBDIR += eog
     SUBDIR += eog-plugins
@@ -248,6 +246,7 @@
     SUBDIR += gdtclft
     SUBDIR += geeqie
     SUBDIR += gegl
+    SUBDIR += generic_image_decoder
     SUBDIR += geoapi
     SUBDIR += geomorph
     SUBDIR += geomview
@@ -264,15 +263,18 @@
     SUBDIR += gimmage
     SUBDIR += gimp
     SUBDIR += gimp-app
+    SUBDIR += gimp-beautify-plugin
     SUBDIR += gimp-data-extras
     SUBDIR += gimp-focusblur-plugin
     SUBDIR += gimp-gap
     SUBDIR += gimp-gmic-plugin
     SUBDIR += gimp-help
+    SUBDIR += gimp-lensfun-plugin
     SUBDIR += gimp-lqr-plugin
     SUBDIR += gimp-manual-html
     SUBDIR += gimp-resynthesizer
     SUBDIR += gimp-save-for-web
+    SUBDIR += gimp-wavelet-decompose-plugin
     SUBDIR += gimpfx-foundry
     SUBDIR += giram
     SUBDIR += gkrellkam2
@@ -281,7 +283,7 @@
     SUBDIR += glew
     SUBDIR += glexcess
     SUBDIR += glfw
-    SUBDIR += glfw-devel
+    SUBDIR += glfw2
     SUBDIR += glide3
     SUBDIR += glitz
     SUBDIR += gliv
@@ -317,7 +319,6 @@
     SUBDIR += grx
     SUBDIR += gscan2pdf
     SUBDIR += gsculpt
-    SUBDIR += gsnapshot
     SUBDIR += gstreamer-plugins-aalib
     SUBDIR += gstreamer-plugins-cairo
     SUBDIR += gstreamer-plugins-gdkpixbuf
@@ -375,6 +376,7 @@
     SUBDIR += imageindex
     SUBDIR += imagesort
     SUBDIR += imageviewer
+    SUBDIR += imageworsener
     SUBDIR += imc
     SUBDIR += imgtops
     SUBDIR += imgv
@@ -409,8 +411,6 @@
     SUBDIR += jpgraph2
     SUBDIR += jpgtn
     SUBDIR += jslice
-    SUBDIR += jumpgis
-    SUBDIR += jumpgis-postgis
     SUBDIR += k3d
     SUBDIR += kamera-kde4
     SUBDIR += kcolorchooser
@@ -421,7 +421,6 @@
     SUBDIR += kdegraphics4-strigi-analyzer
     SUBDIR += kdegraphics4-svgpart
     SUBDIR += kdegraphics4-thumbnailers
-    SUBDIR += kgraphviewer
     SUBDIR += kiconedit
     SUBDIR += kipi-plugin-acquireimages
     SUBDIR += kipi-plugin-advancedslideshow
@@ -440,6 +439,7 @@
     SUBDIR += kipi-plugin-imageviewer
     SUBDIR += kipi-plugin-imgurexport
     SUBDIR += kipi-plugin-ipodexport
+    SUBDIR += kipi-plugin-jalbumexport
     SUBDIR += kipi-plugin-jpeglossless
     SUBDIR += kipi-plugin-kioexport
     SUBDIR += kipi-plugin-kmlexport
@@ -498,6 +498,7 @@
     SUBDIR += libdrm
     SUBDIR += libecwj2
     SUBDIR += libemf
+    SUBDIR += libetonyek
     SUBDIR += libexif
     SUBDIR += libexif-gtk
     SUBDIR += libfpx
@@ -587,6 +588,7 @@
     SUBDIR += mingplot
     SUBDIR += mirage
     SUBDIR += mmrecover
+    SUBDIR += mozjpeg
     SUBDIR += mscgen
     SUBDIR += mtpaint
     SUBDIR += multican
@@ -599,7 +601,6 @@
     SUBDIR += nip2
     SUBDIR += nomacs
     SUBDIR += npretty
-    SUBDIR += nurbs++
     SUBDIR += nvidia-texture-tools
     SUBDIR += ocaml-images
     SUBDIR += ocaml-lablgl
@@ -632,6 +633,7 @@
     SUBDIR += orca
     SUBDIR += osg
     SUBDIR += osg-devel
+    SUBDIR += osgearth
     SUBDIR += oyranos
     SUBDIR += p5-Acme-Steganography-Image-Png
     SUBDIR += p5-CAD-Drawing
@@ -763,9 +765,6 @@
     SUBDIR += php5-ffmpeg
     SUBDIR += php5-gd
     SUBDIR += php5-swfed
-    SUBDIR += php52-exif
-    SUBDIR += php52-gd
-    SUBDIR += php52-ming
     SUBDIR += php53-exif
     SUBDIR += php53-gd
     SUBDIR += php55-exif
@@ -886,6 +885,11 @@
     SUBDIR += qt4-opengl
     SUBDIR += qt4-pixeltool
     SUBDIR += qt4-svg
+    SUBDIR += qt5-graphicaleffects
+    SUBDIR += qt5-imageformats
+    SUBDIR += qt5-opengl
+    SUBDIR += qt5-pixeltool
+    SUBDIR += qt5-svg
     SUBDIR += qtgtl
     SUBDIR += quat
     SUBDIR += quat-gui
@@ -904,15 +908,12 @@
     SUBDIR += repng2jpeg
     SUBDIR += rgbpaint
     SUBDIR += ristretto
-    SUBDIR += ruby-cairo
     SUBDIR += ruby-gd
     SUBDIR += ruby-gdal
-    SUBDIR += ruby-gdk_pixbuf2
     SUBDIR += ruby-image_size
     SUBDIR += ruby-imlib2
     SUBDIR += ruby-ming
     SUBDIR += ruby-rmagick
-    SUBDIR += ruby-rsvg2
     SUBDIR += ruby-svg
     SUBDIR += ruby-tgif
     SUBDIR += rubygem-cairo
@@ -989,6 +990,7 @@
     SUBDIR += swfdec
     SUBDIR += swfmill
     SUBDIR += swftools
+    SUBDIR += sxiv
     SUBDIR += synaesthesia
     SUBDIR += synfigstudio
     SUBDIR += telak
@@ -1027,7 +1029,6 @@
     SUBDIR += whirlgif
     SUBDIR += white_dune
     SUBDIR += wings
-    SUBDIR += wmgrabimage
     SUBDIR += wmicons
     SUBDIR += wxsvg
     SUBDIR += xaos
@@ -1045,22 +1046,6 @@
     SUBDIR += xmedcon
     SUBDIR += xmfract
     SUBDIR += xmlgraphics-commons
-    SUBDIR += xmms-blursk
-    SUBDIR += xmms-dancingparticles
-    SUBDIR += xmms-dflowers
-    SUBDIR += xmms-dscope
-    SUBDIR += xmms-dspectogram
-    SUBDIR += xmms-dspectral
-    SUBDIR += xmms-finespectrum
-    SUBDIR += xmms-fishmatic
-    SUBDIR += xmms-gdancer
-    SUBDIR += xmms-iris
-    SUBDIR += xmms-jess
-    SUBDIR += xmms-nebulus
-    SUBDIR += xmms-paranormal
-    SUBDIR += xmms-scivi
-    SUBDIR += xmms-vumeter
-    SUBDIR += xmms-waterfall
     SUBDIR += xmorph
     SUBDIR += xmountains
     SUBDIR += xnview

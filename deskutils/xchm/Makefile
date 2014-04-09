@@ -3,6 +3,7 @@
 
 PORTNAME=	xchm
 PORTVERSION=	1.23
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/xCHM/${PORTNAME}-${PORTVERSION}
 
@@ -13,22 +14,15 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libchm.so:${PORTSDIR}/misc/chmlib
 
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
+NLS_USES=	gettext
+
 GNU_CONFIGURE=	yes
-USE_WX=		2.6+
+USE_WX=		2.8+
 WX_UNICODE=	yes
 WX_CONF_ARGS=	absolute
 LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
 CPPFLAGS+=	-I${LOCALBASE}/include
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=	--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
 
 .include <bsd.port.mk>

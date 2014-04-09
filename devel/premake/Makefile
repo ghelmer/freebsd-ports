@@ -11,24 +11,19 @@ DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 MAINTAINER=	lippe@FreeBSD.org
 COMMENT=	Writes build scripts
 
+OPTIONS_DEFINE=	DOCS
+
 WRKSRC=		${WRKDIR}/Premake-${PORTVERSION}
 
-USE_DOS2UNIX=	yes
-USE_ZIP=	yes
-USE_GMAKE=	yes
+USES=		gmake dos2unix zip
 
 PLIST_FILES=	bin/premake
 
 PORTDOCS=	CHANGES.txt LICENSE.txt README.txt
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
 do-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${DOCSDIR}
-.endif
-	@${INSTALL_PROGRAM} ${WRKSRC}/bin/premake ${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_PROGRAM} ${WRKSRC}/bin/premake ${STAGEDIR}${PREFIX}/bin
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	opencl
-PORTVERSION=	1.2
-PORTREVISION=	6
+PORTVERSION=	2.0
 CATEGORIES=	devel
 MASTER_SITES=	http://www.khronos.org/registry/cl/api/${PORTVERSION}/
 DISTFILES=	opencl.h cl_platform.h cl.h cl_ext.h cl_dx9_media_sharing.h \
@@ -12,7 +11,12 @@ DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=
 
 MAINTAINER=	ohartman@zedat.fu-berlin.de
-COMMENT=	Open Computing Language (OpenCL) specifications V1.2 (header files)
+COMMENT=	Open Computing Language (OpenCL) specifications V2.0 (header files)
+
+LICENSE=	unknown
+LICENSE_NAME=	BSD-esque license agreement
+LICENSE_TEXT=	License is included in each of the header files of this port
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS=	opencl-1.[0-1]
 

@@ -7,18 +7,22 @@ CATEGORIES=	net
 MASTER_SITES=	http://www.frenchfries.net/paul/tcpstat/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A program to report various network statistics
+COMMENT=	Program to report various network statistics
+
+LICENSE=	BSD2CLAUSE
 
 GNU_CONFIGURE=	yes
-NO_STAGE=	yes
 
-MAN1=		tcpstat.1 tcpprof.1
-DOCS=		AUTHORS ChangeLog LICENSE README doc/Tips_and_Tricks.txt
+PLIST_FILES=	bin/tcpstat bin/tcpprof \
+		man/man1/tcpprof.1.gz man/man1/tcpstat.1.gz
 
-.if !defined(NOPORTDOCS)
+PORTDOCS=	*
+
+DOCS=		AUTHORS ChangeLog README doc/Tips_and_Tricks.txt
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-	@${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

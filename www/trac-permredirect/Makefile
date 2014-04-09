@@ -16,7 +16,7 @@ RUN_DEPENDS=	tracd:${PORTSDIR}/www/trac
 
 FETCH_BEFORE_ARGS=	-o ${DISTFILES}
 REV=			13353
-USE_ZIP=		yes
+USES=			zip
 USE_PYTHON=		yes
 USE_PYDISTUTILS=	easy_install
 PYDISTUTILS_PKGNAME=	TracPermRedirect
@@ -25,5 +25,4 @@ WRKSRC=			${WRKDIR}/${PORTNAME}plugin/tags/${PORTVERSION}
 
 PLIST_FILES=		%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

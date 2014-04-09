@@ -3,7 +3,7 @@
 
 PORTNAME=	firebird
 PORTVERSION=	2.0.7
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}-Release/
 PKGNAMESUFFIX?=	${PORTVERSION:R:S/.//}-server
@@ -47,6 +47,9 @@ CONFLICTS+=	firebird-client-2.1* firebird-server-2.1* \
 		firebird-client-2.5* firebird-server-2.5*
 
 INSTALL_FB=	${INSTALL} ${COPY} -g firebird
+
+DEPRECATED=	firebird20 has been discontinued. Use firebird21-* or firebird25-* instead
+EXPIRATION_DATE=2014-04-23
 
 IPCCHECK!=	ipcrm -q 0 2>&1 || true
 .if ${IPCCHECK:Mimplemented}

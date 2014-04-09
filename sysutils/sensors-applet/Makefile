@@ -3,15 +3,18 @@
 
 PORTNAME=	sensors-applet
 PORTVERSION=	1.6.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/GNOME%20Sensors%20Applet%20Version%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A GNOME applet displaying hardware sensor values
 
-RUN_DEPENDS=	mbmon:${PORTSDIR}/sysutils/mbmon \
+RUN_DEPENDS=	mbmon:${PORTSDIR}/sysutils/xmbmon \
 		smartctl:${PORTSDIR}/sysutils/smartmontools
+
+DEPRECATED=	gnome-panel 2.x will be updated in the GNOME 3 import 
+EXPIRATION_DATE=2014-04-10
 
 USES=		pathfix pkgconfig
 USE_GNOME=	gnomeprefix intlhack gnomepanel libgnomeui

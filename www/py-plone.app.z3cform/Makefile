@@ -2,9 +2,12 @@
 
 PORTNAME=	plone.app.z3cform
 PORTVERSION=	0.7.4
+PORTREVISION=	2
 CATEGORIES=	www python zope
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+EXTRACT_SUFX=	.zip
+DIST_SUBDIR=	zope
 
 MAINTAINER=	zope@FreeBSD.org
 COMMENT=	Collection of widgets, templates for use with z3c.form and Plone
@@ -20,12 +23,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}collective.z3cform.datetimewidget>=0.1:${POR
 		${PYTHON_PKGNAMEPREFIX}zope.interface>0:${PORTSDIR}/devel/py-zope.interface \
 		${PYTHON_PKGNAMEPREFIX}zope.traversing>0:${PORTSDIR}/devel/py-zope.traversing
 
-DIST_SUBDIR=	zope
-USE_PYTHON=	yes
-USE_PYDISTUTILS=easy_install
-USE_ZIP=	yes
-USES=		zope
-
-NO_STAGE=	yes
+USE_PYTHON=		yes
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
+USES=			zope
 
 .include <bsd.port.mk>

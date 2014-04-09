@@ -2,7 +2,7 @@
 # $FreeBSD$
 #   $MCom: ports/trunk/lang/vala-vapigen/Makefile 18374 2013-04-15 09:25:19Z kwm $
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel gnome
 PKGNAMESUFFIX=	-vapigen
 
@@ -17,5 +17,4 @@ PLIST=		${.CURDIR}/pkg-plist
 
 VALA_SLAVE=	yes
 
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

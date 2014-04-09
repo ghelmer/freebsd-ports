@@ -3,6 +3,7 @@
 
 PORTNAME=	gmpy
 PORTVERSION=	1.17
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,13 +13,11 @@ COMMENT=	Python Extension that Wraps the GMP Library
 
 LIB_DEPENDS=	gmp:${PORTSDIR}/math/gmp
 
-USE_ZIP=	yes
+USES=		zip
 USE_PYTHON=	yes
 USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/gmpy.so
-
-NO_STAGE=	yes
 post-extract:
 	${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' \
 		${WRKSRC}/setup.py

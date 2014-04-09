@@ -2,8 +2,6 @@
 #
 # Provide support for CMake based projects
 #
-# MAINTAINER: kde@FreeBSD.org
-#
 # Feature:		cmake
 # Usage:		USES=cmake or USES=cmake:ARGS
 # Valid ARGS:		outsource
@@ -18,6 +16,7 @@
 #			Default: not set, until BATCH or PACKAGE_BUILDING is defined
 # CMAKE_NOCOLOR		- Disable colour build output
 #			Default: not set, until BATCH or PACKAGE_BUILDING is defined
+# CMAKE_NINJA		- Use ninja instead of make(1)
 #
 # Variables for ports:
 # CMAKE_ENV		- Environment passed to cmake.
@@ -35,6 +34,8 @@
 #			Debug otherwise
 # CMAKE_SOURCE_PATH	- Path to the source directory
 #			Default: ${WRKSRC}
+#
+# MAINTAINER: kde@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_CMAKE_MK)
 _INCLUDE_USES_CMAKE_MK=	yes
@@ -97,6 +98,10 @@ CMAKE_ARGS+=		-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 .endif
 .if defined(CMAKE_NOCOLOR)
 CMAKE_ARGS+=		-DCMAKE_COLOR_MAKEFILE:BOOL=OFF
+.endif
+
+.if defined(CMAKE_NINJA)
+.include "${USESDIR}/ninja.mk"
 .endif
 
 _CMAKE_MSG=		"===>  Performing in-source build"

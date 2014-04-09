@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dd_rescue
-PORTVERSION=	1.32
+PORTVERSION=	1.40
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.garloff.de/kurt/linux/ddrescue/ \
 		http://fossies.org/unix/privat/
@@ -15,11 +15,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
 USE_CSTD=	gnu89
+USE_AUTOTOOLS=	autoconf autoheader
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=	default
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 do-install:

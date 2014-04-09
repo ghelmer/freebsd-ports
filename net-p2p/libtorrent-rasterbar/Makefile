@@ -2,27 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	libtorrent-rasterbar
-PORTVERSION=	0.16.13
-PORTREVISION=	2
+PORTVERSION=	0.16.16
 CATEGORIES?=	net-p2p ipv6
-MASTER_SITES=	GOOGLE_CODE
-PROJECTHOST=	libtorrent
+MASTER_SITES=	SF/${PORTNAME:S/-rasterbar//}/${PORTNAME:S/-rasterbar//}/
 
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT?=	C++ library implementing a BitTorrent client
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS?=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
 		libGeoIP.so:${PORTSDIR}/net/GeoIP
 
-USES=		compiler:c++11-lib pathfix pkgconfig iconv
+USES=		compiler:c++11-lang pathfix pkgconfig iconv
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=	--disable-debug \
-		--disable-static \
+CONFIGURE_ARGS=	--disable-static \
 		--enable-dht \
 		--enable-encryption \
 		--enable-pool-allocators \
@@ -34,20 +31,26 @@ CONFIGURE_ARGS=	--disable-debug \
 		--with-libiconv \
 		--with-openssl=${OPENSSLBASE}
 
+SHLIB_VER=	7
+PLIST_SUB+=	SHLIB_VER="${SHLIB_VER}"
+
 SUB_FILES=	pkg-message
 
 PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	AUTHORS README
+DOC_FILES1=	AUTHORS ChangeLog README
 
 DOCSRCDIR2=	${WRKSRC}/docs
 DOCSDIR2=	${DOCSDIR}/docs
-DOC_FILES2=	*.png *.jpg *.gif *.html *.rst *.css
+DOC_FILES2=	*
 
 PORTEXAMPLES=	*.cpp
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
+OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES STRIP
+OPTIONS_DEFAULT=	STRIP
+
+DEBUG_CONFIGURE_ENABLE=	debug
 
 .include <bsd.port.options.mk>
 
@@ -63,13 +66,24 @@ post-patch:
 		${WRKSRC}/Jamfile
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
-	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+.if ${PORT_OPTIONS:MSTRIP}
+	${STRIP_CMD} \
+	${STAGEDIR}${PREFIX}/lib/libtorrent-rasterbar.so.${SHLIB_VER}
+.else
+	${STRIP_CMD} \
+	${STAGEDIR}${PREFIX}/lib/${PYTHON_VERSION}/site-packages/libtorrent.so
+.endif
 
+.if ${PORT_OPTIONS:MDOCS}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${DOCSDIR2}
+	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+.endif
+
+.if ${PORT_OPTIONS:MEXAMPLES}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${PORTEXAMPLES:S|^|${WRKSRC}/examples/|} \
 		${STAGEDIR}${EXAMPLESDIR}
+.endif
 
 .include <bsd.port.mk>

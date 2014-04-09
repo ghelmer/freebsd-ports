@@ -40,7 +40,7 @@ LICENSE_PERMS_JYTHON=	auto-accept
 TARGET_DIR=	${STAGEDIR}${PREFIX}/${PORTNAME}
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
-USE_ZIP=	yes
+USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-r${PLUS_REV}-PLUS
@@ -58,6 +58,8 @@ do-install:
 	${LN} -sf ../${PORTNAME}/bin/openjump ${STAGEDIR}${PREFIX}/bin/openjump
 	${INSTALL_DATA} ${WRKSRC}/bin/default-plugins.xml ${TARGET_DIR}/bin/
 	${INSTALL_DATA} ${WRKSRC}/bin/log4j.xml ${TARGET_DIR}/bin/
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

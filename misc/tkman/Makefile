@@ -10,6 +10,9 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tcl/Tk based manual browser
 
+DEPRECATED=	Depends on expired textproc/glimpse
+EXPIRATION_DATE=2014-04-10
+
 RUN_DEPENDS=	glimpse:${PORTSDIR}/textproc/glimpse \
 		rman:${PORTSDIR}/textproc/rman
 
@@ -21,6 +24,8 @@ MAKE_ARGS=	WISH="${WISH}" \
 		masterbin="\"/usr/bin ${PREFIX}/bin ${LOCALBASE}/bin\"" \
 		manformat="{groff -Tlatin1 -te -mandoc}" \
 		manprint="{groff -mandoc -Tps -te -l}"
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

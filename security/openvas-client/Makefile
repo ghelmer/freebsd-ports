@@ -8,15 +8,14 @@ CATEGORIES=	security
 MASTER_SITES=	http://wald.intevation.org/frs/download.php/595/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A GUI client for OpenVAS
-
-MAN1=		OpenVAS-Client.1 openvasclient-mkcert.1
+COMMENT=	GUI client for OpenVAS
 
 GNU_CONFIGURE=	yes
 USES=		gmake pkgconfig
 USE_GNOME=	gtk20
 
-NO_STAGE=	yes
+MAKE_JOBS_UNSAFE=yes
+
 .include "${.CURDIR}/../../security/openvas-libraries/Makefile.common"
 
 .include <bsd.port.mk>

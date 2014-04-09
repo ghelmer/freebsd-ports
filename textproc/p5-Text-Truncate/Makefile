@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Text-Truncate
-PORTVERSION=	1.04
+PORTVERSION=	1.06
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,7 +13,4 @@ COMMENT=	Perl module with simple string truncating routine
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		Text::Truncate.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	gaupol
 PORTVERSION=	0.19.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia python
 MASTER_SITES=	http://download.gna.org/gaupol/0.19/ \
 		http://www.c-s.li/ports/
@@ -26,6 +26,9 @@ INSTALLS_ICONS=	yes
 MAN1=		${PORTNAME}.1
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

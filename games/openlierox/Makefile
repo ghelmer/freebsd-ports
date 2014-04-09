@@ -3,6 +3,7 @@
 
 PORTNAME=	openlierox
 DISTVERSION=	0.58_rc3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/OpenLieroX%20${DISTVERSION:C/_/%20/}
@@ -60,7 +61,7 @@ post-patch:
 		${REINPLACE_CMD} -e '/include.*curl\/types.h/ d'
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/openliero ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/openlierox ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/share/openlierox-openlierox.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/
 	${INSTALL_DATA} ${WRKSRC}/share/OpenLieroX.svg \

@@ -11,12 +11,12 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/./_/g}-lib
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	High performance image processing libraries for Java
 
+USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:S/./_/g}
 NO_BUILD=	yes
 
-USE_ZIP=	yes
 SUB_FILES=	pkg-message
 SUB_LIST=	TARGET_DIR=${TARGET_DIR}
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -34,23 +34,15 @@ PORTDOCS=	\
 		LICENSE-jai.txt \
 		THIRDPARTYLICENSEREADME-jai.txt
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 # documentation
-.ifndef(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-.for file in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${file} ${DOCSDIR}
-.endfor
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 # jars
-	@${MKDIR} ${TARGET_DIR}
-	@${INSTALL_DATA} ${WRKSRC}/lib/jai_codec.jar ${TARGET_DIR}
-	@${INSTALL_DATA} ${WRKSRC}/lib/jai_core.jar ${TARGET_DIR}
+	@${MKDIR} ${STAGEDIR}${TARGET_DIR}
+	${INSTALL_DATA} ${WRKSRC}/lib/jai_codec.jar ${STAGEDIR}${TARGET_DIR}
+	${INSTALL_DATA} ${WRKSRC}/lib/jai_core.jar ${STAGEDIR}${TARGET_DIR}
 
-post-install:
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

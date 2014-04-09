@@ -15,6 +15,8 @@ COMMENT=	Flexible IDL Compiler Kit
 LICENSE=	BSD GPLv2
 LICENSE_COMB=	multi
 
+DEPRECATED=	Unmaintained since 2001
+EXPIRATION_DATE=	2014-04-12
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USE_GMAKE=	yes
@@ -22,6 +24,9 @@ GNU_CONFIGURE=	yes
 MAKEFILE=	GNUmakefile
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-patch:

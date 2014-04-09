@@ -5,18 +5,20 @@ PORTNAME=	hsetroot
 PORTVERSION=	1.0.2
 PORTREVISION=	10
 CATEGORIES=	graphics
-MASTER_SITES=	http://cdn.thegraveyard.org/releases/hsetroot/
+MASTER_SITES=	http://cdn.thegraveyard.org/releases/hsetroot/ \
+		http://www.skysmurf.nl/comp/FreeBSD/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	freebsd@skysmurf.nl
 COMMENT=	Wallpaper manipulation utility for X11
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 USE_EFL=	imlib2
+USE_XORG=	x11
+LDFLAGS+=	-lX11
 
 PLIST_FILES=	bin/hsetroot
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

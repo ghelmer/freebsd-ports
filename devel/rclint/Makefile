@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rclint
-PORTVERSION=	0.0.6
+PORTVERSION=	0.1.0
 CATEGORIES=	devel textproc python
 MASTER_SITES=	http://www.bayofrum.net/dist/rclint/	\
 		LOCAL/crees/
@@ -12,8 +12,9 @@ COMMENT=	Checks rc scripts for style and common errors
 LICENSE=	BSD2CLAUSE
 
 NO_BUILD=	yes
-USE_PYTHON=	yes
+USE_PYTHON_RUN=	yes
 SUB_FILES=	${PORTNAME}
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	${PORTNAME}.py errors.en

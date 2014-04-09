@@ -4,6 +4,7 @@
     COMMENT = Internet Relay Chat utilities
 
     SUBDIR += anope
+    SUBDIR += atheme-services
     SUBDIR += bip
     SUBDIR += bitchx
     SUBDIR += bitlbee
@@ -16,7 +17,6 @@
     SUBDIR += cwirc
     SUBDIR += dancer
     SUBDIR += darkbot
-    SUBDIR += dcc
     SUBDIR += dircproxy
     SUBDIR += dxirc
     SUBDIR += eggdrop
@@ -42,8 +42,6 @@
     SUBDIR += ircd-ratbox
     SUBDIR += ircd-ratbox-devel
     SUBDIR += ircd-ru
-    SUBDIR += irchat-pj-emacs21
-    SUBDIR += irchat-pj-xemacs21-mule
     SUBDIR += ircproxy
     SUBDIR += ircservices
     SUBDIR += iroffer
@@ -95,8 +93,6 @@
     SUBDIR += pircbot
     SUBDIR += pisg
     SUBDIR += psybnc
-    SUBDIR += pure-emacs21
-    SUBDIR += pure-xemacs21-mule
     SUBDIR += py-fishcrypt
     SUBDIR += py-gozerbot
     SUBDIR += py-irc
@@ -127,7 +123,6 @@
     SUBDIR += thales
     SUBDIR += tircd
     SUBDIR += tircproxy
-    SUBDIR += trickyirc
     SUBDIR += undernet-ircu
     SUBDIR += unreal
     SUBDIR += weechat

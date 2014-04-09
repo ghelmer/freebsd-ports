@@ -14,18 +14,13 @@ RUN_DEPENDS=	fc-cache:${PORTSDIR}/x11-fonts/fontconfig
 
 FETCH_BEFORE_ARGS=	-o ${DISTFILES}
 NO_BUILD=	yes
-USE_ZIP=	yes
+USES=		zip
 
 FONTSDIR=	lib/X11/fonts/Myanmar
 PLIST_SUB=	FONTSDIR=${FONTSDIR}
 
-NO_STAGE=	yes
 do-install:
-	${MKDIR} ${PREFIX}/${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.ttf ${PREFIX}/${FONTSDIR}
-
-post-install:
-	@${ECHO_MSG} "==> Running fc-cache"
-	@-${LOCALBASE}/bin/fc-cache -f -v ${PREFIX}/${FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${PREFIX}/${FONTSDIR}
 
 .include <bsd.port.mk>

@@ -10,7 +10,7 @@ MASTER_SITE_SUBDIR=	${PORTNAME:S,commons-,,}
 PKGNAMEPREFIX=	jakarta-
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	hq@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XML-to-Java-object mapping utility package
 
 BUILD_DEPENDS=	${JAR_DEPENDS}
@@ -20,6 +20,7 @@ USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 
 USE_ANT=	yes
+MAKE_ENV=	ANT_INCLUDE_SHARED_JARS=YES
 MAKE_ARGS=	-Dcommons-beanutils.api=${COMMONS_BEANUTILS_API} \
 		-Dcommons-collections.api=${COMMONS_COLLECTIONS_API} \
 		-Dcommons-logging.api=${COMMONS_LOGGING_API} \

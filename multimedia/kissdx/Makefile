@@ -3,11 +3,11 @@
 
 PORTNAME=	kissdx
 PORTVERSION=	0.13.10a
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	multimedia net
 MASTER_SITES=	http://paragi.dk/kiss/
 
-MAINTAINER=	freebsd@paragi.dk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multimedia streaming server for KiSS/Linksys player
 
 LICENSE=	GPLv2
@@ -30,6 +30,9 @@ PLIST_FILES=	etc/kissdx.conf sbin/kissdx sbin/kissd-pretrigger \
 PORTDOCS=	README
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-patch:

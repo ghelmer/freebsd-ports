@@ -12,6 +12,8 @@ COMMENT=	Profiling library/utilities for C/C++ programs
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
+BROKEN=		Missing header
+
 USE_BINUTILS=	yes
 USE_AUTOTOOLS=	libtoolize aclocal automake autoconf
 LIBTOOLIZE_ARGS=--force
@@ -27,6 +29,9 @@ STRIP=		# none
 INFO=		libfc
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	NLS
+
 .include <bsd.port.options.mk>
 
 # should be same as binutils

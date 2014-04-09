@@ -1,7 +1,7 @@
 # Created by: Marc G. Fournier <scrappy@FreeBSD.org>
 # $FreeBSD$
 
-DISTVERSION?=	9.0.16
+DISTVERSION?=	9.0.17
 PORTREVISION=	0
 PKGNAMESUFFIX?=	${DISTVERSION:R:S/.//}${COMPONENT}
 
@@ -15,13 +15,4 @@ BUILD_DIRS?=	src/timezone src/backend src/backend/utils/mb/conversion_procs \
 INSTALL_DIRS?=	${BUILD_DIRS}
 COMPONENT?=	-server
 
-.if defined(CLIENT_ONLY)
-MAN1=		# no MAN1 for 9.0 only
-
-MAN3=		# no MAN3 for 9.0 only
-
-MAN7=		CREATE_CONSTRAINT_TRIGGER.7
-.endif
-
-NO_STAGE=	yes
 .include "${.CURDIR}/../postgresql91-server/Makefile"

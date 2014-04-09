@@ -31,14 +31,11 @@ post-patch:
 		${WRKSRC}/Makefile.in
 
 post-install:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/sample.weexrc ${STAGEDIR}${EXAMPLESDIR}
-
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/doc/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

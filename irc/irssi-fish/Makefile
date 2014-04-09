@@ -4,7 +4,8 @@
 PORTNAME=	irssi-fish
 DISTVERSION=	1.00-RC5
 CATEGORIES=	irc security
-MASTER_SITES=	http://fish.secure.la/irssi/
+MASTER_SITES=	http://fish.secure.la/irssi/ \
+		http://mirror.shatow.net/freebsd/${PORTNAME}/
 DISTNAME=	FiSH-irssi.v${DISTVERSION}-source
 
 MAINTAINER=	ashish@FreeBSD.org
@@ -15,7 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/glib-2.0/glib.h:${PORTSDIR}/devel/glib20 \
 		${LOCALBASE}/include/irssi/src/common.h:${PORTSDIR}/irc/irssi
 RUN_DEPENDS=	irssi:${PORTSDIR}/irc/irssi
 
-USE_ZIP=	yes
+USES=		zip
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/irssi/modules/libfish.so
@@ -34,6 +35,7 @@ post-patch:
 	@${REINPLACE_CMD} -E \
 		-e 's|gcc|${CC}|' \
 		-e 's|-O2|${CFLAGS}|' \
+		-e 's|-static||' \
 		-e 's|-shared|-shared -fPIC -DPIC|' \
 		-e 's|[$$][(]HOME[)]/glib-1.2.10|${LOCALBASE}/include/glib-2.0|' \
 		-e 's|[$$][(]HOME[)]/irssi-0.8.9|${LOCALBASE}/include/irssi|' \

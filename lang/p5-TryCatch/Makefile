@@ -7,7 +7,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:ASH
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	milki@rescomp.berkeley.edu
+MAINTAINER=	milki@FreeBSD.org
 COMMENT=	First class try catch semantics for Perl, without source filters
 
 LICENSE=	ART10 GPLv1
@@ -33,9 +33,6 @@ AUTHOR_DESC=	Include dependencies for AUTHORING
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		TryCatch.3
-
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MAUTHOR}

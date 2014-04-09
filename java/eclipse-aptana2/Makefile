@@ -17,16 +17,15 @@ RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:${PORTSDIR}/java/eclipse
 
 CONFLICTS_INSTALL=	eclipse-aptana-1*
 
+USES=		zip
 JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 USE_JAVA=	yes
-USE_ZIP=	yes
 
-NO_STAGE=	yes
 do-install:
-	@(cd ${WRKDIR} && ${CP} -R features ${PREFIX}/lib/eclipse && ${CP} -R plugins ${PREFIX}/lib/eclipse;)
+	@(cd ${WRKDIR} && ${COPYTREE_SHARE} "features plugins" ${STAGEDIR}${PREFIX}/lib/eclipse)
 
 .include <bsd.port.mk>

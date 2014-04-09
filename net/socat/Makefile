@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	socat
-PORTVERSION=	1.7.2.2
-PORTREVISION=	1
+PORTVERSION=	1.7.2.4
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.dest-unreach.org/socat/download/ \
 		CRITICAL
@@ -13,8 +12,8 @@ COMMENT=	Multipurpose relay and more
 
 LICENSE=	GPLv2
 
+USES=		compiler tar:bzip2
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
 USE_RC_SUBR=	socat
 USE_OPENSSL=	yes
 
@@ -25,16 +24,14 @@ PORTDOCS=	EXAMPLES README SECURITY FAQ
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
 .if defined(WITH_OPENSSL_PORT)
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 .endif
 
-CCISCLANG!=	${CC} --version
-
-.if !empty(CCISCLANG:M*clang*)
+.if ${COMPILER_TYPE} == "clang"
 CFLAGS+=	-Wno-unused-comparison
 .endif
 
@@ -43,13 +40,11 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
 	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .if ${ARCH} == "arm"
 BROKEN=		Does not configure on arm
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

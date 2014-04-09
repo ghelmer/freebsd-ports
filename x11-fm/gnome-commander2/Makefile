@@ -14,6 +14,8 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	sylvio@FreeBSD.org
 COMMENT=	File manager for Gnome2
 
+BROKEN=		Fails to configure
+
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	id3-3.8.3:${PORTSDIR}/audio/id3lib \
@@ -22,9 +24,8 @@ LIB_DEPENDS=	id3-3.8.3:${PORTSDIR}/audio/id3lib \
 
 CONFLICTS=	gnome-commander-[0-9]*
 
-USE_XZ=		yes
+USES=		tar:xz gmake
 USE_GNOME=	gnomedocutils gnomehack gnomeprefix intlhack libgnomeui
-USE_GMAKE=	yes
 USE_LDCONFIG=	yes
 USE_AUTOTOOLS=	libtool autoconf:env aclocal:env automake:env
 GNU_CONFIGURE=	yes
@@ -37,6 +38,8 @@ MAN1=		gnome-commander.1
 NO_STAGE=	yes
 pre-configure:
 	cd ${WRKSRC} && ${SETENV} ${AUTOTOOLS_ENV} ${AUTORECONF} -W none
+
+OPTIONS_DEFINE=	NLS
 
 .include <bsd.port.options.mk>
 

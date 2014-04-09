@@ -3,7 +3,7 @@
 
 PORTNAME=	netcdf
 PORTVERSION=	0.6.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science ruby
 MASTER_SITES=	http://ruby.gfd-dennou.org/products/ruby-netcdf/release/ \
 		http://dennou-h.gfd-dennou.org/library/ruby/products/ruby-netcdf/release/ \
@@ -24,15 +24,12 @@ USE_RUBY_EXTCONF=	yes
 
 DOCS=		ChangeLog ToDo doc/*
 
-NO_STAGE=	yes
 post-install:
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${RUBY_MODEXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/demo/* ${RUBY_MODEXAMPLESDIR}/
-	${MKDIR} ${RUBY_MODDOCDIR}
+	${MKDIR} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/demo/* ${STAGEDIR}${RUBY_MODEXAMPLESDIR}/
+	${MKDIR} ${STAGEDIR}${RUBY_MODDOCDIR}
 .for f in ${DOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${RUBY_MODDOCDIR}/
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/
 .endfor
-.endif
 
 .include <bsd.port.mk>

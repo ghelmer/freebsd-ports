@@ -15,10 +15,8 @@ COMMENT=	Cross-compiler for 6502-based systems, includes 65816 assembler
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		shebangfix perl5
-USE_BZIP2=	yes
+USES=		gmake perl5 shebangfix tar:bzip2
 USE_PERL5=	build
-USE_GMAKE=	yes
 MAKEFILE=	${WRKSRC}/make/gcc.mak
 MAKE_JOBS_UNSAFE=yes
 SHEBANG_FILES=	src/ca65html/ca65html \
@@ -27,39 +25,36 @@ SHEBANG_FILES=	src/ca65html/ca65html \
 
 SUB_FILES=	pkg-message
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include <bsd.port.options.mk>
 
 post-patch:
 	@${FIND} ${WRKSRC} -name "gcc.mak" | ${XARGS} ${REINPLACE_CMD} -e \
 		'/gcc/s|^CC|#CC| ; \
 		/-O2/s|^CFLAGS|#CFLAGS|'
-	@${REINPLACE_CMD} -e \
-		'/^prefix/s|=.*|= $${PREFIX}| ; \
-		 /^docdir/s|=.*|=| ; \
-		 /^CC65_DOC/s|=.*|=| ;  \
+	@${REINPLACE_CMD} -E -e '/^prefix/s|=.*|= $${PREFIX}| ; \
+		 /^(docdir|CC65_DOC)/ s|=.*|=| ; \
 		 /^INSTALL_DATA/s|=.*|= $${BSD_INSTALL_DATA}| ; \
 		 /^INSTALL_PROG/s|=.*|= $${BSD_INSTALL_SCRIPT}| ; \
 		 /^INSTALL_STRIP/s|=.*|= $${BSD_INSTALL_PROGRAM}| ; \
-		 /^all:/s|docs|| ; \
-		 /^install:/s|install-docs||' ${WRKSRC}/make/gcc.mak
+		 /^all:/s|docs|| ; /^install:/s|install-docs|| ; \
+		 s|MKDIR) |&-p $$(DESTDIR)|g ; \
+		 /INSTALL_(PROG|STRIP)/ s,bindir),DESTDIR)$$(&,g ; \
+		 /INSTALL_DATA/ s,(CA|CC|LD)65_(CFG|INC|HOME|LIB|OBJ),DESTDIR)$$(&,g' \
+		${WRKSRC}/make/gcc.mak
 
 # XXX: gmake>=3.82 hack:  beats the hell out of me.  Quick fix.
 pre-install:
-	@${MKDIR} ${PREFIX}/lib/cc65/tgi
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/cc65/tgi
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in BUGS CREDITS compile.txt internal.txt newvers.txt readme.1st
-	${INSTALL_DATA} ${WRKSRC}/doc/${i} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-	${INSTALL_DATA} ${WRKSRC}/src/ca65/macpack/*.mac ${DOCSDIR}
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
-	@(cd ${WRKSRC}/samples && ${COPYTREE_SHARE} . ${EXAMPLESDIR})
-.endif
-	@${CAT} ${PKGMESSAGE}
+	${INSTALL_DATA} ${WRKSRC}/src/ca65/macpack/*.mac ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC}/samples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

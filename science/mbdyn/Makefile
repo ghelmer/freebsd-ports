@@ -3,7 +3,7 @@
 
 PORTNAME=	mbdyn
 PORTVERSION=	1.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	http://www.aero.polimi.it/~masarati/Download/mbdyn/
 
@@ -16,8 +16,7 @@ LIB_DEPENDS=	arpack:${PORTSDIR}/math/arpack \
 		umfpack:${PORTSDIR}/math/suitesparse
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-USE_FORTRAN=	yes
+USES=		fortran gmake
 MAN1=		mbdyn.1
 CPPFLAGS+=	-fpermissive -I${LOCALBASE}/include/suitesparse
 LDFLAGS+=	-L${LOCALBASE}/lib

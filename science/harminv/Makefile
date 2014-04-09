@@ -3,16 +3,15 @@
 
 PORTNAME=	harminv
 PORTVERSION=	1.3.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	http://ab-initio.mit.edu/harminv/
 
 MAINTAINER=	devel@stasyan.com
 COMMENT=	Solver of harmonic inversion
 
-USE_GMAKE=	yes
+USES=		fortran gmake
 GNU_CONFIGURE=	yes
-USE_FORTRAN=	yes
 USE_GCC=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LD_LIBRARY_PATH=	-L${LOCALBASE}/lib -L/usr/lib

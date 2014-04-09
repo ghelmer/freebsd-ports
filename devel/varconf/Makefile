@@ -2,31 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	varconf
-PORTVERSION=	1.0.0
+PORTVERSION=	1.0.1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/worldforge/${PORTNAME}%20%28config%20lib%29/${PORTVERSION}
 
 MAINTAINER=	oliver@FreeBSD.org
-COMMENT=	A Configuration System for the STAGE Server
+COMMENT=	Configuration System for the STAGE Server
 
-LIB_DEPENDS=	sigc-2.0:${PORTSDIR}/devel/libsigc++20
+LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20
+
+OPTIONS_DEFINE=	DOCS
 
 GNU_CONFIGURE=	yes
 USE_BZIP2=	yes
-USES=	pathfix pkgconfig
+USES=		libtool pathfix pkgconfig compiler:c++11-lib
 USE_LDCONFIG=	yes
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|: install-docDATA|:|g' ${WRKSRC}/Makefile.in
+INSTALL_TARGET=	install-strip
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for file in README COPYING AUTHORS THANKS NEWS
-	@${INSTALL_DATA} ${WRKSRC}/${file} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
+
 .include <bsd.port.mk>

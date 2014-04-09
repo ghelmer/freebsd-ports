@@ -3,6 +3,7 @@
 
 PORTNAME=	lyx
 PORTVERSION=	${MAJOR_VERSION}.${MINOR_VERSION}
+PORTREVISION=	1
 CATEGORIES=	print editors
 MASTER_SITES=	ftp://ftp.lyx.org/pub/lyx/stable/${MAJOR_VERSION}.x/ \
 		http://www-ftp.lip6.fr/ftp/pub/lyx/stable/${MAJOR_VERSION}.x/ \
@@ -21,9 +22,10 @@ LIB_DEPENDS=	libboost_regex.so:${PORTSDIR}/devel/boost-libs \
 
 CONFLICTS=	lyx-1.[0-9]*
 MAJOR_VERSION=	2.0
-MINOR_VERSION=	6
+MINOR_VERSION=	7
 
-USES=		desktop-file-utils gmake iconv pkgconfig perl5
+USES=		desktop-file-utils gmake iconv pkgconfig perl5 shebangfix
+SHEBANG_FILES=	lib/scripts/listerrors
 USE_PYTHON=	2
 USE_QT4=	corelib gui moc_build uic_build rcc_build
 USE_XZ=		yes

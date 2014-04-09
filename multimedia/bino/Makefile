@@ -25,10 +25,10 @@ LIB_DEPENDS+=	libass.so:${PORTSDIR}/multimedia/libass \
 		libGLEW.so:${PORTSDIR}/graphics/glew \
 		libopenal.so:${PORTSDIR}/audio/openal-soft
 
-MAN1=	bino.1
 INFO=	bino
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	NLS DOCS
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

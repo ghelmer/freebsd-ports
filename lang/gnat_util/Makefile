@@ -5,14 +5,16 @@ PORTNAME=	gnat_util
 PORTVERSION=	${SNAPSHOT}
 CATEGORIES=	lang
 MASTER_SITES=	${MASTER_SITE_GCC}
-MASTER_SITE_SUBDIR=	releases/gcc-${GCC_VERSION}
-DISTNAME=	gcc-${GCC_VERSION}
+MASTER_SITE_SUBDIR= ${MS_SUBDIR}
+DISTNAME=	${IDENTIFICATION}
 
 MAINTAINER=	marino@FreeBSD.org
 COMMENT=	Library used to build GNAT tools such as ASIS
 
-USES=		ada
-USE_BZIP2=	yes
+LICENSE=	GPLv3 GPLv3RLE
+LICENSE_COMB=	multi
+
+USES=		ada tar:bzip2
 NO_MTREE=	yes
 DISTINFO_FILE=	${.CURDIR}/../gcc-aux/distinfo
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -20,7 +22,6 @@ MAKE_ENV=	MAKEOBJDIR=${WRKSRC}/obj
 
 .include "${.CURDIR}/Makefile.sources"
 .include "${.CURDIR}/../gcc-aux/Makefile.version"
-.include <bsd.port.pre.mk>
 
 post-extract:
 	@${MKDIR} ${WRKSRC}/obj
@@ -33,11 +34,10 @@ post-extract:
 
 post-install:
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} * \( -type f -or -type l \) | \
-	   ${SORT} > ${TMPPLIST}
+	   ${SORT} >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} * -type d | ${AWK} '/\//' | \
 	   ${SORT} -r | ${SED} -e '/lib\/gnat$$/d' -e 's/^/@dirrm /g' \
 	   >> ${TMPPLIST}
 	@echo "@unexec rmdir %D/lib/gnat 2>/dev/null || true" >> ${TMPPLIST}
 
-.include <bsd.port.post.mk>
-
+.include <bsd.port.mk>

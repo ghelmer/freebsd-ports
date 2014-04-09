@@ -5,8 +5,6 @@
 # Standard templates for bash, perl, python,... are included out of
 # the box, others can easily be added per port.
 #
-# MAINTAINER: portmgr@FreeBSD.org
-#
 # Feature:	shebangfix
 # Usage:	USES=shebangfix
 #
@@ -26,22 +24,29 @@
 #
 #   perl_CMD=	${SETENV} perl
 #
+# MAINTAINER: portmgr@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_SHEBANGFIX_Mk)
 _INCLUDE_USES_SHEBANGFIX_MK=	yes
 
 bash_OLD_CMD?=	/bin/bash
 bash_CMD?=	${LOCALBASE}/bin/bash
+java_OLD_CMD?=	/usr/bin/java
+java_CMD?=	${LOCALBASE}/bin/java
 perl_OLD_CMD?=	/usr/bin/perl
 perl_CMD?=	${LOCALBASE}/bin/perl
+php_OLD_CMD?=	/usr/bin/php
+php_CMD?=	${LOCALBASE}/bin/php
 python_OLD_CMD?=	/usr/bin/python
 python_CMD?=	${LOCALBASE}/bin/python
 ruby_OLD_CMD?=	/usr/bin/ruby
 ruby_CMD?=	${LOCALBASE}/bin/ruby
-php_OLD_CMD?=	/usr/bin/php
-php_CMD?=	${LOCALBASE}/bin/php
+tcl_OLD_CMD?=	/usr/bin/tclsh
+tcl_CMD?=	${TCLSH}
+tk_OLD_CMD?=	/usr/bin/wish
+tk_CMD?=	${WISH}
 
-SHEBANG_LANG+=	bash perl python ruby php
+SHEBANG_LANG+=	bash java perl php python ruby tcl tk
 
 .for lang in ${SHEBANG_LANG}
 .if !defined(${lang}_CMD)

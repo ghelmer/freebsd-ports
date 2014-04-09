@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mnemo
-PORTVERSION=	4.1.2
+PORTVERSION=	4.1.3
 CATEGORIES=	deskutils www pear
 PKGNAMEPREFIX=	horde-
 
@@ -37,7 +37,6 @@ OPTIONS_DEFAULT=	PDF
 OPTIONS_DEFINE=		PDF
 PDF_DESC=		Support PDF generation
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MPDF}

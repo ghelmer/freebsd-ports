@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 bin/port
 man/man1/port.1.gz
 man/man5/porttools.5.gz
@@ -6,6 +5,7 @@ man/man5/porttools.5.gz
 %%DATADIR%%/cmd_create
 %%DATADIR%%/cmd_diff
 %%DATADIR%%/cmd_fetch
+%%DATADIR%%/cmd_followup
 %%DATADIR%%/cmd_getpr
 %%DATADIR%%/cmd_help
 %%DATADIR%%/cmd_install
@@ -17,6 +17,5 @@ man/man5/porttools.5.gz
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/NEWS
 %%PORTDOCS%%%%DOCSDIR%%/THANKS
-%%PORTDOCS%%%%DOCSDIR%%/TODO
 %%PORTDOCS%%@dirrm %%DOCSDIR%%
 @dirrm %%DATADIR%%

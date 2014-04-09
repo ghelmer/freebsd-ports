@@ -13,7 +13,7 @@ MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	XSL FO processor, written in TeX
 
 NO_BUILD=	yes
-USE_ZIP=	yes
+USES=		zip
 USE_TEX=	tetex xmltex texhash
 TEXHASHDIRS=	${TEXMFDIR}
 WRKSRC=		${WRKDIR}/passivetex
@@ -42,6 +42,9 @@ CLASS_FILES=	dummyels.sty fotex.xmt fotex.sty \
 		dummyels.sty nomulticol.sty
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include <bsd.port.options.mk>
 
 do-install:

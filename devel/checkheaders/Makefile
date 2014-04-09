@@ -9,18 +9,14 @@ MASTER_SITES=	GOOGLE_CODE
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Checks headers in C/C++ programs
 
-USE_ZIP=	yes
-USE_GMAKE=	yes
+USES=		gmake zip
+MAKE_ARGS=	CXX="${CXX}"
 
 PLIST_FILES=	bin/${PORTNAME}
 
 LICENSE=	GPLv3
 
-NO_STAGE=	yes
-post-patch:
-	@${REINPLACE_CMD} -e '/^CXX.*=/d' ${WRKSRC}/Makefile
-
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${PREFIX}/bin
+	@${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

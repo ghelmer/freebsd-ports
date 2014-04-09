@@ -38,7 +38,6 @@
     SUBDIR += pscyr
     SUBDIR += rubygem-russian
     SUBDIR += rubygem-rutils
-    SUBDIR += rus-ispell
     SUBDIR += rux
     SUBDIR += stardict-bars
     SUBDIR += stardict-computer
@@ -52,7 +51,6 @@
     SUBDIR += unzip
     SUBDIR += wordpress
     SUBDIR += xcode
-    SUBDIR += xmms
     SUBDIR += xpi-tabextensions
     SUBDIR += xruskb
 

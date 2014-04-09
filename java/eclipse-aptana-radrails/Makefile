@@ -16,16 +16,15 @@ COMMENT=	IDE for Ruby and the Ruby on Rails framework (Eclipse plugin)
 
 RUN_DEPENDS=	${LOCALBASE}/lib/eclipse/features/com.aptana.ide.feature_1.2.7.024747.jar:${PORTSDIR}/java/eclipse-aptana
 
+USES=		zip
 JAVA_VERSION=	1.6+
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 USE_JAVA=	yes
-USE_ZIP=	yes
 
-NO_STAGE=	yes
 do-install:
-	@(cd ${WRKDIR} && ${CP} -R features ${PREFIX}/lib/eclipse && ${CP} -R plugins ${PREFIX}/lib/eclipse;)
+	@(cd ${WRKDIR} && ${COPYTREE_SHARE} "features plugins" ${STAGEDIR}${PREFIX}/lib/eclipse)
 
 .include <bsd.port.mk>

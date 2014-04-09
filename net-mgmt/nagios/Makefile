@@ -3,7 +3,7 @@
 
 PORTNAME=	nagios
 PORTVERSION=	3.5.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3.x/${PORTNAME}-${PORTVERSION}
 
@@ -15,13 +15,15 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
 RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/nagios-plugins
 
+PORTSCOUT=	limit:^3.
+
 USES=		iconv perl5 uidfix
 USE_PERL5=	build
 USE_AUTOTOOLS=	autoconf libltdl
 USE_PHP=	yes
 USE_RC_SUBR=	nagios
 
-CONFLICTS=	nagios-[12].* nagios-devel-*
+CONFLICTS=	nagios-[12].* nagios-devel-* nagios4-*
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \
@@ -52,8 +54,6 @@ PLIST_SUB=	NAGIOSDIR=${NAGIOSDIR} \
 		NAGIOSWWWDIR=${NAGIOSWWWDIR} \
 		NAGIOSUSER=${NAGIOSUSER} \
 		NAGIOSGROUP=${NAGIOSGROUP} \
-		NAGIOSUID=${NAGIOSUID} \
-		NAGIOSGID=${NAGIOSGID} \
 		NAGIOSHTMURL=${NAGIOSHTMURL} \
 		NAGIOSCGIURL=${NAGIOSCGIURL} \
 		WWWGRP=${WWWGRP}
@@ -67,9 +67,6 @@ SUB_LIST=	PREFIX=${PREFIX} \
 NAGIOSUSER?=	nagios
 NAGIOSGROUP?=	nagios
 NAGIOSDIR?=	/var/spool/nagios
-
-NAGIOSUID=	181
-NAGIOSGID=	${NAGIOSUID}
 
 NAGIOSWWWDIR?=	www/nagios
 NAGIOSHTMURL?=	/nagios

@@ -2,12 +2,12 @@
 #
 # Handles common items for kernel module ports.
 #
-# MAINTAINER: rene@FreeBSD.org
-#
 # Feature:	kmod
 # Usage:	USES=kmod
 # Valid ARGS:	none
 #
+# MAINTAINER: rene@FreeBSD.org
+
 .if !defined(_INCLUDE_USES_KMOD_MK)
 _INCLUDE_USES_KMOD_MK=	yes
 
@@ -23,17 +23,14 @@ IGNORE=	requires kernel source files in ${SRC_BASE}
 
 CATEGORIES+=	kld
 
-SSP_UNSAFE=	kernel module does not support SSP
+SSP_UNSAFE=	kernel module supports SSP natively
 
 KMODDIR?=	/boot/modules
 .if ${KMODDIR} == /boot/kernel
 KMODDIR=	/boot/modules
 .endif
 PLIST_SUB+=	KMODDIR="${KMODDIR:C,^/,,}"
-MAKE_ENV+=	KMODDIR="${KMODDIR}" SYSDIR="${SRC_BASE}/sys"
-.if !defined(NO_STAGE)
-MAKE_ENV+=	NO_XREF=yes
-.endif
+MAKE_ENV+=	KMODDIR="${KMODDIR}" SYSDIR="${SRC_BASE}/sys" NO_XREF=yes
 
 .endif
 
@@ -47,11 +44,8 @@ ${STAGEDIR}${KMODDIR}:
 kmod-post-install:
 	@${ECHO_CMD} "@exec /usr/sbin/kldxref ${KMODDIR}" >> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec /usr/sbin/kldxref ${KMODDIR}" >> ${TMPPLIST}
-.if defined(NO_STAGE)
-	/usr/sbin/kldxref ${KMODDIR}
-.endif
 .if ${KMODDIR} != /boot/modules
-	@${ECHO_CMD} "@unexec rmdir ${KMODDIR} 2>/dev/null || true" \
+	@${ECHO_CMD} "@unexec rmdir -p ${KMODDIR} 2>/dev/null || true" \
 		>> ${TMPPLIST}
 .endif
 

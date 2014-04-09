@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	glances
-PORTVERSION=	1.7.3
+PORTVERSION=	1.7.5
 CATEGORIES=	sysutils python
 MASTER_SITES=	https://github.com/nicolargo/glances/archive/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,7 +14,7 @@ COMMENT=	CLI curses based monitoring tool for GNU/Linux and BSD OS
 LICENSE=	LGPL3
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>=2.0.0:${PORTSDIR}/devel/py-Jinja2 \
-		${PYTHON_PKGNAMEPREFIX}psutil>=1.2.1:${PORTSDIR}/sysutils/py-psutil
+		${PYTHON_PKGNAMEPREFIX}psutil121>=1.2.1:${PORTSDIR}/sysutils/py-psutil121
 
 OPTIONS_DEFINE=	MANPAGES NLS
 OPTIONS_SUB=	yes
@@ -24,7 +24,6 @@ USE_PYTHON=	yes
 USE_PYDISTUTILS=easy_install
 PYDISTUTILS_PKGNAME=	Glances
 
-MANPAGES_MAN1=		glances.1
 NLS_TRANSLATIONS=	es fr it pt_BR zh_CN
 NLS_USES=		gettext
 

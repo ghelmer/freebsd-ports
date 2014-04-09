@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird-i18n
-PORTVERSION=	24.2.0
+PORTVERSION=	24.4.0
 CATEGORIES=	mail news net-im
 MASTER_SITES=	MOZILLA/${PORTNAME:S|-i18n||}/releases/${PORTVERSION}/linux-i686/xpi
 PKGNAMEPREFIX=
@@ -20,6 +20,7 @@ PLISTF?=	${WRKDIR}/plist_files
 
 NO_BUILD=	yes
 NO_ARCH=	yes
+USES=		zip:infozip
 USE_THUNDERBIRD=	yes
 USE_XPI=	thunderbird linux-thunderbird
 USE_SUBMAKE=	yes

@@ -2,6 +2,7 @@
 
 PORTNAME=	ExtensionClass
 PORTVERSION=	4.0a1
+PORTREVISION=	1
 CATEGORIES=	devel python zope
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,11 +13,9 @@ COMMENT=	Metaclass for subclassable extension types
 
 LICENSE=	ZPL21
 
-PYEASYINSTALL_ARCHDEP=	yes
+USES=		zip
 USE_PYTHON=		yes
-USE_PYDISTUTILS=	easy_install
-USE_ZIP=		yes
-
-NO_STAGE=	yes
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
 .include <bsd.port.mk>

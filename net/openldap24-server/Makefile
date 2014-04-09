@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openldap
-DISTVERSION=		2.4.38
+DISTVERSION=		2.4.39
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
@@ -49,6 +49,8 @@ USE_AUTOTOOLS=		libtool
 USE_AUTOTOOLS+=		autoconf
 USERS=			ldap
 GROUPS=			ldap
+LDAP_USER?=		ldap
+LDAP_GROUP?=		ldap
 .endif
 
 WANT_OPENLDAP_VER?=	24
@@ -59,26 +61,27 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 PORTREVISION_CLIENT=	0
 PORTREVISION_SERVER=	1
 OPENLDAP_SHLIB_MAJOR=	8
+OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=	FETCH
 
 FETCH_DESC=	Enable fetch(3) support
 
 .if !defined(CLIENT_ONLY)
-OPTIONS_DEFINE+=	DYNACL ACI BDB DNSSRV MDB PASSWD PERL RELAY SHELL
+OPTIONS_DEFINE+=	DYNACL ACI BDB MDB DNSSRV PASSWD PERL RELAY SHELL
 OPTIONS_DEFINE+=	SOCK ODBC RLOOKUPS SLP SLAPI TCP_WRAPPERS
 OPTIONS_DEFINE+=	ACCESSLOG AUDITLOG COLLECT CONSTRAINT DDS
 OPTIONS_DEFINE+=	DEREF DYNGROUP DYNLIST MEMBEROF PPOLICY PROXYCACHE
 OPTIONS_DEFINE+=	REFINT RETCODE RWM SEQMOD SSSVLV SYNCPROV TRANSLUCENT
 OPTIONS_DEFINE+=	UNIQUE VALSORT SMBPWD SHA2 DYNAMIC_BACKENDS SASL
 
-OPTIONS_DEFAULT=	BDB TCP_WRAPPERS SEQMOD SYNCPROV DYNAMIC_BACKENDS
+OPTIONS_DEFAULT=	BDB MDB SYNCPROV DYNAMIC_BACKENDS
 
 DYNACL_DESC=		Run-time loadable ACL (experimental)
 ACI_DESC=		Per-object ACI (experimental)
-BDB_DESC=		With BerkeleyDB backend
-DNSSRV_DESC=		With Dnssrv backend
+BDB_DESC=		With BerkeleyDB backend (DEPRECATED)
 MDB_DESC=		With Memory-Mapped DB backend
+DNSSRV_DESC=		With Dnssrv backend
 PASSWD_DESC=		With Passwd backend
 PERL_DESC=		With Perl backend
 RELAY_DESC=		With Relay backend
@@ -87,7 +90,7 @@ SOCK_DESC=		With Sock backend
 ODBC_DESC=		With SQL backend
 RLOOKUPS_DESC=		With reverse lookups of client hostnames
 SLP_DESC=		With SLPv2 (RFC 2608) support
-SLAPI_DESC=		With Netscape SLAPI plugin API
+SLAPI_DESC=		With Netscape SLAPI plugin API (experimental)
 TCP_WRAPPERS_DESC=	With tcp wrapper support
 ACCESSLOG_DESC=		With In-Directory Access Logging overlay
 AUDITLOG_DESC=		With Audit Logging overlay
@@ -125,7 +128,6 @@ OPENLDAP_PKGFILESUFX=
 
 CONFIGURE_SED=		-e 's,-kthread,${PTHREAD_LIBS},g' -e 's,uuid/uuid.h,xxuuid/uuid.h,g'
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if defined(CLIENT_ONLY)
@@ -135,7 +137,7 @@ PORTDOCS=		CHANGES drafts rfc
 PORT_OPTIONS+=	SASL
 .endif
 .if defined(USE_OPENLDAP)
-BROKEN=			You have `USE_OPENLDAP' variable defined either in environment or in make(1) arguments. Please undefine and try again.
+BROKEN=			You have 'USE_OPENLDAP' variable defined either in environment or in make(1) arguments. Please undefine and try again.
 .endif
 .else
 USE_OPENLDAP=		yes
@@ -163,6 +165,8 @@ LOCALSTATEDIR?=		/var/db
 DATABASEDIR?=		${LOCALSTATEDIR}/openldap-data
 
 SUB_LIST+=		LDAP_RUN_DIR=${LDAP_RUN_DIR} \
+			LDAP_USER=${LDAP_USER} \
+			LDAP_GROUP=${LDAP_GROUP} \
 			DATABASEDIR=${DATABASEDIR} \
 			PKGNAME=${PKGNAME}
 
@@ -470,7 +474,7 @@ LIB_DEPENDS+=		slp.1:${PORTSDIR}/net/openslp
 .endif
 
 # Include tcp-wrapper support
-.if !defined(WITHOUT_TCP_WRAPPERS) && exists(/usr/include/tcpd.h)
+.if ${PORT_OPTIONS:MTCP_WRAPPERS}
 CONFIGURE_ARGS+=	--enable-wrappers
 .endif
 
@@ -489,16 +493,15 @@ LDFLAGS+=		-L${LOCALBASE}/lib
 CONFIGURE_ENV+=		LIBS="${LIBS}"
 
 .if defined(CLIENT_ONLY)
-.include "${FILESDIR}/manpages.client"
 .else
 SUB_LIST+=		RC_DIR=${PREFIX} \
 			LDAP_RUN_DIR=${LDAP_RUN_DIR} \
 			DATABASEDIR=${DATABASEDIR}
-.include "${FILESDIR}/manpages.server"
 .endif
 
 PLIST_SUB+=		${SUB_LIST}
 PLIST_SUB+=		SHLIB_MAJOR=${OPENLDAP_SHLIB_MAJOR}
+PLIST_SUB+=		OPENLDAP_MAJOR=${OPENLDAP_MAJOR}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,%LOCALSTATEDIR%/run/,${LDAP_RUN_DIR}/,g' \
@@ -540,23 +543,27 @@ pre-su-install:
 		${SETENV} PKG_PREFIX="${PREFIX}" ${SH} ${PKGINSTALL} ${PKGNAME} PRE-INSTALL; \
 	fi
 .if ${PORT_OPTIONS:MMODULES} || ${PORT_OPTIONS:MDYNAMIC_BACKENDS} || ${PORT_OPTIONS:MSLAPI}
-	@${MKDIR} ${PREFIX}/libexec/openldap
+	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/openldap
+.endif
+.if !defined(CLIENT_ONLY)
+	@${MKDIR} ${STAGEDIR}${DATABASEDIR}
 .endif
 
 post-install:
 .if defined(CLIENT_ONLY)
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/CHANGES ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/CHANGES ${STAGEDIR}${DOCSDIR}
 	@for dir in drafts rfc; do \
-		${MKDIR} ${DOCSDIR}/$${dir}; \
-		${INSTALL_DATA} ${WRKSRC}/doc/$${dir}/* ${DOCSDIR}/$${dir}; \
+		${MKDIR} ${STAGEDIR}${DOCSDIR}/$${dir}; \
+		${INSTALL_DATA} ${WRKSRC}/doc/$${dir}/* ${STAGEDIR}${DOCSDIR}/$${dir}; \
 	done
-.endif
+	@for library in lber ldap ldap_r; do \
+		${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib$${library}-${OPENLDAP_MAJOR}.so.${OPENLDAP_SHLIB_MAJOR}; \
+	done
 .else
-	@${MKDIR} ${LDAP_RUN_DIR}
+	@${MKDIR} ${STAGEDIR}${LDAP_RUN_DIR}
 	@for schema in ${SCHEMATA}; do \
-		${ECHO_CMD} "@unexec if cmp -s %D/etc/openldap/schema/$${schema}.schema" \
+		${ECHO_CMD} "@unexec if cmp -s %D/etc/openldap/schema/$${schema}.schema " \
 			"%D/etc/openldap/schema/$${schema}.schema.default; then" \
 			"rm -f %D/etc/openldap/schema/$${schema}.schema; fi"; \
 		${ECHO_CMD} "etc/openldap/schema/$${schema}.schema.default"; \
@@ -564,21 +571,23 @@ post-install:
 	done >>${TMPPLIST}
 	@${ECHO_CMD} "@unexec ${RMDIR} %D/etc/openldap/schema 2>/dev/null || true" >>${TMPPLIST}
 	@${ECHO_CMD} "@unexec ${RMDIR} %D/etc/openldap 2>/dev/null || true" >>${TMPPLIST}
+.if ${PORT_OPTIONS:MDYNAMIC_BACKENDS}
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/openldap/*.so.${OPENLDAP_SHLIB_MAJOR}
+.endif
 .if ${PORT_OPTIONS:MSMBPWD}
 	@${INSTALL_DATA} ${WRKSRC}/contrib/slapd-modules/smbk5pwd/smbk5pwd.la \
-		${PREFIX}/libexec/openldap/
+		${STAGEDIR}${PREFIX}/libexec/openldap/
 	@${INSTALL_PROGRAM} ${WRKSRC}/contrib/slapd-modules/smbk5pwd/.libs/smbk5pwd.so.0 \
-		${PREFIX}/libexec/openldap/
-	@${LN} -s smbk5pwd.so.0 ${PREFIX}/libexec/openldap/smbk5pwd.so
+		${STAGEDIR}${PREFIX}/libexec/openldap/
+	@${LN} -s smbk5pwd.so.0 ${STAGEDIR}${PREFIX}/libexec/openldap/smbk5pwd.so
 .endif
 .if ${PORT_OPTIONS:MSHA2}
 	@${INSTALL_DATA} ${WRKSRC}/contrib/slapd-modules/passwd/sha2/pw-sha2.la \
-		${PREFIX}/libexec/openldap/
+		${STAGEDIR}${PREFIX}/libexec/openldap/
 	@${INSTALL_PROGRAM} ${WRKSRC}/contrib/slapd-modules/passwd/sha2/.libs/pw-sha2.so.0 \
-		${PREFIX}/libexec/openldap/
-	@${LN} -s pw-sha2.so.0 ${PREFIX}/libexec/openldap/pw-sha2.so
+		${STAGEDIR}${PREFIX}/libexec/openldap/
+	@${LN} -s pw-sha2.so.0 ${STAGEDIR}${PREFIX}/libexec/openldap/pw-sha2.so
 .endif
 .endif
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

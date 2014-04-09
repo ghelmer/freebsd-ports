@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Products.ZCTextIndex
-PORTVERSION=	2.13.4
+PORTVERSION=	2.13.5
 CATEGORIES=	devel python zope
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,11 +20,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}AccessControl>=0:${PORTSDIR}/security/py-Acc
 		zodb${PYTHON_PKGNAMESUFFIX}>=0:${PORTSDIR}/databases/zodb3 \
 		${PYTHON_PKGNAMEPREFIX}zope.interface>=0:${PORTSDIR}/devel/py-zope.interface
 
-PYEASYINSTALL_ARCHDEP=	yes
+USES=		zip
 USE_PYTHON=		yes
-USE_PYDISTUTILS=	easy_install
-USE_ZIP=		yes
-
-NO_STAGE=	yes
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
 
 .include <bsd.port.mk>

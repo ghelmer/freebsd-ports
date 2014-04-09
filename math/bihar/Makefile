@@ -3,7 +3,7 @@
 
 PORTNAME=	bihar
 PORTVERSION=	1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	NL
 DISTFILES=	dbihar.f dbipl.f  dbiplr.f dbisld.f dbislf.f dbmult.f dbplrm.f	\
@@ -41,7 +41,7 @@ LIB_DEPENDS=	linpack.3:${PORTSDIR}/math/linpack
 NO_STAGE=	yes
 NO_WRKSUBDIR=	yes
 USE_LDCONFIG=	yes
-USE_FORTRAN=	yes
+USES=		fortran
 
 .if !defined(NOPORTDOCS)
 PORTDOCS=	fft.doc

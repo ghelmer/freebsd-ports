@@ -3,7 +3,7 @@
 
 PORTNAME=	blocksolve95
 PORTVERSION=	3.0
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	math parallel
 MASTER_SITES=	ftp://ftp.mcs.anl.gov/pub/BlockSolve95/ \
 		http://ftp.mcs.anl.gov/pub/BlockSolve95/
@@ -18,7 +18,7 @@ BUILD_DEPENDS=	${MPIDIR}/lib/libmpich.a:${PORTSDIR}/net/mpich2
 LIB_DEPENDS=	f2c.2:${PORTSDIR}/lang/f2c
 RUN_DEPENDS=	${MPIDIR}/bin/mpirun:${PORTSDIR}/net/mpich2
 
-USE_GMAKE=	yes
+USES=		fortran gmake
 MAKEFILE=	makefile
 MAKE_ARGS=	GMAKE=${GMAKE} PETSC_ARCH=${PETSC_ARCH} BOPT=${BOPT}	\
 		BLAS_LIB="${BLAS_LIB}" LAPACK_LIB="${LAPACK_LIB}"
@@ -27,7 +27,6 @@ MPIDIR=		${LOCALBASE}
 PETSC_ARCH=	freebsd
 BOPT?=		O
 
-USE_FORTRAN=	yes
 FFLAGS+=	-O2
 
 INCLUDES=	BMmsg.h BSdepend.h BSlog.h BSmy_blas.h BSprivate.h BSsparse.h

@@ -12,8 +12,7 @@ COMMENT=	Highly portable, general purpose CAS (Computer Algebra System)
 
 LICENSE=	GPLv2
 
-USES=		gmake
-USE_BZIP2=	yes
+USES=		gmake tar:bzip2
 
 MAKEFILE=	makefile
 
@@ -26,8 +25,6 @@ MAKE_ARGS=	READLINE=1
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 regression-test: build
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} check
 
@@ -37,16 +34,14 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/icons/mathomatic.desktop \
 		${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/icons/mathomatic.png ${STAGEDIR}${PREFIX}/share/pixmaps
-.if ${PORT_OPTIONS:MDOCS}
 .for d in m4 tests
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/${d}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/${d}
 	${INSTALL_DATA} ${WRKSRC}/${d}/* ${STAGEDIR}${DOCSDIR}/${d}
 .endfor
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/html
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
 	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}/html
 .for f in AUTHORS README.txt changes.txt
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor
-.endif
 
 .include <bsd.port.mk>

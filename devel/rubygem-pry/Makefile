@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pry
-PORTVERSION=	0.9.12.2
+PORTVERSION=	0.9.12.6
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -19,9 +19,5 @@ USE_RAKE=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 PLIST_FILES=	bin/pry
-
-post-patch:
-	@${REINPLACE_CMD} -e "19,26 s|~>|'>='|" ${WRKSRC}/${GEM_NAME}.gemspec
-	@${REINPLACE_CMD} -e '/coderay/ s|~>|>=|' ${WRKSRC}/${PORTNAME}.gemspec
 
 .include <bsd.port.mk>

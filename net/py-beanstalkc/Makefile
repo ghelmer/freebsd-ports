@@ -2,31 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	beanstalkc
-PORTVERSION=	0.3.0
+PORTVERSION=	0.4.0
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	koobs@FreeBSD.org
-COMMENT=	A simple beanstalkd client library for Python
+COMMENT=	Simple beanstalkd client library for Python
 
 LICENSE=	APACHE20
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:${PORTSDIR}/devel/py-nose \
+		${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml
 
-OPTIONS_DEFINE=	YAML
+USE_PYTHON=		yes
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
+
+OPTIONS_DEFINE=		YAML
 OPTIONS_DEFAULT=	YAML
-YAML_DESC=	Support parsing YAML responses
+YAML_DESC=		Support parsing YAML responses
 
-# bypass infrastructure bug
-OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
+YAML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MYAML}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml
-.endif
+regression-test: build
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test
 
 .include <bsd.port.mk>

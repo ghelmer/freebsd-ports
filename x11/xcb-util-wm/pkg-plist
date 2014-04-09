@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 include/xcb/xcb_icccm.h
 include/xcb/xcb_ewmh.h
 lib/libxcb-icccm.so.4
@@ -11,3 +10,4 @@ lib/libxcb-ewmh.la
 lib/libxcb-ewmh.a
 libdata/pkgconfig/xcb-icccm.pc
 libdata/pkgconfig/xcb-ewmh.pc
+@dirrmtry include/xcb

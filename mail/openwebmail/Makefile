@@ -77,7 +77,7 @@ RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
 .endif
 
 .if ${PORT_OPTIONS:MISPELL}
-RUN_DEPENDS+=	ispell:${PORTSDIR}/textproc/ispell
+RUN_DEPENDS+=	ispell:${PORTSDIR}/textproc/aspell-ispell
 .endif
 
 .if ${PORT_OPTIONS:MLSOF}
@@ -101,7 +101,7 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/tnef:${PORTSDIR}/converters/tnef
 .endif
 
 .if ${PORT_OPTIONS:MSPAMCHECK}
-RUN_DEPENDS+=	p5-Mail-SpamAssassin>=0:${PORTSDIR}/mail/p5-Mail-SpamAssassin
+RUN_DEPENDS+=	spamassassin>=0:${PORTSDIR}/mail/spamassassin
 .endif
 
 .if ${PORT_OPTIONS:MSPEEDYCGI}

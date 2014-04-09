@@ -3,7 +3,7 @@
 
 PORTNAME=	arrows
 PORTVERSION=	0.4.4.1
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

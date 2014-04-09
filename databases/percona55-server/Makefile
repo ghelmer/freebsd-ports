@@ -1,13 +1,12 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.5.34-32.0
-DISTNAME=	Percona-Server-5.5.34-rel32.0
+DISTVERSION=	5.5.36-34.1
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
-MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.5/${DISTNAME}/source/
-MASTER_SITE_SUBDIR=	MySQL-5.5
+MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.5/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	55-server
+DISTNAME=	percona-server-5.5.36-34.1
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)

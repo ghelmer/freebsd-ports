@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 %%DOCSDIR%%/handbook
 %%DOCSDIR%%/faq
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/imagelib/callouts
@@ -44,6 +43,7 @@
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/pr-guidelines
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/portbuild
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/port-mentor-guidelines
+@dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/pgpkeys
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/pam
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/p4-primer
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/new-users
@@ -77,6 +77,8 @@
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/contributing
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/console-server
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/compiz-fusion
+@dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib/callouts
+@dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/imagelib
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/casestudy-argentina.com
 @dirrm %%DOCSDIR%%/%%DOCLANG%%/articles/building-products

@@ -3,17 +3,16 @@
 
 PORTNAME?=	xmms2
 PORTVERSION=	0.8
-PORTREVISION?=	4
 DISTVERSIONSUFFIX=DrO_o
+PORTREVISION?=	5
 CATEGORIES?=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20${DISTVERSIONSUFFIX}
 
 MAINTAINER?=	madpilot@FreeBSD.org
 COMMENT?=	Rewrite of xmms as a client/server system (developer release)
 
-USE_BZIP2=	yes
 USE_PYTHON_BUILD=	yes
-USES+=		pkgconfig
+USES+=		pkgconfig tar:bzip2
 
 .if !defined(XMMS2_SLAVE)
 USE_GNOME=	glib20
@@ -372,6 +371,10 @@ PLIST_SUB+=	ET="@comment "
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|%%WRKSRC%%|${WRKSRC}|" ${WRKSRC}/wscript
+.if ${PORT_OPTIONS:MVISUAL} && ${PORT_OPTIONS:MVORBIS}
+	@${REINPLACE_CMD} -e "s|'vorbisenc',|'vorbisenc vorbis ogg',|" \
+		${WRKSRC}/src/clients/vistest/wscript
+.endif
 
 do-configure:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} waf ${_MAKE_JOBS} configure \

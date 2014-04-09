@@ -8,7 +8,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SRIHA
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	milki@rescomp.berkeley.edu
+MAINTAINER=	milki@FreeBSD.org
 COMMENT=	Provides deep_search_where() for Class::DBI
 
 LICENSE=	ART10 GPLv1
@@ -23,7 +23,5 @@ TEST_DEPENDS=	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite
 
 USES=		perl5
 USE_PERL5=	configure
-MAN3=		Class::DBI::Plugin::DeepAbstractSearch.3
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

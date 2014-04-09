@@ -3,6 +3,7 @@
 
 PORTNAME=	umemcache
 PORTVERSION=	1.6.3
+PORTREVISION=	1
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,14 +11,11 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Memcache client written in highly optimized C++ with Python bindings
 
-LICENSE=	BSD
+LICENSE=	BSD4CLAUSE
 
-USE_DOS2UNIX=		yes
+USES=			dos2unix zip
 USE_PYTHON=		2
 USE_PYDISTUTILS=	yes
-USE_ZIP=		yes
+PYDISTUTILS_AUTOPLIST=	yes
 
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/umemcache.so
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

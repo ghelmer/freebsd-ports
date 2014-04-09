@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	racc
-PORTVERSION=	1.4.9
+PORTVERSION=	1.4.11
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
@@ -16,7 +16,4 @@ USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 PLIST_FILES=	bin/racc bin/racc2y bin/y2racc
 
-CONFLICTS=	ruby1[89]-racc-1\.4\*
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

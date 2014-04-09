@@ -3,7 +3,7 @@
 
 PORTNAME=	monsterz
 PORTVERSION=	0.7.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://sam.zoy.org/monsterz/ \
 		SF/nemysisfreebsdp/:icons
@@ -33,6 +33,9 @@ DESKTOP_ENTRIES="Monsterz" "${COMMENT}" "${PORTNAME}" \
 		"${PORTNAME}" "Game;ArcadeGame;" false
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-install:

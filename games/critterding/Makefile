@@ -3,7 +3,7 @@
 
 PORTNAME=	critterding
 DISTVERSION=	beta12
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/sources
 
@@ -24,6 +24,8 @@ CONFIGURE_ARGS=	--disable-system-ftgl
 USE_GCC=	yes
 
 PORTDOCS=	README AUTHORS Changelog
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

@@ -7,7 +7,7 @@ CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/YaBB%202/${PORTVERSION}
 DISTNAME=	YaBB_${PORTVERSION}
 
-MAINTAINER=	rodrigo@bebik.net
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	The original free open-source forum written in Perl
 
 LICENSE=	YABB_PUBLIC_LICENCE
@@ -18,8 +18,7 @@ LICENSE_PERMS=	${_LICENSE_PERMS_DEFAULT}
 RUN_DEPENDS=	p5-Digest-HMAC>=0:${PORTSDIR}/security/p5-Digest-HMAC
 
 NO_PACKAGE=	complicated (de)installation paradigm
-USES=		perl5
-USE_ZIP=	yes
+USES=		perl5 zip
 USE_PERL5=	run
 NO_BUILD=	yes
 WWWDOCROOT?=	www

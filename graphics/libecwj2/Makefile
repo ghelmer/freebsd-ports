@@ -11,21 +11,14 @@ DISTFILES=	ecw_jpeg_2000_sdk_3_3_source.zip
 MAINTAINER=	glebius@FreeBSD.org
 COMMENT=	Erdas ECW and JPEG2000 support library
 
-RESTRICTED=	Registration required to download sources, \
+RESTRICTED=	Registration required to download sources,\
 		but sources no longer available on ERDAS website
 
-USE_ZIP=	yes
 USE_AUTOTOOLS=	libtool autoconf
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
-USES=	gmake
-
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 800000
-BROKEN=		does not build on 7.X
-.endif
+USES=	gmake zip:infozip
 
 post-extract:
 	cd ${WRKDIR} && \
@@ -34,4 +27,4 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/configure.in
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@
 
 PORTNAME=	krecipes
 DISTVERSION=	2.0-beta2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	misc kde
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
@@ -11,11 +11,9 @@ COMMENT=	KDE4 recipe database
 
 LICENSE=	GPLv2
 
-USES=		cmake gettext
+USES=		cmake gettext shared-mime-info
 USE_QT4=	moc_build qmake_build rcc_build uic_build
-USE_KDE4=	automoc4 kdeprefix kdelibs qimageblitz sharedmime
-
-NO_STAGE=	yes
+USE_KDE4=	automoc4 kdeprefix kdelibs qimageblitz
 
 OPTIONS_MULTI=		DB
 OPTIONS_MULTI_DB=	SQLITE MYSQL PGSQL

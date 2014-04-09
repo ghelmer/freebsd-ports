@@ -5,7 +5,8 @@ PORTNAME=	wmminichess
 PORTVERSION=	0.8
 PORTREVISION=	4
 CATEGORIES=	games
-MASTER_SITES=	http://web.cs.mun.ca/~gstarkes/wmaker/dockapps/files/
+MASTER_SITES=	AFTERSTEP/apps/miniCHESS/ \
+		http://tigr.net/afterstep/download/miniCHESS/
 DISTNAME=	miniCHESS-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org

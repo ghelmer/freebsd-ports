@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	systempreferences
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	deskutils gnustep
 MASTER_SITES=	${MASTER_SITE_GNUSTEP}
 MASTER_SITE_SUBDIR=usr-apps
@@ -23,6 +23,4 @@ USE_GNUSTEP_SYSTEM_LIBS+=	PreferencePanes:${PREFERENCEPANES_PORT}
 USE_GNUSTEP_MAKE_DIRS=	SystemPreferences Modules
 MAKE_ENV+=	GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
 
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

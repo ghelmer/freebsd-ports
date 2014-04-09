@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	26.0
+DISTVERSION=	28.0
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source
@@ -11,13 +11,18 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}.source
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
-BUILD_DEPENDS=	nspr>=4.10.2:${PORTSDIR}/devel/nspr \
-		nss>=3.15:${PORTSDIR}/security/nss \
-		sqlite3>=3.7.17:${PORTSDIR}/databases/sqlite3 \
+BUILD_DEPENDS=	nspr>=4.10.3:${PORTSDIR}/devel/nspr \
+		nss>=3.15.4:${PORTSDIR}/security/nss \
+		harfbuzz>=0.9.25:${PORTSDIR}/print/harfbuzz \
+		libvorbis>=1.3.4:${PORTSDIR}/audio/libvorbis \
+		opus>=1.1:${PORTSDIR}/audio/opus \
+		libvpx>=1.3.0:${PORTSDIR}/multimedia/libvpx \
+		sqlite3>=3.8.1:${PORTSDIR}/databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
-		cairo>=1.10.2_1,1:${PORTSDIR}/graphics/cairo \
 		v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat \
+		zip:${PORTSDIR}/archivers/zip \
 		unzip:${PORTSDIR}/archivers/unzip
+#		cairo>=1.12.16,2:${PORTSDIR}/graphics/cairo \
 
 LIB_DEPENDS=	libv4l2.so:${PORTSDIR}/multimedia/libv4l
 
@@ -27,7 +32,7 @@ OBJDIR_BUILD=	# in-tree build broken after bug 789837
 USE_GECKO=	gecko
 CONFLICTS=	firefox-esr-24.* firefox-esr-17.* firefox-1[07].*
 MOZ_PKGCONFIG_FILES=	# empty
-USE_MOZILLA=	# empty
+USE_MOZILLA=	-cairo
 MOZILLA_NAME=	Firefox
 
 WANT_GNOME=	yes
@@ -37,7 +42,8 @@ ALL_TARGET=	default
 GNU_CONFIGURE=	yes
 USE_BZIP2=	yes
 USE_GL=		gl
-USE_DOS2UNIX=	media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
+USES=		dos2unix
+DOS2UNIX_FILES=	media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
 NO_MOZPKGINSTALL=yes
 
 FIREFOX_ICON=		${MOZILLA}.png
@@ -51,8 +57,25 @@ MOZ_OPTIONS=	--program-transform-name='s/firefox/${MOZILLA}/' \
 
 WRKSRC:=	${WRKDIR}/mozilla-release
 
-.if ${ARCH} == i386 && ${OSVERSION} < 1000000
-USE_GCC?=	yes
+# avoid clang 3.2/3.3 crash in js/src/jsgc.cpp on refillFreeList<(js::AllowGC)1>
+# http://svnweb.freebsd.org/changeset/base/255804
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${ARCH} == i386 && ${OSVERSION} < 1000056
+. if ${PORT_OPTIONS:MOPTIMIZED_CFLAGS}
+BROKEN=		Cannot build with OPTIMIZED_CFLAGS option due to \
+		a ${CHOSEN_COMPILER_TYPE} bug: unset the option or \
+		use FAVORITE_COMPILER=gcc in Makefile.local/make.conf
+# apply workaround only for -O2 or greater
+. elif ${CXXFLAGS:M-O*} && ! ${CXXFLAGS:M-O[01]}
+.  if ${MACHINE_CPU:Msse2}
+CXXFLAGS+=	-msse2
+.  else
+CXXFLAGS+=	-O1
+.  endif
+. endif
+.endif
+
+.if ${PORT_OPTIONS:MALSA}
+BUILD_DEPENDS+=	alsa-lib>=1.0.27.2_1:${PORTSDIR}/audio/alsa-lib
 .endif
 
 post-extract:

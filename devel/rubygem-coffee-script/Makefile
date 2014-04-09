@@ -3,14 +3,16 @@
 
 PORTNAME=	coffee-script
 PORTVERSION=	2.2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby CoffeeScript is a bridge to the JS CoffeeScript compiler
 
-RUN_DEPENDS=	rubygem-coffee-script-source>=1.4.0:${PORTSDIR}/devel/rubygem-coffee-script-source \
+LICENSE=	MIT
+
+RUN_DEPENDS=	rubygem-coffee-script-source>=1.7.0:${PORTSDIR}/devel/rubygem-coffee-script-source \
 		rubygem-execjs>=0:${PORTSDIR}/devel/rubygem-execjs
 
 USE_RUBY=	yes

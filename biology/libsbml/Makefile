@@ -15,8 +15,7 @@ LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
 
 OPTIONS_DEFINE=	PYTHON RUBY
 
-USE_GMAKE=	yes
-USE_ZIP=	yes
+USES=		gmake zip
 USE_GCC=	any
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -24,7 +23,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_JOBS_UNSAFE=	yes
 
 NO_STAGE=	yes
-.include <bsd.port.pre.mk>
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
@@ -57,4 +55,4 @@ post-install:
 		&& ${FIND} . -type d -exec ${MKDIR} ${EXAMPLESDIR}/\{} \; \
 		&& ${FIND} . -type f -exec ${INSTALL_DATA} \{} ${EXAMPLESDIR}/\{} \;
 .endif
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

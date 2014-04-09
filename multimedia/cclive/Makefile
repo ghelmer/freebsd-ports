@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	cclive
-PORTVERSION=	0.7.11
-PORTREVISION=	3
+PORTVERSION=	0.7.16
 CATEGORIES=	multimedia net
-MASTER_SITES=	SF/${PORTNAME}/0.7 \
+MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION:R} \
 		GOOGLE_CODE
 
 MAINTAINER=	jlaffaye@FreeBSD.org
@@ -18,14 +17,13 @@ LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
 		libpcre.so:${PORTSDIR}/devel/pcre \
 		libquvi.so:${PORTSDIR}/multimedia/libquvi
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--with-boost=${LOCALBASE}
 USES=		pkgconfig
 USE_XZ=		yes
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-boost=${LOCALBASE}
 
-MAN1=		cclive.1
 PLIST_FILES=	bin/ccl \
-		bin/cclive
+		bin/cclive \
+		man/man1/cclive.1.gz
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

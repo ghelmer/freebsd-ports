@@ -8,7 +8,7 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:HINRIK
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	milki@rescomp.berkeley.edu
+MAINTAINER=	milki@FreeBSD.org
 COMMENT=	A PoCo-IRC plugin for a Hailo conversation simulator
 
 LICENSE=	ART10 GPLv1
@@ -25,9 +25,4 @@ TEST_DEPENDS=	p5-Test-Script>=1.07:${PORTSDIR}/devel/p5-Test-Script
 USES=		perl5
 USE_PERL5=	configure
 
-MAN1=	irchailo-seed.1
-
-MAN3=	POE::Component::IRC::Plugin::Hailo.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

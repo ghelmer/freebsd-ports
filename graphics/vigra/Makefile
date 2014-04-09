@@ -3,7 +3,7 @@
 
 PORTNAME=	vigra
 PORTVERSION=	1.9.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://hci.iwr.uni-heidelberg.de/vigra/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -45,8 +45,8 @@ CMAKE_ARGS+=	-DWITH_OPENEXR=0
 .if ${PORT_OPTIONS:MNUMPY}
 CONFLICTS_BUILD=	python3*
 CMAKE_ARGS+=	-DWITH_VIGRANUMPY=1
+USES+=		fortran
 USE_GCC=	yes
-USE_FORTRAN=	yes
 USE_PYTHON=	2
 BUILD_DEPENDS+=	nosetests:${PORTSDIR}/devel/py-nose
 BUILD_DEPENDS+=	${PYTHON_SITELIBDIR}/numpy/core/numeric.py:${PORTSDIR}/math/py-numpy

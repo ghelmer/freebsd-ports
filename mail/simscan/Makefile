@@ -63,7 +63,7 @@ BUILD_DEPENDS+=	ripmime:${PORTSDIR}/mail/ripmime
 .endif
 
 .if ${PORT_OPTIONS:MSPAMD}
-BUILD_DEPENDS+=	spamassassin:${PORTSDIR}/mail/p5-Mail-SpamAssassin
+BUILD_DEPENDS+=	spamassassin:${PORTSDIR}/mail/spamassassin
 CONFIGURE_ARGS+=--enable-spam=y
 CONFIGURE_ARGS+=--enable-spamassassin-path=${LOCALBASE}/bin/spamassassin
 .endif
@@ -125,6 +125,8 @@ fi
 post-patch:
 	@${REINPLACE_CMD} -E 's,($f/daily.cvd"),\1 || test -d "$$f/daily.inc",' \
 		${WRKSRC}/configure
+	@${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/cdb/conf-cc
+	@${ECHO_CMD} "${CC} ${STRIP} ${LDFLAGS}" > ${WRKSRC}/cdb/conf-ld
 
 pre-configure:
 	@${ECHO_MSG} ""

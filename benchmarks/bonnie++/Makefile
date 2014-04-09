@@ -23,7 +23,7 @@ WRKSRC=	${WRKDIR}/${PORTNAME}-1.97.1
 
 PORTDOCS=	readme.html
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -32,9 +32,7 @@ post-patch:
 		's|-lpthread|${PTHREAD_LIBS}|g' ${WRKSRC}/configure
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/readme.html ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

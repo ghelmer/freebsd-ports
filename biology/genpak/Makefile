@@ -14,6 +14,8 @@ COMMENT=	Utilities to manipulate DNA sequences
 
 LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
 
+DEPRECATED=	Unmaintained since 2001
+EXPIRATION_DATE=	2014-04-12
 USES=	gmake
 
 MAN1=	Genpak.1 gp_acc.1 gp_adjust.1 gp_cdndev.1 gp_cusage.1 gp_digest.1 \
@@ -22,6 +24,8 @@ MAN1=	Genpak.1 gp_acc.1 gp_adjust.1 gp_cdndev.1 gp_cusage.1 gp_digest.1 \
 	gp_trimer.1 gp_primer.1
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 .if ${PORT_OPTIONS:MDOCS}

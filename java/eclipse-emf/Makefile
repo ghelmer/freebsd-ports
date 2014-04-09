@@ -15,10 +15,9 @@ COMMENT=	Eclipse Modeling Framework
 
 RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse
 
+USES=		zip
 WRKSRC=		${WRKDIR}/eclipse
-USE_ZIP=	yes
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../eclipse/Makefile.plugins"
 
 .include <bsd.port.mk>

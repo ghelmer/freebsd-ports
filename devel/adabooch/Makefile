@@ -2,42 +2,36 @@
 # $FreeBSD$
 
 PORTNAME=	adabooch
-PORTVERSION=	20030309
+PORTVERSION=	20130322
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE}
+MASTER_SITES=	SF
+MASTER_SITE_SUBDIR= booch95/booch95/${PORTVERSION}
 DISTNAME=	bc-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	sylvio@FreeBSD.org
-COMMENT=	Library which provide container classes as well as powertools for Ada
+MAINTAINER=	marino@FreeBSD.org
+COMMENT=	Ada 95 Booch Components
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 GMGPL
+LICENSE_COMB=	multi
 
-NO_BUILD=	yes
+BUILD_DEPENDS=	gprbuild:${PORTSDIR}/devel/gprbuild
 
-NO_STAGE=	yes
-do-install:
-	@${ECHO} Installing library files
-	@${MKDIR} ${PREFIX}/lib/adabooch
-	@for i in `cat pkg-plist|grep "lib/adabooch/"|sed "s/lib\/adabooch\///"`; do \
-		${INSTALL_DATA} ${WRKSRC}/$${i} ${PREFIX}/lib/adabooch; \
-	done
+USES=		ada gmake
+USE_BZIP2=	yes
+HAS_CONFIGURE=	yes
+ALL_TARGET=	libs
 
-	@${MKDIR} ${PREFIX}/share/adabooch
-	@${ECHO} Installing demos and tests
-	@${MKDIR} ${PREFIX}/share/adabooch/demo
-	@for i in `cat pkg-plist|grep "share/adabooch/demo/"|sed "s/share\/adabooch\/demo\///"`; do \
-		${INSTALL_DATA} ${WRKSRC}/demo/$${i} ${PREFIX}/share/adabooch/demo; \
-	done
+# Demos are available but require that the libraries are already installed
+# In other words, adabooch demos requires a separate port to do correctly
+OPTIONS_DEFINE=	DOCS
 
-	@${MKDIR} ${PREFIX}/share/adabooch/test
-	@for i in `cat pkg-plist|grep "share/adabooch/test/"|sed "s/share\/adabooch\/test\///"`; do \
-		${INSTALL_DATA} ${WRKSRC}/test/$${i} ${PREFIX}/share/adabooch/test; \
-	done
+.include <bsd.port.options.mk>
 
 post-install:
-	@${ECHO}
-	@${ECHO} "The booch library has been installed into ${PREFIX}/lib/adabooch"
-	@${ECHO}
+.if ${PORT_OPTIONS:MDOCS}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/html/* ${STAGEDIR}${DOCSDIR}/
+	${RM} ${STAGEDIR}${DOCSDIR}/Makefile
+.endif
 
 .include <bsd.port.mk>

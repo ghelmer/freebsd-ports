@@ -93,9 +93,8 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #				  Default: ${DISTNAME}${EXTRACT_SUFX}
 # EXTRACT_SUFX	- Suffix for archive names
 #				  You never have to set both DISTFILES and EXTRACT_SUFX.
-#				  Default: .tar.bz2 if USE_BZIP2 is set, .lzh if USE_LHA is set,
-#				  .zip if USE_ZIP is set, .tar.xz if USE_XZ is set, .run if
-#				  USE_MAKESELF is set, .tar.gz otherwise).
+#				  Default: .tar.bz2 if USE_BZIP2 is set, .tar.xz if USE_XZ is set,
+#				  .tar.gz otherwise).
 # MASTER_SITES	- Primary location(s) for distribution files if not found
 #				  locally.  See bsd.sites.mk for common choices for
 #				  MASTER_SITES.
@@ -329,13 +328,8 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 #
 # USE_BZIP2		- If set, this port tarballs use bzip2, not gzip, for
 #				  compression.
-# USE_LHA		- If set, this port distfile uses lha for compression
 # USE_XZ		- If set, this port tarballs use xz (or lzma)
 #				  for compression
-# USE_ZIP		- If set, this port distfile uses zip, not tar w/[bg]zip
-#				  for compression.
-# USE_MAKESELF		- If set, this port distfile uses makeself, not tar w/[bg]zip
-#				  for compression.
 # USE_GCC		- If set, this port requires this version of gcc, either in
 #				  the system or installed from a port.
 # USE_CSTD		- Override the default C language standard (gnu89, gnu99)
@@ -435,13 +429,18 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # USE_WX		- If set, this port uses the WxWidgets library and related
 #				  components. See bsd.wx.mk for more details.
 ##
-# USE_KDE4		- A list of the KDE4 dependencies the port has (e.g.,
+# USE_KDE4		- A list of the KDE 4 dependencies the port has (e.g.,
 #				  kdelibs, kdebase).  Implies that the port needs KDE.
 #				  Implies inclusion of bsd.kde4.mk.  See bsd.kde4.mk
 #				  for more details.
 #
-# USE_QT4		- A list of the QT4 dependencies the port has (e.g,
+# USE_QT4		- A list of the Qt 4 dependencies the port has (e.g,
 #				  corelib, webkit).  Implies that the port needs Qt.
+#				  Implies the inclusion of bsd.qt.mk.  See bsd.qt.mk
+#				  for more details.
+#
+# USE_QT5		- A list of the Qt 5 dependencies the port has (e.g,
+#				  core, webkit).  Implies that the port needs Qt.
 #				  Implies the inclusion of bsd.qt.mk.  See bsd.qt.mk
 #				  for more details.
 #
@@ -809,8 +808,7 @@ FreeBSD_MAINTAINER=	portmgr@FreeBSD.org
 # For extract:
 #
 # EXTRACT_CMD	- Command for extracting archive: "bzip2" if USE_BZIP2
-#				  is set, "unzip" if USE_ZIP is set, "unmakeself" if
-#				  USE_MAKESELF if set, "gzip" otherwise.
+#				  is set, "gzip" otherwise.
 # EXTRACT_BEFORE_ARGS
 #				- Arguments to ${EXTRACT_CMD} before filename.
 #				  Default: "-dc"
@@ -1206,6 +1204,12 @@ WITH_PKGNG?=	yes
 .endif
 .endif
 
+.if !defined(WITH_PKGNG) && !defined(NO_WARNING_PKG_INSTALL_EOL)
+WARNING+=	"pkg_install EOL is scheduled for 2014-09-01. Please consider migrating to pkgng"
+WARNING+=	"http://blogs.freebsdish.org/portmgr/2014/02/03/time-to-bid-farewell-to-the-old-pkg_-tools/"
+WARNING+=	"If you do not want to see this message again set NO_WARNING_PKG_INSTALL_EOL=yes in your make.conf"
+.endif
+
 # Enable new xorg for FreeBSD versions after Radeon KMS was imported unless
 # WITHOUT_NEW_XORG is set.
 .if ${OSVERSION} >= 1100000
@@ -1305,11 +1309,6 @@ CONFIGURE_ENV+=	TMPDIR="${TMPDIR}"
 .if ${WITH_DEBUG_PORTS:M${PKGORIGIN}}
 WITH_DEBUG=	yes
 .endif
-.endif
-
-# Reset value from bsd.own.mk.
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
-STRIP=	#none
 .endif
 
 .include "${PORTSDIR}/Mk/bsd.options.mk"
@@ -1429,15 +1428,11 @@ PKGCOMPATDIR?=		${LOCALBASE}/lib/compat/pkg
 .include "${PORTSDIR}/Mk/bsd.ocaml.mk"
 .endif
 
-.if defined(USE_TCL) || defined(USE_TCL_BUILD) || defined(USE_TCL_RUN) || defined(USE_TCL_WRAPPER) || defined(USE_TK) || defined(USE_TK_BUILD) || defined(USE_TK_RUN) || defined(USE_TK_WRAPPER)
-.include "${PORTSDIR}/Mk/bsd.tcl.mk"
-.endif
-
 .if defined(USE_APACHE) || defined(USE_APACHE_BUILD) || defined(USE_APACHE_RUN)
 .include "${PORTSDIR}/Mk/bsd.apache.mk"
 .endif
 
-.if defined(USE_QT4)
+.if defined(USE_QT4) || defined(USE_QT5)
 .include "${PORTSDIR}/Mk/bsd.qt.mk"
 .endif
 
@@ -1519,14 +1514,8 @@ ${_f}_ARGS:=	${f:C/^[^\:]*\://g}
 
 .if defined(USE_BZIP2)
 EXTRACT_SUFX?=			.tar.bz2
-.elif defined(USE_LHA)
-EXTRACT_SUFX?=			.lzh
-.elif defined(USE_ZIP)
-EXTRACT_SUFX?=			.zip
 .elif defined(USE_XZ)
 EXTRACT_SUFX?=			.tar.xz
-.elif defined(USE_MAKESELF)
-EXTRACT_SUFX?=			.run
 .else
 EXTRACT_SUFX?=			.tar.gz
 .endif
@@ -1601,10 +1590,16 @@ CFLAGS:=	${CFLAGS:C/${_CPUCFLAGS}//}
 .endif
 .endif
 
+# Reset value from bsd.own.mk.
 .if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+STRIP=	#none
+MAKE_ENV+=	DONTSTRIP=yes
 STRIP_CMD=	${TRUE}
 DEBUG_FLAGS?=	-g
 CFLAGS:=		${CFLAGS:N-O*:N-fno-strict*} ${DEBUG_FLAGS}
+.if defined(INSTALL_TARGET)
+INSTALL_TARGET:=	${INSTALL_TARGET:S/^install-strip$/install/g}
+.endif
 .endif
 
 .if defined(WITH_SSP) || defined(WITH_SSP_PORTS)
@@ -1695,17 +1690,7 @@ PKG_DEPENDS+=		${LOCALBASE}/sbin/pkg:${PORTSDIR}/${PKGNG_ORIGIN}
 .endif
 .endif
 
-.if defined(USE_LHA)
-EXTRACT_DEPENDS+=	lha:${PORTSDIR}/archivers/lha
-.endif
-.if defined(USE_ZIP)
-EXTRACT_DEPENDS+=	${LOCALBASE}/bin/unzip:${PORTSDIR}/archivers/unzip
-.endif
-.if defined(USE_MAKESELF)
-EXTRACT_DEPENDS+=	unmakeself:${PORTSDIR}/archivers/unmakeself
-.endif
-
-.if defined(USE_GCC) || defined(USE_FORTRAN)
+.if defined(USE_GCC)
 .include "${PORTSDIR}/Mk/bsd.gcc.mk"
 .endif
 
@@ -1792,7 +1777,7 @@ USES+=	display
 
 PKG_IGNORE_DEPENDS?=		'this_port_does_not_exist'
 
-_GL_glesv2_LIB_DEPENDS=		libGLESv2.so:${PORTSDIR}/grahpics/libglesv2
+_GL_glesv2_LIB_DEPENDS=		libGLESv2.so:${PORTSDIR}/graphics/libglesv2
 _GL_egl_LIB_DEPENDS=		libEGL.so:${PORTSDIR}/graphics/libEGL
 _GL_gl_LIB_DEPENDS=		libGL.so:${PORTSDIR}/graphics/libGL
 _GL_gl_USE_XORG=		glproto dri2proto
@@ -1821,6 +1806,13 @@ RUN_DEPENDS+=	${_GL_${_component}_RUN_DEPENDS}
 
 .if !defined(NO_STAGE)
 .include "${PORTSDIR}/Mk/bsd.stage.mk"
+.else
+# Ignore STAGEDIR if set from make.conf
+.undef STAGEDIR
+# From command line it is impossible to undefined so we must raise an error
+.if defined(STAGEDIR)
+IGNORE=	Do not define STAGEDIR in command line
+.endif
 .endif
 
 .if defined(WITH_PKGNG)
@@ -1853,6 +1845,10 @@ RUN_DEPENDS+=	${_GL_${_component}_RUN_DEPENDS}
 .include "${PORTSDIR}/Mk/bsd.java.mk"
 .endif
 
+.if defined(USE_OCAML)
+.include "${PORTSDIR}/Mk/bsd.ocaml.mk"
+.endif
+
 .if defined(USE_LINUX_RPM)
 .include "${PORTSDIR}/Mk/bsd.linux-rpm.mk"
 .endif
@@ -1861,7 +1857,7 @@ RUN_DEPENDS+=	${_GL_${_component}_RUN_DEPENDS}
 .include "${PORTSDIR}/Mk/bsd.linux-apps.mk"
 .endif
 
-.if defined(USE_QT4)
+.if defined(USE_QT4) || defined(USE_QT5)
 .include "${PORTSDIR}/Mk/bsd.qt.mk"
 .endif
 
@@ -1879,10 +1875,6 @@ RUN_DEPENDS+=	${_GL_${_component}_RUN_DEPENDS}
 
 .if defined(USE_PYTHON)
 .include "${PORTSDIR}/Mk/bsd.python.mk"
-.endif
-
-.if defined(USE_TCL) || defined(USE_TCL_BUILD) || defined(USE_TK) || defined(USE_TK_BUILD)
-.include "${PORTSDIR}/Mk/bsd.tcl.mk"
 .endif
 
 .if defined(USE_LUA) || defined(USE_LUA_NOT)
@@ -2141,6 +2133,9 @@ PATCH_DEBUG_TMP=	no
 PATCH_ARGS?=	-d ${PATCH_WRKSRC} --forward --quiet -E ${PATCH_STRIP}
 PATCH_DIST_ARGS?=	--suffix ${DISTORIG} -d ${PATCH_WRKSRC} --forward --quiet -E ${PATCH_DIST_STRIP}
 .endif
+.if !defined(QUIET)
+PATCH_SILENT=		PATCH_SILENT=yes
+.endif
 .if defined(BATCH)
 PATCH_ARGS+=		--batch
 PATCH_DIST_ARGS+=	--batch
@@ -2162,26 +2157,12 @@ PATCH_DIST_ARGS+=	--suffix .orig
 TAR?=	/usr/bin/tar
 
 # EXTRACT_SUFX is defined in .pre.mk section
-.if defined(USE_LHA)
-EXTRACT_CMD?=		${LHA_CMD}
-EXTRACT_BEFORE_ARGS?=	xfqw=${WRKDIR}
-EXTRACT_AFTER_ARGS?=
-.elif defined(USE_ZIP)
-EXTRACT_CMD?=		${UNZIP_CMD}
-EXTRACT_BEFORE_ARGS?=	-qo
-EXTRACT_AFTER_ARGS?=	-d ${WRKDIR}
-.elif defined(USE_MAKESELF)
-EXTRACT_CMD?=		${UNMAKESELF_CMD}
-EXTRACT_BEFORE_ARGS?=
-EXTRACT_AFTER_ARGS?=
-.else
 EXTRACT_CMD?=	${TAR}
 EXTRACT_BEFORE_ARGS?=	-xf
 .if defined(EXTRACT_PRESERVE_OWNERSHIP)
 EXTRACT_AFTER_ARGS?=
 .else
 EXTRACT_AFTER_ARGS?=	--no-same-owner --no-same-permissions
-.endif
 .endif
 
 # Figure out where the local mtree file is
@@ -2773,6 +2754,7 @@ CONFIGURE_FAIL_MESSAGE?=	"Please report the problem to ${MAINTAINER} [maintainer
 CONFIGURE_MAX_CMD_LEN!=	${SYSCTL} -n kern.argmax
 .endif
 GNU_CONFIGURE_PREFIX?=	${PREFIX}
+GNU_CONFIGURE_MANPREFIX?=	${MANPREFIX}
 CONFIG_SITE?=		${PORTSDIR}/Templates/config.site
 CONFIGURE_ARGS+=	--prefix=${GNU_CONFIGURE_PREFIX} $${_LATE_CONFIGURE_ARGS}
 CONFIGURE_ENV+=		CONFIG_SITE=${CONFIG_SITE} lt_cv_sys_max_cmd_len=${CONFIGURE_MAX_CMD_LEN}
@@ -2781,10 +2763,10 @@ HAS_CONFIGURE=		yes
 SET_LATE_CONFIGURE_ARGS= \
      _LATE_CONFIGURE_ARGS="" ; \
 	if [ ! -z "`./${CONFIGURE_SCRIPT} --help 2>&1 | ${GREP} -- '--mandir'`" ]; then \
-	    _LATE_CONFIGURE_ARGS="$${_LATE_CONFIGURE_ARGS} --mandir=${MANPREFIX}/man" ; \
+	    _LATE_CONFIGURE_ARGS="$${_LATE_CONFIGURE_ARGS} --mandir=${GNU_CONFIGURE_MANPREFIX}/man" ; \
 	fi ; \
 	if [ ! -z "`./${CONFIGURE_SCRIPT} --help 2>&1 | ${GREP} -- '--infodir'`" ]; then \
-	    _LATE_CONFIGURE_ARGS="$${_LATE_CONFIGURE_ARGS} --infodir=${PREFIX}/${INFO_PATH}/${INFO_SUBDIR}" ; \
+	    _LATE_CONFIGURE_ARGS="$${_LATE_CONFIGURE_ARGS} --infodir=${GNU_CONFIGURE_PREFIX}/${INFO_PATH}/${INFO_SUBDIR}" ; \
 	fi ; \
 	if [ -z "`./${CONFIGURE_SCRIPT} --version 2>&1 | ${EGREP} -i '(autoconf.*2\.13|Unrecognized option)'`" ]; then \
 		_LATE_CONFIGURE_ARGS="$${_LATE_CONFIGURE_ARGS} --build=${CONFIGURE_TARGET}" ; \
@@ -3192,6 +3174,13 @@ build: configure
 	@${TOUCH} ${TOUCH_FLAGS} ${BUILD_COOKIE}
 .endif
 
+# Disable staging. Be non-fatal here as some scripts may just call it as a
+# matter of correctness in their ordering.
+.if defined(NO_STAGE) && !target(stage)
+stage:
+	@${ECHO_MSG} "===>   This port does not yet support staging"
+.endif
+
 # Disable install
 .if defined(NO_INSTALL) && !target(do-install)
 do-install:
@@ -3545,7 +3534,7 @@ do-patch:
 							PATCHES_APPLIED="$$PATCHES_APPLIED $$i" ; \
 						else \
 							${ECHO_MSG} `${ECHO_CMD} "=> Patch $$i failed to apply cleanly." | ${SED} "s|${PATCHDIR}/||"` ; \
-							if [ x"$$PATCHES_APPLIED" != x"" ]; then \
+							if [ x"$$PATCHES_APPLIED" != x"" -a ${PATCH_SILENT} != "yes" ]; then \
 								${ECHO_MSG} `${ECHO_CMD} "=> Patch(es) $$PATCHES_APPLIED applied cleanly." | ${SED} "s|${PATCHDIR}/||g"` ; \
 							fi; \
 							${FALSE} ; \
@@ -3617,10 +3606,10 @@ do-configure:
 .endif
 
 # Build
-
+# XXX: ${MAKE_ARGS:N${DESTDIRNAME}=*} would be easier but it is not valid with the old fmake
 .if !target(do-build)
 do-build:
-	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET}; then \
+	@(cd ${BUILD_WRKSRC}; if ! ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS:C,^${DESTDIRNAME}=.*,,g} ${ALL_TARGET}; then \
 		if [ -n "${BUILD_FAIL_MESSAGE}" ] ; then \
 			${ECHO_MSG} "===> Compilation failed unexpectedly."; \
 			(${ECHO_CMD} "${BUILD_FAIL_MESSAGE}") | ${FMT} 75 79 ; \
@@ -3785,10 +3774,11 @@ do-package: ${TMPPLIST}
 	if [ -f ${PKGMESSAGE} ]; then \
 		_LATE_PKG_ARGS="$${_LATE_PKG_ARGS} -D ${PKGMESSAGE}"; \
 	fi; \
-	if ${PKG_CMD} -S ${STAGEDIR} ${PKG_ARGS} ${WRKDIR}/${PKGNAME}${PKG_SUFX}; then \
-		if [ -d ${PACKAGES} -a -w ${PACKAGES} ]; then \
-			${LN} -f ${WRKDIR}/${PKGNAME}${PKG_SUFX} ${PKGFILE} 2>/dev/null || \
-			    ${CP} -af ${WRKDIR}/${PKGNAME}${PKG_SUFX} ${PKGFILE}; \
+	${MKDIR} ${WRKDIR}/pkg; \
+	if ${PKG_CMD} -S ${STAGEDIR} ${PKG_ARGS} ${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}; then \
+		if [ -d ${PKGREPOSITORY} -a -w ${PKGREPOSITORY} ]; then \
+			${LN} -f ${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX} ${PKGFILE} 2>/dev/null || \
+			    ${CP} -af ${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX} ${PKGFILE}; \
 			cd ${.CURDIR} && eval ${MAKE} package-links; \
 		fi; \
 	else \
@@ -3838,7 +3828,7 @@ delete-package: delete-package-links
 	@${RM} -f ${PKGFILE}
 .	else
 # When staging, the package may only be in the workdir if not root
-	@${RM} -f ${PKGFILE} ${WRKDIR}/${PKGNAME}${PKG_SUFX} 2>/dev/null || :
+	@${RM} -f ${PKGFILE} ${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX} 2>/dev/null || :
 .	endif
 .endif
 
@@ -3857,14 +3847,22 @@ delete-package-list: delete-package-links-list
 	@${ECHO_CMD} "[ -f ${PKGFILE} ] && (${ECHO_CMD} deleting ${PKGFILE}; ${RM} -f ${PKGFILE})"
 .endif
 
-# Only used if !defined(NO_STAGE)
+# Used if !defined(NO_STAGE) during install, or manually to install package
+# from local repository.
 .if !target(install-package)
-install-package:
 .if defined(FORCE_PKG_REGISTER)
-	@${PKG_ADD} -f ${WRKDIR}/${PKGNAME}${PKG_SUFX}
-.else
-	@${PKG_ADD} ${WRKDIR}/${PKGNAME}${PKG_SUFX}
+_INSTALL_PKG_ARGS=	-f
 .endif
+.if defined(INSTALLS_DEPENDS) && defined(WITH_PKGNG)
+_INSTALL_PKG_ARGS+=	-A
+.endif
+install-package:
+	@if [ -f "${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}" ]; then \
+	    _pkgfile="${WRKDIR}/pkg/${PKGNAME}${PKG_SUFX}"; \
+	else \
+	    _pkgfile="${PKGFILE}"; \
+	fi; \
+	${PKG_ADD} ${_INSTALL_PKG_ARGS} $${_pkgfile}
 .endif
 
 
@@ -4160,6 +4158,10 @@ fix-plist-sequence: ${TMPPLIST}
 	@${EGREP} -v -e '^@exec echo.*Creating users and' -e '^@exec.*${PW}' -e '^@exec ${INSTALL} -d -g' ${TMPPLIST} >> ${TMPGUCMD}
 	@${MV} -f ${TMPGUCMD} ${TMPPLIST}
 .endif
+.if !defined(WITH_PKGNG)
+	@${ECHO_CMD} "@exec echo pkg_install EOL is scheduled for 2014-09-01. Please consider migrating to pkgng" >> ${TMPPLIST}
+	@${ECHO_CMD} "@exec echo http://blogs.freebsdish.org/portmgr/2014/02/03/time-to-bid-farewell-to-the-old-pkg_-tools/" >> ${TMPPLIST}
+.endif
 .endif
 
 .if !defined(DISABLE_SECURITY_CHECK)
@@ -4264,7 +4266,7 @@ pretty-print-www-site:
 
 .if !target(checkpatch)
 checkpatch:
-	@cd ${.CURDIR} && ${MAKE} PATCH_CHECK_ONLY=yes ${_PATCH_DEP} ${_PATCH_REAL_SEQ}
+	@cd ${.CURDIR} && ${MAKE} ${PATCH_SILENT} PATCH_CHECK_ONLY=yes ${_PATCH_DEP} ${_PATCH_REAL_SEQ}
 .endif
 
 # Reinstall
@@ -4784,11 +4786,14 @@ pre-repackage:
 
 .if !target(package-noinstall)
 package-noinstall:
+.if defined(NO_STAGE)
 	@${MKDIR} ${WRKDIR}
-	@cd ${.CURDIR} && ${MAKE} pre-package \
-		pre-package-script do-package post-package-script
+	@cd ${.CURDIR} && ${MAKE} ${_PACKAGE_REAL_SEQ}
 	@${RM} -f ${TMPPLIST}
 	-@${RMDIR} ${WRKDIR}
+.else
+	@cd ${.CURDIR} && ${MAKE} package
+.endif
 .endif
 
 ################################################################
@@ -4817,7 +4822,10 @@ _INSTALL_DEPENDS=	\
 					${WRKDIR}/pkg-static add $${subpkgfile}; \
 					${RM} -f ${WRKDIR}/pkg-static; \
 				else \
-					${PKG_ADD} $${subpkgfile}; \
+					if [ -n "${WITH_PKGNG}" ]; then \
+						_pkg_add_a="-A"; \
+					fi; \
+					${PKG_ADD} $${_pkg_add_a} $${subpkgfile}; \
 				fi; \
 			elif [ -n "${USE_PACKAGE_DEPENDS_ONLY}" -a "$${target}" = "${DEPENDS_TARGET}" ]; then \
 				${ECHO_MSG} "===>   ${PKGNAME} depends on package: $${subpkgfile} - not found"; \
@@ -5349,7 +5357,7 @@ actual-package-depends:
 
 package-recursive: package
 	@for dir in $$(${ALL-DEPENDS-LIST}); do \
-		(cd $$dir; ${MAKE} package clean); \
+		(cd $$dir; ${MAKE} package-noinstall); \
 	done
 
 # Show missing dependencies
@@ -6436,7 +6444,8 @@ _PATCH_SEQ=		ask-license patch-message patch-depends pathfix-pre-patch dos2unix 
 _CONFIGURE_DEP=	patch
 _CONFIGURE_SEQ=	build-depends lib-depends configure-message run-autotools-fixup \
 				configure-autotools pre-configure pre-configure-script \
-				run-autotools do-configure post-configure post-configure-script
+				run-autotools patch-libtool do-configure post-configure \
+				post-configure-script
 _BUILD_DEP=		configure
 _BUILD_SEQ=		build-message pre-build pre-build-script do-build \
 				post-build post-build-script

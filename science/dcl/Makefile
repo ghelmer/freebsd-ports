@@ -3,7 +3,7 @@
 
 PORTNAME=	dcl
 PORTVERSION=	5.4.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.gfd-dennou.org/library/dcl/ \
 		http://dennou-h.gfd-dennou.org/library/dcl/ \
@@ -13,9 +13,8 @@ MAINTAINER=	murashin@gfd-dennou.org
 COMMENT=	Scientific graphic library for geoscience
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		pkgconfig
+USES=		fortran pkgconfig
 USE_XORG=	x11 xext
-USE_FORTRAN=	yes
 USE_GNOME=	gtk20 gdkpixbuf2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --with-x

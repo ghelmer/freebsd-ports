@@ -7,7 +7,7 @@ CATEGORIES=	sysutils
 MASTER_SITES=	http://freebie.miraclenet.co.th/notebook/toshctl/
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	carl@servicefactory.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A command-line tool to access parts of the Toshiba hardware interface
 
 ONLY_FOR_ARCHS=	i386
@@ -15,8 +15,7 @@ PLIST_FILES=	bin/toshctl
 
 WRKSRC=		${WRKDIR}/toshctl
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

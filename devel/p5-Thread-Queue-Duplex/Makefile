@@ -7,13 +7,10 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tjs@cdpa.nsysu.edu.tw
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Thread-safe request/response queue with identifiable elements
 
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=	Thread::Queue::Duplex.3 Thread::Queue::Queueable.3
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

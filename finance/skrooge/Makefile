@@ -2,7 +2,7 @@
 
 PORTNAME=	skrooge
 PORTVERSION=	1.7.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	finance kde
 MASTER_SITES=	${MASTER_SITE_KDE}
 MASTER_SITE_SUBDIR=	stable/${PORTNAME}/${PORTVERSION}/src/
@@ -17,14 +17,14 @@ LIB_DEPENDS=	ofx:${PORTSDIR}/finance/libofx \
 		kactivities:${PORTSDIR}/x11/kactivities
 
 USE_BZIP2=	yes
-USES=		cmake:outsource gettext
+USES=		cmake:outsource gettext shared-mime-info
 USE_SQLITE=	yes
 USE_QT4=	qmake_build moc_build uic_build rcc_build designer_build \
 		corelib dbus gui script sql webkit xml sql-sqlite3_run
-USE_KDE4=	automoc4 kdehier kdelibs kdeprefix pimlibs sharedmime
+USE_KDE4=	automoc4 kdehier kdelibs kdeprefix pimlibs
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	VERSION=${PORTVERSION}
+PLIST_SUB=	VERSION=${PORTVERSION} \
+		GRANTLEE_VER=0.4
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

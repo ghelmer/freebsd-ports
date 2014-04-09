@@ -12,7 +12,6 @@ EXTRACT_SUFX=	.jar
 MAINTAINER=	wenheping@gmail.com
 COMMENT=	Open-source Java tools for processing biological data
 
-USE_ZIP=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 USE_ANT=	yes
@@ -25,6 +24,8 @@ PORTEXAMPLES=	demos
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 

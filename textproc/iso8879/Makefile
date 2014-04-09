@@ -14,7 +14,7 @@ COMMENT=	Character entity sets from ISO 8879:1986 (SGML)
 
 RUN_DEPENDS=	${XMLCATMGR}:${PORTSDIR}/textproc/xmlcatmgr
 
-USE_ZIP=	yes
+USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 PLIST_SUB=	DTD_NAME=${PORTNAME} XMLCATMGR=${XMLCATMGR}
@@ -24,13 +24,10 @@ INSTDIR=	${PREFIX}/share/sgml/iso8879
 XMLCATMGR=	${LOCALBASE}/bin/xmlcatmgr
 CATALOG_PORTS_SGML=	${PREFIX}/share/sgml/catalog.ports
 
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${INSTDIR}
-	@${INSTALL_DATA} ${WRKSRC}/ISO* ${INSTDIR}
-	@${INSTALL_DATA} ${FILESDIR}/catalog ${INSTDIR}/catalog
+	@${MKDIR} ${STAGEDIR}${INSTDIR}
+	@${INSTALL_DATA} ${WRKSRC}/ISO* ${STAGEDIR}${INSTDIR}
+	@${INSTALL_DATA} ${FILESDIR}/catalog ${STAGEDIR}${INSTDIR}/catalog
 
-post-install:
-	@${XMLCATMGR} -sc ${CATALOG_PORTS_SGML} add CATALOG ${PORTNAME}/catalog
 
 .include <bsd.port.mk>

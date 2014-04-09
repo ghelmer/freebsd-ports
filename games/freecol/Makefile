@@ -12,15 +12,11 @@ COMMENT=	An open source version of Colonization
 
 LICENSE=	GPLv2
 
-USE_ZIP=	yes
+USES=		zip
 NO_BUILD=	yes
 SUB_FILES=	freecol
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
-
-.if defined(NOPORTDATA)
-IGNORE=		needs data file to run, unset NOPORTDATA
-.endif
 
 PLIST_FILES=	bin/freecol
 PORTDATA=	*
@@ -29,6 +25,9 @@ PORTDOCS=	*
 DESKTOP_ENTRIES="FreeCol" "${COMMENT}" "${DATADIR}/freecol.xpm" "freecol" "Game;StrategyGame;" "false"
 
 NO_STAGE=	yes
+
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 post-extract:

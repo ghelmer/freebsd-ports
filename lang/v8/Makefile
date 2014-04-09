@@ -9,26 +9,30 @@ MASTER_SITES=	LOCAL/vanilla
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Google\'s open source JavaScript engine
 
+LICENSE=	BSD3CLAUSE
+
 BUILD_DEPENDS=	python:${PORTSDIR}/lang/python
-LIB_DEPENDS=	execinfo:${PORTSDIR}/devel/libexecinfo
+LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
-CONFLICTS=      v8-devel-*
+CONFLICTS=	v8-3.24.*
 
-USES=		gmake
-USE_XZ=		yes
+USES=		gmake compiler tar:xz
 USE_PYTHON=	2
 USE_LDCONFIG=	yes
 ALL_TARGET=	native
 MAKE_ARGS=	library=shared
+MAKE_ENV+=	CC.host=${CC} CXX.host=${CXX} LINK.host=${CXX} LINK.target=${CXX}
 
 .include <bsd.port.pre.mk>
 
-.if ${CC:T:Mclang} == "clang" || ${CXX:T:Mclang++} == "clang++" || ${OSVERSION} >= 1000024
-_CLANG!=	clang --version | ${HEAD} -1 | ${SED} -e 's/.*clang version \([0-9]\)\.\([0-9]\).*/\1\2/'
+.if ${COMPILER_TYPE} == clang
 MAKE_ENV+=	LINK=clang++
 CFLAGS+=	-Wno-unused-private-field
-.if ${_CLANG} >= 33
+.if ${COMPILER_VERSION} >= 33
 CFLAGS+=	-Wno-nested-anon-types -Wno-unused-function
+.if ${COMPILER_VERSION} >= 34
+CFLAGS+=	-Wno-unused-const-variable
+.endif
 .endif
 .else
 MAKE_ARGS+=	strictaliasing=off

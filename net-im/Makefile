@@ -128,6 +128,7 @@
     SUBDIR += pwytter
     SUBDIR += py-jabber
     SUBDIR += py-jabberbot
+    SUBDIR += py-libturpial
     SUBDIR += py-punjab
     SUBDIR += py-pyxmpp
     SUBDIR += py-skype4py
@@ -165,11 +166,13 @@
     SUBDIR += tkabber-devel
     SUBDIR += tkabber-plugins
     SUBDIR += tkabbur
+    SUBDIR += tox
     SUBDIR += ttytter
     SUBDIR += turpial
     SUBDIR += twirssi
     SUBDIR += twitmail
     SUBDIR += vacuum-im
+    SUBDIR += venom
     SUBDIR += vicq
     SUBDIR += vqcc-gtk
     SUBDIR += yoono

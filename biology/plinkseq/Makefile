@@ -14,12 +14,11 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libprotobuf.so:${PORTSDIR}/devel/protobuf
 
-USE_DOS2UNIX=	yes
+USES=		dos2unix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-protobuf=${LOCALBASE}
 
-NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} -e 's|PF_INET|AF_INET|g' ${WRKSRC}/browser/mongoose.c
 	${REINPLACE_CMD} -e 's|-ldl||g' \

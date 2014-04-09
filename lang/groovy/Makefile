@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	groovy
-DISTVERSION=	2.0.5
+DISTVERSION=	2.2.2
 CATEGORIES=	lang java
-MASTER_SITES=	http://dist.groovy.codehaus.org/distributions/
-DISTNAME=	groovy-${PORTVERSION}
+MASTER_SITES=	http://dl.bintray.com/groovy/maven/
 DISTFILES=	groovy-binary-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	mjs@Bur.st
@@ -15,45 +14,45 @@ LICENSE=	APACHE20
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:U}
 
-USE_ZIP=yes
+USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.7+
 NO_BUILD=	yes
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 DATAFILES=	ANTLR-LICENSE.txt ASM-LICENSE.txt CLI-LICENSE.txt JSR223-LICENSE.txt LICENSE.txt conf lib
 SCRIPTFILES=	groovy groovyConsole groovyc groovysh java2groovy startGroovy
+PORTDOCS=	html pdf
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
+DOCS_DISTFILES=	groovy-docs-${PORTVERSION}${EXTRACT_SUFX}
+
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MDOCS}
-DISTFILES+=	groovy-docs-${PORTVERSION}${EXTRACT_SUFX}
-PORTDOCS=	html pdf
-.endif
 PLIST_FILES=	${SCRIPTFILES:S,^,bin/,} %%JAVAJARDIR%%/${PORTNAME}.jar
 SUB_FILES=	set-groovy_home.sed
 
 do-install:
-	@${ECHO_MSG} -n ">> Installing JAR as ${JAVAJARDIR}/${PORTNAME}.jar..."
-	@${INSTALL_DATA} ${WRKSRC}/embeddable/${PORTNAME}-all-${DISTVERSION:U}.jar ${JAVAJARDIR}/${PORTNAME}.jar
+	@${ECHO_MSG} -n ">> Staging JAR as ${JAVAJARDIR}/${PORTNAME}.jar..."
+	@${INSTALL_DATA} ${WRKSRC}/embeddable/${PORTNAME}-all-${DISTVERSION:U}.jar ${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
 	@${ECHO_MSG} " [ DONE ]"
-	@${ECHO_MSG} -n ">> Installing data files in ${DATADIR}..."
+	@${ECHO_MSG} -n ">> Staging data files in ${DATADIR}..."
 	@cd ${WRKSRC} \
-	  && ${FIND} ${DATAFILES} -type d -exec ${MKDIR} ${DATADIR}/{} \; \
-	  && ${FIND} ${DATAFILES} -type f -exec ${INSTALL_DATA} {} ${DATADIR}/{} \;
+	  && ${FIND} ${DATAFILES} -type d -exec ${MKDIR} ${STAGEDIR}${DATADIR}/{} \; \
+	  && ${FIND} ${DATAFILES} -type f -exec ${INSTALL_DATA} {} ${STAGEDIR}${DATADIR}/{} \;
 	@${ECHO_MSG} " [ DONE ]"
-	@${ECHO_MSG} -n ">> Installing executables in ${PREFIX}/bin..."
+	@${ECHO_MSG} -n ">> Staging executables in ${PREFIX}/bin..."
 	@${REINPLACE_CMD} -f ${WRKDIR}/set-groovy_home.sed ${WRKSRC}/bin/startGroovy
 .for file in ${SCRIPTFILES}
 	@${ECHO_MSG} -n " ${file}"
-	@${INSTALL_SCRIPT} ${WRKSRC}/bin/${file} ${PREFIX}/bin/
+	@${INSTALL_SCRIPT} ${WRKSRC}/bin/${file} ${STAGEDIR}${PREFIX}/bin/
 .endfor
 	@${ECHO_MSG} " [ DONE ]"
 .if ${PORT_OPTIONS:MDOCS}
-	@${ECHO_MSG} -n ">> Installing documentation in ${DOCSDIR}..."
+	@${ECHO_MSG} -n ">> Staging documentation in ${DOCSDIR}..."
 	@cd ${WRKSRC} \
-	  && ${FIND} ${PORTDOCS} -type d -exec ${MKDIR} ${DOCSDIR}/{} \; \
-	  && ${FIND} ${PORTDOCS} -type f -exec ${INSTALL_DATA} {} ${DOCSDIR}/{} \;
+	  && ${FIND} ${PORTDOCS} -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/{} \; \
+	  && ${FIND} ${PORTDOCS} -type f -exec ${INSTALL_DATA} {} ${STAGEDIR}${DOCSDIR}/{} \;
 	@${ECHO_MSG} " [ DONE ]"
 .endif
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sqwebmail
-PORTVERSION=	5.7.0
+PORTVERSION=	5.7.2
 CATEGORIES=	mail www
 MASTER_SITES=	SF/courier/webmail/${PORTVERSION}
 
@@ -113,8 +113,8 @@ CONFIGURE_ARGS+=	--without-gzip
 .endif
 
 .if ${PORT_OPTIONS:MISPELL}
-BUILD_DEPENDS+=		${LOCALBASE}/bin/ispell:${PORTSDIR}/textproc/ispell
-RUN_DEPENDS+=		${LOCALBASE}/bin/ispell:${PORTSDIR}/textproc/ispell
+BUILD_DEPENDS+=		${LOCALBASE}/bin/ispell:${PORTSDIR}/textproc/aspell-ispell
+RUN_DEPENDS+=		${LOCALBASE}/bin/ispell:${PORTSDIR}/textproc/aspell-ispell
 CONFIGURE_ARGS+=	--with-ispell=${LOCALBASE}/bin/ispell
 .else
 CONFIGURE_ARGS+=	--without-ispell
@@ -186,21 +186,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|^case x$$lockmethod in|${TEST} \&\& &|g' \
 		${WRKSRC}/libs/liblock/configure
 
-	@${REINPLACE_CMD} -e 's|@LIBS@|@LIBS@ -rpath=:${LOCALBASE}/lib/courier-authlib|' \
-		${WRKSRC}/libs/sqwebmail/Makefile.in
-
 	@${REINPLACE_CMD} -e 's|mkdir -p|${MKDIR}|g' ${WRKSRC}/libs/pcp/configure
-
-	@${REINPLACE_CMD} -e 's|@LIBTOOL@|${LIBTOOL}| ; \
-		s|$$(SHELL) $$(MKINSTALLDIRS)|$$(MKINSTALLDIRS)| ; \
-		s|$$(libdir)/charset|$$(prefix)/libdata/charset|g ; \
-		s|$$(libdir)/t-charset|$$(prefix)/libdata/t-charset|g' \
-		${WRKSRC}/libs/pcp/intl/Makefile.in
-
-post-install:
-#	${SED} ${RC_SCRIPTS_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \
-#		${FILESDIR}/sqwebmail-sqwebmaild.sh > ${WRKDIR}/sqwebmail-sqwebmaild.sh
-#	${INSTALL_SCRIPT} ${WRKDIR}/sqwebmail-sqwebmaild.sh ${RCDIR}/sqwebmail-sqwebmaild.sh
 
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${DOCSDIR}

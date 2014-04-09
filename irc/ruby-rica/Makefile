@@ -11,7 +11,7 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Another IRC client framework for Ruby
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_RUBY=	yes
 
 NO_BUILD=	yes
@@ -25,6 +25,8 @@ MODULES=	rica.rb \
 
 DOCS=		CHANGES	README	classes_and_methods.txt	event.lst *.png
 EXAMPLES=	erica.* ricaco.rb rica-example.rb
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 

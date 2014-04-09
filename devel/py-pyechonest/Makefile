@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	pyechonest
-PORTVERSION=	7.1.1
+PORTVERSION=	8.0.1
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Python interface to The Echo Nest APIs
@@ -12,9 +14,6 @@ COMMENT=	Python interface to The Echo Nest APIs
 LICENSE=	MIT
 
 USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
+USE_PYDISTUTILS=	yes
 
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -13,13 +13,15 @@ DISTFILES=		estic-1.60-sources.zip estic-1.61-patch-from-1.60.zip
 MAINTAINER=		dinoex@FreeBSD.org
 COMMENT=		Controller for ISDN TK-Anlage (PBX) made by Istec
 
-USE_ZIP=	yes
+USES=		zip
+USE_CSTD=	gnu89
+
 NO_WRKSUBDIR=	yes
 
 # Personal Preferences, Where to install.
 PBX_VAR=${STAGEDIR}${PREFIX}/var/log/pbx
 PBX_ETC=${STAGEDIR}${PREFIX}/etc/pbx
-PBX_MAN=${STAGEDIR}${MANPREFIX}/man/man1
+PBX_MAN=${STAGEDIR}${PREFIX}/man/man1
 PBX_BIN=${STAGEDIR}${PREFIX}/bin
 PBX_DOC=${STAGEDIR}${DOCSDIR}
 ESTIC=${WRKSRC}/estic
@@ -33,7 +35,15 @@ NO_OPTIONS_SORT=yes
 DTR_OFF_DESC=	use dtr-off patch
 X11_USE=	xorg=x11
 
+FIXME=	areacode estic spunk
+
 .include <bsd.port.options.mk>
+
+.if ${OSVERSION} > 1000000
+.if ${CC} != gcc42
+BROKEN=	needs gcc4.2 to compile
+.endif
+.endif
 
 .if ${PORT_OPTIONS:MX11}
 X_OR_NOT=-x
@@ -55,6 +65,11 @@ pre-patch:
 #	@${PATCH} -d ${PATCH_WRKSRC}/estic --forward --quiet -E -p0 --batch < ${WRKDIR}/estic.diff
 
 do-configure:
+.for i in ${FIXME}
+	${REINPLACE_CMD} -e 's|CC|CXX|' -e 's|CFLAGS|CXXFLAGS|' \
+		${WRKSRC}/${i}/make/freebsd.mak \
+		${WRKSRC}/${i}/make/freebsd-x.mak
+.endfor
 	@cd ${WRKSRC}/spunk ; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} dep
 	@cd ${WRKSRC}/areacode ; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} dep
 	@cd ${ESTIC} ; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} dep

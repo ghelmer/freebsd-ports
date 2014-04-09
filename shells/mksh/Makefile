@@ -3,6 +3,7 @@
 
 PORTNAME=	mksh
 DISTVERSION=	R49
+PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	http://www.mirbsd.org/MirOS/dist/mir/mksh/ \
 		http://pub.allbsd.org/MirOS/dist/mir/mksh/
@@ -12,6 +13,8 @@ MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	MirBSD Korn Shell
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
+
+OPTIONS_DEFINE=	EXAMPLES
 
 .include <bsd.port.options.mk>
 

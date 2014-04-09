@@ -21,7 +21,6 @@
     SUBDIR += another-htmllint
     SUBDIR += anthy
     SUBDIR += asterisk-sounds
-    SUBDIR += aterm
     SUBDIR += awffull
     SUBDIR += bible_names-fpw
     SUBDIR += bookview
@@ -78,6 +77,7 @@
     SUBDIR += font-ipaex
     SUBDIR += font-jisx0213
     SUBDIR += font-kochi
+    SUBDIR += font-koruri
     SUBDIR += font-migmix
     SUBDIR += font-migu
     SUBDIR += font-mona-ipa
@@ -99,11 +99,9 @@
     SUBDIR += gimp-help
     SUBDIR += gjiten
     SUBDIR += gqmpeg
-    SUBDIR += grep
     SUBDIR += groff
     SUBDIR += gskk
     SUBDIR += gsuica
-    SUBDIR += gtkicq
     SUBDIR += guesswork-classic
     SUBDIR += hns
     SUBDIR += ibus-anthy
@@ -153,7 +151,6 @@
     SUBDIR += latex2html
     SUBDIR += leafrogue
     SUBDIR += less
-    SUBDIR += libjcode
     SUBDIR += libreoffice
     SUBDIR += libskk
     SUBDIR += libslang
@@ -223,7 +220,6 @@
     SUBDIR += p5-Lingua-JA-Numbers
     SUBDIR += p5-Lingua-JA-Regular-Unicode
     SUBDIR += p5-Lingua-JA-Summarize-Extract
-    SUBDIR += p5-Mail-SpamAssassin
     SUBDIR += p5-MeCab
     SUBDIR += p5-Number-Phone-JP
     SUBDIR += p5-PDFJ
@@ -262,7 +258,6 @@
     SUBDIR += rogue_s
     SUBDIR += rskkserv
     SUBDIR += ruby-eb
-    SUBDIR += ruby-man
     SUBDIR += ruby-mecab
     SUBDIR += ruby-ming
     SUBDIR += ruby-romkan
@@ -297,6 +292,7 @@
     SUBDIR += skkserv
     SUBDIR += slimeforest
     SUBDIR += slrn
+    SUBDIR += spamassassin
     SUBDIR += srd-fpw
     SUBDIR += srd-fpw-package
     SUBDIR += suicavalue
@@ -317,7 +313,6 @@
     SUBDIR += tkhonyaku
     SUBDIR += today
     SUBDIR += tomoe
-    SUBDIR += trac
     SUBDIR += uim-anthy
     SUBDIR += uim-tomoe-gtk
     SUBDIR += vera-fpw
@@ -345,7 +340,6 @@
     SUBDIR += xyaku
     SUBDIR += yasou-fpw
     SUBDIR += yc.el
-    SUBDIR += zangband
     SUBDIR += zinnia
     SUBDIR += zinnia-tomoe
     SUBDIR += zipcodes

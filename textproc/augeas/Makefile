@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	augeas
-PORTVERSION=	1.1.0
+PORTVERSION=	1.2.0
 CATEGORIES=	textproc
 MASTER_SITES=	http://download.augeas.net/
 
 MAINTAINER=	swills@FreeBSD.org
-COMMENT=	A configuration editing tool
+COMMENT=	Configuration editing tool
+
+LICENSE=	LGPL21
 
 TEST_DEPENDS=	bash:${PORTSDIR}/shells/bash \
 		gsed:${PORTSDIR}/textproc/gsed
@@ -19,12 +21,8 @@ ACLOCAL_ARGS=	-I . -I gnulib/m4 -I ${LOCALBASE}/share/aclocal
 AUTOMAKE_ARGS=	--add-missing
 USE_LDCONFIG=	yes
 
-MAN1=		augparse.1 augtool.1
-MANCOMPRESSED=	no
-
 LENSESDIR=	${PREFIX}/share/augeas/lenses
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's:$$(libdir)/pkgconfig:${PREFIX}/libdata/pkgconfig:' ${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} -e 's:/bin/bash:/usr/bin/env bash:' ${WRKSRC}/tests/*.sh
@@ -32,5 +30,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's:%%LOCALBASE%%:${LOCALBASE}:' \
 		${WRKSRC}/lenses/puppet.aug \
 		${WRKSRC}/lenses/puppetfileserver.aug
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libaugeas.so.18
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libfa.so.5
 
 .include <bsd.port.mk>

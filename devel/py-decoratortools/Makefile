@@ -3,11 +3,10 @@
 
 PORTNAME=	DecoratorTools
 PORTVERSION=	1.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-EXTRACT_SUFX=	.zip
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Class, function, and metaclass decorators
@@ -15,9 +14,9 @@ COMMENT=	Class, function, and metaclass decorators
 LICENSE=	PSFL ZPL21
 LICENSE_COMB=	dual
 
+PYDISTUTILS_AUTOPLIST=	yes
+USE_PYDISTUTILS=yes
 USE_PYTHON=	2
-USE_PYDISTUTILS=easy_install
-
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
+USES=		zip
 
 .include <bsd.port.mk>

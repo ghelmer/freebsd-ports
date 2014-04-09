@@ -15,8 +15,7 @@ COMMENT=	A passwd file cracker (supports distributed nodes)
 PLIST_FILES=	sbin/slurp sbin/slurpie
 PORTDOCS=	README
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 # Fix for GCC 4.2
@@ -25,10 +24,8 @@ post-patch:
 		${WRKSRC}/src/slurpie.c
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/slurp* ${PREFIX}/sbin
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/slurp* ${STAGEDIR}${PREFIX}/sbin
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

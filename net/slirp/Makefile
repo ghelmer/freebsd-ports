@@ -21,12 +21,10 @@ USES=		perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 
-MAN1=		slirp.1
-PLIST_FILES=	bin/slirp
+PLIST_FILES=	bin/slirp man/man1/slirp.1.gz
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/slirp ${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/slirp.man ${PREFIX}/man/man1/slirp.1
+	${INSTALL_PROGRAM} ${WRKSRC}/slirp ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/slirp.man ${STAGEDIR}${PREFIX}/man/man1/slirp.1
 
 .include <bsd.port.mk>

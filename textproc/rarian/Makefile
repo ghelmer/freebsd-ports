@@ -4,6 +4,7 @@
 
 PORTNAME=	rarian
 PORTVERSION=	0.8.1
+PORTREVISION=	1
 CATEGORIES=	textproc gnome
 MASTER_SITES=	GNOME
 
@@ -11,22 +12,20 @@ MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	An OMF help system based on the Freedesktop specification
 
 BUILD_DEPENDS=	${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:${PORTSDIR}/textproc/docbook-xsl \
-    		${LOCALBASE}/share/xml/docbook/${DOCBOOK_VERSION}/catalog.xml:${PORTSDIR}/textproc/docbook-xml \
-		${LOCALBASE}/share/xml/docbook/4.1.2/docbookx.dtd:${PORTSDIR}/textproc/docbook-sk \
+    		${LOCALBASE}/share/xml/docbook/${DOCBOOK_VERSION}:${PORTSDIR}/textproc/docbook-xml \
 		bash:${PORTSDIR}/shells/bash
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash \
     		${LOCALBASE}/bin/getopt:${PORTSDIR}/misc/getopt \
 		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:${PORTSDIR}/textproc/docbook-xsl \
-		${LOCALBASE}/share/xml/docbook/${DOCBOOK_VERSION}/catalog.xml:${PORTSDIR}/textproc/docbook-xml \
-		${LOCALBASE}/share/xml/docbook/4.1.2/docbookx.dtd:${PORTSDIR}/textproc/docbook-sk
+		${LOCALBASE}/share/xml/docbook/${DOCBOOK_VERSION}:${PORTSDIR}/textproc/docbook-xml
 
 DOCBOOK_VERSION=4.2
 
 CONFLICTS=	scrollkeeper-[0-9]*
 
 USE_BZIP2=	yes
-USE_GMAKE=	yes
-USE_GNOME=	gnomehier gnomehack libxslt
+USES=		gmake pathfix
+USE_GNOME=	gnomehier libxslt
 USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -36,7 +35,6 @@ CONFIGURE_ARGS=	--with-convert-dir=${LOCALBASE}/share/omf \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|/lib/rarian|/db/rarian|' \
 		${WRKSRC}/util/Makefile.in

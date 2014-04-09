@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Module-Build-Tiny
-PORTVERSION=	0.030
+PORTVERSION=	0.035
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,13 +22,4 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USE_PERL5=	modbuildtiny
 USES=		perl5
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-BUILD_DEPENDS+=	p5-CPAN-Meta>=0:${PORTSDIR}/devel/p5-CPAN-Meta \
-		p5-JSON-PP>=2:${PORTSDIR}/converters/p5-JSON-PP
-RUN_DEPENDS+=	p5-CPAN-Meta>=0:${PORTSDIR}/devel/p5-CPAN-Meta \
-		p5-JSON-PP>=2:${PORTSDIR}/converters/p5-JSON-PP
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

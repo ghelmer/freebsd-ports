@@ -3,6 +3,7 @@
 
 PORTNAME=	gamess
 PORTVERSION=    ${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	science
 MASTER_SITES=   #http://www.msg.ameslab.gov/GAMESS/License_Agreement.html
 DISTNAME=	gamess-current
@@ -11,11 +12,9 @@ DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 MAINTAINER=	maho@FreeBSD.org
 COMMENT=	A freely obtainable ab-initio molecular orbital calculation program
 
-USE_GMAKE=	yes
+USES=		fortran gmake
 WRKSRC=         ${WRKDIR}/gamess
 SNAPDATE=	20130501.1
-
-USE_FORTRAN=   yes
 
 RESTRICTED=	NOT DISTRIBUTED FREELY. BUT YOU CAN OBTAIN SOURCE CODE FREELY.
 

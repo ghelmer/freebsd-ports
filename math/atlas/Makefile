@@ -3,7 +3,7 @@
 
 PORTNAME=	atlas
 PORTVERSION=	3.8.4
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/math-${PORTNAME}/Stable/${PORTVERSION}
@@ -16,8 +16,8 @@ LICENSE=	BSD
 
 BUILD_DEPENDS=	${NONEXISTENT}:${PORTSDIR}/math/lapack:checksum
 
-USE_BZIP2=	yes
-USE_FORTRAN=	yes
+USES=		fortran tar:bzip2
+USE_GCC=	yes
 
 CONFLICTS=	atlas-devel-[0-9]* cblas-[0-9]*
 MANUAL_PACKAGE_BUILD=	Optimizes for the local machine.

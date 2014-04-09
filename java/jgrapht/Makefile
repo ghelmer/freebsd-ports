@@ -7,10 +7,10 @@ PORTREVISION=	1
 CATEGORIES=	java math
 MASTER_SITES=	SF/${PORTNAME}/JGraphT/Version%20${PORTVERSION}
 
-MAINTAINER=	hq@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java package for mathematical graph-theory objects and algorithms
 
-USE_ZIP=	yes
+USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 

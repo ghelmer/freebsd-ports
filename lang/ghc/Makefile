@@ -3,7 +3,7 @@
 
 PORTNAME=	ghc
 PORTVERSION=	7.6.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	lang haskell
 MASTER_SITES=	http://www.haskell.org/ghc/dist/${PORTVERSION}/:source \
 		${MASTER_SITE_LOCAL:S/$/:boot/}
@@ -14,6 +14,8 @@ MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Compiler for the functional language Haskell
 
 ONLY_FOR_ARCHS=	i386 amd64
+
+MAKE_JOBS_NUMBER_LIMIT=		4
 
 GHC_VERSION=		${PORTVERSION}
 HSCOLOUR_VERSION=	1.20.3
@@ -44,13 +46,14 @@ MAKE_ENV=	LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 # You can view below.
 GNU_CONFIGURE=	yes
 
-OPTIONS_DEFINE=		PROFILE DYNAMIC DOCS
+OPTIONS_DEFINE=		PROFILE DYNAMIC LLVM DOCS
 OPTIONS_DEFAULT=	PROFILE DYNAMIC DOCS
 
 BOOT_DESC=		Use installed GHC for bootstrapping
 BOOTH_DESC=		Use installed HsColour for bootstrapping
 PROFILE_DESC=		Add support for performance profiling
 DYNAMIC_DESC=		Add support for dynamic linking
+LLVM_DESC=		Add support for generating code via LLVM
 DOCS_DESC=		Install HTML documentation
 
 LOCALBASE?=	/usr/local
@@ -71,11 +74,7 @@ LIB_DEPENDS+=	ffi.6:${PORTSDIR}/devel/libffi
 
 .if empty(PORT_OPTIONS:MBOOT)
 
-.if ${OSVERSION} >= 1000043
 BOOT_GHC_VERSION=	7.6.3
-.else
-BOOT_GHC_VERSION=	7.4.1
-.endif
 
 EXTRA_PATCHES=		${PATCHDIR}/nopatch-.._ghc-${BOOT_GHC_VERSION}-boot_rts_package.conf.in
 
@@ -131,6 +130,14 @@ CONFIGURE_ARGS+=	--with-system-libffi \
 			--with-ffi-libraries=${LOCALBASE}/lib
 .endif
 
+.if ${PORT_OPTIONS:MLLVM}
+BUILD_DEPENDS+=		${LOCALBASE}/bin/opt32:${PORTSDIR}/devel/llvm32
+RUN_DEPENDS+=		${LOCALBASE}/bin/opt32:${PORTSDIR}/devel/llvm32
+
+CONFIGURE_ARGS+=	--with-opt=${LOCALBASE}/bin/opt32 \
+			--with-llc=${LOCALBASE}/bin/llc32
+.endif
+
 .if empty(PORT_OPTIONS:MBOOT)
 
 BOOT_DIR=	${WRKDIR}/ghc-${BOOT_GHC_VERSION}-boot
@@ -140,7 +147,7 @@ BOOT_HSC2HS=	${BOOT_DIR}/bin/hsc2hs
 
 SLAVE_CMD=	${SETENV} PATH=${BOOT_DIR}/bin:${PATH}
 
-CONFIGURE_ARGS_BOOT=	--prefix=${BOOT_DIR} --with-gcc=${CC}
+CONFIGURE_ARGS_BOOT=	--prefix=${BOOT_DIR} --with-gcc=${CC} --with-ld=${LD}
 CONFIGURE_ARGS+=	--with-ghc=${BOOT_GHC}
 
 .else # MBOOT
@@ -305,7 +312,7 @@ pre-configure:
 		${TAR} xvf ${DISTDIR}/hscolour-${HSCOLOUR_VERSION}.tar.gz && \
 		cd hscolour-${HSCOLOUR_VERSION} && \
 		${SLAVE_CMD} ghc --make -o Setup Setup.hs -package Cabal && \
-		${SLAVE_CMD} ./Setup configure --ghc --prefix=${SLAVES_PREFIX} && \
+		${SLAVE_CMD} ./Setup configure --ghc --prefix=${SLAVES_PREFIX} --with-gcc=${CC} --with-ld=${LD} && \
 		${SLAVE_CMD} ./Setup build && \
 		${SLAVE_CMD} ./Setup install)
 .endif

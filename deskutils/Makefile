@@ -14,7 +14,6 @@
     SUBDIR += basket
     SUBDIR += bigyear
     SUBDIR += bitcollider
-    SUBDIR += bmp-docklet
     SUBDIR += cairo-dock
     SUBDIR += cairo-dock-plugins
     SUBDIR += cal
@@ -65,7 +64,6 @@
     SUBDIR += glabels
     SUBDIR += glipper
     SUBDIR += global-menu
-    SUBDIR += gmcal
     SUBDIR += gnochm
     SUBDIR += gnome-blog
     SUBDIR += gnome-main-menu
@@ -91,15 +89,15 @@
     SUBDIR += hamster-applet
     SUBDIR += hebcal
     SUBDIR += helpviewer
+    SUBDIR += horde-groupware
+    SUBDIR += horde-kronolith
+    SUBDIR += horde-mnemo
+    SUBDIR += horde-nag
     SUBDIR += horde3-hermes
     SUBDIR += horde3-klutz
     SUBDIR += horde3-kronolith
     SUBDIR += horde3-mnemo
     SUBDIR += horde3-nag
-    SUBDIR += horde-groupware
-    SUBDIR += horde-kronolith
-    SUBDIR += horde-mnemo
-    SUBDIR += horde-nag
     SUBDIR += hot-babe
     SUBDIR += howm
     SUBDIR += ical
@@ -110,8 +108,6 @@
     SUBDIR += kchmviewer-kde4
     SUBDIR += kdepim4
     SUBDIR += kdepim4-runtime
-    SUBDIR += kdepim44
-    SUBDIR += kdepim44-runtime
     SUBDIR += kdepimlibs4
     SUBDIR += kdeplasma-addons
     SUBDIR += kruler
@@ -125,8 +121,6 @@
     SUBDIR += libopensync-plugin-file
     SUBDIR += libopensync-plugin-python
     SUBDIR += libopensync-plugin-sunbird
-    SUBDIR += libopensync-plugin-synce
-    SUBDIR += libopensync-plugin-synce-legacy
     SUBDIR += libopensync-plugin-vformat-devel
     SUBDIR += libstreamanalyzer
     SUBDIR += libstreams
@@ -134,13 +128,11 @@
     SUBDIR += ljclive
     SUBDIR += ljit
     SUBDIR += logjam
-    SUBDIR += lxshortcut
     SUBDIR += mate-character-map
     SUBDIR += mate-file-manager-open-terminal
     SUBDIR += mate-menu-editor
     SUBDIR += mate-notification-daemon
     SUBDIR += mate-utils
-    SUBDIR += mcal
     SUBDIR += mdh
     SUBDIR += mencal
     SUBDIR += menumaker
@@ -158,6 +150,7 @@
     SUBDIR += nautilus-locked-folder
     SUBDIR += nautilus-open-terminal
     SUBDIR += nautilus-sendto
+    SUBDIR += note
     SUBDIR += notecase
     SUBDIR += notification-daemon
     SUBDIR += notify-osd
@@ -176,7 +169,6 @@
     SUBDIR += parcellite
     SUBDIR += phpcollab
     SUBDIR += phpicalendar
-    SUBDIR += phprojekt
     SUBDIR += pinot
     SUBDIR += plan
     SUBDIR += planner
@@ -229,6 +221,7 @@
     SUBDIR += systempreferences
     SUBDIR += tagutils
     SUBDIR += taskcoach
+    SUBDIR += taskd
     SUBDIR += taskwarrior
     SUBDIR += teapot
     SUBDIR += tel

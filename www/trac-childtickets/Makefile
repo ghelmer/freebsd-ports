@@ -14,7 +14,7 @@ LICENSE=	BSD
 
 RUN_DEPENDS+=	trac>=0.12:${PORTSDIR}/www/trac
 
-USE_ZIP=	yes
+USES=		zip
 
 WRKSRC=		${WRKDIR}/childticketsplugin/0.12
 
@@ -25,7 +25,6 @@ PYDISTUTILS_PKGNAME=	Tracchildtickets
 SUB_FILES=	pkg-message
 PLIST_FILES=	%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%
 
-NO_STAGE=	yes
 post-install:
 	@${CAT} ${PKGMESSAGE}
 

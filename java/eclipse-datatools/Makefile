@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	eclipse-
 DISTNAME=	dtp-sdk_${PORTVERSION}
 DIST_SUBDIR=	eclipse
 
-MAINTAINER=	lioux@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Data Tools Platform for the Eclipse IDE
 
 RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse \
@@ -20,9 +20,8 @@ RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse \
 LICENSE=	EPL
 
 WRKSRC=		${WRKDIR}/eclipse
-USE_ZIP=	yes
+USES=		zip
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../eclipse/Makefile.plugins"
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	kvirc
 PORTVERSION=	4.2.0
+PORTREVISION=	1
 CATEGORIES=	irc kde
 MASTER_SITES=	ftp://ftp.kvirc.de/pub/kvirc/%SUBDIR%/ \
 		http://kvirc.gmake.de/pub/kvirc/%SUBDIR%/ \
@@ -63,7 +64,8 @@ USE_QT4+=	webkit
 CMAKE_ARGS+=	-DWITHOUT_QTWEBKIT=yes
 . endif
 .else #defined(PKGNAMESUFFIX)
-USE_KDE4=	kdelibs automoc4 kdeprefix sharedmime
+USES+=		shared-mime-info
+USE_KDE4=	kdelibs automoc4 kdeprefix
 PLIST_SUB+=	QT="@comment " KDE=""
 .endif #defined(PKGNAMESUFFIX)
 

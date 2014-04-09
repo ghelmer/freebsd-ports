@@ -3,6 +3,7 @@
 
 PORTNAME=	vlc
 DISTVERSION=	2.1.2
+PORTREVISION=	3
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio ipv6 net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -21,7 +22,7 @@ BUILD_DEPENDS=	ffmpeg>=2.0:${PORTSDIR}/multimedia/ffmpeg
 RUN_DEPENDS=	ffmpeg>=2.0:${PORTSDIR}/multimedia/ffmpeg
 
 OPTIONS_DEFINE=	A52 AALIB ASS AVAHI CACA DBUS DIRAC DOCS DTS DVDREAD \
-		DVDNAV FAAD FLAC FLUID FRIBIDI GNOMEVFS GNUTLS GOOM \
+		DVDNAV FAAD FLAC FLUID FREERDP FRIBIDI GNOMEVFS GNUTLS GOOM \
 		HTTPD JACK LIBSSH2 LIRC LIVEMEDIA LUA MAD MATROSKA MODPLUG \
 		MPEG2 MTP MUSEPACK NCURSES NLS NOTIFY OPTIMIZED_CFLAGS OGG \
 		OPUS PNG PULSEAUDIO QT4 REALAUDIO RUNROOT \
@@ -38,6 +39,7 @@ DTS_DESC=	DTS DVD audio decoder
 DVDREAD_DESC=	DVD Playback support
 DVDNAV_DESC=	DVD menu navigation
 FLUID_DESC=	Fluidsynth MIDI support
+FREERDP_DESC=	RDP support
 GME_DESC=	Game_Music_Emu (libgme) support
 GNOMEVFS_DESC=	Gnome VFS support
 GOOM_DESC=	the Goom visual effect library
@@ -102,6 +104,9 @@ FLAC_CONFIGURE_ENABLE=	flac
 FLUID_LIB_DEPENDS=	libfluidsynth.so:${PORTSDIR}/audio/fluidsynth
 FLUID_CONFIGURE_ENABLE=	fluidsynth
 
+FREERDP_LIB_DEPENDS=	libfreerdp-core.so:${PORTSDIR}/net/freerdp
+FREERDP_CONFIGURE_ENABLE=	libfreerdp
+
 FRIBIDI_LIB_DEPENDS=	libfribidi.so:${PORTSDIR}/converters/fribidi
 FRIBIDI_CONFIGURE_ENABLE=	fribidi
 
@@ -154,7 +159,7 @@ MODPLUG_CONFIGURE_ENABLE=	mod
 MPEG2_LIB_DEPENDS=	libmpeg2.so:${PORTSDIR}/multimedia/libmpeg2
 MPEG2_CONFIGURE_ENABLE=	libmpeg2
 
-MTP_LIB_DEPENDS=	libmtp.so:${PORTSDIR}/audio/libmtp
+MTP_LIB_DEPENDS=	libmtp.so:${PORTSDIR}/multimedia/libmtp
 MTP_CONFIGURE_ENABLE=	mtp
 
 MUSEPACK_LIB_DEPENDS=	libmpcdec.so:${PORTSDIR}/audio/musepack
@@ -399,7 +404,7 @@ WITH_CDROM_DEVICE?=/dev/acd0
 WITH_DVD_DEVICE?=/dev/acd0
 .endif
 
-# If you change this value, the dependancy will not be recorded
+# If you change this value, the dependency will not be recorded
 .if !defined(WITH_VLC_DEFAULT_FONT)
 WITH_VLC_DEFAULT_FONT=		${LOCALBASE}/lib/X11/fonts/bitstream-vera/Vera.ttf
 WITH_VLC_DEFAULT_MONO_FONT=	${LOCALBASE}/lib/X11/fonts/bitstream-vera/VeraMono.ttf

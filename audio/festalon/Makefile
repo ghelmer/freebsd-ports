@@ -16,9 +16,8 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS+=	libsamplerate.so:${PORTSDIR}/audio/libsamplerate
 
-USES=		pkgconfig
+USES=		pkgconfig tar:bzip2
 USE_AUTOTOOLS=	libtool
-USE_BZIP2=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -28,8 +27,8 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} >= 1000000
-BROKEN=		does not build on FreeBSD 10.x and later
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
+BROKEN_i386=	does not build on i386 FreeBSD 10.x and later
 .endif
 
 .if ${PKGNAMEPREFIX} == ""
@@ -42,12 +41,8 @@ PORTDOCS=	README
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
-
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
-
 .endif
 
 .include <bsd.port.mk>

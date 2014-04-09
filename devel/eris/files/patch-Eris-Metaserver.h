@@ -1,11 +1,11 @@
---- Eris/Metaserver.h.orig	Tue Oct  4 17:40:26 2005
-+++ Eris/Metaserver.h	Tue Oct  4 17:40:52 2005
-@@ -11,7 +11,7 @@
- #include <sigc++/object.h>
+--- Eris/Metaserver.h.orig	2014-03-10 19:49:32.000000000 +0100
++++ Eris/Metaserver.h	2014-03-10 19:49:47.000000000 +0100
+@@ -12,6 +12,8 @@
  #include <sigc++/signal.h>
+ #include <memory>
  
--#ifndef __WIN32__
-+#if !defined(__WIN32__) && defined(HAVE_STDINT_H)
- // pull in uint32_t on POSIX - is this generic?!
++#include <ios>
++
  #include <stdint.h>
- #else
+ 
+ // Forward decls

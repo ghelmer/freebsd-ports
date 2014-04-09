@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	turses
-PORTVERSION=	0.2.19
+PORTVERSION=	0.2.21
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 
@@ -21,18 +21,12 @@ TEST_DEPENDS:=	${RUN_DEPENDS} \
 
 OPTIONS_DEFINE=	TESTS
 TESTS_DESC=	Install tools for unit tests
-OPTIONSFILE?=	${PORT_DBDIR}/py-${PORTNAME}/options
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+TESTS_BUILD_DEPENDS=	${TEST_DEPENDS}
 
 USE_PYTHON=		2
-USE_PYDISTUTILS=	easy_install
+USE_PYDISTUTILS=	yes
 PYDISTUTILS_AUTOPLIST=	yes
-
-.if ${PORT_OPTIONS:MTESTS}
-BUILD_DEPENDS:=	${TEST_DEPENDS}
-.endif
 
 regression-test: build
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test

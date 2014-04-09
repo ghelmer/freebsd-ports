@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	bind10
-PORTVERSION=	1.0.0
+PORTVERSION=	1.1.0
 CATEGORIES=	dns
 MASTER_SITES=	${MASTER_SITE_ISC}
 MASTER_SITE_SUBDIR=	${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	freebsd@ISC.org
+MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Development version of ISC BIND 10 DNS Suite
 
 LICENSE=	ISC
@@ -19,7 +19,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/interprocess/sync/interprocess_upgradable_mutex.hpp:${PORTSDIR}/devel/boost-libs \
 		${LOCALBASE}/include/log4cplus/logger.h:${PORTSDIR}/devel/log4cplus \
 		sqlite3>=3.3.9:${PORTSDIR}/databases/sqlite3
-LIB_DEPENDS=	libbotan.so:${PORTSDIR}/security/botan \
+LIB_DEPENDS=	libbotan-1.10.so:${PORTSDIR}/security/botan110 \
 		liblog4cplus.so:${PORTSDIR}/devel/log4cplus \
 		libicuuc.so:${PORTSDIR}/devel/icu \
 		libgmp.so:${PORTSDIR}/math/gmp \
@@ -29,13 +29,18 @@ RUN_DEPENDS=	${PYTHON_LIBDIR}/lib-dynload/_sqlite3.so:${PORTSDIR}/databases/py-s
 USE_PYTHON=	3.3
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
-USES=	pkgconfig
+USES=	compiler:c++11-lang pathfix pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var	\
-		--disable-install-configurations
+		--without-werror \
+		--enable-install-configurations
 
 PLIST_SUB+=	PORTNAME=${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS
+
+PORTDOCS=	*
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/${PORTNAME}
@@ -43,6 +48,5 @@ post-install:
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}/cmdctl-certfile.pem.sample
 	${INSTALL_DATA} -m 640 ${WRKSRC}/src/bin/cmdctl/cmdctl-keyfile.pem \
 		${STAGEDIR}${PREFIX}/etc/${PORTNAME}/cmdctl-keyfile.pem.sample
-	@${MV} ${STAGEDIR}${PREFIX}/lib/pkgconfig/* ${STAGEDIR}${PREFIX}/libdata/pkgconfig/
 
 .include <bsd.port.mk>

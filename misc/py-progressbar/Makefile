@@ -2,29 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	progressbar
-PORTVERSION=	2.2
+PORTVERSION=	2.3
 CATEGORIES=	misc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	GOOGLE_CODE
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	lioux@FreeBSD.org
-COMMENT=	A text progressbar library for python
+MAINTAINER=	sunpoet@FreeBSD.org
+COMMENT=	Text progressbar library for python
 
-LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=	BSD3CLAUSE
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-INSTALLS_EGGINFO=	yes
+PYDISTUTILS_AUTOPLIST=	yes
+USE_PYDISTUTILS=yes
+USE_PYTHON=	2
 
-PLIST_FILES=	\
-		%%PYTHON_SITELIBDIR%%/progressbar.py \
-		%%PYTHON_SITELIBDIR%%/progressbar.pyc \
-		%%PYTHON_SITELIBDIR%%/progressbar.pyo
-
-NO_STAGE=	yes
-post-patch:
-	@${REINPLACE_CMD} -E -e 's|/usr/bin/python|${PYTHON_CMD}|' \
-		${WRKSRC}/${PORTNAME}.py
+PROJECTHOST=	python-${PORTNAME}
 
 .include <bsd.port.mk>
