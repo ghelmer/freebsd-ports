@@ -51,6 +51,136 @@ Note:  Please add new entries to the beginning of this file.
 
 -->
 <vuxml xmlns="http://www.vuxml.org/apps/vuxml-1">
+  <vuln vid="59e72db2-cae6-11e3-8420-00e0814cab4e">
+    <topic>django -- multiple vulnerabilities</topic>
+    <affects>
+      <package>
+	<name>py26-django</name>
+	<name>py27-django</name>
+	<name>py31-django</name>
+	<name>py32-django</name>
+	<name>py33-django</name>
+	<name>py34-django</name>
+	<range><ge>1.6</ge><lt>1.6.3</lt></range>
+	<range><ge>1.5</ge><lt>1.5.6</lt></range>
+	<range><ge>1.4</ge><lt>1.4.11</lt></range>
+      </package>
+      <package>
+	<name>py26-django15</name>
+	<name>py27-django15</name>
+	<name>py31-django15</name>
+	<name>py32-django15</name>
+	<name>py33-django15</name>
+	<name>py34-django15</name>
+	<range><ge>1.5</ge><lt>1.5.6</lt></range>
+      </package>
+      <package>
+	<name>py26-django14</name>
+	<name>py27-django14</name>
+	<name>py31-django14</name>
+	<name>py32-django14</name>
+	<name>py33-django14</name>
+	<name>py34-django14</name>
+	<range><ge>1.4</ge><lt>1.4.11</lt></range>
+      </package>
+      <package>
+	<name>py26-django15</name>
+	<name>py27-django15</name>
+	<name>py31-django15</name>
+	<name>py32-django15</name>
+	<name>py33-django15</name>
+	<name>py34-django15</name>
+	<range><ge>1.5</ge><lt>1.5.6</lt></range>
+      </package>
+      <package>
+	<name>py26-django14</name>
+	<name>py27-django14</name>
+	<name>py31-django14</name>
+	<name>py32-django14</name>
+	<name>py33-django14</name>
+	<name>py34-django14</name>
+	<range><ge>1.4</ge><lt>1.4.11</lt></range>
+      </package>
+      <package>
+	<name>py26-django-devel</name>
+	<name>py27-django-devel</name>
+	<range><lt>20140423,1</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>The Django project reports:</p>
+	<blockquote cite="https://www.djangoproject.com/weblog/2014/apr/21/security/">
+	  <p>These releases address an unexpected code-execution issue, a
+	    caching issue which can expose CSRF tokens and a MySQL typecasting
+	    issue. While these issues present limited risk and may not affect
+	    all Django users, we encourage all users to evaluate their own
+	    risk and upgrade as soon as possible.</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <url>https://www.djangoproject.com/weblog/2014/apr/21/security/</url>
+      <cvename>CVE-2014-0472</cvename>
+      <cvename>CVE-2014-0473</cvename>
+      <cvename>CVE-2014-0474</cvename>
+    </references>
+    <dates>
+      <discovery>2014-04-21</discovery>
+      <entry>2014-04-23</entry>
+      <modified>2014-04-24</modified>
+    </dates>
+  </vuln>
+  <vuln vid="5631ae98-be9e-11e3-b5e3-c80aa9043978">
+    <topic>OpenSSL -- Multiple vulnerabilities - private data exposure</topic>
+    <affects>
+      <package>
+	<name>openssl</name>
+	<range><ge>1.0.1</ge><lt>1.0.1_10</lt></range>
+      </package>
+      <package>
+	<name>mingw32-openssl</name>
+	<range><ge>1.0.1</ge><lt>1.0.1g</lt></range>
+      </package>
+    </affects>
+    <description>
+      <body xmlns="http://www.w3.org/1999/xhtml">
+	<p>OpenSSL Reports:</p>
+	<blockquote cite="https://www.openssl.org/news/secadv_20140407.txt">
+	  <p>A missing bounds check in the handling of the TLS heartbeat extension can be
+	    used to reveal up to 64k of memory to a connected client or server.</p>
+	  <p>Affected users should upgrade to OpenSSL 1.0.1g. Users unable to immediately
+	    upgrade can alternatively recompile OpenSSL with -DOPENSSL_NO_HEARTBEATS.</p>
+	</blockquote>
+	<blockquote cite="http://www.heartbleed.com">
+	  <p>The bug allows anyone on the Internet to read the memory of the
+	  systems protected by the vulnerable versions of the OpenSSL software.
+	  This compromises the secret keys used to identify the service
+	  providers and to encrypt the traffic, the names and passwords of the
+	  users and the actual content. This allows attackers to eavesdrop
+	  communications, steal data directly from the services and users and
+	  to impersonate services and users.</p>
+	</blockquote>
+	<p>This also covers:</p>
+	<blockquote cite="https://www.openssl.org/news/vulnerabilities.html#2014-0076">
+	  <p>Fix for the attack described in the paper "Recovering OpenSSL
+	    ECDSA Nonces Using the FLUSH+RELOAD Cache Side-channel Attack"</p>
+	</blockquote>
+      </body>
+    </description>
+    <references>
+      <cvename>CVE-2014-0160</cvename>
+      <cvename>CVE-2014-0076</cvename>
+      <url>https://www.openssl.org/news/secadv_20140407.txt</url>
+      <url>https://www.openssl.org/news/vulnerabilities.html#2014-0076</url>
+      <url>http://www.heartbleed.com</url>
+    </references>
+    <dates>
+      <discovery>2014-04-07</discovery>
+      <entry>2014-04-07</entry>
+    </dates>
+  </vuln>
+
   <vuln vid="4e95eb4e-b737-11e3-87cd-f0def10dca57">
     <topic>Icinga -- buffer overflow in classic web interface</topic>
     <affects>
