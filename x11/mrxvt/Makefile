@@ -19,6 +19,12 @@ CONFLICTS=	mrxvt-0.5.*
 GNU_CONFIGURE=	yes
 USE_XORG=	x11
 
+OPTIONS_DEFINE=	DOCS JAPANESE XFT
+
+JAPANESE_CONFIGURE_ON=	--enable-xim --enable-cjk --with-encoding=eucj
+XFT_LIB_DEPENDS=	libXft.so:${PORTSDIR}/x11-fonts/libXft
+XFT_CONFIGURE_ENABLE=	xft
+
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} >= 900007
