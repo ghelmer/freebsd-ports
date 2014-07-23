@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	7.38.0
+PORTVERSION=	7.37.1
 PORTREVISION=	1
 CATEGORIES=	ftp www
 MASTER_SITES=	http://curl.haxx.se/download/ \
