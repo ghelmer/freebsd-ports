@@ -3,7 +3,7 @@
 
 PORTNAME=	openconnect
 PORTVERSION=	5.03
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	ftp://ftp.infradead.org/pub/openconnect/ \
 		http://mirrors.rit.edu/zi/
@@ -34,21 +34,10 @@ OPTIONS_DEFINE=	PROXY GNUTLS
 PROXY_DESC=	Enable automatic proxy configuratio via libproxy
 GNUTLS_DESC=	Use GnuTLS instead of OpenSSL(EXPERIMENTAL)
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGNUTLS}
-LIB_DEPENDS+=	gnutls:${PORTSDIR}/security/gnutls
-CONFIGURE_ARGS+=--with-gnutls \
-		--with-system-cafile=${LOCALBASE}/share/certs/ca-root-nss.crt
-RUN_DEPENDS+=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
-BUILD_DEPENDS+=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MPROXY}
-LIB_DEPENDS+=	proxy:${PORTSDIR}/net/libproxy
-.endif
+GNUTLS_DESC=		Use GnuTLS instead of OpenSSL(EXPERIMENTAL)
+GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
+GNUTLS_CONFIGURE_WITH=	gnutls
+GNUTLS_USE_OFF=		OPENSSL=yes
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
