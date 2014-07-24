@@ -3,6 +3,7 @@
 
 PORTNAME=	dbmail
 PORTVERSION=	3.1.15
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	http://git.dbmail.eu/paul/dbmail/snapshot/
 
