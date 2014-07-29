@@ -14,9 +14,8 @@ COMMENT=	A encrypted filesystem for FUSE
 LIB_DEPENDS=	gcrypt:${PORTSDIR}/security/libgcrypt \
 		glib-2.0:${PORTSDIR}/devel/glib20
 
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
-USES=		fuse pkgconfig
+USES=		fuse pkgconfig tar:bzip2
 DOCS=		README cryptofs.conf
 
 OPTIONS_DEFINE=	DOCS

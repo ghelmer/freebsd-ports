@@ -20,8 +20,7 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	fltk:${PORTSDIR}/x11-toolkits/fltk
 RUN_DEPENDS=	wget:${PORTSDIR}/ftp/wget
 
-USES=		gmake pkgconfig
-USE_BZIP2=	yes
+USES=		gmake pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 MAN1=		dillo.1
 CONFIGURE_ARGS=	--libdir=${PREFIX}/libexec

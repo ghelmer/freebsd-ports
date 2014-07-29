@@ -11,12 +11,11 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}
 MAINTAINER=	kpetrikas@gmail.com
 COMMENT=	bxPKG is a GTK+ based tool to manage binary packages on BSD systems.
 
-USES=		pkgconfig
+USES=		pkgconfig tar:bzip2
 USE_XORG=	x11
 USE_GNOME=	gtk20
 
 PLIST_FILES=	bin/bxpkg
-USE_BZIP2=	YES
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}
 

@@ -58,12 +58,9 @@ MIMETYPES=	${LOCALBASE}/etc/mime.types
 WITH_TRANSPORT=	local esmtp dsn
 
 USE_AUTOTOOLS=	libtool aclocal automake
-AUTOMAKE_ARGS=	--add-missing
-USE_BZIP2=	yes
-USE_GCC=	any
-USES=		fam gettext gmake perl5 pkgconfig
 USE_OPENSSL=	yes
 USE_SUBMAKE=	yes
+USES=		fam gettext gmake perl5 pkgconfig tar:bzip2
 
 USE_RC_SUBR=	courier
 

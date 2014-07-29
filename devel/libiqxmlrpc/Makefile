@@ -17,12 +17,8 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
 LICENSE=	BSD
 
-USE_BZIP2=	yes
 USE_GNOME=	libxml2
-USES=		cmake
-.if defined(NOPORTDOCS)
-CMAKE_ARGS=	-Dbuild_docs=off
-.endif
+USES=		cmake tar:bzip2
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
