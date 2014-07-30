@@ -5,6 +5,192 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20140730:
+  AFFECTS: users of security/libgcrypt
+  AUTHOR: pi@FreeBSD.org
+
+  libgcrypt has been updated to 1.6.1 and all shared libraries versions have
+  been bumped. So you need to rebuild all applications that depend on
+  libgcrypt.
+
+  # portmaster -r libgcrypt
+    or
+  # portupgrade -fr security/libgcrypt
+    or
+  # pkg install -fR security/libgcrypt
+
+20140728:
+  AFFECTS: users of net/GeoIP
+  AUTHOR: adamw@FreeBSD.org
+
+  GeoIP no longer ships with the GeoIP database. To continue using GeoIP,
+  you MUST fetch it first by running geoipupdate.sh.
+
+20140728:
+  AFFECTS: users of security/libtasn1 and any port that depends on it
+  AUTHOR: novel@FreeBSD.org
+
+  libtasn1 has been updated to 4.0 and all shared libraries versions have
+  been bumped. So you need to rebuild all applications that depend on
+  libtasn1.
+
+  # portmaster -r libtasn1
+    or
+  # portupgrade -fr security/libtasn1
+    or
+  # pkg install -fR security/libtasn1
+
+20140727:
+  AFFECTS: users of comms/qpage
+  AUTHOR: marino@FreeBSD.org
+
+  The default configure file location has changed from
+  ${LOCALBASE}/etc/qpage.cf to ${LOCALBASE}/etc/qpage.conf
+  You will likely want to move the old configure file to the new location
+  after updating if it contains custom settings.
+
+20140725:
+  AFFECTS: users of cad/netgen
+  AUTHOR: stephen@FreeBSD.org
+
+  Before you update this port the old one should be removed.  (This is
+  because the build may try to link to libraries that are in
+  ${LOCALBASE}/lib rather than in ${WRKSRC}.)
+
+20140724:
+  AFFECTS: users of dns/mydns-ng
+  AUTHOR: danilo@FreeBSD.org
+
+  The dns/mydns-ng port no longer has the suffix (-mysql|-pgsql). Before
+  you update this port the old one must be removed:
+
+  pkg remove mydns-ng-mysql
+    or
+  pkg remove mysql-ng-pgsql
+
+20140723:
+  AFFECTS: users of devel/libevent
+
+  libevent1 has been replaced by libevent2 via the compatibility layer.
+  All applications that used libevent1 must be rebuilt.
+
+  Please remove libevent1 before upgrading, by running:
+  	pkg delete -f libevent
+
+20140723:
+  AFFECTS: users of security/scanlogd
+  AUTHOR: tgyurci@gmail.com
+
+  The security/scanlogd port now creates scanlogd user and group. Previous
+  scanlogd user and group must be removed before updating to not conflict
+  with the one created by the port:
+
+    pw userdel scanlogd
+    pw groupdel scanlogd
+
+20140723:
+  AFFECTS: users of TeX
+  AUTHOR: bapt@FreeBSD.org
+
+  TeXLive is now the default teX provider.
+  Please remove all TeX-related packages based on teTeX.
+
+20140722:
+  AFFECTS: users of mail/exim
+  AUTHOR: vsevolod@FreeBSD.org
+
+  The behaviour of expansion of arguments to math comparison functions (<, <=,
+  =, =>, >) was unexpected, expanding the values twice. Please update your
+  configuration if you have relied on such an expansion.
+
+20140722:
+  AFFECTS: users of multimedia/mediainfo
+  AUTHOR: sunpoet@FreeBSD.org
+
+  mediainfo has been split into 3 ports: libzen, libmediainfo and mediainfo.
+  Please uninstall mediainfo before you update this port.
+
+20140722
+  AFFECTS: users of games/bsdgames
+  AUTHOR: adamw@FreeBSD.org
+
+  Please disregard any prior instructions about moving your game data to
+  /usr/local/var/games. If you have done this, please move it back to
+  /var/games.
+
+20140714:
+  AFFECTS: users of databases/db6
+  AUTHOR:  mandree@FreeBSD.org
+
+  Oracle Berkeley DB 6 has been upgraded to version 6.1.19.  Since the
+  previous 6.0 version, the log file format has changed in 6.1.
+  Depending on applications used, you may need to take action BEFORE you
+  upgrade.  For details, please see the online upgrade manual at
+  <http://docs.oracle.com/cd/E17076_04/html/upgrading/upgrade_process.html>
+  <http://docs.oracle.com/cd/E17076_04/html/installation/upgrade_61_toc.html>
+
+  Note: if you've got Apache installed and depending on db6, you may
+  need to upgrade it separately BEFORE upgrading other ports, such as
+  Apache modules.
+
+  After that, you must rebuild all applications that link to db6 because
+  the shared library name has changed with the upgrade.  To do that:
+
+  If you use portmaster:
+        portmaster -w -r db6-
+  If you use portupgrade:
+        portupgrade -fr databases/db6
+
+20140714:
+  AFFECTS: users of net/linphone-base
+  AUTHOR: tijl@FreeBSD.org
+
+  Linphone has been updated to version 3.7.0 and the linphone-base port
+  has been split into separate components.  You must first delete the
+  linphone-base package before you can update ports that depend on it.
+
+  pkg del -f linphone-base
+    or
+  pkg_delete -f linphone-base\*
+
+20140713:
+  AFFECTS: users of mail/postfix-current
+  AUTHOR: sahil@FreeBSD.org
+
+  This is a significant update; so, please carefully review the
+  RELEASE_NOTES to identify which incompatible changes impact your
+  environment. Of particular note are changes to the Postfix
+  build/install procedure.
+
+  Please backup main.cf, master.cf and any other important files
+  associated with your Postfix setup before updating.
+
+20140713:
+  AFFECTS: users of www/apache22
+  AUTHOR: ohauer@FreeBSD.org
+
+  The default version was changed from www/apache22 to www/apache24,
+  pre-build apache modules and web applications will also reflect this!
+
+  In case ports are build by yourself and apache22 is required
+  use the following command to keep apache22 as default.
+
+  # echo "DEFAULT_VERSIONS+=apache=2.2" >> /etc/make.conf
+
+20140710:
+  AFFECTS: users of lang/rust
+  AUTHOR: robak@FreeBSD.org
+
+  The lang/rust port was updated to 0.11 and is now only working on FreeBSD
+  versions 10 and 11 - the 9.x support has been removed by upstream.
+
+20140709:
+  AFFECTS: users of security/pam-pgsql
+  AUTHOR: tijl@FreeBSD.org
+
+  The pam_pgsql.so module is now installed in PREFIX/lib (/usr/local/lib)
+  instead of /usr/lib.
+
 20140627:
   AFFECTS: Users of Java
   AUTHOR: swills@FreeBSD.org
