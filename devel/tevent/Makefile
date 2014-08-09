@@ -33,6 +33,16 @@ DESTDIRNAME=		--destdir
 
 .include <bsd.port.options.mk>
 
+.if defined(NO_PYTHON)
+CONFIGURE_ARGS+=	--disable-python
+.else
+USE_PYTHON_RUN=		yes
+PLIST_FILES+=		%%PYTHON_SITELIBDIR%%/_tevent.so \
+			%%PYTHON_SITELIBDIR%%/tevent.py  \
+			%%PYTHON_SITELIBDIR%%/tevent.pyc \
+			%%PYTHON_SITELIBDIR%%/tevent.pyo
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ! ${PORT_OPTIONS:MMANPAGES}
@@ -42,7 +52,7 @@ BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}
 			xsltproc:${PORTSDIR}/textproc/libxslt
 .endif
 
-PLIST_FILES=		include/tevent.h \
+PLIST_FILES+=		include/tevent.h \
 			lib/libtevent.so \
 			lib/libtevent.so.0 \
 			%%PKGCONFIGDIR%%/tevent.pc
@@ -62,18 +72,6 @@ MAKE_ENV+=		NOCOLOR=yes
 .if !defined(DISABLE_MAKE_JOBS) && !defined(MAKE_JOBS_UNSAFE)
 CONFIGURE_ARGS+=	--jobs=${MAKE_JOBS_NUMBER}
 _MAKE_JOBS+=		--jobs=${MAKE_JOBS_NUMBER}
-.endif
-
-.if defined(NO_PYTHON)
-CONFIGURE_ARGS+=	--disable-python
-.else
-USE_PYTHON_RUN=		yes
-PLIST_FILES+=		%%PYTHON_SITELIBDIR%%/_tevent.so \
-			%%PYTHON_SITELIBDIR%%/tevent.py  \
-			%%PYTHON_SITELIBDIR%%/tevent.pyc \
-			%%PYTHON_SITELIBDIR%%/tevent.pyo
-PLIST_DIRSTRY+=		%%PYTHON_SITELIBDIR%% \
-			%%PYTHON_LIBDIR%%
 .endif
 
 CONFIGURE_TARGET=	configure
