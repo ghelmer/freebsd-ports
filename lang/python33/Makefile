@@ -2,7 +2,7 @@
 
 PORTNAME=	python33
 PORTVERSION=	3.3.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON
 MASTER_SITE_SUBDIR=	${PYTHON_MASTER_SITE_SUBDIR}
@@ -14,6 +14,9 @@ COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
 
+USES=		cpe ncurses pkgconfig readline tar:xz
+USE_OPENSSL=	yes
+USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	../configure # must be relative
 CONFIGURE_ENV=	OPT="" SVNVERSION="echo freebsd"
