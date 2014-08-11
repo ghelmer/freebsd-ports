@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	cimg
-PORTVERSION=	1.5.7
-PORTREVISION=	3
+PORTVERSION=	1.5.8
+PORTREVISION=	2
 PORTEPOCH=	3
 CATEGORIES=	graphics devel
 MASTER_SITES=	SF/${PORTNAME}		\
 		SF/${PORTNAME}/old
 DISTNAME=	CImg-${DISTVERSION}
-DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
+DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}_${PORTREVISION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	The C++ Template Image Processing Library
@@ -31,7 +31,7 @@ WRKSRC=		${WRKDIR}/${DISTNAME:C/_/-/}
 BUILD_WRKSRC=	${WRKSRC}/examples
 MAKE_ENV=	X11PATH=${LOCALBASE} LOCALBASE=${LOCALBASE}
 CPPFLAGS+=	${CFLAGS} ${PTHREAD_CFLAGS}
-LDFLAGS+=	${PTHREAD_LIBS} -Wl,--verbose
+LDFLAGS+=	${PTHREAD_LIBS}
 
 .if !defined(NOPORTDOCS)
 USES+=		gmake
@@ -45,8 +45,9 @@ LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png		\
 		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR	\
 		libgimp-2.0.so:${PORTSDIR}/graphics/gimp-app	\
 		libfftw3.so:${PORTSDIR}/math/fftw3		\
-		libGraphicsMagick.so.14:${PORTSDIR}/graphics/GraphicsMagick13
-#		libopencv_legacy.so:${PORTSDIR}/graphics/opencv
+		libopencv_legacy.so:${PORTSDIR}/graphics/opencv	\
+		libopencv_core.so:${PORTSDIR}/graphics/opencv-core\
+		libGraphicsMagick.so.14:${PORTSDIR}/graphics/GraphicsMagick
 ALL_TARGET=	Mlinux
 . else
 ALL_TARGET=	dlinux
@@ -60,6 +61,11 @@ RUN_DEPENDS+=	medcon:${PORTSDIR}/graphics/xmedcon
 . endif
 . if !defined(WITHOUT_FFMPEG)
 LIB_DEPENDS+=	libavformat.so:${PORTSDIR}/multimedia/ffmpeg
+. endif
+
+. if !defined(WITHOUT_LAPACK)
+# Don't really need Fortran, but required to link with blas/lapack
+USES+=	fortran
 . endif
 
 DOCBASE=	README.txt

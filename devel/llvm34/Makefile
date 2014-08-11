@@ -2,6 +2,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	3.4
+PORTREVISION=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -133,9 +134,11 @@ MAN1SRCS+=	bugpoint.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 PLIST_FILES+=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 .endif
 
+NOT_FOR_ARCH=	ia64
+
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64" || ${ARCH} == "ia64"
+.if ${ARCH} == "amd64"
 CONFIGURE_ARGS+=	--enable-pic --with-pic
 .endif
 
@@ -153,7 +156,8 @@ post-patch:
 	${REINPLACE_CMD} -e 's|import lit|import lit${LLVM_SUFFIX}|' \
 	    -e 's|from lit|from lit${LLVM_SUFFIX}|' \
 	    -e 's|lit\.|lit${LLVM_SUFFIX}.|' \
-	    ${WRKSRC}/utils/lit/lit.py ${WRKSRC}/utils/lit/lit/*.py
+	    ${WRKSRC}/utils/lit/lit.py ${WRKSRC}/utils/lit/lit/*.py \
+	    ${WRKSRC}/utils/lit/lit/formats/*.py
 
 .if ${PORT_OPTIONS:MCMAKE}
 post-configure:
@@ -166,10 +170,10 @@ post-configure:
 
 post-build:
 .if ${PORT_OPTIONS:MMANPAGES}
-	@cd ${WRKSRC}/docs && ${GMAKE} -f Makefile.sphinx man
+	@cd ${WRKSRC}/docs && ${MAKE_CMD} -f Makefile.sphinx man
 .endif
 .if ${PORT_OPTIONS:MDOCS}
-	@cd ${WRKSRC}/docs && ${GMAKE} -f Makefile.sphinx html
+	@cd ${WRKSRC}/docs && ${MAKE_CMD} -f Makefile.sphinx html
 .endif
 
 post-install:
@@ -207,6 +211,9 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX}
 	${INSTALL_DATA} ${WRKSRC}/utils/lit/lit/*.py \
 	    ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX}
+	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX}/formats
+	${INSTALL_DATA} ${WRKSRC}/utils/lit/lit/formats/*.py \
+	    ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX}/formats
 	${INSTALL_PROGRAM} ${WRKSRC}/${RELEASE_TYPE}/bin/FileCheck \
 	    ${STAGEDIR}${LLVM_PREFIX}/bin/
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/FileCheck \
@@ -219,7 +226,7 @@ post-install:
 	done
 .endif
 
-TEST_CMD=	'(cd ${WRKSRC}/test; ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/Release/lib ${GMAKE} check-local-lit)'
+TEST_CMD=	'(cd ${WRKSRC}/test; ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/Release/lib ${MAKE_CMD} check-local-lit)'
 regression-test: ${BUILD_COOKIE}
 	if [ `${ID} -u` = 0 ]; then \
 		${CHOWN} -R nobody ${WRKSRC}/test; \
@@ -256,6 +263,8 @@ build-plist:
 	    ${SORT} -r | ${SED} -e 's|^|@dirrm |' \
 	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' >> ${PLIST}
 	echo "%%LIT%%@dirrm %%PYTHON_SITELIBDIR%%/lit%%LLVM_SUFFIX%%" >> \
+	    ${PLIST}
+	echo "%%LIT%%@dirrm %%PYTHON_SITELIBDIR%%/lit%%LLVM_SUFFIX%%/formats" >> \
 	    ${PLIST}
 	${FIND} ${STAGEDIR}${DOCSDIR} -type d | \
 	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%@dirrm %%DOCSDIR%%|' | \

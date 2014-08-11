@@ -3,7 +3,7 @@
 
 PORTNAME=	asc
 PORTVERSION=	2.6.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}-hq/ASC%20Source/${PORTVERSION:R} \
 		http://www.asc-hq.org/music/:music
@@ -27,13 +27,11 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 OPTIONS_DEFINE=	MUSIC XVID
 MUSIC_DESC=	Install extra music files
 
-USES=		gmake perl5 pkgconfig tar:bzip2
+USES=		gmake libtool lua:51 perl5 pkgconfig tar:bzip2
 USE_SDL=	image mixer sound sdl
 USE_WX=		3.0
 WX_UNICODE=	yes
 WX_CONF_ARGS=	absolute
-USE_LUA=	5.1
-LUA_COMPS=	lua
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 

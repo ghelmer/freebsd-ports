@@ -4,6 +4,8 @@
 PORTNAME=	boost-libs
 COMMENT=	Free portable C++ libraries (without Boost.Python)
 
+PORTREVISION=	3
+
 BUILD_DEPENDS+=	bjam:${PORTSDIR}/devel/boost-jam
 
 OPTIONS_DEFINE=	VERBOSE_BUILD DEBUG ICU OPTIMIZED_CFLAGS
@@ -16,6 +18,14 @@ ICU_DESC=		Boost.Regex with ICU unicode support
 .include "${.CURDIR}/../boost-all/compiled.mk"
 
 BJAM_ARGS+=	--without-python
+.if defined(X_BUILD_FOR)
+BJAM_ARGS+=	--without-context --without-coroutine \
+		--without-locale --without-log
+PLIST_SUB+=	COROUTINE="@comment " CONTEXT="@comment " \
+		LOCALE="@comment " LOG="@comment "
+.else
+PLIST_SUB+=	COROUTINE="" CONTEXT="" LOCALE="" LOG=""
+.endif
 
 .if ${PORT_OPTIONS:MICU}
 LIB_DEPENDS+=	libicuuc.so:${PORTSDIR}/devel/icu
@@ -48,6 +58,8 @@ post-install:
 
 	@${CAT} ${PKG_MESSAGE_FILE_THREADS} >> ${PKGMESSAGE}
 	@${ECHO_CMD} >> ${PKGMESSAGE}
+
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 	@${REINPLACE_CMD} \
 		-e "s|%%LOCALBASE%%|${LOCALBASE}|g" \

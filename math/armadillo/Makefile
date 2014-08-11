@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	armadillo
-PORTVERSION=	3.800.1
-PORTREVISION=	3
+PORTVERSION=	4.300.8
 CATEGORIES=	math
 MASTER_SITES=	SF/arma/
 
-MAINTAINER=	giffunip@tutopia.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ linear algebra library
 
 LICENSE=	MPL
@@ -17,5 +16,4 @@ LIB_DEPENDS=	liblapack.so:${PORTSDIR}/math/lapack	\
 USES=		cmake
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

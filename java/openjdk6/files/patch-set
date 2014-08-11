@@ -4330,7 +4330,7 @@
  	$(PORTFILES_export)
  
 +ifeq ($(PLATFORM), bsd)
-+LDFLAGS  += -L$(PACKAGE_PATH)/lib -lasound
++OTHER_LDLIBS  += -L$(PACKAGE_PATH)/lib -lasound
 +
 +CPPFLAGS += \
 +	-DUSE_DAUDIO=TRUE \
@@ -4338,7 +4338,7 @@
 +	-I$(PACKAGE_PATH)/include \
 +	-I$(SHARE_SRC)/native/com/sun/media/sound
 +else
- LDFLAGS += -lasound
+ OTHER_LDLIBS += -lasound
  
  CPPFLAGS += \
 @@ -73,6 +82,7 @@
@@ -5272,17 +5272,42 @@
 +}
 --- jdk/src/share/classes/sun/print/PSPrinterJob.java
 +++ jdk/src/share/classes/sun/print/PSPrinterJob.java
-@@ -1531,7 +1531,9 @@
+@@ -1531,9 +1531,33 @@
              pFlags |= NOSHEET;
              ncomps+=1;
          }
 -       if (System.getProperty("os.name").equals("Linux")) {
 +
 +       String osname = System.getProperty("os.name");
-+       if (osname.equals("Linux") || osname.equals("FreeBSD") || osname.equals("NetBSD") || osname.equals("OpenBSD") || osname.equals("Darwin")) {
++       if (osname.equals("Linux") || osname.endsWith("BSD") || osname.contains("OS X")) {
++            String lprPath = "/usr/bin/lpr";
++            if (osname.endsWith("BSD")) {
++                final PrintService pservice = getPrintService();
++                Boolean isIPPPrinter =
++                    (Boolean)java.security.AccessController.doPrivileged(
++                    new java.security.PrivilegedAction() {
++                        public Object run() {
++                            try {
++                                Class psClass =
++                                    Class.forName("sun.print.IPPPrintService");
++                                if (psClass.isInstance(pservice)) {
++                                    return Boolean.TRUE;
++                                }
++                            } catch (Throwable t) {
++                            }
++                            return Boolean.FALSE;
++                        }
++                    });
++                if (isIPPPrinter) {
++                    lprPath = "%%LOCALBASE%%/bin/lpr";
++                }
++            }
              execCmd = new String[ncomps];
-             execCmd[n++] = "/usr/bin/lpr";
+-            execCmd[n++] = "/usr/bin/lpr";
++            execCmd[n++] = lprPath;
              if ((pFlags & PRINTER) != 0) {
+                 execCmd[n++] = new String("-P" + printer);
+             }
 --- jdk/src/share/classes/sun/security/jgss/GSSManagerImpl.java
 +++ jdk/src/share/classes/sun/security/jgss/GSSManagerImpl.java
 @@ -49,8 +49,12 @@
@@ -5601,17 +5626,6 @@
              /* There can't be more than 64K labels because of the limit
               * on per-method byte code length.
               */
---- jdk/src/share/native/common/jdk_util.c
-+++ jdk/src/share/native/common/jdk_util.c
-@@ -76,7 +76,7 @@
-     }
- 
- 
--    memset(info, 0, sizeof(info_size));
-+    memset(info, 0, info_size);
-     info->jdk_version = ((jdk_major_version & 0xFF) << 24) |
-                         ((jdk_minor_version & 0xFF) << 16) |
-                         ((jdk_micro_version & 0xFF) << 8)  |
 --- jdk/src/share/native/java/io/io_util.h
 +++ jdk/src/share/native/java/io/io_util.h
 @@ -29,7 +29,15 @@
@@ -8260,6 +8274,17 @@
  #include <math.h>
  #include <jlong.h>
  
+--- jdk/src/share/native/sun/management/GcInfoBuilder.c
++++ jdk/src/share/native/sun/management/GcInfoBuilder.c
+@@ -190,7 +190,7 @@
+ 
+     if (ext_att_count <= 0) {
+         JNU_ThrowIllegalArgumentException(env, "Invalid ext_att_count");
+-        return;
++        return 0;
+     }
+ 
+     gc_stat.usage_before_gc = usageBeforeGC;
 --- jdk/src/share/transport/socket/socketTransport.c
 +++ jdk/src/share/transport/socket/socketTransport.c
 @@ -65,6 +65,9 @@
@@ -9279,19 +9304,43 @@
 +}
 --- jdk/src/solaris/classes/sun/print/UnixPrintServiceLookup.java
 +++ jdk/src/solaris/classes/sun/print/UnixPrintServiceLookup.java
-@@ -119,7 +119,11 @@
+@@ -119,7 +119,9 @@
      }
  
      static boolean isBSD() {
 -        return osname.equals("Linux");
-+	return (osname.equals("Linux") ||
-+		osname.equals("FreeBSD") ||
-+		osname.equals("Darwin") ||
-+		osname.equals("NetBSD") ||
-+		osname.equals("OpenBSD"));
++        return (osname.equals("Linux") ||
++                osname.endsWith("BSD") ||
++                osname.contains("OS X"));
      }
  
      static final int UNINITIALIZED = -1;
+@@ -129,13 +131,13 @@
+     static int cmdIndex = UNINITIALIZED;
+ 
+     String[] lpcFirstCom = {
+-        "/usr/sbin/lpc status | grep : | sed -ne '1,1 s/://p'",
++        "/usr/sbin/lpc status all | grep ':$' | sed -ne '1,1 s/://p'",
+         "/usr/sbin/lpc status | grep -E '^[ 0-9a-zA-Z_-]*@' | awk -F'@' '{print $1}'"
+     };
+ 
+     String[] lpcAllCom = {
+-        "/usr/sbin/lpc status | grep : | sed -e 's/://'",
+-        "/usr/sbin/lpc -a status | grep -E '^[ 0-9a-zA-Z_-]*@' | awk -F'@' '{print $1}' | sort"
++        "/usr/sbin/lpc status all | grep ':$' | sed -e 's/://'",
++        "/usr/sbin/lpc status all | grep -E '^[ 0-9a-zA-Z_-]*@' | awk -F'@' '{print $1}' | sort"
+     };
+ 
+     String[] lpcNameCom = {
+@@ -145,7 +147,7 @@
+ 
+ 
+     static int getBSDCommandIndex() {
+-        String command  = "/usr/sbin/lpc status";
++        String command  = "/usr/sbin/lpc status all";
+         String[] names = execCmd(command);
+ 
+         if ((names == null) || (names.length == 0)) {
 --- jdk/src/solaris/classes/sun/tools/attach/BsdVirtualMachine.java
 +++ jdk/src/solaris/classes/sun/tools/attach/BsdVirtualMachine.java
 @@ -38,9 +38,6 @@
@@ -13633,10 +13682,10 @@
  #include <jni.h>
  #include <jni_util.h>
 +#include <jvm_md.h>
+ #include <sizecalc.h>
  #include <sun_font_FontManager.h>
  #ifndef HEADLESS
- #include <X11/Xlib.h>
-@@ -58,10 +59,24 @@
+@@ -59,10 +60,24 @@
  extern Display *awt_display;
  #endif /* !HEADLESS */
  
@@ -13662,7 +13711,7 @@
  /*
   * This can be set in the makefile to "/usr/X11" if so desired.
   */
-@@ -111,24 +126,40 @@
+@@ -112,24 +127,40 @@
      NULL, /* terminates the list */
  };
  
@@ -13715,7 +13764,7 @@
      NULL, /* terminates the list */
  };
  #endif
-@@ -351,7 +382,7 @@
+@@ -357,7 +388,7 @@
  
  #endif /* !HEADLESS */
  
@@ -13724,7 +13773,7 @@
  /* from awt_LoadLibrary.c */
  JNIEXPORT jboolean JNICALL AWTIsHeadless();
  #endif
-@@ -476,8 +507,10 @@
+@@ -482,8 +513,10 @@
       */
      fcdirs = getFontConfigLocations();
  
@@ -13736,7 +13785,7 @@
  #else /* IF SOLARIS */
      knowndirs = fullSolarisFontPath;
  #endif
-@@ -488,7 +521,8 @@
+@@ -494,7 +527,8 @@
       * be initialised.
       */
  #ifndef HEADLESS
@@ -13746,7 +13795,7 @@
      if (!AWTIsHeadless()) { /* .. so need to call a function to check */
  #endif
      AWT_LOCK();
-@@ -496,7 +530,7 @@
+@@ -502,7 +536,7 @@
          x11dirs = getX11FontPath();
      }
      AWT_UNLOCK();
@@ -13755,7 +13804,7 @@
      }
  #endif
  #endif /* !HEADLESS */
-@@ -608,7 +642,7 @@
+@@ -614,7 +648,7 @@
  }
  
  #include <dlfcn.h>
@@ -13764,7 +13813,7 @@
  #include <link.h>
  #endif
  
-@@ -654,9 +688,9 @@
+@@ -660,9 +694,9 @@
       * certain symbols - and functionality - to be available.
       * Also add explicit search for .so.1 in case .so symlink doesn't exist.
       */
@@ -13778,11 +13827,12 @@
          }
 --- jdk/src/solaris/native/sun/awt/gtk2_interface.c
 +++ jdk/src/solaris/native/sun/awt/gtk2_interface.c
-@@ -30,8 +30,9 @@
+@@ -30,9 +30,10 @@
  #include <string.h>
  #include "gtk2_interface.h"
  #include "java_awt_Transparency.h"
 +#include "jvm_md.h"
+ #include "sizecalc.h"
  
 -#define GTK2_LIB "libgtk-x11-2.0.so.0"
 +#define GTK2_LIB VERSIONED_JNI_LIB_NAME("gtk-x11-2.0", "0")
@@ -14526,6 +14576,57 @@
 +#ifdef __cplusplus
 +}
 +#endif
+--- jdk/src/solaris/native/sun/nio/ch/NativeThread.c
++++ jdk/src/solaris/native/sun/nio/ch/NativeThread.c
+@@ -33,12 +33,20 @@
+ #include "nio_util.h"
+ 
+ 
+-#ifdef __linux__
++#if defined(__linux__) || defined(_ALLBSD_SOURCE)
++#if defined(__linux__)
+ #include <pthread.h>
+ #include <sys/signal.h>
+ 
+ /* Also defined in src/solaris/native/java/net/linux_close.c */
+ #define INTERRUPT_SIGNAL (__SIGRTMAX - 2)
++#else
++#include <pthread.h>
++#include <signal.h>
++
++/* Also defined in src/solaris/native/java/net/bsd_close.c */
++#define INTERRUPT_SIGNAL SIGIO
++#endif
+ 
+ static void
+ nullHandler(int sig)
+@@ -51,7 +59,7 @@
+ JNIEXPORT void JNICALL
+ Java_sun_nio_ch_NativeThread_init(JNIEnv *env, jclass cl)
+ {
+-#ifdef __linux__
++#if defined(__linux__) || defined(_ALLBSD_SOURCE)
+ 
+     /* Install the null handler for INTERRUPT_SIGNAL.  This might overwrite the
+      * handler previously installed by java/net/linux_close.c, but that's okay
+@@ -74,7 +82,7 @@
+ JNIEXPORT jlong JNICALL
+ Java_sun_nio_ch_NativeThread_current(JNIEnv *env, jclass cl)
+ {
+-#ifdef __linux__
++#if defined(__linux__) || defined(_ALLBSD_SOURCE)
+     return (long)pthread_self();
+ #else
+     return -1;
+@@ -84,7 +92,7 @@
+ JNIEXPORT void JNICALL
+ Java_sun_nio_ch_NativeThread_signal(JNIEnv *env, jclass cl, jlong thread)
+ {
+-#ifdef __linux__
++#if defined(__linux__) || defined(_ALLBSD_SOURCE)
+     if (pthread_kill((pthread_t)thread, INTERRUPT_SIGNAL))
+         JNU_ThrowIOExceptionWithLastError(env, "Thread signal failed");
+ #endif
 --- jdk/src/solaris/native/sun/nio/ch/Net.c
 +++ jdk/src/solaris/native/sun/nio/ch/Net.c
 @@ -65,17 +65,33 @@

@@ -3,7 +3,7 @@
 #   $MCom: ports-stable/net-im/gaim-consoleui-devel/Makefile,v 1.2 2006/10/29 18:55:28 marcus Exp $
 
 PORTNAME=	finch
-PORTREVISION=	2
+PORTREVISION=	5
 
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Finch multi-protocol messaging client (Console UI)
@@ -19,6 +19,7 @@ PLIST=		${.CURDIR}/pkg-plist
 PIDGIN_SLAVE=	yes
 WITH_CONSOLEUI=	yes
 
+CPPFLAGS+=	-DNCURSES_WIDECHAR
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--disable-gtkui \
 		--disable-nm \

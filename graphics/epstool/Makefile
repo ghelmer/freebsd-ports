@@ -14,29 +14,27 @@ LICENSE=	GPLv2
 
 USE_GHOSTSCRIPT_RUN=	yes
 
-USE_GMAKE=	yes
+USES=		gmake
 MAKEFILE=	makefile
-MAKE_ARGS=	MAKE="${GMAKE}" GSCDEBUG="" CC="${CC}" CCAUX="${CC}" \
+MAKE_ARGS=	MAKE="${MAKE_CMD}" GSCDEBUG="" CC="${CC}" CCAUX="${CC}" \
 		CLINK="${CC} ${LDFLAGS}" LINK="${CC} ${LDFLAGS}" EPSLIB="" \
 		GTKCFLAGS="" GTKLIBS="" LIBPNGCFLAGS="" LIBPNGLIBS=""
 ALL_TARGET=	${PORTNAME}
 MAKE_JOBS_UNSAFE=	yes
 
-MAN1=		epstool.1
-PLIST_FILES=	bin/epstool
+PLIST_FILES=	bin/epstool man/man1/epstool.1.gz
 
 .if !defined(NOPORTDOCS)
 PORTDOCS=	epstool.htm gsview.css
 .endif
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/epstool ${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/epstool.1 ${MANPREFIX}/man/man1
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/epstool ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/doc/epstool.1 ${STAGEDIR}${MANPREFIX}/man/man1
 .if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/epstool.htm ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/gsview.css ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/epstool.htm ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/gsview.css ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

@@ -3,19 +3,19 @@
 
 PORTNAME=	GiNaC
 PORTVERSION=	1.6.2
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftpthep.physik.uni-mainz.de/pub/GiNaC/ \
 		http://www.ginac.de/
-DISTNAME=	${PORTNAME:L}-${PORTVERSION}
+DISTNAME=	${PORTNAME:tl}-${PORTVERSION}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	C++ library for symbolic mathematical calculations
 
 LIB_DEPENDS=	libcln.so:${PORTSDIR}/math/cln
 
-USE_BZIP2=	yes
-USES=		pkgconfig pathfix gmake
-USE_AUTOTOOLS=	libtool
+USES=		gmake libtool makeinfo pathfix pkgconfig tar:bzip2
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include

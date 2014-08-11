@@ -19,10 +19,9 @@ LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
 USES=		gettext gmake
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl
-CONFIGURE_ARGS=	LDFLAGS="${LDFLAGS}" CPPFLAGS="${CPPFLAGS}" LIBS="-lintl"
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib -lintl
 
 WRKSRC=		${WRKDIR}/VisualBoyAdvance-${PORTVERSION}
 SUB_FILES=	pkg-message
@@ -36,6 +35,7 @@ OPTIONS_SUB=	yes
 PROFILING_DESC=	Enable profiling
 
 GTK2_CONFIGURE_ON=	--enable-gtk=2.4
+GTK2_USES=		pkgconfig
 PROFILING_CONFIGURE_ENABLE=	profiling
 
 NO_STAGE=	yes

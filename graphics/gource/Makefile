@@ -3,7 +3,7 @@
 
 PORTNAME=	gource
 PORTVERSION=	0.40
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 MASTER_SITE_SUBDIR=	${PORTNAME}
@@ -20,8 +20,7 @@ LIB_DEPENDS=	libSDL_image.so:${PORTSDIR}/graphics/sdl_image \
 RUN_DEPENDS=	${LOCALBASE}/include/glm/glm.hpp:${PORTSDIR}/math/glm
 
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig
-USE_GCC=	yes
+USES=		gmake pkgconfig compiler:c++0x
 
 CONFIGURE_ARGS+=--with-boost-system=boost_system \
 		--with-boost-filesystem=boost_filesystem

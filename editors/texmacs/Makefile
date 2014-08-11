@@ -3,6 +3,7 @@
 
 PORTNAME=	texmacs
 PORTVERSION=	1.0.7.21
+PORTREVISION=	1
 CATEGORIES=	editors print
 MASTER_SITES=	ftp://ftp.texmacs.org/TeXmacs/tmftp/source/ \
 		http://www.predatorlabs.net/dl/
@@ -23,7 +24,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--enable-optimize="${CXXFLAGS}"
 MAKE_ARGS=	CP="${CP} -R -f"
-ALL_TARGET=	${PORTNAME:U}
+ALL_TARGET=	${PORTNAME:tu}
 INSTALL_ICONS=	yes
 
 DATADIR=	${PREFIX}/share/TeXmacs

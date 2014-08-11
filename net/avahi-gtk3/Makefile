@@ -1,7 +1,7 @@
 # Created by: Michael Johnson <ahze@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 PKGNAMESUFFIX=	-gtk3
 
@@ -23,9 +23,9 @@ AVAHI_PKGCONFIG=avahi-ui-gtk3.pc
 USE_GNOME+=	gtk30
 
 do-build:
-	@(cd ${WRKSRC}/avahi-ui; ${GMAKE} libavahi-ui-gtk3.la)
+	@(cd ${WRKSRC}/avahi-ui; ${MAKE_CMD} libavahi-ui-gtk3.la)
 
 do-install:
-	@(cd ${WRKSRC}/avahi-ui; ${GMAKE} ${MAKE_ARGS} install-libLTLIBRARIES)
+	@(cd ${WRKSRC}/avahi-ui; ${MAKE_CMD} ${MAKE_ARGS} install-libLTLIBRARIES)
 
 .include "${MASTERDIR}/Makefile"

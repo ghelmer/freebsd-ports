@@ -3,28 +3,26 @@
 
 PORTNAME=	proxsmtp
 PORTVERSION=	1.10
+PORTREVISION=	1
 CATEGORIES=	mail security
 MASTER_SITES=	http://thewalter.net/stef/software/proxsmtp/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flexible SMTP filter which can act also as transparent proxy
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USE_GMAKE=	yes
-USE_AUTOTOOLS=  aclocal automake autoconf
+USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+= --enable-ssl
 
 USE_RC_SUBR=	proxsmtpd
 SUB_FILES=	pkg-message
 
-MAN5=		proxsmtpd.conf.5
-MAN8=		proxsmtpd.8
-
 PORTDOCS=	ChangeLog NEWS README
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^acx_pthread_flags/s|=.*|="${PTHREAD_LIBS}"|' \
@@ -32,17 +30,8 @@ post-patch:
 
 post-install:
 	(cd ${WRKSRC}/doc && ${INSTALL_DATA} proxsmtpd.conf \
-		${PREFIX}/etc/proxsmtpd.conf-sample)
-.if !exists(${PREFIX}/etc/proxsmtpd.conf)
-	(cd ${PREFIX}/etc && ${CP} -p proxsmtpd.conf-sample \
-		${PREFIX}/etc/proxsmtpd.conf)
-.endif
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-.for docs in ${PORTDOCS}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${docs} ${DOCSDIR})
-.endfor
-.endif
-	@${CAT} ${PKGMESSAGE}
+		${STAGEDIR}${PREFIX}/etc/proxsmtpd.conf.sample)
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

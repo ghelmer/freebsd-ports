@@ -3,7 +3,7 @@
 
 PORTNAME=	gogglesmm
 PORTVERSION=	0.12.7
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	GOOGLE_CODE
 
@@ -31,8 +31,7 @@ OPTIONS_SUB=	yes
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--mandir=${PREFIX}/man --prefix=${PREFIX}
 
-USES=		pkgconfig gmake desktop-file-utils
-USE_XZ=		yes
+USES=		tar:xz pkgconfig gmake desktop-file-utils
 MAKE_ARGS=	CXX="${CXX}" LINK="${CXX}"
 INSTALLS_ICONS=	yes
 

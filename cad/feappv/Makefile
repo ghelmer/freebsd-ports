@@ -10,7 +10,7 @@ DISTFILES=	${PORTNAME}${PORTVERSION:S/.//}${EXTRACT_SUFX} ${PORTDOCS}
 DIST_SUBDIR=	${PORTNAME}${PORTVERSION:S/.//}
 EXTRACT_ONLY=	${PORTNAME}${PORTVERSION:S/.//}${EXTRACT_SUFX}
 
-MAINTAINER=	mexas@bris.ac.uk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Finite element analysis program (personal version)
 
 USES=		fortran gmake zip
@@ -29,7 +29,6 @@ PORTDOCS=	manual.pdf
 
 OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 post-patch:
@@ -44,11 +43,9 @@ post-patch:
 		 s|Feappv.a|libfeappv.a|' ${WRKSRC}/makefile.in
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/main/feappv ${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/libfeappv.a ${PREFIX}/lib
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${DOCSDIR}
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/main/feappv ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/libfeappv.a ${STAGEDIR}${PREFIX}/lib
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -21,7 +21,7 @@ USE_XORG=	x11 xpm
 USE_GL=		gl
 USE_PERL5=	run
 USE_GNOME=	gnomehier libglade2 gnomehack
-USES=		gettext gmake perl5 pkgconfig
+USES=		dos2unix gettext gmake perl5 pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gtk --with-gl --with-gle --with-pixbuf --with-xpm \
 		--with-jpeg=${LOCALBASE} --with-xshm-ext --with-xdbe-ext \
@@ -29,9 +29,8 @@ CONFIGURE_ARGS=	--with-gtk --with-gl --with-gle --with-pixbuf --with-xpm \
 		--with-configdir=${PREFIX}/share/xscreensaver/config \
 		--with-dpms-ext --with-xinerama-ext --with-xf86vmode-ext \
 		--with-xf86gamma-ext --with-randr-ext --enable-locking
-CONFIGURE_ENV=	LIBS="-lintl"
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib -lintl
 
 OPTIONS_DEFINE=	PAM KEYRING ALL_FORTUNES SETUID_HACKS
 OPTIONS_DEFAULT=	PAM KEYRING
@@ -112,7 +111,7 @@ CONFIGURE_ARGS+=	--with-setuid-hacks
 CFLAGS+=	-O0
 .endif
 
-USE_DOS2UNIX=	hacks/glx/topblock.c
+DOS2UNIX_FILES=	hacks/glx/topblock.c
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lpthread|${PTHREAD_LIBS}|g ; \
 	    	s|malloc.h|stdlib.h|g ; \

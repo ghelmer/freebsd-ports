@@ -4,6 +4,7 @@
 
 PORTNAME=	vala
 PORTVERSION=	0.20.1
+PORTREVISION=	1
 CATEGORIES=	lang gnome
 MASTER_SITES=	GNOME
 
@@ -12,7 +13,7 @@ COMMENT=	Programming language and compiler that converts Vala code into C code
 
 LICENSE=	LGPL21
 
-USES=		bison gettext gmake libtool pathfix pkgconfig
+USES=		bison gettext gmake libtool:keepla pathfix pkgconfig
 USE_XZ=		yes
 USE_GNOME=	glib20 gnomeprefix libxslt introspection:build
 GNU_CONFIGURE=	yes
@@ -46,13 +47,13 @@ post-patch:
 
 .if defined(VALA_SLAVE)
 pre-build:
-	@cd ${WRKSRC} && ${GMAKE} version.h
+	@cd ${WRKSRC} && ${MAKE_CMD} version.h
 	@cd ${WRKSRC}/gobject-introspection && ${MAKE_CMD} libgidl.la && \
 		${MAKE_CMD} gen-introspect
 	@cd ${WRKSRC}/vapigen && ${MAKE_CMD} all
 
 post-install:
-	@cd ${WRKSRC}/gobject-introspection && DESTDIR=${STAGEDIR} ${GMAKE} install
+	@cd ${WRKSRC}/gobject-introspection && DESTDIR=${STAGEDIR} ${MAKE_CMD} install
 	${INSTALL_MAN} ${WRKSRC}/doc/vapigen.1 ${WRKSRC}/doc/vala-gen-introspect.1 \
 		 ${STAGEDIR}${PREFIX}/man/man1/
 .else

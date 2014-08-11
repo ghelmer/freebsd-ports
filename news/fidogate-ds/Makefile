@@ -3,7 +3,7 @@
 
 PORTNAME=		fidogate
 PORTVERSION=		5.1.7
-PORTREVISION=		2
+PORTREVISION=		3
 CATEGORIES=		news mail
 MASTER_SITES=		SF/rus${PORTNAME}/${PORTNAME}-stable/${PORTNAME}%20${PORTVERSION}ds
 PKGNAMESUFFIX=		-ds
@@ -11,6 +11,8 @@ DISTNAME=		fidogate${PORTVERSION}ds
 
 MAINTAINER=		5u623l20@gmail.com
 COMMENT=		Fido-Internet Gateway and Tosser
+
+BROKEN=			Fails to configure
 
 PORTSCOUT=		limit:^5\.[^2] # 5.2.X is development branch
 

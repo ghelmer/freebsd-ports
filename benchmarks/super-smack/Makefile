@@ -7,7 +7,7 @@ PORTREVISION=	2
 CATEGORIES=	benchmarks databases
 MASTER_SITES=	http://vegan.net/tony/supersmack/
 
-MAINTAINER=	gslin@gslin.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Benchmarking, stress testing, and load generation tool for Databases
 
 GNU_CONFIGURE=	yes
@@ -37,7 +37,7 @@ CONFIGURE_ARGS+=--with-mysql \
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 CONFIGURE_ARGS+=--with-pgsql \
 		--with-pgsql-include=${LOCALBASE}/include \
 		--with-pgsql-lib=${LOCALBASE}/lib

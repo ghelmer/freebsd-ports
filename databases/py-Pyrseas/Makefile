@@ -10,6 +10,8 @@ COMMENT=	Framework and utilities to upgrade and maintain a relational database
 
 LICENSE=	BSD3CLAUSE
 
+BROKEN=		Checksum and size mismatch
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>0:${PORTSDIR}/databases/py-psycopg2 \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml
 
@@ -22,6 +24,6 @@ GH_ACCOUNT=	jmafc
 GH_COMMIT=	9b0e3d2
 GH_TAGNAME=	v${PORTVERSION}
 
-WRKSRC=		${WRKDIR}/${PORTNAME:L}-${PORTNAME}-${GH_COMMIT}
+WRKSRC=		${WRKDIR}/${PORTNAME:tl}-${PORTNAME}-${GH_COMMIT}
 
 .include <bsd.port.mk>

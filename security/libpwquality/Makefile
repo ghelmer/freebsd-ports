@@ -2,6 +2,7 @@
 
 PORTNAME=	libpwquality
 PORTVERSION=	1.2.3
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://fedorahosted.org/releases/l/i/libpwquality/
 
@@ -10,16 +11,14 @@ COMMENT=	Library for generating random passwords and quality checking
 
 LIB_DEPENDS=	libcrack.so:${PORTSDIR}/security/cracklib
 
-USES=		gettext gmake libtool pathfix
+USES=		gettext gmake libtool:keepla pathfix
 USE_BZIP2=	yes
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS+=--disable-pam
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-# configure needs to be fixed
-CONFIGURE_ENV+=	LIBS="-lintl"
+LIBS+=		-L${LOCALBASE}/lib -lintl
 
 OPTIONS_DEFINE=	PYTHON
 OPTIONS_DEFAULT=PYTHON

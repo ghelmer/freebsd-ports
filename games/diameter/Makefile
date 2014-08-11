@@ -3,7 +3,7 @@
 
 PORTNAME=	diameter
 PORTVERSION=	0.4.0.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/game${PORTNAME}/game${PORTNAME}/${PORTNAME}-0.4.0
 
@@ -13,9 +13,8 @@ COMMENT=	Arcade-style game with elements of economy and adventure
 LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libguichan.so:${PORTSDIR}/devel/guichan
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 gmake pkgconfig
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig
 USE_GL=		gl
 USE_SDL=	sdl mixer image
 USE_PYTHON=	yes

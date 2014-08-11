@@ -3,7 +3,7 @@
 
 PORTNAME=	snownews
 PORTVERSION=	1.5.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://kiza.kcore.de/media/software/snownews/
 
@@ -47,7 +47,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|ncurses|ncursesw|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|-liconv|${ICONV_LIB}|' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|gcc|${CC}|' ${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's|make|${GMAKE}|' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's|make|${MAKE_CMD}|' ${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e 's|share/man|man|' ${WRKSRC}/Makefile
 .if ! ${PORT_OPTIONS:MNLS}
 	${REINPLACE_CMD} -e 's/ install-locales / /g' ${WRKSRC}/Makefile

@@ -391,7 +391,7 @@ gst_mad_PLIST_FILES=	${GST_LIB_DIR}/libgstmad.la \
 gst_mad_DIST=	ugly
 
 # mpeg2enc
-gst_mpeg2enc_LIB_DEPENDS+=	libmjpegutils-2.0.so:${PORTSDIR}/multimedia/mjpegtools
+gst_mpeg2enc_LIB_DEPENDS+=	libmjpegutils.so:${PORTSDIR}/multimedia/mjpegtools
 gst_mpeg2enc_PLIST_FILES=	${GST_LIB_DIR}/libgstmpeg2enc.la \
 		${GST_LIB_DIR}/libgstmpeg2enc.so
 gst_mpeg2enc_DIST=	bad
@@ -467,7 +467,7 @@ gst_sdl_PLIST_FILES=	${GST_LIB_DIR}/libgstsdl.la \
 gst_sdl_DIST=	bad
 
 # shout2
-gst_shout2_LIB_DEPENDS+=	libshout.so.5:${PORTSDIR}/audio/libshout2
+gst_shout2_LIB_DEPENDS+=	libshout.so:${PORTSDIR}/audio/libshout
 gst_shout2_PLIST_FILES=		${GST_LIB_DIR}/libgstshout2.la \
 				${GST_LIB_DIR}/libgstshout2.so
 
@@ -564,7 +564,8 @@ gst_vdpau_PLIST_FILES=	${GST_INC_DIR}/gst/vdpau/gstvdp.h \
 			${GST_LIB_DIR}/libgstvdpau.so \
 			lib/libgstvdp-${VERSION}.la \
 			lib/libgstvdp-${VERSION}.so \
-			lib/libgstvdp-${VERSION}.so.0
+			lib/libgstvdp-${VERSION}.so.0 \
+			lib/libgstvdp-${VERSION}.so.0.0.0
 gst_vdpau_PLIST_DIRS=	${GST_INC_DIR}/gst/vdpau
 gst_vdpau_DIST=		bad
 
@@ -653,7 +654,7 @@ GST_POSTBUILD_DIR=${gst_${GST_PLUGIN}_GST_POSTBUILD_DIR}
 .if !target(do-build)
 do-build:
 .for dir in ${GST_PREBUILD_DIR} ${GST_PLUGIN_DIR} ${GST_POSTBUILD_DIR}
-	@cd ${WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} \
+	@cd ${WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
 		${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET}
 .endfor
 .endif
@@ -661,7 +662,7 @@ do-build:
 .if !target(do-install)
 do-install:
 .for dir in ${GST_PLUGIN_DIR}
-	@cd ${WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} \
+	@cd ${WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
 		${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
 .endfor
 .endif

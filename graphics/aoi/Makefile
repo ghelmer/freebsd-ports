@@ -3,14 +3,14 @@
 
 PORTNAME=	aoi
 PORTVERSION=	3.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics java
 MASTER_SITES=	SF/${PORTNAME}/ArtOfIllusion/${PORTVERSION} \
 		SF/${PORTNAME}/ArtOfIllusion-manual/${PORTVERSION}:docs
 DISTFILES=	${PORTNAME}${PORTVERSION:S/.//g}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source Java written 3D modelling and rendering studio
 
 LICENSE=	GPLv2
@@ -18,8 +18,8 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libjogl.so:${PORTSDIR}/graphics/jogl
 RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper
 
-USES=		zip:infozip
-EXTRACT_BEFORE_ARGS=	-a -q
+USES=		dos2unix zip
+DOS2UNIX_FILES=	../AoI_Manual/*.html
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 NO_BUILD=	yes

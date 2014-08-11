@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libyaml
-PORTVERSION=	0.1.5
+PORTVERSION=	0.1.6
 CATEGORIES=	devel textproc
 MASTER_SITES=	http://pyyaml.org/download/libyaml/
 PKGNAMEPREFIX=	mingw32-
@@ -21,5 +21,4 @@ CONFIGURE_ARGS=	--host="mingw32"
 CC=		${PKGNAMEPREFIX}gcc
 CFLAGS=		-O3	# Override CFLAGS for a cross-build
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -4,30 +4,28 @@
 
 PORTNAME=	folks
 PORTVERSION=	0.4.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
+PKGNAMESUFFIX=	04
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	library to aggregates people from multiple sources
+COMMENT=	Library to aggregate people from multiple sources
 
-BUILD_DEPENDS=	vapigen:${PORTSDIR}/lang/vala-vapigen \
-		g-ir-scanner:${PORTSDIR}/devel/gobject-introspection
-LIB_DEPENDS=	gee:${PORTSDIR}/devel/libgee06 \
-		telepathy-glib.0:${PORTSDIR}/net-im/telepathy-glib
+BUILD_DEPENDS=	vapigen:${PORTSDIR}/lang/vala-vapigen
+LIB_DEPENDS=	libgee.so:${PORTSDIR}/devel/libgee06 \
+		libtelepathy-glib.so:${PORTSDIR}/net-im/telepathy-glib
 
 CONFLICTS=	folks-0.[6-9].[0-9]*
 
-PKGNAMESUFFIX=	04
-USE_BZIP2=	yes
+USES=		gettext gmake libtool:keepla pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
-USES=		pathfix gettext gmake pkgconfig
-USE_GNOME=	intlhack gnomehier
+USE_GNOME=	intlhack gnomehier introspection:build
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 PLIST_SUB=	VERSION=22
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

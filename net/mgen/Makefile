@@ -18,7 +18,7 @@ COMMENT=	An IP network performance tests and measurements
 ONLY_FOR_ARCHS=	i386
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USE_GMAKE=	yes
+USES=		gmake
 
 PLIST_FILES=	bin/mgen
 PORTDOCS=	README.TXT VERSION.TXT mgen.html example.mgn
@@ -32,7 +32,7 @@ post-patch:
 	                ${WRKSRC}/protolib/unix/Makefile.freebsd
 
 do-build:
-	cd ${WRKSRC}/unix && ${GMAKE} -f Makefile.freebsd ${PORTNAME}
+	cd ${WRKSRC}/unix && ${MAKE_CMD} -f Makefile.freebsd ${PORTNAME}
 
 do-install:
 	${INSTALL_PROGRAM}	${WRKSRC}/unix/mgen ${PREFIX}/bin

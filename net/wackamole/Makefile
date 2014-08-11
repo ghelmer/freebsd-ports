@@ -2,21 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	wackamole
-PORTVERSION=	2.1.4
+PORTVERSION=	2.1.5
 CATEGORIES=	net
-MASTER_SITES=	http://mirrors.omniti.com/wackamole/
+MASTER_SITES=	http://bsdforge.com/projects/source/net/wackamole/ \
+		http://mirrors.omniti.com/wackamole/
 
-MAINTAINER=	saper@saper.info
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Peer-to-peer high availability cluster
 
-LIB_DEPENDS=	spread.1:${PORTSDIR}/net/spread
+LIB_DEPENDS=	libspread.so:${PORTSDIR}/net/spread
 
+USES=		tar:xz
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ENV+=	YACC=${YACC}
 
-MAN5=		wackamole.conf.5
-MAN8=		wackamole.8 wackatrl.8
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

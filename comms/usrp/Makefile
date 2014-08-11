@@ -18,8 +18,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/boost/tuple/tuple.hpp:${PORTSDIR}/devel/boos
 		orcc:${PORTSDIR}/devel/orc \
 		sdcc:${PORTSDIR}/lang/sdcc
 
-USE_DOS2UNIX=		yes
-USES=			cmake:outsource gmake pkgconfig
+USES=			cmake:outsource dos2unix gmake pkgconfig
 USE_LDCONFIG=		yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/host
 
@@ -65,17 +64,17 @@ PLIST_SUB+=	PUSRP2="@comment "
 
 do-build:
 # build host component
-	(export PATH=${LOCALBASE}/zpu/bin:${PATH};cd ${CONFIGURE_WRKSRC}&&${GMAKE})
+	(export PATH=${LOCALBASE}/zpu/bin:${PATH};cd ${CONFIGURE_WRKSRC}&& ${SETENV} ${MAKE_ENV} ${MAKE_CMD})
 # build usrp firmware
 #	(export PATH=${LOCALBASE}/zpu/bin:${PATH};\
-#	cd ${WRKSRC}/images && ${GMAKE} -f Makefile images)
+#	cd ${WRKSRC}/images && ${MAKE_CMD} -f Makefile images)
 
 .if	USRP1
-	(cd ${WRKSRC}/images && ${GMAKE} -f Makefile images_usrp1)
+	(cd ${WRKSRC}/images && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f Makefile images_usrp1)
 .endif
 .if	USRP2
 	(export PATH=${LOCALBASE}/zpu/bin:${PATH};\
-	cd ${WRKSRC}/images && ${GMAKE} -f Makefile images_usrp2)
+	cd ${WRKSRC}/images && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f Makefile images_usrp2)
 .endif
 
 do-install:

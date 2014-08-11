@@ -3,14 +3,14 @@
 
 PORTNAME=	giacxcas
 PORTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math
-MASTER_SITES=	http://www-fourier.ujf-grenoble.fr/~parisse/giac/freebsd/ \
-		http://www.math.jussieu.fr/~han/xcas/sources/
+MASTER_SITES=	http://www-fourier.ujf-grenoble.fr/~parisse/giac/ \
+		http://www.math.jussieu.fr/~han/xcas/sources/v2/
 DISTFILES=	fltk-giac.tar.gz CoCoALib-0.9950.tgz giac-${PORTVERSION}.tar.gz
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	han@math.jussieu.fr
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Computer algebra system by Bernard Parisse
 
 LICENSE=	GPLv3
@@ -19,7 +19,7 @@ BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
 		${LOCALBASE}/lib/libntl.a:${PORTSDIR}/math/ntl
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libpng.so:${PORTSDIR}/graphics/png \
-                libjpeg.so:${PORTSDIR}/graphics/jpeg \
+		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libpari.so:${PORTSDIR}/math/pari \
 		libmpfr.so:${PORTSDIR}/math/mpfr \
 		libgsl.so:${PORTSDIR}/math/gsl \
@@ -28,11 +28,12 @@ LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 NO_CDROM=	French documentation is for non-commercial use only
 
 GNU_CONFIGURE=	yes
+USES=		desktop-file-utils gettext gmake libtool:keepla shebangfix
 USE_GL=		gl
-USE_XORG=	xcursor xft xi
+USE_XORG=	x11 xcursor xft xi
 USE_TEX=	latex:build dvipsk:build
 USE_LDCONFIG=	yes
-USES=		gettext gmake shebangfix desktop-file-utils
+# Warning:  don't remove the USE_GCC without a runtime test *after* make install
 USE_GCC=	yes
 DOCSDIR=	${PREFIX}/share/doc/giac
 PORTDOCS=	*
@@ -40,6 +41,7 @@ DATADIR=	${PREFIX}/share/giac
 PORTDATA=	*
 SHEBANG_FILES=	src/pgiac
 
+CONFIGURE_ENV=	X_LIBS=-lX11
 CPPFLAGS+=	-I${FLTKDEV-GIAC} -I${COCOALIB-GIAC}/include -I${LOCALBASE}/include
 LDFLAGS+=	-L${FLTKDEV-GIAC}/lib -L${COCOALIB-GIAC}/lib -L${LOCALBASE}/lib
 CXXFLAGS+=	-I${LOCALBASE}/include
@@ -50,7 +52,10 @@ COCOALIB-GIAC=	${WRKDIR}/CoCoALib-0.9950
 
 INFO=		giac_es giac_us
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
+
+#NB: built of giacxcas with USE_GCC and nlt is successfull if the ntl port is also
+#    installed  with USE_GCC
 .if ${OSVERSION} >= 1000000
 CONFIGURE_ARGS+=	--disable-ntl
 .endif
@@ -68,9 +73,9 @@ post-patch:
 pre-configure:
 	cd ${COCOALIB-GIAC} && \
 	./configure --with-libgmp=${LOCALBASE}/lib/libgmp.a --with-cxx=${CXX}&& \
-	${GMAKE} library && \
+	${MAKE_CMD} library && \
 	cd ${FLTKDEV-GIAC} && \
 	./configure --prefix=${FLTKDEV-GIAC} \
-	&& ${MAKE}
+	&& cd src && ${MAKE}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

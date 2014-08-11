@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	icecast2
-PORTVERSION=	2.3.3
-PORTREVISION=	1
+PORTVERSION=	2.4.0
 PORTEPOCH=	1
 CATEGORIES=	audio net ipv6
 MASTER_SITES=	http://downloads.xiph.org/releases/icecast/:source \
@@ -21,7 +20,7 @@ COMMENT=	Streaming mp3/ogg-vorbis audio server
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libshout.so:${PORTSDIR}/audio/libshout2 \
+		libshout.so:${PORTSDIR}/audio/libshout \
 		libspeex.so:${PORTSDIR}/audio/speex \
 		libtheora.so:${PORTSDIR}/multimedia/libtheora \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
@@ -38,15 +37,11 @@ WRKSRC=		${WRKDIR}/icecast-${PORTVERSION}
 
 DATADIR=	${PREFIX}/share/icecast
 DOCSDIR=	${PREFIX}/share/doc/icecast
+PLIST_FILES=	bin/icecast \
+		etc/icecast.xml.sample
+PORTDATA=	*
 PORTDOCS=	*
 SUB_FILES=	pkg-message
-
-.include <bsd.port.options.mk>
-
-post-patch:
-.if !${PORT_OPTIONS:MDOCS}
-	${REINPLACE_CMD} -e '/^SUBDIRS = / s| doc||; s| install-exec-am install-data-am| install-exec-am|' ${WRKSRC}/Makefile.in
-.endif
 
 post-install:
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/favicon.ico ${STAGEDIR}${DATADIR}/web/

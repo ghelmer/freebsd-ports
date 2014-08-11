@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	kivy
-PORTVERSION=	1.7.2
-PORTREVISION=	2
+PORTVERSION=	1.8.0
 CATEGORIES=	x11-toolkits python
-MASTER_SITES=	LOCAL/dbn/${PORTNAME}
+MASTER_SITES=	GH LOCAL/dbn/${PORTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbn@FreeBSD.org
@@ -19,7 +18,7 @@ MAKE_ENV=	KIVY_NO_CONFIG=yes KIVY_NO_FILELOG=yes PYTHONPATH=${WRKSRC}
 MAKE_JOBS_UNSAFE=	yes  # does not (really) use make
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}
-GH_COMMIT=	f4f6246
+GH_COMMIT=	d602d4b
 USES=		shebangfix
 USE_GL=		gl
 USE_PYDISTUTILS=	yes
@@ -27,7 +26,7 @@ PYDISTUTILS_AUTOPLIST=	yes
 PYDISTUTILS_BUILD_TARGET=	build_ext
 PYDISTUTILS_BUILDARGS=	--inplace
 PYDISTUTILS_EGGINFO=	Kivy-${PORTVERSION}-py${PYTHON_VER}.egg-info
-USE_PYTHON=	2
+USE_PYTHON=	2.7+
 SHEBANG_FILES=	kivy/lib/osc/OSC.py
 
 OPTIONS_DEFINE=	DOCS PDF TEST
@@ -43,16 +42,6 @@ OPTIONS_GROUP_IMAGE=	PIL PYGAME
 OPTIONS_GROUP_CAMERA=	OPENCV GSTREAMER
 OPTIONS_GROUP_SPELLING=	ENCHANT
 OPTIONS_GROUP_CLIPBOARD=	PYGAME
-
-.if !defined(ARCH)
-ARCH!=		uname -p
-.endif
-.if ${ARCH} == i386
-OPTIONS_GROUP_VIDEO+=	PYGLET
-.if !defined(WITH_NEW_XORG)
-BROKEN=		Does not compile with old libGL on i386: Undefined symbol glBlendEquationSeparate
-.endif
-.endif
 
 CAMERA_DESC=	Camera support
 CLIPBOARD_DESC=	Clipboard support
@@ -84,7 +73,21 @@ TEST_USES=		display:build
 X11_MAKE_ENV=		USE_X11=1
 X11_USE=		XORG=x11
 
+.if !defined(ARCH)
+ARCH!=		uname -p
+.endif
+
+.if ${ARCH} == i386
+OPTIONS_GROUP_VIDEO+=	PYGLET
+.endif
+
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == i386
+.if !defined(WITH_NEW_XORG)
+BROKEN=		Does not compile with old libGL on i386: Undefined symbol glBlendEquationSeparate
+.endif
+.endif
 
 .if ${PORT_OPTIONS:MPDF}
 .if empty(PORT_OPTIONS:MDOCS)
@@ -133,9 +136,9 @@ do-build-docs:
 			-d ${WRKSRC}/doc/build/doctrees \
 			-D latex_paper=letter doc/sources ${WRKSRC}/doc/build/latex-letter)
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/doc/build/latex-a4 \
-		all-pdf > /dev/null
+		all-pdf < /dev/null > /dev/null
 	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/doc/build/latex-letter \
-		all-pdf > /dev/null
+		all-pdf < /dev/null > /dev/null
 .endif
 	${REINPLACE_CMD} -i '' -e 's/#\(import pygame\.joystick\)/\1/' \
 		${WRKSRC}/kivy/input/providers/androidjoystick.py

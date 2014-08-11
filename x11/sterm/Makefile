@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sterm
-PORTVERSION=	0.4.1
+PORTVERSION=	0.5
 CATEGORIES=	x11
 MASTER_SITES=	http://dl.suckless.org/st/
 DISTNAME=	st-${PORTVERSION}

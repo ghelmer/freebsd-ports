@@ -4,16 +4,16 @@
 PORTNAME=	devil
 PORTVERSION=	1.7.8
 PORTEPOCH=	1
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	SF/openil/DevIL/${PORTVERSION}
 DISTNAME=	DevIL-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	A full featured cross-platform image library
+COMMENT=	Full featured cross-platform image library
 
-USES=		pkgconfig
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtool
+USES=		pkgconfig libtool
+USE_AUTOTOOLS=	aclocal autoheader automake autoconf
 ACLOCAL_ARGS=	-I m4 -I ${LOCALBASE}/share/aclocal
 AUTOMAKE_ARGS=	--add-missing --copy --force-missing
 CONFIGURE_ARGS=	--enable-ILU \
@@ -22,7 +22,7 @@ CONFIGURE_ARGS=	--enable-ILU \
 USE_LDCONFIG=	yes
 USE_GCC=	any
 
-WRKSRC=		${WRKDIR}/${DISTNAME:L}
+WRKSRC=		${WRKDIR}/${DISTNAME:tl}
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -93,6 +93,8 @@ CONFIGURE_ARGS+=--disable-altivec --disable-sse --disable-sse2 --disable-sse3
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS/s|docs||g' ${WRKSRC}/Makefile.am
+	@${REINPLACE_CMD} -e '/^ilur_LDADD =/s|$$| $$(il_library)|' \
+		${WRKSRC}/bin/Makefile.am
 	@${REINPLACE_CMD} -e '/^pkgdir=/s|$$(libdir)/|$$(prefix)/libdata/|g' \
 		${WRKSRC}/data/Makefile.am
 	@${REINPLACE_CMD} -e 's|<malloc\.h>|<stdlib.h>|g' \

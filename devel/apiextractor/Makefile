@@ -3,7 +3,7 @@
 
 PORTNAME=	apiextractor
 PORTVERSION=	0.10.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.pyside.org/files/
 
@@ -12,9 +12,11 @@ COMMENT=	API Extractor library to build PySide
 
 LICENSE=	GPLv2
 
+BROKEN=		Unfetchable
+
 BUILD_DEPENDS=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
-LIB_DEPENDS=	xml2.5:${PORTSDIR}/textproc/libxml2 \
-		xslt.2:${PORTSDIR}/textproc/libxslt
+
+USE_GNOME=	libxml2 libxslt
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	irpf
-PORTVERSION=	2014.1.0
+PORTVERSION=	2014.1.4
 CATEGORIES=	portuguese finance java
 MASTER_SITES=	http://www28.receita.fazenda.gov.br/publico/programas/IRPF/2014/PGDIRPF2014/Java/zip/
 PKGNAMEPREFIX?=	pt_BR-
-DISTNAME=	IRPF2014-1.0
+DISTNAME=	IRPF2014-1.4
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	araujo@FreeBSD.org
 COMMENT=	Programa do Imposto de Renda Pessoa Fisica 2014 versao Java
 
 LICENSE=	EULA
@@ -18,7 +18,7 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 LICENSE_DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 USES=		zip
-WRKSRC=		${WRKDIR}/${PORTNAME:U}2014
+WRKSRC=		${WRKDIR}/${PORTNAME:tu}2014
 
 USE_JAVA=	yes
 JAVA_RUN=	yes
@@ -30,7 +30,7 @@ PLIST_SUB=	JAR_DIR=${JAR_DIR}
 
 JAVAVM=		${LOCALBASE}/bin/java
 
-JAR_DIR=	${JAVAJARDIR:S,^${PREFIX}/,,}/${PORTNAME}
+JAR_DIR=	${JAVAJARDIR:S,^${PREFIX}/,,}${PORTNAME}
 
 DESKTOP_ENTRIES=	"Imposto de Renda Pessoa Fisica 2014" \
 			"${COMMENT}" \

@@ -9,7 +9,7 @@ MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3977/ \
 		http://fossies.org/linux/misc/
 
 MAINTAINER=	johans@FreeBSD.org
-COMMENT=	An MS-DOS Telix serial communication program "workalike"
+COMMENT=	MS-DOS Telix serial communication program "workalike"
 
 RUN_DEPENDS=	lrz:${PORTSDIR}/comms/lrzsz
 
@@ -20,15 +20,12 @@ NLS_CONFIGURE_ENABLE=	nls
 
 USES=		iconv
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib ${ICONV_LIB} -lcurses
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-dfl-baud=57600 \
 			--sysconfdir=${PREFIX}/etc/minicom \
 			--enable-lock-dir=/var/spool/lock \
 			--enable-dfl-port=/dev/cuau0
-MAKE_ARGS+=	LIBS+="${ICONV_LIB} -lcurses"
-
-.include <bsd.port.pre.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e "s@/usr/local/bin/@${LOCALBASE}/bin/@; \
@@ -38,11 +35,7 @@ post-patch:
 		${WRKSRC}/Makefile.in
 
 post-install:
-	${CHOWN} uucp:dialer ${STAGEDIR}${PREFIX}/bin/minicom
-	${CHMOD} 4511 ${STAGEDIR}${PREFIX}/bin/minicom
-	${INSTALL} -d -o root -g wheel -m 0755 ${STAGEDIR}${PREFIX}/etc/minicom
-	${CHOWN} uucp ${STAGEDIR}${PREFIX}/etc/minicom
-.if ${PORT_OPTIONS:MDOCS}
+	${INSTALL} -d -m 0755 ${STAGEDIR}${PREFIX}/etc/minicom
 	${INSTALL} -d -o root -g wheel -m 0755 ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/AUTHORS ${STAGEDIR}${DOCSDIR}/
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}/
@@ -50,6 +43,5 @@ post-install:
 	(umask 022 && cd ${WRKSRC} && ${TAR} --exclude '*/Makefile*' \
 		 --exclude '*.orig' -chf - extras doc | ${TAR}  -xf - -C \
 		${STAGEDIR}${DOCSDIR})
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

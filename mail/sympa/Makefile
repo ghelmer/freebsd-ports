@@ -3,6 +3,7 @@
 
 PORTNAME=	sympa
 PORTVERSION=	6.1.20
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://www.sympa.org/distribution/ \
 		http://www.sympa.org/distribution/old/
@@ -61,15 +62,15 @@ CONFIGURE_ARGS+=--bindir=${PREFIX}/libexec/${PORTNAME}	\
 		--with-spooldir=/var/spool/${PORTNAME}
 CONFIGURE_ENV+=	lt_cv_sys_max_cmd_len=${CONFIGURE_MAX_CMD_LEN}
 MAKE_ENV?=	PERL_EXTUTILS_AUTOINSTALL=--skip
-SUB_FILES=	pkg-install
-SUB_LIST=	DB_TYPE=${DB_TYPE:L} WITH_FASTCGI=${PORT_OPTIONS:MFASTCGI}
+SUB_FILES=	pkg-install pkg-message
+SUB_LIST=	DB_TYPE=${DB_TYPE}
 PORTEXAMPLES=	*
 
 USE_RC_SUBR=	sympa
 
 CONFLICTS=	sympa-5*
 
-OPTIONS_DEFINE=	FASTCGI APACHE
+OPTIONS_DEFINE=	FASTCGI APACHE NLS
 OPTIONS_DEFAULT=APACHE
 OPTIONS_RADIO=	DATABASE
 OPTIONS_RADIO_DATABASE=	ORACLE PGSQL SYBASE MYSQL
@@ -77,7 +78,7 @@ OPTIONS_RADIO_DATABASE=	ORACLE PGSQL SYBASE MYSQL
 SYBASE_DESC=	Sybase database
 
 .ifdef DB_TYPE
-DB_TYPE:=	${DB_TYPE:U}
+DB_TYPE:=	${DB_TYPE:tu}
 .  for option in ${OPTIONS_RADIO_DATABASE}
 .    if ${DB_TYPE} == ${option:S,PGSQL,PG,}
 OPTIONS_SET+=	${option}
@@ -98,10 +99,13 @@ PLIST_SUB+=	NLS="@comment "
 
 .if ${PORT_OPTIONS:MFASTCGI}
 RUN_DEPENDS+=	p5-FCGI>=0:${PORTSDIR}/www/p5-FCGI
+SUB_LIST+=	FCGI=""
 . if ${PORT_OPTIONS:MAPACHE}
 USE_APACHE_RUN=	22+
 RUN_DEPENDS+=	${LOCALBASE}/${APACHEMODDIR}/mod_fastcgi.so:${PORTSDIR}/www/mod_fastcgi
 . endif
+.else
+SUB_LIST+=	FCGI="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MORACLE}
@@ -110,7 +114,7 @@ DB_TYPE=	oracle
 .elif ${PORT_OPTIONS:MPGSQL}
 SUB_LIST+=	REQ_MYSQL="" REQ_PGSQL=postgresql
 RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
-DB_TYPE=	pg
+DB_TYPE=	Pg
 .elif ${PORT_OPTIONS:MSYBASE}
 RUN_DEPENDS+=	p5-DBD-Sybase>=0:${PORTSDIR}/databases/p5-DBD-Sybase
 DB_TYPE=	sybase

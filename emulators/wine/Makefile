@@ -3,6 +3,7 @@
 
 PORTNAME=	wine
 DISTVERSION=	1.6.2
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}/Source \
@@ -34,7 +35,7 @@ CONFIGURE_ARGS+=--verbose --disable-tests \
 		--without-gphoto --without-gsm --without-gstreamer \
 		--with-opengl --without-mpg123 --without-opencl \
 		--with-oss --without-sane --without-tiff \
-		--without-v4l --without-xcomposite --without-xinerama \
+		--without-v4l --with-xcomposite --without-xinerama \
 		--with-xinput2 --with-xrandr
 CONFIGURE_ENV=	FLEX="${LOCALBASE}/bin/flex"
 WINELIBDIR?=	${PREFIX}/lib
@@ -46,7 +47,7 @@ USES=		bison compiler:c11 gmake shebangfix
 SHEBANG_FILES=	tools/winemaker tools/winedump/function_grep.pl
 USE_BZIP2=	yes
 USE_GL=		glu
-USE_XORG=	xcursor xi xpm xrandr xrender
+USE_XORG=	xcomposite xcursor xi xpm xrandr xrender
 
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -131,7 +132,7 @@ IGNORE=		lacks required sound support on FreeBSD before 8.0
 .endif
 
 pre-build:
-	cd ${WRKSRC} && ${GMAKE} depend
+	cd ${WRKSRC} && ${MAKE_CMD} depend
 
 post-install:
 	@${MV} -f ${STAGEDIR}${WINELIBDIR}/libwine.so.1.0 \

@@ -3,6 +3,7 @@
 
 PORTNAME=		openldap
 DISTVERSION=		2.4.39
+PORTREVISION=		1
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
@@ -63,9 +64,10 @@ PORTREVISION_SERVER=	1
 OPENLDAP_SHLIB_MAJOR=	8
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
-OPTIONS_DEFINE=	FETCH
+OPTIONS_DEFINE=		FETCH GSSAPI
 
-FETCH_DESC=	Enable fetch(3) support
+FETCH_DESC=		Enable fetch(3) support
+GSSAPI_DESC=		With GSSAPI support (implies SASL support)
 
 .if !defined(CLIENT_ONLY)
 OPTIONS_DEFINE+=	DYNACL ACI BDB MDB DNSSRV PASSWD PERL RELAY SHELL
@@ -143,10 +145,17 @@ BROKEN=			You have 'USE_OPENLDAP' variable defined either in environment or in m
 USE_OPENLDAP=		yes
 WANT_OPENLDAP_VER=	24
 
+.if ${PORT_OPTIONS:MGSSAPI} && empty(PORT_OPTIONS:MSASL)
+PORT_OPTIONS+=	SASL
+.endif
+
 .if ${PORT_OPTIONS:MSASL}
 WANT_OPENLDAP_SASL=	yes
 CONFLICTS=		${PKGNAMEPREFIX}${PORTNAME}-client-2.*
 PKGNAMESUFFIX=		-sasl-server
+.if ${PORT_OPTIONS:MGSSAPI}
+RUN_DEPENDS+=		cyrus-sasl-gssapi>0:${PORTSDIR}/security/cyrus-sasl2-gssapi
+.endif
 .else
 CONFLICTS=		${PKGNAMEPREFIX}${PORTNAME}-sasl-client-2.*
 .endif
@@ -344,8 +353,7 @@ PLIST_SUB+=		BACK_BDB="@comment " \
 .else
 
 WITH_BDB_VER?=		46
-INVALID_BDB_VER=	42
-USE_BDB=		yes
+USE_BDB=		44+
 
 # XXX Can BDB 5.x use XY instead of X as version?
 .if ${WITH_BDB_VER} >= 43 || ${WITH_BDB_VER} == 5 || ${WITH_BDB_VER} == 6
@@ -429,14 +437,7 @@ CONFIGURE_ARGS+=	--enable-spasswd
 .if ${PORT_OPTIONS:MODBC}
 CONFIGURE_ARGS+=	--enable-sql=${BACKEND_ENABLE}
 PLIST_SUB+=		BACK_SQL=${BACKEND_PLIST}
-WITH_ODBC_TYPE?=	iODBC
-.if ${WITH_ODBC_TYPE:L} == iodbc
-LIB_DEPENDS+=		iodbc.3:${PORTSDIR}/databases/libiodbc
-.elif ${WITH_ODBC_TYPE:L} == unixodbc
-LIB_DEPENDS+=		odbc.2:${PORTSDIR}/databases/unixODBC
-.else
-BROKEN=			choose either iODBC or unixODBC for WITH_ODBC_TYPE
-.endif
+LIB_DEPENDS+=		libodbc.so:${PORTSDIR}/databases/unixODBC
 .else
 PLIST_SUB+=		BACK_SQL="@comment "
 .endif
@@ -485,12 +486,8 @@ CONFIGURE_ARGS+=	--enable-wrappers
 CPPFLAGS+=		-DLDAP_CONNECTIONLESS
 .endif
 
-CPPFLAGS+=		${PTHREAD_CFLAGS} \
-			-I${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib
-#LIBS+=			${PTHREAD_LIBS}
-
-CONFIGURE_ENV+=		LIBS="${LIBS}"
+CPPFLAGS+=		-I${LOCALBASE}/include
+LIBS+=			-L${LOCALBASE}/lib
 
 .if defined(CLIENT_ONLY)
 .else

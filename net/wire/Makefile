@@ -14,12 +14,11 @@ COMMENT=	Wire is a screen-oriented command line Wired client
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib"
-CONFIGURE_ARGS=	--libdir="${LOCALBASE}/lib" --includedir="${LOCALBASE}/include"
+LIBS+=		-L${LOCALBASE}/lib
+CONFIGURE_ARGS=	--libdir="${PREFIX}/lib" --includedir="${PREFIX}/include"
 
-USE_GMAKE=	yes
 USE_OPENSSL=	yes
-USES=		iconv
+USES=		iconv gmake
 
 PLIST_FILES=	bin/wire
 
@@ -36,6 +35,6 @@ LIB_DEPENDS+=	readline.6:${PORTSDIR}/devel/readline
 #TODO this is fucking dirty :(
 NO_STAGE=	yes
 do-build:
-	cd ${WRKSRC} ;${GMAKE}
+	cd ${WRKSRC} ;${MAKE_CMD}
 
 .include <bsd.port.mk>

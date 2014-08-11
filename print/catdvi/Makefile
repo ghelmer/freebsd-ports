@@ -11,21 +11,19 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A DVI to text/plain translator
 
 USE_TEX=	latex
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 MAKEFILE=	GNUmakefile
 ALL_TARGET=	# empty
 MAKE_JOBS_UNSAFE=	yes
 
-MAN1=		catdvi.1
-PLIST_FILES=	bin/catdvi
+PLIST_FILES=	bin/catdvi man/man1/catdvi.1.gz
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/catdvi ${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/catdvi.1 ${MANPREFIX}/man/man1
+	${INSTALL_PROGRAM} ${WRKSRC}/catdvi ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/catdvi.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.mk>

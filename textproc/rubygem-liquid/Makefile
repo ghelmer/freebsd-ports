@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	liquid
-PORTVERSION=	2.5.0
+PORTVERSION=	2.6.1
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Library for rendering safe templates
+
+LICENSE=	MIT
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

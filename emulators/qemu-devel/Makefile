@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	1.7.1
+PORTVERSION=	2.0.0
+PORTREVISION=	6
 CATEGORIES=	emulators
 MASTER_SITES=	http://wiki.qemu.org/download/:release \
 		LOCAL/nox:snapshot
-PKGNAMESUFFIX=	-devel
+PKGNAMESUFFIX?=	-devel
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:release
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
 MAINTAINER=	nox@FreeBSD.org
-COMMENT=	QEMU CPU Emulator - development version
+COMMENT?=	QEMU CPU Emulator - development version
 
 HAS_CONFIGURE=	yes
 USES=		gmake pkgconfig bison perl5 tar:bzip2
@@ -22,7 +23,6 @@ USE_GNOME+=	glib20
 PATCH_STRIP=	-p1
 MAKE_ENV+=	BSD_MAKE="${MAKE}"
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
-CONFLICTS_INSTALL=	qemu-[0-9]*
 
 OPTIONS_DEFINE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
 		CDROM_DMA PCAP USBREDIR GNS3 X86_TARGETS BSD_USER \
@@ -41,38 +41,48 @@ BSD_USER_DESC=		Also build bsd-user targets (for testing)
 STATIC_LINK_DESC=	Statically link the executables
 OPTIONS_DEFAULT=X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CDROM_DMA CURL PCAP
 
+.if !defined(QEMU_USER_STATIC)
+CONFLICTS_INSTALL=	qemu-[0-9]*
+.endif
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MBSD_USER}
-PATCH_SITES=	http://people.freebsd.org/~sson/qemu/qemu-bsd-user/
-PATCHFILES= \
-	0001-bsd-user-refresh-freebsd-system-call-numbers.patch \
-	0002-bsd-user-add-HOST_VARIANT_DIR-for-various-BSD-depend.patch \
-	0003-bsd-user-move-strace-OS-arch-dependent-code-to-host-.patch \
-	0004-bsd-user-move-arch-OS-dependent-code-out-of-main.c.patch \
-	0005-bsd-user-move-arch-OS-dependent-code-out-of-syscall..patch \
-	0006-bsd-user-add-support-for-freebsd-time-related-system.patch \
-	0007-bsd-user-add-support-for-freebsd-signal-related-syst.patch \
-	0008-bsd-user-move-arch-OS-dependent-code-out-of-elfload..patch \
-	0009-bsd-user-add-support-for-freebsd-process-related-sys.patch \
-	0010-bsd-user-add-support-for-file-system-related-system-.patch \
-	0011-bsd-user-add-support-for-stat-dir-and-fcntl-related-.patch \
-	0012-bsd-user-add-support-for-memory-management-related-s.patch \
-	0013-bsd-user-add-support-for-socket-related-system-calls.patch \
-	0014-bsd-user-add-support-for-thread-related-system-calls.patch \
-	0015-bsd-user-add-support-for-the-ioctl-system-call.patch \
-	0016-bsd-user-add-support-for-extattr-and-ACL-related-sys.patch \
-	0017-bsd-user-add-support-for-miscellaneous-system-calls.patch \
-	0018-bsd-user-add-arm-mips-and-mips64-options-to-configur.patch
-PATCH_DIST_STRIP=	-p1
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-790d0ef625d22ff3f1a895d266a48e2bacd63776
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-3d175d6ed5b809976662135369c639f53780ca5c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-a3129eea10f188bfd39ce83b18b25dcefbc5bffc
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-fd7ec8e06cd1876ef478975f052ff64134d19c6c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-9ac2c49c734a49025fe1647ce84728d3988ea5d2
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-38f8d5aaebdb4b1624bae86b374b5265c9f01b54
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-c13_tls2
+#
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-freebsd-os-proc.c
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-05ee8495804599b52a88eb36b13ea9c06b3207cd
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-mips-target_arch_vmparam.h
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-inherit-interp_prefix
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-d62553b108aa27c0c020dbb771d29f8673807a3b
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-6201cb17ad905dffee1b2eb76f58fb032e99b2a1
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-syscall.c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sysctl-hw-availpages
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sysctl-0oldlen
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-mmap.c
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sysctl-hw-pagesizes
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-x86_64-target_arch_vmparam.h
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-target_siginfo
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-arm-signal
 .endif
 
 CONFIGURE_ARGS+=	--extra-ldflags=-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	--disable-smartcard-nss --disable-libssh2
 PORTDOCS=	docs qemu-doc.html qemu-tech.html qmp-commands.txt
 
+.if defined(QEMU_USER_STATIC)
+.if ${ARCH} != "amd64"
+CONFIGURE_ARGS+=	--target-list=i386-bsd-user,sparc-bsd-user,arm-bsd-user,mips-bsd-user,mipsel-bsd-user
+.else
+CONFIGURE_ARGS+=	--target-list=i386-bsd-user,x86_64-bsd-user,sparc-bsd-user,sparc64-bsd-user,arm-bsd-user,mips-bsd-user,mipsel-bsd-user,mips64-bsd-user,mips64el-bsd-user
+.endif
+.else
 .if ${PORT_OPTIONS:MX86_TARGETS}
 .if ${PORT_OPTIONS:MBSD_USER}
 .if ${ARCH} != "amd64"
@@ -88,7 +98,8 @@ CONFIGURE_ARGS+=	--target-list=i386-softmmu,x86_64-softmmu
 CONFIGURE_ARGS+=	--disable-bsd-user
 .else
 .if ${ARCH} != "amd64"
-CONFIGURE_ARGS+=	--target-list=i386-softmmu,x86_64-softmmu,alpha-softmmu,arm-softmmu,cris-softmmu,lm32-softmmu,m68k-softmmu,microblaze-softmmu,microblazeel-softmmu,mips-softmmu,mipsel-softmmu,mips64-softmmu,mips64el-softmmu,or32-softmmu,ppc-softmmu,ppcemb-softmmu,ppc64-softmmu,sh4-softmmu,sh4eb-softmmu,sparc-softmmu,sparc64-softmmu,s390x-softmmu,xtensa-softmmu,xtensaeb-softmmu,unicore32-softmmu,moxie-softmmu,i386-bsd-user,sparc-bsd-user,arm-bsd-user,mips-bsd-user,mipsel-bsd-user
+CONFIGURE_ARGS+=	--target-list=i386-softmmu,x86_64-softmmu,aarch64-softmmu,alpha-softmmu,arm-softmmu,cris-softmmu,lm32-softmmu,m68k-softmmu,microblaze-softmmu,microblazeel-softmmu,mips-softmmu,mipsel-softmmu,mips64-softmmu,mips64el-softmmu,or32-softmmu,ppc-softmmu,ppcemb-softmmu,ppc64-softmmu,sh4-softmmu,sh4eb-softmmu,sparc-softmmu,sparc64-softmmu,s390x-softmmu,xtensa-softmmu,xtensaeb-softmmu,unicore32-softmmu,moxie-softmmu,i386-bsd-user,sparc-bsd-user,arm-bsd-user,mips-bsd-user,mipsel-bsd-user
+.endif
 .endif
 .endif
 .endif
@@ -113,6 +124,14 @@ PLIST_SUB+=	NONX86="@comment "
 PLIST_SUB+=	NONX86=""
 .endif
 
+.if defined(QEMU_USER_STATIC)
+PLIST_SUB+=	SOFTMMU="@comment "
+PLIST_SUB+=	STATIC="-static"
+.else
+PLIST_SUB+=	SOFTMMU=""
+PLIST_SUB+=	STATIC=""
+.endif
+
 .if ${PORT_OPTIONS:MGNS3}
 EXTRA_PATCHES+=	${FILESDIR}/hw_e1000_c.patch
 .endif
@@ -135,7 +154,7 @@ USE_SDL=	sdl
 .endif
 
 .if empty(PORT_OPTIONS:MGTK2)
-CONFIGURE_ARGS+=	--disable-gtk
+CONFIGURE_ARGS+=	--disable-gtk --disable-vte
 PLIST_SUB+=	GTK2="@comment "
 .else
 USE_GNOME+=	gtk20 vte
@@ -203,6 +222,7 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/smbd:${PORTSDIR}/net/samba36
 
 .if ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	texi2html:${PORTSDIR}/textproc/texi2html
+USES+=		makeinfo
 .else
 MAKE_ARGS+=	NOPORTDOCS=1
 .endif
@@ -219,6 +239,10 @@ MAKE_ARGS+=	ARCH=x86_64
 MAKE_ARGS+=	ARCH=ppc
 .endif
 
+.if ${ARCH} == "powerpc64"
+MAKE_ARGS+=	ARCH=ppc64
+.endif
+
 .if ${ARCH} == "sparc64"
 CONFIGURE_ARGS+= --sparc_cpu=v9
 .endif
@@ -231,11 +255,6 @@ MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 .endif
 
 CONFIGURE_ARGS+= --python=${PYTHON_CMD}
-
-.if ${PORT_OPTIONS:MBSD_USER}
-pre-patch:
-	@cd ${WRKSRC} && ${PATCH} --quiet < ${FILESDIR}/prepatch-configure
-.endif
 
 # -lprocstat actually only _needs_ -lelf after r249666 or r250870 (MFC)
 # but it shouldn't matter much
@@ -277,17 +296,15 @@ post-configure:
 		${WRKSRC}/config-host.mak
 .endif
 
+.if !target(post-install)
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} docs ${STAGEDIR}${DOCSDIR}/)
 .endif
 	@${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc
 	@${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc
-	@if [ ! -f ${PREFIX}/etc/qemu-ifup ]; then \
-	    ${CP} -p ${STAGEDIR}${PREFIX}/etc/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc/qemu-ifup ; \
-	fi
-	@if [ ! -f ${PREFIX}/etc/qemu-ifdown ]; then \
-	    ${CP} -p ${STAGEDIR}${PREFIX}/etc/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc/qemu-ifdown ; \
-	fi
+	@(cd ${STAGEDIR}${PREFIX}/etc/qemu && \
+		${MV} -i target-x86_64.conf target-x86_64.conf.sample)
+.endif
 
 .include <bsd.port.mk>

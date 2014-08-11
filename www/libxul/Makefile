@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libxul
-DISTVERSION=	24.3.0
+DISTVERSION=	24.6.0
+PORTREVISION=	1
 CATEGORIES?=	www devel
 MASTER_SITES=	MOZILLA/firefox/releases/${DISTVERSION}esr/source \
 		https://ftp.mozilla.org/pub/mozilla.org/firefox/candidates/${DISTVERSION}esr-candidates/build1/source/
@@ -16,7 +17,9 @@ BUILD_DEPENDS=	nspr>=4.10.2:${PORTSDIR}/devel/nspr \
 		sqlite3>=3.7.17:${PORTSDIR}/databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		cairo>=1.10.2_1,1:${PORTSDIR}/graphics/cairo \
+		soundtouch>=1.7.0:${PORTSDIR}/audio/soundtouch \
 		harfbuzz>=0.9.16:${PORTSDIR}/print/harfbuzz \
+		graphite2>=1.2.3:${PORTSDIR}/graphics/graphite2 \
 		libvorbis>=1.3.4:${PORTSDIR}/audio/libvorbis \
 		opus>=1.1:${PORTSDIR}/audio/opus \
 		v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat \
@@ -35,9 +38,8 @@ QT_NONSTANDARD=	yes
 WANT_PERL=	yes
 ALL_TARGET=	default
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
 USE_GL=		gl
-USES=		dos2unix
+USES=		dos2unix pathfix tar:bzip2
 DOS2UNIX_FILES=	media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
 MAKE_ENV=	SKIP_GRE_REGISTRATION=1 mozappdir=${PREFIX}/lib/${MOZILLA}
 LDFLAGS+=	-Wl,-rpath,${PREFIX}/lib/${MOZ_RPATH}
@@ -49,7 +51,7 @@ USE_GECKO=	gecko
 OBJDIR_BUILD=	# in-tree build broken after bug 789837
 MOZILLA_EXEC_NAME=xulrunner
 USE_MOZILLA=	# empty
-MOZILLA_PLIST_DIRS=	bin include lib share/idl
+MOZILLA_PLIST_DIRS=	bin include lib share/idl libdata
 PLIST_DIRSTRY=	share/idl
 MOZ_PKGCONFIG_FILES=	libxul-embedding libxul mozilla-js \
 			mozilla-plugin

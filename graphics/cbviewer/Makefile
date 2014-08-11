@@ -3,7 +3,7 @@
 
 PORTNAME=	cbviewer
 PORTVERSION=	0.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CBViewer%200.8/ \
 		SF/nemysisfreebsdp/graphics/:icons
@@ -12,15 +12,14 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Comic book viewer for comic book archives in cbz, cbr, zip, rar
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	unrar:${PORTSDIR}/archivers/unrar \
-		unzip:${PORTSDIR}/archivers/unzip
+RUN_DEPENDS=	unrar:${PORTSDIR}/archivers/unrar
 
-USES=		dos2unix zip:infozip
+USES=		dos2unix zip
 DOS2UNIX_GLOB=	CREDITS
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+

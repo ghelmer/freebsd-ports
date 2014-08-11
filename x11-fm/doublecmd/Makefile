@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	doublecmd
-PORTVERSION=	0.5.9
+PORTVERSION=	0.5.10
+PORTREVISION=	1
 CATEGORIES=	x11-fm
 MASTER_SITES=	${MASTER_SITE_SOURCEFORGE}
 MASTER_SITE_SUBDIR=	${PORTNAME}/Double%20Commander%20Source
@@ -29,8 +30,9 @@ WANT_GNOME=	yes
 PLIST=		${WRKDIR}/pkg-plist
 
 PROJECT_FILE=	src/doublecmd.lpi
-LAZBUILD_CMD=	${LOCALBASE}/bin/lazbuild -d
-LAZARUS_DIR=	${LOCALBASE}/share/lazarus
+LAZARUS_VER=	1.2.4
+LAZBUILD_CMD=	${LOCALBASE}/bin/lazbuild -d --pcp=${WRKSRC}/tmppcp
+LAZARUS_DIR=	${LOCALBASE}/share/lazarus-${LAZARUS_VER}
 
 HELPVERSION=	0.5.5
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -81,15 +83,15 @@ OPTIONS_DEFAULT=	GTK2 \
 
 .if ${PORT_OPTIONS:MGTK2}
 USE_FPC+=	gtk2
-USE_GNOME=	gtk20 gdkpixbuf
+USE_GNOME=	gtk20
 LCL_PLATFORM=	gtk2
-BUILD_DEPENDS+=	${LOCALBASE}/share/lazarus/lcl/units/${BUILDNAME}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-gtk2
+BUILD_DEPENDS+=	${LAZARUS_DIR}/lcl/units/${BUILDNAME}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-gtk2
 .endif
 
 .if ${PORT_OPTIONS:MQT4}
 LIB_DEPENDS+=	libQt4Pas.so:${PORTSDIR}/x11-toolkits/qt4pas
 LCL_PLATFORM=	qt
-BUILD_DEPENDS+=	${LOCALBASE}/share/lazarus/lcl/units/${BUILDNAME}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-qt
+BUILD_DEPENDS+=	${LAZARUS_DIR}/lcl/units/${BUILDNAME}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-qt
 .endif
 
 .if ${PORT_OPTIONS:MWCX_UNRAR}

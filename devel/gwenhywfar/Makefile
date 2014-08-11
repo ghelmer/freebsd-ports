@@ -2,7 +2,7 @@
 
 PORTNAME=	gwenhywfar
 PORTVERSION=	4.3.3
-PORTREVISION?=	4
+PORTREVISION?=	5
 CATEGORIES=	devel net security
 MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=67&file=01&dummy=/
 
@@ -14,14 +14,14 @@ LICENSE=	LGPL21
 LIB_DEPENDS=	libgcrypt.so:${PORTSDIR}/security/libgcrypt \
 		libgnutls.so:${PORTSDIR}/security/gnutls
 
-USES=		pathfix pkgconfig gettext gmake
+USES=		pathfix pkgconfig gettext gmake libtool
 USE_OPENSSL=	yes
-USE_AUTOTOOLS=	libtool
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-release="yes" \
 		--with-guis="${SLAVEPORT}"
 CPPFLAGS+=	-DGCRYPT_NO_DEPRECATED -I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 
 PLIST_SUB=	GWEN_SHLIB_VER="${GWEN_SHLIB_VER}"
 USE_LDCONFIG=	yes
@@ -49,7 +49,6 @@ INSTALL_WRKSRC=	${WRKSRC}/gui/${SLAVEPORT}
 .if ${SLAVEPORT}=="fox16"
 LIB_DEPENDS+=	libFOX-1.6.so:${PORTSDIR}/x11-toolkits/fox16
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 .endif
 
 .if ${SLAVEPORT}=="gtk2"
@@ -70,7 +69,7 @@ post-patch:
 
 post-build:
 .if ${PORT_OPTIONS:MDOXYGEN}
-	@cd ${WRKSRC} && ${GMAKE} srcdoc
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} srcdoc
 .endif
 
 post-install:

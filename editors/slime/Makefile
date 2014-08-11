@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	slime
-PORTVERSION=	2.4
-PORTEPOCH=	2
+PORTVERSION=	2.7
 CATEGORIES=	editors elisp
-MASTER_SITES=	https://codeload.github.com/slime/slime/legacy.tar.gz/v2.4?dummy=/
+MASTER_SITES=	https://codeload.github.com/slime/slime/legacy.tar.gz/v${PORTVERSION}?dummy=/
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Superior Lisp Interaction Mode for Emacs
@@ -14,7 +13,7 @@ USES=		gmake
 USE_EMACS=	yes
 
 SLIME_LISPDIR=	${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/slime
-WRKSRC=		${WRKDIR}/slime-slime-e676480
+WRKSRC=		${WRKDIR}/slime-slime-fa7f318
 
 SUB_FILES=	pkg-message
 SUB_LIST=	SLIME_LISPDIR="${SLIME_LISPDIR}"

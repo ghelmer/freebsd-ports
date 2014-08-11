@@ -45,8 +45,7 @@ SRCDIR=		${WRKDIR}/${PORTNAME}-${GCCVERSION}
 WRKSRC=		${WRKDIR}/build
 PATCH_WRKSRC=	${SRCDIR}
 
-USE_BZIP2=	yes
-USES=		bison iconv gmake perl5
+USES=		bison gmake iconv makeinfo perl5 tar:bzip2
 USE_PERL5=	build
 
 GNU_CONFIGURE=	yes
@@ -60,8 +59,6 @@ CONFIGURE_ARGS+=--target=${PKGNAMEPREFIX:S/-$//} \
 		--with-pkgversion="MSPGCC_${LTSVERSION}"
 INFO_PATH=	${PKGNAMEPREFIX:S/-$//}/info
 MAKE_ENV=	PATH=${PREFIX}/bin:${PATH}
-MAN1=		${PKGNAMEPREFIX}gcc.1 ${PKGNAMEPREFIX}g++.1 \
-		${PKGNAMEPREFIX}cpp.1 ${PKGNAMEPREFIX}gcov.1
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} GCC_TARG=${PKGNAMEPREFIX:S/-$//} \
 		GCC_REV=${GCCVERSION}
@@ -71,7 +68,6 @@ INFO_PATH=	${PKGNAMEPREFIX:S/-$//}/info
 
 BINARIES=	gcc gcc-${GCCVERSION} c++ g++ gcov cpp
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64"
@@ -91,9 +87,10 @@ post-configure:
 	@${PERL} -pi.bak -e 's,^(TARGET_CONFIGDIRS\s*=).+$$,\1,' ${WRKSRC}/Makefile
 
 post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${PKGNAMEPREFIX:S/-$//}/bin
 .for F in ${BINARIES}
-	@${LN} -f ${PREFIX}/bin/${PKGNAMEPREFIX}$F \
-		${PREFIX}/${PKGNAMEPREFIX:S/-$//}/bin/$F
+	@${LN} -f ${STAGEDIR}${PREFIX}/bin/${PKGNAMEPREFIX}$F \
+		${STAGEDIR}${PREFIX}/${PKGNAMEPREFIX:S/-$//}/bin/$F
 .endfor
 
 .include <bsd.port.post.mk>

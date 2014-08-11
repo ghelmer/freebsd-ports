@@ -3,14 +3,14 @@
 
 PORTNAME=	sdl_sge
 PORTVERSION=	0.030809
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	devel graphics
 MASTER_SITES=	http://www.digitalfanatics.org/cal/sge/files/ \
 		http://www.sourcefiles.org/Programming/Libraries/Graphics/
 DISTNAME=	sge030809
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A graphic library for the Simple DirectMedia Layer (SDL)
+COMMENT=	Graphic library for the Simple DirectMedia Layer (SDL)
 
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual

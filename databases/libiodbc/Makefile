@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libiodbc
-PORTVERSION=	3.52.8
+PORTVERSION=	3.52.9
 CATEGORIES=	databases
 MASTER_SITES=	SF/iodbc/iodbc/${PORTVERSION}
 
@@ -14,11 +14,12 @@ LICENSE_COMB=		dual
 LICENSE_FILE_BSD=	${WRKSRC}/LICENSE.BSD
 LICENSE_FILE_LGPL20=	${WRKSRC}/LICENSE.LGPL
 
-CONFLICTS=	unixODBC-[0-9]*
-
-USES=		libtool:oldver pathfix pkgconfig
+USES=		libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-iodbc-inidir=${ETCDIR}
+CONFIGURE_ARGS=	--with-iodbc-inidir=${ETCDIR} \
+		--includedir=${LOCALBASE}/include/libiodbc \
+		--disable-libodbc
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	GTK2 DOCS EXAMPLES

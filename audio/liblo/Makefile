@@ -3,17 +3,18 @@
 
 PORTNAME=	liblo
 PORTVERSION=	0.28
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	koalative@gmail.com
 COMMENT=	Lightweight Open Sound Control implementation
 
 LICENSE=	LGPL21
 
 BUILD_DEPENDS=	doxygen:${PORTSDIR}/devel/doxygen
 
-USES=		gmake pathfix
+USES=		gmake pathfix libtool:oldver
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 

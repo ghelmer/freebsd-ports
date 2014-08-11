@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openjdk6
-PORTVERSION=	b30
-PORTREVISION?=	3
+PORTVERSION=	b31
+PORTREVISION?=	4
 PORTEPOCH=	1
 CATEGORIES=	java devel
 MASTER_SITES=	${MASTER_SITE_APACHE:S,%SUBDIR%/,ant/binaries/:ant,} \
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 RUN_DEPENDS=	javavm:${PORTSDIR}/java/javavmwrapper \
 		${LOCALBASE}/lib/X11/fonts/dejavu:${PORTSDIR}/x11-fonts/dejavu
 
-OPENJDK_BUILDDATE=	21_jan_2014
+OPENJDK_BUILDDATE=	15_apr_2014
 
 OPTIONS_DEFINE=	ICEDTEA IPV6 POLICY SOUND TZUPDATE
 OPTIONS_DEFAULT=ICEDTEA IPV6 TZUPDATE
@@ -52,8 +52,7 @@ TEST_DESC=	Add support for running regression test
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 PKGINSTALL=	${WRKDIR}/pkg-install
 
-USE_XZ=		yes
-USES=		compiler gmake iconv motif
+USES=		compiler gmake iconv motif tar:xz
 
 .include <bsd.port.options.mk>
 .include "${.CURDIR}/../openjdk6/Makefile.icedtea"
@@ -122,9 +121,8 @@ MAKE_ENV=	LANG=C LC_ALL=C OS= \
 		JDK_UPDATE_VERSION=${UPDATE_VERSION}
 
 # XXX Turn off parallel build by default.
-_MAKE_JOBS=	#
-MAKE_ENV+=	ALT_PARALLEL_COMPILE_JOBS=${MAKE_JOBS_NUMBER} \
-		HOTSPOT_BUILD_JOBS=${MAKE_JOBS_NUMBER}
+MAKE_JOBS_UNSAFE=	yes
+MAKE_ENV+=	HOTSPOT_BUILD_JOBS=${MAKE_JOBS_NUMBER}
 
 .if ${PORT_OPTIONS:MDEBUG}
 ALL_TARGET=	debug_build
@@ -245,7 +243,8 @@ post-patch:
 	    ${WRKSRC}/jdk/make/tools/freetypecheck/Makefile
 	@${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|" \
 	    ${WRKSRC}/hotspot/src/os/bsd/vm/os_bsd.cpp \
-	    ${WRKSRC}/jdk/src/share/classes/com/sun/java/swing/plaf/gtk/Metacity.java
+	    ${WRKSRC}/jdk/src/share/classes/com/sun/java/swing/plaf/gtk/Metacity.java \
+	    ${WRKSRC}/jdk/src/share/classes/sun/print/PSPrinterJob.java
 .if ${PORT_OPTIONS:MPOLICY}
 	@${REINPLACE_CMD} -e 's|%%POLICY%%|unlimited|' \
 	    ${WRKSRC}/jdk/make/javax/crypto/Makefile

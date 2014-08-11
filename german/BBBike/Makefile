@@ -5,10 +5,10 @@ PORTNAME=	BBBike
 PORTVERSION=	3.18
 PORTREVISION=	1
 CATEGORIES=	german
-MASTER_SITES=	SF/${PORTNAME:L}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	slaven@rezic.de
-COMMENT=	A route-finder for cyclists in Berlin and Brandenburg
+COMMENT=	Route-finder for cyclists in Berlin and Brandenburg
 
 BUILD_DEPENDS=	p5-Inline>=0:${PORTSDIR}/devel/p5-Inline \
 		p5-CDB_File>=0:${PORTSDIR}/databases/p5-CDB_File

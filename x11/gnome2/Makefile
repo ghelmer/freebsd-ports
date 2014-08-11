@@ -4,7 +4,7 @@
 
 PORTNAME=	gnome2
 PORTVERSION=	2.32.1
-PORTREVISION?=	5
+PORTREVISION?=	6
 CATEGORIES?=	x11 gnome
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -57,6 +57,8 @@ RUN_DEPENDS?=	${LOCALBASE}/libexec/gweather-applet-2:${PORTSDIR}/x11/gnome-apple
 		${LOCALBASE}/share/sounds/freedesktop/index.theme:${PORTSDIR}/audio/freedesktop-sound-theme
 
 NO_BUILD=	yes
+NO_MTREE=	yes
+NO_INSTALL=	yes
 
 .if !defined(GNOME_SLAVE)
 USE_PYTHON=	yes
@@ -68,9 +70,6 @@ XSCREENSAVER_DESC=	Use xscreensaver as screen saver app
 #		MAPI "Depend on evolution-mapi (pulls in samba4)
 .endif
 
-do-install:	# empty
-
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if !defined(GNOME_SLAVE)
@@ -91,7 +90,6 @@ RUN_DEPENDS+=	empathy:${PORTSDIR}/net-im/empathy \
 		${LOCALBASE}/libexec/deskbar-applet/deskbar-applet:${PORTSDIR}/deskutils/deskbar-applet \
 		${LOCALBASE}/lib/hamster-applet/hamster-applet:${PORTSDIR}/deskutils/hamster-applet \
 		${LOCALBASE}/lib/gtk-2.0/modules/libatk-bridge.so:${PORTSDIR}/accessibility/at-spi \
-		gpk-application:${PORTSDIR}/ports-mgmt/gnome-packagekit \
 		ekiga:${PORTSDIR}/net-im/ekiga
 .if ${OSVERSION}>=800000
 RUN_DEPENDS+=	cheese:${PORTSDIR}/multimedia/cheese

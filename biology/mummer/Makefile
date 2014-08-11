@@ -3,14 +3,15 @@
 
 PORTNAME=	mummer
 PORTVERSION=	3.23
+PORTREVISION=	1
 CATEGORIES=	biology
 MASTER_SITES=	SF
 DISTNAME=	MUMmer${PORTVERSION}
 
-MAINTAINER=	sylvio@FreeBSD.org
-COMMENT=	A modular system for rapid whole genome alignment
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Modular system for rapid whole genome alignment
 
-USES=		gmake
+USES=		gmake perl5
 
 PROGRAMS=	annotate combineMUMs delta-filter gaps \
 		mgaps mummer repeat-match show-aligns \
@@ -19,26 +20,21 @@ SCRIPTS=	dnadiff exact-tandems mapview mummerplot nucmer \
 		nucmer2xfig promer run-mummer1 run-mummer3
 DOCUMENTS=	COPYRIGHT INSTALL LICENSE README
 
-NO_STAGE=	yes
-
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-do-install:
-.for program in ${PROGRAMS}
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${program} ${PREFIX}/bin)
-.endfor
-
-.for script in ${SCRIPTS}
-	(cd ${WRKSRC} && ${INSTALL_SCRIPT} ${script} ${PREFIX}/bin)
-.endfor
-
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-.for doc in ${DOCUMENTS}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${doc} ${DOCSDIR})
-.endfor
+post-extract:
+	@${REINPLACE_CMD} -e 's,type perl,type ${LOCALBASE}/bin/perl,' ${WRKSRC}/scripts/Makefile
+.if (${OSVERSION} >= 1000024)
+	@${REINPLACE_CMD} -e 's,type gcc,type clang,' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's,type g++,type clang++,' ${WRKSRC}/Makefile
 .endif
+
+do-install:
+	${INSTALL_PROGRAM} ${PROGRAMS:S|^|${WRKSRC}/|} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${SCRIPTS:S|^|${WRKSRC}/|} ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DOCUMENTS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

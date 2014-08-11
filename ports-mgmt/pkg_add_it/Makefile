@@ -9,28 +9,23 @@ MASTER_SITES=	http://www.unix-heaven.org/FreeBSD/distfiles/
 MAINTAINER=	dnaeon@gmail.com
 COMMENT=	Interactive tool for package installation
 
-MAN1=		pkg_add_it.1
-MAN5=		pkg_add_it.conf.5
-PLIST_FILES=	etc/pkg_add_it.conf sbin/pkg_add_it
+PLIST_FILES=	etc/pkg_add_it.conf \
+		man/man1/pkg_add_it.1.gz \
+		man/man5/pkg_add_it.conf.5.gz \
+		sbin/pkg_add_it
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 PKG_RELEASE!=	${UNAME} -r | ${CUT} -d '-' -f 1,2 | ${SED} -e 's|\.[0-9]*.*|-STABLE|'
 
 post-patch:
 	${REINPLACE_CMD} -e 's|@PKG_ARCH@|${ARCH}|' \
-		-e 's|@PKG_RELEASE@|${PKG_RELEASE:L}|' ${WRKSRC}/pkg_add_it.conf
+		-e 's|@PKG_RELEASE@|${PKG_RELEASE:tl}|' ${WRKSRC}/pkg_add_it.conf
 
 do-install:
-	${INSTALL_DATA} ${WRKSRC}/pkg_add_it.conf ${PREFIX}/etc/
-	${INSTALL_PROGRAM} ${WRKSRC}/pkg_add_it ${PREFIX}/sbin/
-	${INSTALL_MAN} ${WRKSRC}/pkg_add_it.1 ${MAN1PREFIX}/man/man1/
-	${INSTALL_MAN} ${WRKSRC}/pkg_add_it.conf.5 ${MAN5PREFIX}/man/man5/
-
-post-install:
-	@${ECHO_CMD}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_CMD}
+	${INSTALL_DATA} ${WRKSRC}/pkg_add_it.conf ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_PROGRAM} ${WRKSRC}/pkg_add_it ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_MAN} ${WRKSRC}/pkg_add_it.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/pkg_add_it.conf.5 ${STAGEDIR}${MAN5PREFIX}/man/man5
 
 .include <bsd.port.post.mk>

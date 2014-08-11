@@ -9,7 +9,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-source/${PORTNAME}-${PORTVERSION}
 EXTRACT_SUFX=	.src.tar.gz
 
 MAINTAINER=	dan@rucci.org
-COMMENT=	A C++ library that persistently stores graph like data
+COMMENT=	C++ library that persistently stores graph like data
 
 LIB_DEPENDS=	mk4.0:${PORTSDIR}/databases/metakit \
 		tcl${TCLVND}:${PORTSDIR}/lang/tcl${TCLVND} \
@@ -17,7 +17,7 @@ LIB_DEPENDS=	mk4.0:${PORTSDIR}/databases/metakit \
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/all
 
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-metakit=${LOCALBASE} \
 		--with-tcl=${LOCALBASE}/lib/tcl${TCL_VER} --enable-tcl \

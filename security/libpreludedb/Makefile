@@ -3,7 +3,7 @@
 
 PORTNAME=	libpreludedb
 PORTVERSION=	1.0.1p1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://www.prelude-ids.org/attachments/download/287/
 
@@ -18,10 +18,9 @@ LIB_DEPENDS=	gmp:${PORTSDIR}/math/gmp \
 		nettle:${PORTSDIR}/security/nettle \
 		p11-kit:${PORTSDIR}/security/p11-kit
 
-USE_GMAKE=	yes
 USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
-USES=		gettext iconv
+USES=		gettext iconv gmake
 
 CONFIGURE_ARGS=	--enable-gtk-doc=no
 USE_LDCONFIG=	yes

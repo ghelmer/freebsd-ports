@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	RTx-Calendar
-PORTVERSION=	0.17
-PORTREVISION=	2
+PORTVERSION=	0.20
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,8 +10,8 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Calendar extension module for the RT ticketing system
 
-LICENSE_COMB=   dual
-LICENSE=        ART10 GPLv1
+LICENSE_COMB=	dual
+LICENSE=	ART10 GPLv1
 
 BUILD_DEPENDS=	p5-Date-ICal>0:${PORTSDIR}/devel/p5-Date-ICal      \
 		p5-Data-ICal>0:${PORTSDIR}/deskutils/p5-Data-ICal  \

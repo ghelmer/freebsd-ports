@@ -3,12 +3,12 @@
 
 PORTNAME=	osmo
 PORTVERSION=	0.2.10
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}-pim/${PORTNAME}-pim/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A personal organizer
+COMMENT=	Personal organizer
 
 LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2 \
 		libnotify.so:${PORTSDIR}/devel/libnotify \

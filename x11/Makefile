@@ -55,7 +55,6 @@
     SUBDIR += editres
     SUBDIR += efreet
     SUBDIR += emprint
-    SUBDIR += emu
     SUBDIR += erun
     SUBDIR += eterm
     SUBDIR += evieext
@@ -169,7 +168,6 @@
     SUBDIR += libexo
     SUBDIR += libfm
     SUBDIR += libgnome
-    SUBDIR += libgnome-java
     SUBDIR += libgnome-reference
     SUBDIR += libgnomekbd
     SUBDIR += libgnomemm26

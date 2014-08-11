@@ -3,6 +3,7 @@
 
 PORTNAME=		vmd
 DISTVERSION=		1.9.1
+PORTREVISION=		1
 CATEGORIES=		science graphics python tcl tk
 MASTER_SITES=		http://jedi.ks.uiuc.edu/~johns/raytracer/files/0.99b2/:tachyon \
 			http://www.photonlimited.com/~johns/tachyon/files/0.99b2/:tachyon \
@@ -16,10 +17,10 @@ COMMENT=		A molecular visualization program
 
 BUILD_DEPENDS=		makedepend:${PORTSDIR}/devel/makedepend \
 			${PYNUMERIC}
-LIB_DEPENDS=		tcl85:${PORTSDIR}/lang/tcl85 \
-			tk85:${PORTSDIR}/x11-toolkits/tk85 \
-			fltk.1:${PORTSDIR}/x11-toolkits/fltk \
-			netcdf:${PORTSDIR}/science/netcdf
+LIB_DEPENDS=		libtcl85.so:${PORTSDIR}/lang/tcl85 \
+			libtk85.so:${PORTSDIR}/x11-toolkits/tk85 \
+			libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
+			libnetcdf.so:${PORTSDIR}/science/netcdf
 RUN_DEPENDS=		${PYNUMERIC}
 
 USES=			gmake perl5
@@ -54,7 +55,7 @@ PLIST_SUB+=		VMD_ARCH=${VMD_ARCH}
 
 # Check for VMD sources
 .if !exists(${DISTDIR}/${VMD_DIST})
-IGNORE= Because of licensing restrictions, you must fetch the source distribution manually.  Please access http://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD with a web browser.  You will be required to log in and register, but you can create an account on this page.  After registration and accepting the University of Illinois agreement, download the source file, ${VMD_DIST}.  Please place this file in ${DISTDIR}, and re-run make
+IGNORE=	Because of licensing restrictions, you must fetch the source distribution manually.  Please access http://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD with a web browser.  You will be required to log in and register, but you can create an account on this page.  After registration and accepting the University of Illinois agreement, download the source file, ${VMD_DIST}.  Please place this file in ${DISTDIR}, and re-run make
 .endif
 
 do-extract:
@@ -77,15 +78,15 @@ post-patch:
 		-e "s|/usr/local|${LOCALBASE}|g" ${WRKSRC}/configure
 
 do-build:
-	${SETENV} ${MAKE_ENV} ${GMAKE} bsd -C ${WRKSRC}/lib/tachyon/unix && ${MV} ${WRKSRC}/lib/tachyon/compile/bsd/tachyon ${WRKSRC}/lib/tachyon/tachyon_${VMD_ARCH}
-	${SETENV} ${MAKE_ENV} TCLLIB=-L${PREFIX}/lib/tcl8.5 TCLINC=-I${PREFIX}/include/tcl8.5 PLUGINDIR=${WRKSRC}/plugins ${GMAKE} ${VMD_ARCH} distrib -C ${WRKDIR}/plugins
-	${SETENV} ${MAKE_ENV} TCL_INCLUDE_DIR=${PREFIX}/include/tcl8.5 TK_INCLUDE_DIR=${PREFIX}/include/tk8.5 ${GMAKE} ${VMD_TARGET} -C ${WRKSRC}
-	${SETENV} ${MAKE_ENV} ${GMAKE} all -C ${WRKSRC}/src
-	${SETENV} ${MAKE_ENV} ${GMAKE} depend -C ${WRKSRC}/lib/surf && ${SETENV} ${MAKE_ENV} ${GMAKE} surf -C ${WRKSRC}/lib/surf && ${MV} ${WRKSRC}/lib/surf/surf ${WRKSRC}/lib/surf/surf_${VMD_ARCH}
-	${SETENV} ${MAKE_ENV} ${GMAKE} -C ${WRKSRC}/lib/stride && ${MV} ${WRKSRC}/lib/stride/stride ${WRKSRC}/lib/stride/stride_${VMD_ARCH}
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} bsd -C ${WRKSRC}/lib/tachyon/unix && ${MV} ${WRKSRC}/lib/tachyon/compile/bsd/tachyon ${WRKSRC}/lib/tachyon/tachyon_${VMD_ARCH}
+	${SETENV} ${MAKE_ENV} TCLLIB=-L${PREFIX}/lib/tcl8.5 TCLINC=-I${PREFIX}/include/tcl8.5 PLUGINDIR=${WRKSRC}/plugins ${MAKE_CMD} ${VMD_ARCH} distrib -C ${WRKDIR}/plugins
+	${SETENV} ${MAKE_ENV} TCL_INCLUDE_DIR=${PREFIX}/include/tcl8.5 TK_INCLUDE_DIR=${PREFIX}/include/tk8.5 ${MAKE_CMD} ${VMD_TARGET} -C ${WRKSRC}
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} all -C ${WRKSRC}/src
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} depend -C ${WRKSRC}/lib/surf && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} surf -C ${WRKSRC}/lib/surf && ${MV} ${WRKSRC}/lib/surf/surf ${WRKSRC}/lib/surf/surf_${VMD_ARCH}
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/lib/stride && ${MV} ${WRKSRC}/lib/stride/stride ${WRKSRC}/lib/stride/stride_${VMD_ARCH}
 
 do-install:
-	${SETENV} ${MAKE_ENV} ${GMAKE} -C ${WRKSRC}/src install
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/src install
 	@${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${PREFIX}/lib/vmd
 
 .include <bsd.port.post.mk>

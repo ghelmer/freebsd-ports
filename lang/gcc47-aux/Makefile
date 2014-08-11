@@ -64,8 +64,8 @@ BOOTSTRAP_TRIPLET=	x86_64-bootstrap-dragonfly2.8/4.6.0
 BOOTSTRAP_TRIPLET=	i386-bootstrap-dragonfly2.8/4.6.0
 .  endif
 .endif
-BLD_TARGET=		${GARCH}-aux-${OPSYS:L}${OSREL}
-BOOTSTRAP_COMPILER=	gnat-bootstrap.${GARCH}.${OPSYS:L}.tar.bz2
+BLD_TARGET=		${GARCH}-aux-${OPSYS:tl}${OSREL}
+BOOTSTRAP_COMPILER=	gnat-bootstrap.${GARCH}.${OPSYS:tl}.tar.bz2
 
 WRKSRC=			${WRKDIR}/gcc-${GCC_VERSION}
 BUILDDIR=		${WRKDIR}/build
@@ -260,38 +260,38 @@ do-configure:
 	${CFG_SCRIPT} ${ADA_CONFIG_ARGS}
 
 do-build:
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} -j${MAKE_JOBS_NUMBER} all
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} -j${MAKE_JOBS_NUMBER} all
 
 test: build test-ada test-fortran test-objc test-cxx test-c
 
 test-ada:
 .if ${PORT_OPTIONS:MADA} && ${PORT_OPTIONS:MTESTSUITE}
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} -sk check-ada
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} -sk check-ada
 .endif
 
 test-fortran:
 .if ${PORT_OPTIONS:MFORT} && ${PORT_OPTIONS:MTESTSUITE}
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} -sk check-fortran
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} -sk check-fortran
 .endif
 
 test-objc:
 .if ${PORT_OPTIONS:MOBJC} && ${PORT_OPTIONS:MTESTSUITE}
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} -sk check-objc
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} -sk check-objc
 .endif
 
 test-cxx:
 .if ${PORT_OPTIONS:MCXX} && ${PORT_OPTIONS:MTESTSUITE}
 	# libstdc++ testsuite will break every time, TRUE used to force continuation
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} -sk check-c++ || true
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} -sk check-c++ || true
 .endif
 
 test-c:
 .if ${PORT_OPTIONS:MTESTSUITE}
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} -sk check-c
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} -sk check-c
 .endif
 
 do-install:
-	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${GMAKE} install-strip DESTDIR=${STAGEDIR}
+	cd ${BUILDDIR} && ${SETENV} ${ADA_MAKE_ENV} ${MAKE_CMD} install-strip DESTDIR=${STAGEDIR}
 
 post-install:
 	${MV} ${STAGEDIR}${PKG_PREFIX}/share/man ${STAGEDIR}/${PKG_PREFIX}

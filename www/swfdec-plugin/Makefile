@@ -3,7 +3,7 @@
 
 PORTNAME=	swfdec-plugin
 PORTVERSION=	0.8.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	http://swfdec.freedesktop.org/download/swfdec-mozilla/0.8/
 DISTNAME=	swfdec-mozilla-${PORTVERSION}
@@ -11,20 +11,17 @@ DISTNAME=	swfdec-mozilla-${PORTVERSION}
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Flash rendering plugin
 
-LIB_DEPENDS=	swfdec-0.8:${PORTSDIR}/graphics/swfdec
+LIB_DEPENDS=	libswfdec-0.8.so:${PORTSDIR}/graphics/swfdec
 
-USES=		pkgconfig
-USE_AUTOTOOLS=	libtool
+USES=		libtool:keepla pkgconfig webplugin:gecko
+GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install-strip
 USE_GNOME=	gtk20
-CONFIGURE_ARGS=	--with-plugin-dir="${WEBPLUGINS_DIR}"
+CONFIGURE_ARGS=	--with-plugin-dir="${WEBPLUGIN_DIR}"
 
 USE_LDCONFIG=	yes
 
-USE_WEBPLUGINS=	gecko*
-WEBPLUGINS_FILES=libswfdecmozilla.so
+WEBPLUGIN_FILES=libswfdecmozilla.so
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/www/firefox/Makefile.webplugins"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

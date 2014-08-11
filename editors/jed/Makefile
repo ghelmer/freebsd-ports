@@ -11,7 +11,7 @@ MASTER_SITES=	ftp://space.mit.edu/pub/davis/jed/v${PORTVERSION:R}/ \
 DISTNAME=	${PORTNAME}-${PORTVERSION:R}-${PORTVERSION:E}
 
 MAINTAINER=	garga@FreeBSD.org
-COMMENT=	A SLang-based text editor
+COMMENT=	SLang-based text editor
 
 LICENSE=	GPLv2
 
@@ -26,7 +26,7 @@ PERMS_DESC=	Respect permissions by Root
 HOSTLOOKUP_DESC=Look-up for hostname
 
 OPTIONS_SUB=	yes
-USE_BZIP2=	yes
+USES=		tar:bzip2
 DIST_SUBDIR=	jed
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes

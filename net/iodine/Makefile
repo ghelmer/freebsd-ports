@@ -2,42 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	iodine
-PORTVERSION=	0.6.0r1
+PORTVERSION=	0.7.0
 CATEGORIES=	net
 MASTER_SITES=	http://code.kryo.se/iodine/ \
 		http://redundancy.redundancy.org/mirror/
-DISTNAME=	${PORTNAME}-0.6.0-rc1
 
 MAINTAINER=	lx@FreeBSD.org
 COMMENT=	Tunnel IPv4 data through a DNS server
 
-PLIST_FILES=	bin/iodine sbin/iodined
-
-PORTDOCS=	CHANGELOG README TODO
-
-MAN8=		iodine.8
-MLINKS=		iodine.8 iodined.8
+LICENSE=	ISCL
 
 USE_RC_SUBR=	iodined
 
-NO_STAGE=	yes
+USERS=	_iodined
+GROUPS=	_iodined
+
 .include <bsd.port.pre.mk>
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/iodine ${PREFIX}/bin
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/iodined ${PREFIX}/sbin
-.for m in ${MAN8}
-	${INSTALL_MAN} ${WRKSRC}/man/${m} ${MANPREFIX}/man/man8
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/iodine ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/iodined ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_MAN} ${WRKSRC}/man/iodine.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	${GZIP_CMD} ${STAGEDIR}${MANPREFIX}/man/man8/iodine.8
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for f in README CHANGELOG TODO
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-.for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
-.endfor
-.endif
 
 post-install:
-	@${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
 	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

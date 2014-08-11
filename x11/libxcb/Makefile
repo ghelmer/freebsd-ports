@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libxcb
-PORTVERSION=	1.9.3
+PORTVERSION=	1.10
+PORTREVISION=	2
 CATEGORIES=	x11 python
 MASTER_SITES=	http://xcb.freedesktop.org/dist/
 
@@ -19,22 +20,19 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:${PORTSDIR}/devel/l
 
 CONFIGURE_ARGS+=	--disable-build-docs --without-doxygen --enable-xinput
 
-USE_BZIP2=	yes
-USES=		gmake pathfix pkgconfig
+XORG_CAT=	lib
+USES=		gmake
 USE_GNOME=	libxslt:build
-USE_LDCONFIG=	yes
 USE_XORG=	xau xdmcp
-USE_PYTHON_BUILD=	yes
+USE_PYTHON_BUILD=2
 
-GNU_CONFIGURE=	yes
 .for f in XPROTO_CFLAGS XPROTO_LIBS XDMCP_CFLAGS XDMCP_LIBS NEEDED_CFLAGS NEEDED_LIBS
 CONFIGURE_ARGS+=${f}="${${f}}"
 .endfor
 CONFIGURE_ARGS+=--enable-xkb
-CONFIGURE_ENV=	LIBS="`pkg-config --libs pthread-stubs`"
 
 NEEDED_CFLAGS=	-I${LOCALBASE}/include
-NEEDED_LIBS=	-L${LOCALBASE}/lib -lXau ${PTHREAD_STUBS_LIBS}
+NEEDED_LIBS=	-L${LOCALBASE}/lib -lXau `pkg-config --libs pthread-stubs`
 
 XDMCP_CFLAGS=	-I${LOCALBASE}/include
 XDMCP_LIBS=	-L${LOCALBASE}/lib -lXdmcp

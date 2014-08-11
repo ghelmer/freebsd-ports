@@ -3,12 +3,14 @@
 
 PORTNAME=	fdmf
 DISTVERSION=	0.0.9s
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	http://w140.com/audio/ CENKES
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find similar music by perceptual hashing
+
+LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
 		libplot.so:${PORTSDIR}/graphics/plotutils \
@@ -20,7 +22,7 @@ RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	${SCRS}
-CFLAGS=		-I${LOCALBASE}/include -L. -L${LOCALBASE}/lib
+CFLAGS+=	-I${LOCALBASE}/include -L. -L${LOCALBASE}/lib
 MAKE_ENV=	VPATH=common
 PORTDOCS=	README
 BINS=		sonic_reducer vector_pairs

@@ -8,9 +8,9 @@ MASTER_SITES=	http://martin.jambon.free.fr/
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	michael.grunewald@laposte.net
-COMMENT=	A simple preprocessor for OCaml
+COMMENT=	Simple preprocessor for OCaml
 
-USE_GMAKE=	yes
+USES=		gmake
 USE_OCAML=	yes
 MAKE_JOBS_UNSAFE=	yes
 

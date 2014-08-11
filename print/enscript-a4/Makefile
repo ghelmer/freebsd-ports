@@ -1,12 +1,10 @@
 # Created by: kline
 # $FreeBSD$
 
-CONFLICTS=	enscript-letter-* enscript-letterdj-*
+CONFLICTS=	enscript-letter-[0-9]* enscript-letterdj-[0-9]*
 
-PAPERSIZE=	a4
 PS=		A4
 
 MASTERDIR=	${.CURDIR}/../enscript-letter
 
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

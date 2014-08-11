@@ -13,7 +13,6 @@
 %%PORTDOCS%%%%DOCSDIR%%/writing-a-php-sp.txt
 %%PORTDOCS%%%%DOCSDIR%%/writing-a-saml2-php-sp.txt
 %%WITH_PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/auto/lasso/.packlist
-%%WITH_PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/auto/lasso/lasso.bs
 %%WITH_PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/auto/lasso/lasso.so
 %%WITH_PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/lasso.pm
 %%WITH_PHP5%%lib/php/%%PHP_EXT_DIR%%/lasso.a
@@ -307,8 +306,6 @@ lib/liblasso.la
 lib/liblasso.so
 lib/liblasso.so.8
 libdata/pkgconfig/lasso.pc
-@dirrmtry libdata/pkgconfig
-@dirrmtry libdata
 @dirrmtry include/lasso/xml/ws
 @dirrmtry include/lasso/xml/saml-2.0
 @dirrmtry include/lasso/xml/id-wsf-2.0

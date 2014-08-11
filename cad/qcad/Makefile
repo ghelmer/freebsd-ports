@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.4.6.0
+PORTVERSION=	3.5.1.0
 CATEGORIES=	cad
 MASTER_SITES=	http://github.com/${PORTNAME}/${PORTNAME}/archive/${DISTNAME}.tar.gz?dummy=/	\
 		https://github.com/${PORTNAME}/${PORTNAME}/archive/${DISTNAME}.tar.gz?dummy=/
@@ -53,6 +53,13 @@ SUB_FILES=	${QSCRIPTS}
 pre-configure:
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RSettings.cpp
+
+# Temporary hack for Qt 4.8.6 support while upstream does not add proper
+# bindings.
+	(cd ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-4.8.5 && \
+		${COPYTREE_SHARE} . ../qt-labs-qtscriptgenerator-4.8.6)
+	(cd ${WRKSRC}/src/3rdparty/qt-labs-qtscriptgenerator-4.8.6 && \
+		mv qt-labs-qtscriptgenerator-4.8.5.pro qt-labs-qtscriptgenerator-4.8.6.pro)
 
 do-install:
 	${INSTALL_PROGRAM} ${RESDIR}/qcad-bin ${STAGEDIR}${PREFIX}/bin/

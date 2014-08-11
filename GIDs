@@ -1,7 +1,9 @@
 # $FreeBSD$
 # Please keep this file sorted by GID!
+daemon:*:1:
 operator:*:5:amanda
 mail:*:6:postfix,clamav
+ftp:*:14:
 smmsp:*:25:
 bind:*:53:
 rdfdb:*:55:
@@ -102,6 +104,7 @@ dnscache:*:184:
 tinydns:*:185:
 dnslog:*:186:
 swift:*:187:
+netxms:*:188:
 moinmoin:*:192:
 cups:*:193:
 saned:*:194:
@@ -162,6 +165,7 @@ uhub:*:411:
 drweb:*:426:
 quasselcore:*:442:
 callweaver:*:444:
+ecartis:*:450:
 courier:*:465:
 condor:*:466:
 netmon:*:467:
@@ -171,6 +175,7 @@ radmind:*:506:
 skkserv:*:507:
 pwhois:*:512:
 nullmail:*:522:
+freevo:*:523:
 dkimproxy:*:525:
 pgbouncer:*:534:
 redis:*:535:
@@ -200,8 +205,10 @@ riak:*:667:
 bnetd:*:700:
 bopm:*:717:
 openxpki:*:777:
+zetacoin:*:780:
 foreman_proxy:*:812:
 puppet:*:814:
+btsync:*:817:
 jenkins:*:818:
 openacs:*:820:
 dotlrn:*:821:

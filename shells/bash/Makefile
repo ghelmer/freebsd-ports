@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=		bash
-PATCHLEVEL=		0
-#PORTVERSION=		4.3.${PATCHLEVEL:S/^0//g}
-PORTVERSION=		4.3.${PATCHLEVEL}
-PORTREVISION?=		1
+PATCHLEVEL=		18
+PORTVERSION=		4.3.${PATCHLEVEL:S/^0//g}
+PORTREVISION?=		2
 CATEGORIES=		shells
 MASTER_SITES=		GNU
 MASTER_SITE_SUBDIR=	${PORTNAME}
@@ -16,6 +15,9 @@ EXTRACT_ONLY=		${DISTNAME}${EXTRACT_SUFX}
 PATCH_SITES=		${MASTER_SITE_GNU} \
 			ftp://ftp.cwru.edu/pub/%SUBDIR%/
 PATCH_SITE_SUBDIR=	${PORTNAME}/${DISTNAME}-patches/
+PATCHFILES!=		/usr/bin/jot -s " " -w \
+			${PORTNAME}${PORTVERSION:R:S/.//g}-%03d \
+			${PATCHLEVEL} 1 ${PATCHLEVEL}
 
 MAINTAINER=		ehaupt@FreeBSD.org
 COMMENT=		The GNU Project's Bourne Again SHell
@@ -28,7 +30,7 @@ IMPLICITCD_DESC=	Use directory name alone to cd into it
 COLONBREAKSWORDS_DESC=	Colons break words
 HELP_DESC=		Enable builtin help
 
-USES=			bison
+USES=			bison makeinfo
 OPTIONS_SUB=		yes
 
 IMPLICITCD_EXTRA_PATCHES=	${PATCHDIR}/extrapatch-implicitcd
@@ -40,7 +42,6 @@ NLS_USES=		gettext iconv
 
 INFO=			bash
 
-MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=		yes
 
 PORTDOCS=		FAQ INTRO CHANGES COMPAT NEWS POSIX RBASH README \
@@ -52,7 +53,7 @@ CONFIGURE_ARGS+=	--without-bash-malloc \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MSTATIC} || defined(NO_DYNAMICROOT) || (defined(NOSHARED) && ${NOSHARED:L} != "no")
+.if ${PORT_OPTIONS:MSTATIC} || defined(NO_DYNAMICROOT) || (defined(NOSHARED) && ${NOSHARED:tl} != "no")
 CONFIGURE_ARGS+=	--enable-static-link
 PKGNAMESUFFIX=		-static
 CONFLICTS+=		bash-[0-9]*

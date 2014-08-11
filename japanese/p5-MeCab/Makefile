@@ -5,8 +5,8 @@ PORTNAME=	MeCab
 PORTVERSION=	0.996
 CATEGORIES=	japanese textproc perl5
 MASTER_SITES=	GOOGLE_CODE
-PROJECTHOST=	${PORTNAME:L}
-DISTNAME=	${PORTNAME:L}-perl-${PORTVERSION}
+PROJECTHOST=	${PORTNAME:tl}
+DISTNAME=	${PORTNAME:tl}-perl-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	MeCab library module for Perl5
@@ -14,7 +14,7 @@ COMMENT=	MeCab library module for Perl5
 LICENSE=	BSD GPLv2 LGPL21
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	mecab:${PORTSDIR}/japanese/mecab
+LIB_DEPENDS=	libmecab.so:${PORTSDIR}/japanese/mecab
 
 USES=		perl5
 USE_PERL5=	configure
@@ -22,15 +22,14 @@ USE_PERL5=	configure
 OPTIONS_DEFINE=	EXAMPLES
 OPTIONSFILE=	${PORT_DBDIR}/ja-p5-${PORTNAME}/options
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 PKGNAMEPREFIX:=	${PKGNAMEPREFIX}p5-
 
 .if ${PORT_OPTIONS:MEXAMPLES}
 post-install:
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/test.pl ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/test.pl ${STAGEDIR}${EXAMPLESDIR}
 .endif
 
 .include <bsd.port.post.mk>

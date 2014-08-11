@@ -21,10 +21,8 @@
     SUBDIR += fasta
     SUBDIR += fasta3
     SUBDIR += fastdnaml
-    SUBDIR += finchtv
     SUBDIR += fluctuate
     SUBDIR += garlic
-    SUBDIR += genpak
     SUBDIR += gff2ps
     SUBDIR += gmap
     SUBDIR += gperiodic
@@ -34,7 +32,6 @@
     SUBDIR += jalview
     SUBDIR += lagan
     SUBDIR += lamarc
-    SUBDIR += libgenome
     SUBDIR += libsbml
     SUBDIR += linux-foldingathome
     SUBDIR += mafft
@@ -79,7 +76,6 @@
     SUBDIR += pyfasta
     SUBDIR += pymol
     SUBDIR += python-nexus
-    SUBDIR += rasmol
     SUBDIR += recombine
     SUBDIR += ruby-bio
     SUBDIR += seaview

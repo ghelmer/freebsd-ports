@@ -2,6 +2,7 @@
 
 PORTNAME=	aleph
 PORTVERSION=	0.0.r.4
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2012/
 PKGNAMEPREFIX=	tex-
@@ -14,8 +15,7 @@ EXTRACT_ONLY=	texlive-${DISTVERSION_TEXLIVE}-source${EXTRACT_SUFX}
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	TeX Engine including Omega and e-TeX features
 
-USE_XZ=		yes
-USE_GMAKE=	yes
+USES=		gmake tar:xz
 USE_TEX=	texlive kpathsea web2c texmf formats fmtutil
 TEXHASHDIRS=	${TEXMFDISTDIR}
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}

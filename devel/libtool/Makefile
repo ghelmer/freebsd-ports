@@ -3,7 +3,7 @@
 
 PORTNAME?=	libtool
 PORTVERSION=	2.4.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITE_GNU}
 MASTER_SITE_SUBDIR=	libtool
@@ -16,6 +16,7 @@ LICENSE?=        GPLv2
 
 CONFLICTS=	libtool-fixed-[0-9]*
 
+USES+=		makeinfo
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?= --disable-ltdl-install
 CONFIGURE_ENV=	MAKEINFO="makeinfo --no-split"

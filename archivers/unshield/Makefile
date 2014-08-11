@@ -3,7 +3,7 @@
 
 PORTNAME=	unshield
 PORTVERSION=	0.6
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	archivers
 MASTER_SITES=	SF/synce/Unshield/${PORTVERSION}
 
@@ -16,7 +16,7 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USES=		libtool pathfix
 
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/lib/.libs/libunshield.so.0.0.0
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libunshield.so.0.0.0
 
 .include <bsd.port.mk>

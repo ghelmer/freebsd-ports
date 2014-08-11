@@ -3,7 +3,7 @@
 
 PORTNAME=	shiboken
 PORTVERSION=	1.1.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.pyside.org/files/
 
@@ -12,6 +12,8 @@ COMMENT=	C++ code generator for CPython extensions
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+BROKEN=		Unfetchable
 
 LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2 \
 		libxslt.so:${PORTSDIR}/textproc/libxslt

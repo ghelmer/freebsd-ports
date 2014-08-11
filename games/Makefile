@@ -7,6 +7,7 @@
     SUBDIR += 0verkill
     SUBDIR += 3dc
     SUBDIR += 3dpong
+    SUBDIR += 3omns
     SUBDIR += 4stattack
     SUBDIR += 54321
     SUBDIR += CaribbeanStud
@@ -215,6 +216,7 @@
     SUBDIR += duke3d-data
     SUBDIR += dungeon
     SUBDIR += dungeoncrawl
+    SUBDIR += dustrac
     SUBDIR += eboard
     SUBDIR += edge
     SUBDIR += editss
@@ -339,7 +341,6 @@
     SUBDIR += gnarr
     SUBDIR += gno3dtet
     SUBDIR += gnome-games
-    SUBDIR += gnome-games-extra-data
     SUBDIR += gnomeattacks
     SUBDIR += gnomebreakout
     SUBDIR += gnomechess
@@ -577,7 +578,6 @@
     SUBDIR += maitretarot
     SUBDIR += manaplus
     SUBDIR += mangband
-    SUBDIR += mangos
     SUBDIR += marsnomercy
     SUBDIR += masterserver
     SUBDIR += maxr
@@ -830,6 +830,7 @@
     SUBDIR += rftg
     SUBDIR += ri-li
     SUBDIR += rnd_jue
+    SUBDIR += robocalypto
     SUBDIR += robocode
     SUBDIR += robotfindskitten
     SUBDIR += rockdodger
@@ -916,7 +917,6 @@
     SUBDIR += sudoku-sensei
     SUBDIR += sudoku_solver
     SUBDIR += sudsol
-    SUBDIR += sumwars
     SUBDIR += super_mario_bros_python
     SUBDIR += super_methane_brothers
     SUBDIR += supertux
@@ -985,7 +985,6 @@
     SUBDIR += twitch
     SUBDIR += tycho
     SUBDIR += typespeed
-    SUBDIR += tyrquake
     SUBDIR += ufoai
     SUBDIR += ufoai-data
     SUBDIR += uhexen
@@ -1160,7 +1159,6 @@
     SUBDIR += xzip
     SUBDIR += yadex
     SUBDIR += yahtzee
-    SUBDIR += yamsweeper
     SUBDIR += zangband
     SUBDIR += zatacka
     SUBDIR += zaz

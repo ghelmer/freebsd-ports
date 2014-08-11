@@ -15,7 +15,7 @@ COMMENT=	BlockOut II is an adaptation of the original Blockout DOS game
 ONLY_FOR_ARCHS=	i386
 
 USE_SDL=	mixer sdl
-USE_GMAKE=	yes
+USES=		gmake
 USE_GL=		gl glu
 
 WRKSRC=		${WRKDIR}/bl24_lin_src
@@ -25,7 +25,7 @@ SUB_FILES=	pkg-message
 
 NO_STAGE=	yes
 pre-build:
-		cd ${WRKSRC}/ImageLib/src && ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS}
+		cd ${WRKSRC}/ImageLib/src && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS}
 
 do-install:
 		${INSTALL_PROGRAM} ${WRKSRC}/BlockOut/blockout ${PREFIX}/bin

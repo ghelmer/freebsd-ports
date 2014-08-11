@@ -3,24 +3,23 @@
 
 PORTNAME=	smssend
 PORTVERSION=	3.5
+PORTREVISION=	2
 CATEGORIES=	misc
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	laszlof
+MASTER_SITES=	LOCAL/laszlof \
+		http://mirror.amdmi3.ru/distfiles/
 
-MAINTAINER=	mico@bsd.hu
-COMMENT=	A tool to send a SMS to any GSM
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Tool to send a SMS to any GSM
 
-LIB_DEPENDS=	skyutils-2.9.9:${PORTSDIR}/misc/skyutils
+LIB_DEPENDS=	libskyutils.so:${PORTSDIR}/misc/skyutils
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-MAN1=	smssend.1 smssend.scripting.1 email2smssend.1
-
-MANLANG=	"" fr
-
+USES=		libtool shebangfix
+SHEBANG_FILES=	bestsms.sh email2smssend
 GNU_CONFIGURE=	yes
 
-NO_STAGE=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}
+
 post-install:
-	${STRIP_CMD} ${PREFIX}/bin/smssend
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/smssend
 
 .include <bsd.port.mk>

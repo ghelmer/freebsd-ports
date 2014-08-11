@@ -11,9 +11,8 @@ COMMENT=	On-access anti-virus filter for Samba
 PATCH_DEPENDS=	smbclient:${PORTSDIR}/net/${SAMBA_PORT}
 BUILD_DEPENDS=	${NONEXISTENT}:${PORTSDIR}/net/${SAMBA_PORT}:configure
 
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		tar:bzip2 gmake
 ALL_TARGET=			# should empty
 CONFIGURE_ARGS=	--with-samba-source=`cd ${PORTSDIR}/net/${SAMBA_PORT}; ${MAKE} -VWRKSRC` \
 	--with-clamd=${PREFIX}/sbin/clamd --with-savdid=${PREFIX}/bin/savdid
@@ -21,5 +20,4 @@ SAMBA_PORT?=	samba36
 USE_AUTOTOOLS=	autoconf autoheader # for net/${SAMBA_PORT} configure
 MAKE_ARGS=	SAMBA_DATADIR=${PREFIX}
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

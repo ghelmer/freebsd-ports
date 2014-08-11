@@ -31,7 +31,7 @@ WEBALIZER_LANG?=english
 
 OPTIONS_DEFINE=	GEOIP GEODB BDB1 BDB WEBALIZER_CONV \
 		FULL_CGI_REFS CLICKABLE_REFERER LARGE_URL
-OPTIONS_DEFAULT=
+OPTIONS_DEFAULT?=
 NO_OPTIONS_SORT=yes
 GEODB_DESC=Enable Webalizers IP-Database support
 WEBALIZER_CONV_DESC=Japanese character code convert patch
@@ -129,8 +129,8 @@ USES+=			iconv
 #	see http://tyche.pu-toyama.ac.jp/~a-urasim/webalizer/
 EXTRA_PATCHES+=		${FILESDIR}/webalizer-a-urasim_2.patch
 CONFIGURE_ARGS+=	--enable-mininls
-CONFIGURE_ENV+=		LIBS="-L${LOCALBASE}/lib ${ICONV_LIB}"
-CFLAGS+=		-I${LOCALBASE}/include
+CPPFLAGS+=		-I${LOCALBASE}/include
+LIBS+=			-L${LOCALBASE}/lib ${ICONV_LIB}
 .endif
 
 .if ${PORT_OPTIONS:MFULL_CGI_REFS}

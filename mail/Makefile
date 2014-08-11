@@ -10,7 +10,6 @@
     SUBDIR += akpop3d
     SUBDIR += alpine
     SUBDIR += altermime
-    SUBDIR += althea
     SUBDIR += amavis-logwatch
     SUBDIR += annoyance-filter
     SUBDIR += anomy-sanitizer
@@ -42,7 +41,6 @@
     SUBDIR += bsmtp
     SUBDIR += bulk_mailer
     SUBDIR += c-sig
-    SUBDIR += c-sig-emacs21
     SUBDIR += cclient
     SUBDIR += chk4mail
     SUBDIR += claws-mail
@@ -56,6 +54,7 @@
     SUBDIR += claws-mail-fancy
     SUBDIR += claws-mail-fetchinfo
     SUBDIR += claws-mail-gdata
+    SUBDIR += claws-mail-libravatar
     SUBDIR += claws-mail-mailmbox
     SUBDIR += claws-mail-newmail
     SUBDIR += claws-mail-notification
@@ -70,7 +69,6 @@
     SUBDIR += claws-mail-vcalendar
     SUBDIR += clawsker
     SUBDIR += cone
-    SUBDIR += contact-lookup-applet
     SUBDIR += coolmail
     SUBDIR += courier
     SUBDIR += courier-authlib-vchkpw
@@ -80,8 +78,6 @@
     SUBDIR += crm114
     SUBDIR += cucipop
     SUBDIR += cvsmail
-    SUBDIR += cyrus-imapd2
-    SUBDIR += cyrus-imapd22
     SUBDIR += cyrus-imapd23
     SUBDIR += cyrus-imapd24
     SUBDIR += cyrus2courier
@@ -96,6 +92,7 @@
     SUBDIR += dkfilter
     SUBDIR += dkimproxy
     SUBDIR += dma
+    SUBDIR += dot-forward
     SUBDIR += dovecot
     SUBDIR += dovecot-antispam
     SUBDIR += dovecot-managesieve
@@ -114,7 +111,6 @@
     SUBDIR += elmo
     SUBDIR += elmo-devel
     SUBDIR += emh
-    SUBDIR += emh-xemacs21-mule
     SUBDIR += emil
     SUBDIR += enma
     SUBDIR += eps
@@ -189,14 +185,12 @@
     SUBDIR += horde3-mimp
     SUBDIR += horde3-turba
     SUBDIR += horde3-vacation
-    SUBDIR += hotwayd
     SUBDIR += hs-email-validate
     SUBDIR += hs-mime
     SUBDIR += hs-mime-mail
     SUBDIR += hs-mime-types
     SUBDIR += ifile
     SUBDIR += ilohamail
-    SUBDIR += ilohamail-devel
     SUBDIR += im
     SUBDIR += imap-uw
     SUBDIR += imapfilter
@@ -235,10 +229,8 @@
     SUBDIR += lookout
     SUBDIR += lurker
     SUBDIR += mail-notification
-    SUBDIR += mail2procmailrc
     SUBDIR += mail2sms
     SUBDIR += mailagent
-    SUBDIR += mailcrypt
     SUBDIR += maildirsync
     SUBDIR += maildrop
     SUBDIR += mailfmt
@@ -353,7 +345,6 @@
     SUBDIR += p5-Email-Stuff
     SUBDIR += p5-Email-Valid
     SUBDIR += p5-Email-Valid-Loose
-    SUBDIR += p5-FuzzyOcr
     SUBDIR += p5-FuzzyOcr-devel
     SUBDIR += p5-GMail-IMAPD
     SUBDIR += p5-IMAP-Admin
@@ -512,6 +503,7 @@
     SUBDIR += postfix-policyd-spf-python
     SUBDIR += postfix-policyd-weight
     SUBDIR += postfix-postfwd
+    SUBDIR += postfix-tls
     SUBDIR += postfix210
     SUBDIR += postfix27
     SUBDIR += postfix28
@@ -594,6 +586,7 @@
     SUBDIR += roundcube-automatic_addressbook
     SUBDIR += roundcube-contextmenu
     SUBDIR += roundcube-groupvice
+    SUBDIR += roundcube-html5_notifier
     SUBDIR += roundcube-login_info
     SUBDIR += roundcube-mobilecube
     SUBDIR += roundcube-mvision2
@@ -619,7 +612,6 @@
     SUBDIR += rubygem-vmail
     SUBDIR += sa-stats
     SUBDIR += sa-utils
-    SUBDIR += sastatd
     SUBDIR += scam-backscatter
     SUBDIR += sccmilter
     SUBDIR += sendmail
@@ -634,7 +626,6 @@
     SUBDIR += simscan
     SUBDIR += slapd-cyrus
     SUBDIR += sma
-    SUBDIR += smail
     SUBDIR += smfsav
     SUBDIR += smtp-cli
     SUBDIR += smtp-gated
@@ -724,6 +715,7 @@
     SUBDIR += usendmail
     SUBDIR += vacation
     SUBDIR += vbsfilter
+    SUBDIR += vexim
     SUBDIR += vm
     SUBDIR += vm-pop3d
     SUBDIR += vmailmgr
@@ -733,9 +725,6 @@
     SUBDIR += vrfy
     SUBDIR += wanderlust
     SUBDIR += wanderlust-devel
-    SUBDIR += wanderlust-emacs21
-    SUBDIR += wanderlust-emacs22
-    SUBDIR += wanderlust-xemacs21-mule
     SUBDIR += websieve
     SUBDIR += whoson
     SUBDIR += wmbiff

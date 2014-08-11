@@ -3,6 +3,7 @@
 
 PORTNAME=	brlcad
 PORTVERSION=	7.24.0
+PORTREVISION=	1
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/BRL-CAD%20Source/${PORTVERSION}
 
@@ -19,11 +20,10 @@ LIB_DEPENDS=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 
-USE_BZIP2=	yes
 USE_GL=		gl glu
 USE_XORG=	ice inputproto sm x11 xau xcb xdamage xdmcp xext xfixes xft xi \
 		xproto xrender xscrnsaver xt xxf86vm
-USES=		bison pathfix cmake:outsource pkgconfig tk:85
+USES=		tar:bzip2 bison pathfix cmake:outsource pkgconfig tk:85
 USE_LDCONFIG=	yes
 
 PREFIX?=	${LOCALBASE}/${PORTNAME}
@@ -54,6 +54,6 @@ post-install:
 	${LN} -s ${PREFIX}/bin/mged.sh ${STAGEDIR}${LOCALBASE}/bin/mged.sh
 
 regression-test: build
-	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${GMAKE} test)
+	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} test)
 
 .include <bsd.port.mk>

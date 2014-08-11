@@ -38,9 +38,7 @@ BUILD_DEPENDS+=	doxygen:${PORTSDIR}/devel/doxygen \
 		jpegtopnm:${PORTSDIR}/graphics/netpbm
 .endif
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
-USES=		gettext:build
+USES=		gettext:build tar:bzip2 gmake
 HAS_CONFIGURE=	yes
 
 CONFLICTS=	avr-libc-devel-[0-9]*
@@ -88,7 +86,7 @@ do-install:
 	        @for file in ${PLIST_FILES}; do \
 			${ECHO_CMD} $${file} >> ${TMPPLIST}; \
 	        done
-		(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${GMAKE} install)
+		(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} install)
 		${MKDIR} ${DOCSDIR}
 		${INSTALL_DATA} \
 			${WRKDIR}/${DISTNAME}/AUTHORS \

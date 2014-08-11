@@ -13,13 +13,9 @@
     SUBDIR += aide
     SUBDIR += aimsniff
     SUBDIR += amap
+    SUBDIR += amavis-stats
     SUBDIR += amavisd-milter
     SUBDIR += amavisd-new
-    SUBDIR += aolserver-nsencrypt
-    SUBDIR += aolserver-nsmcrypt
-    SUBDIR += aolserver-nsmhash
-    SUBDIR += aolserver-nsopenssl
-    SUBDIR += aolserver-nssha1
     SUBDIR += apache-xml-security-c
     SUBDIR += apg
     SUBDIR += arirang
@@ -41,7 +37,6 @@
     SUBDIR += binwalk
     SUBDIR += bioapi
     SUBDIR += blindelephant
-    SUBDIR += botan
     SUBDIR += botan110
     SUBDIR += bro
     SUBDIR += broccoli
@@ -54,7 +49,6 @@
     SUBDIR += burpsuite
     SUBDIR += ca_root_nss
     SUBDIR += calife
-    SUBDIR += calife-devel
     SUBDIR += ccrypt
     SUBDIR += ccsrch
     SUBDIR += cfs
@@ -73,7 +67,6 @@
     SUBDIR += cl-md5-sbcl
     SUBDIR += clamassassin
     SUBDIR += clamav
-    SUBDIR += clamav-devel
     SUBDIR += clamav-milter
     SUBDIR += clamav-unofficial-sigs
     SUBDIR += clamcour
@@ -96,6 +89,7 @@
     SUBDIR += cryptopp
     SUBDIR += cryptstring
     SUBDIR += cvm
+    SUBDIR += cyassl
     SUBDIR += cyrus-sasl2
     SUBDIR += cyrus-sasl2-gssapi
     SUBDIR += cyrus-sasl2-ldapdb
@@ -160,9 +154,9 @@
     SUBDIR += gnupg
     SUBDIR += gnupg1
     SUBDIR += gnutls
-    SUBDIR += gnutls-devel
     SUBDIR += gnutls3
     SUBDIR += go.crypto
+    SUBDIR += goptlib
     SUBDIR += gorilla
     SUBDIR += gpa
     SUBDIR += gpasman
@@ -175,7 +169,6 @@
     SUBDIR += gss
     SUBDIR += gtk-knocker
     SUBDIR += gtkpasman
-    SUBDIR += gtkportscan
     SUBDIR += gwee
     SUBDIR += hackbot
     SUBDIR += hamachi
@@ -254,9 +247,9 @@
     SUBDIR += l0pht-watch
     SUBDIR += l0phtcrack
     SUBDIR += l5
-    SUBDIR += labrea
     SUBDIR += lasso
     SUBDIR += libassuan
+    SUBDIR += libbeid
     SUBDIR += libbf
     SUBDIR += libecc
     SUBDIR += libfprint
@@ -318,6 +311,7 @@
     SUBDIR += md5deep
     SUBDIR += mdcrack
     SUBDIR += medusa
+    SUBDIR += meek
     SUBDIR += metasploit
     SUBDIR += mhash
     SUBDIR += mindterm-binary
@@ -326,7 +320,6 @@
     SUBDIR += munge
     SUBDIR += mussh
     SUBDIR += nacl
-    SUBDIR += nbaudit
     SUBDIR += ncrack
     SUBDIR += ncrypt
     SUBDIR += nessus
@@ -515,6 +508,7 @@
     SUBDIR += p5-Crypt-xDBM_File
     SUBDIR += p5-CryptX
     SUBDIR += p5-Dancer-Plugin-Auth-Extensible
+    SUBDIR += p5-Dancer-Plugin-Auth-Extensible-Provider-Usergroup
     SUBDIR += p5-Dancer-Plugin-Passphrase
     SUBDIR += p5-Data-Entropy
     SUBDIR += p5-Data-Password
@@ -565,7 +559,6 @@
     SUBDIR += p5-HTML-Email-Obfuscate
     SUBDIR += p5-IO-Async-SSL
     SUBDIR += p5-IO-Socket-SSL
-    SUBDIR += p5-Jifty-Plugin-OpenID
     SUBDIR += p5-MD5
     SUBDIR += p5-Mcrypt
     SUBDIR += p5-Module-Signature
@@ -633,7 +626,6 @@
     SUBDIR += pam_pwdfile
     SUBDIR += pam_require
     SUBDIR += pam_search_list
-    SUBDIR += pam_smb
     SUBDIR += pam_ssh_agent_auth
     SUBDIR += pam_yubico
     SUBDIR += pamtester
@@ -758,9 +750,11 @@
     SUBDIR += py-cryptkit
     SUBDIR += py-cryptography
     SUBDIR += py-cybox
+    SUBDIR += py-dfvfs
     SUBDIR += py-ecdsa
     SUBDIR += py-ed25519ll
     SUBDIR += py-fail2ban
+    SUBDIR += py-fchksum
     SUBDIR += py-gnupg
     SUBDIR += py-gnutls
     SUBDIR += py-htpasswd
@@ -783,7 +777,6 @@
     SUBDIR += py-plone.openid
     SUBDIR += py-plone.protect
     SUBDIR += py-plone.session
-    SUBDIR += py-posix1e
     SUBDIR += py-potr
     SUBDIR += py-pow
     SUBDIR += py-pyclamd
@@ -867,12 +860,15 @@
     SUBDIR += rubygem-bcrypt-ruby
     SUBDIR += rubygem-ezcrypto
     SUBDIR += rubygem-gpgr
+    SUBDIR += rubygem-gssapi
     SUBDIR += rubygem-hmac
     SUBDIR += rubygem-jugyo-twitter_oauth
     SUBDIR += rubygem-metasploit_data_models
     SUBDIR += rubygem-net-scp
+    SUBDIR += rubygem-net-scp11
     SUBDIR += rubygem-net-sftp
     SUBDIR += rubygem-net-ssh
+    SUBDIR += rubygem-net-ssh27
     SUBDIR += rubygem-net-ssh-gateway
     SUBDIR += rubygem-net-ssh-multi
     SUBDIR += rubygem-nmap-parser
@@ -887,7 +883,6 @@
     SUBDIR += rubygem-sshkit
     SUBDIR += rubygem-twitter_oauth
     SUBDIR += safesh
-    SUBDIR += saint
     SUBDIR += samba-virusfilter
     SUBDIR += samhain
     SUBDIR += samhain-client
@@ -965,13 +960,12 @@
     SUBDIR += strobe
     SUBDIR += strongswan
     SUBDIR += stunnel
+    SUBDIR += subversion-gnome-keyring
+    SUBDIR += subversion-kwallet
     SUBDIR += subweb
     SUBDIR += sud
     SUBDIR += sudo
     SUBDIR += sudoscript
-    SUBDIR += sudosh
-    SUBDIR += sudosh2
-    SUBDIR += sudosh3
     SUBDIR += super
     SUBDIR += suricata
     SUBDIR += swatch
@@ -996,7 +990,6 @@
     SUBDIR += truecrypt
     SUBDIR += tsshbatch
     SUBDIR += tthsum
-    SUBDIR += tuntun
     SUBDIR += umit
     SUBDIR += unhide
     SUBDIR += unicornscan
@@ -1024,7 +1017,6 @@
     SUBDIR += yafic
     SUBDIR += yapet
     SUBDIR += yara
-    SUBDIR += yassl
     SUBDIR += yersinia
     SUBDIR += ykclient
     SUBDIR += ykpers

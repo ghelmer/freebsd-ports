@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	i2p
-PORTVERSION=	0.9.11
+PORTVERSION=	0.9.14
 CATEGORIES=	security java net-p2p
-MASTER_SITES=	SF/${PORTNAME:L}/${PORTVERSION} \
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION} \
 		http://download.i2p2.no/releases/${PORTVERSION}/ \
 		http://download2.geti2p.com/${PORTVERSION}/ \
 		http://download.geti2p.com/${PORTVERSION}/ \
 		http://download.i2p2.de/releases/${PORTVERSION}/ \
-		https://dl.dropboxusercontent.com/u/18621288/I2P/${PORTVERSION}/ \
 		https://launchpad.net/i2p/trunk/${PORTVERSION}/+download/ \
 		https://googledrive.com/host/0B4jHEq5G7_EPWV9UeERwdGplZXc/${PORTVERSION}/
 DISTFILES=	i2psource_${PORTVERSION}${EXTRACT_SUFX}
@@ -24,6 +23,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_DISTFILES=	i2psource_${PORTVERSION}${EXTRACT_SUFX}
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libgmp.a:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libiconv.so:${PORTSDIR}/converters/libiconv
 RUN_DEPENDS=	unzip:${PORTSDIR}/archivers/unzip
 
 ONLY_FOR_ARCHS=	i386 amd64
@@ -31,7 +31,7 @@ ONLY_FOR_ARCHS_REASON=	i2p libwrapper.so library binary only available for i386 
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		gettext iconv tar:bzip2
+USES=		gettext tar:bzip2
 USE_RC_SUBR=	i2p
 
 USE_ANT=	yes
@@ -42,6 +42,7 @@ JAVA_VERSION=	1.6+
 ALL_TARGET=	\
 		updater \
 		tarball
+MAKE_ENV=	LANG=en_US.UTF-8
 
 PORTDATA=	*
 
@@ -61,14 +62,6 @@ JAVADOC_WRKSRC=	${WRKSRC}/build/javadoc
 .endif
 
 .include <bsd.port.pre.mk>
-
-# Only works with converters/iconv port due to binary dependency:
-# source code isn't available at this moment
-.if ${OSVERSION} >= 1000043
-IGNORE= libwrapper.so binary depends on converters/iconv port.\
-	Therefore, it's not compatible with FreeBSD 10.x and above. Check\
-	entry 20130904 on ${PORTSDIR}/UPDATING
-.endif
 
 post-patch:
 # postinstall.sh SHOULD only do post installation house keeping

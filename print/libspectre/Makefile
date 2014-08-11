@@ -3,22 +3,22 @@
 #    $MCom: ports/print/libspectre/Makefile,v 1.7 2010/04/19 15:38:43 kwm Exp $
 
 PORTNAME=	libspectre
-PORTVERSION=	0.2.6
-PORTREVISION=	1
+PORTVERSION=	0.2.7
 CATEGORIES=	print
 MASTER_SITES=	http://libspectre.freedesktop.org/releases/
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	A small library for rendering Postscript documents
+COMMENT=	Small library for rendering Postscript documents
 
-LIB_DEPENDS=	cairo.2:${PORTSDIR}/graphics/cairo
+LICENSE=	GPLv2
 
-USE_AUTOTOOLS=	libtool
+USES=		gmake libtool:keepla pathfix pkgconfig
 USE_LDCONFIG=	yes
-USE_GNOME=	gnomehack gnomeprefix ltverhack
+USE_GNOME=	cairo
 USE_GHOSTSCRIPT=yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

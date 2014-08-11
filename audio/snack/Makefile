@@ -8,8 +8,8 @@ CATEGORIES=	audio tcl tk
 MASTER_SITES=	http://www.speech.kth.se/snack/dist/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	simon@olofsson.de
-COMMENT=	A sound toolkit for scripting languages
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Sound toolkit for scripting languages
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/unix
 

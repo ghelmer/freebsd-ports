@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	manaplus
-PORTVERSION=	1.4.3.15
+PORTVERSION=	1.4.6.21
 CATEGORIES=	games
 MASTER_SITES=	http://download.evolonline.org/manaplus/download/${PORTVERSION}/
 

@@ -3,10 +3,10 @@
 
 PORTNAME=	cfengine
 PORTVERSION=	3.2.3
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://cfengine.com/source-code/download?file=
+MASTER_SITES=	https://s3.amazonaws.com/cfengine.package-repos/tarballs/
 PKGNAMESUFFIX=	32
 
 MAINTAINER=	cy@FreeBSD.org
@@ -22,6 +22,7 @@ USE_RC_SUBR=	cf-execd cf-serverd
 
 LIB_DEPENDS=	pcre.3:${PORTSDIR}/devel/pcre
 
+USES=		libtool
 WITH_BDB_VER?=	47
 USE_BDB=	yes
 USE_OPENSSL=	yes

@@ -10,8 +10,7 @@ DISTNAME=	AROS-20060207-i386-all-sdk
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Software development kit (SDK) for the AROS Operating System
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+USES=		gmake tar:bzip2
 
 NO_STAGE=	yes
 .include <bsd.port.pre.mk>
@@ -47,7 +46,7 @@ do-build:
 	@${REINPLACE_CMD} -e 's|@aros_sdk_path@|${AROS_SDK_PATH}|g; s|@ld@|${LD}|g; s|@nm@|${NM}|g; s|@cc@|${CC}|g; s|@objdump@|${OBJDUMP}|g; s|@cc_cpu@|${ARCH}|g; s|@strip@|${STRIP}|g' ${WRKSRC}/scripts/aros-gcc.in
 	@${REINPLACE_CMD} -e 's|@aros_sdk_path@|${AROS_SDK_PATH}|g; s|@ld@|${LD}|g; s|@nm@|${NM}|g; s|@cc@|${CC}|g; s|@objdump@|${OBJDUMP}|g; s|@cc_cpu@|${ARCH}|g; s|@cc_programs_path@|${CC_PROGRAMS_PATH}|g' ${WRKSRC}/scripts/aros-ld.in
 	@${REINPLACE_CMD} -e 's|@strip@|${STRIP}|g' ${WRKSRC}/scripts/aros-strip.in
-	@cd ${WRKSRC}/tools/collect-aros; ${GMAKE}
+	@cd ${WRKSRC}/tools/collect-aros; ${SETENV} ${MAKE_ENV} ${MAKE_CMD}
 
 do-install:
 	@${MKDIR} ${AROS_SDK_PATH}

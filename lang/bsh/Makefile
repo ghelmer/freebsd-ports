@@ -10,8 +10,8 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.b/b/}
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	simon@olofsson.de
-COMMENT=	A Java scripting language
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Java scripting language
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -23,9 +23,10 @@ SUB_LIST=	JARNAME=${PORTNAME}.jar
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar \
 		bin/${PORTNAME}
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_DATA} ${DISTDIR}/${DISTFILES} ${JAVAJARDIR}/${PORTNAME}.jar
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${PREFIX}/bin/${PORTNAME}
+	${INSTALL_DATA} ${DISTDIR}/${DISTFILES} \
+		${STAGEDIR}${JAVAJARDIR}/${PORTNAME}.jar
+	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

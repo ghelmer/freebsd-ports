@@ -4,12 +4,12 @@
 PORTNAME=	mapnik
 PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://mapnik.s3.amazonaws.com/dist/v${PORTVERSION}/
 
 MAINTAINER=	littlesavage@rambler.ru
-COMMENT=	A Free Toolkit For Developing Mapping Applications
+COMMENT=	Free Toolkit For Developing Mapping Applications
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

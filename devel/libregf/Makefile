@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libregf
-DISTVERSION=	alpha-20140323
+DISTVERSION=	alpha-20140427
 CATEGORIES=	devel
 MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSSC1yUDZpb3l0UHM/ \
 		LOCAL/antoine

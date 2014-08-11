@@ -6,7 +6,8 @@ PKGNAMESUFFIX=	-tcltk
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tcl/Tk interface for TiMidity++
 
+OPTIONS_DEFINE=	DOCS
+
 MASTERDIR=	${.CURDIR}/../../audio/timidity++
-NO_STAGE=	yes
 
 .include "${MASTERDIR}/Makefile"

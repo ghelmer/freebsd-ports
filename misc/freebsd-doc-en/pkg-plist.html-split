@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 %%DOCSDIR%%/%%DOCLANG%%/articles/bsdl-gpl/addenda.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/bsdl-gpl/bsd-advantages.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/bsdl-gpl/conclusion.html
@@ -45,6 +44,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/rules.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/ssh.guide.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/subversion-primer.html
+%%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/tracking.license.grants.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/trademarks.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/compiz-fusion/compiz-fusion.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/compiz-fusion/compiz-troubleshooting.html
@@ -104,10 +104,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/custom-gcc/performance-imparct.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/custom-gcc/prerequisites.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/custom-gcc/trademarks.html
-%%DOCSDIR%%/%%DOCLANG%%/articles/cvs-freebsd/first-setup.html
-%%DOCSDIR%%/%%DOCLANG%%/articles/cvs-freebsd/freebsdspecific.html
-%%DOCSDIR%%/%%DOCLANG%%/articles/cvs-freebsd/index.html
-%%DOCSDIR%%/%%DOCLANG%%/articles/cvs-freebsd/trademarks.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/explaining-bsd/comparing-bsd-and-linux.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/explaining-bsd/index.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/explaining-bsd/trademarks.html
@@ -589,6 +585,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/acknowledgments.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/admin.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/advanced.html
+%%DOCSDIR%%/%%DOCLANG%%/books/faq/all-about-zfs.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/applications.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/bibliography.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/compatibility-drives.html
@@ -596,7 +593,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/compatibility-other.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/compatibility-processors.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/disks.html
-%%DOCSDIR%%/%%DOCLANG%%/books/faq/funnies.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/hardware.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/index.html
 %%DOCSDIR%%/%%DOCLANG%%/books/faq/install.html
@@ -678,7 +674,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/xml-primer-marked-sections.html
 %%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/xml-primer-xml-escape.html
 %%DOCSDIR%%/%%DOCLANG%%/books/fdp-primer/xml-primer.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/ACPI-debug.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/SMTP-Auth.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/SMTP-dialup.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/acpi-overview.html
@@ -690,7 +685,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit-inline-glossary.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/backup-basics.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/backups-tapebackups.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/basics-devices.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/basics-more-information.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/basics-processes.html
@@ -705,15 +699,13 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bibliography-userguides.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bibliography.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/book-preface.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/boot-boot0.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/boot-init.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/boot-introduction.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/boot-shutdown.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/boot-splash.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/boot.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-final-warning.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-hardware.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-install-trouble.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-netinstall.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-partitioning.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-post.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/bsdinstall-pre.html
@@ -752,12 +744,10 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-encrypting.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-growing.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-hast.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-naming.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks-virtual.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/disks.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dtrace-enable.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dtrace-implementation.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/dtrace-language.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dtrace-using.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/dtrace.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/editors.html
@@ -779,7 +769,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-gjournal.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-glabel.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-graid.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-intro.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-mirror.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-raid3.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/geom-striping.html
@@ -805,7 +794,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/ix01.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/jails-application.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/jails-build.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/jails-intro.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/jails-terms.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/jails-tuning.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/jails.html
@@ -886,12 +874,11 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/ppp-troubleshoot.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/pppoa.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/pppoe.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-advanced.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-intro-setup.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-intro-spooler.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-lpd-alternatives.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-troubleshooting.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-using.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-connections.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-direct.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-lpd.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-other.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing-pdls.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/printing.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/quotas.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/scanners.html
@@ -910,7 +897,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/snapshots.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/sound-mp3.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/sound-setup.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/svn-mirrors.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/svn.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/swap-encrypting.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/synching.html
@@ -931,7 +917,8 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/using-sysinstall.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/video-playback.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/virtualization-guest.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/virtualization-host.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/virtualization-host-bhyve.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/virtualization-host-virtualbox.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/virtualization.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/x-config.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/x-fonts.html
@@ -1019,6 +1006,7 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/plist-cleaning.html
 %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/plist-config.html
 %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/plist-dynamic.html
+%%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/plist-keywords.html
 %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/plist.html
 %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/port-upgrading.html
 %%DOCSDIR%%/%%DOCLANG%%/books/porters-handbook/porting-checksum.html

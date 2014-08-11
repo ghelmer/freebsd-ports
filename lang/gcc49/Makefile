@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc49
-PORTVERSION=	4.9.0.20140330
+PORTVERSION=	4.9.1.s20140625
 CATEGORIES=	lang java
 MASTER_SITES=	${MASTER_SITE_GCC}
 MASTER_SITE_SUBDIR=	snapshots/${DISTVERSION}
@@ -28,11 +28,11 @@ BUILD_DEPENDS+=	runtest:${PORTSDIR}/misc/dejagnu
 # of executables and directories once installed.  A PORTVERSION of
 # 4.Y.2.s20130808 results in values of 4.Y-20130808, 4.Y.2, and 4Y
 # for these three.
-DISTVERSION=	${PORTVERSION:C/([0-9]+\.[0-9]+).*\.([0-9]+)/\1-\2/}
-GCC_VERSION=	${PORTVERSION:C/(.+)\.[0-9]{8}/\1/}
+DISTVERSION=	${PORTVERSION:C/([0-9]+\.[0-9]+).*\.s([0-9]+)/\1-\2/}
+GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64
-USES=		gmake iconv perl5 tar:bzip2
+USES=		gmake iconv makeinfo perl5 tar:bzip2
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -51,9 +51,9 @@ BOOTSTRAP_DESC=		Build using a full bootstrap
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "amd64"
-CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:L}${OSREL}
+CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 .else
-CONFIGURE_TARGET=	${ARCH}-portbld-${OPSYS:L}${OSREL}
+CONFIGURE_TARGET=	${ARCH}-portbld-${OPSYS:tl}${OSREL}
 .endif
 
 .if ${ARCH} == powerpc64
@@ -99,6 +99,8 @@ INFO=		gcc${SUFFIX}/cpp \
 INFO+=		gcc${SUFFIX}/libquadmath \
 		gcc${SUFFIX}/libitm
 .endif
+SUB_FILES=	pkg-message
+SUB_LIST+=	TARGLIB=${TARGLIB}
 
 .if ${PORT_OPTIONS:MJAVA}
 ECJ_JAR=	${LOCALBASE}/share/java/ecj-4.5.jar
@@ -127,12 +129,15 @@ pre-configure:
 
 .if defined(MAINTAINER_MODE)
 full-regression-test: build
-	cd ${WRKSRC}; ${GMAKE} -sk check
+	cd ${WRKSRC}; ${MAKE_CMD} -sk check \
+	; ${SRCDIR}/contrib/test_summary
 .endif
 
 post-install:
 	${RM} -f ${STAGEDIR}${TARGLIB}/*.la
 	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
+	${RM} -f ${STAGEDIR}${PREFIX}/bin/rebuild-gcj-db${SUFFIX} \
+	         ${STAGEDIR}${PREFIX}/man/man1/rebuild-gcj-db${SUFFIX}.1
 	# Add target libraries and include files to packaging list.
 	${RM} -f ${WRKDIR}/PLIST.lib
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax

@@ -3,7 +3,7 @@
 
 PORTNAME=	gbemol
 PORTVERSION=	0.3.2
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -16,7 +16,6 @@ LIB_DEPENDS=	libmpd.so:${PORTSDIR}/audio/libmpd \
 
 GNU_CONFIGURE=	yes
 USES=		gmake pkgconfig
-NO_STAGE=	yes
 USE_GNOME=	gtk20
 
 post-patch:

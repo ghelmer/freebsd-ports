@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	daemon_controller
-PORTVERSION=	1.1.8
+PORTVERSION=	1.2.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-
 
 MAINTAINER=	osa@FreeBSD.org
-COMMENT=	A library for implementing daemon management capabilities
+COMMENT=	Library for implementing daemon management capabilities
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

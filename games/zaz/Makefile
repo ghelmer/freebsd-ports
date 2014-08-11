@@ -3,21 +3,20 @@
 
 PORTNAME=	zaz
 PORTVERSION=	1.0.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	A puzzle game where the player has to arrange balls in triplets
+COMMENT=	Puzzle game where the player has to arrange balls in triplets
 
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libtheora.so:${PORTSDIR}/multimedia/libtheora \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libftgl.so:${PORTSDIR}/graphics/ftgl
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 pkgconfig
 GNU_CONFIGURE=	yes
-USES=		pkgconfig
 USE_SDL=	sdl image
 USE_GL=		gl glu
 

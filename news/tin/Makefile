@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tin
-PORTVERSION=	2.2.0
+PORTVERSION=	2.2.1
+PORTREVISION=	1
 CATEGORIES+=	news ipv6
 MASTER_SITES=	ftp://ftp.tin.org/pub/news/clients/tin/v${PORTVERSION:R}/ \
 		ftp://ftp.sunet.se/pub/news/readers/tin/v${PORTVERSION:R}/ \
@@ -24,20 +25,30 @@ LIB_DEPENDS=	libuu.so:${PORTSDIR}/converters/uulib \
 		libpcre.so:${PORTSDIR}/devel/pcre
 RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:${PORTSDIR}/misc/mime-support
 
-USE_BZIP2=	yes
-USES=		gmake iconv shebangfix
+USES=		gmake iconv shebangfix tar:bzip2
 GNU_CONFIGURE=	yes
 SHEBANG_FILES=	tools/opt-case.pl tools/tinews.pl tools/url_handler.pl \
 		tools/w2r.pl
 TIN_EDITOR?=	/usr/bin/ee
 TIN_SCREEN?=	ncursesw
 
-OPTIONS_DEFINE=	GNUPG ISPELL METAMAIL CANLOCK NNTP_ONLY
-OPTIONS_DEFAULT=GNUPG ISPELL METAMAIL
-CANLOCK_DESC=	Enable Cancel-Lock key support via libcanlock
-NNTP_ONLY=	Only read news via NNTP (no spool dir support)
-
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=		GNUPG ISPELL METAMAIL CANLOCK NNTP_ONLY NLS
+OPTIONS_DEFAULT=	GNUPG ISPELL METAMAIL
+OPTIONS_SUB=		yes
+NNTP_ONLY_DESC=		Only read news via NNTP (no spool dir support)
+NNTP_ONLY_CONFIGURE_ENABLE=nntp-only
+GNUPG_RUN_DEPENDS=	gpg:${PORTSDIR}/security/gnupg
+GNUPG_CONFIGURE_ON=	--with-gpg=${PREFIX}/bin/gpg \
+			--without-pgp --without-pgpk
+GNUPG_CONFIGURE_OFF=	--disable-pgp-gpg
+ISPELL_RUN_DEPENDS=	ispell:${PORTSDIR}/textproc/aspell-ispell
+ISPELL_CONFIGURE_ARGS=	--with-ispell=${PREFIX}/bin/ispell
+METAMAIL_RUN_DEPENDS=	metamail:${PORTSDIR}/mail/metamail
+METAMAIL_CONFIGURE_ARGS=--with-metamail=${PREFIX}/bin/metamail
+CANLOCK_DESC=		Enable Cancel-Lock key support via libcanlock
+CANLOCK_CONFIGURE_ENABLE=cancel-locks
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext
 
 # --with-mime-default-charset=US-ASCII needed to build tin in the non-ascii
 # national environment.
@@ -52,46 +63,11 @@ CONFIGURE_ARGS+=--with-nntp-default-server=news \
 		${ICONV_CONFIGURE_ARG} \
 		--with-mime-default-charset=US-ASCII \
 		--enable-ipv6
-MAKE_ARGS+=	MAKE=${GMAKE}
+MAKE_ARGS+=	MAKE=${MAKE_CMD}
 CFLAGS+=	-DNNTP_SERVER_FILE=\\\"${PREFIX}/etc/nntpserver\\\"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 ALL_TARGET=	build
-
-.if ${PORT_OPTIONS:MNNTP_ONLY}
-CONFIGURE_ARGS+=	--enable-nntp-only
-.endif
-
-.if ${PORT_OPTIONS:MGNUPG}
-RUN_DEPENDS+=		gpg:${PORTSDIR}/security/gnupg
-CONFIGURE_ARGS+=	--with-gpg=${PREFIX}/bin/gpg \
-		 	--without-pgp --without-pgpk
-.else
-CONFIGURE_ARGS+=	--disable-pgp-gpg
-.endif
-
-.if ${PORT_OPTIONS:MISPELL}
-RUN_DEPENDS+=		ispell:${PORTSDIR}/textproc/aspell-ispell
-CONFIGURE_ARGS+=	--with-ispell=${PREFIX}/bin/ispell
-.endif
-
-.if ${PORT_OPTIONS:MMETAMAIL}
-RUN_DEPENDS+=		metamail:${PORTSDIR}/mail/metamail
-CONFIGURE_ARGS+=	--with-metamail=${PREFIX}/bin/metamail
-.endif
-
-.if ${PORT_OPTIONS:MCANLOCK}
-CONFIGURE_ARGS+=	--enable-cancel-locks
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-CONFIGURE_ARGS+=	--enable-nls
-USES+=		gettext
-PLIST_SUB+=		NLS=""
-.else
-CONFIGURE_ARGS+=	--disable-nls
-PLIST_SUB+=		NLS="@comment "
-.endif
 
 post-patch:
 	${REINPLACE_CMD} -Ee 's:5/(mmdf|mbox):5/tin_\1:g' \
@@ -112,15 +88,11 @@ post-patch:
 		${WRKSRC}/tools/tinurl_handler.pl
 
 post-build:
-.if ${PORT_OPTIONS:MNLS}
-	cd ${WRKSRC}/po; ${GMAKE}
-.endif
+	${MAKE_CMD} -C ${WRKSRC}/po
 
 post-install:
-	cd ${STAGEDIR}${PREFIX}/etc;\
-		 ${INSTALL_DATA} ${WRKSRC}/doc/tin.defaults tin.defaults.dist;\
-		if [ ! -f tin.defaults ] ; then \
-			${CP} tin.defaults.dist tin.defaults; \
-		fi
+	${INSTALL_DATA} ${WRKSRC}/doc/tin.defaults \
+		${STAGEDIR}${PREFIX}/etc/tin.defaults.sample
+	ln -sf tin ${STAGEDIR}${PREFIX}/bin/rtin
 
 .include <bsd.port.mk>

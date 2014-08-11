@@ -20,17 +20,19 @@ EXTRACT_ONLY=	nedit-5.5-src.tar.bz2
 
 MAINTAINER=	deischen@FreeBSD.org
 COMMENT=	X11/Motif GUI text editor for programs and plain text files
+
 LICENSE=	GPLv1
 
-USES=		motif
-USE_BZIP2=	yes
+USES=		motif tar:bzip2
 USE_XORG=	xpm
-MAN1=		nclient.1 nedit.1
 ALL_TARGET=	freebsd
-MAKE_ENV+=	BINOWN=${BINOWN} BINGRP=${BINGRP} BINMODE=${BINMODE}
 
-NO_STAGE=	yes
 post-extract:
 	${CP} ${DISTDIR}/nedit.app-defaults ${WRKSRC}/NEdit.ad
+
+post-install::
+.for file in nedit nclient
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${file}
+.endfor
 
 .include <bsd.port.mk>

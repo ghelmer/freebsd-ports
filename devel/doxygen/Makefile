@@ -4,6 +4,7 @@
 PORTNAME=	doxygen
 PORTVERSION=	1.8.3.1
 PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	ftp://ftp.stack.nl/pub/users/dimitri/ \
 		http://ftp.stack.nl/pub/users/dimitri/
@@ -22,9 +23,8 @@ USES=		bison iconv perl5 gmake
 ALL_TARGET=	all
 HAS_CONFIGURE=	yes
 QT_NONSTANDARD=	yes	# non-standard configure arguments
-CONFIGURE_ARGS=	--prefix ${PREFIX} --perl ${PERL} --make ${GMAKE} \
+CONFIGURE_ARGS=	--prefix ${PREFIX} --perl ${PERL} --make ${MAKE_CMD} \
 		--install "${INSTALL}"
-MAKE_JOBS_UNSAFE=	yes
 REINPLACE_ARGS=	-i ''
 
 EXTRACT_AFTER_ARGS=	--exclude '*/libmd5'	\
@@ -65,7 +65,7 @@ CONFIGURE_ENV=	QTDIR="${QTDIR}"
 CONFIGURE_ARGS+=--with-doxywizard
 .endif # QT4
 
-.if ${MACHINE_ARCH:L} == alpha
+.if ${MACHINE_ARCH:tl} == alpha
 CONFIGURE_ARGS+=	--enable-langs no
 .endif
 
@@ -86,7 +86,7 @@ post-configure:
 
 post-build:
 	cd ${BUILD_WRKSRC}/examples; \
-	${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} Makefile ${MAKE_ARGS} all
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} Makefile ${MAKE_ARGS} all
 
 pre-install:
 	${RM} -rf ${TMPDOCDEST} ${PLIST}

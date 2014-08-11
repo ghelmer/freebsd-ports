@@ -15,7 +15,7 @@
 # was removed.
 #
 # $FreeBSD$
-# $MCom: portlint/portlint.pl,v 1.312 2014/02/23 20:06:34 marcus Exp $
+# $MCom: portlint/portlint.pl,v 1.319 2014/06/21 19:21:54 marcus Exp $
 #
 
 use strict;
@@ -45,12 +45,12 @@ $contblank = 1;
 $portdir = '.';
 
 @ALLOWED_FULL_PATHS = qw(/boot/loader.conf /compat/ /dev/null /etc/inetd.conf);
-@MASTERSITES_WHITELIST = qw(googlecode.com nodeload.github.com);
+@MASTERSITES_WHITELIST = qw(googlecode.com nodeload.github.com s3.amazonaws.com);
 
 # version variables
 my $major = 2;
 my $minor = 15;
-my $micro = 0;
+my $micro = 2;
 
 sub l { '[{(]'; }
 sub r { '[)}]'; }
@@ -353,7 +353,7 @@ if ($committer) {
 			$File::Find::prune = 1;
 		} elsif (-f) {
 			my $fullpath = $makevar{'.CURDIR'}.'/'.$fullname;
-			my $result = `svn -q status $fullpath`;
+			my $result = `type svn >/dev/null 2>&1 && svn -q status $fullpath`;
 
 			chomp $result;
 			if (substr($result, 0, 1) eq '?') {
@@ -601,7 +601,7 @@ sub checkplist {
 
 		# store possible OPTIONS knobs for OPTIONS_SUB
 		if ($makevar{OPTIONS_SUB}) {
-			if ($_ =~ /^\%\%([^%]+)\%\%/) {
+			while (/\%\%([^%]+)\%\%/g) {
 				if ($1 =~ /PORTDOCS/) {
 					push @popt, "DOCS";
 				} elsif ($1 =~ /PORTEXAMPLES/) {
@@ -621,11 +621,18 @@ sub checkplist {
 			&perror("WARN", $file, $., "use \%\%SITE_PERL\%\% ".
 					"instead of lib/perl5/site_perl/\%\%PERL_VER\%\%.");
 		}
+
 		if (m'([\w\d]+-portbld-freebsd\d+\.\d+)') {
 			&perror("WARN", $file, $., "possible direct use of the ".
 				"CONFIGURE_TARGET value ($1).  Consider using the plist ".
 				"substitution %%CONFIGURE_TARGET%% instead.");
 		}
+
+		if (m'\@dirrm(try)?\s+libdata/pkgconfig') {
+			&perror("FATAL", $file, $., "libdata/pkgconfig should not be ".
+				"removed.  It is listed in BSD.local.dist.");
+		}
+
 		$seen_special++ if /[\%\@]/;
 		$seen_dirrm_docsdir++ if /^(\%\%PORTDOCS\%\%)?\@dirrm\s+\%\%DOCSDIR\%\%/ || /^(\%\%PORTDOCS\%\%)?\@unexec\s+(\/bin\/)?rmdir\s+\%D\/\%\%DOCSDIR\%\%\s+2\>\s*\/dev\/null\s+\|\|\s+(\/usr\/bin\/)?true/;
 		if ($_ =~ /^\@/) {
@@ -693,6 +700,13 @@ sub checkplist {
 			} elsif ($_ eq "\@cwd") {
 				; # @cwd by itself means change directory back to the original
 				  # PREFIX.
+		  	} elsif ($_ =~ /^\@sample\s+(\S*)/) {
+				my $sl = $.;
+				if ($1 !~ /\.sample$/) {
+					&perror("WARN", $file, $sl, "\@sample directive references".
+						" file that does not end in ``.sample''.  Sample".
+						" files must end in ``.sample''.");
+				}
 			} else {
 				&perror("WARN", $file, $.,
 					"unknown pkg-plist directive \"$_\"");
@@ -860,7 +874,7 @@ sub checkplist {
 				"could you please avoid it?");
 		}
 
-		if ("$curdir/$_" =~ m#^$localbase/share/doc#) {
+		if ("$curdir/$_" =~ m#^$localbase/share/doc/#) {
 			print "OK: $file [$.]: seen installation to share/doc. ".
 				"($curdir/$_)\n" if ($verbose);
 			$sharedocused++;
@@ -1037,12 +1051,6 @@ sub checkpatch {
 	while (<IN>) {
 		$whole .= $_;
 	}
-	if ($committer && $whole =~ /\$([A-Z][A-Za-z0-9]+)(:[^\n]+)?\$/) {
-		my $lineno = &linenumber($`);
-		&perror("WARN", $file, $lineno, "includes possible RCS tag \"\$$1\$\". ".
-			"use binary mode (-ko) on commit/import.") unless
-			$1 eq $rcsidstr;
-	}
 
 	if ($committer && $whole =~ /\wjavavm\w/) {
 		my $lineno = &linenumber($`);
@@ -1144,7 +1152,7 @@ sub check_depends_syntax {
 			}
 
 			# check USES=gmake
-			if ($m{'dep'} =~ /^(gmake|\${GMAKE})$/) {
+			if ($m{'dep'} =~ /^(gmake|\${MAKE_CMD})$/) {
 				&perror("WARN", $file, -1, "dependency to $1 ".
 					"listed in $j. consider using ".
 					"USES[+]=gmake.");
@@ -1542,12 +1550,16 @@ sub checkmakefile {
 	if ($makevar{OPTIONS_SUB}) {
 		if ($makevar{PLIST_FILES}) {
 			foreach my $i (split(/\s+/, $makevar{PLIST_FILES})) {
-				push @popt, $1 if $i =~ /^\%\%([^%]+)\%\%/;
+				while ($i =~ /\%\%([^%]+)\%\%/g) {
+					push @popt, $1;
+				}
 			}
 		}
 		if ($makevar{PLIST_DIRS}) {
 			foreach my $i (split(/\s+/, $makevar{PLIST_DIRS})) {
-				push @popt, $1 if $i =~ /^\%\%([^%]+)\%\%/;
+				while ($i =~ /\%\%([^%]+)\%\%/g) {
+					push @popt, $1;
+				}
 			}
 		}
 		# special cases for PORTDOCS/PORTEXAMPLES
@@ -1573,8 +1585,8 @@ sub checkmakefile {
 		if (!grep(/^$i$/, @opt, @aopt)) {
 			# skip global options
 			next if ($i eq 'DOCS' or $i eq 'NLS' or $i eq 'EXAMPLES' or $i eq 'IPV6' or $i eq 'X11');
-			&perror("WARN", $file, -1, "$i is appears in PORT_OPTIONS:M, ".
-				"but not listed in OPTIONS_DEFINE.");
+			&perror("WARN", $file, -1, "$i appears in PORT_OPTIONS:M, ".
+				"but is not listed in OPTIONS_DEFINE.");
 		}
 	}
 
@@ -1766,7 +1778,7 @@ sub checkmakefile {
 	if ($sharedocused && $whole !~ /defined\s*\(?NOPORTDOCS\)?/
 		&& $whole !~ /def\s*\(?NOPORTDOCS\)?/) {
 		if ($makevar{NO_STAGE} && $docsused == 0
-			&& $whole !~ m#(\$[\{\(]PREFIX[\}\)]|$localbase)/share/doc#) {
+			&& $whole !~ m#(\$[\{\(]PREFIX[\}\)]|$localbase)/share/doc/#) {
 			&perror("WARN", $file, -1, "use \".if \${PORT_OPTIONS:MDOCS}\" to wrap ".
 				"installation of files into $localbase/share/doc.");
 		}
@@ -1788,7 +1800,8 @@ sub checkmakefile {
 	# whole file: check for USES[+]=gettext
 	#
 	print "OK: checking for USES=gettext without PORT_OPTIONS:MNLS.\n" if ($verbose);
-	if ($makevar{USES} =~ /\bgettext\b/ && $whole !~ /PORT_OPTIONS:MNLS/) {
+	if ($makevar{USES} =~ /\bgettext\b/ && $whole !~ /PORT_OPTIONS:MNLS/
+		&& $whole !~ /NLS_USES=.*\bgettext\b/) {
 		&perror("WARN", $file, -1, "Consider adding support for a NLS ".
 			"knob to conditionally disable gettext support.");
 	}
@@ -1799,11 +1812,7 @@ sub checkmakefile {
 	print "OK: checking for deprecated macros.\n" if $verbose;
 
 	%deprecated = (
-			USE_MESA		=> 'USE_GL',
 			USE_RCORDER		=> 'USE_RC_SUBR',
-			INSTALLS_SHLIB  => 'USE_LDCONFIG',
-			APACHE_COMPAT   => 'USE_APACHE',
-			USE_XPM         => 'USE_X11=xpm',
 	);
 
 	@deplist = (\%deprecated);
@@ -1841,7 +1850,7 @@ sub checkmakefile {
 awk basename brandelf cat chmod chown cp cpio dialog dirname egrep expr
 false file find gmake grep gzcat ldconfig ln md5 mkdir mv objcopy paste patch
 pax perl printf rm rmdir pkg_add pkg_delete pkg_info pkg_version
-ruby sed sh sort sysctl touch tr which xargs xmkmf
+ruby sed sdl-config sh sort sysctl touch tr which xargs xmkmf
 	)) {
 		$cmdnames{$i} = "\$\{\U$i\E\}";
 	}
@@ -1851,11 +1860,12 @@ ruby sed sh sort sysctl touch tr which xargs xmkmf
 	$cmdnames{'gzip'} = '${GZIP_CMD}';
 	$cmdnames{'install'} = '${INSTALL_foobaa}';
 	$cmdnames{'python'} = '${PYTHON_CMD}';
+	$cmdnames{'sdl-config'} = '${SDL_CONFIG}';
 	$cmdnames{'strip'} = '${STRIP_CMD}';
 	$cmdnames{'unzip'} = '${UNZIP_CMD}';
 	$cmdnames{'pkg_create'} = '${PKG_CMD}';
-	foreach my $i (qw(aclocal autoconf autoheader automake autoreconf autoupdate autoscan ifnames libtool libtoolize)) {
-		$autocmdnames{$i} = "\$\{" . ( ( $i !~ /auto|aclocal|libtool/ ) ? "AUTO" : "" ) . "\U$i\E\}";
+	foreach my $i (qw(aclocal autoconf autoheader automake autoreconf autoupdate autoscan ifnames libtoolize)) {
+		$autocmdnames{$i} = "\$\{" . ( ( $i !~ /auto|aclocal/ ) ? "AUTO" : "" ) . "\U$i\E\}";
 	}
 	#
 	# ignore parameter string to echo command.
@@ -1925,6 +1935,11 @@ ruby sed sh sort sysctl touch tr which xargs xmkmf
 						"instead and set according USE_AUTOTOOLS=<tool> macro");
 			}
 		}
+	}
+
+	if ($makevar{'USE_AUTOTOOLS'} =~ /\blibtool\b/) {
+		&perror("WARN", $file, -1, "USE_AUTOTOOLS=libtool is deprecated.  ".
+			"Use USES=libtool instead.");
 	}
 
 	#
@@ -2110,11 +2125,11 @@ ruby sed sh sort sysctl touch tr which xargs xmkmf
 	}
 
 	#
-	# whole file: check for USE_ANT and USE_GMAKE both defined
+	# whole file: check for USE_ANT and USE_MAKE_CMD both defined
 	#
-	if ($use_ant && $whole =~ /^USE_GMAKE[?:]?=\s*(.*)$/m) {
+	if ($use_ant && $whole =~ /^USE_MAKE_CMD[?:]?=\s*(.*)$/m) {
 		&perror("WARN", $file, -1, "a port shall not define both USE_ANT ".
-			"and USE_GMAKE");
+			"and USE_MAKE_CMD");
 	}
 
 	#
@@ -2751,13 +2766,6 @@ DIST_SUBDIR EXTRACT_ONLY
 			&perror("WARN", $file, -1, "how about \"EXTRACT_SUFX=$1\"".
 				", instead of DISTFILES?");
 		}
-	}
-
-	# additional checks for committer.
-	if ($committer && $has_lang_cat) {
-		&perror("WARN", $file, -1, "be sure to include language code ".
-			"\"$port_lang-\" ".
-			"in the module alias name.");
 	}
 
 	if ($committer) {
@@ -3403,20 +3411,21 @@ sub abspathname {
 		}
 	}
 
-	print "OK: checking direct use of pathnames, phase 1.\n" if ($verbose);
+	foreach my $s (split(/\n+/, $str)) {
+		print "OK: checking direct use of pathnames, phase 1.\n" if ($verbose);
 %cmdnames = split(/\n|\t+/, <<EOF);
 /usr/opt	\${PORTSDIR} instead
 $portsdir	\${PORTSDIR} instead
 $localbase	\${PREFIX} or \${LOCALBASE}, as appropriate
 EOF
-	foreach my $i (keys %cmdnames) {
-		if ($str =~ /$i/) {
-			&perror("WARN", $file, -1, "possible direct use of \"$&\" ".
-				"found. if so, use $cmdnames{$i}.");
+		foreach my $i (keys %cmdnames) {
+			if ($s =~ /^[^#]*$i/) {
+				&perror("WARN", $file, -1, "possible direct use of \"$&\" ".
+					"found. if so, use $cmdnames{$i}.");
+			}
 		}
-	}
 
-	print "OK: checking direct use of pathnames, phase 2.\n" if ($verbose);
+		print "OK: checking direct use of pathnames, phase 2.\n" if ($verbose);
 %cmdnames = split(/\n|\t+/, <<EOF);
 distfiles	\${DISTDIR} instead
 pkg		\${PKGDIR} instead
@@ -3425,10 +3434,12 @@ scripts		\${SCRIPTDIR} instead
 patches		\${PATCHDIR} instead
 work		\${WRKDIR} instead
 EOF
-	foreach my $i (keys %cmdnames) {
-		if ($str =~ /(\.\/|\$[\{\(]\.CURDIR[\}\)]\/|[ \t])(\b$i)\//) {
-			&perror("WARN", $file, -1, "possible direct use of \"$i\" ".
-				"found. if so, use $cmdnames{$i}.");
+		foreach my $i (keys %cmdnames) {
+			# use (?![\w-]) instead of \b to exclude pkg-*
+			if ($s =~ /^[^#]*(\.\/|\$[\{\(]\.CURDIR[\}\)]\/|[ \t])(\b$i)(?![\w-])/) {
+				&perror("WARN", $file, -1, "possible direct use of \"$i\" \"$s\" ".
+					"found. if so, use $cmdnames{$i}.");
+			}
 		}
 	}
 }
@@ -3492,11 +3503,6 @@ sub urlcheck {
 	if ($url =~ m#://[^/]*:/#) {
 	&perror("FATAL", $file, -1, "URL \"$url\" contains ".
 				"extra \":\".");
-	}
-	if ($url =~ m#(www\.freebsd\.org)/~.+/#i) {
-		&perror("WARN", $file, -1, "URL \"$url\", ".
-			"$1 should be ".
-			"people.FreeBSD.org");
 	}
 }
 sub TRUE {1;}

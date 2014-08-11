@@ -2,28 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	collectd
-PORTVERSION=	5.4.0
+PORTVERSION=	5.4.1
 PORTREVISION=	3
-PKGNAMESUFFIX=	5
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://collectd.org/files/
+PKGNAMESUFFIX=	5
 
 MAINTAINER=	ports@bsdserwis.com
 COMMENT=	Systems & network statistics collection daemon
 
-USES=		gmake pkgconfig
-USE_BZIP2=	yes
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		gmake pkgconfig tar:bzip2 libtool
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	aclocal autoconf autoheader automake libltdl libtool
+USE_AUTOTOOLS=	aclocal autoconf autoheader automake libltdl libtoolize
 
 # Only autoconf stage and sigrok plugin need GLIB:
 BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/glib-2.0.pc:${PORTSDIR}/devel/glib20
 
 OPTIONS_DEFINE=		CGI DEBUG GCRYPT VIRT
 OPTIONS_GROUP=		INPUT OUTPUT
-OPTIONS_GROUP_OUTPUT=	RRDTOOL NOTIFYEMAIL NOTIFYDESKTOP
-OPTIONS_GROUP_INPUT=	CURL DBI JSON MEMCACHEC MODBUS MYSQL \
-			NUTUPS PGSQL PING PYTHON RABBITMQ REDIS \
+OPTIONS_GROUP_OUTPUT=	RRDTOOL NOTIFYEMAIL NOTIFYDESKTOP RIEMANN
+OPTIONS_GROUP_INPUT=	CURL DBI JSON MEMCACHEC MODBUS MONGODB MYSQL \
+			NUTUPS PERL PGSQL PING PYTHON RABBITMQ REDIS \
 			ROUTEROS SIGROK SNMP STATGRAB TOKYOTYRANT XML XMMS
 
 CGI_DESC=		Install collection.cgi (requires rrdtool)
@@ -34,15 +36,18 @@ GCRYPT_DESC=		Build with libgcrypt
 JSON_DESC=		Enable JSON plugins
 MEMCACHEC_DESC=		Enable memcachec plugin
 MODBUS_DESC=		Enable modbus plugin
+MONGODB_DESC=		Enable MongoDB-based plugins
 MYSQL_DESC=		Enable mysql-based plugins
 NOTIFYEMAIL_DESC=	Enable notifications via email
 NOTIFYDESKTOP_DESC=	Enable desktop notifications
 NUTUPS_DESC=		Enable nut (ups) plugin
+PERL_DESC=		Enable libperl plugin and binding
 PGSQL_DESC=		Enable postgresql-based plugins
 PING_DESC=		Enable ping plugin
 PYTHON_DESC=		Enable python-based plugins
 RABBITMQ_DESC=		Enable rabbitmq-based plugins
 REDIS_DESC=		Enable redis-based plugins
+RIEMANN_DESC=		Enable write_riemann plugin (via protobuf-c)
 ROUTEROS_DESC=		Enable routeros plugin
 RRDTOOL_DESC=		Enable rrdtool plugin (also rrdcached plugin)
 SIGROK_DESC=		Enable sigrok plugin
@@ -60,7 +65,9 @@ USE_LDCONFIG=	yes
 CONFLICTS=	collectd-4.[0-9]*
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
+
+PLIST_SUB+=	RESETPREFIX=${PREFIX}
 
 .include <bsd.port.options.mk>
 
@@ -68,23 +75,24 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--localstatedir=/var \
 		--disable-all-plugins \
 		--disable-static \
+		--without-amqp \
 		--without-java \
+		--without-libaquaero5 \
 		--without-libganglia \
 		--without-libiptc \
 		--without-libjvm \
 		--without-libkstat \
 		--without-libmodbus \
-		--without-libmongoc \
 		--without-libnetlink \
 		--without-libnetapp \
 		--without-libopenipmi \
 		--without-libowcapi \
 		--without-libperfstat \
-		--without-libperl \
 		--without-libsensors \
 		--without-libvarnish \
-		--without-oracle \
-		--without-perl-bindings
+		--without-lvm \
+		--without-mic \
+		--without-oracle
 
 # NOTE: Plugins without external dependencies
 CONFIGURE_ARGS+=	\
@@ -204,7 +212,7 @@ PLIST_SUB+=	DBI="@comment "
 .if ${PORT_OPTIONS:MGCRYPT}
 LIB_DEPENDS+=	libgcrypt.so:${PORTSDIR}/security/libgcrypt
 CONFIGURE_ARGS+=--with-libgcrypt=${LOCALBASE}
-LDFLAGS+=	-lgcrypt
+LIBS+=		-lgcrypt
 .else
 CONFIGURE_ARGS+=--without-libgcrypt
 .endif
@@ -231,6 +239,17 @@ CONFIGURE_ARGS+=--enable-modbus
 PLIST_SUB+=	MODBUS=""
 .else
 PLIST_SUB+=	MODBUS="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MMONGODB}
+LIB_DEPENDS+=	libmongoc.so:${PORTSDIR}/devel/mongo-c-driver
+CONFIGURE_ARGS+=--with-libmongoc=${LOCALBASE} \
+		--enable-write_mongodb
+PLIST_SUB+=	MONGODB=""
+.else
+CONFIGURE_ARGS+=--without-libcmongoc \
+		--disable-write_mongodb
+PLIST_SUB+=	MONGODB="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
@@ -269,6 +288,15 @@ PLIST_SUB+=	NUTUPS=""
 .else
 CONFIGURE_ARGS+=--without-libupsclient --disable-nut
 PLIST_SUB+=	NUTUPS="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MPERL}
+USES+=		perl5
+CONFIGURE_ARGS+=--with-perl=${PERL} --with-perl-bindings --enable-perl
+PLIST_SUB+=	PERL=""
+.else
+CONFIGURE_ARGS+=--without-perl --without-perl-bindings --disable-perl
+PLIST_SUB+=	PERL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
@@ -322,6 +350,15 @@ CONFIGURE_ARGS+=--without-libcredis \
 PLIST_SUB+=	REDIS="@comment "
 .endif
 
+.if ${PORT_OPTIONS:MRIEMANN}
+LIB_DEPENDS+=	libprotobuf-c.so:${PORTSDIR}/devel/protobuf-c
+CONFIGURE_ARGS+=--enable-write_riemann
+PLIST_SUB+=	RIEMANN=""
+.else
+CONFIGURE_ARGS+=--disable-write_riemann
+PLIST_SUB+=	RIEMANN="@comment "
+.endif
+
 .if ${PORT_OPTIONS:MROUTEROS}
 LIB_DEPENDS+=	librouteros.so:${PORTSDIR}/net/librouteros
 CONFIGURE_ARGS+=--with-librouteros=${LOCALBASE} --enable-routeros
@@ -347,7 +384,7 @@ PLIST_SUB+=	RRDTOOL="@comment "
 .if ${PORT_OPTIONS:MSTATGRAB}
 USES+=		pkgconfig
 LIB_DEPENDS+=	libstatgrab.so:${PORTSDIR}/devel/libstatgrab
-CONFIGURE_ENV+= LIBS="`pkg-config --libs libstatgrab`"
+LIBS+=		`pkg-config --libs libstatgrab`
 CONFIGURE_ARGS+=--with-libstatgrab=${LOCALBASE} \
 		--enable-disk \
 		--enable-interface
@@ -359,22 +396,22 @@ PLIST_SUB+=	STATGRAB="@comment "
 
 .if ${OSVERSION} >= 900007
 CONFIGURE_ARGS+=--enable-users
-PLIST_SUB+= USERS=""
+PLIST_SUB+=	USERS=""
 .elif ${PORT_OPTIONS:MSTATGRAB}
 CONFIGURE_ARGS+=--enable-users
-PLIST_SUB+= USERS=""
+PLIST_SUB+=	USERS=""
 .else
-PLIST_SUB+= USERS="@comment "
+PLIST_SUB+=	USERS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSIGROK}
 USE_GNOME+=	glib20
 LIB_DEPENDS+=	libsigrok.so:${PORTSDIR}/devel/libsigrok
 CONFIGURE_ARGS+=--with-libsigrok --enable-sigrok
-PLIST_SUB+=     SIGROK=""
+PLIST_SUB+=	SIGROK=""
 .else
 CONFIGURE_ARGS+=--disable-sigrok
-PLIST_SUB+=     SIGROK="@comment "
+PLIST_SUB+=	SIGROK="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSNMP}
@@ -441,9 +478,6 @@ post-patch:
 		-e 's;/opt/collectd/var/lib;/var/db;' \
 		-e 's;/opt/collectd/lib;${PREFIX}/lib;' \
 		${WRKSRC}/contrib/collection.conf
-	@${REINPLACE_CMD} \
-		-e 's;{libdir}/pkgconfig;{prefix}/libdata/pkgconfig;' \
-		${WRKSRC}/configure.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}/var/db/collectd
@@ -452,6 +486,11 @@ post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/collection.cgi ${STAGEDIR}${WWWDIR}/
 	${INSTALL_DATA} ${WRKSRC}/contrib/collection.conf \
 		${STAGEDIR}${WWWDIR}/collection.conf.sample
+.endif
+
+post-stage:
+.if ${PORT_OPTIONS:MPERL}
+	@${SED} -i '' -e 's,${STAGEDIR},,g' ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto/Collectd/.packlist
 .endif
 
 .include <bsd.port.mk>

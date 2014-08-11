@@ -1,14 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	mariadb
-PORTREVISION=	0
 PKGNAMESUFFIX=	55-client
 
 COMMENT=	Multithreaded SQL database (client)
 
 MASTERDIR=	${.CURDIR}/../mariadb55-server
 
-PKGMESSAGE=	mustnotexist
+FILESDIR=	${.CURDIR}/files
 PATCHDIR=	${.CURDIR}/files
 PLIST=		${.CURDIR}/pkg-plist
 

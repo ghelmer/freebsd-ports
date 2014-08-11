@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xapian-bindings
-PORTVERSION=	1.2.17
+PORTVERSION=	1.2.18
 CATEGORIES=	databases
 MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -24,13 +24,13 @@ CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
 		--without-csharp --without-java --without-tcl
 GNU_CONFIGURE=	yes
 MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
-USES=		tar:xz
+USES=		libtool tar:xz
 
 PORTDOCS=	*
 
 LUA_CONFIGURE_ENV=	LUA="${LUA_CMD}" LUA_INC="${LUA_INCDIR}" LUA_LIB="${LUA_MODLIBDIR}" LUA_SO=.so
 LUA_CONFIGURE_WITH=	lua
-LUA_USE=		LUA=5.1+
+LUA_USES=		lua
 PERL_CONFIGURE_ENV=	PERL_LIB=${SITE_PERL}
 PERL_CONFIGURE_WITH=	perl
 PERL_USES=		perl5

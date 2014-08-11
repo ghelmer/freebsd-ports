@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-PORTVERSION=	2.19.3
+PORTVERSION=	2.19.8
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-devel
@@ -44,7 +44,8 @@ INFO=		internals \
 		lilypond-web \
 		music-glossary
 
-USES=		bison:build gettext gmake pkgconfig perl5
+USES=		bison:build gettext gmake pkgconfig perl5 compiler:c++11-lib
+USE_CXXSTD=	c++11
 USE_GHOSTSCRIPT=9
 USE_TEX=	latex
 USE_PYTHON=	-3
@@ -59,7 +60,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-ncsb-dir=${LOCALBASE}/share/ghostscript/fonts \
 		--with-python-include=${PYTHON_INCLUDEDIR}
 CONFIGURE_ENV+=	ac_cv_prog_MAKEINFO="${LOCALBASE}/bin/makeinfo" \
-		FLEX=${FLEX} YACC=${YACC}
+		FLEX=${FLEX} YACC=${YACC} HOME=${WRKDIR}
 
 ALL_TARGET=	all
 

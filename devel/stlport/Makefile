@@ -11,11 +11,11 @@ DISTNAME=	STLport-${PORTVERSION:S/.b/-b/}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Adaptation of SGI\'s Standard Template Library
 
-USE_BZIP2=	yes
 
 WRKSRC=		${WRKDIR}/STLport-${PORTVERSION:S/.b/b/}/build/lib
 PATCH_WRKSRC=	${WRKDIR}/STLport-${PORTVERSION:S/.b/b/}
-USE_GMAKE=	yes
+
+USES=		gmake tar:bzip2
 USE_GCC=	any
 COMPILER?=	gcc
 MAKEFILE=	${COMPILER}.mak
@@ -88,7 +88,7 @@ do-install:
 regression-test:
 	(cd ${WRKSRC}/../test/unit &&	\
 	${SETENV} STLPORT_LIB_DIR="${PATCH_WRKSRC}/lib"	\
-	${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET} && \
+	${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET} && \
 	(../../../bin/stl_unit_test || ${TRUE}) &&	\
 	(../../../bin-g/stl_unit_test  || ${TRUE}) )
 .endif

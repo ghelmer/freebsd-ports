@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hplip
-PORTVERSION=	3.14.1
+PORTVERSION=	3.14.4
 PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	SF
@@ -11,7 +11,7 @@ MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Drivers and utilities for HP Printers and All-in-One devices
 
 LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libcupsdriver.so:${PORTSDIR}/print/cups-base \
+		libcupsmime.so:${PORTSDIR}/print/cups-base \
 		libcups.so:${PORTSDIR}/print/cups-client \
 		libcupsimage.so:${PORTSDIR}/print/cups-image \
 		libdbus-1.so:${PORTSDIR}/devel/dbus
@@ -30,6 +30,7 @@ USES=		dos2unix pkgconfig shebangfix
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-foomatic-ppd-install \
 		--enable-hpijs-install \
+		--enable-cups-ppd-install \
 		--with-cupsbackenddir=${PREFIX}/libexec/cups/backend \
 		--with-cupsfilterdir=${PREFIX}/libexec/cups/filter \
 		--with-icondir=${DESKTOPDIR} \

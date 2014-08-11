@@ -17,13 +17,14 @@ USE_XORG=	xf86driproto xineramaproto xf86miscproto glproto
 .if ${OSVERSION} < 1000051 || !defined(WITH_NEW_XORG) || \
 	(${ARCH} != i386 && ${ARCH} != amd64)
 ATI_VERSION=	6.14.6
-ATI_REVISION=	1
+ATI_REVISION=	3
 CONFIGURE_ARGS+=--disable-kms
 PLIST_SUB+=	OLD=""
 .else
 ATI_VERSION=	7.2.0
-ATI_REVISION=	1
+ATI_REVISION=	3
 CONFIGURE_ARGS+=--disable-udev
+CONFIGURE_ARGS+=--disable-glamor
 EXTRA_PATCHES+=	${FILESDIR}/extra-src__radeon_kms.c
 PLIST_SUB+=	OLD="@comment "
 .endif

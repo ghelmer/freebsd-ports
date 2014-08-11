@@ -2,10 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	screen
-PORTVERSION=	4.0.3
-PORTREVISION=	14
+PORTVERSION=	4.2.1
+PORTREVISION=	3
 CATEGORIES=	sysutils
-MASTER_SITES=	ftp://ftp.uni-erlangen.de/pub/utilities/screen/ \
+MASTER_SITES=	http://ftp.gnu.org/gnu/screen/ \
+		ftp://ftp.gnu.org/gnu/screen/ \
+		ftp://gnu.mirror.iweb.com/screen/ \
+		http://gnu.mirror.iweb.com/screen/ \
+		http://mirror.sdunix.com/gnu/ \
+		ftp://mirrors.kernel.org/gnu/screen/ \
 		http://komquats.com/distfiles/ \
 		http://people.freebsd.org/~cy/distfiles/ \
 		GNU
@@ -13,30 +18,39 @@ MASTER_SITES=	ftp://ftp.uni-erlangen.de/pub/utilities/screen/ \
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Multi-screen window manager
 
-OPTIONS_DEFINE=	CJK INFO MAN NETHACK XTERM_256 HOSTINLOCKED SHOWENC
-OPTIONS_DEFAULT=	INFO MAN NETHACK XTERM_256
-CJK_DESC=		Treat CJK ambiguous characters as full width
+LICENSE=	GPLv3
+
+OPTIONS_DEFINE=		INFO MAN NETHACK XTERM_256 SHOWENC
+OPTIONS_DEFAULT=	INFO MAN NETHACK XTERM_256 SOCKETS
+OPTIONS_SINGLE=		IPC
+OPTIONS_SINGLE_IPC=	SOCKETS NAMED_PIPES
 INFO_DESC=		Build and install info documentation
 MAN_DESC=		Build and install man pages
 NETHACK_DESC=		Enable nethack-style messages
 XTERM_256_DESC=		Enable support for 256 colour xterm
-HOSTINLOCKED_DESC=	Print user@host in locked message
 SHOWENC_DESC=		Show encoding on the status line
+SOCKETS_DESC=		Use new (4.2.1+) sockets for IPC (default)
+NAMED_PIPES_DESC=	Use legacy (4.0.3) named pipes for IPC (override)
 
 OPTIONS_SUB=
+
+USES=		gmake
 
 .include <bsd.port.options.mk>
 
 GNU_CONFIGURE=	yes
 .if ${PORT_OPTIONS:MMAN}
-MAKE_ARGS+=	-DWITH_MAN
+MAKE_ARGS+=	WITH_MAN=1
+PLIST_SUB+=	MAN=""
+.else
+PLIST_SUB+=	MAN="@comment"
 .endif
 .if ${PORT_OPTIONS:MINFO}
 .if !exists(/usr/bin/install-info)
 RUN_DEPENDS+=	install-info:${PORTSDIR}/print/texinfo
 .endif
 INFO=		screen
-MAKE_ARGS+=	-DWITH_INFO
+MAKE_ARGS+=	WITH_INFO=1
 .endif
 
 # Enables support for 256 colour xterm.  Note that you may need to
@@ -51,15 +65,6 @@ CFLAGS+=	-DCOLORS256
 CFLAGS+=	-DNONETHACK
 .endif
 
-# treat CJK ambiguous characters as full width via option "cjkwidth"
-.if ${PORT_OPTIONS:MCJK}
-EXTRA_PATCHES+=	${FILESDIR}/opt-cjkwidth
-.endif
-
-.if ${PORT_OPTIONS:MHOSTINLOCKED}
-EXTRA_PATCHES+= ${FILESDIR}/opt-hostinlocked
-.endif
-
 # show encoding on the status line via option "showenc"
 .if ${PORT_OPTIONS:MSHOWENC}
 EXTRA_PATCHES+=	${FILESDIR}/opt-showencoding
@@ -68,6 +73,17 @@ EXTRA_PATCHES+=	${FILESDIR}/opt-showencoding
 post-patch:
 	@${RM} ${WRKSRC}/doc/screen.info*
 	@${REINPLACE_CMD} -e 's|/dev/ptmx|/nonexistent|' ${WRKSRC}/configure
+
+# Bug 191029:	Users can choose whether to use sockets or named pipes.
+# 		Choose sockets if you don't know what the difference is.
+# 		Choose named pipes if your environment is heterogeneous,
+#		using both screen 4.0.3 and 4.2.1.
+.if ${PORT_OPTIONS:MNAMED_PIPES}
+# Bug 191017
+post-configure:
+	@${ECHO_CMD} '#define NAMEDPIPE 1' >> ${WRKSRC}/config.h
+	@${ECHO_CMD} User selected named pipes override set.
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

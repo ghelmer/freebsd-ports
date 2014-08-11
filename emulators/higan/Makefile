@@ -3,6 +3,7 @@
 
 PORTNAME=	higan
 PORTVERSION=	0.94
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	http://byuu.org/files/ \
 		http://www.cyberbotx.com/higan/
@@ -115,7 +116,7 @@ post-patch:
 		-e 's|%%AUDIO%%|${AUDIO_DRIVER}|' \
 		-e 's|%%INPUT%%|${INPUT_DRIVER}|' \
 		${WRKSRC}/target-ethos/Makefile
-	${REINPLACE_CMD} -e 's|/usr/share/|${PREFIX}/|' \
+	${REINPLACE_CMD} -e 's|/usr/share/|${PREFIX}/share/|' \
 		${WRKSRC}/nall/string/platform.hpp
 .if ${PORT_OPTIONS:MDEBUG}
 	${REINPLACE_CMD} -e 's|-O3|-g|g' \
@@ -131,7 +132,7 @@ do-build:
 	(cd ${WRKSRC}/phoenix/qt && ${MOC} -i -o platform.moc platform.moc.hpp)
 .endif
 .for d in . ananke
-	(cd ${WRKSRC}/${d} && ${GMAKE} ${MAKE_ENV})
+	(cd ${WRKSRC}/${d} && ${MAKE_CMD} ${MAKE_ENV})
 .endfor
 
 do-install:

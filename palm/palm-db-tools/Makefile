@@ -12,14 +12,13 @@ COMMENT=	Utilities for the PalmOS flat-file database programs
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/libpdbtools.so \
 		bin/csv2pdb \
 		bin/pdb2csv
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e "s|-Wno-deprecated|& -fPIC -DPIC|" \
 		${WRKSRC}/libflatfile/Makefile.in ${WRKSRC}/libpalm/Makefile.in \

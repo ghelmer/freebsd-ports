@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gawk
-PORTVERSION=	4.1.0
+PORTVERSION=	4.1.1
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 
@@ -21,9 +22,8 @@ MPFR_CONFIGURE_OFF=	--without-gmp --without-mpfr
 
 INFO=		gawk gawkinet
 
-USE_XZ=		true
 GNU_CONFIGURE=	yes
-USES=		iconv
+USES=		iconv libtool makeinfo tar:xz
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} \
 		--with-libintl-prefix=${LOCALBASE} \
 		AWK=${AWK}

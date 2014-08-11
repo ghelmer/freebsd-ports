@@ -10,9 +10,11 @@ MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		pkgconfig
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV+=	HOME=${WRKSRC}
 
 LIB_DEPENDS+=	avcodec:${PORTSDIR}/multimedia/ffmpeg
 

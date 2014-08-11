@@ -10,13 +10,13 @@
  
  all:
 -	gcc -g -Wall -lssl -o sslscan $(SRCS) $(LDFLAGS) $(CFLAGS)
-+	${CC} -g -Wall -lssl -o sslscan $(SRCS) $(LDFLAGS) $(CFLAGS)
++	${CC} -g -Wall -lssl -lcrypto -o sslscan $(SRCS) $(LDFLAGS) $(CFLAGS)
  
  install:
 -	cp sslscan $(BINPATH)
 -	cp sslscan.1 $(MANPATH)man1
-+	install -s -m 755 sslscan $(BINPATH)
-+	install -m 644 sslscan.1 $(MANPATH)/man1
++	install -s -m 755 sslscan $(DESTDIR)$(BINPATH)
++	install -m 644 sslscan.1 $(DESTDIR)$(MANPATH)/man1
  
  uninstall:
  	rm -f $(BINPATH)sslscan

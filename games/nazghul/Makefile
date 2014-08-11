@@ -8,13 +8,13 @@ CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	acm@FreeBSD.org
-COMMENT=	A computer role-playing game engine
+COMMENT=	Computer role-playing game engine
 
 LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
 
 USE_SDL=	sdl image mixer
-USE_GMAKE=	yes
 GNU_CONFIGURE=	yes
+USES=		gmake
 
 NO_STAGE=	yes
 post-patch:

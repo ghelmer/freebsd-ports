@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	salt
-PORTVERSION=	2014.1.1
-PORTREVISION=	1
+PORTVERSION=	2014.1.5
 CATEGORIES=	sysutils python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,6 +12,7 @@ COMMENT=	Distributed remote execution and configuration management system
 
 LICENSE=	APACHE20
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyzmq>=2.1.9:${PORTSDIR}/net/py-pyzmq
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml \
 		${PYTHON_PKGNAMEPREFIX}pyzmq>=2.1.9:${PORTSDIR}/net/py-pyzmq \
 		${PYTHON_PKGNAMEPREFIX}pycrypto>0:${PORTSDIR}/security/py-pycrypto \
@@ -54,15 +54,15 @@ post-patch:
 	doc/man/salt-call.1 salt/config.py \
 	salt/modules/mysql.py salt/utils/parsers.py salt/modules/tls.py \
 	salt/modules/postgres.py salt/utils/migrations.py
-	@${REINPLACE_CMD} -e 's|/etc/salt|${PREFIX}/etc/salt|' \
-		-e 's|/srv/salt|${PREFIX}/etc/salt/states|' \
-		-e 's|/srv/pillar|${PREFIX}/etc/salt/pillar|' ${WRKSRC}/${file}
+	@${REINPLACE_CMD} -e 's|/etc/salt|${ETCDIR}|' \
+		-e 's|/srv/salt|${ETCDIR}/states|' \
+		-e 's|/srv/pillar|${ETCDIR}/pillar|' ${WRKSRC}/${file}
 .endfor
+	@${REINPLACE_CMD} -e 's|yumpkg5|pkgng|' ${WRKSRC}/conf/minion
 
 post-install:
-	${MKDIR} ${STAGEDIR}${ETCDIR}
+	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/conf/master ${STAGEDIR}${ETCDIR}/master.sample
 	${INSTALL_DATA} ${WRKSRC}/conf/minion ${STAGEDIR}${ETCDIR}/minion.sample
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

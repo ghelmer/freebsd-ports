@@ -3,7 +3,7 @@
 
 PORTNAME=	boinc-setiathome-v7
 PORTVERSION=	7.00
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	astro
 MASTER_SITES=	${MASTER_SITE_LOCAL} \
 		ftp://rene-ladan.nl/pub/distfiles/
@@ -20,8 +20,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:${PORTSDIR}/math/fftw3
 RUN_DEPENDS=	boinc_client:${PORTSDIR}/net/boinc-client
 LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float
 
-USES=		gmake pkgconfig
-USE_XZ=		yes
+USES=		tar:xz gmake pkgconfig
 USE_AUTOTOOLS=	autoconf:env automake:env
 GNU_CONFIGURE=	yes
 

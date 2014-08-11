@@ -2,6 +2,7 @@
 
 PORTNAME=	opera
 PORTVERSION=	${OPERA_VER}
+PORTREVISION=	2
 CATEGORIES=	www ipv6
 MASTER_SITES=	ftp://ftp.opera.com/pub/opera/${MASTER_SITES_VER_PATH}/ \
 		ftp://opera.inode.at/${MASTER_SITES_VER_PATH}/ \
@@ -13,7 +14,7 @@ MASTER_SITES=	ftp://ftp.opera.com/pub/opera/${MASTER_SITES_VER_PATH}/ \
 		${MASTER_SITE_RINGSERVER:S,%SUBDIR%,net/www/opera/${MASTER_SITES_VER_PATH}&,}/
 DISTNAME=	${PORTNAME}-${OPERA_VER}-${OPERA_BUILD}.${ARCH}.freebsd
 
-MAINTAINER=	dinoex@FreeBSD.org
+MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Blazingly fast, full-featured, standards-compliant browser
 
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
@@ -66,7 +67,7 @@ USE_GSTREAMER+=	vorbis ogg theora vp8 good
 .endif
 
 .if ${PORT_OPTIONS:MGTK2}
-USE_GNOME+=	gtk20
+USE_GNOME+=	gtk20 libxml2
 .endif
 
 .if ${PORT_OPTIONS:MKDE4}
@@ -78,10 +79,6 @@ USE_KDE4+=	kdelibs
 ONLY_FOR_ARCHS=	i386 amd64
 
 OPERA_ARCH=	${ARCH:S,i386,intel,}
-
-.if ${OSVERSION} < 700000
-IGNORE=		only for FreeBSD 7.x and higher
-.endif
 
 .if ${OSVERSION} >= 1000054
 .if ${PORT_OPTIONS:MCOMPAT9}
@@ -117,6 +114,9 @@ do-configure:
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/opera ${STAGEDIR}${PREFIX}/bin/
 	${TAR} -C ${WRKSRC} -cf - lib man share | ${TAR} -C ${STAGEDIR}${PREFIX} -xf -
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/libmap.d
+	${INSTALL_DATA} ${FILESDIR}/libmap.conf \
+		${STAGEDIR}${PREFIX}/etc/libmap.d/opera.conf
 
 # target to build distinfo for both arch
 makesum-all:

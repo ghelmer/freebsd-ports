@@ -4,10 +4,10 @@
 PORTNAME=	atheme-services
 PORTVERSION=	7.0.7
 CATEGORIES=	irc
-MASTER_SITES=	http://www.atheme.net/downloads/
+MASTER_SITES=	http://atheme.net/downloads/
 
 MAINTAINER=	tdb@FreeBSD.org
-COMMENT=	A set of services for IRC networks
+COMMENT=	Set of services for IRC networks
 
 USES=		pkgconfig pathfix gmake
 PATHFIX_MAKEFILEIN=	Makefile

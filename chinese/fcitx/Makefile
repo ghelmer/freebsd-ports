@@ -3,8 +3,8 @@
 
 PORTNAME=	fcitx
 PORTVERSION=	4.2.6.1
+PORTREVISION=	4
 CATEGORIES=	chinese x11
-PORTREVISION=	3
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		pinyin.tar.gz table.tar.gz en_dict-${_DICT_VER}.tar.gz
@@ -12,7 +12,7 @@ DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	lichray@gmail.com
-COMMENT=	A Flexible Input Method Framework
+COMMENT=	Flexible Input Method Framework
 
 LICENSE=	GPLv2
 
@@ -27,11 +27,10 @@ SUB_LIST+=	PORTSDIR=${PORTSDIR}
 
 CONFLICTS=	zh-scim-fcitx-3.*
 
-USE_XZ=		yes
 USE_GNOME=	pango intltool libxml2 introspection
 USE_XORG=	x11 xext xkbfile
 USE_LDCONFIG=	yes
-USES=		cmake desktop-file-utils gettext iconv pathfix pkgconfig shared-mime-info
+USES=		tar:xz cmake desktop-file-utils gettext iconv pathfix pkgconfig shared-mime-info
 INSTALLS_ICONS=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	tuxguitar
 PORTVERSION=	1.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio java
 MASTER_SITES=	SF/${PORTNAME}/TuxGuitar/TuxGuitar-${PORTVERSION}:src \
 		${MASTER_SITE_LOCAL}/gahr/:fluid \
@@ -28,7 +28,7 @@ LIB_DEPENDS=	libfluidsynth.so:${PORTSDIR}/audio/fluidsynth \
 MAKE_ENV+=	PREFIX=${PREFIX} INSTALL_DOC_DIR=${DOCSDIR} \
 		INSTALL_SHARE_DIR=${DATADIR}
 
-USES=		gmake pkgconfig
+USES=		desktop-file-utils gmake pkgconfig
 USE_JAVA=	yes
 USE_ANT=	yes
 WITH_GECKO=	libxul
@@ -59,7 +59,10 @@ post-patch:
 	${FIND} ${WRKSRC}/.. -name GNUmakefile | ${XARGS} ${REINPLACE_CMD} -e '\
 	    s|-I$$(shell gcj -print-file-name=include/)|-I${JAVA_HOME}/include \
 	    -I${JAVA_HOME}/include/freebsd -I${LOCALBASE}/include|; \
-	    s|LDFLAGS\?=.*|LDFLAGS?=-L${LOCALBASE}/lib|'
+	    s|-I $$(shell $$(GCJ) -print-file-name=include/)|-I${JAVA_HOME}/include \
+	    -I${JAVA_HOME}/include/freebsd -I${LOCALBASE}/include|; \
+	    s|LDFLAGS\?=.*|LDFLAGS+=-L${LOCALBASE}/lib|; \
+	    s|CFLAGS\?=|CFLAGS+=|'
 	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g; \
 	    s|%%PREFIX%%|${PREFIX}|g; \
 	    s|%%JAVAJARDIR%%|${JAVAJARDIR}|g; \
@@ -73,9 +76,9 @@ post-build:
 	(cd ${WRKSRC}/../TuxGuitar-${p}; \
 	    ${SETENV} ${MAKE_ENV} ${ANT} ${MAKE_ARGS} ${ALL_TARGET})
 .endfor
-	cd ${WRKSRC}/../TuxGuitar-oss/jni && ${GMAKE}
-	cd ${WRKSRC}/../TuxGuitar-fluidsynth/jni && ${GMAKE}
-	cd ${WRKSRC}/../TuxGuitar-jack/jni && ${GMAKE}
+	cd ${WRKSRC}/../TuxGuitar-oss/jni && ${SETENV} ${MAKE_ENV} ${MAKE_CMD}
+	cd ${WRKSRC}/../TuxGuitar-fluidsynth/jni && ${SETENV} ${MAKE_ENV} ${MAKE_CMD}
+	cd ${WRKSRC}/../TuxGuitar-jack/jni && ${SETENV} ${MAKE_ENV} ${MAKE_CMD}
 
 do-install:
 	@${INSTALL} -d ${STAGEDIR}${DATADIR}
@@ -85,8 +88,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/tuxguitar.jar ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/../misc/*.tg ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKDIR}/8MBGMSFX.SF2 ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/../TuxGuitar-oss/jni/libtuxguitar-oss-jni.so ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${WRKSRC}/../TuxGuitar-fluidsynth/jni/libtuxguitar-fluidsynth-jni.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_PROGRAM} ${WRKSRC}/../TuxGuitar-oss/jni/libtuxguitar-oss-jni.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_PROGRAM} ${WRKSRC}/../TuxGuitar-fluidsynth/jni/libtuxguitar-fluidsynth-jni.so ${STAGEDIR}${PREFIX}/lib
 .for p in ${PLUGINS}
 	${INSTALL_DATA} ${WRKSRC}/../TuxGuitar-${p}/tuxguitar-${p}.jar ${STAGEDIR}${DATADIR}/plugins
 .endfor

@@ -11,7 +11,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}-data-${DATAVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	A game similar to GNU Arcade Volleyball
+COMMENT=	Game similar to GNU Arcade Volleyball
 
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes
@@ -39,7 +39,7 @@ post-configure:
 
 post-install:
 	cd ${WRKDIR}/${PORTNAME}-data-${DATAVERSION} && \
-		${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/
 

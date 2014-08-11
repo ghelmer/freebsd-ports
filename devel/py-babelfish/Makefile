@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	babelfish
-PORTVERSION=	0.4.0
+PORTVERSION=	0.5.3
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,14 +10,10 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	wg@FreeBSD.org
 COMMENT=	Module to work with countries and languages
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
+USE_PYDISTUTILS=	yes
 PYDISTUTILS_AUTOPLIST=	yes
-
-post-patch:
-	@${REINPLACE_CMD} "s/.com',/.com', zip_safe=False,/" \
-		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

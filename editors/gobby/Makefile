@@ -2,31 +2,29 @@
 
 PORTNAME=	gobby
 PORTVERSION=	0.4.13
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	http://releases.0x539.de/gobby/ \
 		LOCAL/${MAINTAINER:C/([^@]*)@.*/\1/}
 
 MAINTAINER=	sbz@FreeBSD.org
-COMMENT=	A free collaborative editor
+COMMENT=	Free collaborative editor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	obby-0.4.1:${PORTSDIR}/devel/obby \
-		net6-1.3.0:${PORTSDIR}/net/net6 \
-		xml++-2.6.2:${PORTSDIR}/textproc/libxml++26 \
-		gtkmm-2.4.1:${PORTSDIR}/x11-toolkits/gtkmm24
+LIB_DEPENDS=	libobby.so:${PORTSDIR}/devel/obby \
+		libnet6-1.3.so:${PORTSDIR}/net/net6 \
+		libxml++-2.6.so:${PORTSDIR}/textproc/libxml++26 \
+		libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24
 
 OPTIONS_DEFINE=	GTKSPELL NLS
 GTKSPELL_DESC=	Enable GtkSpell support
 
-USE_GNOME=	gnomehack gtksourceview2 intltool
-USES=		gmake pkgconfig
+USE_GNOME=	gtksourceview2 intltool
+USES=		gmake pkgconfig pathfix
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 
-MAN1=		${PORTNAME}.1
-
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTKSPELL}

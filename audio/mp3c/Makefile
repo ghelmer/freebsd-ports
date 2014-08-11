@@ -11,17 +11,13 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}:src \
 EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	joris@vandalon.nl
-COMMENT=	A CD to mp3c converter with a console frontend
+COMMENT=	CD to mp3c converter with a console frontend
 
 RUN_DEPENDS=	mp3info:${PORTSDIR}/audio/mp3info \
 		cdrecord:${PORTSDIR}/sysutils/cdrtools
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	"--prefix=${PREFIX}"
-
-NO_STAGE=	yes
-MAN1=		mp3c.1
-MANCOMPRESSED=	no
 
 OPTIONS_DEFINE=	NLS
 
@@ -40,6 +36,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/dev/cdrom|/dev/acd0|g' ${WRKSRC}/src/conf.c
 
 post-install:
-	${INSTALL_SCRIPT} ${DISTDIR}/cdrip.sh ${LOCALBASE}/bin
+	${INSTALL_SCRIPT} ${DISTDIR}/cdrip.sh ${STAGEDIR}${LOCALBASE}/bin
 
 .include <bsd.port.mk>

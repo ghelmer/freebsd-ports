@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	herbstluftwm
-PORTVERSION=	0.5.3
-PORTREVISION=	1
+PORTVERSION=	0.6.2
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://herbstluftwm.org/tarballs/
 
@@ -13,7 +12,8 @@ LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig shebangfix
+SHEBANG_FILES=scripts/*.sh
 USE_XORG=	x11 xinerama
 USE_GNOME=	glib20
 
@@ -22,27 +22,12 @@ MAKE_ARGS=	PREFIX=${PREFIX} SYSCONFDIR=${PREFIX}/etc \
 		MANDIR=${PREFIX}/man
 
 OPTIONS_DEFINE=	BASH ZSH DOCS EXAMPLES
+OPTIONS_SUB=	yes
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MBASH}
-PLIST_SUB+=	BASH=""
-.else
-PLIST_SUB+=	BASH="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MZSH}
-PLIST_SUB+=	ZSH=""
-.else
-PLIST_SUB+=	ZSH="@comment "
-.endif
-
 post-patch:
-	${REINPLACE_CMD} -e '/-[LI]\/usr/s,/usr,${LOCALBASE},' \
-		${WRKSRC}/config.mk
 	${REINPLACE_CMD} -e '/LICENSEDIR/d' ${WRKSRC}/Makefile
-	${GREP} -Rl --null '^#!/bin/bash' ${WRKSRC} | ${XARGS} -0 \
-		${REINPLACE_CMD} -e 's,/bin/bash,/usr/bin/env bash,'
 .if ! ${PORT_OPTIONS:MBASH}
 	${REINPLACE_CMD} -e '/BASHCOMPLETIONDIR/d' ${WRKSRC}/Makefile
 .endif

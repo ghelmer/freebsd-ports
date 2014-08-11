@@ -4,6 +4,7 @@
 
 PORTNAME=	librsvg
 PORTVERSION=	2.36.4
+PORTREVISION=	2
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
@@ -12,16 +13,14 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library for parsing and rendering SVG vector-graphic files
 
-LIB_DEPENDS=	freetype:${PORTSDIR}/print/freetype2 \
-		croco-0.6:${PORTSDIR}/textproc/libcroco
+LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libcroco-0.6.so:${PORTSDIR}/textproc/libcroco
 RUN_DEPENDS=	gtk-engines2>=2.7.5_1:${PORTSDIR}/x11-themes/gtk-engines2
 
-USE_XZ=		yes
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	libtool
-USE_GNOME=	gnomehier gnomeprefix libgsf ltverhack gtk20 \
-		introspection:build
-USES=		gettext gmake pathfix pkgconfig
+GNU_CONFIGURE=	yes
+USE_GNOME=	gnomehier gnomeprefix libgsf gtk20 introspection:build
+USES=		gettext gmake libtool:keepla pathfix pkgconfig tar:xz
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-svgz \

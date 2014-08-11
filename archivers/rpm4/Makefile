@@ -3,6 +3,7 @@
 
 PORTNAME=	rpm
 PORTVERSION=	4.11.2
+PORTREVISION=	1
 CATEGORIES=	archivers
 MASTER_SITES=	http://rpm.org/releases/rpm-${PORTVERSION:R}.x/ \
 		ftp://ftp.mirrorservice.org/sites/ftp.rpm.org/pub/rpm/dist/rpm-${PORTVERSION:E}.x/
@@ -22,11 +23,9 @@ PYTHON_CONFIGURE_ENABLE=python
 PYTHON_USE=	PYTHON=yes
 NLS_CONFIGURE_ENABLE=nls
 NLS_USES=	gettext
+PORTDOCS=	*
 
-USES=		gmake shebangfix
-USE_AUTOTOOLS=	libtool
-USE_BZIP2=	yes
-USE_LUA=	5.1+
+USES=		gmake libtool lua:51 pathfix shebangfix tar:bzip2
 USE_BDB=	46+
 INVALID_BDB_VER=51
 GNU_CONFIGURE=	yes
@@ -52,13 +51,14 @@ CONFIGURE_ARGS+=--with-external-db \
 		--with-popt-prefix="${LOCALBASE}" \
 		--sysconfdir=${PREFIX}/etc \
 		--localstatedir=/var \
-		--without-javaglue \
-		LUA_CFLAGS=-I${LUA_INCDIR} \
+		--without-javaglue
+CONFIGURE_ENV+=	LUA_CFLAGS=-I${LUA_INCDIR} \
 		LUA_LIBS="-L${LUA_LIBDIR} -llua-${LUA_VER} -lm"
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
 post-patch:
-	${REINPLACE_CMD} -e '/^pkgconfigdir/s:/:data/:' \
+	${REINPLACE_CMD} \
+		-e '/_LDADD =/s/=/= @LTLIBINTL@/' \
 		-e 's:\.\./\.\./bin/::' ${WRKSRC}/Makefile.in
 	${REINPLACE_CMD} -e 's/(hpux)/& || defined(__FreeBSD__)/' \
 		${WRKSRC}/misc/fts.?

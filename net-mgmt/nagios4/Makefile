@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	nagios
-PORTVERSION=	4.0.4
-PORTREVISION=	1
-PKGNAMESUFFIX=	4
+PORTVERSION=	4.0.7
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-4.x/${PORTNAME}-${PORTVERSION}
+PKGNAMESUFFIX=	4
 
 MAINTAINER=	mat@FreeBSD.org
 COMMENT=	Powerful network monitoring system
@@ -21,7 +20,7 @@ USE_AUTOTOOLS=	autoconf libltdl
 USE_PHP=	xml
 USE_RC_SUBR=	nagios
 
-CONFLICTS=	nagios-[12].* nagios-devel-*
+CONFLICTS=	nagios-[123].* nagios-devel-*
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \
@@ -40,26 +39,26 @@ CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \
 		--with-checkresult-dir=${NAGIOSDIR}/checkresults \
 		--disable-statuswrl \
 		--enable-event-broker
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib" \
-		PERL=${PERL}
+CONFIGURE_ENV=	PERL=${PERL}
 
-CPPFLAGS+=	-I${LOCALBASE}/include -fPIC
+CPPFLAGS+=	-I${LOCALBASE}/include
 CFLAGS+=	${CPPFLAGS}
+LIBS+=		-L${LOCALBASE}/lib
 
 INSTALL_TARGET=	install install-commandmode install-config
 PLIST_SUB=	NAGIOSDIR=${NAGIOSDIR} \
 		NAGIOSWWWDIR=${NAGIOSWWWDIR} \
 		NAGIOSUSER=${NAGIOSUSER} \
 		NAGIOSGROUP=${NAGIOSGROUP} \
-		NAGIOSHTMURL=${NAGIOSHTMURL} \
-		NAGIOSCGIURL=${NAGIOSCGIURL} \
 		WWWGRP=${WWWGRP}
+SUB_LIST=	NAGIOSDIR=${NAGIOSDIR} \
+		NAGIOSWWWDIR=${PREFIX}/${NAGIOSWWWDIR} \
+		NAGIOSUSER=${NAGIOSUSER} \
+		NAGIOSGROUP=${NAGIOSGROUP} \
+		NAGIOSHTMURL=${NAGIOSHTMURL} \
+		NAGIOSCGIURL=${NAGIOSCGIURL}
 
 SUB_FILES=	pkg-message
-
-# XXX: Don't remove PREFIX from SUB_LIST here.
-SUB_LIST=	PREFIX=${PREFIX} \
-		${PLIST_SUB}
 
 NAGIOSUSER?=	nagios
 NAGIOSGROUP?=	nagios

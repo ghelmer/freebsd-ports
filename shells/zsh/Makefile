@@ -3,6 +3,7 @@
 
 PORTNAME=	zsh
 PORTVERSION=	5.0.5
+PORTREVISION=	1
 CATEGORIES=	shells
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION} \
 		SF/${PORTNAME}/${PORTNAME}-doc/${PORTVERSION}:doc
@@ -23,8 +24,9 @@ ZSH_VER=	${PORTVERSION}
 USES=		iconv ncurses tar:bzip2
 GNU_CONFIGURE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include -DBOOL_DEFINED
 LDFLAGS+=	-L${LOCALBASE}/lib
+CONFIGURE_ENV+=	zsh_cv_sys_path_dev_fd=no
 CONFIGURE_ARGS=	--with-term-lib="ncursesw ncurses" --with-tcsetpgrp \
 		--enable-function-subdirs
 
@@ -63,8 +65,13 @@ STATIC_CONFIGURE_ON=	--disable-dynamic
 STATIC_CONFIGURE_OFF=	--enable-dynamic
 DEBUG_CONFIGURE_ENABLE=	zsh-debug
 MULTIBYTE_CONFIGURE_ENABLE=	multibyte
+DOCS_USES=		makeinfo
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
+
+.if empty(ICONV_LIB)
+CONFIGURE_ENV+=	ac_cv_lib_iconv_libiconv=no
+.endif
 
 .if ${PORT_OPTIONS:MDOCS}
 INFO=	zsh
@@ -116,7 +123,8 @@ post-install:
 .endif
 	${STAGEDIR}${PREFIX}/bin/zsh -fc ' \
 		setopt extendedglob nomark_dirs; \
-		for i in ${STAGEDIR}${DATADIR}/${ZSH_VER}/functions/**/*(/) ; do \
+		cd ${STAGEDIR}/${DATADIR}/${ZSH_VER} ; \
+		for i in functions/**/*(/) ; do \
 			zcompile -U -M $$i.zwc $$i/*~*.zwc(^/) ; \
 			${CHMOD} 644 $$i.zwc ; \
 		done'
@@ -124,6 +132,4 @@ post-install:
 regression-test:
 	@cd ${WRKSRC}; ${SETENV} -i ${MAKE} check
 
-
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

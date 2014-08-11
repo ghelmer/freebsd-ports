@@ -2,15 +2,16 @@
 
 PORTNAME=	cvs
 PORTVERSION=	1.20120905
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/eadler
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version control system
 
 LICENSE=	GPLv2
 
-USES=		uidfix tar:xz
+USES=		makeinfo tar:xz uidfix
 WRKSRC=		${WRKDIR}/call/cvs-build
 INFO=		cvs cvsclient
 

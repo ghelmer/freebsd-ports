@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libetonyek
-PORTVERSION=	0.0.3
-PORTREVISION=	1
+PORTVERSION=	0.0.4
 CATEGORIES=	graphics
 MASTER_SITES=	http://dev-www.libreoffice.org/src/
 
@@ -22,10 +21,10 @@ OPTIONS_DEFINE=	DOCS TEST
 CONFIGURE_ARGS=	--disable-werror
 CPPFLAGS+=	-I${LOCALBASE}/include
 
-USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USE_XZ=		yes
-USES=		gmake libtool pkgconfig pathfix
+USES=		gmake libtool:keepla pathfix pkgconfig tar:xz
+USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 PORTDOCS=	*
 DOCS_BUILD_DEPENDS=	doxygen:${PORTSDIR}/devel/doxygen
@@ -37,7 +36,7 @@ TEST_CONFIGURE_OFF=	--disable-tests
 
 .if ${PORT_OPTIONS:MTEST}
 post-build:
-	@cd ${WRKSRC}/src/test && ${GMAKE} check
+	@cd ${WRKSRC}/src/test && ${MAKE_CMD} check
 .endif
 
 .include <bsd.port.mk>

@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	pypy
-DISTVERSION=	2.3-alpha${DATE}
+DISTVERSION=	2.3.1
 PORTREVISION=	1
 CATEGORIES=	lang python
-MASTER_SITES=	https://bitbucket.org/pypy/pypy/get/ LOCAL/dbn/${PORTNAME}
+MASTER_SITES=	https://bitbucket.org/pypy/pypy/get/ LOCAL/dbn/pypy
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${COMMIT}
-DIST_SUBDIR=	${PORTNAME}
+DISTNAME=	release-${DISTVERSION}
+DIST_SUBDIR=	pypy
 
 MAINTAINER=	dbn@FreeBSD.org
 COMMENT=	Fast, compliant implementation of the Python language
@@ -41,14 +41,11 @@ CONFLICTS_INSTALL=	pypy-[0-9]*
 
 ALL_TARGET=	${PYPY_NAMES}
 BUILD_WRKSRC=	${WRKDIR}
-COMMIT=		92ff43b19372
-DATE=		20131216
-USE_BZIP2=	yes
-USES=		compiler:c11 gettext iconv
+USES=		compiler:c11 gettext iconv tar:bzip2
 MAKEFILE=	${FILESDIR}/Makefile
 PKGINSTALL=	${WRKDIR}/pkg-install
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
-WRKSRC=		${WRKDIR}/pypy-pypy-${COMMIT}
+WRKSRC=		${WRKDIR}/pypy-pypy-32f35069a16d
 
 PYPY_VER=	${DISTVERSION:C|([0-9])\.([0-9]).*|\1.\2|}
 PYTHON_IMPL_VER=	2.7
@@ -266,9 +263,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/${name} ${STAGEDIR}${PREFIX}/bin/${name}-${PYPY_VER}
 	${ECHO} bin/${name}-${PYPY_VER} >> ${TMPPLIST}
 .endfor
-
-post-install:
-	${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
 
 test: patch
 .for inst in ${PYPY_INST}

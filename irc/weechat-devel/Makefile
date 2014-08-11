@@ -11,7 +11,7 @@ DISTNAME=	weechat-devel-${GITREV}
 DISTFILES=	${DISTNAME}.txz
 
 MAINTAINER=	jase@FreeBSD.org
-COMMENT=	A lightweight and user friendly ncurses based IRC client
+COMMENT=	Lightweight and user friendly ncurses based IRC client
 
 LICENSE=	GPLv3
 
@@ -122,7 +122,7 @@ PLIST_SUB+=	TCL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MLUA}
-USE_LUA=	5.1+
+USES+=		lua:51
 CMAKE_ARGS+=	-DBSD_LUA_LIBDIR=${LUA_LIBDIR} \
 		-DBSD_LUA_INCDIR=${LUA_INCDIR}
 PLIST_SUB+=	LUA=""

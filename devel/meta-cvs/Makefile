@@ -7,9 +7,12 @@ CATEGORIES=	devel
 MASTER_SITES=	http://common-lisp.net/project/meta-cvs/downloads/
 
 MAINTAINER=	gahr@FreeBSD.org
-COMMENT=	A more capable version control system than CVS, built around CVS
+COMMENT=	More capable version control system than CVS, built around CVS
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Depends on deprecated lang/clisp
+EXPIRATION_DATE=	2014-07-28
 
 BUILD_DEPENDS=	clisp:${PORTSDIR}/lang/clisp \
     		lndir:${PORTSDIR}/devel/lndir
@@ -36,7 +39,7 @@ post-patch:
 #	http://svnweb.freebsd.org/base/head/lib/libc/libc.ldscript?revision=251668&view=markup
 	rep=$$(${BASENAME} $$(${LDCONFIG} -r | ${AWK} '/libc.so/ { print $$3 }')); \
 	    ${REINPLACE_CMD} -e "s|libc.so.6|$$rep|" ${WRKSRC}/code/clisp-ffi.lisp
-	${REINPLACE_CMD} -e '232s|make|${GMAKE}|g' ${WRKSRC}/configure
+	${REINPLACE_CMD} -e '232s|make|${MAKE_CMD}|g' ${WRKSRC}/configure
 	${REINPLACE_CMD} -e 's|type -P|which|g;s|$$(prefix)/lib|${DATADIR}|g' ${WRKSRC}/Makefile
 
 .if ${PORT_OPTIONS:MDOCS}

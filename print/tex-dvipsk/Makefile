@@ -2,7 +2,7 @@
 
 PORTNAME=	dvipsk
 PORTVERSION=	5.992
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2012/
 PKGNAMEPREFIX=	tex-
@@ -17,10 +17,9 @@ COMMENT=	Convert a TeX DVI file to PostScript
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	paper:${PORTSDIR}/print/libpaper
+LIB_DEPENDS=	libpaper.so:${PORTSDIR}/print/libpaper
 
-USE_XZ=		yes
-USE_GMAKE=	yes
+USES=		gmake tar:xz
 USE_TEX=	texlive kpathsea web2c texmf texhash
 TEXHASHDIRS=	${TEXMFDISTDIR} ${TEXMFDIR}
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	onenetd
-PORTVERSION=	1.11
+PORTVERSION=	12
 CATEGORIES=	net
 MASTER_SITES=	http://offog.org/files/ \
-		ftp://ftp.i-scream.org/pub/offog.org/files/ \
 		http://ftp.i-scream.org/pub/offog.org/files/
 
 MAINTAINER=	tdb@FreeBSD.org

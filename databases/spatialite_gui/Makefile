@@ -3,11 +3,14 @@
 
 PORTNAME=	spatialite_gui
 PORTVERSION=	1.7.1
+PORTREVISION=	2
 CATEGORIES=	databases geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
 MAINTAINER=	coder@tuxfamily.org
 COMMENT=	Graphical User Interface (GUI) tool supporting SpatiaLite
+
+LICENSE=	GPLv3
 
 LIB_DEPENDS=	libgaiagraphics.so:${PORTSDIR}/graphics/libgaiagraphics \
 		libfreexl.so:${PORTSDIR}/textproc/freexl \
@@ -27,5 +30,4 @@ USE_LDCONFIG=	yes
 
 PLIST_FILES=	bin/spatialite_gui
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -10,14 +10,14 @@ MASTER_SITES=	\
 		http://www.mavetju.org/download/adopted/:tapes \
 		ftp://ftp.komkon.org/pub/EMUL8/P2000/Tapes/:tapes \
 		http://www.mavetju.org/download/adopted/:code
-DISTFILES=	${PORTNAME:U}${EXTRACT_SUFX}:code \
+DISTFILES=	${PORTNAME:tu}${EXTRACT_SUFX}:code \
 		tapeconv.zip:code \
 		${M2000TAPES:S/$/.gz:tapes/}
 DIST_SUBDIR=	m2000
-EXTRACT_ONLY=	${PORTNAME:U}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${PORTNAME:tu}${EXTRACT_SUFX}
 
 MAINTAINER=	edwin@mavetju.org
-COMMENT=	A portable emulator for the Philips P2000 home computer
+COMMENT=	Portable emulator for the Philips P2000 home computer
 
 EXTRACT_DEPENDS=${UNZIP_CMD}:${PORTSDIR}/archivers/unzip
 
@@ -46,7 +46,6 @@ USE_XORG=	x11 xi
 SUB_FILES=	m2000.sh
 PORTDOCS=	M2000.txt
 
-NO_STAGE=	yes
 post-extract:
 	${MKDIR} ${WRKDIR}/tapeconv
 	${UNZIP_CMD} ${DISTDIR}/${DIST_SUBDIR}/tapeconv.zip -d ${WRKDIR}/tapeconv
@@ -56,20 +55,20 @@ post-build:
 	${CC} -o ${WRKDIR}/tapeconv/PCM2CAS ${WRKDIR}/tapeconv/PCM2CAS.c
 
 do-install:
-	@${INSTALL_SCRIPT} ${WRKDIR}/m2000.sh ${PREFIX}/bin/m2000
-	@${INSTALL_PROGRAM} ${WRKDIR}/tapeconv/PCM2CAS ${PREFIX}/bin/tapeconv
-	@${MKDIR} ${PREFIX}/share/m2000/
-	@${INSTALL_PROGRAM} ${WRKSRC}/m2000 ${DATADIR}
-	@${INSTALL_DATA} ${WRKSRC}/P2000ROM.bin ${DATADIR}
-	@${INSTALL_DATA} ${WRKSRC}/Default.fnt ${DATADIR}
-	@${INSTALL_DATA} ${WRKSRC}/BASIC.bin ${DATADIR}
+	@${INSTALL_SCRIPT} ${WRKDIR}/m2000.sh ${STAGEDIR}${PREFIX}/bin/m2000
+	@${INSTALL_PROGRAM} ${WRKDIR}/tapeconv/PCM2CAS ${STAGEDIR}${PREFIX}/bin/tapeconv
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/m2000/
+	@${INSTALL_PROGRAM} ${WRKSRC}/m2000 ${STAGEDIR}${DATADIR}
+	@${INSTALL_DATA} ${WRKSRC}/P2000ROM.bin ${STAGEDIR}${DATADIR}
+	@${INSTALL_DATA} ${WRKSRC}/Default.fnt ${STAGEDIR}${DATADIR}
+	@${INSTALL_DATA} ${WRKSRC}/BASIC.bin ${STAGEDIR}${DATADIR}
 .if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/M2000.txt ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/M2000.txt ${STAGEDIR}${DOCSDIR}
 .endif
 .for f in ${M2000TAPES}
 	@${GZCAT} ${DISTDIR}/${DIST_SUBDIR}/${f}.gz > ${WRKDIR}/${f}
-	@${INSTALL_DATA} ${WRKDIR}/${f} ${DATADIR}
+	@${INSTALL_DATA} ${WRKDIR}/${f} ${STAGEDIR}${DATADIR}
 .endfor
 
 post-install:

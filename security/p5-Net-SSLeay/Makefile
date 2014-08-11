@@ -2,13 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	Net-SSLeay
-PORTVERSION=	1.58
+PORTVERSION=	1.64
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 interface to SSL
+
+LICENSE=	OpenSSL
 
 TEST_DEPENDS=	p5-Test-Exception>=0:${PORTSDIR}/devel/p5-Test-Exception \
 		p5-Test-NoWarnings>=0:${PORTSDIR}/devel/p5-Test-NoWarnings \
@@ -26,8 +28,9 @@ PORTEXAMPLES=	*
 SHEBANG_FILES=	examples/*.pl
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
-	${INSTALL_SCRIPT} ${WRKSRC}/examples/*.pl ${STAGEDIR}${EXAMPLESDIR}/
+	${STRIP_CMD} ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto/Net/SSLeay/SSLeay.so
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/examples/*.pl ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/req.conf ${STAGEDIR}${EXAMPLESDIR}/req.conf
 
 .include <bsd.port.mk>

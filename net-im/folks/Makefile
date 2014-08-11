@@ -18,12 +18,10 @@ LIB_DEPENDS=	gee:${PORTSDIR}/devel/libgee06 \
 IGNORE=		Doesn't build currently, missing components
 CONFLICTS=	folks-0.4.[0-9]*
 
-USE_XZ=		yes
 USE_AUTOTOOLS=	libtool
 USE_LDCONFIG=	yes
-USE_GMAKE=	yes
 USE_GNOME=	gnomehier gnomehack intlhack ltverhack evolutiondataserver3
-USES=		gettext
+USES=		gettext gmake tar:xz
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -41,7 +39,6 @@ PLIST_SUB=	LIBVER=25 VERSION=33
 CONFIGURE_ARGS+=--enable-libsocialweb-backend=no
 #.endif
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|^build_old_libs=yes|build_old_libs=no|g' \
 		${WRKDIR}/gnome-libtool

@@ -14,7 +14,7 @@ COMMENT=	Small, compilable scripting language providing easy access to C code
 LICENSE=	MIT
 
 LUA_VER=	5.2
-USES=		pkgconfig readline
+USES=		readline
 USE_LDCONFIG=	yes
 
 # Overriding __MAKE_CONF makes sure that we don't re-parse
@@ -28,7 +28,7 @@ MAKE_ARGS=	__MAKE_CONF=${NONEXISTENT}
 # so that applications need not second-guess lua's dependencies.
 LDFLAGS+=	-lm -pthread
 BUILD_WRKSRC=	${WRKSRC}/src
-MAKE_ARGS+=	MYCFLAGS="${CFLAGS} -DLUA_USE_LINUX" \
+MAKE_ARGS+=	MYCFLAGS="${CFLAGS} ${CPPFLAGS} -DLUA_USE_LINUX" \
 		MYLDFLAGS="${LDFLAGS} -Wl,-E -lreadline" \
 		CC="${CC}" \
 		LUA_T=lua52 \

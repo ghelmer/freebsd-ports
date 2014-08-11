@@ -3,14 +3,10 @@ bin/ods-hsmutil
 bin/ods-kaspcheck
 bin/ods-ksmutil
 bin/ods-kasp2html
-@unexec if cmp -s %D/etc/opendnssec/addns.xml %D/etc/opendnssec/addns.xml.sample; then rm -f %D/etc/opendnssec/addns.xml; fi
-%%ETCDIR%%/addns.xml.sample
-@unexec if cmp -s %D/etc/opendnssec/conf.xml %D/etc/opendnssec/conf.xml.sample; then rm -f %D/etc/opendnssec/conf.xml; fi
-%%ETCDIR%%/conf.xml.sample
-@unexec if cmp -s %D/etc/opendnssec/kasp.xml %D/etc/opendnssec/kasp.xml.sample; then rm -f %D/etc/opendnssec/kasp.xml; fi
-%%ETCDIR%%/kasp.xml.sample
-@unexec if cmp -s %D/etc/opendnssec/zonelist.xml %D/etc/opendnssec/zonelist.xml.sample; then rm -f %D/etc/opendnssec/zonelist.xml; fi
-%%ETCDIR%%/zonelist.xml.sample
+@sample %%ETCDIR%%/addns.xml.sample
+@sample %%ETCDIR%%/conf.xml.sample
+@sample %%ETCDIR%%/kasp.xml.sample
+@sample %%ETCDIR%%/zonelist.xml.sample
 sbin/ods-control
 sbin/ods-enforcerd
 sbin/ods-signer
@@ -26,22 +22,44 @@ sbin/ods-signerd
 %%DATADIR%%/kasp.rnc
 %%DATADIR%%/kasp.rng
 %%DATADIR%%/kasp2html.xsl
+%%SQLITE%%%%DATADIR%%/migrate_adapters_1.sqlite3
+%%SQLITE%%%%DATADIR%%/migrate_keyshare_sqlite3.pl
+%%SQLITE%%%%DATADIR%%/migrate_to_ng_sqlite.pl
+%%MYSQL%%%%DATADIR%%/migrate_adapters_1.mysql
+%%MYSQL%%%%DATADIR%%/migrate_keyshare_mysql.pl
+%%MYSQL%%%%DATADIR%%/migrate_zone_delete.mysql
+%%MYSQL%%%%DATADIR%%/migrate_id_mysql.pl
+%%MYSQL%%%%DATADIR%%/migrate_to_ng_mysql.pl
 %%DATADIR%%/signconf.rnc
 %%DATADIR%%/signconf.rng
 %%DATADIR%%/zonelist.rnc
 %%DATADIR%%/zonelist.rng
+man/man1/ods-hsmspeed.1.gz
+man/man1/ods-hsmutil.1.gz
+man/man1/ods-ksmutil.1.gz
+man/man1/ods-kaspcheck.1.gz
+man/man5/ods-timing.5.gz
+man/man7/opendnssec.7.gz
+man/man8/ods-control.8.gz
+man/man8/ods-enforcerd.8.gz
+man/man8/ods-signer.8.gz
+man/man8/ods-signerd.8.gz
+@owner opendnssec
+@group opendnssec
+@exec install -d -o opendnssec -g opendnssec %D/var/opendnssec/unsigned
+@exec install -d -o opendnssec -g opendnssec %D/var/opendnssec/tmp
+@exec install -d -o opendnssec -g opendnssec %D/var/opendnssec/signed
+@exec install -d -o opendnssec -g opendnssec %D/var/opendnssec/signconf
 @dirrm var/opendnssec/unsigned
 @dirrm var/opendnssec/tmp
 @dirrm var/opendnssec/signed
 @dirrm var/opendnssec/signconf
 @dirrm var/opendnssec
+@owner root
+@group wheel
 @dirrm %%DATADIR%%
 @dirrm %%ETCDIR%%
 @exec mkdir -p %D/var/run/opendnssec
-@exec mkdir -p %D/var/opendnssec/unsigned
-@exec mkdir -p %D/var/opendnssec/tmp
-@exec mkdir -p %D/var/opendnssec/signed
-@exec mkdir -p %D/var/opendnssec/signconf
 @dirrmtry var/run/opendnssec
 @dirrmtry var/run
 @dirrmtry var

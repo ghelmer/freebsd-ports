@@ -3,7 +3,7 @@
 
 PORTNAME=	cdcollect
 PORTVERSION=	0.6.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	misc gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}_source
 
@@ -13,15 +13,13 @@ COMMENT=	Simple CD catalog for GNOME
 BUILD_DEPENDS=	sqlite3>=3.0:${PORTSDIR}/databases/sqlite3
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
-USES=        pathfix gettext gmake pkgconfig
+USES=		tar:bzip2 pathfix gettext gmake pkgconfig
 USE_GNOME=	gnomeprefix intlhack libgnome gnomesharp20
 GCONF_SCHEMAS=	cdcollect.schemas
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-NO_STAGE=	yes
 post-extract:
 	${REINPLACE_CMD} -e 's,SqliteClient,Sqlite,' \
 	    ${WRKSRC}/src/Makefile.in \

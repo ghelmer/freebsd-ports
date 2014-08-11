@@ -3,13 +3,13 @@
 
 PORTNAME=	rpm
 PORTVERSION=	3.0.6
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	archivers
 MASTER_SITES=	http://rpm5.org/files/rpm/rpm-3.0/ \
 		http://rpm.org/releases/historical/rpm-3.0.x/ \
 		http://www.mirrorservice.org/sites/ftp.rpm.org/pub/rpm/dist/rpm-3.0.x/
 
-MAINTAINER=	sylvio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Red Hat Package Manager
 
 LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt
@@ -18,9 +18,9 @@ OPTIONS_DEFINE=	NLS
 
 CONFLICTS=	rpm-[45].* rpm[45]-*
 
-USES=		gmake shebangfix
+USES=		gmake libtool shebangfix
 SHEBANG_FILES=	scripts/*
-USE_AUTOTOOLS=	automake14 autoconf213 libtool
+USE_AUTOTOOLS=	automake14 autoconf213
 CONFIGURE_ARGS=	--with-glob
 USE_LDCONFIG=	yes
 MAKE_ENV=	OLD_PO_FILE_INPUT=1
@@ -28,7 +28,7 @@ MAKE_ENV=	OLD_PO_FILE_INPUT=1
 OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CPPFLAGS=	-I${LOCALBASE}/include
-NLS_CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib -lintl ${ICONV_LIB}"
+NLS_LIBS=	-L${LOCALBASE}/lib -lintl ${ICONV_LIB}
 NLS_CONFIGURE_ENABLE=	nls
 
 post-patch:

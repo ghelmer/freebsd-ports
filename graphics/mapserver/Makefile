@@ -3,7 +3,7 @@
 
 PORTNAME=		mapserver
 PORTVERSION=		6.4.0
-PORTREVISION=		2
+PORTREVISION=		4
 CATEGORIES=		graphics www geography
 MASTER_SITES=		http://download.osgeo.org/mapserver/
 
@@ -17,6 +17,7 @@ LIB_DEPENDS=		libgd.so:${PORTSDIR}/graphics/gd \
 			libgif.so:${PORTSDIR}/graphics/giflib
 
 USES=			cmake
+USE_GNOME=		libxml2
 LDFLAGS+=		-L${LOCALBASE} -pthread
 CMAKE_ARGS+=		-DCMAKE_PREFIX_PATH=${LOCALBASE} \
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
@@ -24,8 +25,9 @@ CMAKE_ARGS+=		-DCMAKE_PREFIX_PATH=${LOCALBASE} \
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		FRIBIDI CURL GDAL GEOS KML POSTGIS PHP PERL PYTHON \
-			WMS WFS WCS MAPSERV FASTCGI DEBUG CAIRO CAIRO_SVG
-OPTIONS_DEFAULT=	FRIBIDI GDAL GEOS MAPSERV
+			WMS WFS WCS FASTCGI DEBUG CAIRO CAIRO_SVG \
+			CLIENT_WMS CLIENT_WFS
+OPTIONS_DEFAULT=	FRIBIDI GDAL GEOS CLIENT_WMS CLIENT_WFS
 CAIRO_SVG_DESC=		Cairo SVG parser support
 GDAL_DESC=		GDAL library support
 FRIBIDI_DESC=		Fribidi library support
@@ -33,19 +35,8 @@ KML_DESC=		KML support
 WMS_DESC=		WMS Server support
 WFS_DESC=		WFS Server support
 WCS_DESC=               WCS Server support
-MAPSERV_DESC=		Mapserv cgi interface support
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMAPSERV}
-USE_APACHE_RUN=		22+
-PLIST_SUB+=		MAPSERV=""
-PLIST_SUB+=		APA_VER=${APACHE_VERSION}
-PLIST_DIRSTRY=		www/apache${APACHE_VERSION}/cgi-bin
-.else
-PLIST_SUB+=		MAPSERV="@comment "
-.endif
 
 .if ${PORT_OPTIONS:MPYTHON}
 USE_PYTHON=		2
@@ -109,6 +100,7 @@ CMAKE_ARGS+=		-DWITH_WCS=0
 .endif
 
 .if ${PORT_OPTIONS:MGDAL}
+USES+=			iconv
 LIB_DEPENDS+=		libgdal.so:${PORTSDIR}/graphics/gdal
 CMAKE_ARGS+=		-DWITH_GDAL=1
 .else
@@ -172,35 +164,42 @@ CMAKE_ARGS+=		-DCMAKE_BUILD_TYPE=Release
 .endif
 
 PROG_FILES=		legend scalebar shp2img shptree shptreetst shptreevis \
-			sortshp msencrypt tile4ms
+			sortshp msencrypt tile4ms mapserv
+
+.if ${PORT_OPTIONS:MCLIENT_WMS}
+LIB_DEPENDS+=		libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=		libgdal.so:${PORTSDIR}/graphics/gdal
+CMAKE_ARGS+=		-DWITH_CURL=1 -DGDAL=1 -DCLIENT_WMS=1
+.endif
+
+.if ${PORT_OPTIONS:MCLIENT_WFS}
+LIB_DEPENDS+=		libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=		libgdal.so:${PORTSDIR}/graphics/gdal
+CMAKE_ARGS+=		-DWITH_CURL=1 -DGDAL=1 -DCLIENT_WFS=1
+.endif
 
 do-install:
 .for f in ${PROG_FILES}
-	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
-	${INSTALL_PROGRAM} ${WRKSRC}/libmapserver.so.${PORTVERSION} ${PREFIX}/lib
-
-.if ${PORT_OPTIONS:MMAPSERV}
-	${MKDIR} ${LOCALBASE}/www/apache${APACHE_VERSION}/cgi-bin/
-	${INSTALL_SCRIPT} ${WRKSRC}/mapserv ${LOCALBASE}/www/apache${APACHE_VERSION}/cgi-bin/mapserv
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/libmapserver.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
 
 .if ${PORT_OPTIONS:MPHP}
-	@${MKDIR} ${LOCALBASE}/${PHP_EXTENSION_DIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${PHP_EXTENSION_DIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/mapscript/php/php_mapscript.so \
-		${LOCALBASE}/${PHP_EXTENSION_DIR}/
+		${STAGEDIR}${PREFIX}/${PHP_EXTENSION_DIR}/
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-	(cd ${WRKSRC}/mapscript/python && ${CP} mapscript.py _mapscript.so ${PYTHON_SITELIBDIR}/)
+	(cd ${WRKSRC}/mapscript/python && ${CP} mapscript.py _mapscript.so ${STAGEDIR}${PYTHON_SITELIBDIR}/)
 .endif
 
 post-install:
-	@${LN} -s ${PREFIX}/lib/libmapserver.so.6.4.0 ${PREFIX}/lib/libmapserver.so.1
-	@${LN} -s ${PREFIX}/lib/libmapserver.so.1 ${PREFIX}/lib/libmapserver.so
+	@${LN} -s ${PREFIX}/lib/libmapserver.so.6.4.0 ${STAGEDIR}${PREFIX}/lib/libmapserver.so.1
+	@${LN} -s ${PREFIX}/lib/libmapserver.so.1 ${STAGEDIR}${PREFIX}/lib/libmapserver.so
 
 .if ${PORT_OPTIONS:MPHP}
-	@${ECHO_MSG} "Please add the line extension=php_mapscript.so to ${LOCALBASE}/etc/php/extensions.ini"
+	@${ECHO_MSG} "Please add the line extension=php_mapscript.so to ${PREFIX}/etc/php/extensions.ini"
 .endif
 
 .include <bsd.port.mk>

@@ -19,6 +19,8 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	maho@FreeBSD.org
 COMMENT=	An electronic structure programs for high-accuracy computations
 
+BROKEN=		Fails to build
+
 .if exists(${LOCALBASE}/lib/libgoto2.so)
 WITH_BLAS?=     gotoblas
 .elif exists(${LOCALBASE}/lib/libatlas.so)
@@ -88,10 +90,10 @@ pre-configure:
 MAKE_ENV+=	SCRATCH=${WRKSRC}/tmp
 
 do-build:
-	@(cd ${WRKSRC} ; ${SETENV} ${MAKE_ENV} ${GMAKE})
+	@(cd ${WRKSRC} ; ${SETENV} ${MAKE_ENV} ${MAKE_CMD})
 
 do-install:
-	@(cd ${WRKSRC} ; ${SETENV} ${MAKE_ENV} ${GMAKE} install)
+	@(cd ${WRKSRC} ; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} install)
 	@${TAR} cf - -C ${WRKSRC}/tmpdoc/man .  | ${TAR} xf - -C ${PREFIX}/man
 .if !defined(NOPORTDOCS)
 	@${MKDIR} ${PREFIX}/share/doc/psi3

@@ -3,6 +3,7 @@
 
 PORTNAME=	ebook-tools
 PORTVERSION=	0.2.2
+PORTREVISION=	2
 CATEGORIES=	textproc kde
 MASTER_SITES=	SF
 

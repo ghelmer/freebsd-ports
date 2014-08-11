@@ -2,12 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	google-perftools
-PORTVERSION=	2.1
-PORTREVISION=	1
+PORTVERSION=	2.2.1
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE} \
+MASTER_SITES=	https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/ \
 		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	vd/${PORTNAME}
 DISTNAME=	gperftools-${PORTVERSION}
 
 MAINTAINER=	yuri@tsoft.com
@@ -26,12 +24,10 @@ LIB_DEPENDS+=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		compiler
+USES=		compiler libtool
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-lexecinfo
-LDFLAGS+=	-L${LOCALBASE}/lib
-CONFIGURE_ARGS+=LIBS="${LIBS}"
+LIBS+=		-L${LOCALBASE}/lib -lexecinfo
 
 .include <bsd.port.pre.mk>
 

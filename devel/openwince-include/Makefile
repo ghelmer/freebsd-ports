@@ -8,17 +8,9 @@ MASTER_SITES=	SF/openwince/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	openwince-
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A collection of the useful include files for embedded developers
+COMMENT=	Collection of the useful include files for embedded developers
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes
-
-NO_STAGE=	yes
-post-install:
-	@${FIND} -d ${PREFIX}/include/openwince/ -type f | \
-		${SED} -e 's,^${PREFIX}/,,' >> ${TMPPLIST}
-	@${FIND} -d ${PREFIX}/include/openwince/ -type d | \
-		${SED} -e 's,^${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

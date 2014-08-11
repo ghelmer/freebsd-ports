@@ -2,7 +2,7 @@
 # $FreeBSD$
 #    $MCom: ports/multimedia/gstreamer-plugins-ugly/Makefile,v 1.13 2008/03/19 14:05:37 ahze Exp $
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	multimedia
 
 COMMENT=	Ugly gstreamer-plugins
@@ -23,12 +23,12 @@ PLIST=	${.CURDIR}/pkg-plist
 
 do-build:
 .for dir in ${UGLY_GST_DIRS}
-	@(cd ${BUILD_WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET})
+	@(cd ${BUILD_WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET})
 .endfor
 
 do-install:
 .for dir in ${UGLY_GST_DIRS}
-	@(cd ${INSTALL_WRKSRC}/${dir} && ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
+	@(cd ${INSTALL_WRKSRC}/${dir} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
 
 .endfor
 

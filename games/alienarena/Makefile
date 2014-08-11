@@ -3,6 +3,7 @@
 
 PORTNAME=	alienarena
 PORTVERSION=	2013.766
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.linux.kiev.ua/pub/Linux/Gentoo/distfiles/ \
 		http://ftp.jeuxlinux.fr/files/ \
@@ -23,8 +24,8 @@ RUN_DEPENDS=	${DATADIR}/data1/default.cfg:${PORTSDIR}/games/alienarena-data
 USES=		dos2unix gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_WRKSRC=${WRKDIR}/${PORTNAME}-7.66/
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib ${PTHREAD_LIBS}"
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=--with-xf86vm \
 		--with-xf86dga
 
@@ -53,7 +54,7 @@ NO_STAGE=	yes
 .if ${PORT_OPTIONS:MCLIENT}
 USES+=		openal:soft,alut pkgconfig
 LIB_DEPENDS+=	curl:${PORTSDIR}/ftp/curl \
-		freetype.9:${PORTSDIR}/print/freetype2 \
+		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		jpeg.11:${PORTSDIR}/graphics/jpeg \
 		png15:${PORTSDIR}/graphics/png \
 		vorbis.4:${PORTSDIR}/audio/libvorbis

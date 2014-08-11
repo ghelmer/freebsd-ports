@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	monodevelop
-PORTVERSION=	4.2.2
+PORTVERSION=	5.0.1
 CATEGORIES=	devel
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-2
+DISTFILES=	${DISTNAME}-0${EXTRACT_SUFX}
 
 MAINTAINER=	mono@FreeBSD.org
 COMMENT=	IDE for the .NET platform
@@ -15,7 +15,6 @@ RUN_DEPENDS=	${LOCALBASE}/lib/libgdiplus.a:${PORTSDIR}/x11-toolkits/libgdiplus \
 		exctags:${PORTSDIR}/devel/ctags \
 		mautil:${PORTSDIR}/devel/mono-addins
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 USE_GNOME=	gtksharp20 gnomesharp20
 USE_AUTOTOOLS=	libtool
 USE_BZIP2=	yes
@@ -45,5 +44,4 @@ post-patch:
 		${WRKSRC}/monodevelop.in \
 		${WRKSRC}/mdtool.in
 
-.include "${.CURDIR}/../../lang/mono/bsd.mono.mk"
 .include <bsd.port.mk>

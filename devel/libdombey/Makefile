@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdombey
-PORTVERSION=	2.8
+PORTVERSION=	3.7
 CATEGORIES=	devel
 MASTER_SITES=	http://www.mammothcheese.ca/
 
@@ -11,7 +11,7 @@ COMMENT=	SCGI application server in a library
 
 USE_LDCONFIG=	yes
 
-INSTALL_TARGET=STAGEDIR=../stage/ install
+DESTDIRNAME=	STAGEDIR
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	gnash
 PORTVERSION=	0.8.10
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	GNU/${PORTNAME}/${PORTVERSION}/
 
@@ -19,12 +19,10 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
 
 CONFLICTS=	gnash-devel-[0-9]*
 
-USE_BZIP2=	yes
-USES=		gmake pkgconfig
+USES=		tar:bzip2 pkgconfig gmake
 USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
 WANT_SDL=	yes
-WANT_GNOME=	yes
 USE_GCC=	any
 WANT_GSTREAMER=	yes
 USE_GNOME=	libxml2
@@ -123,7 +121,7 @@ CONFIGURE_ARGS+=	--disable-kparts4
 GNASH_GUIS=
 
 .if ${PORT_OPTIONS:MGTK2}
-USE_GNOME=	gtk20 atk gconf2
+USE_GNOME+=	gtk20 atk gconf2
 GNASH_GUIS+=	gtk
 .endif
 
@@ -239,11 +237,11 @@ post-install:
 .if ${PORT_OPTIONS:MPLUGIN}
 .if ${PORT_OPTIONS:MGTK2}
 	cd ${INSTALL_WRKSRC}/plugin && \
-		${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install-plugin
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-plugin
 .endif
 .if ${PORT_OPTIONS:MKDE4}
 	cd ${INSTALL_WRKSRC}/plugin/klash4 && \
-		${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install-plugin
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-plugin
 .endif
 .endif
 

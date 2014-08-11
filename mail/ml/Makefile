@@ -7,14 +7,17 @@ PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	http://ftp.uni-koeln.de/windows/xcontrib/
 
-MAINTAINER=	mjl@luckie.org.nz
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 IMAP client
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 USES=		imake motif
 USE_XORG=	ice sm x11 xext xmu xp xt
 
-NO_STAGE=	yes
+post-patch:
+	@${REINPLACE_CMD} 's,ML_LIBDIR),DESTDIR)$$(&,g' \
+		${WRKSRC}/Imakefile
+
 pre-configure:
 	@${ECHO_MSG} "===>  Building c-client"
 	@( cd ${WRKSRC}/../imap-4; make bsi )

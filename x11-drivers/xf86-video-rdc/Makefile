@@ -3,7 +3,7 @@
 
 PORTNAME=	xf86-video-rdc
 PORTVERSION=	0.9
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11-drivers
 MASTER_SITES=	http://www.SpringDaemons.com/stas/
 
@@ -17,7 +17,7 @@ USE_XORG=	xvmc xf86driproto xextproto x11 glproto
 .include <bsd.port.options.mk>
 
 .if defined(WITH_NEW_XORG)
-IGNORE=         does not build with X server 1.12
+IGNORE=		does not build with X server 1.12
 .endif
 
 NO_STAGE=	yes

@@ -11,20 +11,21 @@ DISTNAME=	${PORTNAME}${WEBFPW_VER}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Webster's Revised Unabridged Dictionary (1913) (EPWING V1 format)
 
-USES=		zip:infozip
+USES=		zip
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/web
 EXTRACT_BEFORE_ARGS=	-qL
 WEBFPW_VER=	1.1.2
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 do-install:
-	${MKDIR} ${PREFIX}/share/dict/web-fpw/web/data
-	${INSTALL_DATA} ${WRKSRC}/web/data/honmon ${PREFIX}/share/dict/web-fpw/web/data
-	${INSTALL_DATA} ${WRKSRC}/catalogs ${PREFIX}/share/dict/web-fpw
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/readme ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/dict/web-fpw/web/data
+	${INSTALL_DATA} ${WRKSRC}/web/data/honmon \
+		${STAGEDIR}${PREFIX}/share/dict/web-fpw/web/data
+	${INSTALL_DATA} ${WRKSRC}/catalogs \
+		${STAGEDIR}${PREFIX}/share/dict/web-fpw
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/readme ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

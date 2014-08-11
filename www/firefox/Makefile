@@ -2,22 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	28.0
+DISTVERSION=	30.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
-MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source
+MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
+		https://ftp.mozilla.org/pub/mozilla.org/${PORTNAME}/candidates/${DISTVERSION}-candidates/build2/source/
 DISTNAME=	${PORTNAME}-${DISTVERSION}.source
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Web browser based on the browser portion of Mozilla
 
 BUILD_DEPENDS=	nspr>=4.10.3:${PORTSDIR}/devel/nspr \
-		nss>=3.15.4:${PORTSDIR}/security/nss \
+		nss>=3.16:${PORTSDIR}/security/nss \
+		soundtouch>=1.7.0:${PORTSDIR}/audio/soundtouch \
 		harfbuzz>=0.9.25:${PORTSDIR}/print/harfbuzz \
+		graphite2>=1.2.4:${PORTSDIR}/graphics/graphite2 \
 		libvorbis>=1.3.4:${PORTSDIR}/audio/libvorbis \
 		opus>=1.1:${PORTSDIR}/audio/opus \
 		libvpx>=1.3.0:${PORTSDIR}/multimedia/libvpx \
-		sqlite3>=3.8.1:${PORTSDIR}/databases/sqlite3 \
+		sqlite3>=3.8.3.1:${PORTSDIR}/databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat \
 		zip:${PORTSDIR}/archivers/zip \
@@ -36,13 +40,12 @@ USE_MOZILLA=	-cairo
 MOZILLA_NAME=	Firefox
 
 WANT_GNOME=	yes
-USE_QT4=	# empty
+USE_QT5=	# empty
 QT_NONSTANDARD=	yes
 ALL_TARGET=	default
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
 USE_GL=		gl
-USES=		dos2unix
+USES=		dos2unix tar:bzip2
 DOS2UNIX_FILES=	media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
 NO_MOZPKGINSTALL=yes
 
@@ -78,6 +81,10 @@ CXXFLAGS+=	-O1
 BUILD_DEPENDS+=	alsa-lib>=1.0.27.2_1:${PORTSDIR}/audio/alsa-lib
 .endif
 
+.if ${PORT_OPTIONS:MGSTREAMER}
+BUILD_DEPENDS+=	gstreamer1-libav>=1.2.4:${PORTSDIR}/multimedia/gstreamer1-libav
+.endif
+
 post-extract:
 	@${SED} -e 's|@FIREFOX_ICON@|${FIREFOX_ICON}|' -e 's|@MOZILLA@|${MOZILLA}|' \
 		-e 's|@MOZILLA_NAME@|${MOZILLA_NAME}|' \
@@ -93,14 +100,9 @@ pre-configure:
 	(cd ${WRKSRC} && ${AUTOCONF})
 	(cd ${WRKSRC}/js/src/ && ${AUTOCONF})
 
-port-pre-install:
-	${ECHO_CMD} 'share/applications/${MOZILLA}.desktop' >> ${PLISTF}
-	${ECHO_CMD} 'share/pixmaps/${FIREFOX_ICON}' >> ${PLISTF}
-
 post-install:
-	${MKDIR} ${PREFIX}/share/pixmaps
-	${INSTALL_DATA} ${WRKDIR}/${MOZILLA}.desktop ${PREFIX}/share/applications/
-	${LN} -sf ${FIREFOX_ICON_SRC} ${PREFIX}/share/pixmaps/${FIREFOX_ICON}
-	@${CAT} ${PKGMESSAGE}
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${INSTALL_DATA} ${WRKDIR}/${MOZILLA}.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	${LN} -sf ${FIREFOX_ICON_SRC} ${STAGEDIR}${PREFIX}/share/pixmaps/${FIREFOX_ICON}
 
 .include <bsd.port.post.mk>

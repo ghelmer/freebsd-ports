@@ -10,20 +10,18 @@ MASTER_SITES=	http://more-cowbell.org/releases/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Elegant music organizer
 
-LIB_DEPENDS=	tag:${PORTSDIR}/audio/taglib
+LIB_DEPENDS=	libtag.so:${PORTSDIR}/audio/taglib
 
-USES=		gmake pathfix gettext iconv pkgconfig
-NO_STAGE=	yes
+BROKEN=		No more public distfiles
+
+USES=		gmake mono pathfix gettext iconv pkgconfig
 USE_GNOME=	gnomeprefix intltool gtksharp20
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-.include <bsd.port.pre.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|.so.*"|.so"|g' ${WRKSRC}/cowbell.exe.config
 
-.include "${PORTSDIR}/lang/mono/bsd.mono.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

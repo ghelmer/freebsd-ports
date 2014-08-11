@@ -14,38 +14,28 @@ COMMENT=	Manage your projects or tasks within GNU Emacs
 RUN_DEPENDS=	xpdf:${PORTSDIR}/graphics/xpdf
 
 USE_EMACS=	yes
-EMACS_PORT_NAME?=	emacs21
 USE_GHOSTSCRIPT_RUN=	yes
 USE_TEX=	latex dvipsk
-
-.if ${EMACS_PORT_NAME} != "emacs21"
-PORTNAMESUFFIX=	${PKGNAMESUFFIX}
-.endif
 
 LISPDIR=	${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
 WRKSRC=		${WRKDIR}/${DISTNAME}a
 
-.if !defined(NOPORTDOCS)
 PORTDOCS=	etasktut.pdf gpl.txt README
-.endif
 
-NO_STAGE=	yes
 do-build:
 	cd ${WRKSRC}; ${EMACS_NAME} -batch -no-site-file\
 			--eval="(add-to-list 'load-path \"${WRKSRC}\")"\
 			-f batch-byte-compile *.el
 
 do-install:
-	${MKDIR} ${LISPDIR}
+	${MKDIR} ${STAGEDIR}${LISPDIR}
 .for i in *.el *.elc
-	${INSTALL_DATA} ${WRKSRC}/${i} ${LISPDIR}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${LISPDIR}
 .endfor
 
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${i} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

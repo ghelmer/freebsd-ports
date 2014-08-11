@@ -3,6 +3,7 @@
 
 PORTNAME=	mate-applets
 PORTVERSION=	1.6.1
+PORTREVISION=	3
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -21,8 +22,7 @@ LIB_DEPENDS=	libgtop-2.0.so:${PORTSDIR}/devel/libgtop \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake pathfix pkgconfig
-USE_XZ=		yes
+USES=		libtool gettext gmake pathfix pkgconfig tar:xz
 USE_MATE=	autogen common:build desktop docutils icontheme intlhack \
 		libmateweather libmatewnck mucharmap panel \
 		polkit settingsdaemon
@@ -32,7 +32,7 @@ USE_GNOME=	gdkpixbuf2 glib20 gnomehier gtk20 introspection:build \
 USE_PYTHON=	yes
 USE_LDCONFIG=	yes
 INSTALLS_OMF=	yes
-USE_AUTOTOOLS=	aclocal:env autoconf:env automake:env libtool libtoolize:env
+USE_AUTOTOOLS=	aclocal:env autoconf:env automake:env libtoolize:env
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--enable-mixer-applet \

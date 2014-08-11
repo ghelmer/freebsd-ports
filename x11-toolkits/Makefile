@@ -27,7 +27,6 @@
     SUBDIR += gal2
     SUBDIR += gal2-reference
     SUBDIR += gdl
-    SUBDIR += gigi
     SUBDIR += girara
     SUBDIR += gnocl
     SUBDIR += gnome-desktop-sharp20
@@ -48,6 +47,7 @@
     SUBDIR += gtk30
     SUBDIR += gtk30-reference
     SUBDIR += gtkada
+    SUBDIR += gtkada3
     SUBDIR += gtkdatabox
     SUBDIR += gtkextra2
     SUBDIR += gtkglarea2
@@ -99,7 +99,6 @@
     SUBDIR += libgnomeui
     SUBDIR += libgnomeui-reference
     SUBDIR += libgnomeuimm26
-    SUBDIR += libgtk-java
     SUBDIR += libgtksourceviewmm
     SUBDIR += libmatewnck
     SUBDIR += libpanelappletmm
@@ -107,6 +106,7 @@
     SUBDIR += libsexymm
     SUBDIR += libunique3
     SUBDIR += libwnck
+    SUBDIR += libwnck3
     SUBDIR += libwnck-reference
     SUBDIR += libxaw3dxft
     SUBDIR += libxfce4gui
@@ -192,7 +192,6 @@
     SUBDIR += py-gui
     SUBDIR += py-kivy
     SUBDIR += py-kiwi
-    SUBDIR += py-pyqwt
     SUBDIR += py-qt4-gui
     SUBDIR += py-sexy
     SUBDIR += py-tkinter
@@ -201,7 +200,6 @@
     SUBDIR += py-traitsgui
     SUBDIR += py-vte
     SUBDIR += py-wax
-    SUBDIR += py-wmdockapps
     SUBDIR += py-wxPython28
     SUBDIR += py-wxPython28-common
     SUBDIR += py-wxPython28-unicode
@@ -251,7 +249,6 @@
     SUBDIR += unique
     SUBDIR += v
     SUBDIR += vdk
-    SUBDIR += vdkbuilder
     SUBDIR += viewklass
     SUBDIR += vte
     SUBDIR += vte-reference

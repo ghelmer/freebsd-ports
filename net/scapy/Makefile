@@ -7,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://secdev.org/projects/scapy/files/
 
-MAINTAINER=	vanhu@netasq.com
+MAINTAINER=	vanhu@FreeBSD.org
 COMMENT=	Powerful interactive packet manipulation program in python
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/dnet.so:${PORTSDIR}/net/py-libdnet \
@@ -17,7 +17,7 @@ USE_PYTHON=	yes
 USE_PYDISTUTILS=	yes
 PYDISTUTILS_AUTOPLIST=	yes
 
-OPTIONS_DEFINE=	PYX PYCRYPTO PYGNUPLOT GRAPH P0F_BASE QUESO_BASE MMAP MANUF
+OPTIONS_DEFINE=	PYX PYCRYPTO PYGNUPLOT GRAPH P0F_BASE QUESO_BASE NMAP MANUF
 PYX_DESC=	PostScript and PDF graphs drawing
 PYCRYPTO_DESC=	Use py-crypto for WEP decoding
 PYGNUPLOT_DESC=	Use py-gnuplot wrapper to plot graphs

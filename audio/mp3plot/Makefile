@@ -3,11 +3,11 @@
 
 PORTNAME=	mp3plot
 DISTVERSION=	0.6.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	http://p.outlyer.net/mp3plot/files/
 
-MAINTAINER=	sylvio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mp3 bitrate plot tool
 
 LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
@@ -17,17 +17,14 @@ OPTIONS_DEFAULT=	GD
 
 LICENSE=	GPLv2
 
-NO_STAGE=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-boost-program-options=boost_program_options \
 		--with-boost-thread=boost_thread
-CONFIGURE_ENV+=	"LIBS=-lboost_system"
 
-MAN1=		${PORTNAME}.1
-PLIST_FILES=	bin/${PORTNAME}
+PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib -lboost_system
 
 .include <bsd.port.options.mk>
 
@@ -38,7 +35,7 @@ CONFIGURE_ARGS+=	--disable-gd
 .endif
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
-LIB_DEPENDS+=	libMagick++.so:${PORTSDIR}/graphics/ImageMagick
+LIB_DEPENDS+=	libMagick++-6.Q*.so:${PORTSDIR}/graphics/ImageMagick
 .else
 CONFIGURE_ARGS+=	--disable-magick
 .endif

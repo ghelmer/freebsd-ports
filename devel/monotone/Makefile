@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	monotone
-PORTVERSION=	1.0
-PORTREVISION=	3
+PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.monotone.ca/downloads/${PORTVERSION}/
 
 MAINTAINER=	lapo@lapo.it
-COMMENT=	A distributed version control system with digital signatures
+COMMENT=	Distributed version control system with digital signatures
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,10 +20,8 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libbotan-1.10.so:${PORTSDIR}/security/botan110
 
 SUB_FILES=	pkg-message
-USE_BZIP2=	yes
-USES=		iconv pkgconfig gmake perl5
+USES=		iconv pkgconfig gmake perl5 lua:51 tar:bzip2 makeinfo
 USE_PERL5=	build
-USE_LUA=	5.1+
 MAKE_JOBS_SAFE=	yes
 
 GNU_CONFIGURE=	yes
@@ -47,6 +45,7 @@ PLIST_FILES=	bin/mtn bin/mtn-cleanup bin/mtnopt \
 		"@dirrmtry share/zsh" \
 		"@dirrmtry etc/bash_completion.d" \
 		"@dirrm share/monotone/hooks" \
+		"@dirrmtry share/zsh/site-functions" \
 		"@dirrm share/monotone/scripts" \
 		"@dirrm share/monotone"
 .if !defined(NO_INSTALL_MANPAGES)

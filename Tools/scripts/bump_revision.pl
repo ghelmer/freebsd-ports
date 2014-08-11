@@ -1,9 +1,9 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 
 # $FreeBSD$
 
 #
-# MAINTAINER=	edwin@freebsd.org
+# MAINTAINER=	gerald@FreeBSD.org
 #
 
 use Getopt::Std;
@@ -23,7 +23,7 @@ Usage: $0 [options] [<category>/]<portname>
     -u <username>   - Your freebsd.org username. Defaults to \$ENV{USER}.
     -i <filename>   - Use this for INDEX name. Defaults to /usr/ports/INDEX.
 
-Questions, suggestions etc -> edwin\@freebsd.org
+Improvements, suggestions,questions -> gerald\@FreeBSD.org
 EOF
 	exit 1;
 }
@@ -198,13 +198,15 @@ unless ($opt_n) {
 #
 # Commit the changes. Not automated.
 #
-print <<EOF;
-All PORTREVISIONs have been updated.  You are nearly done, only one thing
-remains:  The committing to the ports tree. This program is not going to do
-that for you, you have to do it manually.
+unless ($opt_c) {
+    print <<EOF;
+All PORTREVISIONs have been updated.  You are nearly done, only one
+thing remains:  Committing to the ports tree.  This program is not
+going to do that for you, you have to do it manually.
 
 \$ cd $TMPDIR
 \$ svn commit
-
+	
 Then, remove the temp directory ($TMPDIR).
 EOF
+}

@@ -3,7 +3,7 @@
 
 PORTNAME=	xbatt
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.clave.gr.jp/~eto/xbatt/
 
@@ -17,5 +17,4 @@ USE_XORG=	xpm xaw
 NO_INSTALL_MANPAGES=	yes
 PLIST_FILES=	bin/xbatt
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -3,20 +3,21 @@
 
 PORTNAME=	heimdal
 PORTVERSION=	1.5.2
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://www.h5l.org/dist/src/ \
 		http://ftp.pdc.kth.se/pub/heimdal/src/ \
 		ftp://ftp.pdc.kth.se/pub/heimdal/src/ \
 		ftp://ftp.sunet.se/pub/unix/admin/mirror-pdc/heimdal/src/
 
-MAINTAINER=	Joerg.Pulz@frm2.tum.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Popular BSD-licensed implementation of Kerberos 5
 
 CONFLICTS=	krb4-[0-9]* krb5-[0-9]* krb5-maint-[0-9]* srp-[0-9]*
 
 OPTIONS_DEFINE=	IPV6 KCM BDB SQLITE LDAP PKINIT DIGEST KX509 CRACKLIB X11
 OPTIONS_DEFAULT=	KCM BDB PKINIT DIGEST KX509
+OPTIONS_SUB=	yes
 KCM_DESC=	Enable Kerberos Credentials Manager
 BDB_DESC=	Enable BerkeleyDB KDC backend support
 SQLITE_DESC=	Enable SQLite KDC backend support
@@ -27,11 +28,20 @@ KX509_DESC=	Enable kx509 support
 CRACKLIB_DESC=	Use CrackLib for password quality checking
 X11_DESC=	Build X11 utilies
 
+IPV6_CONFIGURE_WITH=		ipv6
+KCM_CONFIGURE_ENABLE=		kcm
+X11_CONFIGURE_WITH=		x
+KX509_CONFIGURE_ENABLE=		kx509
+DIGEST_CONFIGURE_ENABLE=	digest
+PKINIT_CONFIGURE_ENABLE=	pk-init
+CRACKLIB_BUILD_DEPENDS=		${PREFIX}/lib/libcrack.a:${PORTSDIR}/security/cracklib
+
 USE_AUTOTOOLS=	autoconf autoheader libtool
 USE_OPENSSL=	yes
 USES=		gettext pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+MAKE_JOBS_UNSAFE=	yes
 CONFIGURE_ARGS+=	--with-libintl=${LOCALBASE} \
 			--with-readline=${DESTDIR}/usr \
 			--enable-pthread-support \
@@ -42,38 +52,17 @@ MAKE_ENV+=	INSTALL_CATPAGES=no
 INFO=		heimdal hx509
 PLIST=		${WRKDIR}/PLIST
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "amd64"
 CFLAGS+=	-fPIC
 .endif
 
-.if ${OSVERSION} >= 700000
-PLIST_SUB+=	HCRYPTO="@comment "
-.else
-PLIST_SUB+=	HCRYPTO=""
-.endif
-
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=	--with-ipv6
-.else
-CONFIGURE_ARGS+=	--without-ipv6
-.endif
-
-.if ${PORT_OPTIONS:MKCM}
-CONFIGURE_ARGS+=	--enable-kcm
-PLIST_SUB+=	KCM=""
-.else
-CONFIGURE_ARGS+=	--disable-kcm
-PLIST_SUB+=	KCM="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MBDB}
-USE_BDB=	yes
-CFLAGS+=	-I${BDB_INCLUDE_DIR}
-CPPFLAGS+=	-I${BDB_INCLUDE_DIR}
-LDFLAGS+=	-L${BDB_LIB_DIR}
+USE_BDB=		yes
+CFLAGS+=		-I${BDB_INCLUDE_DIR}
+CPPFLAGS+=		-I${BDB_INCLUDE_DIR}
+LDFLAGS+=		-L${BDB_LIB_DIR}
 CONFIGURE_ARGS+=	--with-berkeley-db=${LOCALBASE} \
 			--with-berkeley-db-include=${BDB_INCLUDE_DIR}
 .else
@@ -81,16 +70,15 @@ CONFIGURE_ARGS+=	--with-berkeley-db=no
 .endif
 
 .if ${PORT_OPTIONS:MSQLITE}
-USE_SQLITE=	yes
+USE_SQLITE=		yes
 CONFIGURE_ARGS+=	--with-sqlite3=${LOCALBASE}
-PLIST_SUB+=	SQLITE="@comment "
 .else
 CONFIGURE_ARGS+=	--without-sqlite3
-PLIST_SUB+=	SQLITE=""
 .endif
 
 .if ${PORT_OPTIONS:MLDAP}
 USE_OPENLDAP=		yes
+WANT_OPENLDAP_SASL?=	yes
 CONFIGURE_ARGS+=	--with-openldap=${LOCALBASE}
 .  if defined(LDAP_SOCKET_PATH)
 _SOCK=		${LDAP_SOCKET_PATH:C|/|%2f|g}
@@ -102,33 +90,8 @@ _SOCK=		${LDAP_RUN_DIR:C|/|%2f|g}%2fldapi
 CONFIGURE_ARGS+=	--without-openldap
 .endif
 
-.if ! ${PORT_OPTIONS:MPKINIT}
-CONFIGURE_ARGS+=	--disable-pk-init
-.else
-CONFIGURE_ARGS+=	--enable-pk-init
-.endif
-
-.if ! ${PORT_OPTIONS:MDIGEST}
-CONFIGURE_ARGS+=	--disable-digest
-.else
-CONFIGURE_ARGS+=	--enable-digest
-.endif
-
-.if ! ${PORT_OPTIONS:MKX509}
-CONFIGURE_ARGS+=	--disable-kx509
-.else
-CONFIGURE_ARGS+=	--enable-kx509
-.endif
-
-.if ${PORT_OPTIONS:MCRACKLIB}
-BUILD_DEPENDS+=		${LOCALBASE}/lib/libcrack.a:${PORTSDIR}/security/cracklib
-.endif
-
 .if ${PORT_OPTIONS:MX11}
-USE_XORG=		x11 xt
-CONFIGURE_ARGS+=	--with-x
-.else
-CONFIGURE_ARGS+=	--without-x
+USE_XORG=	x11 xt
 .endif
 
 .if defined(HEIMDAL_HOME)
@@ -168,14 +131,12 @@ pre-install:
 	@${ECHO_CMD} include/ifaddrs.h >> ${PLIST}
 .endif
 .if ${PORT_OPTIONS:MCRACKLIB}
-	${INSTALL_PROGRAM} ${WRKSRC}/kpasswdd-cracklib.so ${PREFIX}/lib/
+	${INSTALL_PROGRAM} ${WRKSRC}/kpasswdd-cracklib.so ${STAGEDIR}${PREFIX}/lib/
 	@${ECHO_CMD} lib/kpasswdd-cracklib.so >> ${PLIST}
 .endif
 
-.include "Makefile.man"
-
 post-install:
 	${SED} 's;%%PREFIX%%;${PREFIX};g' ${FILESDIR}/kdc.sh > \
-		${PREFIX}/etc/rc.d/kdc.sh.sample
+		${STAGEDIR}${PREFIX}/etc/rc.d/kdc.sh.sample
 
 .include <bsd.port.mk>

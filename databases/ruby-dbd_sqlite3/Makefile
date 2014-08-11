@@ -3,6 +3,7 @@
 
 PORTNAME=	dbd_sqlite3
 PORTVERSION=	1.2.5
+PORTREVISION=	1
 CATEGORIES=	databases ruby
 MASTER_SITES=	RF
 MASTER_SITE_SUBDIR=	ruby-dbi
@@ -19,5 +20,4 @@ RUN_DEPENDS=	${RUBY_SITELIBDIR}/dbi.rb:${PORTSDIR}/databases/ruby-dbi
 USE_RUBY=	yes
 USE_RUBY_SETUP=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

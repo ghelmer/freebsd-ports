@@ -4,12 +4,12 @@
 
 PORTNAME=	libsvg
 PORTVERSION=	0.1.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/snapshots/
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	A parser for SVG content in files or buffers
+COMMENT=	Parser for SVG content in files or buffers
 
 LIB_DEPENDS=	fontconfig.1:${PORTSDIR}/x11-fonts/fontconfig \
 		png15:${PORTSDIR}/graphics/png \

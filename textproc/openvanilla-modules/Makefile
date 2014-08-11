@@ -3,7 +3,7 @@
 
 PORTNAME=	openvanilla-modules
 PORTVERSION=	0.7.2.20070514
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	rafan
@@ -15,9 +15,8 @@ COMMENT=	Input method modules for OpenVanilla
 BUILD_DEPENDS=	${LOCALBASE}/include/OpenVanilla/OpenVanilla.h:${PORTSDIR}/textproc/openvanilla-framework
 RUN_DEPENDS=	${LOCALBASE}/lib/scim-1.0/1.4.0/IMEngine/OVLoader-SCIM.so:${PORTSDIR}/textproc/scim-openvanilla
 
-USES=		perl5
+USES=		perl5 gmake
 USE_AUTOTOOLS=	libtool:env
-USE_GMAKE=	yes
 USE_PERL5=	build
 
 OPTIONS_DEFINE=		OVIMArray OVIMBig5 OVIMGeneric OVIMPOJ_Holo OVIMPhonetic OVIMRoman \
@@ -95,7 +94,7 @@ PLIST_SUB+=	OVIMUnicode="@comment "
 #DISTFILES+=	liu5.cin
 #NOFETCHFILES=	liu5.cin
 #EXTRACT_ONLY+=	openvanilla-${PORTVERSION}${EXTRACT_SUFX}
-#LIB_DEPENDS+=	sqlite3.8:${PORTSDIR}/databases/sqlite3
+#LIB_DEPENDS+=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 #LDFLAGS+=	${LOCALBASE}/lib
 #.if !exists(${DISTDIR}/liu5.cin)
 #IGNORE=		need liu5.cin from a legal copy of LIU57 standard version CDROM to use Boshiamy input module. Please copy /UNIX/xcin2.5/liu5.cin from the CDROM to ${DISTDIR} and run make again
@@ -110,66 +109,66 @@ PLIST_SUB+=	OVIMUnicode="@comment "
 
 do-build:
 .if ${PORT_OPTIONS:MOVIMArray}
-	@(cd ${WRKSRC}/Modules/OVIMArray; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMArray; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 .if ${PORT_OPTIONS:MOVIMBig5}
-	@(cd ${WRKSRC}/Modules/OVIMBig5; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMBig5; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 #.if ${PORT_OPTIONS:MOVIMBoshiamy}
-#	@(cd ${WRKSRC}/Modules/OVIMBoshiamy; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+#	@(cd ${WRKSRC}/Modules/OVIMBoshiamy; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 #.endif
 .if ${PORT_OPTIONS:MOVIMGeneric}
-	@(cd ${WRKSRC}/Modules/OVIMGeneric; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMGeneric; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 .if ${PORT_OPTIONS:MOVIMPOJ_Holo}
-	@(cd ${WRKSRC}/Modules/OVIMPOJ-Holo; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMPOJ-Holo; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 .if ${PORT_OPTIONS:MOVIMPhonetic}
-	@(cd ${WRKSRC}/Modules/OVIMPhonetic; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMPhonetic; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 .if ${PORT_OPTIONS:MOVIMSpaceChewing}
-	@(cd ${WRKSRC}/Modules/OVIMSpaceChewing0.3; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} data all)
+	@(cd ${WRKSRC}/Modules/OVIMSpaceChewing0.3; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} data all)
 .endif
 .if ${PORT_OPTIONS:MOVIMRoman}
-	@(cd ${WRKSRC}/Modules/OVIMRoman; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMRoman; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 .if ${PORT_OPTIONS:MOVIMTibetan}
-	@(cd ${WRKSRC}/Modules/OVIMTibetan; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMTibetan; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 .if ${PORT_OPTIONS:MOVIMUnicode}
-	@(cd ${WRKSRC}/Modules/OVIMUnicode; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} all)
+	@(cd ${WRKSRC}/Modules/OVIMUnicode; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all)
 .endif
 
 do-install:
 .if ${PORT_OPTIONS:MOVIMArray}
-	@(cd ${WRKSRC}/Modules/OVIMArray; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMArray; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMBig5}
-	@(cd ${WRKSRC}/Modules/OVIMBig5; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMBig5; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 #.if ${PORT_OPTIONS:MOVIMBoshiamy}
-#	@(cd ${WRKSRC}/Modules/OVIMBoshiamy; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+#	@(cd ${WRKSRC}/Modules/OVIMBoshiamy; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 #.endif
 .if ${PORT_OPTIONS:MOVIMGeneric}
-	@(cd ${WRKSRC}/Modules/OVIMGeneric; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMGeneric; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMPOJ_Holo}
-	@(cd ${WRKSRC}/Modules/OVIMPOJ-Holo; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMPOJ-Holo; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMPhonetic}
-	@(cd ${WRKSRC}/Modules/OVIMPhonetic; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMPhonetic; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMRoman}
-	@(cd ${WRKSRC}/Modules/OVIMRoman; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMRoman; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMSpaceChewing}
-	@(cd ${WRKSRC}/Modules/OVIMSpaceChewing0.3; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMSpaceChewing0.3; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMTibetan}
-	@(cd ${WRKSRC}/Modules/OVIMTibetan; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMTibetan; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 .if ${PORT_OPTIONS:MOVIMUnicode}
-	@(cd ${WRKSRC}/Modules/OVIMUnicode; ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install)
+	@(cd ${WRKSRC}/Modules/OVIMUnicode; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install)
 .endif
 
 .include <bsd.port.mk>

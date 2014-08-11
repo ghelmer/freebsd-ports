@@ -4,25 +4,24 @@
 
 PORTNAME=	adonthell
 PORTVERSION=	0.3.5
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 DISTFILES=	${PORTNAME}-src-${PORTVERSION}${EXTRACT_SUFX} \
 	   	wastesedge-src-${WEDGE_VERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	rodrigo@FreeBSD.org
-COMMENT=	A free role playing game
+COMMENT=	Free role playing game
 
 LICENSE=	GPLv2
 LICENSE_DISTFILES=	${DISTFILES}
 
 LIB_DEPENDS=	vorbis:${PORTSDIR}/audio/libvorbis \
-		freetype:${PORTSDIR}/print/freetype2
+		libfreetype.so:${PORTSDIR}/print/freetype2
 
 USE_SDL=	mixer ttf sdl
 USE_PYTHON=	yes
-USES=		gettext
-USE_GMAKE=	yes
+USES=		gettext gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PYPACKAGE="${PYTHON_CMD}" ac_cv_path_P_SWIG=no
 CONFIGURE_ARGS=	--disable-py-debug
@@ -55,7 +54,7 @@ post-install:
 		&& ${SETENV} ${CONFIGURE_ENV} ./configure ${CONFIGURE_ARGS} \
 			--with-adonthell-binary=${PREFIX}/bin/${PORTNAME} \
 			${CONFIGURE_TARGET}
-	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${GMAKE}
-	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${GMAKE} install
+	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${MAKE_CMD}
+	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${MAKE_CMD} install
 
 .include <bsd.port.post.mk>

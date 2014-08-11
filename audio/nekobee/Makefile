@@ -3,7 +3,7 @@
 
 PORTNAME=	nekobee
 PORTVERSION=	0.1.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	GH
 
@@ -18,7 +18,6 @@ LIB_DEPENDS=	libdssialsacompat.so:${PORTSDIR}/audio/libdssialsacompat \
 		libjack.so:${PORTSDIR}/audio/jack
 
 USE_GITHUB=	yes
-NO_STAGE=	yes
 GH_ACCOUNT=	gordonjcp
 GH_COMMIT=	3f4737f
 
@@ -27,19 +26,21 @@ USE_GNOME=	gtk20
 
 CPPFLAGS+=	-I${LOCALBASE}/include/dssi -I${LOCALBASE}/include
 
-.if !defined(DISABLE_MAKE_JOBS)
-MAKE_JOBS_ARGS=	-j${MAKE_JOBS_NUMBER}
-.endif
+post-patch:
+	@${REINPLACE_CMD} -e \
+		'/LINKFLAGS/s|^|#|' ${WRKSRC}/wscript
 
 do-configure:
 	@(cd ${WRKSRC} && ${SETENV} CC="${CC}" CFLAGS="${CFLAGS}" \
-		LINKFLAGS="-lm" \
-		CPPFLAGS="${CPPFLAGS}" ./waf configure --prefix=${PREFIX})
+		CPPFLAGS="${CPPFLAGS}" LINKFLAGS="-lm" \
+		 ./waf configure --prefix=${PREFIX})
 
 do-build:
-	@(cd ${WRKSRC} && ./waf build -vvv ${MAKE_JOBS_ARGS})
+	@(cd ${WRKSRC} && ./waf build -vvv -j${MAKE_JOBS_NUMBER})
 
 do-install:
-	@(cd ${WRKSRC} && ./waf install)
+	@(cd ${WRKSRC} && ./waf install --destdir=${STAGEDIR})
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/dssi/nekobee.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/dssi/nekobee/nekobee_gtk
 
 .include <bsd.port.mk>

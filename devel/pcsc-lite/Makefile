@@ -2,24 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	pcsc-lite
-PORTVERSION=	1.8.10
+PORTVERSION=	1.8.11
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	devel security
-#MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3963/
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	arved
+MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3991/
 
 MAINTAINER=	arved@FreeBSD.org
-COMMENT=	A smartcard development library
+COMMENT=	Smartcard development library
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake perl5 pathfix pkgconfig
+USES=		gmake perl5 pathfix pkgconfig shebangfix tar:bzip2
 USE_PERL5=	build
 USE_RC_SUBR=	pcscd
+SHEBANG_FILES=	${WRKSRC}/src/spy/pcsc-spy
 
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-usbdropdir=${PREFIX}/lib/pcsc/drivers/
@@ -27,6 +26,12 @@ CONFIGURE_ARGS=	--enable-usbdropdir=${PREFIX}/lib/pcsc/drivers/
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 .include <bsd.port.pre.mk>
+
+.if ${OSVERSION} < 1000000
+FETCH_DEPENDS=	wget:${PORTSDIR}/ftp/wget
+DISABLE_SIZE=	yes
+FETCH_CMD=	${LOCALBASE}/bin/wget -c -nc --no-check-certificate
+.endif
 
 .if !defined(WITHOUT_USB) && ${OSVERSION} >= 800069
 CONFIGURE_ENV+=	LIBUSB_LIBS="-lusb"
@@ -65,5 +70,6 @@ post-install:
 	${TOUCH} ${STAGEDIR}${PREFIX}/lib/pcsc/services/.keep_me
 	@${SED} 's,%%PREFIX%%,${PREFIX},g' < ${FILESDIR}/pkg-message.in > \
 		${WRKDIR}/pkg-message
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpcsclite.so.1 ${STAGEDIR}${PREFIX}/lib/libpcscspy.so.0
 
 .include <bsd.port.post.mk>

@@ -10,7 +10,7 @@ DISTNAME=	gogoc-1_2-RELEASE
 MAINTAINER=	kami@k5-storitve.net
 COMMENT=	GogoCLIENT, connect to Freenet6 tunnel
 
-USE_GMAKE=	yes
+USES=		gmake
 USE_RC_SUBR=	gogoc
 USE_OPENSSL=	yes
 
@@ -27,7 +27,7 @@ SUB_LIST=	LOCALBASE=${LOCALBASE}
 NO_STAGE=	yes
 do-install:
 	cd ${WRKSRC}/gogoc-tsp/ && \
-	    ${GMAKE} platform=freebsd installdir=${PREFIX} install
+	    ${MAKE_CMD} platform=freebsd installdir=${PREFIX} install
 	${RM} ${PREFIX}/bin/gogoc.conf*
 .if !defined(NOPORTEXAMPLES)
 	${MKDIR} ${EXAMPLESDIR}

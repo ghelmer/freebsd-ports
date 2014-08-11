@@ -6,21 +6,21 @@ lib/gimageview/archiver/libgimv_zip_extarc.so
 lib/gimageview/image_loader/libgimv_bmp_loader.so
 lib/gimageview/image_loader/libgimv_jpeg_loader.so
 lib/gimageview/image_loader/libgimv_mag_loader.so
-%%WITH_LIBMNG%%lib/gimageview/image_loader/libgimv_mng_loader.so
+%%LIBMNG%%lib/gimageview/image_loader/libgimv_mng_loader.so
 lib/gimageview/image_loader/libgimv_pcx_loader.so
 lib/gimageview/image_loader/libgimv_pixbuf_loader.so
 lib/gimageview/image_loader/libgimv_png_loader.so
-%%WITH_LIBRSVG%%lib/gimageview/image_loader/libgimv_rsvg_loader.so
+%%LIBRSVG2%%lib/gimageview/image_loader/libgimv_rsvg_loader.so
 lib/gimageview/image_loader/libgimv_tga_loader.so
-%%WITH_LIBWMF%%lib/gimageview/image_loader/libgimv_wmf_loader.so
+%%LIBWMF%%lib/gimageview/image_loader/libgimv_wmf_loader.so
 lib/gimageview/image_loader/libgimv_xbm_loader.so
 lib/gimageview/image_loader/libgimv_xcf_loader.so
 lib/gimageview/image_loader/libgimv_xvpics_loader.so
 lib/gimageview/image_saver/libgimv_png_saver.so
 lib/gimageview/image_saver/libgimv_pnm_saver.so
 lib/gimageview/image_saver/libgimv_xvpics_saver.so
-%%WITH_LIBMPLAYER%%lib/gimageview/image_view/libgimv_mplayer.so
-%%WITH_LIBXINE%%lib/gimageview/image_view/libgimv_xine.so
+%%MPLAYER%%lib/gimageview/image_view/libgimv_mplayer.so
+%%LIBXINE%%lib/gimageview/image_view/libgimv_xine.so
 lib/gimageview/io_stream/libgimv_bz_io.so
 lib/gimageview/io_stream/libgimv_gzip_io.so
 lib/gimageview/thumbnail/libgimv_ee_thumb.so
@@ -32,7 +32,7 @@ lib/gimageview/thumbnail/libgimv_nautilus_thumb.so
 lib/gimageview/thumbnail/libgimv_thumb.so
 lib/gimageview/thumbnail/libgimv_xvpics_thumb.so
 lib/gimageview/thumbnail_view/libgimv_thumbview_detail.so
-share/apps/Graphics/gimageview.desktop
+share/applications/gimageview.desktop
 share/doc/gimageview/html/ja/01.html
 share/doc/gimageview/html/ja/02.html
 share/doc/gimageview/html/ja/03.html
@@ -136,5 +136,3 @@ share/pixmaps/gimv.png
 @dirrm share/gimageview/pixmaps/default
 @dirrm share/gimageview/pixmaps
 @dirrm share/gimageview
-@dirrmtry share/apps/Graphics
-@dirrmtry share/apps

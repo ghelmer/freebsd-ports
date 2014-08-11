@@ -12,16 +12,15 @@ MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	A computer algebra system, forked from axiom
 
 LICENSE=	BSD
+LICENSE_FILE=	${WRKSRC}/license/LICENSE.AXIOM
 
 BUILD_DEPENDS=	noweb:${PORTSDIR}/devel/noweb \
 		sbcl:${PORTSDIR}/lang/sbcl
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USE_BZIP2=	yes
 USE_XORG=	x11 ice sm xpm
-USES=		gettext iconv
-USE_GMAKE=	yes
+USES=		gettext iconv gmake tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-lisp=sbcl
 USE_LDCONFIG=	${PREFIX}/lib/fricas/target/${CONFIGURE_TARGET}/lib

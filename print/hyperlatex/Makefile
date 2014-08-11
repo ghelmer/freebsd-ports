@@ -5,7 +5,7 @@ PORTNAME=	Hyperlatex
 DISTVERSION=	2.9a
 PORTREVISION=	4
 CATEGORIES=	print
-MASTER_SITES=	SF/${PORTNAME:L}/${PORTNAME:L}/2.9a
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/2.9a
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Produce HTML and printed documents from LaTeX source
@@ -14,7 +14,6 @@ RUN_DEPENDS=	ppmtogif:${PORTSDIR}/graphics/netpbm
 
 USE_TEX=	latex
 USE_EMACS=	yes
-EMACS_PORT_NAME?=	emacs21
 
 LATEX_DIR=	${PREFIX}/share/texmf/tex/latex/hyperlatex
 HYPERLATEX_DIR=	${PREFIX}/share/hyperlatex

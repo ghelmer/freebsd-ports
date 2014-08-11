@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	soapui
-PORTVERSION=	4.6.4
+PORTVERSION=	5.0.0
 CATEGORIES=	devel java www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
 DISTNAME=	SoapUI-${PORTVERSION}-linux-bin
 
-MAINTAINER=	fbsd-ports@opsec.eu
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Web service, SOA, and SOAP testing tool
 
 LICENSE=	GPLv2

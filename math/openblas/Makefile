@@ -3,7 +3,7 @@
 
 PORTNAME=	openblas
 PORTVERSION=	0.2.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	https://codeload.github.com/${GH_ACCOUNT}/${GH_PROJECT}/legacy.tar.gz/${GH_TAGNAME}?dummy=/:${PORTNAME} \
 		NL:lapack_tmg
@@ -48,7 +48,6 @@ AVX_DESC=		Support Advanced Vector Extensions (AVX)
 OPTIONS_DEFAULT=	DYNAMIC_ARCH
 .endif
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if defined(TARGET_CPU_ARCH)
@@ -132,12 +131,12 @@ post-patch:
 
 do-build:
 	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=1 USE_THREAD=0 \
-	${GMAKE} ${MAKE_ARGS}
+	${MAKE_CMD} ${MAKE_ARGS}
 	${CP} ${WRKSRC}/libopenblas-${OPENBLAS_SUFX}.a ${WRKDIR}/lib/libopenblas.a
 	${CP} ${WRKSRC}/libopenblas-${OPENBLAS_SUFX}.so ${WRKDIR}/lib/libopenblas.so.${OPENBLAS_SVER}
-	cd ${WRKSRC} ; ${GMAKE} ${MAKE_ARGS} clean
+	cd ${WRKSRC} ; ${MAKE_CMD} ${MAKE_ARGS} clean
 	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=${MAXTHREADS} \
-	USE_THREAD=1 ${GMAKE} ${MAKE_ARGS}
+	USE_THREAD=1 ${MAKE_CMD} ${MAKE_ARGS}
 	${CP} ${WRKSRC}/libopenblasp-${OPENBLAS_SUFX}.a ${WRKDIR}/lib/libopenblasp.a
 	${CP} ${WRKSRC}/libopenblasp-${OPENBLAS_SUFX}.so ${WRKDIR}/lib/libopenblasp.so.${OPENBLAS_SVER}
 .if !${PORT_OPTIONS:MDEBUG}
@@ -153,15 +152,15 @@ BENCHMARK_THREADS_FLAG =	OPENBLAS_NUM_THREADS=${BENCHMARK_MAXTHREADS}
 
 benchmark: build
 	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=${MAXTHREADS} \
-	USE_THREAD=1 ${GMAKE} ${MAKE_ARGS} hpl
+	USE_THREAD=1 ${MAKE_CMD} ${MAKE_ARGS} hpl
 	cd ${WRKSRC}/benchmark ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=${MAXTHREADS} \
-	USE_THREAD=1 ${BENCHMARK_THREADS_FLAG} ${GMAKE} ${MAKE_ARGS}
+	USE_THREAD=1 ${BENCHMARK_THREADS_FLAG} ${MAKE_CMD} ${MAKE_ARGS}
 
 do-install:
 	cd ${WRKDIR}/lib ; \
 	${INSTALL_DATA} ${OPENBLAS_LIBS:S|$|.a|} ${OPENBLAS_LIBS:S|$|.so.${OPENBLAS_SVER}|} \
-	${PREFIX}/lib/
-	cd ${PREFIX}/lib ; \
+	${STAGEDIR}${PREFIX}/lib/
+	cd ${STAGEDIR}${PREFIX}/lib ; \
 	for i in ${OPENBLAS_LIBS:S|$|.so|}; do \
 		${LN} -sf $$i.${OPENBLAS_SVER} $$i ; \
 	done

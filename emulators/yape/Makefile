@@ -12,14 +12,13 @@ MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Yet Another Commodore +4 Emulator
 
 USE_SDL=	sdl
-USE_GMAKE=	yes
+USES=		gmake
 NO_WRKSUBDIR=	yes
 ALL_TARGET=	yape
 
 PLIST_FILES=	bin/yape
-PORTDOCS=	*
+PORTDOCS=	README.SDL
 
-NO_STAGE=	yes
 post-extract:
 	@${FIND} -E ${WRKDIR} -type f -iregex ".*\.(c|cpp|h|txt)" -print0 | \
 		${XARGS} -0 ${REINPLACE_CMD} -e 's/[[:cntrl:]]*$$//'
@@ -30,12 +29,12 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|TAP::TAP|TAP|" ${WRKSRC}/tape.h
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/yape ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/yape ${STAGEDIR}${PREFIX}/bin
 
 post-install:
 .ifndef(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.SDL ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.SDL ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

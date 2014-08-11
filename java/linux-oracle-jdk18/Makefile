@@ -4,8 +4,8 @@ PORTNAME=	jdk
 PORTVERSION=	${JDK_VERSION}.${JDK_UPDATE_VERSION}
 CATEGORIES=	java devel
 MASTER_SITES=	#
-PKGNAMEPREFIX=	linux-oracle-
-DISTNAME=	jdk-8-linux-i586
+PKGNAMEPREFIX=	linux-${JDK_VENDOR}-
+DISTNAME=	jdk-${JDK_VERSION}u${JDK_UPDATE_VERSION}-linux-i586
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	Oracle Java ${JDK_VERSION} Development Kit for Linux
@@ -15,12 +15,11 @@ RUN_DEPENDS=	javavm:${PORTSDIR}/java/javavmwrapper
 OPTIONS_DEFINE=	DEMO
 DEMO_DESC=	Install demos and samples
 
-NO_CDROM=	License does not allow distribution with fee
 RESTRICTED=	Redistribution of repackaged binaries not permitted
-PKGNAMESUFFIX=	18
+PKGNAMESUFFIX=	1${JDK_VERSION}
 
 WRKSRC=		${WRKDIR}/jdk${DL_JDK_VERSION}
-PLIST_SUB+=	T=${APP_HOME:S/^${PREFIX}\///} PORTVERSION=${PORTVERSION}
+PLIST_SUB=	T=${APP_HOME:S/^${PREFIX}\///} PORTVERSION=${PORTVERSION}
 
 NO_BUILD=	yes
 USE_LINUX=	yes
@@ -28,15 +27,23 @@ USE_LINUX_APPS=	xorglibs
 USES=		shebangfix
 ONLY_FOR_ARCHS=	i386 amd64
 
+JDK_VENDOR=		oracle
 JDK_VERSION=		8
-JDK_INTERNAL_VERSION=	1.8.0
-JDK_UPDATE_VERSION=	0
+JDK_INTERNAL_VERSION=	1.${JDK_VERSION}.0
+JDK_UPDATE_VERSION=	5
+.if ${JDK_UPDATE_VERSION} == 0
 DL_JDK_VERSION=		${JDK_INTERNAL_VERSION}
+.elif ${JDK_UPDATE_VERSION} <= 9
+DL_JDK_VERSION=		${JDK_INTERNAL_VERSION}_0${JDK_UPDATE_VERSION}
+.else
+DL_JDK_VERSION=		${JDK_INTERNAL_VERSION}_${JDK_UPDATE_VERSION}
+.endif
 DOWNLOAD_URL=		http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 APP_HOME=	${PREFIX}/${PKGNAMEPREFIX}${PORTNAME}${JDK_INTERNAL_VERSION}
 BIN_DIRS=	bin jre/bin
-SHEBANG_FILES=	bin/jcontrol jre/bin/jcontrol
+LIB_DIRS=	${BIN_DIRS:S|bin$|lib|}
+SHEBANG_FILES=	${BIN_DIRS:S|$|/jcontrol|}
 bash_CMD=	${SH}
 
 .include <bsd.port.pre.mk>
@@ -50,7 +57,7 @@ IGNORE?=You must manually fetch the J2SE SDK download for the Linux platform (${
 .if ${PORT_OPTIONS:MDEMO}
 DEMO_UPDATE_VERSION=	${JDK_UPDATE_VERSION}
 .if ${DEMO_UPDATE_VERSION} != ${JDK_UPDATE_VERSION}
-DEMO_DISTNAME=	jdk-7u${DEMO_UPDATE_VERSION}-linux-i586-demos
+DEMO_DISTNAME=	jdk-${JDK_VERSION}u${DEMO_UPDATE_VERSION}-linux-i586-demos
 DEMO_WRKSRC=	${WRKDIR}/jdk${JDK_INTERNAL_VERSION}_${DEMO_UPDATE_VERSION}
 .else
 DEMO_DISTNAME=	${DISTNAME}-demos
@@ -67,8 +74,7 @@ PLIST_SUB+=	DEMO="@comment "
 
 .if ${PORT_OPTIONS:MDEMO} && ${DEMO_WRKSRC} != ${WRKSRC}
 post-extract:
-	@${MV} ${DEMO_WRKSRC}/demo ${WRKSRC}/
-	@${MV} ${DEMO_WRKSRC}/sample ${WRKSRC}/
+	@cd ${DEMO_WRKSRC} && ${MV} demo sample ${WRKSRC}
 .endif
 
 post-patch:
@@ -77,11 +83,7 @@ post-patch:
 do-install:
 	@${MKDIR} ${STAGEDIR}${APP_HOME}
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${APP_HOME}
-	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${APP_HOME} \
-	    "-not ( -type d -name bin -prune )"
-	@cd ${WRKSRC} && ${COPYTREE_BIN} "${BIN_DIRS}" ${STAGEDIR}${APP_HOME}
-	@${INSTALL_SCRIPT} ${WRKSRC}/jre/lib/jexec \
-	    ${STAGEDIR}${APP_HOME}/jre/lib
-	@${INSTALL_SCRIPT} ${WRKSRC}/lib/jexec ${STAGEDIR}${APP_HOME}/lib
+	@cd ${STAGEDIR}${APP_HOME} && \
+	    ${CHMOD} ${BINMODE} ${BIN_DIRS:S|$|/*|} ${LIB_DIRS:S|$|/jexec|}
 
 .include <bsd.port.post.mk>

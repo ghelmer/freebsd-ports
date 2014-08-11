@@ -12,7 +12,9 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Y4mscaler scales, crops, and shifts Y'CbCr video
 
-LIB_DEPENDS=	liblavjpeg-2.0.so:${PORTSDIR}/multimedia/mjpegtools
+BROKEN=		Conflicts with mjpegtools on /usr/local/bin/y4mscaler
+
+LIB_DEPENDS=	liblavjpeg.so:${PORTSDIR}/multimedia/mjpegtools
 
 USES=		gmake
 

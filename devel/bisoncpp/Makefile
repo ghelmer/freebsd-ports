@@ -1,13 +1,12 @@
 # $FreeBSD$
 
 PORTNAME=	bisoncpp
-PORTVERSION=	4.05.00
+PORTVERSION=	4.09.01
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/bisonc%2B%2B/${PORTVERSION}
-DISTNAME=	bisonc++_${PORTVERSION}
-EXTRACT_SUFX=	.orig.tar.gz
+DISTNAME=	bisonc++_${PORTVERSION}.orig
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	5u623l20@gmail.com
 COMMENT=	LALR(1) parser generator that generates C++ classes
 
 LICENSE=	GPLv3
@@ -16,14 +15,12 @@ BUILD_DEPENDS=	icmake:${PORTSDIR}/devel/icmake \
 		yodl>=3.0:${PORTSDIR}/textproc/yodl \
 		libbobcat>=3.18:${PORTSDIR}/devel/libbobcat
 
-DOCSDIR=	${PREFIX}/share/doc/bisonc++-${PORTVERSION}
+DOCSDIR=	${PREFIX}/share/doc/bisonc++
 PORTDOCS=	*
-
-PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 WRKSRC=		${WRKDIR}/bisonc++-${PORTVERSION}
 
-USE_GCC=	4.7
+USE_GCC=	yes
 
 USES=		shebangfix
 
@@ -43,17 +40,14 @@ SHEBANG_FILES=	build \
 		parser/driver/build \
 		scanner/driver/build
 
-.include <bsd.port.options.mk>
-
 post-patch:
-	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g; \
-		s|%%PORTVERSION%%|${PORTVERSION}|g' \
+	@${REINPLACE_CMD} 's|%%PREFIX%%|${PREFIX}|g' \
 		${WRKSRC}/INSTALL.im
-	@${REINPLACE_CMD} 's|"g++|"g++47|' \
+	@${REINPLACE_CMD} 's|"g++|"${CXX}|' \
 		${WRKSRC}/INSTALL.im \
 		${WRKSRC}/scanner/driver/build \
 		${WRKSRC}/parser/driver/build
-	@${REINPLACE_CMD} 's|"gcc|"gcc47|' \
+	@${REINPLACE_CMD} 's|"gcc|"${CC}|' \
 		${WRKSRC}/icmake/special
 	@${REINPLACE_CMD} 's|"cp -d |"cp -Pp | ; \
 		s|"cp -r |"cp -R | ; \

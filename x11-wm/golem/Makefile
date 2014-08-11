@@ -14,9 +14,8 @@ LICENSE=	BSD
 OPTIONS_DEFINE=	ESOUND XINERAMA
 OPTIONS_DEFAULT=	XINERAMA
 
-USES=		perl5 gmake
+USES=		perl5 gmake tar:bzip2
 USE_PERL5=	build
-USE_BZIP2=	yes
 USE_XORG=	xpm
 WANT_GNOME=	yes
 GNU_CONFIGURE=	yes
@@ -52,10 +51,10 @@ post-patch:
 # avoid using standard MAKE_ENV
 do-build:
 	@cd ${BUILD_WRKSRC}; \
-		${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET}
+		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET}
 
 do-install:
 	@cd ${INSTALL_WRKSRC}; \
-		${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
+		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
 
 .include <bsd.port.post.mk>

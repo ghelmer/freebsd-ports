@@ -12,19 +12,18 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Package for solving large sparse systems of linear equations
 
-WRKSRC=	${WRKDIR}/${PORTNAME}
+WRKSRC=		${WRKDIR}/${PORTNAME}
 MAKEFILE=	makefile
-MAKE_ENV+=	HOME=${PREFIX}
+MAKE_ARGS=	HOME=${STAGEDIR}${PREFIX}
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} -e 's+/usr/local+${LOCALBASE}+g' ${WRKSRC}/${MAKEFILE}
 
 post-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/doc/*.ps ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/*.ps ${STAGEDIR}${DOCSDIR}
 
 .ifdef MAINTAINER_MODE
 regression-test:

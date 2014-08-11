@@ -17,7 +17,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 PATCH_SITES=	http://www.erlang.org/download
 
 MAINTAINER=	olgeni@FreeBSD.org
-COMMENT=	A functional programming language from Ericsson
+COMMENT=	Functional programming language from Ericsson
 
 WRKSRC=		${WRKDIR}/otp_src_${ERL_RELEASE}
 
@@ -30,8 +30,6 @@ PLIST_SUB=	ERLANG_LIB=${ERLANG_LIB}
 MAKE_JOBS_UNSAFE=yes
 
 OPTIONS_DEFINE=	GCC DOCS GS HIPE JAVA KQUEUE ODBC OPENSSL SCTP SMP THREADS WX DTRACE
-OPTIONS_SINGLE=	ODBC
-OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 
 GCC_DESC=	Use current GCC
 HIPE_DESC=	Build native HiPE compiler
@@ -44,7 +42,7 @@ DTRACE_DESC=	Enable DTrace support (experimental)
 
 OPTIONS_DEFAULT=SMP OPENSSL THREADS SCTP KQUEUE
 
-ERL_RELEASE=	R${PORTVERSION:S/.//g:U:S/1$/-1/}
+ERL_RELEASE=	R${PORTVERSION:S/.//g:tu:S/1$/-1/}
 
 USES=		gmake perl5
 GNU_CONFIGURE=	yes
@@ -118,11 +116,7 @@ CONFIGURE_ARGS+=--with-wx-config=${WX_CONFIG}
 
 .if ${PORT_OPTIONS:MODBC}
 CONFIGURE_ARGS+=--with-odbc
-.if ${PORT_OPTIONS:MUNIXODBC}
-LIB_DEPENDS+=	odbc:${PORTSDIR}/databases/unixODBC
-.elif ${PORT_OPTIONS:MIODBC}
-LIB_DEPENDS+=	iodbc:${PORTSDIR}/databases/libiodbc
-.endif
+LIB_DEPENDS+=	libodbc.so:${PORTSDIR}/databases/unixODBC
 .else
 CONFIGURE_ARGS+=--without-odbc
 .endif

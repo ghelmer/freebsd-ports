@@ -7,16 +7,14 @@ PORTREVISION=	7
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.qsl.net/pg4i/download/
 
-MAINTAINER=	xride@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	A gtk psk31 client
 
 USES=		pkgconfig
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e "s,-lpthread,${PTHREAD_LIBS},g" ${WRKSRC}/configure
 
-MAN1=	gpsk31.1
 .include <bsd.port.mk>

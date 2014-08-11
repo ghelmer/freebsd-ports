@@ -3,6 +3,7 @@
 
 PORTNAME=	calf
 PORTVERSION=	0.0.19
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -18,12 +19,7 @@ LIB_DEPENDS=	libfluidsynth.so:${PORTSDIR}/audio/fluidsynth \
 		libfftw3f.so:${PORTSDIR}/math/fftw3-float \
 		libexpat.so:${PORTSDIR}/textproc/expat2
 
-OPTIONS_DEFINE=	LASH LV2
-OPTIONS_DEFAULT=LASH LV2
-OPTIONS_SUB=	yes
-LV2_DESC=	LV2 audio plugin
-
-USES=		gmake pkgconfig compiler:env
+USES=		gmake pkgconfig libtool
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
@@ -31,8 +27,13 @@ INSTALLS_ICONS=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
+OPTIONS_DEFINE=		LASH LV2
+OPTIONS_DEFAULT=	LASH LV2
+OPTIONS_SUB=		yes
+
 LASH_LIB_DEPENDS=	liblash.so:${PORTSDIR}/audio/lash
 LASH_CONFIGURE_WITH=	lash
+LV2_DESC=		LV2 audio plugin
 LV2_BUILD_DEPENDS=	lv2core>0:${PORTSDIR}/audio/lv2core
 LV2_RUN_DEPENDS=	lv2core>0:${PORTSDIR}/audio/lv2core
 LV2_CONFIGURE_WITH=	lv2
@@ -42,12 +43,19 @@ LV2_CONFIGURE_WITH=	lv2
 post-patch:
 	@${FIND} ${BUILD_WRKSRC} -name '*.cpp' | ${XARGS} ${REINPLACE_CMD} -e \
 		's|<malloc.h>|<stdlib.h>|'
-	@${REINPLACE_CMD} -e '/CXXFLAGS/s|-O3||' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e '/calf.so/s|$$(pkglibdir)|../../calf|' \
+	@${REINPLACE_CMD} -e \
+		'/CXXFLAGS/s|-O3|| ; \
+		 /CXXFLAGS/s|-finline-functions-called-once||' \
+		${WRKSRC}/configure
+	@${REINPLACE_CMD} -e \
+		'/AM_CXXFLAGS/s|-finline-limit=80|| ; \
+		 /calf.so/s|$$(pkglibdir)|../../calf|' \
 		${WRKSRC}/src/Makefile.in
-	@${REINPLACE_CMD} -e 's|src\.size();|src->size();|' \
+	@${REINPLACE_CMD} -e \
+		's|src\.size();|src->size();|' \
 		${WRKSRC}/src/calf/buffer.h
-	@${REINPLACE_CMD} -e 's|data\[(1<<IntBits)+1\]|data[]|' \
+	@${REINPLACE_CMD} -e \
+		's|data\[(1<<IntBits)+1\]|data[]|' \
 		${WRKSRC}/src/calf/fixed_point.h
 .if ${COMPILER_TYPE} == "clang"
 	@${REINPLACE_CMD} -e 's|-finline-functions -finline-functions-called-once||' \

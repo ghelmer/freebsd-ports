@@ -165,6 +165,9 @@
 %%PYTHON_SITELIBDIR%%/astroid/test/unittest_python3.py
 %%PYTHON_SITELIBDIR%%/astroid/test/unittest_python3.pyc
 %%PYTHON_SITELIBDIR%%/astroid/test/unittest_python3.pyo
+%%PYTHON_SITELIBDIR%%/astroid/test/unittest_raw_building.py
+%%PYTHON_SITELIBDIR%%/astroid/test/unittest_raw_building.pyc
+%%PYTHON_SITELIBDIR%%/astroid/test/unittest_raw_building.pyo
 %%PYTHON_SITELIBDIR%%/astroid/test/unittest_regrtest.py
 %%PYTHON_SITELIBDIR%%/astroid/test/unittest_regrtest.pyc
 %%PYTHON_SITELIBDIR%%/astroid/test/unittest_regrtest.pyo

@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pike78
-PORTVERSION=	7.8.700
-PORTREVISION=	3
+PORTVERSION=	${PIKEVERSION}
 CATEGORIES=	lang
 MASTER_SITES=	http://pike.ida.liu.se/pub/pike/all/${PORTVERSION}/ \
 		ftp://pike.ida.liu.se/pub/pike/beta/${PORTVERSION}/ \
@@ -25,9 +24,15 @@ CONFLICTS=	pike7[26]-[0-9]*
 OPTIONS_DEFINE=	TTF FREETYPE MYSQL PGSQL
 OPTIONS_DEFAULT=TTF FREETYPE MYSQL
 NO_OPTIONS_SORT=yes
-TTF_DESC?=	Enable FreeType 1 (libttf) font rendering engine
-
-MAN1=		pike.1
+TTF_DESC?=		Enable FreeType 1 (libttf) font rendering engine
+TTF_LIB_DEPENDS=	libttf.so:${PORTSDIR}/print/freetype
+TTF_CONFIGURE_WITH=	ttflib
+FREETYPE_LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+FREETYPE_CONFIGURE_WITH=freetype
+MYSQL_USE=		mysql=yes
+MYSQL_CONFIGURE_WITH=	mysql
+PGSQL_USE=		pgsql=yes
+PGSQL_CONFIGURE_WITH=	pgsql
 
 CFLAGS+=	-ffast-math -fomit-frame-pointer
 
@@ -75,49 +80,19 @@ CONFIGURE_ARGS+=	--without-debug \
 
 USES=		bison gettext gmake perl5
 
-PLIST_FILES=	bin/pike bin/pike78 bin/hilfe
-
-NO_STAGE=	yes
-
-.include <bsd.port.pre.mk>
+PLIST_FILES=	bin/pike bin/pike78 bin/hilfe \
+		man/man1/pike.1.gz
 
 ONLY_FOR_ARCHS=	i386 amd64
-
-.if ${PORT_OPTIONS:MTTF}
-LIB_DEPENDS+=	libttf.so:${PORTSDIR}/print/freetype
-CONFIGURE_ARGS+=	--with-ttflib
-.else
-CONFIGURE_ARGS+=	--without-ttflib
-.endif
-
-.if ${PORT_OPTIONS:MFREETYPE}
-LIB_DEPENDS+=	libfreetype.so:${PORTSDIR}/print/freetype2
-CONFIGURE_ARGS+=	--with-freetype
-.else
-CONFIGURE_ARGS+=	--without-freetype
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
-CONFIGURE_ARGS+=	--with-mysql=${PREFIX}
-.else
-CONFIGURE_ARGS+=	--without-mysql
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
-CONFIGURE_ARGS+=	--with-pgsql=${PREFIX}
-.else
-CONFIGURE_ARGS+=	--without-pgsql
-.endif
 
 do-configure:
 	@${MAKE} -C ${WRKSRC} configure CONFIGUREARGS="${CONFIGURE_ARGS}"
 
-
 post-patch:
 	@${REINPLACE_CMD} -e 's| -lgmp| -L${LOCALBASE}/lib -lgmp|' \
 		${WRKSRC}/src/modules/Gmp/configure ${WRKSRC}/src/modules/_Image_XFace/configure
+	@${REINPLACE_CMD} -e '/memchr_memcmp.*needle/s/^/static /' \
+		${WRKSRC}/src/pike_search_engine2.c
 	@${REINPLACE_CMD} -e 's|%%PTHREAD_CFLAGS%%|${PTHREAD_CFLAGS}|' \
 		-e 's|%%PTHREAD_LIBS%%|${PTHREAD_LIBS}|' \
 		-e 's|,-Bshareable|& -shared|' \
@@ -125,17 +100,23 @@ post-patch:
 	@${REINPLACE_CMD} -e '/install.*MANDIR/s|^|//|' \
 		${WRKSRC}/bin/install.pike
 
+do-install:
+	@cd ${WRKSRC} && ${MAKE_CMD} ${INSTALL_TARGET} buildroot=${STAGEDIR}
+
 post-install:
-	${STRIP_CMD} ${PREFIX}/pike/${PORTVERSION}/bin/pike
-	${INSTALL_SCRIPT} ${WRKSRC}/bin/hilfe ${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/man/pike.1 ${MAN1PREFIX}/man/man1
-	@cd ${PREFIX} && ${FIND} pike/${PORTVERSION} ! -type d >> ${TMPPLIST}
-	@cd ${PREFIX} && ${FIND} pike/${PORTVERSION} -type d -empty -delete
-	@cd ${PREFIX} && ${FIND} -d pike/${PORTVERSION} -type d | \
-		${SED} 's,^,@dirrm ,' >> ${TMPPLIST}
-	@${ECHO} '@unexec rmdir %D/pike 2>/dev/null || true' >> ${TMPPLIST}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/pike/${PORTVERSION}/bin/pike
+	${INSTALL_SCRIPT} ${WRKSRC}/bin/hilfe ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/man/pike.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	@cd ${STAGEDIR}${PREFIX} && \
+		(${FIND} pike/${PORTVERSION} ! -type d && \
+		${FIND} pike/${PORTVERSION} -type d -empty -delete && \
+		${FIND} -d pike/${PORTVERSION} -type d | \
+		${SED} 's,^,@dirrm ,' && \
+		${ECHO_CMD} '@unexec rmdir %D/pike 2>/dev/null || true' \
+		) >> ${TMPPLIST}
 
 verify:
-	@(cd ${WRKSRC}; make verify)
+	cd ${WRKSRC}; ${MAKE_CMD} verify
 
-.include <bsd.port.post.mk>
+.include "Makefile.common"
+.include <bsd.port.mk>

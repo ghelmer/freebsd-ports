@@ -3,6 +3,7 @@
 
 PORTNAME=	graphviz
 PORTVERSION=	2.36.0
+PORTREVISION=	6
 CATEGORIES=	graphics tk
 MASTER_SITES=	http://www.graphviz.org/pub/graphviz/ARCHIVE/
 
@@ -16,15 +17,14 @@ LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libgd.so:${PORTSDIR}/${GD_PORT}
 
-USES=		bison gmake pkgconfig shebangfix
-USE_AUTOTOOLS=	libltdl libtool
-WANT_GNOME=	yes
+USES=		bison gmake libtool:oldver pathfix pkgconfig shebangfix
+USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 CPPFLAGS+=	-I${LOCALBASE}/include
 PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
-MAKE_ENV=	EXPR_COMPAT=yes MISSING=${TRUE}
+MAKE_ENV=	EXPR_COMPAT=yes
 
 SHEBANG_LANG=	tcl
 tcl_OLD_CMD=	/usr/bin/tclsh
@@ -69,7 +69,7 @@ SMYRNA_DESC=	SMYRNA graph viewer (requires GTK2)
 GVEDIT_DESC=	gvedit (requires qt)
 MING_DESC=	ming plugin
 DEVIL_DESC=	devil plugin
-GHOSTSCRIPT_DESC=ghostscript plugin
+GHOSTSCRIPT_DESC=ghostscript plugin (requires PANGOCAIRO)
 PERL_DESC=	Perl bindings (swig)
 PHP_DESC=	PHP bindings (swig) 
 PYTHON_DESC=	Python bindings (swig)
@@ -95,7 +95,7 @@ PERL_USES=	perl5
 PHP_USE=	PHP=yes PHP_BUILD=yes
 PYTHON_USE=	PYTHON_BUILD=yes
 RUBY_USE=	RUBY=yes
-LUA_USE=	LUA=yes
+LUA_USES=	lua
 TCL_USES=	tcl:build
 TK_USES= 	tk:build
 POPPLER_LIB_DEPENDS=	libpoppler-glib.so:${PORTSDIR}/graphics/poppler-glib
@@ -165,8 +165,6 @@ CONFIGURE_ARGS+=	--program-transform-name="s/x/x/" \
 		--disable-io --disable-ocaml --disable-java \
 		--disable-sharp
 
-CONFIGURE_ENV+=	MISSING=${TRUE}
-
 .if ${PORT_OPTIONS:MGUILE}
 BROKEN=	guile is too old
 .endif
@@ -197,6 +195,12 @@ CONFIGURE_ARGS+=	--without-libiconv-prefix
 .if ${PORT_OPTIONS:MLIBRSVG2}
 .if empty(PORT_OPTIONS:MPANGOCAIRO)
 IGNORE=	option PANGOCAIRO is required for option LIBRVG2
+.endif
+.endif
+
+.if ${PORT_OPTIONS:MGHOSTSCRIPT}
+.if empty(PORT_OPTIONS:MPANGOCAIRO)
+IGNORE=	option PANGOCAIRO is required for option GHOSTSCRIPT
 .endif
 .endif
 
@@ -266,7 +270,6 @@ SHEBANG_FILES+=	tclpkg/gv/demo/modgraph.tcl
 post-patch:
 	${FIND} ${WRKSRC} -name Makefile.in | \
 		${XARGS} ${REINPLACE_CMD} \
-		-e 's|(libdir)/pkgconfig|(prefix)/libdata/pkgconfig|' \
 		-e "s|\([^:]*:.*\) install-pdfDATA\(.*\)|\1\2|g" \
 		-e "s|\([^:]*:.*\) install-htmlDATA\(.*\)|\1\2|g" \
 		-e "s|\([^:]*:.*\) install-txtDATA\(.*\)|\1\2|g" \

@@ -3,6 +3,7 @@
 
 PORTNAME=	core
 PORTVERSION=	1.7.9
+PORTREVISION=	1
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
@@ -10,7 +11,7 @@ PKGNAMEPREFIX=	evas-
 DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}
 
 MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	A hardware accelerated canvas API (core library)
+COMMENT=	Hardware accelerated canvas API (core library)
 
 LICENSE=	BSD
 

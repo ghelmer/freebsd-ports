@@ -13,6 +13,9 @@ COMMENT=	GCC plugin to use the LLVM backend
 
 CONFLICTS=	dragonegg46-devel-3.3*
 
+DEPRECATED=	Dead upstream, impractical to build on 10 and later
+EXPIRATION_DATE=	2014-08-01
+
 BUILD_DEPENDS+=	llvm-config${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
 RUN_DEPENDS+=	llvm-config${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
 
@@ -45,7 +48,7 @@ PORTDOCS=		README
 .include <bsd.port.pre.mk>
 
 .if ${COMPILER_FEATURES:Mlibc++}
-IGNORE= "Dragonegg can't work if LLVM was built with libc++"
+IGNORE=	"Dragonegg can't work if LLVM was built with libc++"
 .endif
 
 post-patch:

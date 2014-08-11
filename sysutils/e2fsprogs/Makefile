@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	e2fsprogs
-PORTVERSION=	1.42.9
+PORTVERSION=	1.42.10
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/kernel/people/tytso/${PORTNAME}/v${PORTVERSION}
@@ -13,15 +13,15 @@ COMMENT?=	Utilities & library to manipulate ext2/3/4 filesystems
 LICENSE=	GPLv2
 
 PATCH_STRIP=	-p1
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig tar:xz
 USE_CSTD=	gnu99
 USE_LDCONFIG=	yes
-USE_XZ=		yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--disable-fsck --disable-e2initrd-helper \
+		--enable-quota \
 		--with-root-prefix='${PREFIX}'
 CPPFLAGS+=	-I${WRKSRC}/lib -I${LOCALBASE}/include # -D_EXT2_USE_C_VERSIONS
-MAKE_ARGS+=	LDFLAGS='${LDFLAGS} -L${LOCALBASE}/lib'
+MAKE_ARGS+=	LDFLAGS='${LDFLAGS} -L${LOCALBASE}/lib' pkgconfigdir='${PREFIX}/libdata/pkgconfig'
 MAKE_ENV+=	CHECK_CMD=@true
 
 .if !defined(MASTERDIR)
@@ -65,9 +65,6 @@ libintl=
 .endif
 
 post-patch::
-	@${REINPLACE_CMD} -E -e \
-		's:\$$\(libdir\)/pkgconfig:${PREFIX}/libdata/pkgconfig:' \
-		${WRKSRC}/lib/*/Makefile.in
 # don't build/install libext2fs.info
 	@${REINPLACE_CMD} -e 's/ install-doc-libs$$//' ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -E -e 's/md5sum ([^ ]*)/printf "%s  %s\\n" $$(md5 -q \1) \1/' \
@@ -76,18 +73,23 @@ post-patch::
 # disable f_mmp_garbage, fails on FreeBSD, and the resize*big_expand tests,
 # which are too unwieldy to run automatically (need too much free space).
 # f_extent_oobounds fails in Tinderbox and is fine outside, reason unclear.
-.for i in f_mmp_garbage f_extent_oobounds r_64bit_big_expand r_bigalloc_big_expand r_ext4_big_expand m_bigjournal
+.for i in f_mmp_garbage m_bigjournal r_64bit_big_expand r_bigalloc_big_expand r_ext4_big_expand
 	@${MV} ${WRKSRC}/tests/${i} ${WRKSRC}/tests/disabled_test-${i}
 .endfor
 
 .if ${MASTERDIR} == ${.CURDIR}
+pre-build:
+# fix up Makefile ordering for parallel builds
+	cd ${WRKSRC}/lib/et && ${DO_MAKE_BUILD} compile_et
+	cd ${WRKSRC}/e2fsck && ${DO_MAKE_BUILD} prof_err.h
+
 post-build:
 # Relink e2fsck statically - We need to make sure that tools for the root file
 # system are statically linked against anything that is outside the root fs,
 # else we're in trouble if e2fsck is needed for boot:
 # (we don't use e2fsck.static, since we can link libc.so dynamically)
 	cd ${WRKSRC}/e2fsck && ${RM} -f e2fsck \
-		&& ${GMAKE} e2fsck \
+		&& ${MAKE_CMD} e2fsck \
 		STATIC_LIBS="../lib/libext2fs.a ../lib/libcom_err.a \
 		../lib/libblkid.a  ../lib/libuuid.a" \
 		LIBINTL=${libintl}
@@ -104,7 +106,7 @@ post-build:
 	    echo 'FAIL' ; echo '===>  e2fsck depends on:' ; echo "$$a" ; exit 1 ; fi
 # Update translation binary files
 .if ${PORT_OPTIONS:MNLS}
-	cd ${WRKSRC}/po && ${GMAKE} update-gmo
+	cd ${WRKSRC}/po && ${MAKE_CMD} update-gmo
 .endif
 # Build fsck(8) wrapper
 	${CC} ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} -s ${LIBS} \
@@ -117,7 +119,7 @@ post-build:
 # There have been subtle failures induced by Linux-isms in the past.
 # -- Matthias Andree, package maintainer, 2007-09-18
 	@${ECHO_CMD} '===>  Running e2fsprogs self-test suite'
-	cd ${WRKSRC}/tests && ${MKDIR} ${WRKDIR}/tmp && ${GMAKE} -j${MAKE_JOBS_NUMBER} check TMPDIR=${WRKDIR}/tmp \
+	cd ${WRKSRC}/tests && ${MKDIR} ${WRKDIR}/tmp && ${MAKE_CMD} -j${MAKE_JOBS_NUMBER} check TMPDIR=${WRKDIR}/tmp \
 	    || { head -n30000 ${WRKSRC}/tests/*.failed 2>/dev/null ; exit 1 ; }
 
 post-install:

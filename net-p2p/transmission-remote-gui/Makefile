@@ -3,6 +3,7 @@
 
 PORTNAME=	transmission-remote-gui
 PORTVERSION=	5.0.1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTNAME=	transgui-${PORTVERSION}-src
@@ -26,8 +27,9 @@ SUB_FILES=	pkg-message
 
 LAZARUS_PROJECT_FILE=	transgui.lpi
 LAZBUILD_CMD=		${LOCALBASE}/bin/lazbuild -d
-LCL_UNITS_DIR=		${LOCALBASE}/share/lazarus/lcl/units/${BUILDNAME}
-LAZARUS_DIR=		${LOCALBASE}/share/lazarus
+LCL_UNITS_DIR=		${LOCALBASE}/share/lazarus-${LAZARUS_VER}/lcl/units/${BUILDNAME}
+LAZARUS_VER=		1.2.4
+LAZARUS_DIR=		${LOCALBASE}/share/lazarus-${LAZARUS_VER}
 
 OPTIONS_SINGLE=		LCL
 OPTIONS_SINGLE_LCL=	GTK1 GTK2 QT4
@@ -38,12 +40,11 @@ QT4_DESC=		Use qt4 interface
 
 OPTIONS_DEFAULT=	GTK2
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MGTK2}
 USE_FPC+=	gtk2
-USE_GNOME=	gtk20 gdkpixbuf
+USE_GNOME=	gtk20
 LCL_PLATFORM=	gtk2
 BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-gtk2
 .endif
@@ -67,9 +68,6 @@ do-build:
 
 do-install:
 	@cd ${WRKSRC}/units && \
-		${INSTALL_PROGRAM} transgui ${PREFIX}/bin
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+		${INSTALL_PROGRAM} transgui ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.post.mk>

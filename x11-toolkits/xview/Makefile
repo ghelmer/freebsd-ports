@@ -29,13 +29,13 @@ MAKE_ENV+=	IMAKEINCLUDE=${IMAKEINCLUDE}
 ALL_TARGET=	World
 SUB_FILES=	pkg-message
 CFLAGS+=	-Wno-return-type
-
-MAN1=		XView.1
+DESTDIRNAME=	NONEXISTENT
 
 X11BASE2FIX=	clients/olwmslave/help_file.c	lib/libxview/help/help_file.c	\
 		lib/libxview/misc/gettext.h	lib/libxview/textsw/txt_e_menu.c
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} > 800089
@@ -54,7 +54,7 @@ pre-configure:
 	@${REINPLACE_CMD} -e "s/-DCOMPAT_43TTY//" \
 	  ${WRKSRC}/config/XView.tmpl
 .endif
-	@${REINPLACE_CMD} -e 's+/usr/X11/+${LOCALBASE}/+g;' \
+	@${REINPLACE_CMD} -e 's+/usr/X11/+${PREFIX}/+g;' \
 	  ${WRKSRC}/clients/olwm/screen.c
 	${REINPLACE_CMD} -e 's+/usr/lib+${PREFIX}/lib+'	\
 		${X11BASE2FIX:C|^|${WRKSRC}/|}
@@ -64,8 +64,12 @@ pre-configure:
 	's|^#endif.*$$|#endif|;s|^#else.*$$|#else|;\
 	s|^/\*\*/#*|XCOMM |'
 
+pre-install:
+	@${FIND} ${WRKSRC} -type f -name Makefile | ${XARGS} ${REINPLACE_CMD} -e '/XVDESTDIR = /s+${PREFIX}+${STAGEDIR}${PREFIX}+'
+	@${FIND} ${WRKSRC}/config ${WRKSRC}/fonts -type f -name Makefile | ${XARGS} ${REINPLACE_CMD} -e '/PROJECTROOT = /!s+${PREFIX}+${STAGEDIR}${PREFIX}+g'
+
 post-install:
-.if !defined{NOPORTDOCS}
+.if ${PORT_OPTIONS:MDOCS}
 	@(cd ${WRKSRC}/doc; ${MAKE} install)
 .endif
 	@${CAT} ${PKGMESSAGE}

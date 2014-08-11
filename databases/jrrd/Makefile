@@ -3,16 +3,18 @@
 
 PORTNAME=	jrrd
 PORTVERSION=	1.0.6
+PORTREVISION=	1
 CATEGORIES=	databases java
 MASTER_SITES=	SF/opennms/JRRD/stable-1.0
 
-MAINTAINER=	venture37@geeklan.co.uk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java native interface (JNI) to RRDtool
 
 LIB_DEPENDS=	librrd.so:${PORTSDIR}/databases/rrdtool
 
+USES=		libtool
 USE_JAVA=	yes
-JAVA_VERSION=	1.6
+JAVA_VERSION=	1.6+
 JAVA_VENDOR=	openjdk
 JAVA_BUILD=	yes
 JAVA_RUN=	yes
@@ -21,10 +23,8 @@ CONFIGURE_ENV=	JAVA_HOME=${JAVA_HOME}
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	%%JAVAJARDIR%%/jrrd.jar \
-		lib/libjrrd.la \
 		lib/libjrrd.so
 
-NO_STAGE=	yes
 pre-everything::
 	@${ECHO_MSG}	""
 	@${ECHO_MSG}	"Installation settings:"

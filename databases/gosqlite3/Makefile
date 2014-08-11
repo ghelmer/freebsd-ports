@@ -3,12 +3,12 @@
 
 PORTNAME=	gosqlite3
 PORTVERSION=	20120330
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	LOCAL/jlaffaye
 
 MAINTAINER=	lichray@gmail.com
-COMMENT=	A Go interface for SQLite3
+COMMENT=	Go interface for SQLite3
 
 LIB_DEPENDS+=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 

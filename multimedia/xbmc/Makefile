@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	xbmc
-DISTVERSION=	13.0.beta1
+DISTVERSION=	13.1
 PORTREVISION=	1
 CATEGORIES=	multimedia
+MASTER_SITES=	http://mirrors.xbmc.org/releases/source/
 
 MAINTAINER=	mickael.maillot@gmail.com
 COMMENT=	Award winning media center application
@@ -17,8 +18,8 @@ BUILD_DEPENDS=	enca:${PORTSDIR}/converters/enca \
 		zip:${PORTSDIR}/archivers/zip \
 		unzip:${PORTSDIR}/archivers/unzip \
 		nasm:${PORTSDIR}/devel/nasm \
-		dvdread-config:${PORTSDIR}/multimedia/libdvdread \
 		gtk-update-icon-cache:${PORTSDIR}/x11-toolkits/gtk20 \
+		libtool:${PORTSDIR}/devel/libtool \
 		swig2.0:${PORTSDIR}/devel/swig20
 LIB_DEPENDS=	libass.so:${PORTSDIR}/multimedia/libass \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
@@ -52,13 +53,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}imaging>0:${PORTSDIR}/graphics/py-imaging \
 		xdpyinfo:${PORTSDIR}/x11/xdpyinfo
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	xbmc
-GH_COMMIT=	128426f
-GH_TAGNAME=	Gotham-beta1
-
-USES=		gmake iconv:wchar_t pkgconfig
-USE_AUTOTOOLS=	autoconf libtool automake libltdl
+USES=		gmake iconv:wchar_t libtool pkgconfig
+USE_AUTOTOOLS=	autoconf automake libltdl
 GNU_CONFIGURE=	yes
 USE_XORG=	xt xmu xtst
 USE_GL=		glu
@@ -76,6 +72,8 @@ DESKTOP_ENTRIES="XBMC" \
 		"xbmc" \
 		"AudioVideo;Video;" \
 		true
+
+WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}-Gotham
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	AIRPLAY AIRTUNES AVAHI CEC LAME \

@@ -4,7 +4,7 @@
 
 PORTNAME=	ghex
 PORTVERSION=	2.24.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	editors gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -12,11 +12,10 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME 2 hex editor
 
-USE_BZIP2=	yes
-USE_GNOME=	gnomeprefix gnomehack intlhack libgnomeprintui libgnomeui \
-		gnomedocutils
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USE_GNOME=	gnomeprefix intlhack libgnomeprintui libgnomeui gnomedocutils
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -24,5 +23,4 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 GCONF_SCHEMAS=	ghex2.schemas
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

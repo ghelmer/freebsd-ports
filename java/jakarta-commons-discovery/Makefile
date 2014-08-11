@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	jakarta-
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	olgeni@FreeBSD.org
-COMMENT=	A Java library for locating resources (including classes)
+COMMENT=	Java library for locating resources (including classes)
 
 USE_JAVA=	YES
 JAVA_VERSION=	1.6+
@@ -23,16 +23,11 @@ PORTDOCS=	*
 JARFILE=	${PORTNAME}.jar
 PLIST_FILES+=	%%JAVAJARDIR%%/${JARFILE}
 
-NO_STAGE=	yes
 do-install:
-	@${ECHO_MSG} -n ">> Installing JAR as ${JAVAJARDIR}/${JARFILE}..."
-	@${INSTALL_DATA} ${WRKSRC}/${PORTNAME}-${PORTVERSION}.jar ${JAVAJARDIR}/${JARFILE}
-	@${ECHO_MSG} " [ DONE ]"
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}-${PORTVERSION}.jar ${STAGEDIR}${JAVAJARDIR}/${JARFILE}
 .if !defined(NOPORTDOCS)
-	@${ECHO_MSG} -n ">> Installing documentation..."
-	@cd ${WRKSRC}/apidocs && ${FIND} . -type d -exec ${MKDIR} ${DOCSDIR}/{} \;
-	@cd ${WRKSRC}/apidocs && ${FIND} . -type f -exec ${INSTALL_DATA} {} ${DOCSDIR}/{} \;
-	@${ECHO_MSG} " [ DONE ]"
+	cd ${WRKSRC}/apidocs && ${FIND} . -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/{} \;
+	cd ${WRKSRC}/apidocs && ${FIND} . -type f -exec ${INSTALL_DATA} {} ${STAGEDIR}${DOCSDIR}/{} \;
 .endif
 
 .include <bsd.port.mk>

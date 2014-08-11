@@ -1,6 +1,6 @@
---- config.orig	2007-12-10 16:42:38.000000000 +0900
-+++ config	2007-12-10 16:42:28.000000000 +0900
-@@ -1,9 +1,9 @@
+--- ./config.orig	2014-06-06 21:17:17.000000000 +0000
++++ ./config	2014-06-06 21:17:45.000000000 +0000
+@@ -1,14 +1,14 @@
  #############################################################
  #Linux/BSD/Mac
 -LUA_DIR= /usr/local/share/lua/5.1.1
@@ -14,7 +14,13 @@
  # For Mac OS, comment the above line and uncomment this one
  #JDK=/Library/Java/Home
  
-@@ -23,7 +23,7 @@
+ # Full path to Lua static library
+-LIB_LUA=$(LUA_LIBDIR)/liblua.a
++LIB_LUA=$(LUA_LIBDIR)/liblua-%%LUA_VER%%.a
+ 
+ #Linux/BSD
+ LIB_EXT= .so
+@@ -23,13 +23,13 @@
  #LIB_OPTION= -dynamiclib -all_load
  
  ## On FreeBSD and Mac OS systems, the following line should be commented
@@ -22,4 +28,12 @@
 +#DLLIB= -ldl
  
  WARN= -O2 -Wall -fPIC -W -Waggregate-return -Wcast-align -Wmissing-prototypes -Wnested-externs -Wshadow -Wwrite-strings
- INCS= -I$(JDK)/include -I$(JDK)/include/linux -I$(LUA_INCLUDES)
+-INCS= -I$(JDK)/include -I$(JDK)/include/linux -I$(LUA_INCLUDES)
++INCS= -I$(JDK)/include -I$(JDK)/include/freebsd -I$(LUA_INCLUDES)
+ CFLAGS= $(WARN) $(INCS)
+ 
+-CC= gcc
++#CC= gcc
+ 
+ 
+ #########################################################

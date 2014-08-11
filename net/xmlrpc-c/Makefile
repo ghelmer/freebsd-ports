@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xmlrpc-c
-PORTVERSION=	1.25.26
+PORTVERSION=	1.25.28
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Xmlrpc-c%20Super%20Stable/${PORTVERSION}
 EXTRACT_SUFX=	.tgz
@@ -10,7 +10,7 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	XML-RPC library for C and C++
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 OPTIONS_DEFINE=	DEBUG CURL LIBWWW
 OPTIONS_DEFAULT=CURL LIBWWW
@@ -20,11 +20,9 @@ LIBWWW_DESC=	Compile with libwww support
 CONFLICTS=	xmlrpc-epi-0.* xmlrpc-c-devel-[0-9]*
 
 USES=		gmake perl5
-USE_AUTOTOOLS=	libtool:env
 GNU_CONFIGURE=	yes
 MAKEFILE=	GNUmakefile
-MAKE_ARGS=	LIBTOOL="${LIBTOOL}" \
-		CFLAGS_COMMON="${CFLAGS}"
+MAKE_ARGS=	CFLAGS_COMMON="${CFLAGS}"
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 
@@ -52,5 +50,8 @@ post-patch:
 		${WRKSRC}/lib/curl_transport/curltransaction.c \
 		${WRKSRC}/lib/curl_transport/xmlrpc_curl_transport.c \
 		${WRKSRC}/lib/curl_transport/curlmulti.c
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libxmlrpc*.so.[37].25
 
 .include <bsd.port.post.mk>

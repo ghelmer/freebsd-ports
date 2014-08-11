@@ -8,7 +8,7 @@ CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-gtk/${PORTNAME}-gtk-${PORTVERSION}
 DISTNAME=	${PORTNAME}-gtk-${PORTVERSION}
 
-MAINTAINER=	sylvio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A multi-purpose desktop calculator (Gnome frontend)
 
 LIB_DEPENDS=	qalculate.5:${PORTSDIR}/math/libqalculate
@@ -16,8 +16,7 @@ RUN_DEPENDS=	gnuplot:${PORTSDIR}/math/gnuplot \
 		wget:${PORTSDIR}/ftp/wget
 
 USE_GNOME=	gnomehack gnomeprefix intlhack libglade2 libgnome
-USES=		gettext
-USE_GMAKE=	yes
+USES=		gettext gmake
 GNU_CONFIGURE=	yes
 INSTALLS_OMF=	yes
 

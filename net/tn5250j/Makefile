@@ -22,11 +22,11 @@ RUN_DEPENDS=	${JAVAJARDIR}/mail.jar:${PORTSDIR}/java/javamail \
 		${JAVAJARDIR}/itext.jar:${PORTSDIR}/devel/itext \
 		${JAVAJARDIR}/log4j.jar:${PORTSDIR}/devel/log4j
 
-USES=		zip
+USES=		dos2unix zip
 USE_ANT=	yes
 USE_JAVA=	1.3+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-USE_DOS2UNIX=	build.xml
+DOS2UNIX_FILES=	build.xml
 
 ALL_TARGET=	package
 MAKE_ENV+=	CLASSPATH=${JYTHON_PREFIX}
@@ -41,19 +41,16 @@ DOC_FILES=	CHANGELOG.txt applet.txt filetransfers.txt readme.txt antbuild.txt\
 SUB_FILES=	tn5250j
 SUB_LIST=	JYTHON_JAR=${JYTHON_JAR}
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/tn5250j ${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/build/tn5250j.jar ${JAVAJARDIR}
+	${INSTALL_SCRIPT} ${WRKDIR}/tn5250j ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/build/tn5250j.jar ${STAGEDIR}${JAVAJARDIR}
 
 post-install:
 .if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for d in ${DOC_FILES}
-	${INSTALL_MAN} ${WRKSRC}/src/${d} ${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/src/${d} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

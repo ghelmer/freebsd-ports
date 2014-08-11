@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	iperf
-PORTVERSION=	3.0.3
+PORTVERSION=	3.0.5
 CATEGORIES=	benchmarks ipv6
-MASTER_SITES=	http://stats.es.net/software/
+MASTER_SITES=	http://downloads.es.net/pub/iperf/
 PKGNAMESUFFIX=	3
 
 MAINTAINER=	bmah@FreeBSD.org
@@ -13,8 +13,10 @@ COMMENT=	Improved tool to measure TCP and UDP bandwidth
 LICENSE=	BSD3CLAUSE
 
 GNU_CONFIGURE=	yes
+USES=		libtool:keepla
 USE_LDCONFIG=	yes
-USES=		libtool
+
+PORTDOCS=	AUTHORS README.md RELEASE_NOTES
 
 # Set ${DOCSDIR} to avoid conflict with benchmarks/iperf ${DOCSDIR}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
@@ -34,6 +36,6 @@ post-patch:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS README.md RELEASE_NOTES ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

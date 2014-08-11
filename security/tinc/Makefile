@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tinc
-PORTVERSION=	1.0.23
+PORTVERSION=	1.0.24
 CATEGORIES=	security
 MASTER_SITES=	http://www.tinc-vpn.org/packages/ \
 		ftp://ftp.wiretapped.net/pub/security/network-security/tinc/ \
@@ -15,6 +15,7 @@ LIB_DEPENDS=	liblzo2.so:${PORTSDIR}/archivers/lzo2
 
 LICENSE=	GPLv3
 
+USES=		makeinfo
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

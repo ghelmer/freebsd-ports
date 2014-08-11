@@ -3,7 +3,7 @@
 
 PORTNAME=	gmsh
 PORTVERSION=	2.8.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	cad
 MASTER_SITES=	http://www.geuz.org/gmsh/src/ \
 		http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
@@ -14,9 +14,7 @@ DIST_SUBDIR=	gmsh
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	stephen@FreeBSD.org
-COMMENT=	An automatic 3D finite element mesh generator
-
-LICENSE=	GPLv2
+COMMENT=	Automatic 3D finite element mesh generator
 
 LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
 		libjpeg.so:${PORTSDIR}/graphics/jpeg \
@@ -59,6 +57,7 @@ CMAKE_ARGS+=	-DINSTALL_DOCS=OFF
 .if defined(WITHOUT_TETGEN)
 CMAKE_ARGS+=	-DENABLE_TETGEN=OFF
 .else
+NO_CDROM=	Contact appropriate authors for commercial purposes if including Tetgen or Metis
 CMAKE_ARGS+=	-DENABLE_TETGEN=ON
 .endif
 
@@ -70,6 +69,7 @@ IGNORE=		requires that WITHOUT_METIS is not set if WITH_TAUCS is set
 .endif
 
 .if !defined(WITHOUT_METIS)
+NO_CDROM=	Contact appropriate authors for commercial purposes if including Tetgen or Metis
 CMAKE_ARGS+=	-DENABLE_METIS=ON
 .if defined(PORT_OPTIONS:MDOCS)
 IGNORE=		the license for Metis requires that its documentation is included
@@ -109,6 +109,7 @@ CMAKE_ARGS+=	-DENABLE_GMM=OFF
 .if defined(WITH_OCC)
 LIB_DEPENDS+=	libTKernel.so:${PORTSDIR}/cad/opencascade
 CMAKE_ARGS+=	-DENABLE_OCC=ON -DOCC_INC=${LOCALBASE}/include/OpenCASCADE
+CFLAGS+=	-DHAVE_CONFIG_H -DHAVE_WOK_CONFIG_H -DFREEBSD
 CONFLICTS=	gmsh-2.*
 .else
 CMAKE_ARGS+=	-DENABLE_OCC=OFF

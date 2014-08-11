@@ -58,7 +58,6 @@
     SUBDIR += btc
     SUBDIR += calf
     SUBDIR += cam
-    SUBDIR += cantus_3
     SUBDIR += caps-plugins
     SUBDIR += ccaudio2
     SUBDIR += cd-console
@@ -181,10 +180,8 @@
     SUBDIR += ghostess
     SUBDIR += gigedit
     SUBDIR += gimmix
-    SUBDIR += gkrellmms
     SUBDIR += gkrellmms2
     SUBDIR += gkrellmss2
-    SUBDIR += gkrellmvolume
     SUBDIR += gkrellmvolume2
     SUBDIR += glame
     SUBDIR += glurp
@@ -307,9 +304,9 @@
     SUBDIR += id3ren
     SUBDIR += id3tool
     SUBDIR += id3v2
+    SUBDIR += idjc
     SUBDIR += ifp-line
     SUBDIR += ipod-sharp
-    SUBDIR += istream
     SUBDIR += jack
     SUBDIR += jack-keyboard
     SUBDIR += jack-rack
@@ -360,11 +357,13 @@
     SUBDIR += libcoverart
     SUBDIR += libdiscid
     SUBDIR += libdssialsacompat
+    SUBDIR += libebur128
     SUBDIR += libechonest
     SUBDIR += libfishsound
     SUBDIR += libgig
     SUBDIR += libgme
     SUBDIR += libgpod
+    SUBDIR += libgroove
     SUBDIR += libid3tag
     SUBDIR += libkcddb
     SUBDIR += libkcompactdisc
@@ -379,7 +378,6 @@
     SUBDIR += libmpd
     SUBDIR += libmpdclient
     SUBDIR += libmusicbrainz3
-    SUBDIR += libmusicbrainz4
     SUBDIR += libmusicbrainz5
     SUBDIR += libnjb
     SUBDIR += libnoise
@@ -390,7 +388,6 @@
     SUBDIR += libsamplerate
     SUBDIR += libshairport
     SUBDIR += libshout
-    SUBDIR += libshout2
     SUBDIR += libsidplay
     SUBDIR += libsidplay2
     SUBDIR += libsidplayfp
@@ -489,6 +486,7 @@
     SUBDIR += mpg123.el
     SUBDIR += mpg321
     SUBDIR += mpiosh
+    SUBDIR += mps
     SUBDIR += msilbc
     SUBDIR += muine
     SUBDIR += mumble
@@ -594,6 +592,7 @@
     SUBDIR += py-cddb
     SUBDIR += py-discogs-client
     SUBDIR += py-eyed3
+    SUBDIR += py-eyed3-06
     SUBDIR += py-fastaudio
     SUBDIR += py-id3
     SUBDIR += py-karaoke
@@ -613,10 +612,10 @@
     SUBDIR += py-speex
     SUBDIR += py-tagpy
     SUBDIR += py-vorbis
-    SUBDIR += py-xmms
     SUBDIR += py-xmms2
     SUBDIR += pytone
     SUBDIR += qjackctl
+    SUBDIR += qmidinet
     SUBDIR += qmpdclient
     SUBDIR += qsampler
     SUBDIR += qsynth
@@ -641,7 +640,6 @@
     SUBDIR += rsynth
     SUBDIR += rubberband
     SUBDIR += ruby-audiofile
-    SUBDIR += ruby-esound
     SUBDIR += ruby-freedb
     SUBDIR += ruby-mp3info
     SUBDIR += ruby-mp3tag
@@ -666,6 +664,7 @@
     SUBDIR += shntool
     SUBDIR += shorten
     SUBDIR += shout
+    SUBDIR += shout-idjc
     SUBDIR += shoutcast
     SUBDIR += sidplay
     SUBDIR += sidplay2
@@ -710,7 +709,6 @@
     SUBDIR += stymulator
     SUBDIR += sweep
     SUBDIR += swhplugins
-    SUBDIR += tagger
     SUBDIR += taglib
     SUBDIR += taglib-extras
     SUBDIR += taglib-sharp
@@ -794,6 +792,7 @@
     SUBDIR += xmms-ahx
     SUBDIR += xmms-bonk
     SUBDIR += xmms-curses
+    SUBDIR += xmms-faad
     SUBDIR += xmms-festalon
     SUBDIR += xmms-flac
     SUBDIR += xmms-gbsplay
@@ -805,7 +804,6 @@
     SUBDIR += xmms-sapplug
     SUBDIR += xmms-scrobbler
     SUBDIR += xmms-sexypsf
-    SUBDIR += xmms-sexyspc
     SUBDIR += xmms-shn
     SUBDIR += xmms-timidity
     SUBDIR += xmms-volnorm

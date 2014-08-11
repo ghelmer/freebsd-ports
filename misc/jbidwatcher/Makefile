@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	jbidwatcher
-PORTVERSION=	2.5
-PORTREVISION=	1
+PORTVERSION=	2.5.6
 CATEGORIES=	misc java
 MASTER_SITES=	http://www.jbidwatcher.com/download/
 
-MAINTAINER=	shurd@sasktel.net
+MAINTAINER=	shurd@FreeBSD.org
 COMMENT=	A Java-based application allowing you to monitor eBay auctions
 
 USE_BZIP2=	yes
@@ -21,9 +20,8 @@ SUB_LIST+=	PORTVERSION=${PORTVERSION}
 PLIST_FILES=	%%JAVAJARDIR%%/JBidwatcher-${PORTVERSION}.jar \
 		bin/${PORTNAME}
 
-NO_STAGE=	yes
 do-install:
-	@${INSTALL_DATA} ${WRKSRC}/JBidwatcher-${PORTVERSION}.jar ${JAVAJARDIR}
-	@${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${PREFIX}/bin
+	@${INSTALL_DATA} ${WRKSRC}/JBidwatcher-${PORTVERSION}.jar ${STAGEDIR}${JAVAJARDIR}
+	@${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

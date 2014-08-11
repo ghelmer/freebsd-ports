@@ -8,7 +8,9 @@ MASTER_SITES=	http://abloz.com/huzheng/stardict-dic/dict.org/
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Longman Dictionary of Contemporary English
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
+
+RESTRICTED=	Possible copyright infringement
 
 .include "${.CURDIR}/../../russian/stardict-mueller7/files/Makefile.common"
 .include <bsd.port.mk>

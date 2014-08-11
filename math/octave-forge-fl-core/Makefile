@@ -10,13 +10,14 @@ MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.
 OCTSRC=		${OCTAVE_PKGNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
-USE_DOS2UNIX=	yes
+USES=		dos2unix
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

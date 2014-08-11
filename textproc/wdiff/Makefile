@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wdiff
-PORTVERSION=	1.2.1
+PORTVERSION=	1.2.2
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
@@ -13,13 +13,11 @@ LICENSE=	GPLv3
 
 GNU_CONFIGURE=	yes
 
-USES=		charsetfix
-MAN1=		wdiff.1
-INFO=		wdiff
-
-NO_STAGE=	yes
+USES=		charsetfix makeinfo
 
 OPTIONS_DEFINE=	NLS
+
+INFO=		wdiff
 
 .include <bsd.port.options.mk>
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wmconfig
-PORTVERSION=	1.4.4
+PORTVERSION=	1.4.5
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://www.arrishq.net/files/
 
@@ -11,7 +11,7 @@ COMMENT=	Menu generation tool for X window managers
 
 LICENSE=	GPLv2
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	AUTHORS ChangeLog COPYING README TODO

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ncurses
-DISTVERSION=	${RELEASE}-20131221
+DISTVERSION=	${RELEASE}-20140621
 CATEGORIES=	devel
 MASTER_SITES=	ftp://invisible-island.net/${PORTNAME}/current/
 MASTER_SITE_SUBDIR=	${PORTNAME}/current
@@ -17,6 +17,7 @@ LICENSE=	MIT
 
 RELEASE=	5.9
 
+SHAREMODE=	0644
 GNU_CONFIGURE=	yes
 CONFIGURE_SCRIPT=../configure
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share/misc --disable-overwrite \
@@ -127,5 +128,6 @@ post-install:
 		${STAGEDIR}${PREFIX}/lib/libncursesw.so
 	${ECHO} "INPUT(libncurses.so.${RELEASE:R} AS_NEEDED(-ltinfo))" > ${STAGEDIR}${PREFIX}/lib/libncurses.so
 	${ECHO} "INPUT(libncursesw.so.${RELEASE:R} AS_NEEDED(-ltinfow))" > ${STAGEDIR}${PREFIX}/lib/libncursesw.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.5.9
 
 .include <bsd.port.mk>

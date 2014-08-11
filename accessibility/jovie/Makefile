@@ -2,6 +2,7 @@
 
 PORTNAME=	jovie
 PORTVERSION=	${KDE4_VERSION}
+PORTREVISION=	1
 CATEGORIES=	accessibility kde
 MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
@@ -11,8 +12,7 @@ COMMENT=	KDE text-to-speech system
 
 LIB_DEPENDS=	libspeechd.so:${PORTSDIR}/accessibility/speech-dispatcher
 
-USE_XZ=		yes
-USES=		cmake:outsource
+USES=		cmake:outsource tar:xz
 USE_KDE4=	kdehier kdeprefix kdelibs automoc4
 USE_QT4=	xml qmake_build moc_build uic_build rcc_build
 USE_LDCONFIG=	yes

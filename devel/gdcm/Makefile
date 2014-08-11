@@ -3,21 +3,43 @@
 
 PORTNAME=	gdcm
 PORTVERSION=	${GDCM_MAJOR}.${GDCM_MINOR}.${GDCM_PATCH}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/gdcm/gdcm%202.x/GDCM%20${PORTVERSION}
 
 MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Grassroots DICOM library
 
-LIB_DEPENDS=	libopenjpeg.so:${PORTSDIR}/graphics/openjpeg \
+LICENSE=	BSD3CLAUSE
+
+LIB_DEPENDS=	libopenjpeg.so:${PORTSDIR}/graphics/openjpeg15 \
    		libexpat.so:${PORTSDIR}/textproc/expat2
 
-OPTIONS_DEFINE=	VTK DOCS
-OPTIONS_UNSET=	DOCS
-VTK_DESC=	Build with VTK bindings
+OPTIONS_DEFINE=		DOCS
+OPTIONS_UNSET=		DOCS
+OPTIONS_RADIO=		VTK
+OPTIONS_RADIO_VTK=	VTK5 VTK6
 
-USE_BZIP2=	yes
-USES=		cmake:outsource
+VTK5_DESC=		Build VTK 5 integration classes
+VTK5_LIB_DEPENDS=	libvtkHybrid.so:${PORTSDIR}/math/vtk5
+VTK5_CMAKE_ON=		-DGDCM_USE_VTK:BOOL=YES \
+			-DVTK_DIR:PATH=${LOCALBASE}/lib/vtk-${VTK5_VERSION}
+
+VTK6_DESC=		Build VTK 6 integration classes
+VTK6_LIB_DEPENDS=	libvtkCommonCore-${VTK6_VERSION}.so:${PORTSDIR}/math/vtk6
+VTK6_CMAKE_ON=		-DGDCM_USE_VTK:BOOL=YES \
+			-DVTK_DIR:PATH=${LOCALBASE}/lib/vtk-${VTK6_VERSION}
+
+# Change this when updating the port
+GDCM_MAJOR=	2
+GDCM_MINOR=	4
+GDCM_PATCH=	2
+
+# Change this whenever VTK is updated
+VTK5_VERSION=	5.10
+VTK6_VERSION=	6.1
+
+USES=		cmake:outsource tar:bzip2
 USE_OPENSSL=	yes
 USE_LDCONFIG=	${PREFIX}/lib
 CFLAGS+=	-I${LOCALBASE}/include
@@ -33,17 +55,11 @@ CMAKE_ARGS+=	-DGDCM_PDF_DOCUMENTATION:BOOL=NO \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MVTK}
-LIB_DEPENDS+=	libvtkHybrid.so.5:${PORTSDIR}/math/vtk5
-CMAKE_ARGS+=	-DGDCM_USE_VTK:BOOL=YES
+.if ${PORT_OPTIONS:MVTK5} || ${PORT_OPTIONS:MVTK6}
 PLIST_SUB+=	VTK=""
 .else
 PLIST_SUB+=	VTK="@comment "
 .endif
-
-GDCM_MAJOR=	2
-GDCM_MINOR=	4
-GDCM_PATCH=	1
 
 PLIST_SUB+=	GDCM_MAJOR="${GDCM_MAJOR}" \
 		GDCM_MINOR="${GDCM_MINOR}" \

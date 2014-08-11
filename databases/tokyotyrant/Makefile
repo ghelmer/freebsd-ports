@@ -3,10 +3,11 @@
 
 PORTNAME=	tokyotyrant
 PORTVERSION=	1.1.41
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://fallabs.com/${PORTNAME}/
 
-MAINTAINER=	gslin@gslin.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network interface of Tokyo Cabinet
 
 BUILD_DEPENDS=	tokyocabinet>=1.4.20:${PORTSDIR}/databases/tokyocabinet
@@ -22,21 +23,17 @@ OPTIONS_DEFINE=	LUA
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-I${LOCALBASE}/include
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MLUA}
-CONFIGURE_ARGS+=	--enable-lua
-LDFLAGS+=	-L${LUA_LIBDIR}
-CFLAGS+=	-I${LUA_INCDIR}
-USE_LUA=	yes
-.else
-CONFIGURE_ARGS+=	--disable-lua
-.endif
+LUA_CONFIGURE_ENABLE=	lua
+LUA_LDFLAGS+=	-L${LUA_LIBDIR}
+LUA_CFLAGS+=	-I${LUA_INCDIR}
+LUA_CPPFLAGS+=	-I${LUA_INCDIR}
+LUA_USES=		lua
 
 # Since gnomehack only works for "(libdir)" case, we need to patch it
 # manually.
 post-patch:
 	${REINPLACE_CMD} -e 's|@libdir@/pkgconfig|@prefix@/libdata/pkgconfig|g' \
 		${WRKSRC}/Makefile.in
+	${REINPLACE_CMD} -e 's|llua|llua-${LUA_VER}|g' ${WRKSRC}/configure
 
 .include <bsd.port.mk>

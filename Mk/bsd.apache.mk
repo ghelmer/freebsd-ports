@@ -1,6 +1,3 @@
-#-*- tab-width: 4; -*-
-# ex:ts=4
-#
 # $FreeBSD$
 #
 # bsd.apache.mk - Apache related macros.
@@ -86,7 +83,7 @@ Apache_Pre_Include=		bsd.apache.mk
 WARNING+=	"DEFAULT_APACHE_VER is defined, consider using DEFAULT_VERSIONS=apache=${DEFAULT_APACHE_VER} instead"
 .endif
 
-DEFAULT_APACHE_VERSION?=		${APACHE_DEFAULT:S/.//}
+DEFAULT_APACHE_VERSION?=	${APACHE_DEFAULT:S/.//}
 APACHE_SUPPORTED_VERSION=	22 24 # preferred version first
 
 # Print warnings
@@ -125,16 +122,16 @@ IGNORE=	${_ERROR_MSG} Illegal use of USE_APACHE ( no version specified )
 # used only by www/cakephp* ports
 .if defined(SLAVE_PORT_MODULES)
 DEFAULT_MODULES_CATEGORIES+=	SLAVE_PORT
-ALL_MODULES_CATEGORIES+=		SLAVE_PORT
+ALL_MODULES_CATEGORIES+=	SLAVE_PORT
 .endif
 
 # Module selection
 .for category in ${DEFAULT_MODULES_CATEGORIES}
-DEFAULT_MODULES+=			${${category}_MODULES}
+DEFAULT_MODULES+=	${${category}_MODULES}
 .endfor
 
 .for category in ${ALL_MODULES_CATEGORIES}
-AVAILABLE_MODULES+=			${${category}_MODULES}
+AVAILABLE_MODULES+=	${${category}_MODULES}
 .endfor
 
 # detect invalid lowercase params in make.conf
@@ -147,13 +144,13 @@ IGNORE=		lowercase WITH_STATIC_MODULES="${WITH_STATIC_MODULES}"\
 # Setting "@comment " as default.
 .for module in ${AVAILABLE_MODULES:O}
 ${module}_PLIST_SUB=	"@comment "
-_DISABLE_MODULES+=		--disable-${module:L}
+_DISABLE_MODULES+=	--disable-${module:tl}
 .endfor
 
 # Configure
 # dirty hacks to make sure all modules are disabled before we select them
 .if ${USE_APACHE:Mcommon2*}
-CONFIGURE_ARGS+= 		${_DISABLE_MODULES:O:u}
+CONFIGURE_ARGS+= 	${_DISABLE_MODULES:O:u}
 .endif
 
 # OPTIONS handling
@@ -161,7 +158,7 @@ CONFIGURE_ARGS+= 		${_DISABLE_MODULES:O:u}
 .	if ${PORT_OPTIONS:M${module}}
 _APACHE_MODULES+=	${module}
 .	else
-WITHOUT_MODULES+=	 ${module}
+WITHOUT_MODULES+=	${module}
 .	endif
 .endfor
 
@@ -175,34 +172,34 @@ WITH_ALL_STATIC_MODULES=	yes
 .endif
 
 .if ${PORT_OPTIONS:MSUEXEC}
-_APACHE_MODULES+=		${SUEXEC_MODULES}
+_APACHE_MODULES+=	${SUEXEC_MODULES}
 SUEXEC_CONFARGS=	with-suexec
 
 # SUEXEC_DOCROOT should exist
-SUEXEC_DOCROOT?=		${PREFIX}/www/data
-#SUEXEC_DOCROOT?=		${WWWDIR}
-SUEXEC_USERDIR?=		public_html
+SUEXEC_DOCROOT?=	${PREFIX}/www/data
+#SUEXEC_DOCROOT?=	${WWWDIR}
+SUEXEC_USERDIR?=	public_html
 # avoid duplicate search paths
 .if ${LOCALBASE} == ${PREFIX}
-SUEXEC_SAFEPATH?=		${LOCALBASE}/bin:/usr/bin:/bin
+SUEXEC_SAFEPATH?=	${LOCALBASE}/bin:/usr/bin:/bin
 .else	
-SUEXEC_SAFEPATH?=		${PREFIX}/bin:${LOCALBASE}/bin:/usr/bin:/bin
+SUEXEC_SAFEPATH?=	${PREFIX}/bin:${LOCALBASE}/bin:/usr/bin:/bin
 .endif	
-SUEXEC_LOGFILE?=		/var/log/httpd-suexec.log
-SUEXEC_UIDMIN?=			1000
-SUEXEC_GIDMIN?=			1000
-SUEXEC_CALLER?=			${WWWOWN}
-CONFIGURE_ARGS+=		--${SUEXEC_CONFARGS}-caller=${SUEXEC_CALLER} \
-				--${SUEXEC_CONFARGS}-uidmin=${SUEXEC_UIDMIN} \
-				--${SUEXEC_CONFARGS}-gidmin=${SUEXEC_GIDMIN} \
-				--${SUEXEC_CONFARGS}-userdir="${SUEXEC_USERDIR}" \
-				--${SUEXEC_CONFARGS}-docroot="${SUEXEC_DOCROOT}" \
-				--${SUEXEC_CONFARGS}-safepath="${SUEXEC_SAFEPATH}" \
-				--${SUEXEC_CONFARGS}-logfile="${SUEXEC_LOGFILE}" \
-				--${SUEXEC_CONFARGS}-bin="${PREFIX}/sbin/suexec"
+SUEXEC_LOGFILE?=	/var/log/httpd-suexec.log
+SUEXEC_UIDMIN?=		1000
+SUEXEC_GIDMIN?=		1000
+SUEXEC_CALLER?=		${WWWOWN}
+CONFIGURE_ARGS+=	--${SUEXEC_CONFARGS}-caller=${SUEXEC_CALLER} \
+			--${SUEXEC_CONFARGS}-uidmin=${SUEXEC_UIDMIN} \
+			--${SUEXEC_CONFARGS}-gidmin=${SUEXEC_GIDMIN} \
+			--${SUEXEC_CONFARGS}-userdir="${SUEXEC_USERDIR}" \
+			--${SUEXEC_CONFARGS}-docroot="${SUEXEC_DOCROOT}" \
+			--${SUEXEC_CONFARGS}-safepath="${SUEXEC_SAFEPATH}" \
+			--${SUEXEC_CONFARGS}-logfile="${SUEXEC_LOGFILE}" \
+			--${SUEXEC_CONFARGS}-bin="${PREFIX}/sbin/suexec"
 
 .	if defined(WITH_SUEXEC_UMASK)
-CONFIGURE_ARGS+=		--${SUEXEC_CONFARGS}-umask=${SUEXEC_UMASK}
+CONFIGURE_ARGS+=	--${SUEXEC_CONFARGS}-umask=${SUEXEC_UMASK}
 .	endif
 .endif
 
@@ -219,17 +216,17 @@ APACHE_MODULES+=	${module}
 .if defined(WITH_STATIC_MODULES)
 .  for module in ${APACHE_MODULES}
 .    if ${WITH_STATIC_MODULES:M${module}}
-_CONFIGURE_ARGS+=	--enable-${module:L}
+_CONFIGURE_ARGS+=	--enable-${module:tl}
 .    else
-_CONFIGURE_ARGS+=	--enable-${module:L}=shared
+_CONFIGURE_ARGS+=	--enable-${module:tl}=shared
 .    endif
 .  endfor
 CONFIGURE_ARGS+=	${_CONFIGURE_ARGS:O}
 .elif defined(WITH_STATIC_APACHE) || defined(WITH_ALL_STATIC_MODULES)
 WITH_STATIC_MODULES=	${APACHE_MODULES}
-CONFIGURE_ARGS+=	--enable-modules="${APACHE_MODULES:O:L}"
+CONFIGURE_ARGS+=	--enable-modules="${APACHE_MODULES:O:tl}"
 .else
-CONFIGURE_ARGS+=	--enable-mods-shared="${APACHE_MODULES:O:L}"
+CONFIGURE_ARGS+=	--enable-mods-shared="${APACHE_MODULES:O:tl}"
 .endif
 
 # ====================================
@@ -303,11 +300,11 @@ _USE_APACHE:=	${USE_APACHE_BUILD}
 _USE_APACHE:=	${USE_APACHE_RUN}
 .endif
 
-_APACHE_VERSION_CHECK:=			${_USE_APACHE:C/^([1-9][0-9])$/\1-\1/}
+_APACHE_VERSION_CHECK:=		${_USE_APACHE:C/^([1-9][0-9])$/\1-\1/}
 _APACHE_VERSION_MINIMUM_TMP:=	${_APACHE_VERSION_CHECK:C/([1-9][0-9])[-+].*/\1/}
-_APACHE_VERSION_MINIMUM:=		${_APACHE_VERSION_MINIMUM_TMP:M[1-9][0-9]}
+_APACHE_VERSION_MINIMUM:=	${_APACHE_VERSION_MINIMUM_TMP:M[1-9][0-9]}
 _APACHE_VERSION_MAXIMUM_TMP:=	${_APACHE_VERSION_CHECK:C/.*-([1-9][0-9])/\1/}
-_APACHE_VERSION_MAXIMUM:=		${_APACHE_VERSION_MAXIMUM_TMP:M[1-9][0-9]}
+_APACHE_VERSION_MAXIMUM:=	${_APACHE_VERSION_MAXIMUM_TMP:M[1-9][0-9]}
 
 .if defined(_APACHE_VERSION)
 # Validate Apache version whether it meets USE_APACHE version restriction.
@@ -351,9 +348,15 @@ APACHE_PORT?=	www/apache${APACHE_VERSION}
 
 PLIST_SUB+=	APACHEMODDIR="${APACHEMODDIR}" \
 		APACHEINCLUDEDIR="${APACHEINCLUDEDIR}" \
-		APACHEETCDIR="${APACHEETCDIR}"
+		APACHEETCDIR="${APACHEETCDIR}" \
+		APACHE_VERSION="${APACHE_VERSION}"
+
+SUB_LIST+=	APACHEMODDIR="${APACHEMODDIR}" \
+		APACHEETCDIR="${APACHEETCDIR}" \
+		APACHE_VERSION="${APACHE_VERSION}"
 
 APACHE_PKGNAMEPREFIX=	ap${APACHE_VERSION}-
+
 .if defined(AP_FAST_BUILD)
 PKGNAMEPREFIX?=	${APACHE_PKGNAMEPREFIX}
 .endif
@@ -429,15 +432,15 @@ print-closest-mirrors:
 
 .if !target(show-modules)
 show-modules:
-.if !empty(APACHE_MODULES)	
+.if !empty(APACHE_MODULES)
 .for module in ${AVAILABLE_MODULES}
 	@${PRINTF} "%-20s : " ${module}
 .	if ${APACHE_MODULES:M${module}}
 		@${ECHO} -n "enabled "
 .		if !empty(WITH_STATIC_MODULES) && ${WITH_STATIC_MODULES:M${module}}
-				@${ECHO_CMD} " (static)"
+			@${ECHO_CMD} " (static)"
 .		else
-				@${ECHO_CMD} "(shared)"
+			@${ECHO_CMD} "(shared)"
 .		endif
 .	else
 		@${ECHO_CMD} disabled
@@ -445,7 +448,7 @@ show-modules:
 .endfor
 .else
 .for module in ${AVAILABLE_MODULES}
-	@${PRINTF} "%-20s : disabled\n" ${module} 
+	@${PRINTF} "%-20s : disabled\n" ${module}
 .endfor
 .endif
 .endif
@@ -465,7 +468,6 @@ ap-gen-plist:
 .if defined(AP_GENPLIST)
 .	if !exists(${PLIST})
 	@${ECHO} "===>  Generating apache plist"
-# apache22
 	@${ECHO} "@unexec ${SED} -i '' -E '/LoadModule[[:blank:]]+%%AP_NAME%%_module/d' %D/%%APACHEETCDIR%%/httpd.conf" >> ${PLIST}
 	@${ECHO} "%%APACHEMODDIR%%/%%AP_MODULE%%" >> ${PLIST}
 	@${ECHO} "@exec %D/sbin/apxs -e ${AP_MOD_EN} -n %%AP_NAME%% %D/%F" >> ${PLIST}
@@ -488,8 +490,15 @@ do-install:
 . else
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}
 	@${APXS} -S LIBEXECDIR=${STAGEDIR}${PREFIX}/${APACHEMODDIR} -i -n ${SHORTMODNAME} ${WRKSRC}/${MODULENAME}.${AP_BUILDEXT}
+.	if !defined(DEBUG)	
+		@${ECHO_MSG} "===> strip ${APACHEMODDIR}/${MODULENAME}.so"
+		@[ -e ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/${MODULENAME}.so ] && ${STRIP_CMD} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/${MODULENAME}.so
+.	else
+		@${ECHO_MSG} "===> DEBUG is set, will not strip ${APACHEMODDIR}/${MODULENAME}.so"
+.	endif
 . endif
 .endif
+
 .endif          # defined(AP_FAST_BUILD)
-.endif          # defined(AP_PORT_IS_MODULE)
+.endif          # defined(AP_PORT_IS_SERVER / AP_PORT_IS_MODULE)
 .endif          # defined(_POSTMKINCLUDED) && !defined(Apache_Post_Include)

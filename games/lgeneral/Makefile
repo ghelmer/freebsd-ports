@@ -10,7 +10,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:DEFAULT \
 		pg-data${EXTRACT_SUFX}:data
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A turn-based strategy engine inspired by Panzer General
+COMMENT=	Turn-based strategy engine inspired by Panzer General
 
 LICENSE=	GPLv2
 
@@ -21,7 +21,7 @@ OPTIONS_DEFAULT=	SOUND
 SOUND_DESC=	Enable sound support
 
 USE_SDL=	sdl
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 USE_CSTD=	gnu89
 

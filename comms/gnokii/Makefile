@@ -3,7 +3,7 @@
 
 PORTNAME=	gnokii
 PORTVERSION=	0.6.31
-PORTREVISION=	4
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	http://www.gnokii.org/download/gnokii/ \
@@ -19,19 +19,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser
 
 GROUPS=		${PORTNAME}
-USES=		gettext gmake pkgconfig tar:bzip2
+USES=		gettext gmake libtool pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu89
-WANT_GNOME=	yes
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	${CFLAGS} -I${LOCALBASE}/include -fPIC
 CONFIGURE_ARGS+=	--enable-security
-CONFIGURE_ENV+=	MSGFMT="${LOCALBASE}/bin/msgfmt" \
-		XGETTEXT="${LOCALBASE}/bin/xgettext" \
-		LIBS="-L${WRKSRC}/common -L${LOCALBASE}/lib" \
-		PKG_CONFIG="${LOCALBASE}/bin/pkg-config"
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 SUB_FILES+=	pkg-message
 PORTDOCS=	*
@@ -72,7 +67,7 @@ CONFIGURE_ARGS+=	--disable-mysql
 PLIST_SUB+=	MSM='@comment '
 . endif
 . if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 PLIST_SUB+=	PGM=''
 . else
 CONFIGURE_ARGS+=	--disable-postgres
@@ -119,14 +114,14 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/xgnokii/xgnokii.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 .if ${PORT_OPTIONS:MDOCS}
-	${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install -C ${WRKSRC}/Docs
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install -C ${WRKSRC}/Docs
 .else
-	${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install -C ${WRKSRC}/Docs/man
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install -C ${WRKSRC}/Docs/man
 .endif
 	${INSTALL_DATA} ${WRKSRC}/Docs/sample/gnokiirc \
 		${STAGEDIR}${PREFIX}/etc/gnokiirc.sample
 .if ${PORT_OPTIONS:MSMSD}
-	@cd ${WRKSRC}/smsd && ${SETENV} ${MAKE_ENV} ${GMAKE} install
+	@cd ${WRKSRC}/smsd && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} install
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/smsd
 	${INSTALL_SCRIPT} ${WRKSRC}/smsd/action ${STAGEDIR}${PREFIX}/share/smsd
 	${INSTALL_DATA} ${WRKSRC}/smsd/README ${STAGEDIR}${PREFIX}/share/smsd

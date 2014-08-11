@@ -1,16 +1,16 @@
-# Created by: nemysis <nemysis@gmx.ch>
+# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	puckman
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/nemysisfreebsdp/${CATEGORIES}/:icons
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Unofficial clone of the original Pac-Man game
 
 LICENSE=	GPLv3
@@ -25,7 +25,6 @@ USES=		gmake
 USE_SDL=	sdl image gfx
 
 PORTDOCS=	README.md
-
 OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="Puck-Man" "" "${PORTNAME}" \

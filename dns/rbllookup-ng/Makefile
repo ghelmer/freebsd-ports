@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rbllookup-ng
-PORTVERSION=	1.0
-PORTREVISION=	1
+PORTVERSION=	1.1
 CATEGORIES=	dns mail
 MASTER_SITES=	http://www.mavetju.org/download/
 
@@ -18,7 +17,7 @@ USES=		perl5 shebangfix
 
 PLIST_FILES=	bin/rbllookup bin/getmoensted etc/rbllookup.conf-sample
 PORTDOCS=	CHANGELOG INSTALL NOTES README TODO gpg.asc
-SHEBANG_FILES=	rbllookup.pl
+SHEBANG_FILES=	rbllookup.pl getmoensted.pl
 
 CONFLICTS=	rbllookup-0.*
 

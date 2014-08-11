@@ -8,7 +8,7 @@ MASTER_SITES=	SF/${PORTNAME}/TreeForm%20Unified/TreeForm%20${PORTVERSION}
 DISTNAME=	TreeForm_1_0_3
 
 MAINTAINER=	buganini@gmail.com
-COMMENT=	A Linguistic Syntax/Semantics tree drawing editor
+COMMENT=	Linguistic Syntax/Semantics tree drawing editor
 
 USES=		zip
 NO_BUILD=	yes
@@ -18,16 +18,12 @@ SUB_FILES=	treeform
 
 WRKSRC=		${WRKDIR}/TreeForm
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/treeform ${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKDIR}/treeform ${STAGEDIR}${PREFIX}/bin
 	cd ${WRKSRC} \
-		&& ${INSTALL_DATA} TreeForm.jar ${JAVAJARDIR} \
-		&& ${COPYTREE_SHARE} about.htm ${DATADIR} \
-		&& ${COPYTREE_SHARE} help ${DATADIR} \
-		&& ${COPYTREE_SHARE} image ${DATADIR}
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+		&& ${INSTALL_DATA} TreeForm.jar ${STAGEDIR}${JAVAJARDIR} \
+		&& ${COPYTREE_SHARE} about.htm ${STAGEDIR}${DATADIR} \
+		&& ${COPYTREE_SHARE} help ${STAGEDIR}${DATADIR} \
+		&& ${COPYTREE_SHARE} image ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

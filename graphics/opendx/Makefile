@@ -3,7 +3,7 @@
 
 PORTNAME=	opendx
 PORTVERSION=	4.4.4
-PORTREVISION=	15
+PORTREVISION=	18
 CATEGORIES=	graphics math java
 MASTER_SITES=	http://www.sfr-fresh.com/unix/misc/
 DISTNAME=	dx-${PORTVERSION}
@@ -11,22 +11,23 @@ DISTNAME=	dx-${PORTVERSION}
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	IBM's Open Visualization Data Explorer
 
-LIB_DEPENDS=	MagickWand:${PORTSDIR}/graphics/ImageMagick	\
+LIB_DEPENDS=	libMagickWand-6.Q*.so:${PORTSDIR}/graphics/ImageMagick	\
 		tiff:${PORTSDIR}/graphics/tiff		\
 		cdf:${PORTSDIR}/science/cdf
 
 USE_XORG=	xinerama xext xpm xmu sm ice
-USES=		bison motif gmake
+USES=		bison motif gmake libtool
 USE_GCC=	any
 USE_GL=		yes
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-shared
 USE_LDCONFIG=	yes
 CFLAGS+=	${PTHREAD_CFLAGS}
-CONFIGURE_ENV=	ARCH="${OPSYS:L}"
+CONFIGURE_ENV=	ARCH=freebsd
 CPPFLAGS+=	${CXXFLAGS} -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 NO_MTREE=	yes
-PLIST_SUB=	ARCH=${OPSYS:L}
+PLIST_SUB=	ARCH=freebsd
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 .if defined(WITH_HDF) && !defined(WITHOUT_NETCDF)
@@ -40,7 +41,7 @@ CONFIGURE_ARGS+=	--without-hdf
 .endif
 
 .if !defined(WITHOUT_NETCDF)
-LIB_DEPENDS+=	netcdf:${PORTSDIR}/science/netcdf4
+LIB_DEPENDS+=	libnetcdf.so:${PORTSDIR}/science/netcdf
 .else
 CONFIGURE_ARGS+=	--without-netcdf
 .endif

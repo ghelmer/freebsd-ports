@@ -3,7 +3,7 @@
 
 PORTNAME=	emacs
 PORTVERSION=	${EMACS_VER}
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	editors ipv6
 MASTER_SITES=	${MASTER_SITE_GNU}
@@ -28,7 +28,7 @@ CONFLICTS=	emacs-19.* emacs21-* emacs22-* emacs24-* \
 
 EMACS_VER=	23.4
 GNU_CONFIGURE=	yes
-USES=		ncurses gmake pkgconfig
+USES=		gmake makeinfo ncurses pkgconfig
 USE_BZIP2=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

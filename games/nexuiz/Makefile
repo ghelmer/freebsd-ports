@@ -3,7 +3,7 @@
 
 PORTNAME=	nexuiz
 PORTVERSION=	2.5.2
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/NexuizRelease/Nexuiz%20${PORTVERSION} \
 		SF/${PORTNAME}/mappack/nexmappack_r2:mappack
@@ -20,7 +20,7 @@ LICENSE=	GPLv2
 
 MANUAL_PACKAGE_BUILD=   huge
 
-SUES=		zip
+USES=		zip
 WRKSRC=		${WRKDIR}/Nexuiz/sources/darkplaces
 MAKEFILE=	BSDmakefile
 MAKE_ARGS=	DP_FS_BASEDIR="${DATADIR}" CC="${CC}" \
@@ -89,9 +89,10 @@ PLIST_FILES+=	bin/${PORTNAME}-dedicated
 .endif
 
 post-extract:
-	@${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
+	@cd ${WRKDIR}/Nexuiz/sources && \
+		${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
 		${WRKDIR}/Nexuiz/sources/enginesource20091001.zip \
-		-d ${WRKDIR}/Nexuiz/sources
+		${EXTRACT_AFTER_ARGS}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/X11R6,${LOCALBASE},' \

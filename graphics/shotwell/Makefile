@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	shotwell
-PORTVERSION=	0.15.1
+PORTVERSION=	0.18.0
 CATEGORIES=	graphics gnome
-MASTER_SITES=	http://www.yorba.org/download/shotwell/${PORTVERSION:R}/
+MASTER_SITES=	GNOME/sources/shotwell/${PORTVERSION:R}
 
-MAINTAINER=	lx@FreeBSD.org
+MAINTAINER=	cmt@burggraben.net
 COMMENT=	Open source photo manager for GNOME
 
 LICENSE=	LGPL21
 
 BUILD_DEPENDS=	vala>=0.18.0:${PORTSDIR}/lang/vala \
 		bash:${PORTSDIR}/shells/bash
-LIB_DEPENDS=	dbus-glib-1:${PORTSDIR}/devel/dbus-glib \
+LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
 		libgee-0.8.so:${PORTSDIR}/devel/libgee \
 		libjson-glib-1.0.so:${PORTSDIR}/devel/json-glib \
 		libsoup-2.4.so:${PORTSDIR}/devel/libsoup \
@@ -25,9 +25,8 @@ LIB_DEPENDS=	dbus-glib-1:${PORTSDIR}/devel/dbus-glib \
 		libraw.so:${PORTSDIR}/graphics/libraw \
 		librest-0.7.so:${PORTSDIR}/devel/librest
 
-USE_XZ=		yes
-USES=		shebangfix gettext desktop-file-utils gmake pkgconfig
-USE_GNOME=	gnomehier gconf2 gtk20 librsvg2
+USES=		shebangfix gettext desktop-file-utils gmake pkgconfig tar:xz
+USE_GNOME=	gnomehier gconf2 gtk20 gnomedocutils librsvg2
 USE_SQLITE=	3
 USE_GSTREAMER1=	yes
 HAS_CONFIGURE=	yes
@@ -66,9 +65,6 @@ post-configure:
 	@${REINPLACE_CMD} -E \
 		-e 's|\.get_child\("share")\.get_child\("shotwell")|${SHOTWELL_DATADIR}|' \
 		${WRKSRC}/src/AppDirs.vala
-
-post-install:
-	@-update-desktop-database
 
 .include <bsd.port.pre.mk>
 

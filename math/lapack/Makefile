@@ -34,7 +34,6 @@ WRKSRC_PROFILE =	${WRKSRC}_PROFILE
 WRKSRC_SHARED=		${WRKSRC}_SHARED
 WRKSRC_STATIC=		${WRKSRC}
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if defined(BLAS_SLAVEPORT)
@@ -47,7 +46,7 @@ TEST_TARGET=		blas_testing
 .else
 ALL_TARGET=		lib
 BLASLIB?=		-L${LOCALBASE}/lib -lblas
-LIB_DEPENDS+=		blas.2:${PORTSDIR}/math/blas
+LIB_DEPENDS+=		libblas.so:${PORTSDIR}/math/blas
 LIBS=			lapack tmglib
 SVERSION=		4
 TEST_TARGET=		lapack_testing
@@ -58,12 +57,13 @@ USE_PYTHON_BUILD=	yes
 S=			\#
 .endif
 .if defined(XLAPACK_SLAVEPORT)
-LIB_DEPENDS+=		xblas.0:${PORTSDIR}/math/xblas
+LIB_DEPENDS+=		libxblas.so:${PORTSDIR}/math/xblas
 MAKE_ENV+=		USEXBLAS=yes XBLASLIB="${XBLASLIB}"
 P=			x
 PLIST_SUB+=		BLAS="@comment " LAPACK="@comment " XLAPACK=""
 XBLASLIB?=		-L${LOCALBASE}/lib -lxblas
 .else
+PLIST_FILES+=		${MAN3L:S|^|man/man3/|:S|$|.gz|}
 PLIST_SUB+=		BLAS="@comment " LAPACK="" XLAPACK="@comment "
 .if defined(MAINTAINER_MODE)
 BUILD_DEPENDS +=	doxygen:${PORTSDIR}/devel/doxygen
@@ -117,9 +117,9 @@ post-patch:
 do-build: ${MAN_TARGET} build-profile build-shared build-static
 
 .for o in PROFILE SHARED STATIC
-build-${o:L}: patch
+build-${o:tl}: patch
 .if ${PORT_OPTIONS:M${o}}
-	${PRINTF} "\n\nBuilding ${o:L} libraries:\n\n\n"
+	${PRINTF} "\n\nBuilding ${o:tl} libraries:\n\n\n"
 	cd ${WRKSRC_${o}}; ${SETENV} ${MAKE_ENV} EXTRAFLAGS="${FFLAGS_${o}}" \
 	${MAKE} ${_MAKE_JOBS} ${MAKE_ARGS} ARCH="${AR}" ${ALL_TARGET}
 
@@ -153,9 +153,9 @@ TESTS ?=	test-profile
 check regression-test test: ${TESTS}
 
 .for o in PROFILE SHARED STATIC
-test-${o:L}: build-${o:L}
+test-${o:tl}: build-${o:tl}
 .if ${PORT_OPTIONS:M${o}}
-	@${PRINTF} "\n\nTesting ${o:L} libraries:\n\n\n"
+	@${PRINTF} "\n\nTesting ${o:tl} libraries:\n\n\n"
 	@cd ${WRKSRC_${o}}; ${SETENV} ${MAKE_ENV} EXTRAFLAGS="${FFLAGS_${o}}" \
 	${MAKE} ${_MAKE_JOBS} ${MAKE_ARGS} ARCH="${AR}" ${TEST_TARGET}
 .if defined(BLAS_SLAVEPORT)
@@ -168,15 +168,15 @@ test-${o:L}: build-${o:L}
 do-install:
 .for L in ${LIBS}
 .if ${PORT_OPTIONS:MSTATIC}
-	@${INSTALL_DATA} ${WRKSRC}/lib${L}.a ${PREFIX}/lib/lib${P}${L}.a
+	@${INSTALL_DATA} ${WRKSRC}/lib${L}.a ${STAGEDIR}${PREFIX}/lib/lib${P}${L}.a
 .endif
 .if ${PORT_OPTIONS:MSHARED}
-	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib${L}.a ${PREFIX}/lib/lib${P}${L}_pic.a
-	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib${P}${L}.so.${SVERSION} ${PREFIX}/lib
-	@${LN} -sf lib${P}${L}.so.${SVERSION} ${PREFIX}/lib/lib${P}${L}.so
+	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib${L}.a ${STAGEDIR}${PREFIX}/lib/lib${P}${L}_pic.a
+	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib${P}${L}.so.${SVERSION} ${STAGEDIR}${PREFIX}/lib
+	@${LN} -sf lib${P}${L}.so.${SVERSION} ${STAGEDIR}${PREFIX}/lib/lib${P}${L}.so
 .endif
 .if ${PORT_OPTIONS:MPROFILE}
-	@${INSTALL_DATA} ${WRKSRC_PROFILE}/lib${L}.a ${PREFIX}/lib/lib${P}${L}_p.a
+	@${INSTALL_DATA} ${WRKSRC_PROFILE}/lib${L}.a ${STAGEDIR}${PREFIX}/lib/lib${P}${L}_p.a
 .endif
 .endfor
 
@@ -187,15 +187,15 @@ do-install:
 .include "${FILESDIR}/manpages"
 
 post-install:
-	@cd ${WRKDIR}/man ; ${ECHO_CMD} ${MAN3:S|^|man3/|} \
-	| ${XARGS} -J @ ${INSTALL_MAN} @ ${MAN3PREFIX}/man/man3
+	@cd ${WRKDIR}/man ; ${ECHO_CMD} ${MAN3L:S|^|man3/|} \
+	| ${XARGS} -J @ ${INSTALL_MAN} @ ${STAGEDIR}${MAN3PREFIX}/man/man3
 
 .if defined(MAINTAINER_MODE)
 package-manpages: build-manpages
 	@${RM} -f ${WRKDIR}/lapack-manpages-${PORTVERSION}.tar.gz ; \
 	cd ${WRKSRC}/DOCS/man; \
 	${TAR} -czvf ${WRKDIR}/lapack-manpages-${PORTVERSION}.tar.gz \
-	${MAN3:S|^|man3/|}
+	${MAN3L:S|^|man3/|}
 
 .endif
 .endif

@@ -3,7 +3,7 @@
 
 PORTNAME=	enblend
 PORTVERSION=	4.1.1
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	SF/enblend/enblend-enfuse/enblend-enfuse-${PORTVERSION:R}
 DISTNAME=	enblend-enfuse-${PORTVERSION}
@@ -23,17 +23,16 @@ LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
 RUN_DEPENDS=	OpenEXR>=1.0:${PORTSDIR}/graphics/OpenEXR
 
 USE_AUTOTOOLS=	automake:env autoconf:env
-USES=		gmake compiler:features 
+USES=		gmake compiler:features makeinfo
 # We need a newer version of makeinfo for this.
 # Remove this line when we remove texinfo from the base system.
 CONFIGURE_ARGS=	MAKEINFO="${LOCALBASE}/bin/makeinfo"
 
 USE_GL=		glew glut
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV+=	"LIBS=-lboost_system"
 CONFIGURE_ARGS+=	--with-boost-filesystem
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib -lboost_system
 
 .include <bsd.port.pre.mk>
 

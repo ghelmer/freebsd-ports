@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tdiary
-PORTVERSION=	4.0.2
+PORTVERSION=	4.0.4
 CATEGORIES?=	www ruby
 MASTER_SITES=	http://www.tdiary.org/download/
 DISTNAME=	${PORTNAME}-full-v${PORTVERSION}
@@ -12,14 +12,13 @@ COMMENT=	Web-based diary system (like weblog) written in Ruby
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	rubygem-fastimage>=1.5.0:${PORTSDIR}/graphics/rubygem-fastimage \
-		hikidoc:${PORTSDIR}/textproc/ruby-hikidoc \
-		rubygem-multi_json>=1.7.7:${PORTSDIR}/devel/rubygem-multi_json \
+RUN_DEPENDS=	rubygem-fastimage>=1.6.0:${PORTSDIR}/graphics/rubygem-fastimage \
+		rubygem-hikidoc>=0:${PORTSDIR}/textproc/rubygem-hikidoc \
+		rubygem-multi_json>=1.8.4:${PORTSDIR}/devel/rubygem-multi_json \
 		rubygem-rack>=0:${PORTSDIR}/www/rubygem-rack
 
 NO_BUILD=	yes
 USE_RUBY=	yes
-RUBY_REQUIRE=	Ruby >= 193
 
 RUBY_SHEBANG_FILES=	index.fcgi \
 			index.rb \
@@ -42,6 +41,9 @@ HTML=	${DOCFILES:S/$/.html/}
 MD=	${DOCFILES:S/$/.md/}
 PORTDOCS=	ChangeLog doc.css ${HTML} ${MD}
 
+PLIST_SUB=	TDIARY_SCRIPT=${TDIARY_SCRIPT} \
+		WWWOWN=${WWWOWN} \
+		WWWGRP=${WWWGRP}
 SUB_FILES=	pkg-message tdiaryinst.rb
 SUB_LIST+=	TDIARY_LANG=${TDIARY_LANG} \
 		TDIARY_SCRIPT=${TDIARY_SCRIPT}
@@ -60,8 +62,6 @@ REINPLACE_ARGS=	-i ''
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-
 pre-patch:
 	@${RM} ${WRKSRC}/.coveralls.yml
 	@${RM} ${WRKSRC}/.gitignore
@@ -72,8 +72,10 @@ pre-patch:
 	@${RM} ${WRKSRC}/Procfile
 	@${RM} ${WRKSRC}/Rakefile
 	@${RM} ${WRKSRC}/config.ru
-	@${RM} -r ${WRKSRC}/.bundle
-	@${RM} -r ${WRKSRC}/misc/lib/bundler-1.3.5
+	@${RM} ${WRKSRC}/tdiary.gemspec
+	@${RM} ${WRKSRC}/tmp/.gitkeep
+	@${RM} -rf ${WRKSRC}/.bundle
+	@${RM} -r ${WRKSRC}/misc/lib/bundler-1.6.2
 	@${RM} -r ${WRKSRC}/public
 	@${RM} -r ${WRKSRC}/spec
 	@${RM} -r ${WRKSRC}/test
@@ -91,21 +93,17 @@ pre-install:
 	@${REINPLACE_CMD} '/#!\/usr\/bin\/env ruby/d' ${WRKSRC}/misc/migrate.rb
 
 do-install:
-	@${INSTALL_SCRIPT} ${WRKDIR}/${TDIARY_SCRIPT} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKDIR}/${TDIARY_SCRIPT} ${STAGEDIR}${PREFIX}/bin
 	@-${MKDIR} ${STAGEDIR}${WWWDIR}
-	@${TAR} --exclude "doc" -C ${WRKSRC} -cf - . | ${TAR} --unlink -C ${STAGEDIR}${WWWDIR} -xf -
-
-post-install:
-	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} ${WWWDIR}' >> ${TMPPLIST}
-	@${ECHO_CMD} bin/${TDIARY_SCRIPT} >> ${TMPPLIST}
-.if ${PORT_OPTIONS:MDOCS}
+	${TAR} --exclude "doc" -C ${WRKSRC} -cf - . | ${TAR} --unlink -C ${STAGEDIR}${WWWDIR} -xf -
 	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
-	@cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
-.endif
-	@${CAT} ${PKGMESSAGE}
+	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 x-generate-plist: stage
-	${FIND} ${STAGEDIR}${WWWDIR} -type f -o -type l | ${SORT} | ${SED} -e 's,${STAGEDIR}${WWWDIR},%%WWWDIR%%,g' > pkg-plist.new
+	${ECHO_CMD} bin/%%TDIARY_SCRIPT%% > pkg-plist.new
+	${FIND} ${STAGEDIR}${WWWDIR} -type f -o -type l | ${SORT} | ${SED} -e 's,${STAGEDIR}${WWWDIR},%%WWWDIR%%,g' >> pkg-plist.new
 	${FIND} ${STAGEDIR}${WWWDIR} -type d -depth | ${SORT} -r | ${SED} -e 's,${STAGEDIR}${WWWDIR},@dirrm %%WWWDIR%%,g' >> pkg-plist.new
+	${ECHO_CMD} @exec mkdir -p %D/%%WWWDIR%%/tmp >> pkg-plist.new
+	${ECHO_CMD} @exec chown -R %%WWWOWN%%:%%WWWGRP%% %D/%%WWWDIR%% >> pkg-plist.new
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

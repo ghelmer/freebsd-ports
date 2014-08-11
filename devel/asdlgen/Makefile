@@ -13,7 +13,8 @@ COMMENT=	Interoperable serializers for C,C++,Haskell,Icon,Java,ML
 
 BUILD_DEPENDS=	smlnj-devel>=110.65:${PORTSDIR}/lang/sml-nj-devel
 
-USE_DOS2UNIX=	src/icon/libasdl.icn
+USES=		dos2unix
+DOS2UNIX_FILES=	src/icon/libasdl.icn
 
 OPTIONS_DEFINE=	CII EXAMPLES
 CII_DESC=	libcii for use by generated C and C++ code
@@ -52,7 +53,7 @@ MAKE_ENV+=	SMLNJ_DEVEL=yes
 # http://java.sun.com/docs/books/tutorial/java/package/namingpkgs.html
 pre-patch:
 .for dir in StdPkl StdPrims StdTypes
-	cd ${WRKSRC}/src/java/asts && [ -d ${dir} ] && ${MV} ${dir} ${dir:L}
+	cd ${WRKSRC}/src/java/asts && [ -d ${dir} ] && ${MV} ${dir} ${dir:tl}
 .endfor
 
 post-build:

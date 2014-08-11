@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	postgresql-repmgr
-PORTVERSION=	1.2.0
+PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.repmgr.org/download/
 DISTNAME=	repmgr-${PORTVERSION}
 
-MAINTAINER=	alp@sfedu.ru
+MAINTAINER=	5u623l20@gmail.com
 COMMENT=	PostgreSQL replication manager
 
 LICENSE=	GPLv3
 
 RUN_DEPENDS=	rsync:${PORTSDIR}/net/rsync
 
-USES=	gmake
-USE_PGSQL=	yes
+USES=		gmake
+USE_PGSQL=	server
 WANT_PGSQL_VER=	90+
 MAKE_ENV=	USE_PGXS=1
 
@@ -29,7 +30,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.rst ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/repmgr.conf ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/repmgr.conf.sample ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/repmgr.sql ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

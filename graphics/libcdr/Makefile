@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libcdr
-PORTVERSION=	0.0.14
+PORTVERSION=	0.0.16
 PORTREVISION=	1
 CATEGORIES=	graphics devel
 MASTER_SITES=	http://dev-www.libreoffice.org/src/
@@ -18,11 +18,11 @@ LIB_DEPENDS=	libicui18n.so:${PORTSDIR}/devel/icu \
 		libwpg-0.2.so:${PORTSDIR}/graphics/libwpg \
 		liblcms2.so:${PORTSDIR}/graphics/lcms2
 
-USE_XZ=		yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-werror --without-docs
-USES=	pathfix pkgconfig
+USES=	libtool pathfix pkgconfig tar:xz
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-Wno-long-long

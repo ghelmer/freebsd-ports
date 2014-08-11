@@ -8,14 +8,16 @@ MASTER_SITES=	http://www.netswarm.net/misc/ \
 		${MASTER_SITE_GENTOO}
 MASTER_SITE_SUBDIR=	distfiles
 
-MAINTAINER=	garga@FreeBSD.org
-COMMENT=	A port of wmxmms to GTK 2.x and Audacious
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Port of wmxmms to GTK 2.x and Audacious
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	audacious:${PORTSDIR}/multimedia/audacious
 RUN_DEPENDS=	audacious:${PORTSDIR}/multimedia/audacious
 LIB_DEPENDS=	libmowgli.so:${PORTSDIR}/devel/libmowgli
+
+BROKEN=		Does not work with audacious 3.5 or later
 
 USES=		gmake pkgconfig
 USE_GNOME=	gnomeprefix gtk20

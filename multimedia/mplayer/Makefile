@@ -3,16 +3,16 @@
 
 PORTNAME=	mplayer
 PORTVERSION=	${MPLAYER_PORT_VERSION}
-PORTREVISION=	2
+PORTREVISION=	3
 
 COMMENT=	High performance media player supporting many formats
 
 .include "${.CURDIR}/Makefile.shared"
 
 OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB BLURAY CACA DEBUG DV \
-		ENCA ESOUND FRIBIDI GIF GSM GUI IPV6 JACK \
+		ENCA FRIBIDI GIF GSM GUI IPV6 JACK \
 		LADSPA LIBMNG LIRC LZO NAS OCFLAGS \
-		OPENAL OPENGL OPENJPEG OPUS OTCHAIN \
+		OPENAL OPENGL OPENJPEG OPUS OTCHAIN PROFILE \
 		PULSEAUDIO REAL RTC RTCPU RTMP SCHROEDINGER SDL \
 		SKINS SMB SVGALIB V4L VDPAU VPX WIN32 \
 		X11 X11DGA X11VM XINERAMA XVIDEO XVMC
@@ -20,7 +20,7 @@ OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB BLURAY CACA DEBUG DV \
 OPTIONS_RADIO=	RGCD
 OPTIONS_RADIO_RGCD=	CDIO CDPARANOIA
 
-OPTIONS_DEFAULT=GUI IPV6 OCFLAGS OPENGL RTCPU SKINS \
+OPTIONS_DEFAULT=FRIBIDI GUI IPV6 OCFLAGS OPENGL RTCPU SKINS \
 		WIN32 X11 X11DGA X11VM XINERAMA XVIDEO
 
 BLURAY_DESC?=	BluRay support
@@ -39,11 +39,12 @@ X11VM_DESC?=	X11 VidMode support
 
 SUB_FILES=	pkg-message
 
+CONFLICTS=	mplayer2-2.*
+
 CONFFILES=	example.conf input.conf menu.conf dvb-menu.conf
 USES+=		pkgconfig
 
 .include "${.CURDIR}/Makefile.optvars"
-.include <bsd.port.options.mk>
 .include <bsd.port.pre.mk>
 
 CONFIGURE_ARGS+=	--disable-arts \
@@ -72,16 +73,12 @@ RUN_DEPENDS+=	${LOCALBASE}/share/mplayer/skins:${PORTSDIR}/multimedia/mplayer-sk
 USE_GNOME+=	gtk20
 CONFIGURE_ARGS+=	--enable-gui
 
-.if defined(WITH_LANG)
-WITH_LANG=	""
-.endif
-
 .else
 PLIST_SUB+=	GMPLAYER="@comment "
 .endif #GUI && X11
 
 .if ${PORT_OPTIONS:MX11}
-USE_XORG=	x11 xscrnsaver
+USE_XORG=	x11 xproto xscrnsaver
 .if ${PORT_OPTIONS:MXVIDEO}
 USE_XORG+=	xv
 .else
@@ -121,11 +118,10 @@ pre-everything::
 	@${ECHO_MSG} "N - O - T - E"
 	@${ECHO_MSG} ""
 	@${ECHO_MSG} "There are some knobs which *can* *not* be selected via the"
-	@${ECHO_MSG} "OPTIONS framework. At the moment, their defaults are:"
-	@${ECHO_MSG} "WITH_LANG=<LanguageCode>"
-	@${ECHO_MSG} "WITH_KERN_HZ=1024"
-	@${ECHO_MSG} "DEFAULT_DVD_DEVICE=/dev/cd0"
-	@${ECHO_MSG} "DEFAULT_CDROM_DEVICE=/dev/cd0"
+	@${ECHO_MSG} "OPTIONS framework. At the moment, these settings are:"
+	@${ECHO_MSG} "WITH_KERN_HZ=${DEFAULT_KERN_HZ}"
+	@${ECHO_MSG} "DEFAULT_DVD_DEVICE=${DEFAULT_DVD_DEVICE}"
+	@${ECHO_MSG} "DEFAULT_CDROM_DEVICE=${DEFAULT_CDROM_DEVICE}"
 
 .if ${PORT_OPTIONS:MGUI} && ${PORT_OPTIONS:MX11}
 	@${ECHO_MSG} "If you want to use the GUI, you can use the skins from"
@@ -144,6 +140,7 @@ post-patch:
 		-e 's|/dev/dvd|${DEFAULT_DVD_DEVICE}|; \
 		s|/dev/cdrom|${DEFAULT_CDROM_DEVICE}|' \
 		-e 's|/usr/local|${LOCALBASE}|' \
+		-e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		-e 's|-lbz2|/usr/lib/libbz2.so|' \
 		-e 's|-lncurses|/usr/lib/libncurses.so|' \
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}

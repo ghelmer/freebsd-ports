@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libtorrent-rasterbar
-PORTVERSION=	0.16.16
+PORTVERSION=	0.16.17
 CATEGORIES?=	net-p2p ipv6
 MASTER_SITES=	SF/${PORTNAME:S/-rasterbar//}/${PORTNAME:S/-rasterbar//}/
 
@@ -14,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 LIB_DEPENDS?=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
 		libGeoIP.so:${PORTSDIR}/net/GeoIP
 
-USES=		compiler:c++11-lang pathfix pkgconfig iconv
+USES=		compiler:c++11-lang libtool pathfix pkgconfig iconv
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -54,7 +54,7 @@ DEBUG_CONFIGURE_ENABLE=	debug
 
 .include <bsd.port.options.mk>
 
-.if defined(SLAVE_PORT) && ${SLAVE_PORT:L} == "yes" && defined(USE_PYTHON)
+.if defined(SLAVE_PORT) && ${SLAVE_PORT:tl} == "yes" && defined(USE_PYTHON)
 CONFIGURE_ARGS+=	--enable-python-binding \
 			--with-boost-python=boost_python
 .else

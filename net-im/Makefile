@@ -3,7 +3,6 @@
 
     COMMENT = Instant messaging
 
-    SUBDIR += ari-yahoo
     SUBDIR += ayttm
     SUBDIR += bsflite
     SUBDIR += centericq
@@ -76,12 +75,10 @@
     SUBDIR += mbpurple
     SUBDIR += mcabber
     SUBDIR += meanwhile
-    SUBDIR += mercury
     SUBDIR += mikutter
     SUBDIR += mu-conference
     SUBDIR += naim
     SUBDIR += openfire
-    SUBDIR += openfire-devel
     SUBDIR += p5-AnyEvent-XMPP
     SUBDIR += p5-DJabberd
     SUBDIR += p5-Jabber-Connection
@@ -163,20 +160,18 @@
     SUBDIR += telepathy-salut
     SUBDIR += telepathy-sofiasip
     SUBDIR += tkabber
-    SUBDIR += tkabber-devel
     SUBDIR += tkabber-plugins
     SUBDIR += tkabbur
     SUBDIR += tox
+    SUBDIR += toxic
     SUBDIR += ttytter
     SUBDIR += turpial
     SUBDIR += twirssi
     SUBDIR += twitmail
     SUBDIR += vacuum-im
     SUBDIR += venom
-    SUBDIR += vicq
     SUBDIR += vqcc-gtk
     SUBDIR += yoono
-    SUBDIR += ysm
     SUBDIR += zephyr
 
 .include <bsd.port.subdir.mk>

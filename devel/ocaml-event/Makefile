@@ -10,13 +10,13 @@ PKGNAMEPREFIX=	ocaml-
 DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	michael.grunewald@laposte.net
-COMMENT=	An ocaml wrapper for the libevent API
+COMMENT=	Ocaml wrapper for the libevent API
 
 BUILD_DEPENDS=	ocamlc:${PORTSDIR}/lang/ocaml
 LIB_DEPENDS=	event-1.4:${PORTSDIR}/devel/libevent
 
 ALL_TARGET=	all allopt
-USE_GMAKE=	yes
+USES=		gmake
 
 .ifndef(NOPORTDOCS)
 ALL_TARGET+=	doc
@@ -64,7 +64,7 @@ post-configure:
 
 pre-build:
 .for file in liboevent.cmi
-	@cd ${WRKSRC} && ${GMAKE} ${file}
+	@cd ${WRKSRC} && ${MAKE_CMD} ${file}
 .endfor
 
 do-install:

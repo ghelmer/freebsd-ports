@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	selenium
-PORTVERSION=	2.37.2
+PORTVERSION=	2.42.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,19 +14,13 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rdflib>=3.1.0:${PORTSDIR}/textproc/py-rdflib
 
-LATEST_LINK=	py-${PORTNAME}
-
 USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
+USE_PYDISTUTILS=	yes
 PYDISTUTILS_AUTOPLIST=	yes
 
 OPTIONS_DEFINE=	FIREFOX
 FIREFOX_DESC=	Install Firefox
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MFIREFOX}
-USE_FIREFOX=	yes
-.endif
+FIREFOX_USES=	gecko:firefox
 
 .include <bsd.port.mk>

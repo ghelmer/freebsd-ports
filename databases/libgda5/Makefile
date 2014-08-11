@@ -74,7 +74,7 @@ CONFIGURE_ARGS+=	--without-mysql
 .endif
 
 .if ${LIBGDA5_SLAVE}==postgresql
-USE_PGSQL=		yes
+USES+=			pgsql
 CONFIGURE_ARGS+=	--with-postgres=${LOCALBASE}
 .else
 CONFIGURE_ARGS+=	--without-postgres
@@ -90,6 +90,7 @@ CONFIGURE_ARGS+=	--without-mdb
 
 .if ${LIBGDA5_SLAVE}==jdbc
 USE_JAVA=		yes
+JAVA_VERSION=		1.6
 JAVA_VENDOR=		bsdjava openjdk
 .else
 CONFIGURE_ARGS+=	--without-java
@@ -115,15 +116,15 @@ post-patch:
 
 pre-build:
 .if ${LIBGDA5_SLAVE}==postgresql
-	cd ${WRKSRC}/providers/reuseable/postgres && ${GMAKE} libgda-postgres.la
+	cd ${WRKSRC}/providers/reuseable/postgres && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} libgda-postgres.la
 .endif
 
 .if ${LIBGDA5_SLAVE}==mysql
-	cd ${WRKSRC}/providers/reuseable/mysql && ${GMAKE} libgda-mysql.la
+	cd ${WRKSRC}/providers/reuseable/mysql && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} libgda-mysql.la
 .endif
 
 .if ${LIBGDA5_SLAVE}==ui
-	cd ${WRKSRC}/libgda && ${GMAKE} gda-enum-types.h
+	cd ${WRKSRC}/libgda && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} gda-enum-types.h
 .endif
 
 .if ${LIBGDA5_SLAVE}==no

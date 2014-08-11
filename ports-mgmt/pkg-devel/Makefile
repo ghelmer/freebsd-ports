@@ -1,16 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	pkg
-DISTVERSION=	1.3.0.a7
+DISTVERSION=	1.3.0.b9
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	\
-		http://files.etoilebsd.net/pkg/ \
-		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
-		http://miwibox.org/distfiles/${PORTNAME}/ \
-		LOCAL/portmgr
+		http://highsecure.ru/distfiles/ \
+		http://pkg.semmy.ru/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	portmgr@FreeBSD.org
+MAINTAINER=	pkg@FreeBSD.org
 COMMENT=	Package manager
 
 LICENSE=	BSD2CLAUSE
@@ -21,7 +19,7 @@ NO_CCACHE=	yes
 WITH_DEBUG=	yes
 CFLAGS+=	-O0 -g
 USE_LDCONFIG=	yes
-USES=		tar:xz
+USES=		libtool tar:xz
 GNU_CONFIGURE=	yes
 
 # Use a submake as 'deinstall install' needs to reevaluate PKG_CMD
@@ -29,7 +27,7 @@ GNU_CONFIGURE=	yes
 USE_SUBMAKE=	yes
 
 .if !exists(/usr/include/jail.h)
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-pkg_pkg.8
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-docs_pkg.8
 .endif
 
 .include <bsd.port.pre.mk>
@@ -45,7 +43,7 @@ NO_LATEST_LINK=	yes
 IGNORE=	WITH_PKGNG is not defined to 'devel', this version is the devel one
 .	endif
 .else
-LATEST_LINK=   pkg
+LATEST_LINK=	pkg
 PKGNAMESUFFIX=
 .endif
 .if exists(${LOCALBASE}/sbin/pkg_info) || exists(/usr/sbin/pkg_info)
@@ -92,7 +90,6 @@ PKG_BIN=	${WRKSRC}/src/pkg-static
 .endif
 
 post-install:
-	@${RM} -f ${STAGEDIR}${PREFIX}/lib/*.la
 	@${MV} ${STAGEDIR}${PREFIX}/lib/libpkg_static.a \
 		${STAGEDIR}${PREFIX}/lib/libpkg.a
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpkg.so.2

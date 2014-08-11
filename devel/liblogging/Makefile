@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	liblogging
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.4
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://download.rsyslog.com/liblogging/
 
@@ -12,7 +13,9 @@ COMMENT=	Easy to use system logging library
 LICENSE=	BSD2CLAUSE
 
 GNU_CONFIGURE=	yes
-USES=	libtool pathfix
+USES=		libtool pathfix pkgconfig
+
+CONFIGURE_ARGS+=	--disable-journal
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/liblogging-stdlog.so.0.0.0

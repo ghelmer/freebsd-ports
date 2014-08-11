@@ -2,19 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	mailfront
-PORTVERSION=	1.21
+PORTVERSION=	2.01
 CATEGORIES=	mail
 MASTER_SITES=	http://untroubled.org/${PORTNAME}/ \
 		http://untroubled.org/${PORTNAME}/archive/
 
-MAINTAINER=	tarkhil@over.ru
+MAINTAINER=	uffe@uffe.org
 COMMENT=	Mail server network protocol front-ends
 
-LIB_DEPENDS=	cvm-v2client:${PORTSDIR}/security/cvm
+LIB_DEPENDS=	libcvm-v2client.so:${PORTSDIR}/security/cvm
 
 OPTIONS_DEFINE=	LUA
 
-OPTIONS_DEFAULT=	LUA
+OPTIONS_DEFAULT=LUA
+OPTIONS_SUB=	yes
 
 USES=		qmail:vars
 
@@ -27,22 +28,19 @@ CVM_INC=	${LOCALBASE}/include
 CVM_LIB=	${LOCALBASE}/lib
 MODULES_DIR=	${PREFIX}/libexec/${PORTNAME}
 
+ALL_TARGET=	all
+LATE_INSTALL_ARGS=	install_prefix=${STAGEDIR}
+
 DOCS=		NEWS README TODO *.html
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-ALL_TARGET=	all
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLUA}
 ALL_TARGET+=	lua
-USE_LUA=	yes
+USES+=		lua:51
 CFLAGS+=	-I${LUA_INCDIR}
 CFLAGS_SO+=	-L${LUA_LIBDIR}
 LDFLAGS+=	-L${LUA_LIBDIR}
-PLIST_SUB+=	LUA=""
-.else
-PLIST_SUB+=	LUA="@comment "
 .endif
 
 LDFLAGS+=	-rdynamic
@@ -58,10 +56,13 @@ do-configure:
 	${ECHO_CMD} "${BGLIBS_LIB}"	> ${WRKSRC}/conf-bglibs
 	${ECHO_CMD} "${QMAIL_PREFIX}"	> ${WRKSRC}/conf-qmail
 
+post-patch:
+	@${REINPLACE_CMD} 's,-llua,-llua-${LUA_VER},' ${WRKSRC}/Makefile
+
 .if ${PORT_OPTIONS:MDOCS}
 post-install:
-	@${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

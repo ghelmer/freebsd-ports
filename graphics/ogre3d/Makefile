@@ -3,32 +3,31 @@
 
 PORTNAME=	ogre3d
 PORTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	graphics devel
 MASTER_SITES=   https://bitbucket.org/sinbad/ogre/get/
 DISTNAME=	v1-9-0
 WRKSRC=		${WRKDIR}/sinbad-ogre-dd30349ea667
 
 MAINTAINER=	oliver@FreeBSD.org
-COMMENT=	A scene-oriented, flexible 3D engine written in C++
+COMMENT=	Scene-oriented, flexible 3D engine written in C++
 
-LIB_DEPENDS=	zzip.13:${PORTSDIR}/devel/zziplib \
-		freetype.9:${PORTSDIR}/print/freetype2 \
-		freeimage.3:${PORTSDIR}/graphics/freeimage
+LIB_DEPENDS=	libzzip.so:${PORTSDIR}/devel/zziplib \
+		libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libfreeimage.so:${PORTSDIR}/graphics/freeimage
 
 OPTIONS_DEFINE=	BOOST
 
-USE_LDCONFIG=	YES
-USE_BZIP2=	YES
-USES=		cmake pkgconfig compiler:c++11-lib
+USE_LDCONFIG=	yes
+USES=		tar:bzip2 cmake pkgconfig compiler:c++11-lib
 USE_SDL=	sdl
 USE_XORG=	xaw xrandr
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MBOOST}
 BUILD_DEPENDS+=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost-libs
-RUND_DEPENDS+=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost-libs
+RUN_DEPENDS+=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost-libs
 PLIST_SUB+=	BOOSTTRUE=""
 PLIST_SUB+=	BOOSTFALSE="@comment "
 .else
@@ -59,11 +58,9 @@ post-patch:
 		${WRKSRC}/OgreMain/include/OgrePlatform.h
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docfile in README COPYING AUTHORS
-	@${INSTALL_DATA} ${WRKSRC}/${docfile} ${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/${docfile} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

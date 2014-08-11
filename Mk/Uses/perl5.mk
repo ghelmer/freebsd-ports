@@ -24,7 +24,9 @@
 # SITE_PERL		- Directory name where site specific perl packages go.
 #				  This value is added to PLIST_SUB.
 # USE_PERL5		- If set, this port uses perl5 in one or more of the extract,
-#				  patch, build, install or run phases.
+#				  patch, build, install or run phases.  The fixpacklist is
+#				  needed in some cases, when a .packlist is created, it may
+#				  reference ${STAGEDIR}
 #				  It can also have configure, modbuild and modbuildtiny when
 #				  the port needs to run Makefile.PL, Build.PL and a
 #				  Module::Build::Tiny flavor of Build.PL.
@@ -53,6 +55,8 @@ PERL_VERSION=	5.14.4
 PERL_VERSION=	5.16.3
 .elif ${PERL5_DEFAULT} == 5.18
 PERL_VERSION=	5.18.2
+.elif ${PERL5_DEFAULT} == 5.20
+PERL_VERSION=	5.20.0
 .else
 IGNORE=	Invalid perl5 version ${PERL5_DEFAULT}
 .endif
@@ -80,7 +84,9 @@ PERL_ARCH?=		mach
 
 # there must always be a default to prevent dependency failures such
 # as "ports/lang: not found"
-.if    ${PERL_LEVEL} >= 501800
+.if    ${PERL_LEVEL} >= 502000
+PERL_PORT?=	perl5.20
+.elif    ${PERL_LEVEL} >= 501800
 PERL_PORT?=	perl5.18
 .elif    ${PERL_LEVEL} >= 501600
 PERL_PORT?=	perl5.16
@@ -93,7 +99,7 @@ SITE_PERL?=	${LOCALBASE}/${SITE_PERL_REL}
 
 PERL5=		${LOCALBASE}/bin/perl${PERL_VERSION}
 PERL=		${LOCALBASE}/bin/perl
-CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
+CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL} ac_cv_path_PERL_PATH=${PERL}
 
 # Define the want perl first if defined
 .if ${USE_PERL5:M5*}
@@ -171,19 +177,17 @@ CONFIGURE_ARGS+=--install_path lib="${PREFIX}/${SITE_PERL_REL}" \
 				--install_path bindoc="${MAN1PREFIX}/man/man1"
 CONFIGURE_SCRIPT?=	Build.PL
 PL_BUILD?=	Build
-.if !defined(NO_STAGE)
 CONFIGURE_ARGS+=--destdir ${STAGEDIR}
 DESTDIRNAME=	--destdir
-.endif
 .if ${_USE_PERL5:Mmodbuild}
 .if ${PORTNAME} != Module-Build
-BUILD_DEPENDS+=	${SITE_PERL}/Module/Build.pm:${PORTSDIR}/devel/p5-Module-Build
+BUILD_DEPENDS+=	p5-Module-Build>=0.4205:${PORTSDIR}/devel/p5-Module-Build
 .endif
 CONFIGURE_ARGS+=--create_packlist 0
 .endif
 .if ${_USE_PERL5:Mmodbuildtiny}
 .if ${PORTNAME} != Module-Build-Tiny
-BUILD_DEPENDS+=	${SITE_PERL}/Module/Build/Tiny.pm:${PORTSDIR}/devel/p5-Module-Build-Tiny
+BUILD_DEPENDS+=	p5-Module-Build-Tiny>=0.036:${PORTSDIR}/devel/p5-Module-Build-Tiny
 .endif
 CONFIGURE_ARGS+=--create_packlist 1
 .endif
@@ -255,10 +259,16 @@ do-install:
 .endif # ! USES=gmake
 .endif # modbuild
 
-# TODO: change to ${_USE_PERL5:Mconfigure} when M::B creates .packlist
-.if ${USE_PERL5:Mconfigure} || ${USE_PERL5:Mmodbuildtiny}
-post-stage::
-	-@[ -d ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto ] && ${FIND} ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto -name .packlist -exec ${SED} -i '' 's|^${STAGEDIR}||' '{}' \;
+.if ${USE_PERL5:Mconfigure} || ${USE_PERL5:Mmodbuildtiny} || ${USE_PERL5:Mfixpacklist}
+fix-packlist::
+	-@[ -d ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}/auto ] && ${FIND} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}/auto -name .packlist -exec ${SED} -i '' 's|^${STAGEDIR}||' '{}' \;
+.endif
+
+# Starting with perl 5.20, the empty bootstrap files are not installed any
+# more.  As we don't need them anyway, remove it altogether.
+.if ${PERL_LEVEL} < 502000
+fix-perl-bs:
+	-@${FIND} ${STAGEDIR} -name '*.bs' -size 0 -delete
 .endif
 
 .if !target(regression-test)

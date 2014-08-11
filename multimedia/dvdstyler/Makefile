@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dvdstyler
-PORTVERSION=	2.7.1
-PORTREVISION=	1
+PORTVERSION=	2.7.2
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
@@ -33,7 +33,6 @@ RUN_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
 USES=		gettext gmake pkgconfig tar:bzip2
 USE_WX=		3.0
 WX_UNICODE=	yes
-WX_COMPS=	wx
 WX_CONF_ARGS=	absolute
 USE_AUTOTOOLS=	aclocal automake autoconf
 ACLOCAL_ARGS=	-I ${WRKSRC}

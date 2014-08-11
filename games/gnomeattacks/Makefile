@@ -13,9 +13,7 @@ COMMENT=	GNOME 2 game featuring a bizarre flying GNOME logo
 GNU_CONFIGURE=	yes
 USES=		pathfix gmake pkgconfig
 USE_GNOME=	gnomeprefix gnomevfs2 libgnomeui
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib"
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-lm
+LIBS+=		-L${LOCALBASE}/lib -lm
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

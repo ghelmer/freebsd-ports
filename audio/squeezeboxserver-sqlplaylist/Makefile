@@ -17,16 +17,16 @@ RUN_DEPENDS=	softsqueeze:${PORTSDIR}/audio/squeezeboxserver \
 		${LOCALBASE}/${SLIMDIR}/Plugins/DynamicPlayList/install.xml:${PORTSDIR}/audio/squeezeboxserver-dynamicplaylist
 
 FETCH_BEFORE_ARGS=	-o ${DISTFILES}
-USES=		zip:infozip
-NO_STAGE=	yes
+USES=		zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 SLIMDIR?=	squeezeboxserver
 PLIST_SUB+=	SLIMDIR=${SLIMDIR}
 
 do-install:
-	${MKDIR} ${PREFIX}/${SLIMDIR}/Plugins/SQLPlayList
-	${CP} -R ${WRKSRC}/SQLPlayList/* ${PREFIX}/${SLIMDIR}/Plugins/SQLPlayList
+	${MKDIR} ${STAGEDIR}${PREFIX}/${SLIMDIR}/Plugins/SQLPlayList
+	${CP} -R ${WRKSRC}/SQLPlayList/* ${STAGEDIR}${PREFIX}/${SLIMDIR}/Plugins/SQLPlayList
 
 .include <bsd.port.mk>

@@ -3,13 +3,17 @@
 
 PORTNAME=	libsmf
 PORTVERSION=	1.3
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	trasz@FreeBSD.org
 COMMENT=	Standard MIDI File format library
 
-USES=	pathfix pkgconfig readline:port
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		pathfix pkgconfig readline:port libtool
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

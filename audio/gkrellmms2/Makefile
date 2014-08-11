@@ -3,16 +3,13 @@
 
 PORTNAME=	gkrellmms
 PORTVERSION=	2.1.22
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	audio
 MASTER_SITES=	http://gkrellm.luon.net/files/
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	GKrellM XMMS Plugin
-
-DEPRECATED=	Abandonware, please consider using multimedia/audacious instead
-EXPIRATION_DATE=	2014-04-27
 
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:${PORTSDIR}/sysutils/gkrellm2
 LIB_DEPENDS=	libxmms.so:${PORTSDIR}/multimedia/xmms

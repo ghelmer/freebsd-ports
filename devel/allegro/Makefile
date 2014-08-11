@@ -1,3 +1,4 @@
+# Created by: Jimmy Olgeni <olgeni@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	allegro
@@ -9,17 +10,18 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	koalative@gmail.com
 COMMENT=	Cross-platform library for games and multimedia programming
 
 LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis
 
-USES=		gmake cmake pkgconfig
+USES=		cmake gmake makeinfo pkgconfig
 USE_XORG=	x11 xpm xext xcursor xxf86vm xxf86dga
 USE_GL=		glu
 USE_LDCONFIG=	yes
 
+INFO=		allegro
 PORTDOCS=	*
 PORTEXAMPLES=	*
 

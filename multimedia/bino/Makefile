@@ -3,6 +3,7 @@
 
 PORTNAME=	bino
 PORTVERSION=	1.4.2
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://download.savannah.nongnu.org/releases/bino/ http://levsha.me/ports/distfiles/
 
@@ -11,8 +12,7 @@ COMMENT=	3D video player with multi-display support
 
 LICENSE=	GPLv3
 
-USES=		gmake pkgconfig
-USE_XZ=		yes
+USES=		gmake pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 USE_QT4=	moc_build opengl rcc_build

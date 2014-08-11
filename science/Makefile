@@ -27,6 +27,7 @@
     SUBDIR += cdf
     SUBDIR += cdo
     SUBDIR += cgnslib
+    SUBDIR += cgribex
     SUBDIR += checkmol
     SUBDIR += chemical-mime-data
     SUBDIR += chemtool
@@ -46,19 +47,15 @@
     SUBDIR += elmergrid
     SUBDIR += elmerpost
     SUBDIR += epte
-    SUBDIR += euler
     SUBDIR += fastcap
     SUBDIR += fasthenry
-    SUBDIR += felt
     SUBDIR += fisicalab
-    SUBDIR += flounder
     SUBDIR += fvcom
     SUBDIR += fvcom-mpi
     SUBDIR += fvm
     SUBDIR += g3data
     SUBDIR += gamess
     SUBDIR += gchemutils
-    SUBDIR += gdis
     SUBDIR += getdp
     SUBDIR += ghemical
     SUBDIR += ghmm
@@ -73,7 +70,6 @@
     SUBDIR += hdf
     SUBDIR += hdf-java
     SUBDIR += hdf5
-    SUBDIR += hdf5-18
     SUBDIR += hs-bio
     SUBDIR += isaac-cfd
     SUBDIR += jmol
@@ -97,6 +93,7 @@
     SUBDIR += medit
     SUBDIR += meep
     SUBDIR += mei
+    SUBDIR += metaf2xml
     SUBDIR += minc
     SUBDIR += minc2
     SUBDIR += mol2ps
@@ -105,9 +102,8 @@
     SUBDIR += mpqc-mpich
     SUBDIR += ncs
     SUBDIR += netcdf
-    SUBDIR += netcdf-ftn
-    SUBDIR += netcdf3-ftn
-    SUBDIR += netcdf4
+    SUBDIR += netcdf-cxx
+    SUBDIR += netcdf-fortran
     SUBDIR += nifticlib
     SUBDIR += openbabel
     SUBDIR += openkim

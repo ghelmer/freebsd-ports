@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hwloc
-PORTVERSION=	1.8
+PORTVERSION=	1.9
 CATEGORIES=	devel
 MASTER_SITES=	http://www.open-mpi.org/software/hwloc/v${PORTVERSION}/downloads/ \
 		http://icl.cs.utk.edu/open-mpi/software/hwloc/v${PORTVERSION}/downloads/
@@ -17,8 +17,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-static \
 			--enable-libxml2 \
 			--disable-gl
-USES=		pkgconfig pathfix iconv
-USE_BZIP2=	yes
+USES=		pkgconfig pathfix iconv tar:bzip2
 USE_LDCONFIG=	yes
 USE_GNOME=	libxml2
 

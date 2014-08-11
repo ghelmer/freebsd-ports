@@ -3,13 +3,14 @@
 
 PORTNAME=	armagetron
 PORTVERSION=	0.2.8.3.2
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}ad/stable/${PORTVERSION}/
 DISTNAME=	armagetronad-${PORTVERSION}
 EXTRACT_SUFX=	.src.tar.bz2
 
 MAINTAINER=	ianthetechie@gmail.com
-COMMENT=	A multiplayer networked Tron clone in 3D
+COMMENT=	Multiplayer networked Tron clone in 3D
 
 USES=		gmake
 GNU_CONFIGURE=	yes

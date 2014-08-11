@@ -3,7 +3,7 @@
 
 PORTNAME=	quadra
 PORTVERSION=	1.3.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://kbrandt.sdf-eu.org/FreeBSD/distfiles/ \
 		ftp://ftp.bsdforen.de/pub/BSDForen/distfiles/ \
@@ -12,14 +12,13 @@ MASTER_SITES=	http://kbrandt.sdf-eu.org/FreeBSD/distfiles/ \
 MAINTAINER=	kbrandt@sdf-eu.org
 COMMENT=	Tetris like game with multiplayer support
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
 
-USE_BZIP2=	yes
+USES=		gmake tar:bzip2
 USE_SDL=	sdl
 USE_XORG=	x11 xau xdmcp
 USE_AUTOTOOLS=	autoconf autoheader
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include/libpng15
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -33,7 +32,6 @@ DESKTOP_ENTRIES=	"Quadra" "${COMMENT}" \
 			"${PREFIX}/share/pixmaps/${PORTNAME}.xpm" \
 			"${PORTNAME}" "BlocksGame;Game;" false
 
-NO_STAGE=	yes
 # maintainer relevant make target:
 SVN_REV=	757
 SVN_SRC=	http://quadra.googlecode.com/svn/trunk/quadra/

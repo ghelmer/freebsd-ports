@@ -1,3 +1,4 @@
+# Created by: Dag-Erling C. Smørgrav <des@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	abuse_sdl
@@ -8,7 +9,7 @@ MASTER_SITES=	GENTOO/distfiles \
 		http://abuse.zoy.org/raw-attachment/wiki/download/
 DISTNAME=	abuse-${DISTVERSION}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	SDL port of the Abuse game engine
 
 LICENSE=	GPLv2
@@ -22,15 +23,17 @@ CONFIGURE_ARGS=	--with-assetdir=${DATADIR} --enable-release
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-PORTDOCS=	AUTHORS ChangeLog NEWS README TODO
+PORTDOCS=	AUTHORS ChangeLog NEWS README
+OPTIONS_DEFINE=	DOCS
 
-DESKTOP_ENTRIES="Abuse-SDL" "${COMMENT}" "abuse" \
-		"abuse" "Game;StrategyGame;" false
+DESKTOP_ENTRIES="Abuse-SDL" "" "abuse" \
+		"abuse" "Game;StrategyGame;" ""
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/doc/abuse.png ${STAGEDIR}${PREFIX}/share/pixmaps/
+	${INSTALL_DATA} ${WRKSRC}/doc/abuse.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/
 
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

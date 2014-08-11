@@ -3,20 +3,20 @@
 
 PORTNAME=	jvgs
 PORTVERSION=	0.5.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:C/\.[0-9]+$//}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	A minimalistic platform game
+COMMENT=	Minimalistic platform game
 
 BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 
-USES=		cmake
+USES=		cmake lua:51
 USE_SDL=	sdl mixer
 USE_GL=		gl glu
-USE_LUA=	5.1+
 
 SUB_FILES=	${PORTNAME}
 

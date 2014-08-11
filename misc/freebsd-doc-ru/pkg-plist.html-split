@@ -1,4 +1,3 @@
-@comment $FreeBSD$
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/archs.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/committer.types.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/committers-guide/conventions.html
@@ -264,7 +263,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit-administration.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit-config.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit-inline-glossary.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit-install.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/audit.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/backup-basics.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/backup-strategies.html

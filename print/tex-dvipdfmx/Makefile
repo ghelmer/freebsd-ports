@@ -3,7 +3,7 @@
 
 PORTNAME=	dvipdfmx
 PORTVERSION=	20120420
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2012/
 PKGNAMEPREFIX=	tex-
@@ -18,15 +18,13 @@ COMMENT=	DVI Previewer(kpathsearch) for X
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
-		paper:${PORTSDIR}/print/libpaper
+LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
+		libpaper.so:${PORTSDIR}/print/libpaper
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ai0/CMap/Identity-H:${PORTSDIR}/print/adobe-cmaps
 
-USE_XZ=		yes
-USE_GMAKE=	yes
+USES=		gmake pkgconfig tar:xz
 USE_TEX=	texlive kpathsea web2c texmf texhash
 TEXHASHDIR=	${TEXMFDISTDIR} ${TEXMFDIR}
-USES=		pkgconfig
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
 EXTRACT_FILES= \
 	m4 \

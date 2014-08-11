@@ -10,7 +10,7 @@ EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	erlang
 
 MAINTAINER=	olgeni@FreeBSD.org
-COMMENT=	A library for XMLRPC support in Erlang
+COMMENT=	Library for XMLRPC support in Erlang
 
 BUILD_DEPENDS=	erlc:${PORTSDIR}/lang/erlang
 RUN_DEPENDS=	erl:${PORTSDIR}/lang/erlang
@@ -29,7 +29,7 @@ post-patch:
 	@${RM} ${WRKSRC}/src/Makefile.bak ${WRKSRC}/src/*.orig
 
 do-build:
-	@cd ${WRKSRC}/src && ${GMAKE}
+	@cd ${WRKSRC}/src && ${MAKE_CMD}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -4,7 +4,6 @@
     COMMENT = Programming languages
 
     SUBDIR += Gofer
-    SUBDIR += STk
     SUBDIR += Sather
     SUBDIR += abcl
     SUBDIR += adacontrol
@@ -31,6 +30,7 @@
     SUBDIR += cfortran
     SUBDIR += chicken
     SUBDIR += cint
+    SUBDIR += clang-cheri
     SUBDIR += clang-devel
     SUBDIR += clang32
     SUBDIR += clang33
@@ -38,7 +38,6 @@
     SUBDIR += clay
     SUBDIR += clisp
     SUBDIR += clojure
-    SUBDIR += clojure-contrib
     SUBDIR += clojure-mode.el
     SUBDIR += cmucl
     SUBDIR += cmucl-extra
@@ -48,9 +47,8 @@
     SUBDIR += cython
     SUBDIR += diveintopython
     SUBDIR += dlv
-    SUBDIR += dmd
+    SUBDIR += dmd1
     SUBDIR += dmd2
-    SUBDIR += dragonegg-devel46
     SUBDIR += dragonegg46-33
     SUBDIR += dragonegg47-33
     SUBDIR += ecl
@@ -61,11 +59,11 @@
     SUBDIR += erlang
     SUBDIR += erlang-runtime15
     SUBDIR += erlang-runtime16
+    SUBDIR += erlang-runtime17
     SUBDIR += execline
     SUBDIR += expect
     SUBDIR += ezm3
     SUBDIR += f2c
-    SUBDIR += f77
     SUBDIR += fasm
     SUBDIR += ferite
     SUBDIR += ficl
@@ -89,17 +87,17 @@
     SUBDIR += gcc47-aux
     SUBDIR += gcc48
     SUBDIR += gcc49
+    SUBDIR += gcc410
     SUBDIR += gcl
     SUBDIR += gforth
     SUBDIR += ghc
     SUBDIR += gjs
-    SUBDIR += gnat
-    SUBDIR += gnat-aux
     SUBDIR += gnat_util
     SUBDIR += gnatdroid-armv5
     SUBDIR += gnatdroid-armv7
     SUBDIR += gnatdroid-binutils
     SUBDIR += gnatdroid-sysroot
+    SUBDIR += gnu-cobol
     SUBDIR += gnustep-base
     SUBDIR += gnustep-guile
     SUBDIR += go
@@ -107,6 +105,7 @@
     SUBDIR += groovy
     SUBDIR += gscheme
     SUBDIR += guile
+    SUBDIR += guile2
     SUBDIR += harbour
     SUBDIR += haskell-mode.el
     SUBDIR += hiphop-php
@@ -133,7 +132,6 @@
     SUBDIR += js_of_ocaml
     SUBDIR += jython
     SUBDIR += kawa
-    SUBDIR += klone
     SUBDIR += kroc
     SUBDIR += kturtle
     SUBDIR += lafontaine
@@ -145,9 +143,8 @@
     SUBDIR += linux-f10-libg2c
     SUBDIR += linux-f10-tcl85
     SUBDIR += linux-j
-    SUBDIR += logo
-    SUBDIR += lua
     SUBDIR += lua-mode.el
+    SUBDIR += lua51
     SUBDIR += lua52
     SUBDIR += luajit
     SUBDIR += lush
@@ -156,9 +153,9 @@
     SUBDIR += mawk
     SUBDIR += mdk
     SUBDIR += metaocaml
+    SUBDIR += micropython
     SUBDIR += mit-scheme
     SUBDIR += mixal
-    SUBDIR += ml-pnet
     SUBDIR += mlton
     SUBDIR += mmix
     SUBDIR += modula3
@@ -186,8 +183,6 @@
     SUBDIR += ocaml
     SUBDIR += ocaml-autoconf
     SUBDIR += ocaml-camlidl
-    SUBDIR += ocaml-doc
-    SUBDIR += ocaml-examples
     SUBDIR += ocaml-mode.el
     SUBDIR += ocaml-nox11
     SUBDIR += ocs
@@ -196,7 +191,6 @@
     SUBDIR += onyx
     SUBDIR += oo2c
     SUBDIR += oorexx
-    SUBDIR += open-cobol
     SUBDIR += opendylan
     SUBDIR += otcl
     SUBDIR += p2c
@@ -234,6 +228,7 @@
     SUBDIR += perl5.14
     SUBDIR += perl5.16
     SUBDIR += perl5.18
+    SUBDIR += perl5.20
     SUBDIR += petite-chez
     SUBDIR += pfe
     SUBDIR += phantomjs
@@ -248,14 +243,11 @@
     SUBDIR += php55-extensions
     SUBDIR += php_doc
     SUBDIR += picoc
-    SUBDIR += pike76
     SUBDIR += pike78
-    SUBDIR += pnet
-    SUBDIR += pnet-base
-    SUBDIR += pnetlib
     SUBDIR += polyml
     SUBDIR += ptoc
     SUBDIR += pure
+    SUBDIR += py-clojure
     SUBDIR += py-mx-base
     SUBDIR += py-prolog
     SUBDIR += pypy
@@ -270,9 +262,9 @@
     SUBDIR += python2
     SUBDIR += python27
     SUBDIR += python3
-    SUBDIR += python31
     SUBDIR += python32
     SUBDIR += python33
+    SUBDIR += python34
     SUBDIR += qore
     SUBDIR += qscheme
     SUBDIR += qt5-qml
@@ -286,7 +278,6 @@
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
     SUBDIR += rubinius
-    SUBDIR += ruby-doc-stdlib
     SUBDIR += ruby19
     SUBDIR += ruby20
     SUBDIR += ruby21
@@ -330,7 +321,6 @@
     SUBDIR += stklos
     SUBDIR += stldoc
     SUBDIR += swi-pl
-    SUBDIR += sxm
     SUBDIR += t3x
     SUBDIR += tcc
     SUBDIR += tcl-manual
@@ -339,11 +329,9 @@
     SUBDIR += tcl85
     SUBDIR += tcl86
     SUBDIR += tclX
-    SUBDIR += tcltutor
     SUBDIR += tinypy
     SUBDIR += tolua
     SUBDIR += tolua++
-    SUBDIR += treecc
     SUBDIR += tuareg-mode.el
     SUBDIR += twelf
     SUBDIR += ucc

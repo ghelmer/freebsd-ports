@@ -3,7 +3,7 @@
 
 PORTNAME=	cflowd
 PORTVERSION=	2.1.b1
-PORTREVISION=	11
+PORTREVISION=	12
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.caida.org/tools/measurement/cflowd/download/
@@ -15,7 +15,7 @@ COMMENT=	Flow analysis tool used for analyzing Cisco's NetFlow switching
 LIB_DEPENDS=	Arts:${PORTSDIR}/net-mgmt/arts++
 
 GNU_CONFIGURE=	yes
-USES=		bison gmake libtool
+USES=		bison gmake libtool:keepla
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS=	--enable-shared --with-artspp=${LOCALBASE}
@@ -25,6 +25,9 @@ MANL=		cfdases.l cfdifmatrix.l cfdnets.l cfdnexthops.l \
 
 OPTIONS_DEFINE=	FLOWSCAN
 FLOWSCAN_DESC=	FlowScan patch
+
+DEPRECATED=	Unmaintained 10 years, requires dozens of patches, unverifiable
+EXPIRATION_DATE=2014-08-15
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>

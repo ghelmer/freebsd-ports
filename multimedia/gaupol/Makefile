@@ -8,7 +8,7 @@ CATEGORIES=	multimedia python
 MASTER_SITES=	http://download.gna.org/gaupol/0.19/ \
 		http://www.c-s.li/ports/
 
-MAINTAINER=	cs@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Subtitle editor
 
 LICENSE=	GPLv3
@@ -22,10 +22,6 @@ USE_PYTHON=	yes
 USE_PYDISTUTILS=yes
 USES=		desktop-file-utils
 INSTALLS_ICONS=	yes
-
-MAN1=		${PORTNAME}.1
-
-NO_STAGE=	yes
 
 OPTIONS_DEFINE=	NLS
 
@@ -43,6 +39,8 @@ post-patch:
 		-e 's|share/man|man|g' \
 		-e 's,distutils\.command\.install$$,setuptools\.command\.install,g' \
 		-e 's,distutils\.command\.install\.,setuptools\.command\.install\.,g' \
+		-e 's|%%STAGEDIR%%|"${STAGEDIR}"|' \
+		-e 's|%%PREFIX%%|"${PREFIX}"|' \
 		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

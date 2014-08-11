@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	davmail
-PORTVERSION=	4.2.1
+PORTVERSION=	4.5.0
 CATEGORIES=	mail java
 MASTER_SITES=	SF/davmail/davmail/${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}-${REVISION}
@@ -13,14 +13,13 @@ COMMENT=	POP/IMAP/SMTP/Caldav/Carddav/LDAP Exchange Gateway
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${JAVALIBDIR}/swt-devel.jar:${PORTSDIR}/x11-toolkits/swt-devel
-
-USE_DOS2UNIX=	build.xml
+USES=		dos2unix
+DOS2UNIX_FILES=	build.xml
 USE_ANT=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 ALL_TARGET=	release
-REVISION=	2089
+REVISION=	2292
 # port build number, same as on DISTNAME
 MAKE_ARGS=	-Drevision=${REVISION}
 MAKE_ENV+=	"ANT_OPTS=-Dfile.encoding=UTF-8"
@@ -30,7 +29,6 @@ DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 USE_RC_SUBR=	davmail
 SUB_FILES=	davmail.sh
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's#exec=\"davmail\"#exec=\"${PREFIX}/bin/davmail\"#' \
 		-e 's#icon=\"/usr/share/davmail/davmail.png\"#icon=\"${DATADIR}/davmail.png\"#' \
@@ -38,7 +36,7 @@ post-patch:
 
 do-install:
 	@cd ${WRKSRC}/dist && ${FIND} . -type d \
-		-exec ${MKDIR} ${DATADIR}/\{} \;
+		-exec ${MKDIR} ${STAGEDIR}${DATADIR}/\{} \;
 	@cd ${WRKSRC}/dist && ${FIND} . -type f \
 		-not -name "*.deb" \
 		-not -name "*.tgz" \
@@ -48,16 +46,10 @@ do-install:
 		-not -name "*.war" \
 		-not -name "*.rpm" \
 		-not -name "*.desktop" \
-		-exec ${INSTALL_DATA} \{} ${DATADIR}/\{} \;
-	@${INSTALL_SCRIPT} ${WRKDIR}/davmail.sh ${PREFIX}/bin/davmail
-	@${INSTALL_DATA} ${FILESDIR}/davmail.properties.sample \
-		${PREFIX}/etc
-	@${INSTALL_DATA} ${WRKSRC}/dist/davmail.desktop ${PREFIX}/share/applications/
-
-post-install:
-	@if [ ! -f ${PREFIX}/etc/davmail.properties ]; then \
-		${CP} -p ${PREFIX}/etc/davmail.properties.sample \
-			${PREFIX}/etc/davmail.properties ; \
-	fi
+		-exec ${INSTALL_DATA} \{} ${STAGEDIR}${DATADIR}/\{} \;
+	@${INSTALL_SCRIPT} ${WRKDIR}/davmail.sh ${STAGEDIR}${PREFIX}/bin/davmail
+	@${INSTALL_DATA} ${WRKSRC}/src/etc/davmail.properties \
+		${STAGEDIR}${PREFIX}/etc/davmail.properties.sample
+	@${INSTALL_DATA} ${WRKSRC}/dist/davmail.desktop ${STAGEDIR}${PREFIX}/share/applications/
 
 .include <bsd.port.mk>

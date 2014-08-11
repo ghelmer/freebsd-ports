@@ -36,29 +36,28 @@ PORTDOCS=	${DOC_FILES} \
 		javadoc
 
 PLIST_FILES=	\
-		%%JAVAJARDIR%%/${PORTNAME:L}.jar
+		%%JAVAJARDIR%%/${PORTNAME:tl}.jar
 
-NO_STAGE=	yes
 pre-build:
 # use our build.xml
 	@${CP} ${FILESDIR}/build.xml ${WRKSRC}
 
 do-install:
 # jar
-	@${MKDIR} ${JAVAJARDIR}
-	@${INSTALL_DATA} ${WRKSRC}/dist/lib/${PORTNAME:L}.jar \
-		${JAVAJARDIR}/
+	@${MKDIR} ${STAGEDIR}${JAVAJARDIR}
+	@${INSTALL_DATA} ${WRKSRC}/dist/lib/${PORTNAME:tl}.jar \
+		${STAGEDIR}${JAVAJARDIR}/
 # docs
 .ifndef(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 . for doc in ${DOC_FILES}
-	@${INSTALL_DATA} ${WRKSRC}/docs/${doc} ${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/docs/${doc} ${STAGEDIR}${DOCSDIR}
 . endfor
-	@${MKDIR} ${DOCSDIR}/javadoc
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/javadoc
 # line taken from textproc/xerces-j maintained by hq@FreeBSD.org
 	@cd ${JAVADOC_WRKSRC} && \
-		${FIND} . -type d -exec ${MKDIR} "${DOCSDIR}/javadoc/{}" \; && \
-		${FIND} . -not -type d -exec ${INSTALL_DATA} "{}" "${DOCSDIR}/javadoc/{}" \;
+		${FIND} . -type d -exec ${MKDIR} "${STAGEDIR}${DOCSDIR}/javadoc/{}" \; && \
+		${FIND} . -not -type d -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DOCSDIR}/javadoc/{}" \;
 .endif
 
 .include <bsd.port.mk>

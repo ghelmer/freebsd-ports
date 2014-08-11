@@ -3,7 +3,7 @@
 
 PORTNAME=	qtools
 PORTVERSION=	0.56
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	http://www.superscript.com/qtools/
 
@@ -13,12 +13,11 @@ COMMENT=	Tools to use in .qmail files
 RUN_DEPENDS=	${EZMLM_DIR}/bin/ezmlm-weed:${PORTSDIR}/mail/ezmlm
 
 USES=		qmail:vars
-NO_STAGE=	yes
 
-ALL_TARGET=	it
+ALL_TARGET=	prog
 INSTALL_TARGET=	setup check
 
-RESTRICTED=	Possibly restricted binary distribution of modified versions
+LEGAL_TEXT=	No license -- see http://cr.yp.to/softwarelaw.html
 
 EZMLM_DIR?=	${LOCALBASE}
 
@@ -31,5 +30,16 @@ do-configure:
 	@${ECHO_CMD} "${PREFIX}" > ${WRKSRC}/conf-home
 	@${ECHO_CMD} "${QMAIL_PREFIX}" > ${WRKSRC}/conf-qmail
 	@${ECHO_CMD} "${EZMLM_DIR}/bin/ezmlm" > ${WRKSRC}/conf-ezmlm
+
+# Do a dance to stage and keep out of resulting binaries (see r346769
+# and r349241)
+post-build:
+	@${ECHO_MSG} "===> Rebuilding DJB installer to respect STAGEDIR"
+	@${MV} -f ${WRKSRC}/conf-home ${WRKSRC}/conf-home.sav
+	@${ECHO_CMD} "${STAGEDIR}${PREFIX}" > ${WRKSRC}/conf-home
+	@cd ${WRKSRC} ; ${RM} -f install instcheck install.o instcheck.o hier.o auto_home.o auto_home.c
+	@cd ${WRKSRC} ; ${DO_MAKE_BUILD} install instcheck
+	@${TOUCH} ${WRKSRC}/replier-config
+	@${MV} -f ${WRKSRC}/conf-home.sav ${WRKSRC}/conf-home
 
 .include <bsd.port.mk>

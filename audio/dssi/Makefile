@@ -3,11 +3,11 @@
 
 PORTNAME=	dssi
 PORTVERSION=	1.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	API for audio processing plugins
 
 LICENSE=	LGPL21
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libdssialsacompat.so:${PORTSDIR}/audio/libdssialsacompat \
 		libjack.so:${PORTSDIR}/audio/jack
 RUN_DEPENDS=	${LOCALBASE}/include/ladspa.h:${PORTSDIR}/audio/ladspa
 
-USES=		gmake pathfix pkgconfig
+USES=		gmake pathfix pkgconfig libtool:keepla
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include

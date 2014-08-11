@@ -3,7 +3,7 @@
 
 PORTNAME=	gnudatalanguage
 DISTVERSION=	0.9.4
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	science lang
 MASTER_SITES=	SF/${PORTNAME}/gdl/${DISTVERSION}
 .if defined(BUILD_PYTHON_MODULE)
@@ -15,8 +15,6 @@ MAINTAINER=	thierry@FreeBSD.org
 COMMENT?=	GDL, a free IDL compatible incremental compiler
 
 LICENSE=	GPLv2
-
-#NO_STAGE=	yes
 
 #---------------------------------------------------------------------------
 # You may define these options:
@@ -36,10 +34,10 @@ LIB_DEPENDS+=	libplplotd.so:${PORTSDIR}/math/plplot	\
 		libps.so:${PORTSDIR}/print/pslib	\
 		libgsl.so:${PORTSDIR}/math/gsl
 
-USE_GCC=	yes
 USE_WX=		2.8
+WX_UNICODE=	yes
 USE_XORG=	x11
-USES=		pkgconfig cmake dos2unix
+USES=		pkgconfig cmake dos2unix compiler:gcc-c++11-lib
 
 # Disable ncurses and readline from ports
 # Disable ImageMagick (does'nt work with plplot because dynamic drivers
@@ -65,14 +63,14 @@ PLIST_SUB+=	MASTER=""
 .endif
 
 .if !defined(WITHOUT_GRAPHICSMAGICK)
-LIB_DEPENDS+=	libGraphicsMagick.so.14:${PORTSDIR}/graphics/GraphicsMagick13
+LIB_DEPENDS+=	libGraphicsMagick.so.14:${PORTSDIR}/graphics/GraphicsMagick
 CMAKE_ARGS+=	-DGRAPHICSMAGICK:BOOL=YES
 .else
 CMAKE_ARGS+=	-DGRAPHICSMAGICK:BOOL=NO
 .endif
 
 .if !defined(WITHOUT_HDF5)
-LIB_DEPENDS+=	libhdf5.so.7:${PORTSDIR}/science/hdf5-18
+LIB_DEPENDS+=	libhdf5.so:${PORTSDIR}/science/hdf5
 CMAKE_ARGS+=	-DHDF5:BOOL=YES
 .else
 CMAKE_ARGS+=	-DHDF5:BOOL=NO

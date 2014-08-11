@@ -3,7 +3,7 @@
 
 PORTNAME=	pgadmin3
 PORTVERSION=	1.18.1
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	PGSQL
 MASTER_SITE_SUBDIR=	pgadmin3/release/v${PORTVERSION}/src
@@ -16,12 +16,8 @@ BUILD_DEPENDS=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
 
 IGNORE_WITH_PGSQL=	82 83
 
-USES=		gettext
-USE_PGSQL=	yes
-USE_GMAKE=	yes
+USES=		gettext gmake pgsql
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LIBS="${PTHREAD_LIBS}"
-CPPFLAGS+=	${PTHREAD_CFLAGS}
 CONFIGURE_ARGS=	--with-wx-version=${USE_WX} --enable-databasedesigner
 USE_GNOME=	libxml2 libxslt
 USE_WX=		2.8

@@ -27,8 +27,7 @@ LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
 		libluajit-5.1.so:${PORTSDIR}/lang/luajit \
 		libzmq.so:${PORTSDIR}/devel/ntopng-zmq
 
-IGNOREFILES=	GeoLiteCity.dat.gz GeoLiteCityv6.dat.gz \
-		GeoIPASNum.dat.gz GeoIPASNumv6.dat.gz
+BROKEN=		no distinfo provided for some of the distfiles
 
 CPPFLAGS+=	-I${LOCALBASE}/include/luajit-2.0
 GNU_CONFIGURE=	yes
@@ -70,6 +69,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "s#%%INSTALL_SCRIPT%%#${INSTALL_SCRIPT}#" ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e "s#%%INSTALL_DATA%%#${INSTALL_DATA}#" ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e "s#%%G++%%#${CXX}#" ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e "s#LIBS#LIBRARIES#" ${WRKSRC}/Makefile.in
 
 pre-build:
 	cd ${WRKSRC}/third-party/json-c && ${MAKE} clean && ./configure && ${MAKE}
@@ -78,8 +78,8 @@ pre-build:
 	--disable-libdbi --disable-libwrap --disable-rrdcgi --disable-libtool-lock \
 	--disable-nls --disable-rpath --disable-perl --disable-ruby --disable-lua \
 	--disable-tcl --disable-python --disable-dependency-tracking && \
-	cd src && ${GMAKE} librrd_th.la
-	cd ${WRKSRC}/third-party/credis-0.2.3 && ${GMAKE} clean && ${GMAKE}
+	cd src && ${MAKE_CMD} librrd_th.la
+	cd ${WRKSRC}/third-party/credis-0.2.3 && ${MAKE_CMD} clean && ${MAKE_CMD}
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

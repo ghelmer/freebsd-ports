@@ -8,11 +8,7 @@
     SUBDIR += acroread9
     SUBDIR += alt-aspell
     SUBDIR += aspell
-    SUBDIR += bsdforen-firefox-searchplugin
-    SUBDIR += bsdgroup-firefox-searchplugin
     SUBDIR += bsdpaste
-    SUBDIR += bugzilla40
-    SUBDIR += bugzilla42
     SUBDIR += bugzilla44
     SUBDIR += calligra-l10n
     SUBDIR += dict

@@ -2,23 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	demjson
-PORTVERSION=	1.6
+PORTVERSION=	2.2.2
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP \
 		http://deron.meranda.us/python/demjson/dist/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wen@FreeBSD.org
-COMMENT=	Encoder, Decoder, and Lint/Validator for JSON
+MAINTAINER=	robak@FreeBSD.org
+COMMENT=	Encoder, Decoder and Lint/Validator for JSON
 
-USE_PYTHON=	yes
+LICENSE=	LGPL3
+
+USE_PYTHON=		yes
 USE_PYDISTUTILS=	yes
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+PYDISTUTILS_AUTOPLIST=	yes
 
 post-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/jsonlint ${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/jsonlint ${STAGEDIR}${PREFIX}/bin
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

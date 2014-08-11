@@ -3,7 +3,7 @@
 
 PORTNAME=	mpb
 PORTVERSION=	1.4.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	science
 MASTER_SITES=	http://ab-initio.mit.edu/mpb/
 
@@ -11,6 +11,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIT Photonic-Bands
 
 LICENSE=	GPLv2
+
+BROKEN=		Fails to build
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 LIB_DEPENDS=	libfftw.so:${PORTSDIR}/math/fftw \

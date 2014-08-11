@@ -3,7 +3,7 @@
 
 PORTNAME=	ois
 PORTVERSION=	1.2.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	SF/wgois/Source%20Release/1.2
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -12,8 +12,11 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Object Oriented Input System
 
 GNU_CONFIGURE=	yes
-USES=		pathfix gmake
-USE_AUTOTOOLS=	libtool:env aclocal:env autoheader:env automake:env autoconf:env
+INSTALL_TARGET=	install-strip
+USES=		pathfix gmake libtool
+PATHFIX_MAKEFILEIN=	Makefile.am
+USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtoolize
+AUTOMAKE_ARGS=	--add-missing --copy --foreign
 USE_XORG=	x11 xaw
 USE_LDCONFIG=	yes
 
@@ -23,10 +26,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 post-patch:
-	@${REINPLACE_CMD} 's|^pkgconfigdir = .*|pkgconfigdir=$${prefix}/libdata/pkgconfig|' \
-		${WRKSRC}/Makefile.am
-
-pre-configure:
-	@cd ${WRKSRC} && ./bootstrap
+	@${REINPLACE_CMD} '/_LDADD =/s/$$/ -lX11/' ${WRKSRC}/demos/Makefile.am
 
 .include <bsd.port.mk>

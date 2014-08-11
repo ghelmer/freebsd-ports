@@ -1,6 +1,6 @@
-lib/libpromises.la
 lib/libpromises.so
 lib/libpromises.so.1
+lib/libpromises.so.1.0.0
 man/man8/cf-agent.8.gz
 man/man8/cf-execd.8.gz
 man/man8/cf-key.8.gz

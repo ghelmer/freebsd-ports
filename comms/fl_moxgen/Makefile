@@ -1,15 +1,14 @@
-# Created by: Stephen Hurd <shurd@sasktel.net>
+# Created by: Stephen Hurd <shurd@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	fl_moxgen
-PORTVERSION=	0.05
-PORTREVISION=	1
+PORTVERSION=	1.00
 CATEGORIES=	comms hamradio
 MASTER_SITES=	${MASTER_SITE_SOURCEFORGE}
 MASTER_SITE_SUBDIR=	flmoxgen
 DISTNAME=	Fl_MoxGen-${PORTVERSION}
 
-MAINTAINER=	shurd@sasktel.net
+MAINTAINER=	shurd@FreeBSD.org
 COMMENT=	Compute the dimensions of a Moxon Rectangle antenna
 
 LICENSE=	GPLv3
@@ -17,13 +16,12 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
 
 DESKTOP_ENTRIES=	"Fl_MoxGen" "${COMMENT}" "" "${PORTNAME}" \
-			"Network;HamRadio;" "false"
+			"Network;HamRadio;" false
 
 OPTIONS_DEFINE=	PDF
 OPTIONS_DEFAULT=	PDF
 PDF_DESC=	Enable PDF Writing (requires libharu)
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPDF}
@@ -37,6 +35,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' \
 		-e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		-e 's|%%DATADIR%%|${DATADIR}|' \
+		-e 's|%%STAGEDIR%%|${STAGEDIR}|' \
 		${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

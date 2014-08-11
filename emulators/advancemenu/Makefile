@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	advancemenu
-PORTVERSION=	2.6
+PORTVERSION=	2.7
 CATEGORIES=	emulators
 MASTER_SITES=	SF/advancemame/${PORTNAME}/${PORTVERSION}
 
@@ -11,53 +11,47 @@ COMMENT=	Frontend for AdvanceMAME, MAME, MESS, RAINE
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	expat:${PORTSDIR}/textproc/expat2
+LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
-OPTIONS_DEFINE=	FREETYPE DOCS
-OPTIONS_DEFAULT=FREETYPE
-
+USES=		gmake
 USE_SDL=	sdl
-USE_GMAKE=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-asm --disable-svgalib --disable-fb \
-		--disable-alsa --enable-oss --disable-slang \
-		--disable-ncurses --disable-kevent
+CONFIGURE_ARGS=	--disable-svgalib --disable-fb --disable-alsa --enable-oss \
+		--disable-slang --disable-ncurses --disable-kevent
 
 CFLAGS+=	-idirafter ${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-MAN1=		advmenu.1
 PORTDOCS=	*
-PLIST_FILES=	bin/advmenu
+PLIST_FILES=	bin/advmenu man/man1/advmenu.1.gz
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=		DOCS FREETYPE
+OPTIONS_DEFINE_i386=	ASM
+OPTIONS_DEFAULT=	FREETYPE
+OPTIONS_DEFAULT_i386=	ASM
 
-.if ${PORT_OPTIONS:MFREETYPE}
-LIB_DEPENDS+=	freetype:${PORTSDIR}/print/freetype2
-.else
-CONFIGURE_ARGS+=--disable-freetype
-.endif
+ASM_BUILD_DEPENDS=	nasm:${PORTSDIR}/devel/nasm
+ASM_CONFIGURE_ENABLE=	asm
+FREETYPE_LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+FREETYPE_CONFIGURE_ENABLE=	freetype
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|-lpthread|-pthread|' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e \
 		's|@@|@|' ${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} -e \
-		'/\(pkgdocdir\)/s|^|#| ; \
-		 /WHOLE_CFLAGS_OPT/s|-O2|| ; \
-		 /WHOLE_LDFLAGS/s|-s||' ${WRKSRC}/advance/advance.mak
 
 do-install:
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} advmenu ${PREFIX}/bin)
-	(cd ${WRKSRC}/doc && ${INSTALL_MAN} advmenu.1 ${MANPREFIX}/man/man1)
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_PROGRAM} advmenu \
+		${STAGEDIR}${PREFIX}/bin)
+	(cd ${WRKSRC}/doc && ${INSTALL_MAN} advmenu.1 \
+		${STAGEDIR}${MANPREFIX}/man/man1)
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in HISTORY README RELEASE
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} ${DOCSDIR})
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} \
+		${STAGEDIR}${DOCSDIR})
 .endfor
-	(cd ${WRKSRC}/doc && ${INSTALL_DATA} advmenu.[ht]* ${DOCSDIR})
-.endif
+	(cd ${WRKSRC}/doc && ${INSTALL_DATA} advmenu.[ht]* \
+		${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

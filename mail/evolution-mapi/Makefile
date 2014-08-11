@@ -18,9 +18,9 @@ RUN_DEPENDS=	${PKGFILES}:${PORTSDIR}/mail/evolution
 
 PKGFILES=	${LOCALBASE}/libdata/pkgconfig/evolution-plugin.pc
 
-USE_BZIP2=	yes
-USES=		gettext
-USE_GMAKE=	yes
+IGNORE=		doesn't build with current libmapi
+
+USES=		gettext tar:bzip2 gmake
 USE_GNOME=	evolutiondataserver
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -31,7 +31,6 @@ EVO_VERSION=	2.32
 EDS_VERSION=	1.2
 PLIST_SUB=	EVO_VERSION=${EVO_VERSION} EDS_VERSION=${EDS_VERSION}
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 post-patch:

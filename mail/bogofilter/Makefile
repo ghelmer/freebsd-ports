@@ -3,7 +3,7 @@
 
 PORTNAME=	bogofilter
 PORTVERSION=	1.2.4
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES?=	mail
 MASTER_SITES=	SF/bogofilter/bogofilter-current/bogofilter-${PORTVERSION}
 
@@ -15,23 +15,23 @@ COMMENT=	Fast, teachable, learning spam detector
 USE_BDB=	41+
 .endif
 
-OPTIONS_DEFINE=		GSL UNICODE
+OPTIONS_DEFINE=		GSL UNICODE DOCS
 OPTIONS_DEFAULT=	GSL UNICODE
 GSL_DESC=		Link with system-wide GSL dynamically (recommended)
 UNICODE_DESC=		Normalize tokens to Unicode (UTF-8) (recommended)
 
 CONFLICTS_INSTALL?=	bogofilter-sqlite-[0-9]* bogofilter-qdbm-[0-9]* bogofilter-tc-[0-9]* [a-z][a-z]-bogofilter-[0-9]*
 
-USES=		perl5
+USES=		perl5 tar:bzip2
 USE_PERL5=	run
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
 
-.include <bsd.port.options.mk>
+UNICODE_USES=	iconv
+UNICODE_CONFIGURE_ENABLE=	unicode
+GSL_LIB_DEPENDS=	libgsl.so:${PORTSDIR}/math/gsl
+GSL_CONFIGURE_ARGS_OFF=	--with-included-gsl
 
-.if ${PORT_OPTIONS:MUNICODE}
-USES+=		iconv
-.endif
+PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
 
@@ -43,18 +43,11 @@ BF_LIBS?=		-l${BDB_LIB_NAME}
 BF_CPPFLAGS?=		-I${BDB_INCLUDE_DIR} -I${LOCALBASE}/include
 CONFIGURE_ARGS+=	--sysconfdir=${PREFIX}/etc
 .if ${PORT_OPTIONS:MUNICODE}
-CONFIGURE_ARGS+=	--enable-unicode
 BF_LIBS+=		${ICONV_LIB}
 .endif
-.if ${PORT_OPTIONS:MGSL}
-LIB_DEPENDS+=		libgsl.so:${PORTSDIR}/math/gsl
-.else
-CONFIGURE_ARGS+=	--with-included-gsl
-.endif
 CPPFLAGS+=	${BF_CPPFLAGS}
-CONFIGURE_ENV+=	LIBS="${BF_LIBS}" \
-		PERL="${PERL}"
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib ${BF_LIBS}
+CONFIGURE_ENV+=	PERL="${PERL}"
 INSTALL_TARGET=	install-strip prefix=${PREFIX} mandir=${MANPREFIX}/man
 
 post-patch:
@@ -65,20 +58,12 @@ post-patch:
 		-e 's/ENVIRON_TESTS = t.abort/ENVIRON_TESTS =/' \
 		${WRKSRC}/src/tests/Makefile.am
 
-.if ${PORT_OPTIONS:MDOCS}
-PORTDOCS=	*
-PLIST_SUB=	CONTRIB="@comment "
-.else
-PLIST_SUB=	CONTRIB=""
-.endif
-
 # XXX: disable self-tests until issue with automake-1.13 is sorted out
 # post-build::
 # 	cd ${WRKSRC}/src && make check SHELL=${SH}
 
 post-install::
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/contrib
-.if ${PORT_OPTIONS:MDOCS}
 .for i in html programmer xml
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/${i}
 .endfor
@@ -97,7 +82,6 @@ post-install::
 	${INSTALL_DATA} ${WRKSRC}/doc/*.html ${STAGEDIR}${DOCSDIR}/html
 	${INSTALL_DATA} ${WRKSRC}/doc/*.xml ${STAGEDIR}${DOCSDIR}/xml
 	${INSTALL_DATA} ${WRKSRC}/doc/programmer/README.freebsd ${STAGEDIR}${DOCSDIR}/programmer
-.endif
 	${INSTALL_PROGRAM} ${WRKSRC}/bogogrep ${STAGEDIR}${PREFIX}/bin/
 .for i in bfproxy.pl bogofilter-milter.pl bogo.R bogofilter-qfe.sh \
 		mime.get.rfc822.pl parmtest.sh printmaildir.pl \

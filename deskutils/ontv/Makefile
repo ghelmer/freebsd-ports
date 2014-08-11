@@ -9,7 +9,7 @@ CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	A GNOME Applet for monitoring current and upcoming TV programs
+COMMENT=	GNOME Applet for monitoring current and upcoming TV programs
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,10 +19,8 @@ BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/gtk-2.0/pynotify/__init__.py:${PORTSDIR}/dev
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		tv_check:${PORTSDIR}/textproc/p5-xmltv
 
-USE_BZIP2=	yes
-USES=		gettext
+USES=		gettext gmake tar:bzip2
 USE_GNOME=	gnomehack gnomeprefix pygnomedesktop pygnomeextras pygtk2
-USE_GMAKE=	yes
 USE_PYTHON=	2
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

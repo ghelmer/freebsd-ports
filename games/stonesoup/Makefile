@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stonesoup
-PORTVERSION=	0.13.1
+PORTVERSION=	0.14.1
 CATEGORIES=	games
 MASTER_SITES=	SF/crawl-ref/Stone%20Soup/${PORTVERSION}
 DISTNAME=	stone_soup-${PORTVERSION}-nodeps
@@ -14,9 +14,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKDIR}/stone_soup-${PORTVERSION}/licence.txt
 
 USE_SQLITE=	yes
-USE_XZ=		yes
-USES=		bison gmake perl5 pkgconfig
-USE_LUA=	5.1
+USES=		bison compiler gmake perl5 pkgconfig tar:xz lua:51
 USE_PERL5=	build
 
 SAVEDIR=	\~/.stonesoup
@@ -60,8 +58,8 @@ PKGNAMESUFFIX=	-sdl
 BUILD_DEPENDS+=	fc-list:${PORTSDIR}/x11-fonts/fontconfig \
 		${LOCALBASE}/lib/X11/fonts/dejavu/DejaVuSans.ttf:${PORTSDIR}/x11-fonts/dejavu
 RUN_DEPENDS+=	${LOCALBASE}/lib/X11/fonts/dejavu/DejaVuSans.ttf:${PORTSDIR}/x11-fonts/dejavu
-LIB_DEPENDS+=	png15:${PORTSDIR}/graphics/png \
-		freetype:${PORTSDIR}/print/freetype2
+LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png \
+		libfreetype.so:${PORTSDIR}/print/freetype2
 USE_SDL=	sdl image
 .else
 USES+=		ncurses
@@ -79,7 +77,7 @@ MAKE_ARGS+=	NO_LUA_BINDINGS=yes
 
 .include <bsd.port.pre.mk>
 
-.if ${OSVERSION} >= 1000100
+.if ${COMPILER_TYPE} == clang
 CFLAGS+=	-std=c++0x
 .endif
 
@@ -97,10 +95,10 @@ pre-install:
 		${XARGS} ${RM}
 
 post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKDIR}/README.FreeBSD ${STAGEDIR}${DOCSDIR}
 
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${STAGEDIR}${DATADIR}/settings/init.txt ${STAGEDIR}${EXAMPLESDIR}/sample.crawlrc
 
 .include <bsd.port.post.mk>

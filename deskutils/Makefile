@@ -23,7 +23,6 @@
     SUBDIR += cdcat
     SUBDIR += charmap
     SUBDIR += charmtimetracker
-    SUBDIR += checkrdf
     SUBDIR += clipit
     SUBDIR += conduit
     SUBDIR += conkyemail
@@ -43,7 +42,6 @@
     SUBDIR += epoch
     SUBDIR += etask
     SUBDIR += everygui
-    SUBDIR += evolution-jescs
     SUBDIR += fbreader
     SUBDIR += fengoffice
     SUBDIR += fet
@@ -145,11 +143,6 @@
     SUBDIR += multisync-syncml
     SUBDIR += myitcrm
     SUBDIR += nagaina
-    SUBDIR += narval
-    SUBDIR += nautilus-actions
-    SUBDIR += nautilus-locked-folder
-    SUBDIR += nautilus-open-terminal
-    SUBDIR += nautilus-sendto
     SUBDIR += note
     SUBDIR += notecase
     SUBDIR += notification-daemon
@@ -256,6 +249,7 @@
     SUBDIR += xfce4-notification-daemon
     SUBDIR += xfce4-notifyd
     SUBDIR += xfce4-tumbler
+    SUBDIR += xfce4-volumed
     SUBDIR += xfce4-xkb-plugin
     SUBDIR += xmaddressbook
     SUBDIR += xmdiary

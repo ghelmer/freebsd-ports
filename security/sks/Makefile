@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sks
-PORTVERSION=	1.1.4
+PORTVERSION=	1.1.5
 CATEGORIES=	security
 MASTER_SITES=	http://cdn.bitbucket.org/skskeyserver/sks-keyserver/downloads/
 EXTRACT_SUFX=	.tgz
@@ -35,7 +35,7 @@ post-patch:
 		${WRKSRC}/Makefile ${WRKSRC}/bdb/Makefile
 
 pre-build:
-	@cd ${WRKSRC} && test -f .depend || ${GMAKE} dep
+	@cd ${WRKSRC} && test -f .depend || ${MAKE_CMD} dep
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

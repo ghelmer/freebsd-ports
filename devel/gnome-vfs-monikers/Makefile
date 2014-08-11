@@ -4,18 +4,18 @@
 
 PORTNAME=	gnome-vfs-monikers
 PORTVERSION=	2.15.3
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gnome-vfs monikers module
 
+USES=		gmake libtool:keepla pkgconfig
 USE_GNOME=	gnomevfs2 libbonobo
-USES=		gmake pkgconfig
+INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib #-pthread
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

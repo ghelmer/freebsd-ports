@@ -2,14 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	epic5
-PORTVERSION=	1.1.7
+PORTVERSION=	1.1.10
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/ \
-		http://tehran.lain.pl/epic-mirror/EPIC5-PRODUCTION/ \
-		ftp://ftp.irc.org/irc/clients/unix/epic/EPIC5-PRODUCTION/ \
 		http://ftp.freenet.de/pub/ftp.prbh.org/pub/epic/EPIC5-PRODUCTION/
 
-MAINTAINER=	jpaetzel@FreeBSD.org
+MAINTAINER=	mp39590@gmail.com
 COMMENT=	The (E)nhanced (P)rogrammable (I)RC-II (C)lient
 
 LICENSE=	BSD3CLAUSE
@@ -18,15 +16,14 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 GNU_CONFIGURE=	yes
 USE_OPENSSL=	yes
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
-USE_BZIP2=	yes
 CFLAGS:=	${CFLAGS:C/-O2/-g -O/g}
 
-OPTIONS_DEFINE=	IPV6 TCL PERL SSL TERMCAP DOCS RUBY
-OPTIONS_DEFAULT=	TCL PERL SSL RUBY
+OPTIONS_DEFINE=	IPV6 TCL PERL TERMCAP DOCS RUBY
+OPTIONS_DEFAULT=	TCL PERL RUBY
 TERMCAP_DESC=	Refuse to use terminfo/ncurses
 
 CONFIGURE_ARGS+=--with-iconv=${ICONV_PREFIX}
-USES=		iconv
+USES=		iconv tar:bzip2
 
 .include <bsd.port.options.mk>
 
@@ -35,8 +32,8 @@ CONFIGURE_ARGS+=	--without-ipv6
 .endif
 
 .if ${PORT_OPTIONS:MTCL}
-LIB_DEPENDS+=		tcl84:${PORTSDIR}/lang/tcl84
-CONFIGURE_ARGS+=	--with-tcl
+USES+=		tcl
+CONFIGURE_ARGS+=	--with-tcl=${TCL_LIBDIR}/tclConfig.sh
 .else
 CONFIGURE_ARGS+=	--without-tcl
 .endif
@@ -73,4 +70,10 @@ post-install:
 .endfor
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} < 901000
+IGNORE=	requires xlocale support for compilation
+.endif
+
+.include <bsd.port.post.mk>

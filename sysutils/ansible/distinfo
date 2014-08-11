@@ -1,2 +1,4 @@
-SHA256 (ansible-1.5.3.tar.gz) = 3b3f5a0410124ad5a432b1e8125fcd27118597af429f05e58e712ae2a9212539
-SIZE (ansible-1.5.3.tar.gz) = 1035170
+SHA256 (ansible-1.6.5.tar.gz) = df7e21c769f46ca1b48cbf1eda1fa7051b93b904bf21ac8baa15d4b98370a8ff
+SIZE (ansible-1.6.5.tar.gz) = 1175816
+SHA256 (ansible.png) = 9bf68abd2c95db4dc8dfc091c0e0e0a9716891f28d157e3f04e541d96e1c6850
+SIZE (ansible.png) = 1160

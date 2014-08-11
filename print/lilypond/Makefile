@@ -3,6 +3,7 @@
 
 PORTNAME=	lilypond
 PORTVERSION=	2.18.2
+PORTREVISION=	1
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 
@@ -89,6 +90,6 @@ post-install:
 	@${LN} -fs ${DATADIR}/${PORTVERSION} ${STAGEDIR}${DATADIR}/current
 
 regression-test: build
-	cd ${WRKSRC} && ${GMAKE} -f ${MAKEFILE} test
+	cd ${WRKSRC} && ${MAKE_CMD} -f ${MAKEFILE} test
 
 .include <bsd.port.mk>

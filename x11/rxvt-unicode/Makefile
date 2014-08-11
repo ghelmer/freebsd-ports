@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rxvt-unicode
-PORTVERSION=	9.19
-PORTREVISION=	2
+PORTVERSION=	9.20
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.schmorp.de/rxvt-unicode/%SUBDIR%/
 MASTER_SITE_SUBDIR=	. Attic
@@ -22,7 +21,8 @@ USES=			pkgconfig shebangfix tar:bzip2
 USE_XORG=		xpm xft xrender
 GNU_CONFIGURE=		yes
 CPPFLAGS+=		-I${LOCALBASE}/include
-CONFIGURE_ENV=		LIBS="-lstdc++ -lutil" TIC=${LOCALBASE}/bin/tic
+LIBS+=			-lutil
+CONFIGURE_ENV=		TIC=${LOCALBASE}/bin/tic
 CONFIGURE_ARGS=		--enable-everything --with-term=rxvt	\
 			--with-terminfo=${LOCALBASE}/share/misc/terminfo.db
 

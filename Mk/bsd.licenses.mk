@@ -3,6 +3,8 @@
 #
 # $FreeBSD$
 
+# ** Please run changes to this file by eadler@ first **
+
 Licenses_Include_MAINTAINER=         portmgr@FreeBSD.org
 
 #
@@ -87,19 +89,23 @@ Licenses_Include_MAINTAINER=         portmgr@FreeBSD.org
 # Case 2: license only known by the port (aka "unknown").
 #
 # In this case LICENSE_{PERMS,NAME} are mandatory, in addition to
-# either LICENSE_FILE or LICENSE_TEXT. Optional variables are
-# LICENSE_{GROUPS,NOTES}.
+# either LICENSE_FILE or LICENSE_TEXT. Optional variable is
+# LICENSE_GROUPS.
 #
 # Available components for LICENSE_PERMS:
-# dist-mirror	- No free redistribution of distfile (like FTP mirroring; RESTRICTED).
-# dist-sell		- No selling of distfile (like in CD-ROM; NO_CDROM).
-# pkg-mirror	- No free redistribution of package (like FTP upload; NO_PACKAGE).
-# pkg-sell		- No selling of package (like in CD-ROM; NO_CDROM).
-# auto-accept	- If license is accepted by default, without presented
+# dist-mirror	- Redistribution of distfile is permitted
+# 				  (like FTP mirroring; port is not RESTRICTED).
+# dist-sell		- Selling of distfile, e.g. on CD-ROM is permitted
+# 				  (port does not need to set NO_CDROM).
+# pkg-mirror	- Free redistribution of package is permitted
+# 				  (like FTP upload; port does not set NO_PACKAGE).
+# pkg-sell		- Selling of package is permitted, e.g. on CD-ROM.
+# auto-accept	- License is accepted by default, without presented
 # 				  agreement, unless the user defines LICENSES_ASK.
 #
 # Notes about permissions:
-# - Permissions use a default-deny policy.
+# - Permissions use a default-deny policy (e.g. not setting "dist-mirror"
+#   means it is automatically excluded).
 # - Components can be negated by prefixing them with "no-" (like
 #   "no-pkg-sell").
 # - In case a component is present and also excluded (i.e. no-dist-sell and
@@ -683,7 +689,11 @@ ${_LICENSE_COOKIE}:
 	@${ECHO_MSG}
 .		if ${_LICENSE_COMB} != "single"
 .			for lic in ${_LICENSE_TO_ASK}
+.				if defined(WRKDIRPREFIX)
+	@${ECHO_MSG} "- ${lic} (${_LICENSE_NAME_${lic}}), available at ${_LICENSE_FILE_${lic}}"
+.				else
 	@${ECHO_MSG} "- ${lic} (${_LICENSE_NAME_${lic}}), available at ${_LICENSE_FILE_${lic}:S/${WRKDIR}\//${WRKDIR:T}\//}"
+.				endif
 .			endfor
 	@${ECHO_MSG}
 .		endif

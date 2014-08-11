@@ -21,7 +21,6 @@
     SUBDIR += p5-PerlFM
     SUBDIR += pbi-thumbnailer
     SUBDIR += pcmanfm
-    SUBDIR += py-nautilus
     SUBDIR += qtfm
     SUBDIR += rodent
     SUBDIR += rox-filer
@@ -36,7 +35,6 @@
     SUBDIR += xcruise
     SUBDIR += xdiskusage
     SUBDIR += xfe
-    SUBDIR += xfm
     SUBDIR += xplore
 
 .include <bsd.port.subdir.mk>

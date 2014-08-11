@@ -14,7 +14,7 @@ LIB_DEPENDS=	libevent-1.4.so:${PORTSDIR}/devel/libevent
 
 OPTIONS_DEFINE=	DOCS
 
-USE_AUTOTOOLS=	libtool
+USES=		libtool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -22,8 +22,8 @@ MAKE_JOBS_UNSAFE=	yes
 
 CONFIGURE_ARGS+=--with-libevent=${LOCALBASE} \
 		--sysconfdir=${PREFIX}/etc
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib"
 CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 PORTDOCS=	*
 post-install:

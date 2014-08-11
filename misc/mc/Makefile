@@ -2,10 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	mc
-PORTVERSION=	4.8.11
-PORTREVISION=	0
+PORTVERSION=	4.8.12
+PORTREVISION=	2
 CATEGORIES=	misc shells
-MASTER_SITES=	http://ftp.osuosl.org/pub/midnightcommander/
+MASTER_SITES=	http://ftp.midnight-commander.org/ \
+		http://ftp.osuosl.org/pub/midnightcommander/ \
+		SF/nemysisfreebsdp/misc/:icons
+DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
+		${PORTNAME}.png:icons
+EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Midnight Commander, a free Norton Commander Clone
@@ -16,12 +21,14 @@ LIB_DEPENDS=	libssh2.so:${PORTSDIR}/security/libssh2
 
 CONFLICTS=	mc-light-4*
 
-USE_XZ=		yes
-USES=		gmake perl5 pkgconfig
+USES=		gmake shebangfix perl5 pkgconfig tar:xz libtool
+SHEBANG_FILES=	misc/mcedit.menu configure configure.ac \
+		${WRKSRC}/src/vfs/extfs/helpers/s3+.in \
+		${WRKSRC}/src/vfs/extfs/helpers/uc1541.in
+python_OLD_CMD=	@PYTHON@
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ZIP=${UNZIP_CMD} UNZIP=${UNZIP_CMD}
-USE_AUTOTOOLS=	libtool
 
 OPTIONS_DEFINE=	DOCS EDITOR ICONV NLS SMB SUBSHELL X11
 
@@ -53,6 +60,8 @@ SUBSHELL_CONFIGURE_WITH=	subshell
 
 X11_CONFIGURE_ENABLE=	x
 
+SUB_FILES=	pkg-message
+
 PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}
@@ -60,7 +69,7 @@ DOC_FILES1=	AUTHORS NEWS README
 
 DOCSRCDIR2=	${WRKSRC}/doc
 DOCSDIR2=	${DOCSDIR}/doc
-DOC_FILES2=	FAQ HACKING MAINTAINERS *.txt TODO
+DOC_FILES2=	FAQ HACKING MAINTAINERS *.txt
 
 .include <bsd.port.options.mk>
 
@@ -82,9 +91,16 @@ CONFIGURE_ARGS+=--with-screen=ncurses
 .endif
 
 post-patch:
+	${REINPLACE_CMD} -e 's|missing-parameter-type|unused-variable|; \
+		s|but-set-variable|variable|' \
+		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|SUBDIRS = intl|SUBDIRS =|' ${WRKSRC}/Makefile.in
 
 post-install:
+	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
+
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR2}

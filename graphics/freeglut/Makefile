@@ -3,17 +3,18 @@
 
 PORTNAME=	freeglut
 PORTVERSION=	2.8.1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	An alternative to the OpenGL Utility Toolkit (GLUT) library
+COMMENT=	Alternative to the OpenGL Utility Toolkit (GLUT) library
 
 LICENSE=	MIT
 
 CONFLICTS=	libglut-[0-9].*
 
-USE_AUTOTOOLS=	libtool
+USES=		libtool:keepla
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 USE_XORG=	ice xi xxf86vm xrandr
@@ -52,7 +53,7 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@${INSTALL_DATA} ${WRKSRC}/progs/demos/Fractals/fractals.dat ${STAGEDIR}${EXAMPLESDIR}
 .for prog in ${BINS}
-	@${INSTALL_PROGRAM} ${WRKSRC}/progs/demos/${prog}/.libs/${prog:L} ${STAGEDIR}${EXAMPLESDIR}
+	@${INSTALL_PROGRAM} ${WRKSRC}/progs/demos/${prog}/.libs/${prog:tl} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 	@${ECHO_MSG} "===> Examples installed in ${EXAMPLESDIR}."
 .endif

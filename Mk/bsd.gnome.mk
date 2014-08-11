@@ -81,16 +81,16 @@ _USE_GNOME_ALL+= atk atspi cairo desktopfileutils eel2 evolutiondataserver gal2 
 		gnomedesktopsharp20 gnomedocutils gnomemenus gnomepanel gnomesharp20 \
 		gnomespeech gnomevfs2 gtk-update-icon-cache gtk20 gtkhtml3 gtksharp10 \
 		gtksharp20 gtksourceview gtksourceview2 gvfs libartlgpl2 libbonobo \
-		libbonoboui libgailgnome libgda2 libgda3 libgda4 libglade2 libgnome \
+		libbonoboui libgailgnome libgda4 libglade2 libgnome \
 		libgnomecanvas libgnomedb libgnomekbd libgnomeprint libgnomeprintui \
 		libgnomeui libgsf libgtkhtml libidl librsvg2 libwnck \
-		libxml2 libxslt libzvt linc metacity nautilus2 nautiluscdburner \
+		libxml2 libxslt libzvt linc metacity nautilus2 \
 		orbit2 pango pangox-compat pygnome2 pygnomedesktop pygnomeextras pygobject pygtk2 \
 		pygtksourceview vte
 
 # GNOME 3 components
-_USE_GNOME_ALL+= dconf gtk30 gtksourceview3 libgda5 libgda5-ui pygobject3 \
-		vte3
+_USE_GNOME_ALL+= dconf gtk30 gtkhtml4 gtksourceview3 libgda5 libgda5-ui \
+		libwnck3 py3gobject3 pygobject3 vte3
 
 # C++ bindings
 _USE_GNOME_ALL+=atkmm cairomm gconfmm gconfmm26 glibmm gtkmm20 gtkmm24 \
@@ -369,13 +369,16 @@ gnomedesktop_USE_GNOME_IMPL=	gconf2 gnomedocutils pygtk2
 gnomedesktopsharp20_DETECT=		${LOCALBASE}/libdata/pkgconfig/gnome-desktop-sharp-2.0.pc
 gnomedesktopsharp20_BUILD_DEPENDS=	${gnomedesktopsharp20_DETECT}:${PORTSDIR}/x11-toolkits/gnome-desktop-sharp20
 gnomedesktopsharp20_RUN_DEPENDS=	${gnomedesktopsharp20_DETECT}:${PORTSDIR}/x11-toolkits/gnome-desktop-sharp20
-gnomedesktopsharp20_USE_GNOME_IMPL=	gnomesharp20 gnomepanel gtkhtml3 librsvg2 vte libgnomeprintui gtksourceview2 libwnck nautiluscdburner
+gnomedesktopsharp20_USE_GNOME_IMPL=	gnomesharp20 gnomepanel gtkhtml3 librsvg2 vte libgnomeprintui gtksourceview2 libwnck
 gnomedesktopsharp20_GNOME_DESKTOP_VERSION=2
 
 libwnck_LIB_DEPENDS=	libwnck-1.so:${PORTSDIR}/x11-toolkits/libwnck
 libwnck_DETECT=		${LOCALBASE}/libdata/pkgconfig/libwnck-1.0.pc
 libwnck_USE_GNOME_IMPL=	gtk20
-libwnck_GNOME_DESKTOP_VERSION=2
+
+libwnck3_LIB_DEPENDS=	libwnck-3.so:${PORTSDIR}/x11-toolkits/libwnck3
+libwnck3_DETECT=	${LOCALBASE}/libdata/pkgconfig/libwnck-3.0.pc
+libwnck3_USE_GNOME_IMPL=gtk30
 
 vte_LIB_DEPENDS=	libvte.so:${PORTSDIR}/x11-toolkits/vte
 vte_DETECT=		${LOCALBASE}/libdata/pkgconfig/vte.pc
@@ -421,14 +424,6 @@ gnomecontrolcenter2_LIB_DEPENDS=libgnome-window-settings.so:${PORTSDIR}/sysutils
 gnomecontrolcenter2_USE_GNOME_IMPL=metacity gnomemenus libgnomekbd gnomedesktop librsvg2
 gnomecontrolcenter2_GNOME_DESKTOP_VERSION=2
 
-libgda2_LIB_DEPENDS=	libgda-2.so:${PORTSDIR}/databases/libgda2
-libgda2_DETECT=		${LOCALBASE}/libdata/pkgconfig/libgda.pc
-libgda2_USE_GNOME_IMPL=	glib20 libxslt
-
-libgda3_LIB_DEPENDS=	libgda-3.0.so:${PORTSDIR}/databases/libgda3
-libgda3_DETECT=		${LOCALBASE}/libdata/pkgconfig/libgda-3.0.pc
-libgda3_USE_GNOME_IMPL=	glib20 libxslt
-
 libgda4_LIB_DEPENDS=	libgda-4.0.so:${PORTSDIR}/databases/libgda4
 libgda4_DETECT=		${LOCALBASE}/libdata/pkgconfig/libgda-4.0.pc
 libgda4_USE_GNOME_IMPL=	glib20 libxslt
@@ -466,9 +461,14 @@ pygobject_BUILD_DEPENDS=	pygobject-codegen-2.0:${PORTSDIR}/devel/py-gobject
 pygobject_RUN_DEPENDS=		pygobject-codegen-2.0:${PORTSDIR}/devel/py-gobject
 pygobject_USE_GNOME_IMPL=	glib20
 
-pygobject3_DETECT=		${LOCALBASE}/libdata/pkgconfig/pygobject-3.0.pc
-pygobject3_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pygobject-3.0.pc:${PORTSDIR}/devel/py-gobject3
-pygobject3_RUN_DEPENDS=		${LOCALBASE}/libdata/pkgconfig/pygobject-3.0.pc:${PORTSDIR}/devel/py-gobject3
+py3gobject3_DETECT=		${LOCALBASE}/share/py3gobject3/.keep
+py3gobject3_BUILD_DEPENDS=	py3?-gobject3>=0:${PORTSDIR}/devel/py3-gobject3
+py3gobject3_RUN_DEPENDS=	py3?-gobject3>=0:${PORTSDIR}/devel/py3-gobject3
+py3gobject3_USE_GNOME_IMPL=	glib20
+
+pygobject3_DETECT=		${LOCALBASE}/share/pygobject3/.keep
+pygobject3_BUILD_DEPENDS=	py2?-gobject3>=0:${PORTSDIR}/devel/py-gobject3
+pygobject3_RUN_DEPENDS=		py2?-gobject3>=0:${PORTSDIR}/devel/py-gobject3
 pygobject3_USE_GNOME_IMPL=	glib20
 
 pygtk2_DETECT=		${LOCALBASE}/libdata/pkgconfig/pygtk-2.0.pc
@@ -495,6 +495,10 @@ gtkhtml3_LIB_DEPENDS=	libgtkhtml-3.14.so:${PORTSDIR}/www/gtkhtml3
 gtkhtml3_DETECT=	${LOCALBASE}/libdata/pkgconfig/libgtkhtml-3.14.pc
 gtkhtml3_USE_GNOME_IMPL=libglade2
 
+gtkhtml4_LIB_DEPENDS=	libgtkhtml-4.0.so:${PORTSDIR}/www/gtkhtml4
+gtkhtml4_DETECT=	${LOCALBASE}/libdata/pkgconfig/libgtkhtml-4.0.pc
+gtkhtml4_USE_GNOME_IMPL=gtk30 libxml2
+
 gnomespeech_LIB_DEPENDS=libgnomespeech.so:${PORTSDIR}/accessibility/gnome-speech
 gnomespeech_DETECT=	${LOCALBASE}/libdata/pkgconfig/gnome-speech-1.0.pc
 gnomespeech_USE_GNOME_IMPL=libbonobo
@@ -508,11 +512,6 @@ desktopfileutils_BUILD_DEPENDS=update-desktop-database:${PORTSDIR}/devel/desktop
 desktopfileutils_RUN_DEPENDS=update-desktop-database:${PORTSDIR}/devel/desktop-file-utils
 desktopfileutils_DETECT=	${LOCALBASE}/bin/update-desktop-database
 desktopfileutils_USE_GNOME_IMPL=glib20
-
-nautiluscdburner_LIB_DEPENDS=libnautilus-burn.so:${PORTSDIR}/sysutils/nautilus-cd-burner
-nautiluscdburner_DETECT=	${LOCALBASE}/libdata/pkgconfig/libnautilus-burn.pc
-nautiluscdburner_USE_GNOME_IMPL=nautilus2 desktopfileutils
-nautiluscdburner_GNOME_DESKTOP_VERSION=2
 
 gnomemenus_BUILD_DEPENDS=	gnome-menus<=2.39.0:${PORTSDIR}/x11/gnome-menus
 gnomemenus_RUN_DEPENDS=		gnome-menus<=2.39.0:${PORTSDIR}/x11/gnome-menus
@@ -824,6 +823,10 @@ GNOME_PRE_PATCH+=	; ${${component}_PRE_PATCH}
 .  endif
 . endfor
 .endif
+
+. if defined(GCONF_SCHEMAS) && ! defined(NO_STAGE)
+MAKE_ENV+=	GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
+. endif
 .endif
 
 .if defined(GNOME_PRE_PATCH)
@@ -879,10 +882,10 @@ gnome-pre-su-install:
 gnome-post-install:
 .  if defined(GCONF_SCHEMAS)
 	@for i in ${GCONF_SCHEMAS}; do \
-		${ECHO_CMD} "@unexec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} gconftool-2 --makefile-uninstall-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
+		${ECHO_CMD} "@unexec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} HOME=${WRKDIR} gconftool-2 --makefile-uninstall-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
 			>> ${TMPPLIST}; \
 		${ECHO_CMD} "etc/gconf/schemas/$${i}" >> ${TMPPLIST}; \
-		${ECHO_CMD} "@exec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} gconftool-2 --makefile-install-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
+		${ECHO_CMD} "@exec env GCONF_CONFIG_SOURCE=xml:${GCONF_CONFIG_OPTIONS}:%D/${GCONF_CONFIG_DIRECTORY} HOME=${WRKDIR} gconftool-2 --makefile-install-rule %D/etc/gconf/schemas/$${i} > /dev/null || /usr/bin/true" \
 			>> ${TMPPLIST}; \
 	done
 .  endif

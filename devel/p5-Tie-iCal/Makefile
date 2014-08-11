@@ -8,13 +8,13 @@ MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:BSDZ
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	kaoru@kaisei.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tie iCal files to Perl hashes
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-USES=		perl5
 USE_PERL5=	configure
+USES=		perl5
 
 .include <bsd.port.mk>

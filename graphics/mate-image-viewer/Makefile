@@ -3,6 +3,7 @@
 
 PORTNAME=	mate-image-viewer
 PORTVERSION=	1.6.1
+PORTREVISION=	1
 CATEGORIES=	graphics mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -15,14 +16,12 @@ LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
 
 PORTSCOUT=	limitw:1,even
 
-USES=		desktop-file-utils gettext gmake pathfix pkgconfig \
-		shared-mime-info
-USE_XZ=		yes
+USES=		desktop-file-utils gettext gmake libtool pathfix pkgconfig \
+		shared-mime-info tar:xz
 USE_MATE=	desktop docutils icontheme
 USE_XORG=	x11
 USE_GNOME=	gdkpixbuf2 glib20 gnomehier gtk20 librsvg2 libxml2
 INSTALLS_OMF=	yes
-USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-gtk-doc \
 		--with-html-dir=${PREFIX}/share/doc \
@@ -31,6 +30,7 @@ CONFIGURE_ARGS=	--disable-gtk-doc \
 INSTALLS_ICONS=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.mate.eom.gschema.xml
 
@@ -67,8 +67,5 @@ PLIST_SUB+=	EXIFEXEMPI=""
 .else
 PLIST_SUB+=	EXIFEXEMPI="@comment "
 .endif
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/eom/plugins/*.so
 
 .include <bsd.port.mk>

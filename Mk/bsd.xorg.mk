@@ -29,7 +29,7 @@ Xorg_Pre_Include=		bsd.xorg.mk
 
 .if defined(XORG_CAT)
 # Default variables, common to all new modular xorg ports.
-.if !defined(USE_TGZ)
+.if !defined(USE_TGZ) && !defined(USE_XZ)
 USE_BZIP2=    	yes
 .endif
 GNU_CONFIGURE= 	yes
@@ -65,6 +65,7 @@ USE_XORG+=	xorg-server xproto randrproto xi renderproto xextproto \
 CFLAGS+=	-fno-optimize-sibling-calls
 .  endif
 CONFIGURE_ENV+=	DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
+USES+=		libtool
 . endif
 
 . if ${XORG_CAT} == "font"
@@ -104,7 +105,6 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
 .  endif
 
 post-install:
-.if defined(WITH_PKGNG)
 .  for _fontdir in ${FONTDIR}
 .    if ${INSTALLS_TTF} == yes && ${NEED_MKFONTFOO} == yes
 		@${ECHO_CMD} "@fcfontsdir lib/X11/fonts/${_fontdir}" >> ${TMPPLIST}
@@ -113,33 +113,13 @@ post-install:
 .    elif ${NEED_MKFONTFOO} == yes
 		@${ECHO_CMD} "@fontsdir lib/X11/fonts/${_fontdir}" >> ${TMPPLIST}
 .    else
-		@${ECHO_CMD} "@dirrmtry lib/X11/fonts/${_fontdir}" >> ${TMPPLIST}
+		@${ECHO_CMD} "@unexec rmdir %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
 .    endif
 .  endfor
-.else
-.  if ${INSTALLS_TTF} == "yes"
-.   for _fontdir in ${FONTDIR}
-	@${ECHO_CMD} "@exec fc-cache -s %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec fc-cache -s %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec rmdir %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-.   endfor
-.  endif
-.  for _fontdir in ${FONTDIR}
-.   if ${NEED_MKFONTFOO} == "yes"
-	@${ECHO_CMD} "@exec mkfontscale %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec mkfontscale %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec if [ -e %D/lib/X11/fonts/${_fontdir}/fonts.scale -a \"\`stat -f '%%z' %D/lib/X11/fonts/${_fontdir}/fonts.scale 2>/dev/null\`\" = '2' ]; then rm %D/lib/X11/fonts/${_fontdir}/fonts.scale; fi" >> ${TMPPLIST}
-	@${ECHO_CMD} "@exec mkfontdir %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec mkfontdir %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec if [ -e %D/lib/X11/fonts/${_fontdir}/fonts.dir -a \"\`stat -f '%%z' %D/lib/X11/fonts/${_fontdir}/fonts.dir 2>/dev/null\`\" = '2' ]; then rm %D/lib/X11/fonts/${_fontdir}/fonts.dir; fi" >> ${TMPPLIST}
-.   endif
-	@${ECHO_CMD} "@unexec rmdir %D/lib/X11/fonts/${_fontdir} 2>/dev/null || true" >> ${TMPPLIST}
-.  endfor
-. endif
 .endif
 
 . if ${XORG_CAT} == "lib"
-USES+=	pathfix
+USES+=		pathfix libtool:keepla
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS+=--enable-malloc0returnsnull
 . endif

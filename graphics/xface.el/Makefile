@@ -16,18 +16,14 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X-Face encoder/decoder/viewer for Emacsen
 
+EMACS_PORT_NAME?=	emacs24
+
 RUN_DEPENDS=	compface:${PORTSDIR}/mail/faces
 
 USE_EMACS=	yes
-EMACS_PORT_NAME?=	emacs21
 
 LISP_FILES=	x-face
-.if (${EMACS_PORT_NAME} == emacs21)
-LISPDIR=	${EMACS_VERSION_SITE_LISPDIR}/x-face
-LISP_FILES+=	x-face-e21
-PLIST_SUB+=	E21_ONLY="" \
-		XEMACS_ONLY="@comment "
-.elif (${EMACS_PORT_NAME} == xemacs21 || ${EMACS_PORT_NAME} == xemacs21-mule)
+.if (${EMACS_PORT_NAME} == xemacs21 || ${EMACS_PORT_NAME} == xemacs21-mule)
 LISPDIR=	${EMACS_SITE_LISPDIR}/x-face
 LISP_FILES+=	x-face-xmas
 PLIST_SUB+=	E21_ONLY="@comment " \
@@ -40,28 +36,16 @@ PLIST_SUB+=	E21_ONLY="@comment " \
 PLIST_SUB+=	LISPDIR=${LISPDIR} \
 		DOCSDIR=share/doc/${PORTNAME}
 
-NO_STAGE=	yes
-post-extract:
-.if (${EMACS_PORT_NAME} == emacs21)
-	${CP} ${DISTDIR}/x-face-e21.el.gz ${WRKSRC}
-	${GUNZIP_CMD} ${WRKSRC}/x-face-e21.el.gz
-.endif
-post-build:
-.if (${EMACS_PORT_NAME} == emacs21)
-	(cd ${WRKSRC}; \
-	${EMACS_CMD} -batch -q -no-site-file \
-	-f batch-byte-compile x-face-e21.el)
-.endif
+OPTIONS_DEFINE=	DOCS
+
 do-install:
-	${MKDIR} ${PREFIX}/${LISPDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${LISPDIR}
 .for i in ${LISP_FILES}
-	${INSTALL_DATA} ${WRKSRC}/${i}.el ${WRKSRC}/${i}.elc ${PREFIX}/${LISPDIR}
+	${INSTALL_DATA} ${WRKSRC}/${i}.el ${WRKSRC}/${i}.elc \
+		${STAGEDIR}${PREFIX}/${LISPDIR}
 .endfor
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-.for i in METHOD.ja README.ja README-Anim.ja TODO.ja
-	${INSTALL_DATA} ${WRKSRC}/${i} ${DOCSDIR}
-.endfor
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} METHOD.ja README.ja README-Anim.ja \
+		TODO.ja ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

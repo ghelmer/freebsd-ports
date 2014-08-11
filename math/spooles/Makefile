@@ -54,7 +54,7 @@ pre-everything::
 .endif
 
 do-extract:
-	${MKDIR} ${WRKSRC} ; cd ${WRKSRC} ; ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS}
+	${MKDIR} ${WRKSRC} ; cd ${WRKSRC} ; ${TAR} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS}
 
 post-patch:
 	${MKDIR} ${WRKSRC}_SHARED ; ${CP} -r ${WRKSRC}/* ${WRKSRC}_SHARED
@@ -63,15 +63,15 @@ post-patch:
 
 do-build:
 .if defined(WITH_MPI)
-	@(cd ${WRKSRC}/MPI/src ; ${SETENV} ${MAKE_ENV} ${GMAKE} -f makeGlobalLib)
-	@(cd ${WRKSRC}_SHARED/MPI/src; ${SETENV} ${MAKE_ENV} ${GMAKE} -f makeGlobalLib)
+	@(cd ${WRKSRC}/MPI/src ; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f makeGlobalLib)
+	@(cd ${WRKSRC}_SHARED/MPI/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f makeGlobalLib)
 	@(cd ${WRKSRC}_SHARED ; ld -Bshareable -o libspooles.so.1 -x -soname libspooles.so.1 --whole-archive spooles.a )
 
 .else
-	@(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${GMAKE} global -f makefile)
-	@(cd ${WRKSRC}/MT/src; ${SETENV} ${MAKE_ENV} ${GMAKE} -f makeGlobalLib)
-	@(cd ${WRKSRC}_SHARED; ${SETENV} ${MAKE_ENV} ${GMAKE} global -f makefile)
-	@(cd ${WRKSRC}_SHARED/MT/src; ${SETENV} ${MAKE_ENV} ${GMAKE} -f makeGlobalLib)
+	@(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} global -f makefile)
+	@(cd ${WRKSRC}/MT/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f makeGlobalLib)
+	@(cd ${WRKSRC}_SHARED; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} global -f makefile)
+	@(cd ${WRKSRC}_SHARED/MT/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -f makeGlobalLib)
 	@(cd ${WRKSRC}_SHARED ; ld -Bshareable -o libspooles.so.1 -x -soname libspooles.so.1 --whole-archive spooles.a )
 .endif
 

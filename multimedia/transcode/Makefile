@@ -3,7 +3,7 @@
 
 PORTNAME=	transcode
 PORTVERSION=	1.1.7
-PORTREVISION=	10
+PORTREVISION=	14
 CATEGORIES=	multimedia
 MASTER_SITES=	http://cdn.bitbucket.org/france/transcode-tcforge/downloads/
 
@@ -14,14 +14,13 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg
 
-USE_BZIP2=	yes
 FAKEDIR=	${WRKDIR}/fake
 PLIST=		${WRKDIR}/plist
 USE_LDCONFIG=	yes
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig tar:bzip2 libtool:keepla
 WANT_SDL=	yes
 WANT_GNOME=	yes
-USE_AUTOTOOLS=	libtool
+USE_AUTOTOOLS=	libtoolize
 CPPFLAGS+=	-isystem ${LOCALBASE}/include
 CONFIGURE_ENV=	SDL_CONFIG="${SDL_CONFIG}"
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -165,7 +164,7 @@ CONFIGURE_ARGS+=	--disable-libxml2
 .endif
 
 .if ${PORT_OPTIONS:MMJPEGTOOLS}
-LIB_DEPENDS+=	liblavjpeg-2.0.so:${PORTSDIR}/multimedia/mjpegtools
+LIB_DEPENDS+=	liblavjpeg.so:${PORTSDIR}/multimedia/mjpegtools
 CONFIGURE_ARGS+=	--enable-mjpegtools
 .else
 CONFIGURE_ARGS+=	--disable-mjpegtools
@@ -179,7 +178,7 @@ CONFIGURE_ARGS+=	--disable-sdl
 .endif
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
-LIB_DEPENDS+=	libMagickWand.so:${PORTSDIR}/graphics/ImageMagick
+LIB_DEPENDS+=	libMagickWand-6.Q*.so:${PORTSDIR}/graphics/ImageMagick
 CONFIGURE_ARGS+=	--with-imagemagick-prefix=${LOCALBASE} --enable-imagemagick
 .else
 CONFIGURE_ARGS+=	--disable-imagemagick
@@ -244,7 +243,7 @@ pre-install:
 	${RM} -rf ${PLIST} ${FAKEDIR}
 	${MKDIR} ${FAKEDIR}
 	${TOUCH} -f ${PLIST}
-	@(cd ${WRKSRC} && ${GMAKE} install prefix=${FAKEDIR} mandir=${FAKEDIR}/man)
+	@(cd ${WRKSRC} && ${MAKE_CMD} install prefix=${FAKEDIR} mandir=${FAKEDIR}/man)
 .for dir in bin share/doc lib
 	@(cd ${FAKEDIR}/${dir} && ${FIND} -s * -type f -o -type l | \
 		${SED} -e 's|^|${dir}/|' >> ${PLIST})

@@ -1,12 +1,12 @@
-# Created by: nemysis <nemysis@gmx.ch>
+# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	epiar
 PORTVERSION=	0.5.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Space trading/exploring sim with RPG elements
 
 LICENSE=	GPLv2 CCbyNCSA3
@@ -35,7 +35,6 @@ ACLOCAL_ARGS=
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	AUTHORS ChangeLog README
-
 OPTIONS_DEFINE=	DOCS
 
 # Wrong versioning upstream

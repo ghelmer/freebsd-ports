@@ -7,9 +7,10 @@ CATEGORIES=	math java
 MASTER_SITES=	SF/${PORTNAME}/3.1.x/${PORTVERSION}/
 EXTRACT_SUFX=	-distribution.zip
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Java based MathML rendering solution
 
+USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 JAVA_RUN=	yes

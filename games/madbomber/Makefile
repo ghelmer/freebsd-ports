@@ -5,10 +5,9 @@ PORTNAME=	madbomber
 PORTVERSION=	0.2.5
 PORTREVISION=	13
 CATEGORIES=	games
-MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/madbomber/src/ \
-		ftp://ftp.billsgames.com/unix/x/madbomber/src/
+MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/madbomber/src/
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Clone of Activision's classic Atari 2600 console game "Kaboom!"
 
 LICENSE=	GPLv2
@@ -18,8 +17,7 @@ USE_SDL=	mixer image sdl
 CPPFLAGS+=	`${SDL_CONFIG} --cflags` -DDATA_PREFIX=\"${DATADIR}/\"
 LDFLAGS+=	`${SDL_CONFIG} --libs`
 
-PORTDOCS=	AUTHORS.txt CHANGES.txt README.txt TODO.txt
-
+PORTDOCS=	AUTHORS.txt CHANGES.txt README.txt
 OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="Mad Bomber" "" "${PORTNAME}" \

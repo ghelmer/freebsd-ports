@@ -1,76 +1,41 @@
-# Created by: wes@FreeBSD.org
+# Created by: Wes Peters <wes@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	poco
+# New version 1.4.6p4 is available; please use DISTVERSION upon updating
 PORTVERSION=	1.4.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel net
 MASTER_SITES=	SF/${PORTNAME}/sources/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	-ssl
-DISTNAME=	poco-${PORTVERSION}p1-all
+DISTNAME=	${PORTNAME}-${PORTVERSION}p1-all
 
 MAINTAINER=	wes@FreeBSD.org
-COMMENT=	C++ Portable Components library with NetSSL and Database libraries
+COMMENT=	C++ libraries with a network/internet focus (full version)
 
-BROKEN=		Fails to build
+LICENSE=	BSL
 
 CONFLICTS=	poco-[0-9]*
 
-OPTIONS_DEFINE=	TEST SAMPLES MYSQL SQLITE
-SAMPLES_DESC=	Build sample programs
-UODBC_DESC=	Build with ODBC driver
-IODBC_DESC=	Build with iODBC driver
-
-OPTIONS_RADIO=	ODBC
-OPTIONS_RADIO_ODBC=	UODBC IODBC
-ODBC_DESC=	ODBC Driver
-
-OPTIONS_DEFAULT=	MYSQL IODBC SQLITE
-
-CONFIGURE_ARGS= --config=FreeBSD
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ! ${PORT_OPTIONS:MTEST}
-CONFIGURE_ARGS+= --no-tests
-.endif
-
-.if ! ${PORT_OPTIONS:MSAMPLES}
-CONFIGURE_ARGS+= --no-samples
-.endif
-
-#
-# ODBC
-#
-
-.if ! ${PORT_OPTIONS:MUODBC} && ! ${PORT_OPTIONS:MIODBC}
-CONFIGURE_ARGS+= --omit=Data/ODBC
-.endif
-
-.if ${PORT_OPTIONS:MUODBC} && ! ${PORT_OPTIONS:MIODBC}
-LIB_DEPENDS+=	odbc.2:${PORTSDIR}/databases/unixODBC
-.endif
-
-.if ${PORT_OPTIONS:MIODBC} && ! ${PORT_OPTIONS:MUODBC}
-LIB_DEPENDS+=	iodbc.3:${PORTSDIR}/databases/libiodbc
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
-.else
-CONFIGURE_ARGS+= --omit=Data/MySQL
-.endif
-
-.if ${PORT_OPTIONS:MSQLITE}
-USE_SQLITE=	yes
-.else
-CONFIGURE_ARGS+= --omit=Data/SQLite
-.endif
-
-GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
-USE_BZIP2=	yes
+USES=		gmake tar:bzip2
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS=	--prefix=${PREFIX} --config=FreeBSD
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	TEST SAMPLES MYSQL SQLITE ODBC
+OPTIONS_DEFAULT=	MYSQL SQLITE
+SAMPLES_DESC=	Build sample programs
+
+TEST_CONFIGURE_OFF=	--no-tests
+SAMPLES_CONFIGURE_OFF=	--no-samples
+
+ODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/libiodbc
+ODBC_CONFIGURE_OFF=	--omit=Data/ODBC
+
+MYSQL_USE=		MYSQL=yes
+MYSQL_CONFIGURE_OFF=	--omit=Data/MySQL
+
+SQLITE_USE=		SQLITE=yes
+SQLITE_CONFIGURE_OFF=	--omit=Data/SQLite
 
 .include <bsd.port.mk>

@@ -4,7 +4,7 @@ PORTNAME=	plover
 PORTVERSION=	2.2.0
 CATEGORIES=	textproc
 MASTER_SITES=	http://launchpadlibrarian.net/88624187/
-PKGNAMEPREFIX=  ${PYTHON_PKGNAMEPREFIX}
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Open source solution for stenography
@@ -21,7 +21,6 @@ USE_WX=		2.8
 WX_COMPS=	wx
 WX_UNICODE=	yes
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e "s@%%PREFIX%%@${PREFIX}@g" ${WRKSRC}/setup.py
 

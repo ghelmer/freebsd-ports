@@ -27,18 +27,19 @@
     SUBDIR += cdlabelgen
     SUBDIR += cloudprint
     SUBDIR += cm-super
-    SUBDIR += cpp2latex
     SUBDIR += cups
     SUBDIR += cups-base
     SUBDIR += cups-bjnp
     SUBDIR += cups-client
     SUBDIR += cups-cloud-print
     SUBDIR += cups-filters
+    SUBDIR += cups-fxlinuxprint
     SUBDIR += cups-image
     SUBDIR += cups-pdf
     SUBDIR += cups-pk-helper
     SUBDIR += cups-pstoraster
     SUBDIR += cups-samba
+    SUBDIR += cups-smb-backend
     SUBDIR += deforaos-pdfviewer
     SUBDIR += detex
     SUBDIR += dk-acroread8
@@ -98,7 +99,6 @@
     SUBDIR += gspdf
     SUBDIR += gsview
     SUBDIR += gtklp
-    SUBDIR += guitartex
     SUBDIR += gutenprint
     SUBDIR += gutenprint-base
     SUBDIR += gutenprint-cups
@@ -115,6 +115,7 @@
     SUBDIR += html2ps
     SUBDIR += hyperlatex
     SUBDIR += ifxetex
+    SUBDIR += indexinfo
     SUBDIR += it-acroread8
     SUBDIR += jabref
     SUBDIR += jadetex
@@ -156,7 +157,6 @@
     SUBDIR += latex-tipa
     SUBDIR += latex-ucs
     SUBDIR += latex2rtf
-    SUBDIR += latex2slides
     SUBDIR += latexdiff
     SUBDIR += latexmk
     SUBDIR += lgrind
@@ -216,7 +216,6 @@
     SUBDIR += pdfjam
     SUBDIR += pdflib
     SUBDIR += pdflib-perl
-    SUBDIR += pdfmod
     SUBDIR += pdftk
     SUBDIR += pdq
     SUBDIR += pear-File_PDF
@@ -236,7 +235,6 @@
     SUBDIR += pkipplib
     SUBDIR += pkpgcounter
     SUBDIR += pmw
-    SUBDIR += pnm2ppa
     SUBDIR += poster
     SUBDIR += ps2eps
     SUBDIR += pscal
@@ -249,6 +247,7 @@
     SUBDIR += py-fonttools
     SUBDIR += py-pdf
     SUBDIR += py-pollyreports
+    SUBDIR += py-preppy
     SUBDIR += py-pyscript
     SUBDIR += py-relatorio
     SUBDIR += py-reportlab
@@ -261,7 +260,6 @@
     SUBDIR += qt5-printsupport
     SUBDIR += rlpr
     SUBDIR += rprint
-    SUBDIR += rtf2latex
     SUBDIR += rtf2latex2e
     SUBDIR += ruby-panda
     SUBDIR += rubygem-afm
@@ -305,6 +303,7 @@
     SUBDIR += tex-xetex
     SUBDIR += tex-xmltex
     SUBDIR += texinfo
+    SUBDIR += texinfo-lite
     SUBDIR += texlive-base
     SUBDIR += texlive-docs
     SUBDIR += texlive-full
@@ -321,7 +320,6 @@
     SUBDIR += txtbdf2ps
     SUBDIR += typetools
     SUBDIR += utopia
-    SUBDIR += wprint
     SUBDIR += xdvi
     SUBDIR += xdvik
     SUBDIR += xfce4-print

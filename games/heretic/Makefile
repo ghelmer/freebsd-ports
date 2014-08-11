@@ -3,7 +3,7 @@
 
 PORTNAME=	heretic
 PORTVERSION=	1.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://heretic.linuxgames.com/heretic/src/:source \
 		http://heretic.linuxgames.com/wad/:wad
@@ -12,8 +12,8 @@ DISTNAME=	gl${PORTNAME}-${PORTVERSION}
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Unix source-port of the famous Heretic game by id Software
 
+USES=		gmake
 USE_XORG=	x11 xi xpm xau
-USE_GMAKE=	yes
 MAKE_ENV=	PTHREAD_LIBS=${PTHREAD_LIBS}
 
 OPTIONS_DEFINE=	WAD
@@ -25,7 +25,6 @@ SG1_DESC=	Graphics Selections
 
 OPTIONS_DEFAULT=	X11 WAD
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MX11}
@@ -62,16 +61,16 @@ post-extract:
 	@${RM} ${WRKSRC}/i_ipx.c
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${BINARY} ${PREFIX}/bin/heretic
-	${INSTALL_PROGRAM} ${WRKSRC}/sndserver ${PREFIX}/bin/sndserver
+	${INSTALL_PROGRAM} ${WRKSRC}/${BINARY} ${STAGEDIR}${PREFIX}/bin/heretic
+	${INSTALL_PROGRAM} ${WRKSRC}/sndserver ${STAGEDIR}${PREFIX}/bin/sndserver
 .if ${PORT_OPTIONS:MWAD}
-	@${MKDIR} ${PREFIX}/share/heretic
-	${INSTALL_DATA} ${WRKSRC}/heretic_share.wad ${PREFIX}/share/heretic
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/heretic
+	${INSTALL_DATA} ${WRKSRC}/heretic_share.wad ${STAGEDIR}${PREFIX}/share/heretic
 .endif
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in "End User License Heretic Source Code.txt" Gamekeys.txt README.txt AUTHORS SourceReadme.txt Changelog README.opengl
-	${INSTALL_DATA} ${WRKSRC}/doc/${i} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif
 

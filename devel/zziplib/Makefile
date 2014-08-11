@@ -3,46 +3,35 @@
 
 PORTNAME=	zziplib
 PORTVERSION=	0.13.62
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}13/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A library to provide transparent read access to zipped files
+COMMENT=	Library to provide transparent read access to zipped files
 
 LICENSE=	LGPL21 MPL
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip
 
-OPTIONS_DEFINE=	SDL
-
-USE_BZIP2=	yes
-USES=		pathfix pkgconfig gmake
+USES=		tar:bzip2 pathfix pkgconfig gmake libtool
 USE_PYTHON_BUILD=	yes
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_path_XMLTO=":"
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 PORTSCOUT=	limit:^0\.
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	SDL
+OPTIONS_SUB=	yes
 
-.if ${PORT_OPTIONS:MSDL}
-USE_SDL=	sdl
-CONFIGURE_ARGS+=--enable-sdl
-PLIST_SUB+=	SDL=""
-.else
-PLIST_SUB+=	SDL="@comment "
-.endif
+SDL_USE=		SDL=sdl
+SDL_CONFIGURE_ENABLE=	sdl
 
-.include <bsd.port.pre.mk>
-
-test check:
-	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} \
+regression-test:
+	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
 		${MAKEFILE} ${MAKE_ARGS} check)
 
-.if !defined(WITHOUT_TESTS)
-post-build::	test
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

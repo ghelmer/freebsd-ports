@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	acpica
-PORTVERSION=	20140325
+PORTVERSION=	20140627
 CATEGORIES=	sysutils devel
 MASTER_SITES=	https://acpica.org/sites/acpica/files/ \
 		LOCAL
@@ -12,17 +12,14 @@ DISTNAME=	${PORTNAME}-unix2-${PORTVERSION}
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Tools from the ACPI Component Architecture (ACPICA) project
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD3CLAUSE GPLv2
+LICENSE_COMB=	dual
 
-USES=		gmake
-
-# XXX 20130927 broke support for yacc.
-USES+=		bison
+USES=		bison gmake
 YACC=		${LOCALBASE}/bin/bison
 
 ACPICA_TOOLS=	acpibin acpidump acpiexec acpihelp acpinames acpisrc
 ACPICA_TOOLS+=	acpixtract iasl
-#ACPICA_TOOLS+=	acpiexamples
 
 PLIST_FILES=	${ACPICA_TOOLS:S,^,bin/,}
 WRKSRC_SUBDIR=	generate/unix

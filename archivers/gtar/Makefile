@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tar
-PORTVERSION=	1.27
+PORTVERSION=	1.27.1
 CATEGORIES=	archivers sysutils
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	GNU
 PKGNAMEPREFIX=	g
 
 MAINTAINER=	naddy@FreeBSD.org
@@ -15,7 +14,7 @@ LICENSE=	GPLv3
 
 INFO=		tar
 
-USES=		iconv:${STATIC_ARGS} tar:xz
+USES=		iconv:${STATIC_ARGS} tar:xz charsetfix makeinfo
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g \
 		--disable-silent-rules

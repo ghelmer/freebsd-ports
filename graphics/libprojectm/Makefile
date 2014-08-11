@@ -2,13 +2,13 @@
 
 PORTNAME=	libprojectM
 PORTVERSION=	2.0.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics audio
-MASTER_SITES=	SF/${PORTNAME:L:S/lib//}/${PORTVERSION}/
+MASTER_SITES=	SF/${PORTNAME:tl:S/lib//}/${PORTVERSION}/
 DISTNAME=	${PORTNAME:S/lib//}-${DISTVERSION}-Source
 
 MAINTAINER=	crees@FreeBSD.org
-COMMENT=	An awesome music visualiser
+COMMENT=	Awesome music visualiser
 
 LICENSE=	LGPL21
 

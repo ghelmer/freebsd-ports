@@ -9,7 +9,7 @@ MASTER_SITES=	${MASTER_SITE_SOURCEFORGE_JP}
 MASTER_SITE_SUBDIR=	ninix-aya/58500
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	umeno@rr.iij4u.or.jp
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ninix-aya is a compatible with desktop mascot program "Ukagaka"
 
 LICENSE=	GPLv2
@@ -23,7 +23,7 @@ RUN_DEPENDS=	unzip:${PORTSDIR}/archivers/unzip \
 
 USE_PYTHON=	yes
 USE_GNOME=	pygtk2
-USE_GMAKE=	yes
+USES=		gmake
 
 OPTIONS_DEFINE=	DOCS NLS
 

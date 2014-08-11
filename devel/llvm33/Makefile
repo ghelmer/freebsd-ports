@@ -133,6 +133,8 @@ MAN1SRCS+=	bugpoint.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 PLIST_FILES+=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 .endif
 
+NOT_FOR_ARCH=	ia64
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "arm"
@@ -141,7 +143,7 @@ BROKEN=		Does not compile on arm
 BROKEN=		does not compile on sparc64
 .endif
 
-.if ${ARCH} == "amd64" || ${ARCH} == "ia64"
+.if ${ARCH} == "amd64"
 CONFIGURE_ARGS+=	--enable-pic --with-pic
 .endif
 
@@ -172,10 +174,10 @@ post-configure:
 
 post-build:
 .if ${PORT_OPTIONS:MMANPAGES}
-	@cd ${WRKSRC}/docs && ${GMAKE} -f Makefile.sphinx man
+	@cd ${WRKSRC}/docs && ${MAKE_CMD} -f Makefile.sphinx man
 .endif
 .if ${PORT_OPTIONS:MDOCS}
-	@cd ${WRKSRC}/docs && ${GMAKE} -f Makefile.sphinx html
+	@cd ${WRKSRC}/docs && ${MAKE_CMD} -f Makefile.sphinx html
 .endif
 
 post-install:
@@ -225,7 +227,7 @@ post-install:
 	done
 .endif
 
-TEST_CMD=	'(cd ${WRKSRC}/test; ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/Release/lib ${GMAKE} check-local-lit)'
+TEST_CMD=	'(cd ${WRKSRC}/test; ${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKSRC}/Release/lib ${MAKE_CMD} check-local-lit)'
 regression-test: ${BUILD_COOKIE}
 	if [ `${ID} -u` = 0 ]; then \
 		${CHOWN} -R nobody ${WRKSRC}/test; \

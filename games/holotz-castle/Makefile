@@ -11,19 +11,18 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}-src${EXTRACT_SUFX} \
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}-src${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Platform game with high doses of mystery
 
 LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
 
-MAKE_ARGS=	HC_BASE=${STAGEDIR}${PREFIX}/share/${PORTNAME}/ HC_BIN_DIR=${STAGEDIR}${PREFIX}/bin/
-MAKE_JOBS_UNSAFE=	yes
-
-USES=		gmake
+USES=		gmake desthack
 USE_GL=		gl
 USE_SDL=	image mixer sdl ttf
+MAKE_ARGS=	HC_BASE=${STAGEDIR}${PREFIX}/share/${PORTNAME}/
+MAKE_JOBS_UNSAFE=	yes
 
 INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96 128x128
@@ -46,6 +45,9 @@ EXTRACT_ONLY+=	${PORTNAME}_solutions${EXTRACT_SUFX}
 .endif
 
 post-install:
+.for f in ${PORTNAME} ${PORTNAME}-editor
+	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${f} ${STAGEDIR}${PREFIX}/bin/)
+.endfor
 .for s in ${ICON_SIZES}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps
 	${INSTALL_DATA} ${WRKDIR}/${PORTNAME}_${s}.png \
@@ -58,9 +60,10 @@ post-install:
 
 .if ${PORT_OPTIONS:MSOLUTIONS}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}-solutions ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}-solutions.desktop ${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}-solutions.desktop \
+		${STAGEDIR}${DESKTOPDIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/solutions
-	@(cd ${WRKDIR} ; ${INSTALL_DATA} *.avi ${STAGEDIR}${DATADIR}/solutions)
+	@(cd ${WRKDIR} && ${INSTALL_DATA} *.avi ${STAGEDIR}${DATADIR}/solutions)
 .endif
 
 .include <bsd.port.mk>

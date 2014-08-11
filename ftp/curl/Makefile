@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	curl
-PORTVERSION=	7.36.0
+PORTVERSION=	7.37.0
 CATEGORIES=	ftp www
 MASTER_SITES=	http://curl.haxx.se/download/ \
 		LOCAL/sunpoet
@@ -37,7 +37,7 @@ CONFIGURE_ENV+=	LOCALBASE=${LOCALBASE}
 GNU_CONFIGURE=	yes
 MAKE_ENV+=	INSTALL_STRIP_FLAG=${STRIP}
 USE_PERL5=	build
-USES=		pathfix perl5 tar:lzma
+USES=		libtool:oldver pathfix perl5 tar:lzma
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -80,10 +80,12 @@ GSSAPI_BASE_CPPFLAGS=	-I${INCLUDEDIR}
 HEIMDAL_PORT_CONFIGURE_ON=	--with-gssapi=${HEIMDAL_HOME}
 HEIMDAL_PORT_CPPFLAGS=	-I${HEIMDAL_HOME}/include
 HEIMDAL_PORT_LDFLAGS=	-L${HEIMDAL_HOME}/lib
-HEIMDAL_PORT_LIB_DEPENDS=	libgssapi.so:${PORTSDIR}/security/heimdal
+HEIMDAL_PORT_LIB_DEPENDS=	libgssapi.so.3:${PORTSDIR}/security/heimdal
+HTTP2_BUILD_DEPENDS=	nghttp2>=0.4.0:${PORTSDIR}/www/nghttp2
 HTTP2_CONFIGURE_OFF=	--without-nghttp2
 HTTP2_CONFIGURE_ON=	--with-nghttp2=${LOCALBASE}
 HTTP2_LIB_DEPENDS=	libnghttp2.so:${PORTSDIR}/www/nghttp2
+HTTP2_RUN_DEPENDS=	nghttp2>=0.4.0:${PORTSDIR}/www/nghttp2
 HTTP2_USES=		pkgconfig
 IDN_CONFIGURE_OFF=	--without-libidn
 IDN_CONFIGURE_ON=	--with-libidn=${LOCALBASE}
@@ -94,7 +96,7 @@ IPV6_CONFIGURE_ON=	--enable-ipv6
 KRB5_PORT_CONFIGURE_ON=	--with-gssapi=${KRB5_HOME}
 KRB5_PORT_CPPFLAGS=	-I${KRB5_HOME}/include
 KRB5_PORT_LDFLAGS=	-L${KRB5_HOME}/lib
-KRB5_PORT_LIB_DEPENDS=	libgssapi_krb5.so:${PORTSDIR}/security/krb5
+KRB5_PORT_LIB_DEPENDS=	libgssapi_krb5.so.2:${PORTSDIR}/security/krb5
 LDAP_CONFIGURE_OFF=	--disable-ldap
 LDAP_CONFIGURE_ON=	--enable-ldap
 LDAP_CPPFLAGS=		-I${LOCALBASE}/include
@@ -106,8 +108,9 @@ LIBSSH2_CONFIGURE_OFF=	--without-libssh2
 LIBSSH2_CONFIGURE_ON=	--with-libssh2=${LOCALBASE}
 LIBSSH2_LIB_DEPENDS=	libssh2.so:${PORTSDIR}/security/libssh2
 NSS_CONFIGURE_OFF=	--without-nss
-NSS_CONFIGURE_ON=	--with-nss=${LOCALBASE}
+NSS_CONFIGURE_ON=	--with-nss=yes
 NSS_LIB_DEPENDS=	libnss3.so:${PORTSDIR}/security/nss
+NSS_USES=		pkgconfig
 OPENSSL_CONFIGURE_OFF=	--without-ssl
 OPENSSL_CONFIGURE_ON=	--with-ssl=${OPENSSLBASE}
 OPENSSL_CPPFLAGS=	-I${OPENSSLINC}
@@ -157,8 +160,8 @@ CONFIGURE_ARGS+=--without-gssapi
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|\(flags_dbg_off=\)".*"|\1""|; s|\(flags_opt_off=\)".*"|\1""|; s|lib/pkgconfig|libdata/pkgconfig|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/^SUBDIRS = / s|$$| docs|; /^DIST_SUBDIRS = / s| docs||; /cd docs &&/d' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|\(flags_dbg_off=\)".*"|\1""|; s|\(flags_opt_off=\)".*"|\1""|; s|lib/pkgconfig|libdata/pkgconfig|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|include <gssapi.h>|include <gssapi/gssapi.h>|' ${WRKSRC}/lib/curl_gssapi.h ${WRKSRC}/lib/urldata.h
 
 post-install:
@@ -171,8 +174,6 @@ post-install:
 	cd ${WRKSRC}/docs/examples/ && ${INSTALL_DATA} README Makefile.example makefile* *.c *.cpp ${STAGEDIR}${EXAMPLESDIR}/
 .endif
 
-# Setting LC_ALL=C is a kludge; maybe curl/libcurl shouldn't actually use
-# the user's locale when dates are sent to the server.
 x-regression-test test: build
 .if !${PORT_OPTIONS:MPROXY}
 	@${ECHO_MSG} "******************************************"
@@ -181,6 +182,6 @@ x-regression-test test: build
 	@${ECHO_MSG} "* This is being addressed.               *"
 	@${ECHO_MSG} "******************************************"
 .endif
-	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} LC_ALL=C ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} test
+	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} LC_ALL=C ${MAKE_CMD} test
 
 .include <bsd.port.mk>

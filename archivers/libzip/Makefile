@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	libzip
-PORTVERSION=	0.11.1
+PORTVERSION=	0.11.2
+PORTREVISION=	1
 CATEGORIES=	archivers devel
 MASTER_SITES=	http://www.nih.at/libzip/
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	C library for reading, creating, and modifying ZIP archives
 
-USE_XZ=		yes
 GNU_CONFIGURE=	yes
 MAKE_ENV=	LC_ALL="C"
-USE_AUTOTOOLS=	libtool
-USES=		pathfix
+USES=		libtool pathfix tar:xz
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

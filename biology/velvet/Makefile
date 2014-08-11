@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	velvet
-PORTVERSION=	1.1.04
+PORTVERSION=	1.2.10
+PORTREVISION=	1
 CATEGORIES=	biology
 MASTER_SITES=	http://www.ebi.ac.uk/~zerbino/velvet/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -17,12 +18,13 @@ MAXKMERLENGTH?=	31
 VELVET_CATEGORIES?=	2
 MAKE_ENV+=	MAXKMERLENGTH=${MAXKMERLENGTH} CATEGORIES=${VELVET_CATEGORIES}
 
-USES=		perl5 gmake
+USES=		perl5 gmake shebangfix
 USE_PERL5=	run
 
 BINARIES=	velvetg velveth
-SCRIPTS=	shuffleSequences_fasta.pl shuffleSequences_fastq.pl \
-		contrib/VelvetOptimiser-2.1.7/VelvetOptimiser.pl \
+SHEBANG_FILES=	contrib/shuffleSequences_fasta/shuffleSequences_fasta.pl \
+		contrib/shuffleSequences_fasta/shuffleSequences_fastq.pl \
+		contrib/VelvetOptimiser-2.2.4/VelvetOptimiser.pl \
 		contrib/afg_handling/asmbly_splitter.pl \
 		contrib/afg_handling/snp_view.pl \
 		contrib/columbus_scripts/enlarge_exons.pl \
@@ -32,20 +34,21 @@ SCRIPTS=	shuffleSequences_fasta.pl shuffleSequences_fastq.pl \
 		contrib/extractContigReads/extractContigReads.pl \
 		contrib/fasta2agp/fasta2agp.pl \
 		contrib/observed-insert-length.pl/observed-insert-length.pl \
+		contrib/read_prepare/pe_read_prepare.0.1.pl \
 		contrib/select_paired/select_paired.pl \
 		contrib/show_repeats/show_repeats.pl
-PERLMOD_DIRS=	contrib/VelvetOptimiser-2.1.7/VelvetOpt
-PERLMOD_FILES=	contrib/VelvetOptimiser-2.1.7/VelvetOpt/Assembly.pm \
-		contrib/VelvetOptimiser-2.1.7/VelvetOpt/Utils.pm \
-		contrib/VelvetOptimiser-2.1.7/VelvetOpt/gwrap.pm \
-		contrib/VelvetOptimiser-2.1.7/VelvetOpt/hwrap.pm
+PERLMOD_DIRS=	contrib/VelvetOptimiser-2.2.4/VelvetOpt
+PERLMOD_FILES=	contrib/VelvetOptimiser-2.2.4/VelvetOpt/Assembly.pm \
+		contrib/VelvetOptimiser-2.2.4/VelvetOpt/Utils.pm \
+		contrib/VelvetOptimiser-2.2.4/VelvetOpt/gwrap.pm \
+		contrib/VelvetOptimiser-2.2.4/VelvetOpt/hwrap.pm
 
 .if !defined(WITHOUT_PYTHON)
 USE_PYTHON=	yes
-SCRIPTS+=	contrib/AssemblyAssembler1.3/AssemblyAssembler1.3.py
+SHEBANG_FILES+=	contrib/AssemblyAssembler1.3/AssemblyAssembler1.3.py
 .endif
 
-.for f in ${BINARIES} ${SCRIPTS}
+.for f in ${BINARIES} ${SHEBANG_FILES}
 PLIST_FILES+=	bin/${f:T}
 .endfor
 .for d in ${PERLMOD_DIRS}
@@ -57,38 +60,24 @@ PLIST_FILES+=	%%SITE_PERL%%/${f:H:T}/${f:T}
 
 PORTDOCS=	ChangeLog Manual.pdf Columbus_manual.pdf
 
-NO_STAGE=	yes
-
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-post-patch:
-.for f in ${SCRIPTS}
-	${REINPLACE_CMD} -e s,#!/usr/bin/perl,${PERL}, ${WRKSRC}/${f}
-.endfor
-.if !defined(WITHOUT_PYTHON)
-	${REINPLACE_CMD} -e s,#!/usr/bin/python,${PYTHON_CMD}, ${WRKSRC}/contrib/AssemblyAssembler1.3/AssemblyAssembler1.3.py
-.endif
-
 do-install:
 .for f in ${BINARIES}
-	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
-.for f in ${SCRIPTS}
-	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${PREFIX}/bin/${f:T}
+.for f in ${SHEBANG_FILES}
+	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin/${f:T}
 .endfor
 .for d in ${PERLMOD_DIRS}
-	${MKDIR} ${PREFIX}/${SITE_PERL_REL}/${d:T}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${d:T}
 .endfor
 .for f in ${PERLMOD_FILES}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${PREFIX}/${SITE_PERL_REL}/${f:H:T}/${f:T}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${f:H:T}/${f:T}
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-.for f in ${PORTDOCS}
-	${INSTALL_MAN} ${WRKSRC}/${f} ${DOCSDIR}
-.endfor
-.endif
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

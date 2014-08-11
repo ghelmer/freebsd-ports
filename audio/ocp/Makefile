@@ -3,7 +3,7 @@
 
 PORTNAME=	ocp
 PORTVERSION=	0.1.20
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://stian.cubic.org/ocp/ \
@@ -22,7 +22,7 @@ LIB_DEPENDS=	libid3tag.so:${PORTSDIR}/audio/libid3tag \
 ONLY_FOR_ARCHS=	i386 amd64
 
 GNU_CONFIGURE=	yes
-USES=		ncurses gmake pkgconfig desktop-file-utils compiler:nestedfct
+USES=		ncurses gmake pkgconfig desktop-file-utils compiler:nestedfct makeinfo
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 
@@ -83,7 +83,7 @@ CONFIGURE_ARGS+=	--without-adplug
 .endif
 
 .if ${PORT_OPTIONS:MSDL}
-USE_SDL=		sound
+USE_SDL=		sdl
 CONFIGURE_ARGS+=	--with-sdl=yes
 PLIST_SUB+=		SDL=""
 .else

@@ -9,8 +9,8 @@ MASTER_SITES=	http://www.daidouji.com/oneko/distfiles/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.sakura.5
 PKGNAMESUFFIX=	-sakura
 
-MAINTAINER=	hotaru@tail.net
-COMMENT=	A cat, Sakura or Tomoyo chasing a mouse all over the screen
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Cat, Sakura or Tomoyo chasing a mouse all over the screen
 
 CONFLICTS=	oneko-2.*
 

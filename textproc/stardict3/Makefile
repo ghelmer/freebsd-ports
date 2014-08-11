@@ -16,11 +16,11 @@ LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
 RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib"
 CONFIGURE_ARGS=	--disable-festival \
 		--disable-gucharmap \
 		--disable-espeak \
 		--disable-updateinfo
+LIBS=		-L${LOCALBASE}/lib
 USES=		tar:bzip2 gettext gmake pathfix pkgconfig
 CONFIGURE_WRKSRC=	${WRKSRC}/dict
 BUILD_WRKSRC=	${CONFIGURE_WRKSRC}
@@ -58,6 +58,6 @@ post-patch:
 pre-configure:
 	cd ${WRKSRC}/lib && \
 	${SETENV} ${CONFIGURE_ENV} ./${CONFIGURE_SCRIPT} ${CONFIGURE_ARGS} && \
-	${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET}
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET}
 
 .include <bsd.port.mk>

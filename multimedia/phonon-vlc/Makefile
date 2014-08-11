@@ -2,7 +2,7 @@
 
 PORTNAME=	phonon
 PORTVERSION=	0.7.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTNAME}-backend${PKGNAMESUFFIX}/${PORTVERSION}
 PKGNAMESUFFIX=	-vlc
@@ -17,8 +17,7 @@ LIB_DEPENDS=	libvlc.so:${PORTSDIR}/multimedia/vlc
 USE_KDE4=	kdehier kdeprefix automoc4
 USE_QT4=	corelib gui phonon \
 		qmake_build moc_build rcc_build uic_build
-USE_XZ=		yes
-USES=		cmake pkgconfig
+USES=		cmake pkgconfig tar:xz
 
 post-install:
 	${MKDIR} ${STAGEDIR}${QT_PLUGINDIR}/phonon_backend

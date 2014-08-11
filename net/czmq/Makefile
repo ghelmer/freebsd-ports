@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	czmq
-PORTVERSION=	2.0.3
+PORTVERSION=	2.2.0
 CATEGORIES=	net
 MASTER_SITES=	http://download.zeromq.org/
 
@@ -13,7 +13,7 @@ LICENSE=	LGPL3
 
 LIB_DEPENDS=	libzmq.so:${PORTSDIR}/net/libzmq4
 
-USES=		pathfix
+USES=		libtool pathfix
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

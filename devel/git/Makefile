@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	git
-PORTVERSION=	1.9.0
-PORTREVISION=	1
+PORTVERSION=	2.0.0
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	KERNEL_ORG
+MASTER_SITE_SUBDIR=	software/scm/git
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}-manpages-${PORTVERSION}${EXTRACT_SUFX}
 # We manually extract the htmldocs.
@@ -14,8 +14,6 @@ EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	wxs@FreeBSD.org
 COMMENT?=	Distributed source code management tool
-
-PROJECTHOST=	git-core
 
 CONFLICTS?=	git-subversion-[0-9]*
 
@@ -75,7 +73,9 @@ USES+=		perl5
 MAKE_ENV+=	PERL_PATH=${PERL}
 BUILD_DEPENDS+=	p5-Error>=0:${PORTSDIR}/lang/p5-Error
 RUN_DEPENDS+=	p5-Error>=0:${PORTSDIR}/lang/p5-Error \
-		p5-Net-SMTP-SSL>=0:${PORTSDIR}/mail/p5-Net-SMTP-SSL
+		p5-Net-SMTP-SSL>=0:${PORTSDIR}/mail/p5-Net-SMTP-SSL \
+		p5-MIME-Base64>=0:${PORTSDIR}/converters/p5-MIME-Base64 \
+		p5-Authen-SASL>=0:${PORTSDIR}/security/p5-Authen-SASL
 PLIST_SUB+=	PERLSUB=""
 .else
 MAKE_ARGS+=	NO_PERL=1
@@ -252,6 +252,11 @@ post-install:
 .endif
 .if ${PORT_OPTIONS:MP4}
 	${INSTALL_SCRIPT} ${WRKSRC}/git-p4.py ${STAGEDIR}${PREFIX}/bin/
+.endif
+
+post-stage:
+.if ${PORT_OPTIONS:MPERL}
+	${FIND} ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto -name .packlist -exec ${SED} -i '' 's|^${STAGEDIR}||' '{}' \;
 .endif
 
 .include <bsd.port.mk>

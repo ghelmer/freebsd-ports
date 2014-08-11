@@ -3,7 +3,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${PORT_MINOR_VERSION}.${PORT_BUILD_NUMBER}
-PORTREVISION=	2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}u${JDK_MINOR_VERSION}/promoted/b${JDK_BUILD_NUMBER}/ \
@@ -26,11 +26,10 @@ LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		iconv gmake zip
+USES=		dos2unix iconv gmake zip
 USE_XORG+=	x11 xext xi xrender xt xtst
-MAKE_ARGS=	CC=${CC} CXX=${CXX} HOST_CC=${CC}
+MAKE_ARGS=	CC=${CC:Q} CXX=${CXX:Q} HOST_CC=${CC:Q}
 MAKE_JOBS_UNSAFE=	yes
-USE_GCC=	any
 
 OPTIONS_DEFINE=		DEBUG POLICY TZUPDATE
 OPTIONS_DEFAULT=	POLICY TZUPDATE
@@ -38,8 +37,8 @@ DEBUG_DESC=		Enable extra debugging info
 POLICY_DESC=		Install the Unlimited Strength Policy Files
 TZUPDATE_DESC=		Update the time zone data
 
-PORT_MINOR_VERSION=	51
-PORT_BUILD_NUMBER=	13
+PORT_MINOR_VERSION=	60
+PORT_BUILD_NUMBER=	19
 JDK_MAJOR_VERSION=	7
 JDK_MINOR_VERSION=	40
 JDK_BUILD_NUMBER=	43
@@ -47,20 +46,20 @@ JDK_BUILD_DATE=		26_aug_2013
 JDK_SRC_DISTFILE=	${PORTNAME}-${JDK_MAJOR_VERSION}u${JDK_MINOR_VERSION}-fcs-src-b${JDK_BUILD_NUMBER}-${JDK_BUILD_DATE}
 
 # Use our own version of ant to avoid circular dependencies
-ANT_VERSION=		1.8.4
+ANT_VERSION=		1.9.3
 ANT_DISTFILE=		apache-ant-${ANT_VERSION}-bin
 
 LATEST_LINK=		openjdk7
 
-LIB_DEPENDS+=	freetype:${PORTSDIR}/print/freetype2 \
-		asound:${PORTSDIR}/audio/alsa-lib
+LIB_DEPENDS+=	libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libasound.so:${PORTSDIR}/audio/alsa-lib
 BUILD_DEPENDS+=	zip:${PORTSDIR}/archivers/zip \
 		${UNZIP_CMD}:${PORTSDIR}/archivers/unzip \
 		${LOCALBASE}/include/cups/cups.h:${PORTSDIR}/print/cups-client
 RUN_DEPENDS+=	javavm:${PORTSDIR}/java/javavmwrapper \
 		${LOCALBASE}/lib/X11/fonts/dejavu:${PORTSDIR}/x11-fonts/dejavu
 
-USE_DOS2UNIX=	jdk/src/share/classes/com/sun/org/apache/xml/internal/security/resource/xmlsecurity_en.properties
+DOS2UNIX_FILES=	jdk/src/share/classes/com/sun/org/apache/xml/internal/security/resource/xmlsecurity_en.properties
 
 OPENJDK_OSARCH=	bsd-${ARCH:S/i386/i586/}
 INSTALLDIR=	${PREFIX}/${PORTNAME}${JDK_MAJOR_VERSION}
@@ -86,6 +85,7 @@ MAKE_ENV+=	LANG="C" \
 		JAVACMD=${BOOTSTRAPJDKDIR}/bin/java \
 		X11DIR="${LOCALBASE}" \
 		LOCALDIR="${LOCALBASE}" \
+		COMPILER_WARNINGS_FATAL="false" \
 		NO_DOCS="true" \
 		SKIP_COMPARE_IMAGES="true" \
 		SKIP_FASTDEBUG_BUILD="true" \
@@ -103,21 +103,11 @@ BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk7 \
 		${LOCALBASE}/openjdk6 \
 		${LOCALBASE}/bootstrap-openjdk
 
-NO_STAGE=	yes
+DEBUG_MAKE_ENV=	ALT_OBJCOPY=${NONEXISTENT}
+POLICY_MAKE_ENV=	UNLIMITED_CRYPTO=1
+TZUPDATE_RUN_DEPENDS=	${LOCALBASE}/share/java/zi:${PORTSDIR}/java/java-zoneinfo
 
 .include <bsd.port.options.mk>
-
-.if empty(PORT_OPTIONS:MDEBUG)
-MAKE_ENV+=	ALT_OBJCOPY="/nonexistent"
-.endif
-
-.if ${PORT_OPTIONS:MPOLICY}
-MAKE_ENV+=	UNLIMITED_CRYPTO=1
-.endif
-
-.if ${PORT_OPTIONS:MTZUPDATE}
-RUN_DEPENDS+=  ${LOCALBASE}/share/java/zi:${PORTSDIR}/java/java-zoneinfo
-.endif
 
 # do we have valid native jdk installed?
 .for BJDK in ${BOOTSTRAP_JDKS}
@@ -132,11 +122,6 @@ BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk
 BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:${PORTSDIR}/java/bootstrap-openjdk
 .endif
 
-.if ${OSVERSION} < 800000
-PATCH_DEPENDS+=	gpatch:${PORTSDIR}/devel/patch
-PATCH=		gpatch
-.endif
-
 .include <bsd.port.pre.mk>
 
 .if empty(ICONV_LIB)
@@ -145,7 +130,8 @@ MAKE_ENV+=	EXTRA_CFLAGS=-DLIBICONV_PLUG
 
 post-patch:
 	@${REINPLACE_CMD} "s|%%LOCALBASE%%|${LOCALBASE}|" \
-		${WRKSRC}/hotspot/src/os/bsd/vm/os_bsd.cpp
+		${WRKSRC}/hotspot/src/os/bsd/vm/os_bsd.cpp \
+		${WRKSRC}/jdk/src/share/classes/sun/print/PSPrinterJob.java
 .if empty(ICONV_LIB)
 	@${REINPLACE_CMD} 's| -liconv||' \
 		${WRKSRC}/Makefile \
@@ -163,26 +149,16 @@ pre-install:
 .endif
 
 do-install:
-	@${MKDIR} ${INSTALLDIR}
+	@${MKDIR} ${STAGEDIR}${INSTALLDIR}
 	@cd ${WRKSRC}/build/${OPENJDK_OSARCH}/j2sdk-image && \
-		${COPYTREE_SHARE} . ${INSTALLDIR}
-	@${INSTALL_DATA} ${WRKSRC}/build/${OPENJDK_OSARCH}/btjars/compilefontconfig.jar ${WRKSRC}/build/${OPENJDK_OSARCH}/btjars/javazic.jar ${INSTALLDIR}/jre/lib/
-	@for dir in `${FIND} ${INSTALLDIR} -name bin -type d`; do \
-		${CHOWN} -h -R ${BINOWN}:${BINGRP} $$dir; \
-		${FIND} $$dir -type f -exec ${CHMOD} ${BINMODE} "{}" \; ; \
-	done
-	@${CHOWN} ${BINOWN}:${BINGRP} ${INSTALLDIR}/jre/lib/${ARCH}/jexec
-	@${CHMOD} ${BINMODE} ${INSTALLDIR}/jre/lib/${ARCH}/jexec
-	@${INSTALL_DATA} ${FILESDIR}/cacerts ${INSTALLDIR}/jre/lib/security/cacerts
+		${PAX} -rw . ${STAGEDIR}${INSTALLDIR}
+	@${INSTALL_DATA} ${WRKSRC}/build/${OPENJDK_OSARCH}/btjars/compilefontconfig.jar ${WRKSRC}/build/${OPENJDK_OSARCH}/btjars/javazic.jar ${STAGEDIR}${INSTALLDIR}/jre/lib/
+	@${INSTALL_DATA} ${FILESDIR}/cacerts ${STAGEDIR}${INSTALLDIR}/jre/lib/security/cacerts
 	@${ECHO} "@unexec ${LOCALBASE}/bin/unregistervm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
-	@${FIND} -s ${INSTALLDIR} -not -type d | ${SORT} | \
-		${SED} -e 's#^${PREFIX}/##' >> ${TMPPLIST}
-	@${FIND} ${INSTALLDIR} -type d | ${SORT} -r | \
-		${SED} -e 's,^${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
+	@${FIND} -s ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \
+		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
+	@${FIND} ${STAGEDIR}${INSTALLDIR} -type d | ${SORT} -r | \
+		${SED} -e 's,^${STAGEDIR}${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
 	@${ECHO} "@exec ${LOCALBASE}/bin/registervm '${INSTALLDIR}/bin/java # OpenJDK${JDK_MAJOR_VERSION}'" >> ${TMPPLIST}
-
-post-install:
-	# Register the VM
-	"${LOCALBASE}/bin/registervm" "${INSTALLDIR}/bin/java # OpenJDK${JDK_MAJOR_VERSION}"
 
 .include <bsd.port.post.mk>

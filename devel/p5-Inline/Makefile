@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Inline
-PORTVERSION=	0.54
+PORTVERSION=	0.55
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SISYPHUS
@@ -18,6 +18,8 @@ BUILD_DEPENDS=	p5-Parse-RecDescent>=1.800:${PORTSDIR}/devel/p5-Parse-RecDescent
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Inline-Files>=0:${PORTSDIR}/devel/p5-Inline-Files \
 		p5-Test-Warn>=0.23:${PORTSDIR}/devel/p5-Test-Warn
+
+PORTSCOUT=	limit:^[0-9\.]*$$
 
 USES=		perl5
 USE_PERL5=	configure

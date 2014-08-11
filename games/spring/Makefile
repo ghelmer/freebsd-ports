@@ -3,14 +3,14 @@
 
 PORTNAME=	spring
 PORTVERSION=	94.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/springrts/springrts/${PORTNAME}-${PORTVERSION} \
 		http://springrts.com/dl/
 DISTNAME=	${PORTNAME}_${PORTVERSION}_src
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	A project aiming to create a new and versatile RTS Engine
+COMMENT=	Project aiming to create a new and versatile RTS Engine
 
 LICENSE=	GPLv2
 

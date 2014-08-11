@@ -2,7 +2,7 @@
 
 PORTNAME=	luatex
 PORTVERSION=	0.70.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2012/
 PKGNAMEPREFIX=	tex-
@@ -23,10 +23,8 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libTECkit.so:${PORTSDIR}/textproc/teckit \
 		libzzip.so:${PORTSDIR}/devel/zziplib
 
-USE_XZ=		yes
-USE_GMAKE=	yes
 USE_TEX=	texlive kpathsea web2c texmf formats fmtutil
-USES=		pkgconfig
+USES=		pkgconfig tar:xz  gmake
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
 EXTRACT_FILES=	\
 	build-aux \

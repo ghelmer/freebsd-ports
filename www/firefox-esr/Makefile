@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-DISTVERSION=	24.4.0
+DISTVERSION=	24.6.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}esr/source
@@ -17,7 +18,9 @@ BUILD_DEPENDS=	nspr>=4.10.2:${PORTSDIR}/devel/nspr \
 		sqlite3>=3.7.17:${PORTSDIR}/databases/sqlite3 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		cairo>=1.10.2_1,1:${PORTSDIR}/graphics/cairo \
+		soundtouch>=1.7.0:${PORTSDIR}/audio/soundtouch \
 		harfbuzz>=0.9.16:${PORTSDIR}/print/harfbuzz \
+		graphite2>=1.2.3:${PORTSDIR}/graphics/graphite2 \
 		libvorbis>=1.3.4:${PORTSDIR}/audio/libvorbis \
 		opus>=1.1:${PORTSDIR}/audio/opus \
 		v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat \
@@ -39,9 +42,8 @@ USE_QT4=	# empty
 QT_NONSTANDARD=	yes
 ALL_TARGET=	default
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
 USE_GL=		gl
-USES=		dos2unix
+USES=		dos2unix tar:bzip2
 DOS2UNIX_FILES=	media/webrtc/trunk/webrtc/system_wrappers/source/spreadsortlib/spreadsort.hpp
 NO_MOZPKGINSTALL=yes
 
@@ -75,14 +77,9 @@ pre-configure:
 	(cd ${WRKSRC} && ${AUTOCONF})
 	(cd ${WRKSRC}/js/src/ && ${AUTOCONF})
 
-port-pre-install:
-	${ECHO_CMD} 'share/applications/${MOZILLA}.desktop' >> ${PLISTF}
-	${ECHO_CMD} 'share/pixmaps/${FIREFOX_ICON}' >> ${PLISTF}
-
 post-install:
-	${MKDIR} ${PREFIX}/share/pixmaps
-	${INSTALL_DATA} ${WRKDIR}/${MOZILLA}.desktop ${PREFIX}/share/applications/
-	${LN} -sf ${FIREFOX_ICON_SRC} ${PREFIX}/share/pixmaps/${FIREFOX_ICON}
-	@${CAT} ${PKGMESSAGE}
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${INSTALL_DATA} ${WRKDIR}/${MOZILLA}.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	${LN} -sf ${FIREFOX_ICON_SRC} ${STAGEDIR}${PREFIX}/share/pixmaps/${FIREFOX_ICON}
 
 .include <bsd.port.post.mk>

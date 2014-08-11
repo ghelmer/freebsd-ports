@@ -3,14 +3,14 @@
 
 PORTNAME=	ufoai
 PORTVERSION=	2.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/UFO_AI%202.x/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/$/-/}${PORTVERSION}-source
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	acm@FreeBSD.org
-COMMENT=	A strategy game featuring tactical combat
+COMMENT=	Strategy game featuring tactical combat
 
 LIB_DEPENDS=	vorbis:${PORTSDIR}/audio/libvorbis \
 		jpeg.11:${PORTSDIR}/graphics/jpeg \
@@ -90,9 +90,9 @@ post-patch:
 		${WRKSRC}/src/client/renderer/r_image.c
 
 post-build:
-	@cd ${WRKSRC} && ${GMAKE} lang
+	@cd ${WRKSRC} && ${MAKE_CMD} lang
 .       if defined(WITH_UFORADIANT)
-		@cd ${WRKSRC} && ${GMAKE} uforadiant
+		@cd ${WRKSRC} && ${MAKE_CMD} uforadiant
 .	endif
 
 do-install:

@@ -6,11 +6,11 @@
     SUBDIR += 9e
     SUBDIR += advancecomp
     SUBDIR += amigadepacker
-    SUBDIR += aolserver-nszlib
     SUBDIR += arc
     SUBDIR += arj
     SUBDIR += ark
     SUBDIR += bicom
+    SUBDIR += bzip
     SUBDIR += bzip2
     SUBDIR += cabextract
     SUBDIR += dact
@@ -138,6 +138,7 @@
     SUBDIR += php-horde_lz4
     SUBDIR += php5-bz2
     SUBDIR += php5-phar
+    SUBDIR += php5-snappy
     SUBDIR += php5-zip
     SUBDIR += php5-zlib
     SUBDIR += php53-bz2
@@ -167,11 +168,11 @@
     SUBDIR += rpm4
     SUBDIR += rpm5
     SUBDIR += ruby-lha
-    SUBDIR += ruby-libarchive
     SUBDIR += ruby-zip
     SUBDIR += rubygem-archive-tar-minitar
     SUBDIR += rubygem-archive-zip
     SUBDIR += rubygem-bzip2
+    SUBDIR += rubygem-libarchive
     SUBDIR += rubygem-minitar
     SUBDIR += rubygem-rubyzip
     SUBDIR += rubygem-rubyzip2
@@ -183,7 +184,6 @@
     SUBDIR += snappy-java
     SUBDIR += squeeze
     SUBDIR += squsq
-    SUBDIR += star
     SUBDIR += stuffit
     SUBDIR += szip
     SUBDIR += tardy

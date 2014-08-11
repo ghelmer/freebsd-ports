@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	ttmkfdir:${PORTSDIR}/x11-fonts/ttmkfdir
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 WRKSRC=		${WRKDIR}/ae_fonts1-${PORTVERSION}
 SUB_FILES=	pkg-message
 
@@ -39,7 +39,7 @@ FONTS+=	${font}
 
 .for font in KASR SHMOOKH
 .  if ${PORT_OPTIONS:M${font}}
-FONTS+=	${font:C/(.).*/\1/}${font:L:C/.//}
+FONTS+=	${font:C/(.).*/\1/}${font:tl:C/.//}
 .  endif
 .endfor
 

@@ -13,6 +13,8 @@ COMMENT=	The audio stream generator of the Savonet project
 
 LICENSE=	GPLv2
 
+BROKEN=		Fails to link
+
 BUILD_DEPENDS=	${OCAMLFIND_DEPEND} \
 		${LOCALBASE}/${OCAML_SITELIBDIR}/pcre/pcre.a:${PORTSDIR}/devel/ocaml-pcre	\
 		${LOCALBASE}/${OCAML_SITELIBDIR}/camomile/camomile.a:${PORTSDIR}/devel/ocaml-camomile
@@ -122,7 +124,8 @@ LIB_DEPENDS_vorbis=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 LIB_DEPENDS_speex=	libspeex.so:${PORTSDIR}/audio/speex
 LIB_DEPENDS_theora=	libtheora.so:${PORTSDIR}/multimedia/libtheora
 LIB_DEPENDS_samplerate=	libsamplerate.so:${PORTSDIR}/audio/libsamplerate
-LIB_DEPENDS_soundtouch=	libSoundTouch.so:${PORTSDIR}/audio/soundtouch bpm:${PORTSDIR}/audio/libbpm
+LIB_DEPENDS_soundtouch=	libSoundTouch.so:${PORTSDIR}/audio/soundtouch \
+			libbpm.so:${PORTSDIR}/audio/libbpm
 LIB_DEPENDS_portaudio=	libportaudio.so:${PORTSDIR}/audio/portaudio2
 LIB_DEPENDS_pulseaudio=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 LIB_DEPENDS_taglib=	libtag.so:${PORTSDIR}/audio/taglib
@@ -165,7 +168,7 @@ CONFIGURE_ARGS+=	--disable-bjack
 .endif
 
 .for i in ${_ALL_PACKAGES}
-.if ${PORT_OPTIONS:M${i:U}}
+.if ${PORT_OPTIONS:M${i:tu}}
 .if defined(LIB_DEPENDS_${i})
 LIB_DEPENDS+=	${LIB_DEPENDS_${i}}
 .endif
@@ -186,6 +189,6 @@ post-patch:
 	${SED} ${_DISABLE_SED_ARGS} ${WRKSRC}/PACKAGES.default > ${WRKSRC}/PACKAGES
 
 pre-configure:
-	(cd ${WRKSRC} && ${GMAKE} bootstrap && ${SED} -i '' -e 's/^RUNNING_USER="$$USER"/RUNNING_USER=liquidsoap/' */configure)
+	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} bootstrap && ${SED} -i '' -e 's/^RUNNING_USER="$$USER"/RUNNING_USER=liquidsoap/' */configure)
 
 .include <bsd.port.mk>

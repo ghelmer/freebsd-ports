@@ -7,8 +7,8 @@ CATEGORIES=	biology
 MASTER_SITES=	# put the tarball manually
 DISTFILES=	phd2fasta-acd-dist.tar.Z
 
-MAINTAINER=	mzaki@biol.s.u-tokyo.ac.jp
-COMMENT=	A converter from output files of Phred/Consed to FASTA files
+MAINTAINER=	mzaki@m.u-tokyo.ac.jp
+COMMENT=	Converter from output files of Phred/Consed to FASTA files
 
 RESTRICTED=	Redistribution is not permitted in any form. You must request the tarball via e-mail. Free for academic use.
 .if defined(PACKAGE_BUILDING)

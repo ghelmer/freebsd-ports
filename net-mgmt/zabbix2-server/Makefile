@@ -26,11 +26,8 @@ ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
 .if ${ZABBIX_BUILD} != "frontend" # frontend only needs the version/distribution settings
 .if ${ZABBIX_BUILD} != "agent"
-MAN8+=		zabbix_${ZABBIX_BUILD}.8
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}
 .else
-MAN1+=		zabbix_get.1 zabbix_sender.1
-MAN8+=		zabbix_${ZABBIX_BUILD}d.8
 USE_RC_SUBR=	zabbix_${ZABBIX_BUILD}d
 .endif
 
@@ -61,8 +58,8 @@ CONFIGURE_ARGS+=	--enable-${ZABBIX_BUILD} \
 			--datadir=${ETCDIR}
 
 .if ${ZABBIX_BUILD} != "agent"
-LIB_DEPENDS=	netsnmp:${PORTSDIR}/net-mgmt/net-snmp \
-		execinfo:${PORTSDIR}/devel/libexecinfo
+LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp \
+		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
 SUB_FILES=	pkg-message
 
@@ -70,7 +67,7 @@ CONFIGURE_ARGS+=	--with-net-snmp
 
 OPTIONSFILE=	${PORT_DBDIR}/${PORTNAME}${PKGNAMESUFFIX}/options
 
-OPTIONS_DEFINE=	IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP ODBC JAVAGW MYSQL
+OPTIONS_DEFINE=	IPV6 FPING JABBER CURL LDAP IPMI SSH NMAP JAVAGW
 OPTIONS_DEFAULT=	MYSQL IPV6 FPING JABBER CURL
 
 CURL_DESC=	Support for web monitoring
@@ -82,14 +79,10 @@ NMAP_DESC=	Build/install nmap for o/s detection
 SSH_DESC=	Support for SSH-based checks
 ODBC_DESC=	Support for database checks via ODBC
 JAVAGW_DESC=	Support for Java gateway
-IODBC_DESC=	Use iODBC for ODBC support
-UNIXODBC_DESC=	Use UnixODBC for ODBC support
 
-OPTIONS_SINGLE=	DB ODBC
-OPTIONS_SINGLE_DB=	MYSQL PGSQL SQLITE ORACLE
-OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
+OPTIONS_SINGLE=	DB
+OPTIONS_SINGLE_DB=	MYSQL PGSQL SQLITE ORACLE ODBC
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMYSQL}
@@ -116,7 +109,7 @@ CONFIGURE_ARGS+=	--with-oracle
 .endif
 
 .if ${PORT_OPTIONS:MCURL}
-LIB_DEPENDS+=	curl:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
 CONFIGURE_ARGS+=	--with-libcurl
 .endif
 
@@ -126,12 +119,12 @@ CONFIGURE_ARGS+=	--with-ldap
 .endif
 
 .if ${PORT_OPTIONS:MIPMI}
-LIB_DEPENDS+=	OpenIPMI:${PORTSDIR}/sysutils/openipmi
+LIB_DEPENDS+=	libOpenIPMI.so:${PORTSDIR}/sysutils/openipmi
 CONFIGURE_ARGS+=	--with-openipmi
 .endif
 
 .if ${PORT_OPTIONS:MJABBER}
-LIB_DEPENDS+=	iksemel:${PORTSDIR}/textproc/iksemel
+LIB_DEPENDS+=	libiksemel.so:${PORTSDIR}/textproc/iksemel
 CONFIGURE_ARGS+=	--with-jabber
 .endif
 
@@ -140,17 +133,12 @@ RUN_DEPENDS+=	fping:${PORTSDIR}/net/fping
 .endif
 
 .if ${PORT_OPTIONS:MSSH}
-LIB_DEPENDS+=	ssh2:${PORTSDIR}/security/libssh2
+LIB_DEPENDS+=	libssh2.so:${PORTSDIR}/security/libssh2
 CONFIGURE_ARGS+=	--with-ssh2
 .endif
 
-.if ${PORT_OPTIONS:MIODBC}
-LIB_DEPENDS+=	iodbc:${PORTSDIR}/databases/libiodbc
-CONFIGURE_ARGS+=	--with-iodbc
-.endif
-
-.if ${PORT_OPTIONS:MUNIXODBC}
-LIB_DEPENDS+=	odbc:${PORTSDIR}/databases/unixODBC
+.if ${PORT_OPTIONS:MODBC}
+LIB_DEPENDS+=	libodbc.so:${PORTSDIR}/databases/unixODBC
 CONFIGURE_ARGS+=	--with-unixodbc
 .endif
 .endif # if ${ZABBIX_BUILD} != "agent"
@@ -195,14 +183,13 @@ post-patch:
 post-install:
 
 .if defined(WITH_JAVAGW)
-	@${MV} ${PREFIX}/sbin/zabbix_java/settings.sh ${PREFIX}/sbin/zabbix_java/settings.sh.sample
+	@${MV} ${PREFIX}/sbin/zabbix_java/settings.sh ${STAGEDIR}${PREFIX}/sbin/zabbix_java/settings.sh.sample
 .endif
 
 .if ${ZABBIX_BUILD} != "agent"
-	@${MKDIR} "${DATADIR}/${ZABBIX_BUILD}/database"
-	@cd ${WRKSRC}/upgrades/ && ${COPYTREE_SHARE} dbpatches ${DATADIR}/${ZABBIX_BUILD}/upgrades/
-	@cd ${WRKSRC}/database/ && ${COPYTREE_SHARE} "ibm_db2 mysql oracle postgresql sqlite3" ${DATADIR}/${ZABBIX_BUILD}/database/
-	@${CAT} ${PKGMESSAGE}
+	@${MKDIR} "${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/database"
+	@cd ${WRKSRC}/upgrades/ && ${COPYTREE_SHARE} dbpatches ${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/upgrades/
+	@cd ${WRKSRC}/database/ && ${COPYTREE_SHARE} "ibm_db2 mysql oracle postgresql sqlite3" ${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/database/
 .endif
 .endif # if ${ZABBIX_BUILD} != "frontend"
 

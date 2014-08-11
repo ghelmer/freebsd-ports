@@ -11,17 +11,15 @@ DISTFILES=	${PORTNAME}_src_${PORTVERSION}.txz \
 		${PORTNAME}_data_sounds_${SOUNDS_VER}${EXTRACT_SUFX} \
 		${PORTNAME}_data_terrain_${TERRAIN_VER}${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Action flight simulation computer program using OSG
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libosg.so:${PORTSDIR}/graphics/osg
 
-USES=		cmake tar:xz
+USES=		cmake tar:xz lua:51
 USE_GL=		gl
-USE_LUA=	5.1
-LUA_COMPS=	lua:build
 
 MISC_VER=	20091027
 MODELS_VER=	20090615

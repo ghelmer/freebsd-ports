@@ -3,7 +3,7 @@
 
 PORTNAME=	mailgraph
 PORTVERSION=	1.14
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	http://mailgraph.schweikert.ch/pub/ \
 		http://mailgraph.schweikert.ch/pub/old/
@@ -15,7 +15,8 @@ RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool	\
 		p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
 
 NO_BUILD=	yes
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	mailgraph.pl
 
 CGIDIR?=	${PREFIX}/www/cgi-bin
 DATADIR?=	/var/db/mailgraph
@@ -32,7 +33,6 @@ DOCS=		README CHANGES
 PORTDOCS=	${DOCS}
 .endif
 
-NO_STAGE=	yes
 pre-everything::
 	@${ECHO_MSG} ""
 	@${ECHO_MSG} "You may set following options:"
@@ -47,23 +47,16 @@ post-patch:
 	@${REINPLACE_CMD} -e "s,%%DATADIR%%,${DATADIR}," ${WRKSRC}/mailgraph.cgi
 
 do-install:
-	${MKDIR} ${CGIDIR}
-	${MKDIR} ${WWWROOT}/mailgraph
-	${MKDIR} ${DATADIR}
-	@${CHOWN} -R ${MAILGRAPH_USER}:${MAILGRAPH_GROUP} ${DATADIR}
-	@${INSTALL_SCRIPT} ${WRKSRC}/mailgraph.pl ${PREFIX}/sbin
-	@${INSTALL_SCRIPT} ${WRKSRC}/mailgraph.cgi ${CGIDIR}
-	@${INSTALL_DATA} ${WRKSRC}/mailgraph.css ${WWWROOT}/mailgraph
+	${MKDIR} ${STAGEDIR}${CGIDIR}
+	${MKDIR} ${STAGEDIR}${WWWROOT}/mailgraph
+	@${INSTALL_SCRIPT} ${WRKSRC}/mailgraph.pl ${STAGEDIR}${PREFIX}/sbin
+	@${INSTALL_SCRIPT} ${WRKSRC}/mailgraph.cgi ${STAGEDIR}${CGIDIR}
+	@${INSTALL_DATA} ${WRKSRC}/mailgraph.css ${STAGEDIR}${WWWROOT}/mailgraph
 .if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	for f in ${DOCS}; do \
-	  ${INSTALL_DATA} ${WRKSRC}/$$f ${DOCSDIR}; \
+	  ${INSTALL_DATA} ${WRKSRC}/$$f ${STAGEDIR}${DOCSDIR}; \
 	done
 .endif
-
-post-install:
-	@${ECHO_MSG} ""
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG} ""
 
 .include <bsd.port.mk>

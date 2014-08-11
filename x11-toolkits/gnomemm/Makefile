@@ -5,24 +5,22 @@ PORTNAME=	gnomemm
 PORTVERSION=	2.6.2
 PORTREVISION=	8
 CATEGORIES=	x11-toolkits devel gnome
-MASTER_SITES=   # empty
-DISTFILES=      # empty
-EXTRACT_ONLY=   # empty
+MASTER_SITES=	# empty
+DISTFILES=	# empty
+EXTRACT_ONLY=	# empty
 
 MAINTAINER=	bland@FreeBSD.org
 COMMENT=	The "meta-port" for the powerful C++ bindings to the GNOME2 libraries
 
-LIB_DEPENDS=	gconfmm-2.6.1:${PORTSDIR}/devel/gconfmm26 \
-		gnomevfsmm-2.6.1:${PORTSDIR}/devel/gnome-vfsmm \
-		glademm-2.4.1:${PORTSDIR}/devel/libglademm24 \
-		gnomecanvasmm-2.6.1:${PORTSDIR}/graphics/libgnomecanvasmm26 \
-		gnomemm-2.6.1:${PORTSDIR}/x11/libgnomemm26 \
-		gnomeuimm-2.6.1:${PORTSDIR}/x11-toolkits/libgnomeuimm26
+LIB_DEPENDS=	libgconfmm-2.6.so:${PORTSDIR}/devel/gconfmm26 \
+		libgnomevfsmm-2.6.so:${PORTSDIR}/devel/gnome-vfsmm \
+		libglademm-2.4.so:${PORTSDIR}/devel/libglademm24 \
+		libgnomecanvasmm-2.6.so:${PORTSDIR}/graphics/libgnomecanvasmm26 \
+		libgnomemm-2.6.so:${PORTSDIR}/x11/libgnomemm26 \
+		libgnomeuimm-2.6.so:${PORTSDIR}/x11-toolkits/libgnomeuimm26
 
 NO_BUILD=	yes
-LATEST_LINK=	gnomemm2
+NO_INSTALL=	yes
+NO_MTREE=	yes
 
-do-install:     # empty
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

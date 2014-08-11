@@ -14,8 +14,10 @@ EXTRACT_ONLY=	config.tgz
 MAINTAINER=	joemann@beefree.free.de
 COMMENT=	Popular functional language from Bell Labs
 
+BROKEN=		Dysfunctional
+
 NO_WRKSUBDIR=	yes
-USE_GMAKE=	yes
+USES=		gmake
 
 ONLY_FOR_ARCHS=	i386
 
@@ -278,7 +280,7 @@ do-install:
 	@${CHOWN} -R ${BINOWN}:${BINGRP} "${MLBIN}" "${MLLIB}"
 .if ${PORT_OPTIONS:MEVERYTHING}
 	@${ECHO} '(* Cleaning base/runtime: *)'
-	cd ${WRKDIR}/base/runtime/objs && ${GMAKE} clean
+	cd ${WRKDIR}/base/runtime/objs && ${MAKE_CMD} clean
 	@${ECHO} -n '(* Installing sources into ${MLROOT} ...'
 	@cd ${WRKDIR} && ${TAR} -cf - ${MLSRCEXCLUDES} ${MLSRCDIRS} | \
 	${TAR} -xf - -C "${MLROOT}"

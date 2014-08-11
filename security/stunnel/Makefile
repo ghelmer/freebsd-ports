@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stunnel
-PORTVERSION=	5.00
+PORTVERSION=	5.02
 CATEGORIES=	security
 MASTER_SITES=	https://www.stunnel.org/downloads/%SUBDIR%/ \
 		http://mirrors.zerg.biz/stunnel/%SUBDIR%/ \
@@ -25,12 +25,13 @@ COMMENT=	SSL encryption wrapper for standard network daemons
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USE_AUTOTOOLS=	libtool
+USES=		shebangfix libtool
 USE_RC_SUBR=	stunnel
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var/tmp --enable-static
+SHEBANG_FILES=	src/stunnel3.in
 
 OPTIONS_DEFINE=			IPV6 LIBWRAP SSL_PORT FIPS
 OPTIONS_SINGLE=			THREAD
@@ -101,6 +102,9 @@ post-patch:
 .else
 	@${REINPLACE_CMD} -E -e 's|\$$\(docdir\)/examples|${EXAMPLESDIR}|g' ${WRKSRC}/tools/Makefile.in
 .endif
+
+post-build:
+	@${STRIP_CMD} ${WRKSRC}/src/.libs/libstunnel.so
 
 cert:
 	@${ECHO} ""

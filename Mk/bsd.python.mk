@@ -14,7 +14,7 @@ Python_Include_MAINTAINER=	python@FreeBSD.org
 # language. It's automatically included when USE_PYTHON is defined in
 # the ports' makefile. If your port requires only some set of Python
 # versions, you can define USE_PYTHON as [min]-[max] or min+ or -max
-# or as an explicit version or as a meta port version (eg. 3.1-3.2
+# or as an explicit version or as a meta port version (eg. 3.2-3.3
 # for [min]-[max], 2.7+ or -3.2 for min+ and -max, 2.7 for an
 # explicit version or 3 for a meta port version).
 #
@@ -27,7 +27,7 @@ Python_Include_MAINTAINER=	python@FreeBSD.org
 #					  number (used for dependencies).
 #					  default: ${PYTHONBASE}/bin/${PYTHON_VERSION}
 #
-# PYTHON_DISTFILE	- The ${DISTFILE} for your python version. Needed for
+# PYTHON_DISTNAME	- The ${DISTNAME} for your python version. Needed for
 #					  extensions like bsddb, gdbm, sqlite3 and tkinter, which
 #					  are built from sources contained in the Python
 #					  distribution.
@@ -122,6 +122,29 @@ Python_Include_MAINTAINER=	python@FreeBSD.org
 # PYXML				- Dependency line for the XML extension. As of Python-2.0,
 #					  this extension is in the base distribution.
 #
+# PYTHON_CONCURRENT_INSTALL
+#					- Indicates that the port can be installed for different
+#					  python versions at the same time. The port is supposed
+#					  to use a unique prefix for certain directories using
+#					  USES=uniquefiles:dirs (see the uniquefiles.mk Uses for
+#					  details about the directories), if set to yes. Binaries
+#					  receive an additional suffix, based on PYTHON_VER.
+#
+#					  The values for the uniquefiles USES are set as follows:
+#
+#						UNIQUE_PREFIX=  ${PYTHON_PKGNAMEPREFIX}
+#						UNIQUE_SUFFIX=  -${PYTHON_VER}
+#
+#					  If the port is installed for the current default
+#					  python version, scripts and binaries in
+#
+#						${PREFIX}/bin
+#						${PREFIX}/sbin
+#						${PREFIX}/libexec
+#
+#					  are linked from the prefixed version to the prefix-less
+#					  original name, e.g. bin/foo-2.7 --> bin/foo.
+#
 # USE_PYTHON_PREFIX	- Says that the port installs in ${PYTHONBASE}.
 #
 # USE_PYDISTUTILS	- Use distutils as do-configure, do-build and do-install
@@ -187,14 +210,14 @@ Python_Include_MAINTAINER=	python@FreeBSD.org
 #
 # PYEASYINSTALL_OSARCH
 #					- Platform identifier for easy_install.
-#					  default: -${OPSYS:L}-${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}-${ARCH}
+#					  default: -${OPSYS:tl}-${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}-${ARCH}
 #							   if PYEASYINSTALL_ARCHDEP is defined.
 #
 # PYEASYINSTALL_CMD - Full file path to easy_install command.
 #					  default: ${LOCALBASE}/bin/easy_install-${PYTHON_VER}
 
 _PYTHON_PORTBRANCH=		2.7
-_PYTHON_ALLBRANCHES=	2.7 3.3 3.2 3.1	# preferred first
+_PYTHON_ALLBRANCHES=	2.7 3.4 3.3 3.2	# preferred first
 
 # Determine version number of Python to use
 .include "${PORTSDIR}/Mk/bsd.default-versions.mk"
@@ -289,7 +312,7 @@ IGNORE=				needs Python ${_PYTHON_VERSION_NONSUPPORTED}.\
 					But you specified ${_PYTHON_VERSION}
 .else
 .undef _PYTHON_VERSION
-.for ver in ${_PYTHON_ALLBRANCHES}
+.for ver in ${PYTHON2_DEFAULT} ${PYTHON3_DEFAULT} ${_PYTHON_ALLBRANCHES}
 __VER=		${ver}
 .if !defined(_PYTHON_VERSION) && \
 	!(!empty(_PYTHON_VERSION_MINIMUM) && ( \
@@ -333,8 +356,19 @@ PYTHON_PORTVERSION=	${PYTHON_DEFAULT_PORTVERSION}
 # Propagate the chosen python version to submakes.
 .MAKEFLAGS:	PYTHON_VERSION=python${_PYTHON_VERSION}
 
+# Python-3.4
+.if ${PYTHON_VERSION} == "python3.4"
+PYTHON_PORTVERSION?=	3.4.1
+PYTHON_PORTSDIR=	${PORTSDIR}/lang/python34
+PYTHON_REL=		341
+PYTHON_SUFFIX=		34
+PYTHON_VER=		3.4
+.if exists(${PYTHON_CMD}-config) && ${PORTNAME} != python34
+PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
+.endif
+
 # Python-3.3
-.if ${PYTHON_VERSION} == "python3.3"
+.elif ${PYTHON_VERSION} == "python3.3"
 PYTHON_PORTVERSION?=	3.3.5
 PYTHON_PORTSDIR=	${PORTSDIR}/lang/python33
 PYTHON_REL=		335
@@ -354,14 +388,6 @@ PYTHON_VER=		3.2
 .if exists(${PYTHON_CMD}-config) && defined(PORTNAME) && ${PORTNAME} != python32
 PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
 .endif
-
-# Python-3.1
-.elif ${PYTHON_VERSION} == "python3.1"
-PYTHON_PORTVERSION?=	3.1.5
-PYTHON_PORTSDIR=	${PORTSDIR}/lang/python31
-PYTHON_REL=		315
-PYTHON_SUFFIX=		31
-PYTHON_VER=		3.1
 
 # Python-2.7
 .elif ${PYTHON_VERSION} == "python2.7"
@@ -386,9 +412,9 @@ check-makevars::
 	@${ECHO} "Makefile error: bad value for PYTHON_VERSION: ${PYTHON_VERSION}."
 	@${ECHO} "Legal values are:"
 	@${ECHO} "  python2.7 (default)"
-	@${ECHO} "  python3.1"
 	@${ECHO} "  python3.2"
 	@${ECHO} "  python3.3"
+	@${ECHO} "  python3.4"
 	@${FALSE}
 .endif
 
@@ -396,7 +422,7 @@ PYTHON_MAJOR_VER=	${PYTHON_VER:R}
 
 PYTHON_MASTER_SITES=		${MASTER_SITE_PYTHON}
 PYTHON_MASTER_SITE_SUBDIR=	ftp/python/${PYTHON_PORTVERSION:C/rc[0-9]//}
-PYTHON_DISTFILE=		Python-${PYTHON_PORTVERSION:S/.rc/rc/}${EXTRACT_SUFX}
+PYTHON_DISTNAME=		Python-${PYTHON_PORTVERSION:S/.rc/rc/}
 PYTHON_WRKSRC=				${WRKDIR}/Python-${PYTHON_PORTVERSION:S/.rc/rc/}
 
 PYTHON_ABIVER?=			# empty
@@ -404,12 +430,52 @@ PYTHON_INCLUDEDIR=		${PYTHONBASE}/include/${PYTHON_VERSION}${PYTHON_ABIVER}
 PYTHON_LIBDIR=			${PYTHONBASE}/lib/${PYTHON_VERSION}
 PYTHON_PKGNAMEPREFIX=	py${PYTHON_SUFFIX}-
 PYTHON_PKGNAMESUFFIX=	-py${PYTHON_SUFFIX}
-PYTHON_PLATFORM=		${OPSYS:L}${OSREL:C/\.[0-9.]*//}
+PYTHON_PLATFORM=		${OPSYS:tl}${OSREL:C/\.[0-9.]*//}
 PYTHON_SITELIBDIR=		${PYTHON_LIBDIR}/site-packages
 
 PYTHONPREFIX_INCLUDEDIR=	${PYTHON_INCLUDEDIR:S;${PYTHONBASE};${PREFIX};}
 PYTHONPREFIX_LIBDIR=		${PYTHON_LIBDIR:S;${PYTHONBASE};${PREFIX};}
 PYTHONPREFIX_SITELIBDIR=	${PYTHON_SITELIBDIR:S;${PYTHONBASE};${PREFIX};}
+
+# Used for recording the installed files.
+_PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
+
+# Ports bound to a certain python version SHOULD
+# - use the PYTHON_PKGNAMEPREFIX
+# - use directories using the PYTHON_PKGNAMEPREFIX
+# - install binaries using the required PYTHON_VER, with
+#   the default python version creating a symlink to the original binary
+#   name (for staging-aware ports).
+#
+# What makes a port 'bound' to a certain python version?
+# - it installs data into PYTHON_SITELIBDIR, PYTHON_INCLUDEDIR, ...
+# - it links against libpython*.so
+# - it uses USE_PYDISTUTILS
+#
+PYTHON_CONCURRENT_INSTALL?=	no
+.if defined(NO_STAGE) && ${PYTHON_CONCURRENT_INSTALL} == "yes"
+BROKEN=		PYTHON_CONCURRENT_INSTALL uses USES=uniquefiles, which is not stage-safe
+.endif
+
+.if ${PYTHON_CONCURRENT_INSTALL} == "yes"
+_USES_POST+=			uniquefiles:dirs
+.if ${PYTHON_VERSION} == ${PYTHON_DEFAULT_VERSION}
+UNIQUE_DEFAULT_LINKS=	yes
+.else
+UNIQUE_DEFAULT_LINKS=	no
+.endif
+UNIQUE_PREFIX=			${PYTHON_PKGNAMEPREFIX}
+UNIQUE_SUFFIX=			-${PYTHON_VER}
+
+.if defined(PYDISTUTILS_AUTOPLIST)
+UNIQUE_FIND_SUFFIX_FILES=	\
+	${SED} -e 's|^${PREFIX}/||' ${_PYTHONPKGLIST} ${TMPPLIST} | \
+	${GREP} -e '^bin/.*$$\|^sbin/.*$$\|^libexec/.*$$'
+.else
+UNIQUE_FIND_SUFFIX_FILES=	\
+	${GREP} -he '^bin/.*$$\|^sbin/.*$$\|^libexec/.*$$' ${TMPPLIST} 2>/dev/null
+.endif
+.endif # ${PYTHON_CONCURRENT_INSTALL} == "yes"
 
 _CURRENTPORT:=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 .if defined(USE_PYDISTUTILS) && ${_CURRENTPORT:S/${PYTHON_SUFFIX}$//} != ${PYTHON_PKGNAMEPREFIX}setuptools
@@ -436,7 +502,7 @@ MAKE_ENV+=						PYTHONPATH=${PYEASYINSTALL_SITELIBDIR}
 .endif
 
 .if defined(PYEASYINSTALL_ARCHDEP)
-PYEASYINSTALL_OSARCH?=			-${OPSYS:L}-${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}-${ARCH}
+PYEASYINSTALL_OSARCH?=			-${OPSYS:tl}-${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}-${ARCH}
 MAKE_ENV+=						_PYTHON_HOST_PLATFORM=${PYEASYINSTALL_OSARCH}
 .endif
 PYEASYINSTALL_EGG?=				${PYDISTUTILS_PKGNAME:C/[^A-Za-z0-9.]+/_/g}-${PYDISTUTILS_PKGVERSION:C/[^A-Za-z0-9.]+/_/g}-py${PYTHON_VER}${PYEASYINSTALL_OSARCH}.egg
@@ -482,7 +548,10 @@ post-install: stage-python-compileall
 
 # distutils support
 PYSETUP?=				setup.py
-PYDISTUTILS_SETUP?=	-c "import setuptools; __file__='${PYSETUP}'; exec(compile(open(__file__).read().replace('\\r\\n', '\\n'), __file__, 'exec'))"
+PYDISTUTILS_SETUP?=	-c \
+	"import sys; import setuptools; \
+	__file__='${PYSETUP}'; sys.argv[0]='${PYSETUP}'; \
+	exec(compile(open(__file__, 'rb').read().replace(b'\\r\\n', b'\\n'), __file__, 'exec'))"
 PYDISTUTILS_CONFIGUREARGS?=
 PYDISTUTILS_BUILDARGS?=
 PYDISTUTILS_INSTALLARGS?=	-c -O1 --prefix=${PREFIX}
@@ -494,7 +563,6 @@ PYDISTUTILS_INSTALLARGS+=	--single-version-externally-managed
 PYDISTUTILS_INSTALLARGS+=	--root=${STAGEDIR}
 . endif
 .endif
-_PYTHONPKGLIST=				${WRKDIR}/.PLIST.pymodtmp
 PYDISTUTILS_INSTALLARGS:=	--record ${_PYTHONPKGLIST} \
 		${PYDISTUTILS_INSTALLARGS}
 
@@ -515,7 +583,7 @@ add-plist-egginfo:
 		${LS} ${PYDISTUTILS_EGGINFODIR}/${egginfo} | while read f; do \
 			${ECHO_CMD} ${PYDISTUTILS_EGGINFODIR:S;^${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}/$${f} >> ${TMPPLIST}; \
 		done; \
-		${ECHO_CMD} "@unexec rmdir \"%D/${PYDISTUTILS_EGGINFODIR:S;${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}\" 2>/dev/null || true" >> ${TMPPLIST}; \
+		${ECHO_CMD} "@dirrmtry ${PYDISTUTILS_EGGINFODIR:S;${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}" >> ${TMPPLIST}; \
 	fi;
 . endfor
 .else
@@ -534,7 +602,7 @@ add-plist-pymod:
 	@${ECHO_CMD} "${_RELLIBDIR}" >> ${WRKDIR}/.localmtree
 	@${SED} -e 's|^${STAGEDIR}${PREFIX}/||' \
 		-e 's|^${PREFIX}/||' \
-		-e 's|^\(man/man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2${MANEXT}|' \
+		-e 's|^\(man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2${MANEXT}|' \
 		${_PYTHONPKGLIST} | ${SORT} >> ${TMPPLIST}
 	@${SED} -e 's|^${STAGEDIR}${PREFIX}/\(.*\)/\(.*\)|\1|' \
 		-e 's|^${PREFIX}/\(.*\)/\(.*\)|\1|' ${_PYTHONPKGLIST} | \
@@ -548,11 +616,13 @@ add-plist-pymod:
 		while read line; do \
 			${GREP} -qw "^$${line}$$" ${WRKDIR}/.localmtree || { \
 				[ -n "$${line}" ] && \
-				${ECHO_CMD} "@unexec rmdir \"%D/$${line}\" 2>/dev/null || true"; \
+				${ECHO_CMD} "@dirrmtry $${line}"; \
 			}; \
 		done | ${SORT} | uniq | ${SORT} -r >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec rmdir \"%D/${PYTHON_SITELIBDIR:S;${PYTHONBASE}/;;}\" 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec rmdir \"%D/${PYTHON_LIBDIR:S;${PYTHONBASE}/;;}\" 2>/dev/null || true" >> ${TMPPLIST}
+.if ${PREFIX} != ${LOCALBASE}
+	@${ECHO_CMD} "@dirrmtry ${PYTHON_SITELIBDIR:S;${PYTHONBASE}/;;}" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dirrmtry ${PYTHON_LIBDIR:S;${PYTHONBASE}/;;}" >> ${TMPPLIST}
+.endif
 
 .else
 .if ${PYTHON_REL} >= 320 && defined(PYTHON_PY3K_PLIST_HACK)
@@ -564,6 +634,7 @@ add-plist-post:
 	@${AWK} '\
 		/\.py[co]$$/ && !($$0 ~ "/" pc "/") {id = match($$0, /\/[^\/]+\.py[co]$$/); if (id != 0) {d = substr($$0, 1, RSTART - 1); dirs[d] = 1}; sub(/\.py[co]$$/,  "." mt "&"); sub(/[^\/]+\.py[co]$$/, pc "/&"); print; next} \
 		/^@dirrm / {d = substr($$0, 8); if (d in dirs) {print $$0 "/" pc}; print $$0; next} \
+		/^@dirrmtry / {d = substr($$0, 11); if (d in dirs) {print $$0 "/" pc}; print $$0; next} \
 		{print} \
 		END {if (sp in dirs) {print "@dirrm " sp "/" pc}} \
 		' \

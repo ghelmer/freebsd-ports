@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ffe
-PORTVERSION=	0.3.3
+PORTVERSION=	0.3.4
 CATEGORIES=	textproc
 MASTER_SITES=	SF/ff-extractor/ff-extractor/${PORTVERSION}
 
@@ -11,6 +11,7 @@ COMMENT=	Flat file extractor
 
 OPTIONS_DEFINE=	DOCS
 
+USES=		makeinfo
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 PORTDOCS=	${PORTNAME}.html

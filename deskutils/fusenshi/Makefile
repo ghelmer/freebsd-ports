@@ -3,13 +3,13 @@
 
 PORTNAME=	fusenshi
 PORTVERSION=	0.9.0
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	deskutils
 MASTER_SITES=	http://www.ongs.co.jp/projects/fusenshi/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ozawa@ongs.co.jp
-COMMENT=	A Post-it(R) like application with network support
+COMMENT=	Post-it(R) like application with network support
 
 LIB_DEPENDS=	libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24 \
 		libgtksourceview-1.0.so:${PORTSDIR}/x11-toolkits/gtksourceview

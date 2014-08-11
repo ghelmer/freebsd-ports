@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	mod_wsgi
-PORTVERSION=	3.4
-PORTREVISION=	1
+PORTVERSION=	3.5
 CATEGORIES=	www python
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	http://github.com/GrahamDumpleton/${PORTNAME}/archive/${PORTVERSION}.tar.gz?dummy=/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	3
 
@@ -13,7 +12,7 @@ COMMENT=	Python WSGI adapter module for Apache
 
 LICENSE=	APACHE20
 
-CONFLICTS=	${PKGNAMEPREFIX}mod_wsgi2.* mod_wsgi2.* \
+CONFLICTS_INSTALL=${PKGNAMEPREFIX}mod_wsgi2.* mod_wsgi2.* \
 		${PKGNAMEPREFIX}mod_wsgi-2.* mod_wsgi-2.*
 
 PROJECTHOST=	modwsgi

@@ -2,7 +2,7 @@
 
 PORTNAME=	apache22
 PORTVERSION=	2.2.27
-#PORTREVISION?=	1
+PORTREVISION?=	6
 CATEGORIES=	www ipv6
 MASTER_SITES=	${MASTER_SITE_APACHE_HTTPD}
 DISTNAME=	httpd-${PORTVERSION}
@@ -20,11 +20,14 @@ CONFLICTS_INSTALL=	caudium14-1.* \
 		apache-*-2.4.* apache24-*-2.4.*
 
 USE_APACHE=	common22
-USES=		tar:bzip2 iconv perl5
+USES=		tar:bzip2 iconv perl5 libtool cpe
 USE_PERL5=	run
-USE_AUTOTOOLS=	autoconf libtool
+USE_AUTOTOOLS=	autoconf
 USE_RC_SUBR=	apache22 htcacheclean
 LIBTOOLFILES=	configure.in
+
+CPE_VENDOR=	apache
+CPE_PRODUCT=	http_server
 
 PORTDOCS=	*
 
@@ -47,8 +50,7 @@ WITH_SSL_PORT?=		443
 AUTHNZ_LDAP_CONFIGURE_ON=	--enable-authnz-ldap
 
 # http://httpd.apache.org/docs/2.2/bind.html
-IPV4_MAPPED_CONFIGURE_OFF=	--disable-v4-mapped
-IPV4_MAPPED_CONFIGURE_ON=	--enable-v4-mapped
+IPV4_MAPPED_CONFIGURE_ENABLE=	v4-mapped
 
 LDAP_CONFIGURE_ON=		--enable-ldap=shared
 SSL_CFLAGS=			-I${OPENSSLINC}
@@ -68,10 +70,6 @@ ETC_SUBDIRS=		Includes envvars.d extra modules.d
 SUB_LIST+=	RELOAD_CMD=graceful
 .else
 SUB_LIST+=	RELOAD_CMD=hrestart
-.endif
-
-.if ! ${PORT_OPTIONS:MDOCS}
-MAKE_ENV+=	NOPORTDOCS=yes
 .endif
 
 APR_CONFIG?=		${LOCALBASE}/bin/apr-1-config
@@ -123,13 +121,14 @@ IGNORE=		suEXEC UserDir patch requires mod_suexec.\
 .include <bsd.port.pre.mk>
 .include "${APACHEDIR}/Makefile.modules"
 
-pre-configure::
-	@${ECHO_MSG}	""
-	@${ECHO_MSG}	"  You can check your modules configuration by using make show-modules"
-	@${ECHO_MSG}	""
-
 show-options:
 	@${SED} -ne 's/^##//p' ${APACHEDIR}/Makefile.doc
+
+pre-everything::
+	@${CAT}	${FILESDIR}/HEADS_UP
+.if !defined(BATCH) || !defined(PORT_BUILDING)
+	@/bin/sleep 5
+.endif
 
 post-extract:
 # remove possible leftover .svn directories in the sources
@@ -149,6 +148,22 @@ post-patch:
 	@${RM} -rf ${WRKSRC}/srclib
 	@${REINPLACE_CMD} -e 's/srclib//' ${WRKSRC}/Makefile.in
 
+pre-configure::
+	@${ECHO_MSG}	""
+	@${ECHO_MSG}	"  You can check your modules configuration by using make show-modules"
+	@${ECHO_MSG}	""
+
+# Fix build with OpenSSL from ports
+.if ${PORT_OPTIONS:MSSL}
+. if ${OPSYS} == FreeBSD
+.  if defined(OPENSSL_INSTALLED) && ${OPENSSL_INSTALLED} != ""
+	@${ECHO_MSG}	"===>  apply fix for FreeBSD-${OSREL} (${OSVERSION}) for usage with ${OPENSSL_INSTALLED}"
+	@${ECHO_MSG}	""
+	${REINPLACE_CMD} -e "s|(ALL_CFLAGS)|(ALL_CFLAGS) -L${OPENSSLLIB}|" ${WRKSRC}/build/rules.mk.in
+.  endif
+. endif
+.endif
+
 post-configure:
 	@FTPUSERS=`${EGREP} -v '^#' /etc/ftpusers| ${TR} -s "\n" " "` ;\
 	${REINPLACE_CMD} -e "s,%%FTPUSERS%%,$${FTPUSERS}," ${WRKSRC}/docs/conf/extra/httpd-userdir.conf
@@ -158,8 +173,14 @@ post-configure:
 post-install:
 	@${MKDIR} ${ETC_SUBDIRS:S|^|${STAGEDIR}${ETCDIR}/|}
 	${INSTALL_DATA} ${FILESDIR}/no-accf.conf ${STAGEDIR}${ETCDIR}/Includes/
-	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}/${ETCDIR}/modules.d/
+	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}${ETCDIR}/modules.d/
+# place for module configuration samples
+	@${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}/modules.d
+	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}${EXAMPLESDIR}/modules.d
 
+# suppress warning for non binary files
+	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* \
+		${STAGEDIR}${PREFIX}/libexec/apache22/*.so 2>/dev/null
 .if ${PORT_OPTIONS:MLOG_FORENSIC}
 	@${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin
 .endif

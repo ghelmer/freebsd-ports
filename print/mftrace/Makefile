@@ -26,27 +26,27 @@ RUN_DEPENDS+=	potrace:${PORTSDIR}/graphics/potrace
 USE_PYTHON=	yes
 USE_TEX=	base texmf
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 MAKEFILE=	GNUmakefile
 
-.if !defined(NO_INSTALL_MANPAGES)
-MAN1=	mftrace.1
-.endif
 
 PLIST_FILES=	\
 		bin/gf2pbm \
 		bin/mftrace \
 		%%PYTHON_SITELIBDIR%%/afm.py \
 		%%PYTHON_SITELIBDIR%%/tfm.py
-
-NO_STAGE=	yes
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/gf2pbm ${PREFIX}/bin
-	${INSTALL_SCRIPT} ${WRKSRC}/mftrace ${PREFIX}/bin
 .if !defined(NO_INSTALL_MANPAGES)
-	${INSTALL_MAN} ${WRKSRC}/mftrace.1 ${MANPREFIX}/man/man1
+PLIST_FILES+=	man/man1/mftrace.1.gz
 .endif
-	${INSTALL_SCRIPT} ${WRKSRC}/tfm.py ${PYTHON_SITELIBDIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/afm.py ${PYTHON_SITELIBDIR}
+
+do-install:
+	${INSTALL_PROGRAM} ${WRKSRC}/gf2pbm ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/mftrace ${STAGEDIR}${PREFIX}/bin
+.if !defined(NO_INSTALL_MANPAGES)
+	${INSTALL_MAN} ${WRKSRC}/mftrace.1 ${STAGEDIR}${MANPREFIX}/man/man1
+.endif
+	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/tfm.py ${STAGEDIR}${PYTHON_SITELIBDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/afm.py ${STAGEDIR}${PYTHON_SITELIBDIR}
 
 .include <bsd.port.mk>

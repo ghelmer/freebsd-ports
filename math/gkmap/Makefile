@@ -3,6 +3,7 @@
 
 PORTNAME=	gkmap
 PORTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/gkmap/gkmap/gkmap-${PORTVERSION}/
 
@@ -16,5 +17,4 @@ GNU_CONFIGURE=	yes
 USES=		pkgconfig
 USE_GNOME=	gtk20 libglade2 libxml2
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	opendnssec
-PORTVERSION=	1.3.16
+PORTVERSION=	1.3.17
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://dist.opendnssec.org/source/
 PKGNAMESUFFIX=	13
@@ -10,7 +11,7 @@ PKGNAMESUFFIX=	13
 MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	Tool suite for maintaining DNSSEC
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	ldns>=1.6.16:${PORTSDIR}/dns/ldns
 LIB_DEPENDS=	libldns.so:${PORTSDIR}/dns/ldns

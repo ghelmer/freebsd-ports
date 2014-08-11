@@ -3,12 +3,12 @@
 
 PORTNAME=	mudmagic
 PORTVERSION=	1.9
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	games
 MASTER_SITES=	http://www.mudmagic.com/mud-client/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A GTK+ based MUD client
+COMMENT=	GTK+ based MUD client
 
 LICENSE=	GPLv2
 

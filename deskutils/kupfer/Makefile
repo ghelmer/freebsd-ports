@@ -3,9 +3,10 @@
 
 PORTNAME=	kupfer
 PORTVERSION=	208
+PORTREVISION=	2
 CATEGORIES=	deskutils
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convenient command and access tool
 
 LICENSE=	GPLv3
@@ -39,25 +40,23 @@ DOCSRCDIR2=	${WRKSRC}/Documentation
 DOCSDIR2=	${DOCSDIR}/Documentation
 DOC_FILES2=	Contributing.rst GTKTheming.rst PluginAPI.rst VersionHistory.rst
 
-OPTIONS_DEFINE=	DOCS NAUTILUS NLS RHYTHMBOX
+OPTIONS_DEFINE=	DOCS NLS RHYTHMBOX
 
 OPTIONS_SUB=	yes
 
-NAUTILUS_DESC=	Enable Nautilus support
 RHYTHMBOX_DESC=	Enable Rhythmbox plugins support
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
-NAUTILUS_RUN_DEPENDS=	${LOCALBASE}/lib/nautilus-python/nautilus:${PORTSDIR}/x11-fm/py-nautilus
 RHYTHMBOX_RUN_DEPENDS=	rhythmbox:${PORTSDIR}/audio/rhythmbox
 
 .include <bsd.port.options.mk>
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|--quiet||' ${WRKSRC}/bin/kupfer.in
+	@${REINPLACE_CMD} -e 's|--quiet||' ${WRKSRC}/bin/${PORTNAME}.in
 	@${REINPLACE_CMD} -e 's|locale.bindtextdomain|gettext.bindtextdomain|; \
 		s|locale.bind_textdomain_codeset|gettext.bind_textdomain_codeset|' \
-		${WRKSRC}/kupfer/main.py
+		${WRKSRC}/${PORTNAME}/main.py
 
 .if ! ${PORT_OPTIONS:MNLS}
 	@${REINPLACE_CMD} -e '/^build_subdirs/s|po||g' ${WRKSRC}/wscript
@@ -74,11 +73,11 @@ do-install:
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./waf install
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/build/kupfer.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/build/${PORTNAME}.1 \
+		${STAGEDIR}${MAN1PREFIX}/man/man1/
 
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
+	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
 
 .include <bsd.port.mk>

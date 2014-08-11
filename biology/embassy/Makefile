@@ -11,6 +11,8 @@ DIST_SUBDIR=	emboss
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Collection of contributed EMBOSS applications
 
+BROKEN=		does not fetch
+
 LIB_DEPENDS=	libnucleus.so:${PORTSDIR}/biology/emboss
 
 PREFIX?=	${LOCALBASE}/emboss
@@ -93,7 +95,7 @@ PLIST_SUB+=	PLIST_${app}=${PLIST_${app}}
 do-extract:
 .for app in ${APPLIST}
 	@ ${MKDIR} ${EMBASSY_WRKDIR}
-	@ cd ${EMBASSY_WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
+	@ cd ${EMBASSY_WRKDIR} && ${TAR} ${EXTRACT_BEFORE_ARGS} \
 	  ${_DISTDIR}/${${app}_DISTFILE} ${EXTRACT_AFTER_ARGS}
 	@ if [ `id -u` = 0 ]; then \
 	    ${CHMOD} -R ug-s ${${app}_WRKSRC}; \
@@ -116,13 +118,13 @@ do-configure:
 do-build:
 .for app in ${APPLIST}
 	@ cd ${${app}_WRKSRC} && \
-	  ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS}
+	  ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS}
 .endfor
 
 do-install:
 .for app in ${APPLIST}
 	@ cd ${${app}_WRKSRC} && \
-	  ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} \
+	  ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 	  ${MAKE_ARGS} ${INSTALL_TARGET}
 .endfor
 

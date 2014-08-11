@@ -3,7 +3,7 @@
 
 PORTNAME=	plutocracy
 PORTVERSION=	0.0.20081229
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
@@ -14,7 +14,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_SDL=	sdl pango
 USE_GL=		gl glu
 USE_PYTHON=	yes

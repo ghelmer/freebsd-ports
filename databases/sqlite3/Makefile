@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	sqlite3
-PORTVERSION=	3.8.4.1
+PORTVERSION=	3.8.5
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.sqlite.org/2014/ http://www2.sqlite.org/2014/ http://www3.sqlite.org/2014/
-DISTNAME=	sqlite-autoconf-3080401
+DISTNAME=	sqlite-autoconf-3080500
 
 MAINTAINER=	pavelivolkov@gmail.com
 COMMENT=	SQL database engine in a C library
@@ -17,9 +18,10 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS=	sqlite34-[0-9]* sqlcipher-[0-9]*
 
-USES=		pathfix
+USES=		pathfix libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -43,10 +45,10 @@ UNLOCK_NOTIFY_DESC=	Enable notification on unlocking
 EXTENSION_DESC=		Allow loadable extensions
 
 OPTIONS_SINGLE_RAMT=	TS0 TS1 TS2 TS3
-RAMT_DESC=		Where to store temporary files
-TS0_DESC=		Always use temporary files
-TS1_DESC=		Files by default, allow changes with PRAGMA
-TS2_DESC=		Memory by default,allow changes with PRAGMA
+RAMT_DESC=		Where to store temporary file
+TS0_DESC=		Always use temporary file
+TS1_DESC=		File by default, change allowed PRAGMA
+TS2_DESC=		Memory by default, change allowed PRAGMA
 TS3_DESC=		Always use memory
 
 OPTIONS_RADIO_STAT=	STAT3 STAT4
@@ -70,8 +72,8 @@ OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS EXTENSION
 # RTREE used by graphics/mapnik, databases/spatialite
 
 PLIST_FILES=	bin/sqlite3 include/sqlite3.h include/sqlite3ext.h \
-		lib/libsqlite3.a lib/libsqlite3.la lib/libsqlite3.so \
-		lib/libsqlite3.so.8 libdata/pkgconfig/sqlite3.pc \
+		lib/libsqlite3.a lib/libsqlite3.so lib/libsqlite3.so.0 \
+		lib/libsqlite3.so.0.8.6 libdata/pkgconfig/sqlite3.pc \
 		man/man1/sqlite3.1.gz
 
 # The default numeric file permissions for newly created database files under unix.
@@ -132,8 +134,5 @@ post-build:
 .if ${ARCH}=="i386"
 	@${ECHO_MSG} "===> WARNING: on ${ARCH} don't pass atof1-* tests"
 .endif
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsqlite3.so.8
 
 .include <bsd.port.mk>

@@ -7,7 +7,7 @@ CATEGORIES=	math lang
 MASTER_SITES=	SF/${PORTNAME}-algebra/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	giffunip@tutopia.com
+MAINTAINER=	pfg@FreeBSD.org
 COMMENT=	Portable general-purpose computer algebra system (CSL version)
 
 LICENSE=	BSD2CLAUSE
@@ -19,7 +19,6 @@ LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
 
 USES=		gmake tar:bzip2
 USE_XORG=	xext x11 xft
-USE_GNOME=	lthack ltverhack
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -29,12 +28,12 @@ ALL_TARGET=
 
 MAKE_JOBS_UNSAFE=	yes
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${ARCH} == "amd64"
-TARGET_SDIR=	x86_64-unknown-${OPSYS:L}${OSREL}
+TARGET_SDIR=	x86_64-unknown-${OPSYS:tl}${OSREL}
 .else
-TARGET_SDIR=	${ARCH}-unknown-${OPSYS:L}${OSREL}
+TARGET_SDIR=	${ARCH}-unknown-${OPSYS:tl}${OSREL}
 .endif
 REDUCECSL=	${WRKSRC}/cslbuild/${TARGET_SDIR}/csl
 
@@ -51,4 +50,4 @@ do-install:
 	(cd ${REDUCECSL}/reduce.fonts && ${COPYTREE_SHARE} . \
 	    ${STAGEDIR}${DATADIR}/reduce.fonts)
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

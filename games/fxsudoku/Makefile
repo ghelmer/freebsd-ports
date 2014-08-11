@@ -8,22 +8,20 @@ CATEGORIES=	games
 MASTER_SITES=	http://www.fifthplanet.net/files/
 
 MAINTAINER=	edwin@mavetju.org
-COMMENT=	An implementation of the Sudoku game
+COMMENT=	Implementation of the Sudoku game
 
-LIB_DEPENDS=	FOX-1.6:${PORTSDIR}/x11-toolkits/fox16
+LIB_DEPENDS=	libFOX-1.6.so:${PORTSDIR}/x11-toolkits/fox16
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+USES=		tar:bzip2 gmake
 PLIST_FILES=	bin/fxsudoku
 
-NO_STAGE=	yes
 post-extract:
 	${CP} ${FILESDIR}/config.freebsd ${WRKSRC}/build
 
 do-build:
-	cd ${WRKSRC} && MAKE=${GMAKE} ./gb
+	cd ${WRKSRC} && MAKE=${MAKE_CMD} ./gb
 
 do-install:
-	cd ${WRKSRC} && MAKE=${GMAKE} ./gb install --prefix=${PREFIX}
+	cd ${WRKSRC} && MAKE=${MAKE_CMD} ./gb install --prefix=${STAGEDIR}${PREFIX}
 
 .include <bsd.port.mk>

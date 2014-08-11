@@ -1,3 +1,5 @@
+@owner www
+@group www
 %%PORTDOCS%%%%DOCSDIR%%/CHANGELOG.txt
 %%PORTDOCS%%%%DOCSDIR%%/COPYRIGHT.txt
 %%PORTDOCS%%%%DOCSDIR%%/INSTALL.mysql.txt
@@ -231,6 +233,7 @@
 %%DRUPAL_BASE%%/modules/aggregator/tests/aggregator_test.module
 %%DRUPAL_BASE%%/modules/aggregator/tests/aggregator_test_atom.xml
 %%DRUPAL_BASE%%/modules/aggregator/tests/aggregator_test_rss091.xml
+%%DRUPAL_BASE%%/modules/aggregator/tests/aggregator_test_title_entities.xml
 %%DRUPAL_BASE%%/modules/block/block-admin-display-form.tpl.php
 %%DRUPAL_BASE%%/modules/block/block.admin.inc
 %%DRUPAL_BASE%%/modules/block/block.api.php
@@ -655,6 +658,7 @@
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud_hook_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud_hook_test.module
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud_hook_test.test
+%%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_query.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_query_access_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_query_access_test.module
@@ -802,6 +806,7 @@
 %%DRUPAL_BASE%%/modules/syslog/syslog.install
 %%DRUPAL_BASE%%/modules/syslog/syslog.module
 %%DRUPAL_BASE%%/modules/syslog/syslog.test
+%%DRUPAL_BASE%%/modules/system/form.api.php
 %%DRUPAL_BASE%%/modules/system/html.tpl.php
 %%DRUPAL_BASE%%/modules/system/image.gd.inc
 %%DRUPAL_BASE%%/modules/system/language.api.php
@@ -834,6 +839,8 @@
 %%DRUPAL_BASE%%/modules/system/system.tokens.inc
 %%DRUPAL_BASE%%/modules/system/system.updater.inc
 %%DRUPAL_BASE%%/modules/system/theme.api.php
+%%DRUPAL_BASE%%/modules/system/tests/cron_queue_test.info
+%%DRUPAL_BASE%%/modules/system/tests/cron_queue_test.module
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy-term.tpl.php
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy.admin.inc
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy.api.php
@@ -954,8 +961,7 @@
 %%DRUPAL_BASE%%/scripts/test.script
 %%DRUPAL_BASE%%/sites/all/modules/README.txt
 %%DRUPAL_BASE%%/sites/all/themes/README.txt
-%%DRUPAL_BASE%%/sites/default/default.settings.php
-%%DRUPAL_BASE%%/sites/default/default.settings.php-dist
+@sample %%DRUPAL_BASE%%/sites/default/default.settings.php.sample
 %%DRUPAL_BASE%%/sites/example.sites.php
 %%DRUPAL_BASE%%/themes/README.txt
 %%DRUPAL_BASE%%/themes/bartik/bartik.info
@@ -1111,6 +1117,7 @@
 @dirrm %%DRUPAL_BASE%%/modules/tracker
 @dirrm %%DRUPAL_BASE%%/modules/toolbar
 @dirrm %%DRUPAL_BASE%%/modules/taxonomy
+@dirrm %%DRUPAL_BASE%%/modules/system/tests
 @dirrm %%DRUPAL_BASE%%/modules/system
 @dirrm %%DRUPAL_BASE%%/modules/syslog
 @dirrm %%DRUPAL_BASE%%/modules/statistics
@@ -1204,4 +1211,5 @@
 @dirrm %%DRUPAL_BASE%%/includes
 @dirrmtry %%DRUPAL_BASE%%/
 %%PORTDOCS%%@dirrm %%DOCSDIR%%
-@unexec (test -d %D/%%DRUPAL_BASE%% && (echo "Configuration information saved.  If you will *NOT* use this package anymore," && echo "please remove %D/%%DRUPAL_BASE%% and its contents manually.")) || true
+@owner root
+@group wheel

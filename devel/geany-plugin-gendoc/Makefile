@@ -2,6 +2,7 @@
 
 PORTNAME=	geany-plugin-gendoc
 PORTVERSION=	${GEANY_VER}
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	makc@FreeBSD.org

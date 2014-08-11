@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	go
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3
 PORTEPOCH=	1
 CATEGORIES=	lang
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	http://golang.org/dl/
 DISTNAME=	go${PORTVERSION}.src
 
 MAINTAINER=	jlaffaye@FreeBSD.org
@@ -50,7 +50,7 @@ do-build:
 	cd ${WRKSRC}/src && \
 		CC=${CC} \
 		GOROOT=${WRKSRC} GOROOT_FINAL=${PREFIX}/go \
-		GOBIN= GOARCH=${GOARCH} GOOS=${OPSYS:L} \
+		GOBIN= GOARCH=${GOARCH} GOOS=${OPSYS:tl} \
 		${SH} make.bash
 
 do-install:

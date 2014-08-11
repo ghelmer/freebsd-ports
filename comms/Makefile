@@ -21,6 +21,8 @@
     SUBDIR += chirp
     SUBDIR += chu
     SUBDIR += comserv
+    SUBDIR += concordance
+    SUBDIR += congruity
     SUBDIR += conserver
     SUBDIR += conserver-com
     SUBDIR += cutecom
@@ -39,6 +41,8 @@
     SUBDIR += esmska
     SUBDIR += fl_moxgen
     SUBDIR += fldigi
+    SUBDIR += fllog
+    SUBDIR += flrig
     SUBDIR += flwrap
     SUBDIR += gammu
     SUBDIR += gammu-devel
@@ -72,6 +76,7 @@
     SUBDIR += kb
     SUBDIR += kermit
     SUBDIR += kremotecontrol
+    SUBDIR += libconcord
     SUBDIR += libfec
     SUBDIR += libimobiledevice
     SUBDIR += libirman
@@ -82,6 +87,7 @@
     SUBDIR += lirc
     SUBDIR += locator
     SUBDIR += lrzsz
+    SUBDIR += lysdr
     SUBDIR += mgetty+sendfax
     SUBDIR += minicom
     SUBDIR += mlan3
@@ -116,6 +122,7 @@
     SUBDIR += pr
     SUBDIR += predict
     SUBDIR += py-bulksms
+    SUBDIR += py-libconcord
     SUBDIR += py-libimobiledevice
     SUBDIR += py-lirc
     SUBDIR += py-serial
@@ -133,12 +140,14 @@
     SUBDIR += ser2net
     SUBDIR += serialoverip
     SUBDIR += seyon
+    SUBDIR += sms_client
     SUBDIR += smstools3
     SUBDIR += soundmodem
     SUBDIR += spandsp
     SUBDIR += spandsp-devel
     SUBDIR += splat
     SUBDIR += sredird
+    SUBDIR += svxlink
     SUBDIR += syncterm
     SUBDIR += tcpser
     SUBDIR += thebridge
@@ -165,6 +174,7 @@
     SUBDIR += xdx
     SUBDIR += xlog
     SUBDIR += xmorse
+    SUBDIR += xnec2c
     SUBDIR += xnecview
     SUBDIR += xwota
     SUBDIR += yagiuda

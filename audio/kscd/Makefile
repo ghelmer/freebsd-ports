@@ -14,11 +14,10 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libmusicbrainz3.so:${PORTSDIR}/audio/libmusicbrainz3
 
-USES=		cmake:outsource
+USES=		cmake:outsource tar:xz
 USE_KDE4=	kdehier kdelibs kdeprefix libkcddb libkcompactdisc \
 		automoc4
 USE_QT4=	phonon moc_build qmake_build rcc_build uic_build
-USE_XZ=		yes
 
 OPTIONS_DEFINE=	ALSA
 
@@ -26,4 +25,3 @@ ALSA_LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib
 ALSA_EXTRA_PATCHES=	${FILESDIR}/extrapatch-no_alsa
 
 .include <bsd.port.mk>
-

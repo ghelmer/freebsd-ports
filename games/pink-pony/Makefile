@@ -3,7 +3,7 @@
 
 PORTNAME=	pink-pony
 PORTVERSION=	1.3.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	GOOGLE_CODE \
 		http://mirror.amdmi3.ru/distfiles/
@@ -20,13 +20,11 @@ LIB_DEPENDS=	libIL.so:${PORTSDIR}/graphics/devil \
 		libftgl.so:${PORTSDIR}/graphics/ftgl \
 		libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20
 
-USES=		pkgconfig
-USE_BZIP2=	yes
-USE_SCONS=	yes
+USES=		dos2unix pkgconfig scons tar:bzip2
 USE_GL=		gl glu
 USE_SDL=	mixer
 SUB_FILES=	pink-pony.sh
-USE_DOS2UNIX=	lib/GL/GLee.h
+DOS2UNIX_FILES=	lib/GL/GLee.h
 
 PORTDOCS=	*
 PORTDATA=	*

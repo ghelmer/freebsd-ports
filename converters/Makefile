@@ -41,7 +41,6 @@
     SUBDIR += iconv-rfc1345
     SUBDIR += igbinary
     SUBDIR += ish
-    SUBDIR += konwert
     SUBDIR += libb64
     SUBDIR += libiconv
     SUBDIR += libticonv
@@ -50,7 +49,6 @@
     SUBDIR += mimelib
     SUBDIR += mmencode
     SUBDIR += mpack
-    SUBDIR += mule-ucs
     SUBDIR += nomyso
     SUBDIR += o3read
     SUBDIR += osm2mp
@@ -83,6 +81,7 @@
     SUBDIR += p5-Encode-Locale
     SUBDIR += p5-Encode-Punycode
     SUBDIR += p5-Encode-compat
+    SUBDIR += p5-Encoding-BER
     SUBDIR += p5-Encoding-FixLatin
     SUBDIR += p5-Format-Human-Bytes
     SUBDIR += p5-JSON
@@ -137,6 +136,7 @@
     SUBDIR += php55-mbstring
     SUBDIR += php55-recode
     SUBDIR += psiconv
+    SUBDIR += py-bencode
     SUBDIR += py-bsdconv
     SUBDIR += py-iconv
     SUBDIR += py-pisa

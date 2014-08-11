@@ -22,9 +22,9 @@ include/libdrizzle/row_client.h
 include/libdrizzle/row_server.h
 include/libdrizzle/structs.h
 include/libdrizzle/visibility.h
-lib/libdrizzle.la
 lib/libdrizzle.so
 lib/libdrizzle.so.0
+lib/libdrizzle.so.0.0.8
 libdata/pkgconfig/libdrizzle.pc
 %%PORTDOCS%%%%DOCSDIR%%/Doxyfile.api
 %%PORTDOCS%%%%DOCSDIR%%/Doxyfile.dev
@@ -357,5 +357,4 @@ libdata/pkgconfig/libdrizzle.pc
 %%PORTDOCS%%@dirrm %%DOCSDIR%%/api
 %%PORTDOCS%%@dirrm %%DOCSDIR%%
 %%PORTEXAMPLES%%@exec mkdir -p %D/%%EXAMPLESDIR%%
-@dirrmtry libdata/pkgconfig
 @dirrm include/libdrizzle

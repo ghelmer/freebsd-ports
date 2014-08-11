@@ -91,6 +91,7 @@
     SUBDIR += figlet-fonts
     SUBDIR += findutils
     SUBDIR += firestring
+    SUBDIR += flag
     SUBDIR += floatator
     SUBDIR += fortune-mod-bible
     SUBDIR += fortune-mod-bofh
@@ -142,10 +143,7 @@
     SUBDIR += gkrellm-helium
     SUBDIR += gkrellm-xkb
     SUBDIR += gkrellmbgchg2
-    SUBDIR += gkrellmfmonitor
-    SUBDIR += gkrellmlaunch
     SUBDIR += gkrellmlaunch2
-    SUBDIR += gkrellshoot
     SUBDIR += gkrellshoot2
     SUBDIR += gkrellweather2
     SUBDIR += gkx86info2
@@ -326,6 +324,7 @@
     SUBDIR += p5-Geo-Coder-Multiple
     SUBDIR += p5-Geo-Coder-Navteq
     SUBDIR += p5-Geo-Coder-OSM
+    SUBDIR += p5-Geo-Coder-OpenCage
     SUBDIR += p5-Geo-Coder-Ovi
     SUBDIR += p5-Geo-Coder-PlaceFinder
     SUBDIR += p5-Geo-Coder-TomTom
@@ -358,11 +357,11 @@
     SUBDIR += patchutils
     SUBDIR += pauker
     SUBDIR += pciids
-    SUBDIR += pdfmap
     SUBDIR += pdmenu
     SUBDIR += pear-Services_Weather
     SUBDIR += pear-Text_Figlet
     SUBDIR += pecl-timezonedb
+    SUBDIR += pfm
     SUBDIR += php5-calendar
     SUBDIR += php53-calendar
     SUBDIR += php55-calendar
@@ -389,7 +388,6 @@
     SUBDIR += qt4-l10n
     SUBDIR += qt4-qtconfig
     SUBDIR += qt4-qtdemo
-    SUBDIR += quick-lounge-applet
     SUBDIR += quotes
     SUBDIR += quranref
     SUBDIR += ree
@@ -402,11 +400,11 @@
     SUBDIR += ruby-vpim
     SUBDIR += rubygem-dotenv
     SUBDIR += rubygem-mime-types
+    SUBDIR += rubygem-mime-types117
     SUBDIR += rubygem-rabbit
     SUBDIR += rubygem-vpim
     SUBDIR += rump
     SUBDIR += saaghar
-    SUBDIR += salias
     SUBDIR += seq2
     SUBDIR += shared-mime-info
     SUBDIR += shc
@@ -436,7 +434,6 @@
     SUBDIR += tet
     SUBDIR += tkcron
     SUBDIR += tkinfo
-    SUBDIR += tkman
     SUBDIR += tkregexp
     SUBDIR += tkrunit
     SUBDIR += toilet
@@ -444,9 +441,7 @@
     SUBDIR += translate
     SUBDIR += ttyrec
     SUBDIR += tvbrowser
-    SUBDIR += txt2regex
     SUBDIR += typetrainer
-    SUBDIR += uf-view
     SUBDIR += uk-phone
     SUBDIR += uk-postcodes
     SUBDIR += umodunpack
@@ -455,6 +450,7 @@
     SUBDIR += us-zipcodes
     SUBDIR += usbrh-libusb
     SUBDIR += utftools
+    SUBDIR += valspeak
     SUBDIR += vera
     SUBDIR += vifm
     SUBDIR += viz
@@ -462,7 +458,6 @@
     SUBDIR += window
     SUBDIR += wmScoreBoard
     SUBDIR += wmcalendar
-    SUBDIR += wmfirew
     SUBDIR += wminfo
     SUBDIR += wmjulia
     SUBDIR += wmpal

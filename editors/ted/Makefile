@@ -3,6 +3,7 @@
 
 PORTNAME=	ted
 PORTVERSION=	2.23
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	ftp://ftp.nluug.nl/pub/editors/ted/ \
 		http://fossies.org/linux/misc/
@@ -13,10 +14,10 @@ COMMENT=	X11 based RTF editor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	pcre:${PORTSDIR}/devel/pcre \
-		png15:${PORTSDIR}/graphics/png \
-		tiff:${PORTSDIR}/graphics/tiff \
-		paper:${PORTSDIR}/print/libpaper
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
+		libpng15.so:${PORTSDIR}/graphics/png \
+		libtiff.so:${PORTSDIR}/graphics/tiff \
+		libpaper.so:${PORTSDIR}/print/libpaper
 RUN_DEPENDS=	gsfonts>0:${PORTSDIR}/print/gsfonts
 
 OPTIONS_DEFINE=	GTK2 DOCS
@@ -35,15 +36,12 @@ MAKE_ENV=	DEF_AFMDIR="-DAFMDIR=\"\\\"${AFMDIR}/\\\"\"" \
 		DEF_PSSCRIPT_DIR="-DPSSCRIPT_DIR=\"\\\"${DATADIR}/\\\"\""
 ALL_TARGET=	compile.shared
 
-MAN1=		Ted.1 rtf2pdf.1 rtf2ps.1
-
 DATADIR=	${PREFIX}/share/Ted
 DOCSDIR=	${PREFIX}/share/doc/Ted
 
 AFMDIR=		${DATADIR}/afm
 INDDIR=		${DATADIR}/dfa
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGTK2}
@@ -68,19 +66,19 @@ post-patch:
 		 s|/iconv.so|/libiconv.so|g'
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/Ted/Ted ${PREFIX}/bin
-	${INSTALL_SCRIPT} ${WRKSRC}/tedPackage/examples/rtf2*.sh ${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/tedPackage/doc/Ted.1 ${MANPREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/tedPackage/doc/rtf2*.1 ${MANPREFIX}/man/man1
-	@${MKDIR} ${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/tedPackage/ps/*.ps ${DATADIR}
-	@${MKDIR} ${AFMDIR}
-	${INSTALL_DATA} ${WRKSRC}/tedPackage/afm/*.afm ${AFMDIR}
-	@${MKDIR} ${INDDIR}
-	${INSTALL_DATA} ${WRKSRC}/tedPackage/dfa/*.dfa ${INDDIR}
+	${INSTALL_PROGRAM} ${WRKSRC}/Ted/Ted ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} ${WRKSRC}/tedPackage/examples/rtf2*.sh ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_MAN} ${WRKSRC}/tedPackage/doc/Ted.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/tedPackage/doc/rtf2*.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/tedPackage/ps/*.ps ${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${AFMDIR}
+	${INSTALL_DATA} ${WRKSRC}/tedPackage/afm/*.afm ${STAGEDIR}${AFMDIR}
+	@${MKDIR} ${STAGEDIR}${INDDIR}
+	${INSTALL_DATA} ${WRKSRC}/tedPackage/dfa/*.dfa ${STAGEDIR}${INDDIR}
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/tedPackage/TedDocument-en_US.rtf ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/tedPackage/TedDocument-en_US.rtf ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

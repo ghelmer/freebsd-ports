@@ -1,6 +1,6 @@
 # $FreeBSD$
 
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 
 COMMENT=	Gstreamer Opus audio encoder/decoder plugin

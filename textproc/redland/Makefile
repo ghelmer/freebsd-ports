@@ -3,7 +3,7 @@
 
 PORTNAME=	redland
 PORTVERSION=	1.0.17
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	http://download.librdf.org/source/
 
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libraptor2.so:${PORTSDIR}/textproc/raptor2 \
 
 USE_AUTOTOOLS=	libltdl
 USE_PERL5=	build
-USES=		gmake pathfix perl5 pkgconfig shebangfix
+USES=		gmake libtool pathfix perl5 pkgconfig shebangfix
 SHEBANG_FILES=	scripts/touch-mtime.pl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-threestore=no
@@ -42,9 +42,8 @@ THREADS_CONFIGURE_ENABLE=	threads
 #.if defined(WITH_MYSQL)
 #USE_MYSQL=	yes
 #CONFIGURE_ARGS+=--with-mysql=yes
-#CONFIGURE_ENV+=	LIBS="${LIBS}"
-#CFLAGS+=	-I${LOCALBASE}/include/mysql -DHAVE_MYSQL_H
-#LDFLAGS+=	-L${LOCALBASE}/lib/mysql
+#CPPFLAGS+=	-I${LOCALBASE}/include/mysql -DHAVE_MYSQL_H
+#LIBS+=		-L${LOCALBASE}/lib/mysql
 #PLIST_SUB+=	MYSQL=""
 #.else
 CONFIGURE_ARGS+=--with-mysql=no

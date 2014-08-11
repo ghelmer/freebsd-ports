@@ -3,12 +3,12 @@
 
 PORTNAME=	gnote
 PORTVERSION=	0.7.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	A port of Tomboy to C++, note taking application
+COMMENT=	Port of Tomboy to C++, note taking application
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	openttd
-PORTVERSION=	1.3.3
+PORTVERSION=	1.4.1
 CATEGORIES=	games
-MASTER_SITES=	http://ftp.snt.utwente.nl/pub/games/openttd/binaries/releases/${PORTVERSION}/ \
+MASTER_SITES=	http://gb.binaries.openttd.org/binaries/releases/${PORTVERSION}/ \
+		http://ftp.snt.utwente.nl/pub/games/openttd/binaries/releases/${PORTVERSION}/ \
 		http://us.binaries.openttd.org/binaries/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
@@ -16,8 +17,7 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
 		liblzo2.so:${PORTSDIR}/archivers/lzo2
 
-USES=		gmake pkgconfig
-USE_XZ=		yes
+USES=		gmake pkgconfig tar:xz
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	STRIP="${STRIP_CMD} ${STRIP}"
 CONFIGURE_ARGS=	--prefix-dir="${PREFIX}" --data-dir="${DATADIR_REL}"
@@ -83,14 +83,7 @@ pre-everything::
 .endif
 
 post-patch:
-# Remove extra (vendor-provided) CFLAGS and LDFLAGS and make the port more
-# LOCALBASE safe
-	@${REINPLACE_CMD} -e '/-O2 -fomit-frame-pointer/d ; \
-		s,/usr/local,${LOCALBASE},' ${WRKSRC}/config.lib
-# Use custom liblzma.pc for when we use liblzma from base
-	@${REINPLACE_CMD} -e \
-		's,pkg-config liblzma,pkg-config ${FILESDIR}/liblzma.pc,' \
-			${WRKSRC}/config.lib
+	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},' ${WRKSRC}/config.lib
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

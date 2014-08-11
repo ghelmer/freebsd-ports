@@ -4,7 +4,7 @@
 
 PORTNAME=	gtk
 PORTVERSION=	1.2.10
-PORTREVISION=	22
+PORTREVISION=	23
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 MASTER_SITE_SUBDIR=	sources/gtk+/1.2
@@ -22,9 +22,8 @@ USE_LDCONFIG=	yes
 USE_AUTOTOOLS=	libtool
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/gtk12 --with-native-locale \
 		--with-xinput=xfree
-CONFIGURE_ENV=	X_CFLAGS="-I${LOCALBASE}/include" \
-		LIBS="-L${LOCALBASE}/lib"
 CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 INFO=		gdk gtk
 .include <bsd.port.options.mk>

@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	poudriere
-PORTVERSION=	3.0.99.20140320
-PORTREVISION=	1
+PORTVERSION=	3.0.99.20140626
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	http://fossil.etoilebsd.net/poudriere/tarball/ \
-		LOCAL/bdrewery/${PORTNAME}/
+MASTER_SITES=	LOCAL/bdrewery/${PORTNAME}/ \
+		http://fossil.etoilebsd.net/poudriere/tarball/
 PKGNAMESUFFIX=	-devel
 DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.gz?uuid=${FSL_CHKIN}
 
@@ -16,22 +15,22 @@ LICENSE=	BSD2CLAUSE
 
 CONFLICTS_INSTALL=	poudriere-[0-9]*
 
-FSL_CHKIN=	0966e62bc4
+FSL_CHKIN=	6d00750ddc
 
-USES=		uidfix
 GNU_CONFIGURE=	yes
 ETCDIR=		${PREFIX}/etc/poudriere.d
 
-OPTIONS_DEFINE=	ZSH
+OPTIONS_DEFINE=	ZSH QEMU
 OPTIONS_SUB=	yes
+
+QEMU_DESC=	Add qemu-user-static to compile ports for non-x86 architectures
+QEMU_RUN_DEPENDS=	qemu-user-static>0:${PORTSDIR}/emulators/qemu-user-static
 
 .include <bsd.port.options.mk>
 
 post-install:
-.if ${PORT_OPTIONS:MZSH}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions/
 	${INSTALL_DATA} ${WRKSRC}/completions/zsh/_poudriere \
 	    ${STAGEDIR}${PREFIX}/share/zsh/site-functions/
-.endif
 
 .include <bsd.port.mk>

@@ -3,12 +3,12 @@
 
 PORTNAME=	ttfm
 PORTVERSION=	0.9.5
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	chinese print
 MASTER_SITES=	LOCAL/rafan/chinese
 
 MAINTAINER=	rafan@FreeBSD.org
-COMMENT=	A Big5/GB enhanced TrueType Font Manager
+COMMENT=	Big5/GB enhanced TrueType Font Manager
 
 RUN_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
 		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale

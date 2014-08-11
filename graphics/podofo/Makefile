@@ -3,7 +3,7 @@
 
 PORTNAME=	podofo
 PORTVERSION=	0.9.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics print
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}
 
@@ -43,10 +43,6 @@ PNG_LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
 TIFF_CMAKE_ON=		-DWANT_TIFF:BOOL=TRUE
 TIFF_LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MIMPOSE}
-USE_LUA=	5.1
-.endif
+IMPOSE_USES=		lua:51
 
 .include <bsd.port.mk>

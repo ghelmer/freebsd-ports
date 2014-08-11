@@ -3,7 +3,7 @@
 
 PORTNAME=	libmt_client
 PORTVERSION=	0.1.98
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	${MASTER_SITE_SAVANNAH}
 MASTER_SITE_SUBDIR=	maitretarot
@@ -11,13 +11,13 @@ MASTER_SITE_SUBDIR=	maitretarot
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Client-side library of MaitreTarot, a Tarot card game
 
-LIB_DEPENDS=	maitretarot.0:${PORTSDIR}/games/libmaitretarot
+LICENSE=	GPLv2
 
-USES=		pkgconfig
-USE_AUTOTOOLS=	libtool
-USE_BZIP2=	yes
+LIB_DEPENDS=	libmaitretarot.so:${PORTSDIR}/games/libmaitretarot
+
 GNU_CONFIGURE=	yes
-USE_GNOME=	glib20 libxml2 lthack
+USES=		libtool:keepla pkgconfig tar:bzip2
+USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes
 
 .include <bsd.port.mk>

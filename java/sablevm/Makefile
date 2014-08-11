@@ -11,15 +11,14 @@ COMMENT=	Java VM created by McGill University's Sable Research Group
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	popt:${PORTSDIR}/devel/popt \
-		ffi:${PORTSDIR}/devel/libffi
+LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt \
+		libffi.so:${PORTSDIR}/devel/libffi
 RUN_DEPENDS=	fastjar:${PORTSDIR}/archivers/fastjar
 
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	libltdl
-USE_GMAKE=	yes
 USE_LDCONFIG=	yes
-USES=		pkgconfig gettext iconv
+USES=		pkgconfig gettext iconv gmake
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -30,7 +29,6 @@ OPTIONS_DEFAULT=MAN SVMCP
 MAN_DESC=	Build and install man pages
 SVMCP_DESC=	Install SableVM classpath
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMAN}

@@ -3,7 +3,7 @@
 
 PORTNAME=	ypsilon
 PORTVERSION=	0.9.6.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang scheme
 MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 DISTNAME=	${PORTNAME}-0.9.6.update3
@@ -20,6 +20,9 @@ ONLY_FOR_ARCHS=	i386 amd64
 
 OPTIONS_DEFINE=	EXAMPLES
 
+post-patch:
+	${REINPLACE_CMD} 's/-fno-[a-z-]*//g' ${WRKSRC}/Makefile
+
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
@@ -29,6 +32,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/example/*.scm ${STAGEDIR}${EXAMPLESDIR}
 
 regression-test: build
-	cd ${WRKSRC} && ${GMAKE} check
+	cd ${WRKSRC} && ${MAKE_CMD} check
 
 .include <bsd.port.mk>

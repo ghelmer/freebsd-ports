@@ -8,8 +8,11 @@ CATEGORIES=	lang scheme
 MASTER_SITES=	http://www.stklos.net/download/ \
 		ftp://kaolin.essi.fr/pub/STklos/
 
-MAINTAINER=	vmagerya@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The successor of the STk Scheme interpreter
+
+DEPRECATED=	Fails testsuite on all platforms, unmaintained upstream
+EXPIRATION_DATE=2014-07-20
 
 LIB_DEPENDS=	gmp.10:${PORTSDIR}/math/gmp \
 		pcre.3:${PORTSDIR}/devel/pcre \
@@ -18,7 +21,7 @@ LIB_DEPENDS=	gmp.10:${PORTSDIR}/math/gmp \
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USE_GMAKE=	yes
+USES=		gmake
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 PLIST_SUB=	VERSION="${PORTVERSION}"
@@ -57,6 +60,6 @@ post-patch:
 
 regression-test: build
 	(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} \
-		${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} test)
+		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} test)
 
 .include <bsd.port.post.mk>

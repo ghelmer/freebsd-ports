@@ -3,7 +3,7 @@
 
 PORTNAME=	fftw
 PORTVERSION=	2.1.5
-PORTREVISION?=	9
+PORTREVISION?=	10
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftp.fftw.org/pub/fftw/ 		\
 		ftp://ftp.fftw.org/pub/fftw/old/ 	\
@@ -22,7 +22,7 @@ FFTW_FLAVOR?=	default
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared
-USES=		fortran gmake libtool
+USES=		fortran gmake libtool:keepla
 USE_LDCONFIG=	yes
 
 BROKEN_sparc64=	does not build
@@ -36,6 +36,7 @@ CONFIGURE_ARGS+=	--enable-float --enable-type-prefix
 FFTW_SUFX=		s
 PKGNAMESUFFIX=		-float
 .else
+USES+=			makeinfo
 FFTW_SUFIX=
 INFO=			fftw
 .endif

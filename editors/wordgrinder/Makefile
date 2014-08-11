@@ -7,15 +7,13 @@ CATEGORIES=	editors
 MASTER_SITES=	SF
 
 MAINTAINER=	vmagerya@gmail.com
-COMMENT=	A simple Unicode-aware console-based word processor
+COMMENT=	Simple Unicode-aware console-based word processor
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	${LUA_MODLIBDIR}/lfs.so:${PORTSDIR}/devel/luafilesystem
 
-USE_LUA=	5.1+
-
-USE_BZIP2=	yes
+USES=		lua:51 tar:bzip2
 
 MAN1=		wordgrinder.1
 

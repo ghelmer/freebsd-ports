@@ -1,7 +1,7 @@
 # Created by: Matthias Andree <matthias.andree@gmx.de>
 # $FreeBSD$
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	misc devel
 PKGNAMESUFFIX=	-libblkid
 
@@ -13,7 +13,6 @@ CONFIGURE_ARGS=	--enable-elf-shlibs
 
 MASTERDIR=	${.CURDIR}/../../sysutils/e2fsprogs
 MAKE_ARGS=	LIB_SUBDIRS=lib/blkid
-USES=		gmake
 USE_LDCONFIG=	yes
 ALL_TARGET=	libs
 INSTALL_TARGET=	install install-shlibs
@@ -23,10 +22,10 @@ PKGDIR=		${.CURDIR}
 
 pre-build:
 	${MKDIR} ${WRKSRC}/lib/blkid/elfshared
-	cd ${WRKSRC}/util && ${GMAKE} subst
+	cd ${WRKSRC}/util && ${MAKE_CMD} subst
 
 post-build:
-	cd ${WRKSRC}/lib/uuid && ${GMAKE}
-	cd ${INSTALL_WRKSRC} && ${GMAKE} check
+	cd ${WRKSRC}/lib/uuid && ${MAKE_CMD}
+	cd ${INSTALL_WRKSRC} && ${MAKE_CMD} check
 
 .include "${MASTERDIR}/Makefile"

@@ -14,9 +14,9 @@ include/libgitg-1.0/libgitg/gitg-revision.h
 include/libgitg-1.0/libgitg/gitg-runner.h
 include/libgitg-1.0/libgitg/gitg-shell.h
 lib/libgitg-1.0.a
-lib/libgitg-1.0.la
 lib/libgitg-1.0.so
 lib/libgitg-1.0.so.0
+lib/libgitg-1.0.so.0.0.0
 libdata/pkgconfig/libgitg-1.0.pc
 man/man1/gitg.1.gz
 share/applications/gitg.desktop
@@ -54,6 +54,7 @@ share/icons/hicolor/scalable/apps/gitg.svg
 %%NLS%%share/locale/fr/LC_MESSAGES/gitg.mo
 %%NLS%%share/locale/gl/LC_MESSAGES/gitg.mo
 %%NLS%%share/locale/it/LC_MESSAGES/gitg.mo
+%%NLS%%share/locale/ko/LC_MESSAGES/gitg.mo
 %%NLS%%share/locale/lt/LC_MESSAGES/gitg.mo
 %%NLS%%share/locale/nb/LC_MESSAGES/gitg.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/gitg.mo

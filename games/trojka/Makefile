@@ -8,13 +8,13 @@ MASTER_SITES=	ftp://ftp.funet.fi/pub/unix/games/
 DISTNAME=	${PORTNAME}
 
 MAINTAINER=	e@ik.nu
-COMMENT=	A game of skill
+COMMENT=	Game of skill
 
-MAN6=		trojka.6
+LICENSE=	TROJKA
+LICENSE_NAME=	Trojka Copyright
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
 SUB_FILES=	pkg-message
-
-NO_STAGE=	yes
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	motion
 PORTVERSION=	3.2.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20-%20${PORTVERSION:R}/${PORTVERSION}
 
@@ -50,7 +50,6 @@ KMODDIR=	/boot/modules
 BUILD_DEPENDS+=	v4l_compat>=1.0.20060801:${PORTSDIR}/multimedia/v4l_compat
 RUN_DEPENDS+=	${KMODDIR}/pwc.ko:${PORTSDIR}/multimedia/pwcbsd
 CONFIGURE_ARGS+=--with-pwcbsd
-CFLAGS+=	-DWITHOUT_V4L
 .else
 CONFIGURE_ARGS+=--without-pwcbsd
 .endif
@@ -101,10 +100,6 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/motion.1 ${STAGEDIR}${MANPREFIX}/man/man1
 	${INSTALL_DATA} ${WRKSRC}/motion-dist.conf \
 		${STAGEDIR}${PREFIX}/etc/motion.conf.sample
-.if !exists(${STAGEDIR}${PREFIX}/etc/motion.conf)
-	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/etc/motion.conf.sample \
-		${STAGEDIR}${PREFIX}/etc/motion.conf
-.endif
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}

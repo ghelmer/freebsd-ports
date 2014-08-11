@@ -10,11 +10,8 @@ MAINTAINER=	wamonzyne@hotmail.com
 COMMENT=	A fastest utility for copy from a disk device for many
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 
-PLIST_FILES=	sbin/mdcp
+PLIST_FILES=	sbin/mdcp man/man1/mdcp.1.gz
 
-MAN1=		mdcp.1
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

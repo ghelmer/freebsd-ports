@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	keybase
-PORTVERSION=	0.2.18
-PORTREVISION=	2
+PORTVERSION=	0.4.11
 CATEGORIES=	security
 MASTER_SITES=	https://dist.keybase.io/pkg/files/ \
-		LOCAL/bdrewery/${PORTNAME}/:DEFAULT,deps \
-		http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,deps
+		LOCAL/bdrewery/${PORTNAME}/ \
+		http://mirror.shatow.net/freebsd/${PORTNAME}/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	bdrewery@freebsd.org

@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	gcc-arm-embedded
-PORTVERSION=	4.8.20131204
+PORTVERSION=	4.8.20140609
 CATEGORIES=	devel
-MASTER_SITES=	http://launchpad.net/gcc-arm-embedded/4.8/4.8-2013-q4-major/+download/
+MASTER_SITES=	http://launchpad.net/gcc-arm-embedded/4.8/4.8-2014-q2-update/+download/
 DISTNAME=	${ORIGINAL_PACKAGE_NAME}-src
 
 MAINTAINER=	lev@FreeBSD.org
@@ -27,13 +27,12 @@ PDF_USE=		TEX=base:build,tex:build
 PDF_BUILD_DEPENDS=	texi2dvi:${PORTSDIR}/print/texinfo
 OPTIONS_SUB=		yes
 
-USE_BZIP2=	yes
-USES=		gmake bison iconv compiler
+USES=		bison compiler gmake iconv makeinfo tar:bzip2
 GNU_CONFIGURE=	yes
 
 BUILD_WRKSRC=	${WRKDIR}
 
-FULL_VERSION=		4_8-2013q4-20131204
+FULL_VERSION=		4_8-2014q2-20140609
 TARGET=			arm-none-eabi
 ORIGINAL_PACKAGE_NAME=	gcc-${TARGET}-${FULL_VERSION}
 
@@ -55,6 +54,7 @@ INTERIM_PREFIX=	${WRKDIR}/install/${PORTNAME}-${FULL_VERSION}
 VAR_TO_SUBMAKE=	BUILD_DIR CC CFLAGS CHOSEN_COMPILER_TYPE CONFIG_SITE \
 		CONFIGURE_MAX_CMD_LEN CP CPP CPPFLAGS CXX CXXFLAGS \
 		DOCS_SUFFIX ECHO_MSG EXAMPLESDIR FILE FIND GMAKE GREP \
+		MAKE_CMD \
 		INSTALL_MACROS INTERIM_PREFIX LD LDFLAGS LIBDIR LN LOCALBASE \
 		MAKE_JOBS_NUMBER MKDIR ORIGINAL_PACKAGE_NAME PORT_OPTIONS \
 		PREFIX RM SED SH SRC_DIR STRIP_CMD TAR TARGET WRKDIR
@@ -75,7 +75,7 @@ post-extract:
 	@${ECHO_MSG} "====>  Extracting bundled newlib"
 	@${TAR} -xf ${SRC_DIR}/newlib.tar.bz2 -C ${SRC_DIR}
 	@${ECHO_MSG} "====>  Extracting bundled newlib-nano"
-	@${TAR} -xf ${SRC_DIR}/newlib-nano-2.0.tar.bz2 -C ${SRC_DIR}
+	@${TAR} -xf ${SRC_DIR}/newlib-nano-2.1.tar.bz2 -C ${SRC_DIR}
 
 do-configure:
 	@${RM} -rf ${BUILD_DIR}

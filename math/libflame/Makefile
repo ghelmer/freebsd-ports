@@ -22,11 +22,11 @@ BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
 GNU_CONFIGURE=	yes
 USE_CSTD=	c99
-USE_GMAKE=	yes
+USES=		gmake
 
 CONFIGURE_ARGS	=	--enable-dynamic-build --enable-static-build
 
-IGNOREFILES=	libflame.pdf
+BROKEN=		no distinfo provided for some of the distfiles
 
 OPTIONS_DEFINE=	BLAS3_CNTL BUILTIN_BLAS CBLAS EXTERNAL_LAPACK GOTOBLAS \
 		LAPACK2FLAME LAPACK_SUBPROBLEMS OPENMP SHARED STATIC \
@@ -86,7 +86,7 @@ WITH_BLAS=	gotoblas
 CONFIGURE_ARGS+=	--disable-goto-interfaces
 .for b in M K N
 .if defined(${b}_BLOCKSIZE)
-CONFIGURE_ARGS+=	--enable-default-${b:L}-blocksize=${${b}_BLOCKSIZE}
+CONFIGURE_ARGS+=	--enable-default-${b:tl}-blocksize=${${b}_BLOCKSIZE}
 .endif
 .endfor
 .endif
@@ -295,21 +295,21 @@ post-configure:
 do-build:
 .for o in SHARED STATIC
 .if ${PORT_OPTIONS:M${o}}
-	@${PRINTF} "\n\n\n===> Building ${o:L} library:\n\n\n\n"
-	@cd ${WRKSRC}${o:S|^|_|:M*STATIC}; ${SETENV} ${MAKE_ENV} ${GMAKE} \
+	@${PRINTF} "\n\n\n===> Building ${o:tl} library:\n\n\n\n"
+	@cd ${WRKSRC}${o:S|^|_|:M*STATIC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 	${_MAKE_JOBS} ${MAKE_ARGS} libs
 .endif
 .endfor
 
 do-install:
-	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} \
+	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
 	${MAKE_ARGS} install-headers
 .if ${PORT_OPTIONS:MSHARED}
-	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} \
+	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
 	${MAKE_ARGS} install-libs install-lib-symlinks
 .endif
 .if ${PORT_OPTIONS:MSTATIC}
-	@cd ${WRKSRC}_STATIC; ${SETENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} \
+	@cd ${WRKSRC}_STATIC; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
 	${MAKE_ARGS} install-libs
 .endif
 .if ${PORT_OPTIONS:MDOCS}
@@ -326,14 +326,14 @@ BUILD_DEPENDS +=	${RUN_DEPENDS}
 CONFIGURE_ARGS+=	--enable-verbose-make-output
 
 check regression-test test: build
-	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${GMAKE} ${_MAKE_JOBS} \
+	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
 	${MAKE_ARGS} MK_INCL_DIR_INST_W_ARCH_VERS="${WRKDIR}/include" \
 	install-headers
 .for o in SHARED STATIC
 .if ${PORT_OPTIONS:M${o}}
-	@${PRINTF} "\n\n\n===> Testing ${o:L} library:\n\n\n\n"
+	@${PRINTF} "\n\n\n===> Testing ${o:tl} library:\n\n\n\n"
 	@cd ${WRKSRC}${o:S|^|_|:M*STATIC}/test;  ${SETENV} ${MAKE_ENV} \
-	${GMAKE} ${_MAKE_JOBS} ${MAKE_ARGS} \
+	${MAKE_CMD} ${_MAKE_JOBS} ${MAKE_ARGS} \
 	LIBBLAS="-L${LOCALBASE}/lib ${BLAS} -lm" \
 	LIBLAPACK="-L${LOCALBASE}/lib ${LAPACK}" test_libflame ; \
 	./test_libflame.x

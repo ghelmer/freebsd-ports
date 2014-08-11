@@ -5,14 +5,13 @@ PORTNAME=	Ri-li
 PORTVERSION=	2.0.1
 PORTREVISION=	5
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME:L}/${PORTNAME}%20Linux_Unix/${PORTNAME}%20V${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}%20Linux_Unix/${PORTNAME}%20V${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Drive a toy wood train in many levels - snake-like arcade game
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 gmake
 GNU_CONFIGURE=	yes
-USES=		gmake
 USE_SDL=	sdl mixer
 
 CPPFLAGS+=	`${SDL_CONFIG} --cflags` -I${LOCALBASE}/include

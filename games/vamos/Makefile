@@ -3,14 +3,14 @@
 
 PORTNAME=	vamos
 PORTVERSION=	0.7.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}:icons
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automotive simulation framework
 
 LICENSE=	GPLv2

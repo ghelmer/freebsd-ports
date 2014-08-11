@@ -3,7 +3,7 @@
 
 PORTNAME=	autogen
 PORTVERSION=	5.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 MASTER_SITE_SUBDIR=	${PORTNAME}/rel${PORTVERSION}
@@ -15,8 +15,7 @@ COMMENT=	The Automated Program Generator
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 LIB_DEPENDS=	libguile.so:${PORTSDIR}/lang/guile
 
-USES=		gmake pathfix shebangfix
-USE_BZIP2=	yes
+USES=		gmake pathfix shebangfix tar:bzip2
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libguile=yes --with-libxml2=yes --datadir=${PREFIX}/share

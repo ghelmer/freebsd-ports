@@ -7,21 +7,19 @@ PORTREVISION=	6
 CATEGORIES+=	math
 MASTER_SITES=	http://pessimization.com/software/orpie/
 
-MAINTAINER=	dylan@dylex.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A fullscreen RPN calculator for the console
 
 BUILD_DEPENDS=	ocamlc:${PORTSDIR}/lang/ocaml
 LIB_DEPENDS=	gsl:${PORTSDIR}/math/gsl
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-PLIST_FILES=	bin/orpie bin/orpie-curses-keys etc/orpierc
+PLIST_FILES=	bin/orpie bin/orpie-curses-keys etc/orpierc \
+		man/man1/orpie.1.gz man/man1/orpie-curses-keys.1.gz \
+		man/man5/orpierc.5.gz
 
-MAN1=		orpie.1 orpie-curses-keys.1
-MAN5=		orpierc.5
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

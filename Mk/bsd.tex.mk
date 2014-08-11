@@ -78,21 +78,21 @@ CONFLICTS_TETEX= \
 	latex2e-[0-9]*
 
 # override the user configuration
-.if !empty(USE_TEX:U:MTETEX)
+.if !empty(USE_TEX:tu:MTETEX)
 TEX_DEFAULT=	tetex
-.elif !empty(USE_TEX:U:MTEXLIVE)
+.elif !empty(USE_TEX:tu:MTEXLIVE)
 TEX_DEFAULT=	texlive
 .endif
 
-.if !empty(TEX_DEFAULT:U:MTETEX)
+.if !empty(TEX_DEFAULT:tu:MTETEX)
 CONFLICTS_INSTALL+=	${CONFLICTS_TEXLIVE}
-.elif !empty(TEX_DEFAULT:U:MTEXLIVE)
+.elif !empty(TEX_DEFAULT:tu:MTEXLIVE)
 CONFLICTS_INSTALL+=	${CONFLICTS_TETEX}
 .else
 .error malformed TEX_DEFAULT: ${TEX_DEFAULT}
 .endif
 
-_TEX_LABEL:=	${TEX_DEFAULT:U:S/TEXLIVE/TEX/}
+_TEX_LABEL:=	${TEX_DEFAULT:tu:S/TEXLIVE/TEX/}
 
 _USE_TETEX_TEXMF=	${LOCALBASE}/${TEXMFDISTDIR}/LICENSE.texmf:${PORTSDIR}/print/teTeX-texmf
 _USE_TEX_TEXMF=		${LOCALBASE}/${TEXMFDISTDIR}/README:${PORTSDIR}/print/texlive-texmf
@@ -146,13 +146,13 @@ _USE_TEX_FULL=	texmf base web2c infra \
 		dvipsk dvipdfmx xdvik \
 		kpathsea:lib ptexenc:lib
 
-.if !empty(USE_TEX:U:MFULL)
+.if !empty(USE_TEX:tu:MFULL)
 USE_TEX:=	${_USE_${_TEX_LABEL}_FULL}
 .endif
 
-.for _UU in ${USE_TEX:U}
+.for _UU in ${USE_TEX:tu}
 _U:=	${_UU}	# ugly but necessary in for loop
-. if !empty(_U:U:MKPATHSEA) || !empty(_U:U:MPTEXENC)
+. if !empty(_U:tu:MKPATHSEA) || !empty(_U:tu:MPTEXENC)
 _U:=	${_U}:lib
 . endif
 . if empty(_U:M*\:*)
@@ -160,7 +160,7 @@ _C:=	BUILD RUN
 . else
 _C:=	${_U:C/.*://}
 . endif
-. for _CC in ${_C:U}
+. for _CC in ${_C:tu}
 TEX_${_CC}_DEPENDS+=${_USE_${_TEX_LABEL}_${_UU:C/:.*$//}}
 . endfor
 .endfor
@@ -186,9 +186,11 @@ do-texhash:
 		${ECHO_CMD} "@unexec ${RMDIR} %D/$$D 2> /dev/null || ${TRUE}"; \
 	done >> ${TMPPLIST}
 . else
+.if defined(NO_STAGE)
 	@for D in ${TEXHASHDIRS:S,^,${PREFIX}/,}; do \
 		if [ -r $$D/ls-R ]; then ${LOCALBASE}/bin/mktexlsr $$D; fi; \
 	done
+.endif
 	@${ECHO_CMD} "@exec for D in ${TEXHASHDIRS:S,^,${PREFIX}/,}; do " \
 		"if [ -r \$$D/ls-R ]; then " \
 			"${LOCALBASE}/bin/mktexlsr \$$D; " \
@@ -207,31 +209,46 @@ post-install-script: do-texhash
 . for F in ${TEX_FORMATS}
 do-fmtutil: do-fmtutil-$F post-install-$F
 do-fmtutil-$F:
-	@${TEST} -n '${TEX_FORMAT_${F:U}}'
+.if defined(NO_STAGE)
+	@${TEST} -n '${TEX_FORMAT_${F:tu}}'
 	@${TEST} -r ${LOCALBASE}/${FMTUTIL_CNF}
 	@exec < ${LOCALBASE}/${FMTUTIL_CNF} && \
 		${RM} ${LOCALBASE}/${FMTUTIL_CNF} && \
 		(${GREP} -v "\#$F\$$"; \
-			${PRINTF} "%s\t\#$F\n" ${TEX_FORMAT_${F:U}}) \
+			${PRINTF} "%s\t\#$F\n" ${TEX_FORMAT_${F:tu}}) \
 			> ${LOCALBASE}/${FMTUTIL_CNF}
-	@${PRINTF} "%s\t\#$F\n" ${TEX_FORMAT_${F:U}} | \
+	@${PRINTF} "%s\t\#$F\n" ${TEX_FORMAT_${F:tu}} | \
 		while read format dum; do \
 		${SETENV} PATH=${PATH}:${LOCALBASE}/bin \
 			TEXMFMAIN=${LOCALBASE}/${TEXMFDIR} \
 			${LOCALBASE}/bin/fmtutil-sys --byfmt $$format; \
 		done
 	@${LOCALBASE}/bin/mktexlsr ${TEXMFVARDIR:S,^,${PREFIX}/,}
+.else
+	@exec < ${LOCALBASE}/${FMTUTIL_CNF} && \
+		(${GREP} -v "\#$F\$$"; \
+			${PRINTF} "%s\t\#$F\n" ${TEX_FORMAT_${F:tu}}) \
+			> ${WRKDIR}/fmtutil.cnf
+	@${PRINTF} "%s\t\#$F\n" ${TEX_FORMAT_${F:tu}} | \
+		while read format dum; do \
+		${SETENV} PATH=${PATH}:${LOCALBASE}/bin:${STAGEDIR}/${PREFIX}/bin \
+			TEXMFMAIN=${LOCALBASE}/${TEXMFDIR} \
+			${LOCALBASE}/bin/fmtutil-sys --byfmt $$format \
+			--cnffile ${WRKDIR}/fmtutil.cnf \
+			--fmtdir ${STAGEDIR}${PREFIX}/${TEXMFVARDIR}/web2c; \
+		done
+.endif
 	@${ECHO_CMD} "@exec exec < ${LOCALBASE}/${FMTUTIL_CNF} && " \
 		"${RM} ${LOCALBASE}/${FMTUTIL_CNF} && " \
 		"(${GREP} -v \"\#$F\$$\"; ${PRINTF} \"%%s\t\#$F\n\" " \
-		"${TEX_FORMAT_${F:U}:S,",\\",g}) " \
+		"${TEX_FORMAT_${F:tu}:S,",\\",g}) " \
 		"> ${LOCALBASE}/${FMTUTIL_CNF}" >> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec exec < ${LOCALBASE}/${FMTUTIL_CNF} && " \
 		"${RM} ${LOCALBASE}/${FMTUTIL_CNF} && " \
 		"${GREP} -v \"\#$F\$$\" " \
 		"> ${LOCALBASE}/${FMTUTIL_CNF}" >> ${TMPPLIST}
-_PLIST_FILES+=	${TEX_FORMAT_${F:U}_FILES}
-_PLIST_DIRSTRY+=${TEX_FORMAT_${F:U}_DIRS}
+_PLIST_FILES+=	${TEX_FORMAT_${F:tu}_FILES}
+_PLIST_DIRSTRY+=${TEX_FORMAT_${F:tu}_DIRS}
 . endfor
 post-install-script: do-fmtutil
 
@@ -269,7 +286,7 @@ TEX_FORMAT_ALEPH_FILES=	\
 TEX_FORMAT_ALEPH_DIRS=	\
 	${TEXMFVARDIR}/web2c/aleph
 post-install-aleph:
-	${LN} -sf aleph ${PREFIX}/bin/lamed
+	${LN} -sf aleph ${STAGEDIR}${PREFIX}/bin/lamed
 
 TEX_FORMAT_AMSTEX?= \
 	"amstex pdftex - -translate-file=cp227.tcx *amstex.ini"
@@ -280,7 +297,7 @@ TEX_FORMAT_AMSTEX_FILES= \
 TEX_FORMAT_AMSTEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-amstex:
-	${LN} -fs pdftex ${PREFIX}/bin/amstex
+	${LN} -fs pdftex ${STAGEDIR}${PREFIX}/bin/amstex
 
 TEX_FORMAT_CONTEXT?= \
 	"cont-en pdftex cont-usr.tex -8bit *cont-en.ini"
@@ -309,8 +326,8 @@ TEX_FORMAT_CSLATEX_FILES= \
 TEX_FORMAT_CSLATEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-cslatex:
-	${LN} -sf pdftex ${PREFIX}/bin/cslatex
-	${LN} -sf pdftex ${PREFIX}/bin/pdfcslatex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/cslatex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/pdfcslatex
 
 TEX_FORMAT_EPLAIN?= \
 	"eplain pdftex language.dat -translate-file=cp227.tcx *eplain.ini"
@@ -321,7 +338,7 @@ TEX_FORMAT_EPLAIN_FILES= \
 TEX_FORMAT_EPLAIN_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-eplain:
-	${LN} -sf pdftex ${PREFIX}/bin/eplain
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/eplain
 
 TEX_FORMAT_JADETEX?= \
 	"jadetex pdftex language.dat *jadetex.ini" \
@@ -336,8 +353,8 @@ TEX_FORMAT_JADETEX_FILES= \
 TEX_FORMAT_JADETEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-jadetex:
-	${LN} -sf pdftex ${PREFIX}/bin/jadetex
-	${LN} -sf pdftex ${PREFIX}/bin/pdfjadetex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/jadetex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/pdfjadetex
 
 TEX_FORMAT_LATEX-BIN?= \
 	"latex pdftex language.dat -translate-file=cp227.tcx *latex.ini" \
@@ -352,8 +369,8 @@ TEX_FORMAT_LATEX-BIN_FILES= \
 TEX_FORMAT_LATEX-BIN_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-latex-bin:
-	${LN} -sf pdftex ${PREFIX}/bin/latex
-	${LN} -sf pdftex ${PREFIX}/bin/pdflatex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/latex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/pdflatex
 
 TEX_FORMAT_LUATEX?= \
 	"luatex luatex language.def,language.dat.lua luatex.ini" \
@@ -375,9 +392,9 @@ TEX_FORMAT_LUATEX_FILES= \
 TEX_FORMAT_LUATEX_DIRS=	\
 	${TEXMFVARDIR}/web2c/luatex
 post-install-luatex:
-	${LN} -sf luatex ${PREFIX}/bin/dviluatex
-	${LN} -sf luatex ${PREFIX}/bin/dvilualatex
-	${LN} -sf luatex ${PREFIX}/bin/lualatex
+	${LN} -sf luatex ${STAGEDIR}${PREFIX}/bin/dviluatex
+	${LN} -sf luatex ${STAGEDIR}${PREFIX}/bin/dvilualatex
+	${LN} -sf luatex ${STAGEDIR}${PREFIX}/bin/lualatex
 
 TEX_FORMAT_METAFONT?= \
 	"mf mf-nowin - -translate-file=cp227.tcx mf.ini"
@@ -406,9 +423,9 @@ TEX_FORMAT_MEX_FILES= \
 TEX_FORMAT_MEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-mex:
-	${LN} -sf pdftex ${PREFIX}/bin/mex
-	${LN} -sf pdftex ${PREFIX}/bin/pdfmex
-	${LN} -sf pdftex ${PREFIX}/bin/utf8mex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/mex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/pdfmex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/utf8mex
 
 TEX_FORMAT_MLTEX?= \
 	"mllatex pdftex language.dat -translate-file=cp227.tcx -mltex mllatex.ini" \
@@ -423,8 +440,8 @@ TEX_FORMAT_MLTEX_FILES=	\
 TEX_FORMAT_MLTEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-mltex:
-	${LN} -sf pdftex ${PREFIX}/bin/mltex
-	${LN} -sf pdftex ${PREFIX}/bin/mllatex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/mltex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/mllatex
 
 TEX_FORMAT_MPTOPDF?= \
 	"mptopdf pdftex - -translate-file=cp227.tcx mptopdf.tex"
@@ -451,7 +468,7 @@ TEX_FORMAT_PDFTEX_FILES= \
 TEX_FORMAT_PDFTEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-pdftex:
-	${LN} -sf pdftex ${PREFIX}/bin/pdfetex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/pdfetex
 
 TEX_FORMAT_PTEX?= \
 	"ptex ptex - ptex.ini" \
@@ -469,7 +486,7 @@ TEX_FORMAT_PTEX_DIRS= \
 	${TEXMFVARDIR}/web2c/ptex \
 	${TEXMFVARDIR}/web2c/eptex
 post-install-ptex:
-	${LN} -sf eptex ${PREFIX}/bin/platex
+	${LN} -sf eptex ${STAGEDIR}${PREFIX}/bin/platex
 
 TEX_FORMAT_TEX?= \
 	"tex tex - tex.ini"
@@ -490,7 +507,7 @@ TEX_FORMAT_TEXSIS_FILES= \
 TEX_FORMAT_TEXSIS_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-texsis:
-	${LN} -sf pdftex ${PREFIX}/bin/texsis
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/texsis
 
 TEX_FORMAT_UPTEX?= \
 	"uptex uptex - uptex.ini" \
@@ -508,7 +525,7 @@ TEX_FORMAT_UPTEX_DIRS=	\
 	${TEXMFVARDIR}/web2c/euptex \
 	${TEXMFVARDIR}/web2c/uptex
 post-install-uptex:
-	${LN} -sf euptex ${PREFIX}/bin/uplatex
+	${LN} -sf euptex ${STAGEDIR}${PREFIX}/bin/uplatex
 
 TEX_FORMAT_XETEX?= \
 	"xetex xetex language.def -etex xetex.ini" \
@@ -525,7 +542,7 @@ TEX_FORMAT_XETEX_FILES=	\
 TEX_FORMAT_XETEX_DIRS=	\
 	${TEXMFVARDIR}/web2c/xetex
 post-install-xetex:
-	${LN} -sf xetex ${PREFIX}/bin/xelatex
+	${LN} -sf xetex ${STAGEDIR}${PREFIX}/bin/xelatex
 
 TEX_FORMAT_XMLTEX?= \
 	"xmltex pdftex language.dat *xmltex.ini" \
@@ -540,5 +557,5 @@ TEX_FORMAT_XMLTEX_FILES= \
 TEX_FORMAT_XMLTEX_DIRS= \
 	${TEXMFVARDIR}/web2c/pdftex
 post-install-xmltex:
-	${LN} -sf pdftex ${PREFIX}/bin/xmltex
-	${LN} -sf pdftex ${PREFIX}/bin/pdfxmltex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/xmltex
+	${LN} -sf pdftex ${STAGEDIR}${PREFIX}/bin/pdfxmltex

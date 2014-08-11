@@ -4,7 +4,8 @@
 #TODO eadler: s/python/python2/g on a number of files, chromium does not build with python3
 
 PORTNAME=	chromium
-PORTVERSION=	34.0.1847.132
+PORTVERSION=	35.0.1916.153
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -33,14 +34,16 @@ LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
 		libcups.so:${PORTSDIR}/print/cups-client \
 		libevent-1.4.so:${PORTSDIR}/devel/libevent \
 		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-		libpci.so:${PORTSDIR}/devel/libpci
+		libpci.so:${PORTSDIR}/devel/libpci \
+		libdrm.so:${PORTSDIR}/graphics/libdrm
 
 RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:${PORTSDIR}/audio/alsa-plugins \
 		${LOCALBASE}/lib/X11/fonts/Droid/fonts.dir:${PORTSDIR}/x11-fonts/droid-fonts-ttf
 
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		bison compiler:c++11-lib desktop-file-utils pkgconfig \
+USES=		bison compiler:c++11-lib cpe desktop-file-utils pkgconfig \
 		perl5 shebangfix ninja tar:xz
+CPE_VENDOR=	The Chromium Project
 USE_PERL5=	build
 USE_PYTHON_BUILD=	2
 USE_XORG=	scrnsaverproto x11 xproto xscrnsaver xtst
@@ -138,12 +141,11 @@ BUILDTYPE=	Release
 GYP_DEFINES+=	buildtype=Official
 .endif
 
-CONFIGURE_ENV+=	CC=${CC} \
-		CXX=${CXX} \
-		GYP_GENERATORS=ninja \
+CONFIGURE_ENV+=	CC="${CC}" \
+		CXX="${CXX}" \
 		GYP_DEFINES="${GYP_DEFINES}"
 MAKE_ENV+=	BUILDTYPE=${BUILDTYPE} \
-		GPERF=${LOCALBASE}/bin/gperf
+		GPERF="${LOCALBASE}/bin/gperf"
 MAKE_ARGS+=	-C out/${BUILDTYPE}
 
 .include <bsd.port.pre.mk>
@@ -172,7 +174,7 @@ pre-everything::
 .if ${PORT_OPTIONS:MDEBUG}
 	@${ECHO_MSG} "and lots of free diskspace (~ 8.5GB)."
 .else
-	@${ECHO_MSG} "and a fair amount of free diskspace (~ 2.4GB)."
+	@${ECHO_MSG} "and a fair amount of free diskspace (~ 3.7GB)."
 .endif
 	@${ECHO_MSG}
 

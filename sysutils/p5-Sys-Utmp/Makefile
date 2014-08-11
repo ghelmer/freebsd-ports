@@ -10,12 +10,12 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	zaa@ulstu.ru
 COMMENT=	Perl5 module which provides Object(ish) Interface to UTMP files
 
+DEPRECATED=	Fails to build with new utmpx
+EXPIRATION_DATE=	2014-07-23
+
 USES=		perl5
 USE_PERL5=	configure
 
-MAN3=		Sys::Utmp.3 Sys::Utmp::Utent.3
-
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e '254 s,strcpy,strncpy,' ${WRKSRC}/Utmp.xs
 

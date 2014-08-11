@@ -3,12 +3,13 @@
 
 PORTNAME=	XML-CanonicalizeXML
 PORTVERSION=	0.03
+PORTREVISION=	1
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	XML
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	gslin@gslin.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Extension for inclusive/exclusive canonicalization of XML
 
 LIB_DEPENDS=	xml2:${PORTSDIR}/textproc/libxml2

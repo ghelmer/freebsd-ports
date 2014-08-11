@@ -45,14 +45,14 @@ LIB_DEPENDS+=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg
 CONFIGURE_ARGS+=	--enable-ffmpeg
 .endif
 
-MACHINE=	${OPSYS:U}
+MACHINE=	${OPSYS:tu}
 
 SUB_LIST=	PREFIX=${PREFIX}
 SUB_FILES=	pkg-message
 MAKE_ENV=	TK_VER=${TK_VER} TCL_VER=${TCL_VER}	\
 		TCL_INCLUDEDIR="${TCL_INCLUDEDIR}"	\
 		TK_INCLUDEDIR="${TK_INCLUDEDIR}"	\
-		MACHINE=${MACHINE} MAKE=${GMAKE}
+		MACHINE=${MACHINE} MAKE=${MAKE_CMD}
 
 pre-configure:
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"		\

@@ -7,7 +7,7 @@ CATEGORIES=	devel
 MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/libdwarf/libdwarf-20130207.tar.gz/64b42692e947d5180e162e46c689dfbf/
 
 MAINTAINER=	joerg@FreeBSD.org
-COMMENT=	A library to analyze DWARF debugging information in ELF files
+COMMENT=	Library to analyze DWARF debugging information in ELF files
 
 INSTALL_CONFLICT=	bsdlibdwarf*
 
@@ -17,7 +17,8 @@ GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-I. -I${LOCALBASE}/include
 
-USE_DOS2UNIX=	*.h
+USES=		dos2unix
+DOS2UNIX_GLOB=	*.h
 
 PS_FILES=	dwarf.v2.pdf index.v2.pdf libdwarf2.1.pdf libdwarf2p.1.pdf mips_extensions.pdf
 

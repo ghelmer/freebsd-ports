@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	dbmail
-PORTVERSION=	3.1.13
+PORTVERSION=	3.1.15
 CATEGORIES=	mail
-MASTER_SITES=	http://www.dbmail.org/download/3.1/ \
-		http://git.dbmail.eu/paul/dbmail/snapshot/
+MASTER_SITES=	http://git.dbmail.eu/paul/dbmail/snapshot/
 
 MAINTAINER=	ahicks@p-o.co.uk
 COMMENT=	SQL database-based mail system (POP3 and IMAP)
@@ -21,7 +20,7 @@ BUILD_DEPENDS=	asciidoc:${PORTSDIR}/textproc/asciidoc \
 		xmlto:${PORTSDIR}/textproc/xmlto \
 		${LOCALBASE}/share/sgml/docbook/4.5:${PORTSDIR}/textproc/docbook-sgml
 
-CONFLICTS=	dbmail-2.* dbmail22-[0-9]*
+CONFLICTS=	dbmail22-[0-9]*
 
 OPTIONS_DEFINE=	DOCS LDAP SIEVE THREADS
 OPTIONS_DEFAULT=	THREADS
@@ -29,16 +28,16 @@ SIEVE_DESC=	Sieve mail sorting language support
 
 OPTIONS_SUB=	yes
 
-USE_AUTOTOOLS=	libtool autoheader autoconf
+INSTALL_TARGET=	install-strip
+USE_AUTOTOOLS=	autoheader autoconf
 USE_LDCONFIG=	${PREFIX}/lib/dbmail
 USE_RC_SUBR=	dbmail-pop3d dbmail-lmtpd dbmail-imapd dbmail-timsieved
 USE_OPENSSL=	yes
-USES=		gmake shebangfix pkgconfig
+USES=		gmake libtool pkgconfig shebangfix tar:bzip2
 SHEBANG_FILES=	man/fixsp.pl
 
-CFLAGS+=	-fPIC ${PTHREAD_CFLAGS}
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	--with-zdb=${LOCALBASE} --sysconfdir=${LOCALBASE}/etc --enable-manpages
 
 MAKE_ARGS+=	mandir=${MANPREFIX}/man
@@ -73,7 +72,5 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/dbmail/libauth_sql.so.0 \
-		${STAGEDIR}${PREFIX}/lib/dbmail/libdbmail.so.0
 
 .include <bsd.port.mk>

@@ -6,10 +6,9 @@ PORTVERSION=	8.22
 PORTREVISION=	2
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	GNU
-MASTER_SITE_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	jharris@widomaker.com
-COMMENT=	The Free Software Foundation's core utilities
+COMMENT=	Free Software Foundation core utilities
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,12 +22,12 @@ GNU_CONFIGURE=	yes
 # bugs.freebsd.org/160060
 CONFIGURE_ARGS=	--program-prefix=g	\
 		--program-transform-name=s/stat/nustat/
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib" FORCE_UNSAFE_CONFIGURE=1
-CPPFLAGS+=	"-I${LOCALBASE}/include"
+CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-USES=		gmake iconv perl5 charsetfix
+USES=		gmake iconv perl5 charsetfix tar:xz
 USE_PERL5=	build	# build - required for tests and man page generation
-USE_XZ=		yes
 USE_LDCONFIG=	yes
 
 INFO=		coreutils
@@ -55,6 +54,6 @@ post-install:
 		${STAGEDIR}${PREFIX}/libexec/coreutils/glibstdbuf.so
 
 #regression-test: build
-#	(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${GMAKE} check)
+#	(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check)
 
 .include <bsd.port.mk>

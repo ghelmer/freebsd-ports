@@ -2,13 +2,13 @@
 
 PORTNAME=	sdl2_image
 PORTVERSION=	2.0.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.libsdl.org/projects/SDL_image/release/
 DISTNAME=	SDL2_image-${PORTVERSION}
 
 MAINTAINER=	mva@FreeBSD.org
-COMMENT=	A simple library to load images of various formats as SDL surfaces
+COMMENT=	Simple library to load images of various formats as SDL surfaces
 
 LICENSE=	ZLIB
 

@@ -9,9 +9,11 @@
     SUBDIR += autotrust
     SUBDIR += bind-tools
     SUBDIR += bind10
+    SUBDIR += bind910
     SUBDIR += bind98
     SUBDIR += bind99
     SUBDIR += bindgraph
+    SUBDIR += bundy
     SUBDIR += c-ares
     SUBDIR += checkdns
     SUBDIR += credns
@@ -91,6 +93,7 @@
     SUBDIR += p5-BIND-Config-Parser
     SUBDIR += p5-DNS-Config
     SUBDIR += p5-DNS-EasyDNS
+    SUBDIR += p5-DNS-Ldns
     SUBDIR += p5-DNS-Zone
     SUBDIR += p5-DNS-ZoneParse
     SUBDIR += p5-Data-Validate-Domain
@@ -139,6 +142,7 @@
     SUBDIR += powerdns-devel
     SUBDIR += powerdns-recursor
     SUBDIR += py-adns
+    SUBDIR += py-bonjour
     SUBDIR += py-dns
     SUBDIR += py-dns3
     SUBDIR += py-dnspython
@@ -169,6 +173,7 @@
     SUBDIR += validns
     SUBDIR += vizone
     SUBDIR += walker
+    SUBDIR += wdns
     SUBDIR += yadifa
     SUBDIR += zkt
     SUBDIR += zonecheck

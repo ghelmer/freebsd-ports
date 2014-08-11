@@ -14,11 +14,11 @@ COMMENT=	POSIX threads library for Windows compiled with MinGW32
 BUILD_DEPENDS=	${PKGNAMEPREFIX}gcc:${PORTSDIR}/devel/${PKGNAMEPREFIX}gcc \
 		mingwm10.dll:${PORTSDIR}/devel/mingw32-bin-msvcrt
 
-USE_GMAKE=	yes
+USES=		gmake
 
 NO_STAGE=	yes
 do-build:
-	@${GMAKE} -C ${WRKSRC} CROSS=${PKGNAMEPREFIX} GC
+	@${MAKE_CMD} -C ${WRKSRC} CROSS=${PKGNAMEPREFIX} GC
 
 do-install:
 .for f in pthread.h sched.h semaphore.h

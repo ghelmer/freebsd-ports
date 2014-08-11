@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	evas-
 DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}
 
 MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	A hardware accelerated canvas API (WBMP loader)
+COMMENT=	Hardware accelerated canvas API (WBMP loader)
 
 LICENSE=	BSD
 
@@ -33,11 +33,11 @@ post-patch:
 		${MAKEDIRS:S,$,/Makefile.in,}
 
 do-build:
-	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${GMAKE} \
+	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 	    ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET}; done)
 
 do-install:
-	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${GMAKE} \
+	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 	    ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}; done)
 
 .include <bsd.port.mk>

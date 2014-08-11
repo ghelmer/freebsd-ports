@@ -3,7 +3,7 @@
 
 PORTNAME=	ccrtp
 PORTVERSION=	2.0.6
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -17,8 +17,8 @@ GNU_CONFIGURE=	yes
 USES=		gmake gettext iconv pkgconfig
 USE_LDCONFIG=	yes
 
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib -pthread"
 CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 INFO=	ccrtp
 
 post-patch:

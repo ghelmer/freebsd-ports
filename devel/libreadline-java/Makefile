@@ -4,7 +4,7 @@
 PORTNAME=		libreadline-java
 PORTVERSION=		0.8.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=		2
+PORTREVISION=		3
 CATEGORIES=		devel java
 MASTER_SITES=		SF/java-readline/java-readline/${PORTVERSION}
 
@@ -46,7 +46,7 @@ do-install:
 
 .if !defined(BATCH)
 test:
-	cd ${WRKSRC} && ${MAKE_ENV} ${GMAKE} test  # Now type something!
+	cd ${WRKSRC} && ${MAKE_ENV} ${MAKE_CMD} test  # Now type something!
 .endif
 
 .include <bsd.port.mk>

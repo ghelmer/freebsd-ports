@@ -25,9 +25,9 @@ include/oggz/oggz_stream.h
 include/oggz/oggz_table.h
 include/oggz/oggz_write.h
 lib/liboggz.a
-lib/liboggz.la
 lib/liboggz.so
-lib/liboggz.so.8
+lib/liboggz.so.2
+lib/liboggz.so.2.6.0
 libdata/pkgconfig/oggz.pc
 man/man1/oggz-chop.1.gz
 man/man1/oggz-codecs.1.gz
@@ -133,7 +133,6 @@ man/man1/oggz.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/latex/structoggz__packet.tex
 %%PORTDOCS%%%%DOCSDIR%%/latex/structoggz__position.tex
 @dirrm include/oggz
-@dirrmtry libdata/pkgconfig
 %%PORTDOCS%%@dirrm %%DOCSDIR%%/html
 %%PORTDOCS%%@dirrm %%DOCSDIR%%/latex
 %%PORTDOCS%%@dirrm %%DOCSDIR%%

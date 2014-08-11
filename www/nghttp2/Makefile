@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	nghttp2
-PORTVERSION=	0.3.2
+PORTVERSION=	0.4.0
+PORTREVISION=	2
 CATEGORIES=	www net
 MASTER_SITES=	https://github.com/tatsuhiro-t/${PORTNAME}/releases/download/v${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -20,7 +21,8 @@ OPTIONS_SUB=	yes
 
 CONFIGURE_ARGS=	--disable-python-bindings \
 		--enable-app \
-		--enable-examples
+		--enable-examples \
+		--with-spdylay
 CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl" \
 		ZLIB_CFLAGS="-I${INCLUDEDIR}" \
@@ -30,7 +32,7 @@ USE_CXXSTD=	c++11
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
-USES=		compiler:c++11-lang pathfix pkgconfig tar:xz
+USES=		compiler:c++11-lang libtool pathfix pkgconfig tar:xz
 
 PORTDOCS=	*
 
@@ -43,7 +45,14 @@ HPACK_LIB_DEPENDS=	libjansson.so:${PORTSDIR}/devel/jansson
 IGNORE=		nghttp2 requires OpenSSL 1.0.1+
 .endif
 
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/lib/.libs/libnghttp2.so.2
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
+CONFIGURE_ARGS+=--with-jemalloc
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e '/JEMALLOC_LIBS/ s|-ljemalloc||' ${WRKSRC}/configure
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libnghttp2.so.3.0.0
 
 .include <bsd.port.post.mk>

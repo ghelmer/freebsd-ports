@@ -8,12 +8,12 @@ MASTER_SITES=	${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	ale
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A streaming-based Java implementation of ISO 9660
+COMMENT=	Streaming-based Java implementation of ISO 9660
+
+LICENSE=	LGPL21
 
 BUILD_DEPENDS=	${JAVALIBDIR}/sabre.jar:${PORTSDIR}/devel/sabre
 RUN_DEPENDS=	${JAVALIBDIR}/sabre.jar:${PORTSDIR}/devel/sabre
-
-LICENSE=	LGPL21
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USE_JAVA=	yes
@@ -24,13 +24,12 @@ ALL_TARGET=	jar
 
 PLIST_FILES=	%%JAVAJARDIR%%/iso9660.jar
 
-NO_STAGE=	yes
 post-extract:
 	@${CP} ${FILESDIR}/build.xml ${WRKSRC}
 
 do-install:
 	@${ECHO_MSG} -n ">> Installing JAR as ${JAVAJARDIR}/iso9660.jar..."
-	@${INSTALL_DATA} ${WRKSRC}/dist/iso9660.jar ${JAVAJARDIR}/
+	@${INSTALL_DATA} ${WRKSRC}/dist/iso9660.jar ${STAGEDIR}${JAVAJARDIR}/
 	@${ECHO_MSG} " [ DONE ]"
 
 .include <bsd.port.mk>

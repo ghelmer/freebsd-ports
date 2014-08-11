@@ -4,12 +4,8 @@ bin/b10-loadzone
 bin/bindctl
 bin/isc-sysinfo
 bin/perfdhcp
-@unexec if cmp -s %D/etc/%%PORTNAME%%/cmdctl-certfile.pem.sample %D/etc/%%PORTNAME%%/cmdctl-certfile.pem; then rm -f %D/etc/%%PORTNAME%%/cmdctl-certfile.pem; fi
-etc/%%PORTNAME%%/cmdctl-certfile.pem.sample
-@exec if [ ! -f %D/etc/%%PORTNAME%%/cmdctl-certfile.pem ] ; then cp -p %D/%F %B/cmdctl-certfile.pem; fi
-@unexec if cmp -s %D/etc/%%PORTNAME%%/cmdctl-keyfile.pem.sample %D/etc/%%PORTNAME%%/cmdctl-keyfile.pem; then rm -f %D/etc/%%PORTNAME%%/cmdctl-keyfile.pem; fi
-etc/%%PORTNAME%%/cmdctl-keyfile.pem.sample
-@exec if [ ! -f %D/etc/%%PORTNAME%%/cmdctl-keyfile.pem ] ; then cp -p %D/%F %B/cmdctl-keyfile.pem; fi
+@sample %%ETCDIR%%/cmdctl-certfile.pem.sample
+@sample %%ETCDIR%%/cmdctl-keyfile.pem.sample
 include/bind10/asio/LICENSE_1_0.txt
 include/bind10/asio/README
 include/bind10/asio/basic_datagram_socket.hpp
@@ -882,4 +878,4 @@ sbin/bind10
 @dirrmtry include/bind10/asio/detail
 @dirrmtry include/bind10/asio
 @dirrmtry include/bind10
-@dirrmtry etc/%%PORTNAME%%
+@dirrmtry %%ETCDIR%%

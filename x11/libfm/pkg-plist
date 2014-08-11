@@ -74,17 +74,17 @@ include/libfm-%%MAJORVER%%/fm-version.h
 include/libfm-%%MAJORVER%%/fm-xml-file.h
 include/libfm-%%MAJORVER%%/fm.h
 lib/libfm-extra.a
-lib/libfm-extra.la
 lib/libfm-extra.so
 lib/libfm-extra.so.%%VER%%
+lib/libfm-extra.so.%%VER%%.0.0
 lib/libfm-gtk.a
-lib/libfm-gtk.la
 lib/libfm-gtk.so
 lib/libfm-gtk.so.%%VER%%
+lib/libfm-gtk.so.%%VER%%.0.0
 lib/libfm.a
-lib/libfm.la
 lib/libfm.so
 lib/libfm.so.%%VER%%
+lib/libfm.so.%%VER%%.0.0
 lib/libfm/modules/gtk-fileprop-x-desktop.so
 lib/libfm/modules/gtk-fileprop-x-shortcut.so
 lib/libfm/modules/gtk-menu-actions.so
@@ -169,8 +169,6 @@ share/applications/lxshortcut.desktop
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/libfm.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/libfm.mo
 share/mime/packages/libfm.xml
-@dirrmtry share/mime/packages
-@dirrmtry share/mime
 %%NLS%%@dirrmtry share/locale/ur_PK/LC_MESSAGES
 %%NLS%%@dirrmtry share/locale/ur_PK
 %%NLS%%@dirrmtry share/locale/tt_RU/LC_MESSAGES
@@ -184,4 +182,3 @@ share/mime/packages/libfm.xml
 @dirrm lib/libfm
 @dirrm include/libfm-%%MAJORVER%%
 @dirrmtry etc/xdg/libfm
-@dirrmtry etc/xdg

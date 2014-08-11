@@ -8,7 +8,7 @@ CATEGORIES=	graphics
 MASTER_SITES=	SF
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	sylvio@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drawing editors derived from idraw
 
 LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
@@ -19,7 +19,7 @@ USE_AUTOTOOLS=	autoconf
 CONFIGURE_ARGS=	--with-tiff=${PREFIX}
 CONFIGURE_ENV=	IMAKECPP=${CPP}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
-MAKE_ARGS=	ARCH="${OPSYS:U}" MAKE="${MAKE_CMD}"
+MAKE_ARGS=	ARCH="${OPSYS:tu}" MAKE="${MAKE_CMD}"
 USE_XORG=	x11 xaw ice xext
 
 MANCOMPRESSED=	no

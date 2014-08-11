@@ -20,8 +20,10 @@ PKGNAMEPREFIX=	linux-
 DISTNAME=	armyops250-linux
 EXTRACT_SUFX=	.run
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	America's Army (Linux version)
+
+BROKEN=		Unfetchable
 
 USE_LINUX=	yes
 NO_BUILD=	yes

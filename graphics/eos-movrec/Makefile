@@ -3,27 +3,26 @@
 
 PORTNAME=	eos-movrec
 DISTVERSION=	0.3.2_beta
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}/
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Capture short movies with Canon DSLR camera
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgphoto2.so:${PORTSDIR}/graphics/libgphoto2
 
-USE_BZIP2=	yes
-USES=		cmake pkgconfig
-USE_DOS2UNIX=	*.pro *.cpp *.h
+USES=		cmake dos2unix pkgconfig tar:bzip2
+DOS2UNIX_GLOB=	*.pro *.cpp *.h
 USE_QT4=	qmake_build moc_build rcc_build uic_build gui
 
 INSTALLS_ICONS=	yes
 ICON_SIZES=	16x16 32x32 128x128 256x256 512x512
 
-DESKTOP_ENTRIES="EOS Camera Movie Recorder" "${COMMENT}" "${PORTNAME}" \
-		"eos_movrec" "Graphics;Photography;Qt;" false
+DESKTOP_ENTRIES="EOS Camera Movie Recorder" "" "${PORTNAME}" \
+		"eos_movrec" "Graphics;Photography;Qt;" ""
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|GLIBC|${OPSYS}|' ${WRKSRC}/os_api.h

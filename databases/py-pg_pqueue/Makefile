@@ -3,7 +3,7 @@
 
 PORTNAME=	pg_pqueue
 PORTVERSION=	1.0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases python
 MASTER_SITES=	http://python.projects.postgresql.org/files/ \
 		CHEESESHOP
@@ -12,16 +12,17 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	wenheping@gmail.com
 COMMENT=	PostgreSQL PQ Protocol Modules
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	easy_install
-PYEASYINSTALL_ARCHDEP=	yes
+LICENSE=	BSD
 
-NO_STAGE=	yes
+USE_PYTHON=		yes
+USE_PYDISTUTILS=	yes
+PYDISTUTILS_AUTOPLIST=	yes
+
 .include <bsd.port.pre.mk>
 post-install:
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/changes.txt ${DOCSDIR}
+.if ${PORT_OPTIONS:MDOCS}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/changes.txt ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.post.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tor
-DISTVERSION=	0.2.5.2-alpha
+DISTVERSION=	0.2.5.6-alpha
 CATEGORIES=	security net ipv6
 MASTER_SITES=	TOR
 PKGNAMESUFFIX=	-devel
@@ -55,7 +55,6 @@ CONFIGURE_ARGS+=	--disable-gcc-hardening
 
 .if ${PORT_OPTIONS:MBUFFEREVENTS}
 CONFIGURE_ARGS+=	--enable-bufferevents
-BROKEN=	some functions are hidden from the test binaries that use them WITH_BUFFEREVENTS
 .else
 CONFIGURE_ARGS+=	--disable-bufferevents
 .endif
@@ -123,7 +122,7 @@ post-patch:
 post-configure:
 	@${FIND} -X ${WRKSRC} -type f -name Makefile | ${XARGS} ${REINPLACE_CMD} -e \
 		"s|-lpthread|${PTHREAD_LIBS}|g"
-	@${REINPLACE_CMD} -e '\|^nodist_man1_MANS =|s|$$|$$(regular_mans:=.1) doc/torify.1|' \
+	@${REINPLACE_CMD} -e '\|^nodist_man1_MANS =|s|$$|$$(install_mans:=.1)|' \
 		${WRKSRC}/Makefile
 
 .if ! ${PORT_OPTIONS:MTOR2WEB}

@@ -3,7 +3,7 @@
 
 PORTNAME=	harbour
 PORTVERSION=	3.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}-project/source/${PORTVERSION}
 
@@ -22,8 +22,7 @@ NOT_FOR_ARCHS_REASON=	does not compile on sparc64: assertion failed
 
 PORTDOCS=	*.txt *.hbd NEWS INSTALL TODO COPYING ChangeLog
 
-USES=		bison
-USE_GMAKE=	yes
+USES=		bison gmake
 USE_OPENSSL=	yes
 USE_LDCONFIG=	${LOCALBASE}/lib/harbour
 

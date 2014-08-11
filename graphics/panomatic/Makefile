@@ -8,16 +8,14 @@ MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	ii@any.com.ru
-COMMENT=	A tool that automates the creation of control points
+COMMENT=	Tool that automates the creation of control points
 
 BUILD_DEPENDS=	bjam:${PORTSDIR}/devel/boost-jam \
 		${LOCALBASE}/include/boost/format.hpp:${PORTSDIR}/devel/boost-libs
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-boost=${LOCALBASE}/include
-USE_BZIP2=	yes
-USES=		gmake
-USE_DOS2UNIX=	yes
+USES=		dos2unix gmake tar:bzip2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

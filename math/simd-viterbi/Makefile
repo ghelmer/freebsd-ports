@@ -11,17 +11,15 @@ MAINTAINER=	freebsduser@paradisegreen.co.uk
 COMMENT=	A fast Viterbi CODEC library
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 USE_LDCONFIG=	yes
 MAKEFILE=	makefile
 
-MAN3=		simd-viterbi.3
-
 PLIST_FILES=	include/parity.h include/viterbi27.h include/viterbi29.h \
-		lib/libviterbi.a lib/libviterbi.so lib/libviterbi.so.2
+		lib/libviterbi.a lib/libviterbi.so lib/libviterbi.so.2 \
+		man/man3/simd-viterbi.3.gz
 PLIST=		${WRKDIR}/pkg-plist
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} != i386 || defined(PACKAGE_BUILDING)

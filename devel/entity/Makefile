@@ -8,7 +8,7 @@ CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Old%20Entity%20Versions
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A really rapid XML-based application development system
+COMMENT=	Really rapid XML-based application development system
 
 LIB_DEPENDS=	pcre:${PORTSDIR}/devel/pcre
 RUN_DEPENDS=	python:${PORTSDIR}/lang/python
@@ -16,9 +16,8 @@ RUN_DEPENDS=	python:${PORTSDIR}/lang/python
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--enable-tcl=no
 
-USES=		perl5
+USES=		perl5 gmake
 USE_AUTOTOOLS=	libtool
-USE_GMAKE=	yes
 USE_GNOME=	gtk12
 USE_LDCONFIG=	${PREFIX}/lib/entity/clib
 MAKE_JOBS_UNSAFE=	yes

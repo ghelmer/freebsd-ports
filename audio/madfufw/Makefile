@@ -8,7 +8,7 @@ CATEGORIES=	audio
 MASTER_SITES=	SF/usb-midi-fw/madfu-firmware/1.2/
 DISTNAME=	madfuload-1.2
 
-MAINTAINER=	aragon@phat.za.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	M-Audio DFU Firmware for Transit, Ozone, Sonica, MobilePre
 
 RUN_DEPENDS=	${LOCALBASE}/bin/dfu-util:${PORTSDIR}/comms/dfu-util
@@ -22,7 +22,6 @@ PLIST_FILES=	share/maudio/ma003101.bin \
 		etc/devd/maudio-devd.conf
 PLIST_DIRS=	share/maudio
 USE_RC_SUBR=	maudio
-NO_STAGE=	yes
 SUB_FILES=	maudio-devd.conf pkg-message
 NO_BUILD=	yes
 NO_PACKAGE=	redistribution of firmware files not permitted

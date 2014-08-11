@@ -3,27 +3,25 @@
 
 PORTNAME=	SearchAndRescue
 PORTVERSION=	1.4.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
-MASTER_SITES=	SF/${PORTNAME:L}/Program/
+MASTER_SITES=	SF/${PORTNAME:tl}/Program/
 
 MAINTAINER=	jessefrgsmith@yahoo.ca
-COMMENT=	A flight simulator in which the player rescues people
+COMMENT=	Flight simulator in which the player rescues people
 
 RUN_DEPENDS=	${LOCALBASE}/share/searchandrescue/human.ini:${PORTSDIR}/games/searchandrescue-data
 
 USE_SDL=	mixer
 USE_XORG=	x11 xau xdmcp xext xmu xpm xxf86vm
 USE_GL=		glu
-WRKSRC=		${WRKDIR}/${PORTNAME:L}_${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME:tl}_${PORTVERSION}
 
 PLIST_FILES=	bin/${PORTNAME} \
 		${DESKTOPDIR:S,${PREFIX}/,,}/${PORTNAME}.desktop \
 		share/pixmaps/${PORTNAME}.xpm
-PLIST_DIRS=	${DESKTOPDIR:S,${PREFIX}/,,}
 
 #Respect PREFIX, LOCALBASE, CC, etc.
-NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} -e 's,%%LOCALBASE%%,${LOCALBASE},g' \
 		-e 's,%%PREFIX%%,${PREFIX},g' \
@@ -38,9 +36,8 @@ post-patch:
 		${WRKSRC}/sar/Makefile
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/sar/${PORTNAME} ${PREFIX}/bin
-	${MKDIR} ${DESKTOPDIR}
-	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.desktop ${DESKTOPDIR}
-	${INSTALL_DATA} ${WRKSRC}/sar/icons/${PORTNAME}.xpm ${PREFIX}/share/pixmaps
+	${INSTALL_PROGRAM} ${WRKSRC}/sar/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
+	${INSTALL_DATA} ${WRKSRC}/sar/icons/${PORTNAME}.xpm ${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

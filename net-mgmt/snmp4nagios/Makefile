@@ -3,9 +3,9 @@
 
 PORTNAME=	SNMP4Nagios
 PORTVERSION=	0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
-MASTER_SITES=	SF/${PORTNAME:L}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Vendor specific SNMP plugins for Nagios
@@ -21,7 +21,6 @@ NAGIOSDIR?=	/var/spool/nagios
 OPTIONS_DEFINE=	RRDTOOL
 RRDTOOL_DESC=	Build with rrdtool support
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 CONFIGURE_ARGS=	--sbindir=${PREFIX}/${NAGIOSWWWDIR}/cgi-bin \
@@ -34,8 +33,8 @@ CONFIGURE_ARGS=	--sbindir=${PREFIX}/${NAGIOSWWWDIR}/cgi-bin \
 		--with-pngdir=${NAGIOSDIR}/snmp4nagios/png \
 		--prefix=${PREFIX}
 
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib"
-CFLAGS+=	-I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 .include <bsd.port.pre.mk>
 

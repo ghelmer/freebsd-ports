@@ -25,9 +25,22 @@ load_rc_config $name
 
 start_cmd="${name}_start"
 
-procname="java"
+davmail_procname()
+{
+	JAVAVM_DRYRUN=yes "%%PREFIX%%/bin/java" | \
+	    /usr/bin/awk -F= '{if ($1=="JAVAVM_PROG") print $2}' 2> /dev/null
+}
+
+procname="$(davmail_procname)"
 pidfile="/var/run/davmail.pid"
 required_files=${davmail_config}
+
+davmail_daemon()
+{
+	%%PREFIX%%/bin/java \
+	    -cp "%%DATADIR%%/davmail.jar:%%DATADIR%%/lib/*" \
+	    davmail.DavGateway "${davmail_config}" & echo -n $! > ${pidfile}
+}
 
 davmail_start()
 {
@@ -36,9 +49,7 @@ davmail_start()
 		return 1
 	fi
 	echo "Starting ${name}."
-	for i in %%DATADIR%%/lib/*; do export CLASSPATH=$CLASSPATH:$i; done
-	java -cp %%DATADIR%%/davmail.jar:$CLASSPATH:%%JAVAJARDIR%%/swt.jar davmail.DavGateway ${davmail_config} >> /var/log/davmail-error.log 2>&1 &
-	echo -n $! > ${pidfile}
+	{ davmail_daemon 2>&1 | /usr/bin/logger -p daemon.info -t davmail; } &
 }
 
 run_rc_command "$1"

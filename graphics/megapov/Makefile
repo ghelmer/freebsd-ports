@@ -15,9 +15,9 @@ LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
 		jpeg:${PORTSDIR}/graphics/jpeg \
 		tiff:${PORTSDIR}/graphics/tiff
 
-USE_BZIP2=	yes
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-USE_GMAKE=	yes
+USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes
 ALL_TARGET=	# empty
 CONFIGURE_ARGS+=	COMPILED_BY="ports@FreeBSD.org"
@@ -48,7 +48,7 @@ pre-build:
 .endif
 
 do-install:
-	@(cd ${WRKSRC}/unix    ; ${GMAKE} install)
+	@(cd ${WRKSRC}/unix    ; ${MAKE_CMD} install)
 .if !defined(NOPORTDOCS)
 	${MKDIR} ${DOCSDIR}
 	@${TAR} -C ${WRKSRC}/doc -cf - . | \

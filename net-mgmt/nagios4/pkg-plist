@@ -1,22 +1,20 @@
-@exec mkdir -p %D/%%NAGIOSWWWDIR%%/ssi
-@exec mkdir -p %%NAGIOSDIR%%/archives
-@exec mkdir -p %%NAGIOSDIR%%/checkresults
-@exec mkdir -p %%NAGIOSDIR%%/rw
-@exec chmod 775 %%NAGIOSDIR%% %%NAGIOSDIR%%/archives %%NAGIOSDIR%%/checkresults %%NAGIOSDIR%%/rw
-@exec chown %%NAGIOSUSER%%:%%NAGIOSGROUP%% %%NAGIOSDIR%% %%NAGIOSDIR%%/archives %%NAGIOSDIR%%/checkresults
-@exec chown %%NAGIOSUSER%%:%%WWWGRP%% %%NAGIOSDIR%%/rw
+@exec install -d %D/%%NAGIOSWWWDIR%%/ssi
+@exec install -d -m 775 -o %%NAGIOSUSER%% -g %%NAGIOSGROUP%% %%NAGIOSDIR%% %%NAGIOSDIR%%/archives
+@exec install -d -m 2775 -o %%NAGIOSUSER%% -g %%NAGIOSGROUP%% %%NAGIOSDIR%%/checkresults
+@exec install -d -m 775 -o %%NAGIOSUSER%% -g %%WWWGRP%% %%NAGIOSDIR%%/rw
 bin/nagios
 bin/nagiostats
-etc/nagios/cgi.cfg-sample
-etc/nagios/nagios.cfg-sample
-etc/nagios/objects/commands.cfg-sample
-etc/nagios/objects/contacts.cfg-sample
-etc/nagios/objects/localhost.cfg-sample
-etc/nagios/objects/printer.cfg-sample
-etc/nagios/objects/switch.cfg-sample
-etc/nagios/objects/templates.cfg-sample
-etc/nagios/objects/timeperiods.cfg-sample
-etc/nagios/resource.cfg-sample
+%%ETCDIR%%/cgi.cfg-sample
+%%ETCDIR%%/nagios.cfg-sample
+%%ETCDIR%%/objects/commands.cfg-sample
+%%ETCDIR%%/objects/contacts.cfg-sample
+%%ETCDIR%%/objects/localhost.cfg-sample
+%%ETCDIR%%/objects/printer.cfg-sample
+%%ETCDIR%%/objects/switch.cfg-sample
+%%ETCDIR%%/objects/templates.cfg-sample
+%%ETCDIR%%/objects/timeperiods.cfg-sample
+%%ETCDIR%%/resource.cfg-sample
+%%NAGIOSWWWDIR%%/cgi-bin/archivejson.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/avail.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/cmd.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/config.cgi
@@ -24,17 +22,17 @@ etc/nagios/resource.cfg-sample
 %%NAGIOSWWWDIR%%/cgi-bin/histogram.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/history.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/notifications.cgi
+%%NAGIOSWWWDIR%%/cgi-bin/objectjson.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/outages.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/showlog.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/status.cgi
+%%NAGIOSWWWDIR%%/cgi-bin/statusjson.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/statusmap.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/statuswml.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/summary.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/tac.cgi
 %%NAGIOSWWWDIR%%/cgi-bin/trends.cgi
-@unexec if cmp -s %D/%%NAGIOSWWWDIR%%/config.inc.php.sample %D/%%NAGIOSWWWDIR%%/config.inc.php; then rm -f %D/%%NAGIOSWWWDIR%%/config.inc.php; fi
-%%NAGIOSWWWDIR%%/config.inc.php.sample
-@exec if [ ! -f %D/%%NAGIOSWWWDIR%%/config.inc.php ] ; then cp -p %D/%F %B/config.inc.php; fi
+@sample %%NAGIOSWWWDIR%%/config.inc.php.sample
 %%NAGIOSWWWDIR%%/contexthelp/A1.html
 %%NAGIOSWWWDIR%%/contexthelp/A2.html
 %%NAGIOSWWWDIR%%/contexthelp/A3.html
@@ -350,18 +348,23 @@ etc/nagios/resource.cfg-sample
 %%NAGIOSWWWDIR%%/images/weblogo1.png
 %%NAGIOSWWWDIR%%/images/zoom1.gif
 %%NAGIOSWWWDIR%%/images/zoom2.gif
+%%NAGIOSWWWDIR%%/includes/jquery-1.7.1.min.js
 %%NAGIOSWWWDIR%%/includes/rss/extlib/Snoopy.class.inc
 %%NAGIOSWWWDIR%%/includes/rss/rss_cache.inc
 %%NAGIOSWWWDIR%%/includes/rss/rss_fetch.inc
 %%NAGIOSWWWDIR%%/includes/rss/rss_parse.inc
 %%NAGIOSWWWDIR%%/includes/rss/rss_utils.inc
-%%NAGIOSWWWDIR%%/includes/jquery-1.7.1.min.js
 %%NAGIOSWWWDIR%%/includes/utils.inc.php
 %%NAGIOSWWWDIR%%/index.php
 %%NAGIOSWWWDIR%%/js/jquery-1.7.1.min.js
+%%NAGIOSWWWDIR%%/js/jsonquery.js
+%%NAGIOSWWWDIR%%/jsonquery.html
 %%NAGIOSWWWDIR%%/main.php
 %%NAGIOSWWWDIR%%/robots.txt
+%%NAGIOSWWWDIR%%/rss-corebanner.php
+%%NAGIOSWWWDIR%%/rss-corefeed.html
 %%NAGIOSWWWDIR%%/rss-corefeed.php
+%%NAGIOSWWWDIR%%/rss-newsfeed.html
 %%NAGIOSWWWDIR%%/rss-newsfeed.php
 %%NAGIOSWWWDIR%%/side.php
 %%NAGIOSWWWDIR%%/stylesheets/avail.css
@@ -372,6 +375,7 @@ etc/nagios/resource.cfg-sample
 %%NAGIOSWWWDIR%%/stylesheets/extinfo.css
 %%NAGIOSWWWDIR%%/stylesheets/histogram.css
 %%NAGIOSWWWDIR%%/stylesheets/history.css
+%%NAGIOSWWWDIR%%/stylesheets/jsonquery.css
 %%NAGIOSWWWDIR%%/stylesheets/ministatus.css
 %%NAGIOSWWWDIR%%/stylesheets/notifications.css
 %%NAGIOSWWWDIR%%/stylesheets/outages.css
@@ -381,8 +385,9 @@ etc/nagios/resource.cfg-sample
 %%NAGIOSWWWDIR%%/stylesheets/summary.css
 %%NAGIOSWWWDIR%%/stylesheets/tac.css
 %%NAGIOSWWWDIR%%/stylesheets/trends.css
-@dirrmtry etc/nagios/objects
-@dirrmtry etc/nagios
+@dirrmtry %%ETCDIR%%/objects
+@dirrmtry %%ETCDIR%%
+@dirrmtry libexec/nagios
 @dirrm %%NAGIOSWWWDIR%%/cgi-bin
 @dirrm %%NAGIOSWWWDIR%%/contexthelp
 @dirrm %%NAGIOSWWWDIR%%/docs/images

@@ -3,13 +3,13 @@
 
 PORTNAME=	crossfire
 PORTVERSION=	1.70.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	-server
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}.maps${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Server for multiplayer graphical arcade and adventure game
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash

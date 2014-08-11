@@ -24,7 +24,6 @@
     SUBDIR += eclipse-cdt
     SUBDIR += eclipse-checkstyle
     SUBDIR += eclipse-datatools
-    SUBDIR += eclipse-devel
     SUBDIR += eclipse-drjava
     SUBDIR += eclipse-ecj
     SUBDIR += eclipse-emf
@@ -53,7 +52,6 @@
     SUBDIR += eclipse-windowbuilder
     SUBDIR += icedtea-web
     SUBDIR += infobus
-    SUBDIR += j2sdkee13
     SUBDIR += jad
     SUBDIR += jaf
     SUBDIR += jai
@@ -96,6 +94,7 @@
     SUBDIR += jdbcpool
     SUBDIR += jdk16-doc
     SUBDIR += jdk7-doc
+    SUBDIR += jdk8-doc
     SUBDIR += jdom
     SUBDIR += jflex
     SUBDIR += jfreechart
@@ -116,9 +115,7 @@
     SUBDIR += langspec
     SUBDIR += linux-oracle-jdk18
     SUBDIR += linux-oracle-jre18
-    SUBDIR += linux-sun-jdk16
     SUBDIR += linux-sun-jdk17
-    SUBDIR += linux-sun-jre16
     SUBDIR += linux-sun-jre17
     SUBDIR += mmake
     SUBDIR += mx4j
@@ -131,6 +128,7 @@
     SUBDIR += openjdk6-jre
     SUBDIR += openjdk7
     SUBDIR += openjdk8
+    SUBDIR += openjdk8-jre
     SUBDIR += phpeclipse
     SUBDIR += poseidon
     SUBDIR += proguard
@@ -144,6 +142,7 @@
     SUBDIR += trove4j
     SUBDIR += veditor
     SUBDIR += visualvm
+    SUBDIR += wildfly80
     SUBDIR += xdoclet
 
 .include <bsd.port.subdir.mk>

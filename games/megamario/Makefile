@@ -1,4 +1,4 @@
-# Created by: nemysis <nemysis@gmx.ch>
+# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	megamario
@@ -7,7 +7,7 @@ CATEGORIES=	games
 MASTER_SITES=	SF/mmario/Mega%20Mario%20Full%20Game/Mega%20Mario%20v${PORTVERSION}%20%28Full%20Game%2C%20high%20Quality%20music%29/
 DISTNAME=	MegaMario_v${PORTVERSION}_full
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Super Mario Bros 1 clone
 
 LICENSE=	LGPL21
@@ -15,7 +15,7 @@ LICENSE=	LGPL21
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
-USES=		dos2unix gmake zip:infozip
+USES=		dos2unix gmake zip
 DOS2UNIX_GLOB=	*.cpp *.h *.ini Makefile* *.txt *.desktop
 USE_SDL=	sdl image mixer ttf
 USE_GL=		glu
@@ -24,7 +24,7 @@ ALL_TARGET=	${PORTNAME}
 pre-extract:
 		@${MKDIR} ${WRKDIR}/${DISTNAME}
 
-PORTDOCS=	CONTROLS.txt readme.txt
+PORTDOCS=	CONTROLS.txt fixes_v1.7.txt readme.txt
 OPTIONS_DEFINE=	DOCS
 
 post-patch:

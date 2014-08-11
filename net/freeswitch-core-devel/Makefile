@@ -43,15 +43,14 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 USE_AUTOTOOLS=	autoconf:env automake:env libtool:env
 
 USE_PERL5=	build
-USES=		bison:both pkgconfig perl5
+USES=		bison:both pkgconfig perl5 gmake
 USE_GCC=	any
-USE_GMAKE=	yes
 SUB_FILES=	pkg-install
 USE_RC_SUBR=	freeswitch
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-INCLUDES+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS+=--prefix=${PREFIX} \
 		--bindir=${PREFIX}/bin \
 		--datadir=${VARBASE}/db/${PORTNAME} \
@@ -71,11 +70,6 @@ CONFIGURE_ARGS+=--prefix=${PREFIX} \
 		--with-ogg-libraries=${LOCALBASE}/lib \
 		--with-ogg-includes=${LOCALBASE}/include
 MAKE_JOBS_UNSAFE=	yes
-
-CONFIGURE_ENV+=	INCLUDES="${INCLUDES}" \
-		PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}"
-CPPFLAGS+=	-I${LOCALBASE}/include
 
 FREESWITCH_USER?=	freeswitch
 FREESWITCH_GROUP?=	${FREESWITCH_USER}
@@ -263,7 +257,7 @@ pre-configure:
 
 post-configure:
 .for i in mod_unimrcp mod_flite mod_pocketsphinx
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(asr_tts/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor
@@ -274,17 +268,17 @@ post-configure:
 	mod_vmd mod_avmd mod_spy mod_curl mod_nibblebill mod_memcache mod_directory mod_distributor \
 	mod_snapshot mod_callcenter mod_fsk mod_ladspa mod_blacklist mod_http_cache mod_abstraction \
 	mod_voicemail_ivr mod_httapi
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(applications/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor
 .for i in mod_amrwb mod_celt mod_silk mod_codec2 mod_opus mod_isac mod_ilbc mod_siren
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(codecs/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor
 .for i in  mod_shell_stream mod_shout mod_vlc
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(formats/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor
@@ -292,17 +286,17 @@ post-configure:
 	@${REINPLACE_CMD} -e 's|#formats/mod_portaudio_stream|formats/mod_portaudio_stream|g' ${WRKSRC}/modules.conf
 .endif
 .for i in mod_say_de mod_say_es mod_say_en mod_say_fr mod_say_he mod_say_hu mod_say_it mod_say_nl mod_say_pt mod_say_ru mod_say_th mod_say_zh
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(say/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor
 .for i in mod_perl mod_python
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(languages/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor
 .for i in mod_skinny mod_portaudio mod_dingaling mod_rtmp mod_khomp
-.if ${PORT_OPTIONS:M${i:S/_//g:U}}
+.if ${PORT_OPTIONS:M${i:S/_//g:tu}}
 	@${REINPLACE_CMD} -e 's|#\(endpoints/${i}\)|\1|g' ${WRKSRC}/modules.conf
 .endif
 .endfor

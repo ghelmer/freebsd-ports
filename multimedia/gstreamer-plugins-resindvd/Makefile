@@ -1,7 +1,7 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 COMMENT=	Gstreamer resindvd plugin

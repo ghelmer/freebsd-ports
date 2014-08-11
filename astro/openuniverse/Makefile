@@ -3,7 +3,7 @@
 
 PORTNAME=	openuniverse
 DISTVERSION=	1.0beta3
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/1.0beta3
 
@@ -21,8 +21,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--includedir="${LOCALBASE}/include" \
 		--libdir="${LOCALBASE}/lib" \
 
-CONFIGURE_ENV=	LIBS="-lcompat"
 CPPFLAGS+=	-I${LOCALBASE}/include/GL -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lm
+LIBS+=		-L${LOCALBASE}/lib -lm -lcompat
 
 .include <bsd.port.mk>

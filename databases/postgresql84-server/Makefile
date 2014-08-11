@@ -3,7 +3,7 @@
 
 PORTNAME?=	postgresql
 DISTVERSION?=	8.4.21
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	databases
 MASTER_SITES=	PGSQL
 MASTER_SITE_SUBDIR=	source/v${DISTVERSION}
@@ -20,7 +20,7 @@ CONFLICTS?=	${PORTNAME}[^${PORTVERSION:R:R}]?-client* \
 WRKSRC=		${WRKDIR}/postgresql-${DISTVERSION}
 DIST_SUBDIR=	postgresql
 
-ICU_PATCHFILE?=	pg-8419-icu-2014-03-23.diff.gz
+ICU_PATCHFILE?=	pg-8421-icu-2014-06-09.diff.gz
 
 UNIQUENAME?=	${PORTNAME}${DISTVERSION:R:S/.//}
 
@@ -245,12 +245,12 @@ pre-build:
 .  if defined(SERVER_ONLY)
 	@${SH} ${PKGINSTALL} ${PORTNAME} PRE-INSTALL
 .  endif
-	@ cd ${WRKSRC}/src/backend && ${SETENV} ${MAKE_ENV} ${GMAKE} symlinks
+	@ cd ${WRKSRC}/src/backend && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} symlinks
 .endif
 
 do-build:
 	@ for dir in ${BUILD_DIRS}; do \
-		cd ${WRKSRC}/$${dir} && ${SETENV} ${MAKE_ENV} ${GMAKE}; \
+		cd ${WRKSRC}/$${dir} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD}; \
 	done
 
 .  if exists(${FILESDIR}/pkg-message${COMPONENT}.in)
@@ -274,7 +274,7 @@ post-patch:
 do-install:
 	@for dir in ${INSTALL_DIRS}; do \
 	    cd ${WRKSRC}/$${dir} && \
-		${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} ${INSTALL_TARGET}; \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${INSTALL_TARGET}; \
 	done
 .  if defined(SERVER_ONLY)
 	@ ${MKDIR} ${STAGEDIR}${PREFIX}/share/postgresql ;\
@@ -284,7 +284,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${PG_USER}
 .  endif # SERVER_ONLY
 .  if defined(CLIENT_ONLY)
-	@ cd ${WRKSRC}/src && ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_ARGS} install-local
+	@ cd ${WRKSRC}/src && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-local
 .  endif
 	@ if [ -r ${PKGMESSAGE} ]; then \
 		${MKDIR} ${STAGEDIR}${DOCSDIR} ;\
@@ -296,7 +296,7 @@ do-install:
 check:
 	@if [ `id -u` != 0 ] ; then \
 	  ${ECHO} "Running postgresql regressions tests" ;\
-	  cd ${WRKSRC}; ${GMAKE} check ;\
+	  cd ${WRKSRC}; ${MAKE_CMD} check ;\
 	 else \
 	  ${ECHO} "You cannot run regression tests when postgresql is built as user root." ; \
 	  ${ECHO} "Clean and rebuild the port as a regular user to run the tests." ;\

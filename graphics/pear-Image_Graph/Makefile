@@ -6,7 +6,7 @@ PORTVERSION=	0.8.0
 CATEGORIES=	graphics www pear
 
 MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	An OO PEAR graph rendering package
+COMMENT=	OO PEAR graph rendering package
 
 BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
 RUN_DEPENDS=	${PEARDIR}/Log.php:${PORTSDIR}/sysutils/pear-Log \
@@ -14,7 +14,7 @@ RUN_DEPENDS=	${PEARDIR}/Log.php:${PORTSDIR}/sysutils/pear-Log \
 
 PEAR_AUTOINSTALL=	yes
 USE_PHP=	yes
-USE_DOS2UNIX=	yes
+USES=		dos2unix
 DOS2UNIX_REGEX=	.*php$$
 DEFAULT_PHP_VER=	5 
 

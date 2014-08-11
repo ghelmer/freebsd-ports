@@ -56,7 +56,7 @@ post-configure:
 		-e 's,-DPACKAGE_[^=]*=."[^"]*",,g' ${WRKSRC}/Makefile
 
 post-build test:
-	${SETENV} LANG=C ${GMAKE} -C ${WRKSRC} test | ${AWK} '\
+	${SETENV} LANG=C ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
 		/Failed/ && $$NF {failed=1}	\
 		END {exit failed}	\
 		{print}'
@@ -80,8 +80,5 @@ do-install:
 		${WRKDIR}/httpd.conf ${STAGEDIR}${EXAMPLESDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC:H:H}/doc/html/* ${STAGEDIR}${DOCSDIR}
-
-post-install:
-	@${APXS} -e -a -n "${SHORTMODNAME}" "${APACHEMODDIR}/mod_${MODULENAME}.so"
 
 .include <bsd.port.mk>

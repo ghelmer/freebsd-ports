@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	eclipse-
 DISTNAME=	net.sourceforge.${PORTNAME}_${PORTVERSION}
 DIST_SUBDIR=	eclipse
 
-MAINTAINER=	freebsd-eclipse@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	A visual database query tool for Eclipse
 
 RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse \
@@ -20,14 +20,13 @@ USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-NO_STAGE=	yes
 do-install:
-		@${MKDIR} -p ${PREFIX}/lib/eclipse
-		@${CP} -r ${WRKSRC}/plugins ${PREFIX}/lib/eclipse
-		@(cd ${WRKSRC}; ${FIND} -s plugins -not -type d) \
-			| ${SED} -ne 's,^,lib/eclipse/,p' >> ${TMPPLIST}
-		@(cd ${WRKSRC}; ${FIND} -s -d plugins -type d) \
-			| ${GREP} -vE '^plugins$$' \
-			| ${SED} -ne 's,^,@dirrm lib/eclipse/,p' >> ${TMPPLIST}
+	@${MKDIR} -p ${STAGEDIR}${PREFIX}/lib/eclipse
+	@${CP} -r ${WRKSRC}/plugins ${STAGEDIR}${PREFIX}/lib/eclipse
+	@(cd ${WRKSRC}; ${FIND} -s plugins -not -type d) \
+		| ${SED} -ne 's,^,lib/eclipse/,p' >> ${TMPPLIST}
+	@(cd ${WRKSRC}; ${FIND} -s -d plugins -type d) \
+		| ${GREP} -vE '^plugins$$' \
+		| ${SED} -ne 's,^,@dirrm lib/eclipse/,p' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

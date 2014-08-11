@@ -3,6 +3,7 @@
 
 PORTNAME=	bind10
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	${MASTER_SITE_ISC}
 MASTER_SITE_SUBDIR=	${PORTNAME}/${PORTVERSION}
@@ -44,11 +45,6 @@ OPTIONS_DEFINE=	DOCS
 PORTDOCS=	*
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/${PORTNAME}
-	${INSTALL_DATA} -m 640 ${WRKSRC}/src/bin/cmdctl/cmdctl-certfile.pem \
-		${STAGEDIR}${PREFIX}/etc/${PORTNAME}/cmdctl-certfile.pem.sample
-	${INSTALL_DATA} -m 640 ${WRKSRC}/src/bin/cmdctl/cmdctl-keyfile.pem \
-		${STAGEDIR}${PREFIX}/etc/${PORTNAME}/cmdctl-keyfile.pem.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cmdctl-certfile.pem ${STAGEDIR}${ETCDIR}/cmdctl-certfile.pem.sample
 	${MV} ${STAGEDIR}${ETCDIR}/cmdctl-keyfile.pem ${STAGEDIR}${ETCDIR}/cmdctl-keyfile.pem.sample
 

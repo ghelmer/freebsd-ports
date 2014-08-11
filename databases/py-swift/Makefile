@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	swift
-PORTVERSION=	1.13.0
+PORTVERSION=	1.13.1
 CATEGORIES=	databases python
-MASTER_SITES=	http://launchpadlibrarian.net/168204360/
+MASTER_SITES=	http://launchpadlibrarian.net/173001998/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	gslin@gslin.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Highly available, distributed, eventually consistent object/blob store
 
 LICENSE=	APACHE20

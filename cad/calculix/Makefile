@@ -3,7 +3,7 @@
 
 PORTNAME=	CalculiX
 PORTVERSION=	2.7
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
 DISTFILES=	${DIST_SOURCES}
@@ -17,17 +17,13 @@ EXTRACT_ONLY+=	${DIST_EXAMPLES}
 .endif
 
 MAINTAINER=	maho@FreeBSD.org
-COMMENT=	A Three-Dimensional Structural Finite Element Program
+COMMENT=	Three-Dimensional Structural Finite Element Program
 
 LICENSE=	GPLv2
-
-BROKEN=		Checksum and size mismatch
 
 LIB_DEPENDS=	libarpack.so:${PORTSDIR}/math/arpack	\
 		libspooles.so:${PORTSDIR}/math/spooles \
 		libtaucs.so:${PORTSDIR}/math/taucs
-
-USE_BZIP2=	yes
 
 DIST_SOURCES=	ccx_${PORTVERSION}.src${EXTRACT_SUFX}	\
 		cgx_${PORTVERSION}.all${EXTRACT_SUFX}
@@ -42,7 +38,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 CCX_VER=	ccx_${PORTVERSION}
 CGX_VER=	cgx_${PORTVERSION}
 
-USES=		fortran gmake
+USES=		fortran gmake tar:bzip2
 USE_GCC=	yes
 USE_XORG=	xmu
 USE_GL=	glut
@@ -114,9 +110,9 @@ pre-build:
 		${WRKSRC}/${CGX_VER}/src/cgx.h
 
 do-build:
-	@(cd ${WRKSRC}/${CCX_VER}/src; ${SETENV} ${MAKE_ENV} $(GMAKE) )
-	@(cd ${WRKSRC}/libSNL/src; ${SETENV} ${MAKE_ENV} $(GMAKE) )
-	@(cd ${WRKSRC}/${CGX_VER}/src; ${SETENV} ${MAKE_ENV} $(GMAKE) )
+	@(cd ${WRKSRC}/${CCX_VER}/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} )
+	@(cd ${WRKSRC}/libSNL/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} )
+	@(cd ${WRKSRC}/${CGX_VER}/src; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} )
 
 do-install:
 	@${INSTALL_PROGRAM} ${WRKSRC}/${CCX_VER}/src/${CCX_VER} \

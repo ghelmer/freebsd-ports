@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	smtube
-PORTVERSION=	2.0
+PORTVERSION=	2.1
 CATEGORIES=	multimedia
-MASTER_SITES=	SF/smplayer/SMTube/${PORTVERSION}/
+MASTER_SITES=	SF/smplayer/SMTube/2.0/
 
 MAINTAINER=	pawel@FreeBSD.org
 COMMENT=	SMPlayer YouTube browser
@@ -27,7 +27,7 @@ post-patch:
 		-e 's|PREFIX=/usr/local|PREFIX=${PREFIX}|g' \
 		-e 's|$$(PREFIX)/share/smtube|${DATADIR}|g' \
 		-e 's|$$(PREFIX)/share/doc/smtube|${DOCSDIR}|' \
-		-e 's| make| ${GMAKE}|' \
+		-e 's| make| ${MAKE_CMD}|' \
 		${WRKSRC}/Makefile
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}	

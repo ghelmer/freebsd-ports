@@ -3,20 +3,19 @@
 
 PORTNAME=	mtools
 PORTVERSION=	4.0.10
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators
 MASTER_SITES=	${MASTER_SITE_GNU}
 MASTER_SITE_SUBDIR=	mtools
 
 MAINTAINER=	skreuzer@FreeBSD.org
-COMMENT=	A collection of tools for manipulating MS-DOS files
+COMMENT=	Collection of tools for manipulating MS-DOS files
 
 LICENSE=	GPLv3
 
 CONFLICTS_INSTALL=	multimarkdown-*
 
-USES=	gmake
-USE_BZIP2=	yes
+USES=		gmake makeinfo tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_malloc_h=no
 CONFIGURE_ARGS=	--enable-xdf

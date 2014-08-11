@@ -3,7 +3,7 @@
 
 PORTNAME=	pyspatialite
 PORTVERSION=	3.0.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP:pyspatialite \
 		http://www.gaia-gis.it/gaia-sins/libspatialite-sources/:amalgam
@@ -23,7 +23,6 @@ PYDISTUTILS_PKGNAME=	pyspatialite
 
 AMALGAMATION_NAME=	libspatialite-amalgamation-${PORTVERSION}
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if empty(ICONV_LIB)

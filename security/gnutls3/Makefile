@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gnutls
-PORTVERSION=	3.1.22
+PORTVERSION=	3.1.25
+PORTREVISION=	2
 CATEGORIES=	security net
 MASTER_SITES=	ftp://ftp.gnutls.org/gcrypt/gnutls/v3.1/
 PKGNAMESUFFIX=	${GNUTLS_SUFFIX}
@@ -10,25 +11,20 @@ PKGNAMESUFFIX=	${GNUTLS_SUFFIX}
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	GNU Transport Layer Security library
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:${PORTSDIR}/print/texinfo
 LIB_DEPENDS=	libgpg-error.so:${PORTSDIR}/security/libgpg-error \
 		libnettle.so:${PORTSDIR}/security/nettle \
 		libp11-kit.so:${PORTSDIR}/security/p11-kit \
 		libidn.so:${PORTSDIR}/dns/libidn \
-		libunbound.so:${PORTSDIR}/dns/unbound \
 		libtspi.so:${PORTSDIR}/security/trousers
 
 GNUTLS_SUFFIX=	3
 
-USES=		gmake iconv pkgconfig
-USE_AUTOTOOLS=	libtool
-USE_GNOME=	ltverhack
+USES=		gmake iconv libtool:keepla makeinfo pkgconfig tar:xz
 USE_LDCONFIG=	${PREFIX}/lib/gnutls3
-USE_XZ=		yes
 CPPFLAGS+=	-I${LOCALBASE}/include -fPIC
 LDFLAGS=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=		MAKEINFO=${PREFIX}/bin/makeinfo
+CONFIGURE_ENV=		MAKEINFO="makeinfo --no-split"
 CONFIGURE_ARGS=	--program-suffix=${GNUTLS_SUFFIX} \
 			--includedir="${PREFIX}/include/gnutls${GNUTLS_SUFFIX}" \
 			--libdir="${PREFIX}/lib/gnutls${GNUTLS_SUFFIX}" \
@@ -42,11 +38,14 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${GNUTLS_SUFFIX}
 EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}${GNUTLS_SUFFIX}
 INFO_SUBDIR=	gnutls${GNUTLS_SUFFIX}
 
-OPTIONS_DEFINE=		CXX DOCS EXAMPLES LIBTASN1
+OPTIONS_DEFINE=		CXX DOCS EXAMPLES LIBTASN1 LIBDANE
 OPTIONS_DEFAULT=	CXX
 OPTIONS_SUB=		yes
 
 LIBTASN1_DESC=	Use libtasn1 from ports
+LIBDANE_DESC=	DNSSEC support for DANE (danetool3 --check)
+LIBDANE_LIB_DEPENDS=	libunbound.so:${PORTSDIR}/dns/unbound
+LIBDANE_CONFIGURE_OFF=	--disable-libdane
 
 CXX_CONFIGURE_ENABLE=	cxx
 
@@ -66,6 +65,10 @@ EXAMPLES=	doc/examples/*.c
 post-patch:
 	@${MV} ${WRKSRC}/libdane/gnutls-dane.pc.in \
 		${WRKSRC}/libdane/gnutls${GNUTLS_SUFFIX}-dane.pc.in
+	# Force regenerating as the dist has info-5, but sometimes when
+	# regnerating it will decide to only create up to info-4, thus
+	# causing plist discrepency. So just rebuild and use --no-split
+	@${RM} ${WRKSRC}/doc/gnutls.info*
 
 pre-configure:
 	@${CP} ${WRKSRC}/lib/gnutls.pc.in ${WRKSRC}/lib/gnutls${GNUTLS_SUFFIX}.pc.in

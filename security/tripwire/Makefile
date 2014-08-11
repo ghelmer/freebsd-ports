@@ -14,15 +14,12 @@ COMMENT=	File system security and verification program
 LICENSE=	GPLv2
 
 NO_LICENSES_INSTALL=	yes
-MAN5=		twfiles.5 twconfig.5 twpolicy.5
-MAN8=		siggen.8 tripwire.8 twadmin.8 twintro.8 twprint.8
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
 MAKE_JOBS_UNSAFE=	yes
-USES=		gmake
-USE_BZIP2=	yes
+USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes
-MAKE_ARGS=	SYSPRE=${ARCH}-unknown-freebsd
-IS_INTERACTIVE=	yes
+MAKE_ARGS=	SYSPRE=${ARCH}-unknown-freebsd \
+		DESTDIR=${STAGEDIR}
 M4=		/usr/bin/m4
 
 # Tripwire database files are stored in TWDB.
@@ -44,7 +41,11 @@ TW_PROMPT_DESC=		Interactive install (ignored when PACKAGE_BUILDING)
 SW_ONLY_DESC=		Install software only, do not post-configure (ignored when PACKAGE_BUILDING)
 DB_BUILD_DESC=		Build database during post-install (ignored when PACKAGE_BUILDING)
 
-NO_STAGE=	yes
+PACKAGE_BUILDING=	yes
+.ifndef PACKAGE_BUILDING
+BROKEN=		for testing only
+.endif
+
 .include <bsd.port.pre.mk>
 
 # Tripwire config files are stored in TWCFG
@@ -117,12 +118,12 @@ install-config-files:
 .endif
 	@ cd ${WRKSRC} && ${LN} -sf install/install.cfg install/install.sh .
 .ifdef PACKAGE_BUILDING
-	@ cd ${WRKSRC} && PREFIX=${PREFIX} TW_CLOBBER=${TW_CLOBBER} DO_NOT_CONFIG="yes" TW_PROMPT="false" ${GMAKE} install-data-hook
+	@ cd ${WRKSRC} && DESTDIR=${STAGEDIR} PREFIX=${PREFIX} TW_CLOBBER=${TW_CLOBBER} DO_NOT_CONFIG="yes" TW_PROMPT="false" ${MAKE_CMD} install-data-hook
 .else
 .if ${PORT_OPTIONS:MSW_ONLY}
-	@ cd ${WRKSRC} && PREFIX=${PREFIX} TW_CLOBBER=${TW_CLOBBER} DO_NOT_CONFIG="yes" TW_PROMPT="false" ${GMAKE} install-data-hook
+	@ cd ${WRKSRC} && DESTDIR=${STAGEDIR} PREFIX=${PREFIX} TW_CLOBBER=${TW_CLOBBER} DO_NOT_CONFIG="yes" TW_PROMPT="false" ${MAKE_CMD} install-data-hook
 .else
-	@ cd ${WRKSRC} && PREFIX=${PREFIX} TW_CLOBBER=${TW_CLOBBER} TW_PROMPT=${TW_PROMPT} ${GMAKE} install-data-hook
+	@ cd ${WRKSRC} && DESTDIR=${STAGEDIR} PREFIX=${PREFIX} TW_CLOBBER=${TW_CLOBBER} TW_PROMPT=${TW_PROMPT} ${MAKE_CMD} install-data-hook
 .endif
 .endif
 
@@ -161,6 +162,7 @@ make-pkg-install:
 	@ ${SED} "/^\. /s/^/: /;/^BASE_DIR=/d;s/BIN_DIR=/: BIN_DIR=/;/^POLICYSRC/d" ${WRKSRC}/install/install.sh >> ${PKGINSTALL}
 
 create-database:
+.ifndef PACKAGE_BUILDING
 .if ${PORT_OPTIONS:MDB_BUILD}
 .if ${PORT_OPTIONS:MSW_ONLY}
 	@ ${ECHO} SW_ONLY has been specified, database will not be built.
@@ -173,6 +175,7 @@ create-database:
 	@ ${ECHO} The tripwire database, configuration file and
 	@ ${ECHO} policy file are signed using the local and site keys,
 	@ ${ECHO} therefore the authors suggest creating a floppy is not necessary.
+.endif
 .endif
 .endif
 

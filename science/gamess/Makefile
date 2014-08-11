@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gamess
-PORTVERSION=    ${SNAPDATE}
+PORTVERSION=	${SNAPDATE}
 PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=   #http://www.msg.ameslab.gov/GAMESS/License_Agreement.html
+MASTER_SITES=	#http://www.msg.ameslab.gov/GAMESS/License_Agreement.html
 DISTNAME=	gamess-current
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 
@@ -13,10 +13,10 @@ MAINTAINER=	maho@FreeBSD.org
 COMMENT=	A freely obtainable ab-initio molecular orbital calculation program
 
 USES=		fortran gmake
-WRKSRC=         ${WRKDIR}/gamess
+WRKSRC=		${WRKDIR}/gamess
 SNAPDATE=	20130501.1
 
-RESTRICTED=	NOT DISTRIBUTED FREELY. BUT YOU CAN OBTAIN SOURCE CODE FREELY.
+RESTRICTED=	No Redistribution
 
 .if !exists(${DISTDIR}/${DISTFILES})
 IGNORE=you must manually get the source distribution from master site. http://www.msg.ameslab.gov/GAMESS/download.html. Please select "Source code distribution", and check on "running on Intel compatible PC running Linux". You must have license, and freely obtainable
@@ -52,23 +52,23 @@ LAPACK=		-lalapack -lptcblas
 
 .if defined(WITH_OPTIMIZED_FLAGS)
 .if ${ARCH} == "amd64"
-CFLAGS+=      -pipe -O3 -ffast-math -funroll-all-loops -fpeel-loops -ftracer -funswitch-loops -funit-at-a-time
-FFLAGS+=      -pipe -O3 -ffast-math -funroll-all-loops -fpeel-loops -ftracer -funswitch-loops -funit-at-a-time
+CFLAGS+=	-pipe -O3 -ffast-math -funroll-all-loops -fpeel-loops -ftracer -funswitch-loops -funit-at-a-time
+FFLAGS+=	-pipe -O3 -ffast-math -funroll-all-loops -fpeel-loops -ftracer -funswitch-loops -funit-at-a-time
 .elif ${ARCH} == "i386"
-CFLAGS+=      -pipe -O3 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops -fexpensive-optimizations -malign-double -mcpu=i686 -march=i686 -mfancy-math-387
-FFLAGS+=      -pipe -O3 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops -fexpensive-optimizations -malign-double -mcpu=i686 -march=i686 -mfancy-math-387
+CFLAGS+=	-pipe -O3 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops -fexpensive-optimizations -malign-double -mcpu=i686 -march=i686 -mfancy-math-387
+FFLAGS+=	-pipe -O3 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops -fexpensive-optimizations -malign-double -mcpu=i686 -march=i686 -mfancy-math-387
 .endif
 .endif
 
-#WITH_IFC=       yes #currently building with ifc is broken
+#WITH_IFC=	yes #currently building with ifc is broken
 .if defined(WITH_IFC)
-FC=    ${LOCALBASE}/intel_fc_80/bin/ifort
-F77=   ${LOCALBASE}/intel_fc_80/bin/ifort
-CC=    ${LOCALBASE}/intel_cc_80/bin/icc
-FFLAGS= -axP -xW -ipo -O3 -Vaxlib
-CFLAGS= -axP -xW -ipo -O3 -Vaxlib
+FC=	${LOCALBASE}/intel_fc_80/bin/ifort
+F77=	${LOCALBASE}/intel_fc_80/bin/ifort
+CC=	${LOCALBASE}/intel_cc_80/bin/icc
+FFLAGS=	-axP -xW -ipo -O3 -Vaxlib
+CFLAGS=	-axP -xW -ipo -O3 -Vaxlib
 LIBSVM=	-lsvml
-LIBG2C= -lg2c
+LIBG2C=	-lg2c
 .else
 LIBG2C=
 LIBSVM=
@@ -134,7 +134,7 @@ pre-build:
 		${WRKSRC}/tools/Makefile
 
 do-build:
-	(cd ${WRKSRC}; ${GMAKE})
+	(cd ${WRKSRC}; ${MAKE_CMD})
 
 do-install:
 	${MKDIR} ${PREFIX}/bin/gms

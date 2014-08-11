@@ -3,7 +3,7 @@
 
 PORTNAME=	libggi
 PORTVERSION=	2.2.2
-PORTREVISION=	4
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	graphics devel
 MASTER_SITES=	SF/ggi/ggi-core/${PORTNAME}-${PORTVERSION}
@@ -14,17 +14,16 @@ COMMENT=	Flexible drawing library
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	gii:${PORTSDIR}/devel/libgii
+LIB_DEPENDS=	libgii.so:${PORTSDIR}/devel/libgii
 
-USE_BZIP2=	yes
+USES=		libtool:keepla tar:bzip2
 USE_LDCONFIG=	yes
-
 GNU_CONFIGURE=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-LDFLAGS+=	${PTHREAD_LIBS}
-
 CONFIGURE_ARGS=	--disable-directfb
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+LDFLAGS+=	${PTHREAD_LIBS}
+INSTALL_TARGET=	install-strip
+
 
 OPTIONS_DEFINE=	AALIB SVGALIB X11
 OPTIONS_DEFAULT=X11
@@ -70,10 +69,25 @@ CONFIGURE_ARGS+=--disable-vgagl --disable-svga
 PLIST_SUB+=	WITH_SVGALIB="@comment "
 .endif
 
+post-patch:
+	@${REINPLACE_CMD} '/^exttest1_LDADD =/s/$$/ -lgg/' \
+		${WRKSRC}/extensions/test/Makefile.in
+	@${REINPLACE_CMD} '/^showaccel_LDADD =/ { \
+		p; s/showaccel/palette/; p; s/palette/cbconsist/; }' \
+		${WRKSRC}/programs/check/Makefile.in
+	@${REINPLACE_CMD} '/^cube3d_LDADD =/s/$$/ -lgii/' \
+		${WRKSRC}/programs/demos/Makefile.in
+	@${REINPLACE_CMD} '/^LDADD =/s/$$/ -lgii/' \
+		${WRKSRC}/programs/regress/Makefile.in
+	@${REINPLACE_CMD} '/^inputdump_LDADD =/s/$$/ -lgii/' \
+		${WRKSRC}/programs/util/Makefile.in
+	@${REINPLACE_CMD} '/^ggiteleserver_LDADD =/s/$$/ -lgg/' \
+		${WRKSRC}/programs/util/ggiteleserver/Makefile.in
+
 post-install:
 	${TOUCH} ${STAGEDIR}${PREFIX}/lib/ggi/default/fbdev/.keep
 	${TOUCH} ${STAGEDIR}${PREFIX}/lib/ggi/default/kgi/.keep
 	${TOUCH} ${STAGEDIR}${PREFIX}/lib/ggi/helper/.keep
-	${INSTALL_DATA} ${WRKSRC}/libggi.conf ${STAGEDIR}${PREFIX}/etc/ggi/libggi.conf.dist
+	${MV} ${STAGEDIR}${PREFIX}/etc/ggi/libggi.conf ${STAGEDIR}${PREFIX}/etc/ggi/libggi.conf.sample
 
 .include <bsd.port.mk>

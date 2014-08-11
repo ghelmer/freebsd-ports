@@ -2,7 +2,7 @@
 
 PORTNAME=	xmmsctrl
 PORTVERSION=	1.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://user.it.uu.se/~adavid/utils/ \
 		http://distro.ibiblio.org/pub/linux/distributions/pdaxrom/src/ \
@@ -14,16 +14,11 @@ COMMENT=	Small utility to control XMMS from the command line
 
 LICENSE=	GPLv2
 
-DEPRECATED=	Abandonware, please consider using multimedia/audacious instead
-EXPIRATION_DATE=	2014-04-27
-
 BUILD_DEPENDS=	xmms:${PORTSDIR}/multimedia/xmms
 RUN_DEPENDS=	xmms:${PORTSDIR}/multimedia/xmms
 
 USES=		gmake
 USE_CSTD=	gnu89
-MAKE_ENV=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}"
 
 PORTDOCS=	Changelog README
 

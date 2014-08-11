@@ -3,7 +3,7 @@
 
 PORTNAME=	openlierox
 DISTVERSION=	0.58_rc3
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/OpenLieroX%20${DISTVERSION:C/_/%20/}
@@ -14,10 +14,9 @@ COMMENT=	Extremely addictive realtime worms shoot-em-up
 
 LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
 		libboost_signals.so:${PORTSDIR}/devel/boost-libs \
-		libcurl.so:${PORTSDIR}/ftp/curl \
-		libalut.so:${PORTSDIR}/audio/freealut
+		libcurl.so:${PORTSDIR}/ftp/curl
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 cmake openal:al,alut pkgconfig
 USE_SDL=	sdl image
 USE_GNOME=	libxml2
 USE_GCC=	any # too many gcc'isms
@@ -26,7 +25,6 @@ CFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-USES=		cmake openal pkgconfig
 CMAKE_ARGS=	-DHAWKNL_BUILTIN=YES \
 		-DLIBZIP_BUILTIN=YES \
 		-DBREAKPAD=NO \
@@ -34,6 +32,8 @@ CMAKE_ARGS=	-DHAWKNL_BUILTIN=YES \
 		-DHASBFD=NO
 
 WRKSRC=		${WRKDIR}/OpenLieroX
+
+PORTSCOUT=	skipv:0.59_beta10 # unstable
 
 PORTDOCS=	*
 PORTDATA=	*

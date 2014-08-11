@@ -2,25 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	sage
-PORTVERSION=	6.1.1
-PORTREVISION=	1
+PORTVERSION=	6.2
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://boxen.math.washington.edu/home/sagemath/sage-mirror/src/ \
 		http://mirrors.xmission.com/sage/src/ \
 		http://www-ftp.lip6.fr/pub/math/sagemath/src/ \
 		http://www.sagemath.org/src-old/
 PKGNAMESUFFIX=	-math
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${PYTHON_SOURCE}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Open source Mathematics software
 
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
+
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
 		convert:${PORTSDIR}/graphics/ImageMagick \
-		ffmpeg:${PORTSDIR}/multimedia/ffmpeg
-LIB_DEPENDS=	atlas:${PORTSDIR}/math/atlas \
-		lapack:${PORTSDIR}/math/lapack \
-		jpeg:${PORTSDIR}/graphics/jpeg
+		ffmpeg:${PORTSDIR}/multimedia/ffmpeg \
+		automake:${PORTSDIR}/devel/automake \
+		autoconf:${PORTSDIR}/devel/autoconf
+LIB_DEPENDS=	libatlas.so:${PORTSDIR}/math/atlas \
+		liblapack.so:${PORTSDIR}/math/lapack \
+		libjpeg.so:${PORTSDIR}/graphics/jpeg
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+
+PYTHON_SOURCE=	python/Python-2.7.6.tar.xz
 
 # 387 option: this only makes a difference for the amd64 architecture.  Causes
 # the internal floating point calculations to be performed with extended
@@ -28,10 +37,15 @@ RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 OPTIONS_DEFINE_amd64=	387
 387_DESC=		Use 387 instead of SSE FPU
 
-# Keep NO_SAGE set, since otherwise the resulting package is huge.
-NO_STAGE=	yes
-
 .include <bsd.port.options.mk>
+
+pre-extract:
+	@${ECHO_MSG}
+	@${ECHO_MSG} Instead of installing the port, which will take a considerable amount of
+	@${ECHO_MSG} extra time and space, you can instead type \"make build\".  Then you can move
+	@${ECHO_MSG} work/${PORTNAME}-${PORTVERSION} to wherever you like, and run sage from there.
+	@${ECHO_MSG} However, there is no guarantee that this alternative will always work.
+	@sleep 10
 
 PLIST_FILES=	bin/sage
 USE_GCC=	yes
@@ -45,12 +59,6 @@ CXXFLAGS+=	-Wl,-rpath=${WRKSRC}/local/lib ${FPM_FLAG}
 # Note that the above addition to LDFLAGS, as a side effect, provides a
 # work-around for the make(1) idiosyncracy mentioned in PR 164361 (which
 # otherwise breaks the build of the maxima sub-package).
-
-USE_AUTOTOOLS=	autoconf
-run-autotools:
-		@${DO_NADA}
-do-configure:
-		@${DO_NADA}
 
 # Optimization flags will be defined by the source
 CFLAGS:=	${CFLAGS:C/^-O.*$//}
@@ -68,22 +76,24 @@ LATEST_LINK=	sage-math	# Conflicts with graphics/sage.
 MAKE_ARGS+=	ARCH="${AR}"
 
 post-patch:
+	${CP} ${DISTDIR}/${PYTHON_SOURCE} ${WRKSRC}/upstream/.
+
 	${REINPLACE_CMD} 's/$$MAKE $$gettext/$$MAKE PTHREAD_LIBS=${PTHREAD_LIBS} $$gettext/' ${WRKSRC}/build/pkgs/git/spkg-install
 
 # Create the wrappers for the compiler invocations.
 	@${MKDIR} ${WRKSRC}/local/bin
 	@${LN} -s -f ${LOCALBASE}/bin/gmake ${WRKSRC}/local/bin/make
-	@${SED} -e 's#%%CC%%#${LOCALBASE}/bin/${CC}#' \
+	@${SED} -e "s#%%CC%%#`which ${CC}`#" \
 		-e 's#%%LDFLAGS%%#${LDFLAGS} ${FPM_FLAG}#' \
 		${FILESDIR}/gcc.in > ${WRKSRC}/local/bin/cc
 	@${CHMOD} +x ${WRKSRC}/local/bin/cc
 	@${LN} -s -f cc ${WRKSRC}/local/bin/gcc
-	@${SED} -e 's#%%CC%%#${LOCALBASE}/bin/${CXX}#' \
+	@${SED} -e "s#%%CC%%#`which ${CXX}`#" \
 		-e 's#%%LDFLAGS%%#${LDFLAGS} ${FPM_FLAG}#' \
 		${FILESDIR}/gcc.in > ${WRKSRC}/local/bin/c++
 	@${CHMOD} +x ${WRKSRC}/local/bin/c++
 	@${LN} -s -f c++ ${WRKSRC}/local/bin/g++
-	@${SED} -e 's#%%CC%%#${LOCALBASE}/bin/${FC}#' \
+	@${SED} -e "s#%%CC%%#`which ${FC}`#" \
 		-e 's#%%LDFLAGS%%#${LDFLAGS} ${FPM_FLAG}#' \
 		${FILESDIR}/gcc.in > ${WRKSRC}/local/bin/gfortran
 	@${CHMOD} +x ${WRKSRC}/local/bin/gfortran
@@ -98,44 +108,25 @@ check regression-test test: build
 	cd ${WRKSRC} && ${SETENV} DOT_SAGE=${WRKSRC}/tmp/.sage ./sage -testall
 	${RM} -f ${WRKSRC}/python*.core
 
-INSTALL_SAGE_DIR=	${PREFIX}/${PORTNAME}-${PORTVERSION}
-pre-install:
-	@${ECHO_MSG}
-	@${ECHO_MSG} \# Instead of doing \"make install\", you can simply perform the commands:
-	@${ECHO_MSG}
-	@${ECHO_MSG} ${MV} ${WRKSRC} ${PREFIX}/.
-	@${ECHO_MSG}
-	@${ECHO_MSG} \# The next four lines are only needed if you want sage in ${PREFIX}/bin.
-	@${ECHO_MSG}
-	@${ECHO_MSG} "${SED} -e \"s+#SAGE_ROOT.*+SAGE_ROOT=${INSTALL_SAGE_DIR}+\" \\"
-	@${ECHO_MSG} "        ${INSTALL_SAGE_DIR}/sage > ${PREFIX}/bin/sage"
-	@${ECHO_MSG} ${CHOWN} ${BINOWN}:${BINGRP} ${PREFIX}/bin/sage
-	@${ECHO_MSG} ${CHMOD} ${BINMODE} ${PREFIX}/bin/sage
-	@${ECHO_MSG}
-	@${ECHO_MSG} \# The next line will provide write protection for sage.
-	@${ECHO_MSG} ${CHOWN} -hR ${BINOWN}:${BINGRP} ${INSTALL_SAGE_DIR}
-	@${ECHO_MSG}
-	@sleep 60
-
+INSTALL_SAGE_DIR=	${STAGEDIR}${PREFIX}/${PORTNAME}-${PORTVERSION}
 do-install:
 	cd ${WRKDIR} && ${FIND} -s ${WRKSRC} | \
 		${GREP} -v '^${WRKSRC}/upstream/' | \
 		${GREP} -v '^${WRKSRC}/tmp' | \
 		${SED} -e 's#${WRKDIR}/##' | \
-		${CPIO} -pmud -R ${BINOWN}:${BINGRP} ${PREFIX}
+		${CPIO} -pmud -R ${BINOWN}:${BINGRP} ${STAGEDIR}${PREFIX}
 	${ECHO_CMD} | ${SETENV} DOT_SAGE=${INSTALL_SAGE_DIR}/tmp/.sage ${INSTALL_SAGE_DIR}/sage
 	${RM} -rf ${INSTALL_SAGE_DIR}/tmp/.sage
-	${SED} -e "s+#SAGE_ROOT.*+SAGE_ROOT=${INSTALL_SAGE_DIR}+" ${WRKSRC}/sage > ${PREFIX}/bin/sage
-	${CHOWN} ${BINOWN}:${BINGRP} ${PREFIX}/bin/sage
-	${CHMOD} ${BINMODE} ${PREFIX}/bin/sage
+	${SED} -e "s+#SAGE_ROOT.*+SAGE_ROOT=${INSTALL_SAGE_DIR}+" ${WRKSRC}/sage > ${STAGEDIR}${PREFIX}/bin/sage
+	${CHMOD} ${BINMODE} ${STAGEDIR}${PREFIX}/bin/sage
 
 post-install:
 	@${FIND} -s ${INSTALL_SAGE_DIR} -not -type d | \
-		${SED} -e 's#${PREFIX}/##' >> ${TMPPLIST}
+		${SED} -e 's#${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
 	@${FIND} -s ${INSTALL_SAGE_DIR} -type d -empty | \
-		${SED} -e 's#${PREFIX}/#@exec ${MKDIR} %D/#' >> ${TMPPLIST}
+		${SED} -e 's#${STAGEDIR}${PREFIX}/#@exec ${MKDIR} %D/#' >> ${TMPPLIST}
 	@${FIND} -s ${INSTALL_SAGE_DIR} -type d -depth | \
-		${SED} -e 's#${PREFIX}/#@dirrm #' >> ${TMPPLIST}
+		${SED} -e 's#${STAGEDIR}${PREFIX}/#@dirrm #' >> ${TMPPLIST}
 
 .include <bsd.port.pre.mk>
 

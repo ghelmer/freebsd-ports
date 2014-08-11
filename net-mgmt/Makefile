@@ -33,6 +33,7 @@
     SUBDIR += cacti-spine
     SUBDIR += cdpd
     SUBDIR += cdpr
+    SUBDIR += centreon-clib
     SUBDIR += cflowd
     SUBDIR += check_logfiles
     SUBDIR += check_multi
@@ -59,7 +60,6 @@
     SUBDIR += disco
     SUBDIR += docsis
     SUBDIR += driftnet
-    SUBDIR += echolot
     SUBDIR += ehnt
     SUBDIR += etherape
     SUBDIR += ettercap
@@ -83,6 +83,7 @@
     SUBDIR += hawk
     SUBDIR += horde3-nic
     SUBDIR += icinga
+    SUBDIR += icinga2
     SUBDIR += icli
     SUBDIR += icmpmonitor
     SUBDIR += icmpquery
@@ -108,6 +109,7 @@
     SUBDIR += macroscope
     SUBDIR += mbrowse
     SUBDIR += mk-livestatus
+    SUBDIR += monitoring-plugins
     SUBDIR += mrtg
     SUBDIR += mrtg-ping-probe
     SUBDIR += mtrace
@@ -129,6 +131,7 @@
     SUBDIR += nagios-check_puppet
     SUBDIR += nagios-check_smartmon
     SUBDIR += nagios-check_tftp
+    SUBDIR += nagios-pf-plugin
     SUBDIR += nagios-geom
     SUBDIR += nagios-openldap-plugins
     SUBDIR += nagios-plugins
@@ -180,6 +183,7 @@
     SUBDIR += nitpicker
     SUBDIR += nocol
     SUBDIR += nrpe
+    SUBDIR += nrpe-ssl
     SUBDIR += nsca
     SUBDIR += nsca-client
     SUBDIR += nsca27
@@ -206,6 +210,7 @@
     SUBDIR += p5-GRNOC-TL1
     SUBDIR += p5-MRTG-Parse
     SUBDIR += p5-Mon
+    SUBDIR += p5-Monitoring-Plugin
     SUBDIR += p5-NSNMP
     SUBDIR += p5-Nagios-Object
     SUBDIR += p5-Nagios-Plugin
@@ -295,7 +300,6 @@
     SUBDIR += scdp
     SUBDIR += scli
     SUBDIR += sdig
-    SUBDIR += send
     SUBDIR += sendip
     SUBDIR += sing
     SUBDIR += sipcalc

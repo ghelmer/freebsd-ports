@@ -17,11 +17,10 @@ BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
 RUN_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
 		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
 
-USE_GMAKE=	yes
+USES=		gmake
 NO_WRKSUBDIR=	yes
 MAKE_ENV=	DISTDIR=${DISTDIR} DISTFILES="${DISTFILES}"
 
-NO_STAGE=	yes
 do-extract:
 	@${RM} -fr ${WRKDIR} && \
 	${MKDIR} ${WRKDIR} && \
@@ -29,8 +28,5 @@ do-extract:
 	for file in ${DISTFILES}; do \
 		${GUNZIP_CMD} -c < ${_DISTDIR}/$$file > `${ECHO_CMD} $$file | ${SED} -e 's/\.Z//' -e 's/\.gz//'`; \
 	done
-
-post-install:
-	${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

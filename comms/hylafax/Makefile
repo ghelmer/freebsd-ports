@@ -3,11 +3,11 @@
 
 PORTNAME=	hylafax
 PORTVERSION=	6.0.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	comms
 MASTER_SITES=	ftp://ftp.hylafax.org/source/
 
-MAINTAINER=	dinoex@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fax software
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/afm/Courier:${PORTSDIR}/print/afm

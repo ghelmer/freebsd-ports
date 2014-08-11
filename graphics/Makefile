@@ -8,8 +8,6 @@
     SUBDIR += Coin
     SUBDIR += EZWGL
     SUBDIR += GraphicsMagick
-    SUBDIR += GraphicsMagick12
-    SUBDIR += GraphicsMagick13
     SUBDIR += Hermes
     SUBDIR += IPA
     SUBDIR += ImageMagick
@@ -43,7 +41,6 @@
     SUBDIR += ampasCTL
     SUBDIR += animorph
     SUBDIR += aoi
-    SUBDIR += aolserver-nsgd
     SUBDIR += apngasm
     SUBDIR += apngdis
     SUBDIR += apvlv
@@ -70,12 +67,10 @@
     SUBDIR += c-a-i-r
     SUBDIR += cadubi
     SUBDIR += cairo
-    SUBDIR += cairo-java
     SUBDIR += cairo-reference
     SUBDIR += cairomm
     SUBDIR += cal3d
     SUBDIR += cal3d-devel
-    SUBDIR += camediaplay
     SUBDIR += camera
     SUBDIR += camerakit
     SUBDIR += cbrpager
@@ -87,14 +82,12 @@
     SUBDIR += chbg
     SUBDIR += cimg
     SUBDIR += cinepaint
-    SUBDIR += claraocr
     SUBDIR += clutter
     SUBDIR += clutter-box2d
     SUBDIR += clutter-gtk
     SUBDIR += colord
     SUBDIR += colord-gtk
     SUBDIR += comical
-    SUBDIR += comix
     SUBDIR += commons-utilities
     SUBDIR += compupic
     SUBDIR += converseen
@@ -109,7 +102,6 @@
     SUBDIR += darknock
     SUBDIR += darktable
     SUBDIR += dataplot
-    SUBDIR += dc20ctrl
     SUBDIR += dc20pack
     SUBDIR += dcraw
     SUBDIR += dcraw-m
@@ -191,7 +183,6 @@
     SUBDIR += exiftran
     SUBDIR += exiv2
     SUBDIR += exrtools
-    SUBDIR += fbm
     SUBDIR += feh
     SUBDIR += ffff
     SUBDIR += fig2sxd
@@ -265,16 +256,21 @@
     SUBDIR += gimp-app
     SUBDIR += gimp-beautify-plugin
     SUBDIR += gimp-data-extras
+    SUBDIR += gimp-elsamuko-script
+    SUBDIR += gimp-ez-perspective-plugin
     SUBDIR += gimp-focusblur-plugin
-    SUBDIR += gimp-gap
     SUBDIR += gimp-gmic-plugin
     SUBDIR += gimp-help
+    SUBDIR += gimp-jagged-border-script
     SUBDIR += gimp-lensfun-plugin
     SUBDIR += gimp-lqr-plugin
     SUBDIR += gimp-manual-html
+    SUBDIR += gimp-refocus-plugin
     SUBDIR += gimp-resynthesizer
     SUBDIR += gimp-save-for-web
     SUBDIR += gimp-wavelet-decompose-plugin
+    SUBDIR += gimp-wavelet-denoise-plugin
+    SUBDIR += gimp-wavelet-sharpen-plugin
     SUBDIR += gimpfx-foundry
     SUBDIR += giram
     SUBDIR += gkrellkam2
@@ -302,7 +298,6 @@
     SUBDIR += goocanvasmm2
     SUBDIR += goom
     SUBDIR += gource
-    SUBDIR += gozer
     SUBDIR += gpaint
     SUBDIR += gphoto2
     SUBDIR += gpicview
@@ -411,11 +406,9 @@
     SUBDIR += jpgraph2
     SUBDIR += jpgtn
     SUBDIR += jslice
-    SUBDIR += k3d
     SUBDIR += kamera-kde4
     SUBDIR += kcolorchooser
     SUBDIR += kcoloredit
-    SUBDIR += kdc2tiff
     SUBDIR += kdegraphics4
     SUBDIR += kdegraphics4-mobipocket
     SUBDIR += kdegraphics4-strigi-analyzer
@@ -502,10 +495,13 @@
     SUBDIR += libexif
     SUBDIR += libexif-gtk
     SUBDIR += libfpx
+    SUBDIR += libfreehand
+    SUBDIR += libfreehand00
     SUBDIR += libgaiagraphics
     SUBDIR += libgeotiff
     SUBDIR += libgfx
     SUBDIR += libggi
+    SUBDIR += libglapi
     SUBDIR += libglesv2
     SUBDIR += libgltext
     SUBDIR += libgnomecanvas
@@ -538,6 +534,7 @@
     SUBDIR += libraw
     SUBDIR += libreatlas
     SUBDIR += librsvg2
+    SUBDIR += libsixel
     SUBDIR += libspiro
     SUBDIR += libsvg
     SUBDIR += libsvg-cairo
@@ -577,7 +574,6 @@
     SUBDIR += mapyrus
     SUBDIR += mate-document-viewer
     SUBDIR += mate-image-viewer
-    SUBDIR += maverik
     SUBDIR += megapov
     SUBDIR += mesa-demos
     SUBDIR += meshviewer
@@ -610,7 +606,6 @@
     SUBDIR += ocropus
     SUBDIR += ogre3d
     SUBDIR += okular
-    SUBDIR += openclipart
     SUBDIR += opencollada
     SUBDIR += opencolorio
     SUBDIR += opencolorio-tools
@@ -618,12 +613,12 @@
     SUBDIR += opencv
     SUBDIR += opencv-core
     SUBDIR += opencv-java
-    SUBDIR += opendis
     SUBDIR += opendx
     SUBDIR += opengl-man
     SUBDIR += opengtl
     SUBDIR += openimageio
     SUBDIR += openjpeg
+    SUBDIR += openjpeg15
     SUBDIR += openjump
     SUBDIR += opennurbs
     SUBDIR += openrm
@@ -781,7 +776,6 @@
     SUBDIR += pixie
     SUBDIR += pixmap
     SUBDIR += plasma-kmod
-    SUBDIR += plotmtv
     SUBDIR += plotutils
     SUBDIR += png
     SUBDIR += png2html
@@ -819,6 +813,7 @@
     SUBDIR += pure-gl
     SUBDIR += pvmpov
     SUBDIR += py-PyX
+    SUBDIR += py-PyX12
     SUBDIR += py-aafigure
     SUBDIR += py-actdiag
     SUBDIR += py-blockdiag
@@ -857,6 +852,8 @@
     SUBDIR += py-poppler-qt4
     SUBDIR += py-pycha
     SUBDIR += py-pydot
+    SUBDIR += py-pygal
+    SUBDIR += py-pyggel
     SUBDIR += py-pyglet
     SUBDIR += py-pygooglechart
     SUBDIR += py-pyproj
@@ -895,7 +892,6 @@
     SUBDIR += quat-gui
     SUBDIR += quesa
     SUBDIR += quesoglc
-    SUBDIR += qvplay
     SUBDIR += qxv
     SUBDIR += radius-engine
     SUBDIR += raster3d
@@ -976,7 +972,6 @@
     SUBDIR += skencil
     SUBDIR += sketch
     SUBDIR += sng
-    SUBDIR += sodipodi
     SUBDIR += springgraph
     SUBDIR += squish
     SUBDIR += sswf
@@ -984,7 +979,6 @@
     SUBDIR += structuresynth
     SUBDIR += svg2pdf
     SUBDIR += svg2png
-    SUBDIR += svg2swf
     SUBDIR += svgalib
     SUBDIR += svgfig
     SUBDIR += swfdec
@@ -999,7 +993,7 @@
     SUBDIR += tgif
     SUBDIR += tif22pnm
     SUBDIR += tiff
-    SUBDIR += tiff2png
+    SUBDIR += tiffgt
     SUBDIR += tifmerge
     SUBDIR += tilecache
     SUBDIR += tiled
@@ -1044,9 +1038,7 @@
     SUBDIR += xli
     SUBDIR += xmandel
     SUBDIR += xmedcon
-    SUBDIR += xmfract
     SUBDIR += xmlgraphics-commons
-    SUBDIR += xmorph
     SUBDIR += xmountains
     SUBDIR += xnview
     SUBDIR += xoris

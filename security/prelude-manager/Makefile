@@ -3,7 +3,7 @@
 
 PORTNAME=	prelude-manager
 PORTVERSION=	1.0.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://www.prelude-ids.org/attachments/download/243/
 
@@ -19,18 +19,16 @@ LIB_DEPENDS=	gmp:${PORTSDIR}/math/gmp \
 		nettle:${PORTSDIR}/security/nettle \
 		p11-kit:${PORTSDIR}/security/p11-kit
 
-USES=		pkgconfig gettext iconv
-USE_GMAKE=	yes
+USES=		pkgconfig gettext iconv gmake
 USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
 USE_RC_SUBR=	prelude-manager
-CONFIGURE_ARGS=		--with-html-dir=${PREFIX}/share/doc \
-			--localstatedir=/var
-CONFIGURE_ENV=	LIBS="${LIBS} -L${LOCALBASE}/lib"
 
-CFLAGS+=	-I${LOCALBASE}/include
+CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc \
+		--localstatedir=/var
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 USERS?=		prelude
 GROUPS?=	prelude

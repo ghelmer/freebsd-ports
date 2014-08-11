@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	ocaml-
 DISTNAME=	ocamlsdl-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	An OCaml interface to the SDL
+COMMENT=	OCaml interface to the SDL
 
 LICENSE=	LGPL21
 
@@ -27,8 +27,8 @@ USE_OCAML_FINDLIB=yes
 USE_OCAMLFIND_PLIST=yes
 USE_OCAML_LDCONFIG=yes
 
+USES=		gmake
 USE_SDL=	sdl
-USE_GMAKE=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-lablgldir=${LOCALBASE} \
 		--with-sdl-prefix=${LOCALBASE} \

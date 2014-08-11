@@ -3,7 +3,7 @@
 
 PORTNAME=	dovecot-antispam
 PORTVERSION=	1.3
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://johannes.sipsolutions.net/download/dovecot-antispam/ \
@@ -12,11 +12,12 @@ MASTER_SITES=	http://johannes.sipsolutions.net/download/dovecot-antispam/ \
 MAINTAINER=	dsh@wizard.volgograd.ru
 COMMENT=	Dovecot plugin to train dspam about spam or false positives
 
+LICENSE=	GPLv2
+
 BUILD_DEPENDS=	${NONEXISTENT}:${PORTSDIR}/mail/dovecot:configure
 RUN_DEPENDS=	dovecot>=1.1.2:${PORTSDIR}/mail/dovecot
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+USES=		gmake tar:bzip2
 USE_LDCONFIG=	${PREFIX}/lib/dovecot/imap
 
 MAN7=		dovecot-antispam.7
@@ -28,7 +29,6 @@ MAILTRAIN_DESC=		send mail to special addresses for training
 DEBUG_DESC=		Turn on debug information (syslog)
 DEBUG_VERBOSE_DESC=	Turn on verbose debug
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 do-configure:
@@ -49,11 +49,10 @@ do-configure:
 	${ECHO} "PLUGINNAME=antispam" >> ${WRKSRC}/.config
 
 do-install:
-	${INSTALL_DATA} ${WRKSRC}/lib90_antispam_plugin.so \
-		${PREFIX}/lib/dovecot/imap/
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/dovecot/imap
+	${INSTALL_DATA} -s ${WRKSRC}/lib90_antispam_plugin.so \
+		${STAGEDIR}${PREFIX}/lib/dovecot/imap/
 	${INSTALL_MAN} ${WRKSRC}/antispam.7 \
-		${MANPREFIX}/man/man7/dovecot-antispam.7
-
-	@${CAT} ${PKGMESSAGE}
+		${STAGEDIR}${MANPREFIX}/man/man7/dovecot-antispam.7
 
 .include <bsd.port.mk>

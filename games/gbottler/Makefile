@@ -8,7 +8,7 @@ CATEGORIES=	games
 MASTER_SITES=	${MASTER_SITE_SOURCEFORGE_JP}
 MASTER_SITE_SUBDIR=	gbottler/45155
 
-MAINTAINER=	umeno@rr.iij4u.or.jp
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SSTP Bottle client
 
 RUN_DEPENDS=	${PYXML}
@@ -17,7 +17,7 @@ PLIST_SUB=	VERSION=${PORTVERSION}
 
 USE_GNOME=	pygtk2
 USE_PYTHON=	yes
-USE_GMAKE=	yes
+USES=		gmake
 
 NO_STAGE=	yes
 .include <bsd.port.mk>

@@ -1,5 +1,6 @@
 bin/jack_mixer.py
 bin/jack_mixer
+bin/jack_mix_box
 share/icons/hicolor/16x16/apps/jack_mixer.png
 share/icons/hicolor/22x22/apps/jack_mixer.png
 share/icons/hicolor/24x24/apps/jack_mixer.png
@@ -17,7 +18,6 @@ share/applications/jack_mixer.desktop
 %%DATADIR%%/slider.py
 %%DATADIR%%/preferences.py
 %%PYTHON_SITELIBDIR%%/jack_mixer_c.so
-%%PYTHON_SITELIBDIR%%/jack_mixer_c.la
 @dirrmtry share/icons/hicolor/16x16/apps
 @dirrmtry share/icons/hicolor/16x16
 @dirrmtry share/icons/hicolor/22x22/apps

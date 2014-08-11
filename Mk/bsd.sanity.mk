@@ -55,10 +55,6 @@ DEV_WARNING+=	"USE_GNOME=gnomehack is deprecated, please use USES=pathfix"
 DEV_WARNING+=	"USE_GNOME=desktopfileutils is deprecated, please use USES=desktop-file-utils"
 .endif
 
-#.if defined(USE_GNOME) && ${USE_GNOME:Mltverhack*}
-#DEV_WARNING+=	"USE_GNOME=ltverhack is now useless LIB_DEPENDS can properly handle all kind of library version"
-#.endif
-
 .if defined(LIB_DEPENDS) && ${LIB_DEPENDS:Nlib*}
 DEV_WARNING+=	"Please use the new format for LIB_DEPENDS, see handbook for details"
 .endif
@@ -95,7 +91,7 @@ DEV_ERROR+=	"you cannot include bsd.port[.pre].mk twice"
 .endif
 
 .if defined(USE_DOS2UNIX)
-DEV_WARNING+=	"USE_DOS2UNIX is deprecated, please use USES=dos2unix"
+DEV_ERROR+=	"USE_DOS2UNIX is no longer supported, please use USES=dos2unix"
 .endif
 
 .if defined(LICENSE)
@@ -112,11 +108,21 @@ DEV_WARNING+=	"USE_PYDISTUTILS=easy_install is deprecated, please use USE_PYDIST
 DEV_WARNING+=	"PYDISTUTILS_PKGNAME has no effect for USE_PYDISTUTILS=yes and PYDISTUTILS_AUTOPLIST=yes"
 .endif
 
+.if defined(USE_AUTOTOOLS)
+.  if ${USE_AUTOTOOLS:Mlibtool} || ${USE_AUTOTOOLS:Mlibtool\:env}
+DEV_WARNING+=	"USE_AUTOTOOLS=libtool is deprecated, please use USES=libtool"
+.  endif
+.endif
+
+.if defined(USE_GNOME) && ${USE_GNOME:Mltverhack*}
+DEV_WARNING+=	"USE_GNOME=ltverhack is deprecated, please use USES=libtool"
+.endif
+
 SANITY_UNSUPPORTED=	USE_OPENAL USE_FAM USE_MAKESELF USE_ZIP USE_LHA USE_CMAKE \
 		USE_READLINE USE_ICONV PERL_CONFIGURE PERL_MODBUILD \
 		USE_PERL5_BUILD USE_PERL5_RUN USE_DISPLAY USE_FUSE \
-		USE_GETTEXT
-SANITY_DEPRECATED=	USE_XZ USE_BZIP2 USE_GMAKE USE_SCONS
+		USE_GETTEXT USE_GMAKE USE_SCONS USE_DRUPAL
+SANITY_DEPRECATED=	USE_XZ USE_BZIP2
 
 USE_OPENAL_ALT=		USES=openal
 USE_FAM_ALT=		USES=fam
@@ -137,6 +143,7 @@ USE_DISPLAY_ALT=	USES=display
 USE_FUSE_ALT=		USES=fuse
 USE_GETTEXT_ALT=	USES=gettext
 USE_SCONS_ALT=		USES=scons
+USE_DRUPAL_ALT=		USES=drupal
 
 .for a in ${SANITY_DEPRECATED}
 .if defined(${a})

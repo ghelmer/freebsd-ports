@@ -10,6 +10,126 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20140623:
+AUTHOR: bapt@FreeBSD.org
+
+  IGNOREFILES is not supported anymore, it was an unsafe feature allowing to
+  use unchecked files downloaded from untrusted places to be used in the ports
+  tree.
+
+20140607:
+AUTHOR: mva@FreeBSD.org
+
+  New PYTHON_CONCURRENT_INSTALL knob to support the parallel installation
+  of ports for different python versions.
+
+  If set to yes, the knob indicates that the port can be installed for
+  different python versions at the same time. The port will use a unique
+  prefix for certain directories using USES=uniquefiles:dirs (see the
+  uniquefiles.mk Uses for details about the directories). Binaries
+  receive an additional suffix, based on ${PYTHON_VER}.
+
+  The values for the uniquefiles USES are set as follows:
+
+    UNIQUE_PREFIX=  ${PYTHON_PKGNAMEPREFIX}
+    UNIQUE_SUFFIX=  -${PYTHON_VER}
+
+  If the port is installed for the current default python version, scripts and
+  binaries in
+
+    ${PREFIX}/bin
+    ${PREFIX}/sbin
+    ${PREFIX}/libexec
+
+  are linked from the prefixed version to the prefix-less original name,
+  e.g. bin/foo-2.7 --> bin/foo.
+
+20140529:
+AUTHOR: miwi@FreeBSD.org
+
+  USE_GMAKE is no longer supported, please use USES=gmake instead
+
+20140526:
+AUTHOR: bapt@FreeBSD.org
+
+  USE_DOS2UNIX is no longer supported, USES=dos2unix should be used instead
+
+20140525:
+AUTHOR: mat@FreeBSD.org
+
+  Add a USE_PERL5=fixpacklist to account for ports creating a .packlist file
+  referencing ${STAGEDIR} when not using USE_PERL5=configure or
+  USE_PERL5=modbuildtiny.
+
+20140505:
+AUTHOR: bapt@FreeBSD.org
+
+  :U and :L syntax is not supported anymore in the ports tree, :tu and :tl
+  should be used instead
+
+  This makes the ports tree incompatible with make(1) version that does not
+  support :tu and :tl (aka FreeBSD 8.3 and earlier)
+
+20140428:
+AUTHOR: bapt@FreeBSD.org
+
+  EXTRA_PATCHES has been extended to support a new syntax:
+
+  EXTRA_PATCHES=	file:-pX
+
+  Where X is the pathname strip count passed to patch(1)
+
+20140423:
+AUTHOR: tijl@FreeBSD.org
+
+  The semantics of USES=libtool have changed.  It now deletes .la libraries
+  from the staging area to reduce overlinking.  USES=libtool:keepla can be
+  used in case they need to be kept.  This form still modifies .la libraries
+  to remove references to other libraries to reduce overlinking.
+
+  Note that .la libraries have to kept around as long as there are .la
+  libraries from other ports that refer to them.  Those ports need to use
+  some form of USES=libtool first such that those references are removed.
+
+20140419:
+AUTHOR: bdrewery@FreeBSD.org
+
+  check-orphans has been renamed to check-plist. It now checks:
+    A. Files in STAGEDIR that are missing from plist.
+       To make check-plist ignore a file *as an orphan* do one of the
+       following:
+        1. Install it
+        2. post-install: ${RM} ${STAGEDIR}file
+        3. Put the file behind an OPTION with a PLIST_SUB: %%OPTION%%file
+        4. Add to plist as a @comment
+           @comment file
+           @comment @dirrmtry dir
+    B. Files in plist missing from STAGEDIR
+    C. Files in plist which are owned by dependencies/MTREEs
+
+20140416:
+AUTHOR: bdrewery@FreeBSD.org
+
+  The default target for 'make' now runs 'make stage' if the port supports
+  it, otherwise 'make build' as before.
+
+20140411:
+AUTHOR: bdrewery@FreeBSD.org
+
+  A new plist keyword has been added, @sample. It accepts a file (must end in
+  .sample):
+
+    @sample file.conf.sample
+
+  This will install file.conf.sample and copy it to file.conf. The file.conf
+  will be removed if it matches file.conf.sample on deinstall.
+
+  This replaces older patterns of:
+
+    @unexec if cmp -s %D/etc/pkgtools.conf %D/etc/pkgtools.conf.sample; then rm -f %D/etc/pkgtools.conf; fi
+    etc/pkgtools.conf.sample
+    @exec [ -f %B/pkgtools.conf ] || cp %B/%f %B/pkgtools.conf
+
 20140312:
 AUTHOR: bapt@FreeBSD.org
 

@@ -8,17 +8,6 @@
 #
 # 4 column tabs prevent hair loss and tooth decay!
 
-# ======================= USERS =================================
-# To specify which gecko-based backend you prefer, use something like:
-#
-# WITH_GECKO=	libxul
-#
-# The valid backends are:
-# libxul
-#
-# See below for more details.
-# ======================= /USERS ================================
-
 # bsd.gecko.mk abstracts the selection of gecko-based backends. It allows users
 # and porters to support any available gecko backend without needing to build
 # many conditional tests. ${USE_GECKO} is the list of backends that your port
@@ -26,403 +15,7 @@
 # Users set ${WITH_GECKO} to the list of gecko backends they want on their
 # system.
 
-.if defined(USE_GECKO) && ${USE_GECKO}!="gecko"
-
-.if !defined(Gecko_Pre_Include)
-# Please make sure all changes to this file are passed through the maintainer.
-# Do not commit them yourself (unless of course you're the Port's Wraith ;).
-Gecko_Include_MAINTAINER=		gecko@FreeBSD.org
-Gecko_Pre_Include=			bsd.gecko.mk
-
-# Users should use the following syntax:
-#
-# WITH_GECKO= libxul
-#  Use libxul whenever a port supports it
-# WITH_GECKO= libxul
-#  Sets your preferred backend. With this example, libxul will always
-#  be chosen, unless the port doesn't support a libxul backend. In that
-#  case, you get whatever the porter chose as the default. Better to use
-#  the first example.
-#
-#
-# Ports should use the following:
-#
-# USE_GECKO= libxul
-#  The list of gecko backends that the port supports. Unless the user
-#  overrides it with WITH_GECKO, the first gecko listed in USE_GECKO
-#  will be the default.
-#
-# USE_GECKO= libxul19<->libxul
-#  This will sed -e 's/libxul/libxul19/' on Makefile.in's and configure
-#  if ${GECKO}=="libxul19"
-#
-#  Example:
-#  USE_GECKO= libxul
-#
-#  post-patch:
-#	@${REINPLACE_CMD} -e 's|mozilla-|${GECKO}-|' \
-#		${MOZSRC}/configure
-#
-#  If you want your port to check the ${GECKO} variable to see which backend
-#  has been chosen.
-#
-#  Example:
-#  USE_GECKO= libxul
-#
-#  post-patch:
-#  .if ${GECKO}=="libxul19"
-#	@${REINPLACE_CMD} -e 's|mozilla-|libxul-|' \
-#		${MOZSRC}/configure
-#  .endif
-
-_GECKO_ALL=	libxul
-
-libxul_PLIST=		libxul>=24
-
-.for gecko in ${_GECKO_ALL}
-${gecko}_PORTSDIR?=	www
-${gecko}_DEPENDS?=	${PORTSDIR}/${${gecko}_PORTSDIR}/${gecko}
-${gecko}_PLIST?=	${LOCALBASE}/lib/${gecko}/libgtkembedmoz.so
-.endfor
-
-# Figure out which mozilla to use
-# Weed out bad options in USE_GECKO
-.for badgecko in ${USE_GECKO}
-. if ${_GECKO_ALL:M${badgecko:C/^([^<->]+).*/\1/}}!=""
-GOOD_USE_GECKO+=	${badgecko:C/^([^<->]+).*/\1/}
-. endif
-. if ${_GECKO_ALL:M${badgecko:C/^[^<->]+<->([^<->]+).*/\1/}}!="${badgecko:C/^([^<->]+).*/\1/}"
-${badgecko:C/^([^<->]+).*/\1/}_HACK=	s:${badgecko:C/^[^<->]+<->([^<->]+).*/\1/}:${badgecko:C/^([^<->]+).*/\1/}:g
-. endif
-.endfor
-
-.undef GECKO_FALLTHROUGH
-.undef _FOUND_WITH_GECKO
-# Figure out which gecko to use and weed out the bad ones
-.if defined(WITH_GECKO) && defined(GOOD_USE_GECKO)
-. for badgecko in ${WITH_GECKO}
-.  if ${GOOD_USE_GECKO:M${badgecko}}!=""
-GOOD_WITH_GECKO+=	${badgecko}
-.  endif
-. endfor
-. if defined(GOOD_WITH_GECKO)
-.  for gecko in ${GOOD_WITH_GECKO}
-.   if !defined(GECKO_FALLTHROUGH)
-GECKO=	${gecko}
-GECKO_FALLTHROUGH=	${TRUE}
-_FOUND_WITH_GECKO=	${TRUE}
-.   endif
-.  endfor
-. endif
-.endif
-
-.if !defined(GECKO) && defined(GOOD_USE_GECKO)
-. for gecko in ${GOOD_USE_GECKO}
-.  if !defined(GECKO_FALLTRHOUGH)
-GECKO=	${gecko}
-GECKO_FALLTRHOUGH=	${TRUE}
-.  endif
-. endfor
-.endif
-
-# Generic defines
-GECKO_CONFIG?=			${LOCALBASE}/bin/${GECKO}-config
-XPIDL?=				${LOCALBASE}/lib/${GECKO}/xpidl
-XPIDL_INCL?=			`${GECKO_CONFIG} --idlflags`
-
-.if defined(GECKO) && ${_GECKO_ALL:M${GECKO}}!=""
-BUILD_DEPENDS+=	${${GECKO}_PLIST}:${${GECKO}_DEPENDS}
-RUN_DEPENDS+=	${${GECKO}_PLIST}:${${GECKO}_DEPENDS}
-.else
-IGNORE=	Unable to find a supported gecko, please check USE_GECKO
-.endif
-
-pre-everything:: _gecko-pre-everything
-
-_gecko-pre-everything::
-	@${ECHO_CMD} ""
-.if !defined(_FOUND_WITH_GECKO) && defined(WITH_GECKO)
-	@${ECHO_CMD} " Warning: ${PORTNAME} does not support any gecko you"
-	@${ECHO_CMD} " listed in WITH_GECKO=${WITH_GECKO}."
-	@${ECHO_CMD} " \"${GECKO}\" will be used"
-	@${ECHO_CMD} ""
-	@${ECHO_CMD} " for gecko support, but you can change that by using one of"
-	@${ECHO_CMD} " the following values:"
-.else
-	@${ECHO_CMD} " ${PORTNAME} is using ${GECKO} for gecko support, but you can"
-	@${ECHO_CMD} " change that by defining WITH_GECKO to the following values:"
-.endif
-	@${ECHO_CMD} ""
-.for gecko in ${GOOD_USE_GECKO}
-	@${ECHO_CMD} "   ${gecko} "
-.endfor
-	@${ECHO_CMD} ""
-
-post-patch: gecko-post-patch
-
-gecko-post-patch:
-.if defined(${GECKO}_HACK)
-	${FIND} ${WRKSRC} -name "Makefile.in" -type f -o -name "configure" -type f | \
-		${XARGS} ${REINPLACE_CMD} -e ${${GECKO}_HACK}
-.endif
-.endif
-
-.elif !defined(_POSTMKINCLUDED) && !defined(Gecko_Pre_Include) && (defined(USE_FIREFOX) || defined(USE_FIREFOX_BUILD) || defined(USE_SEAMONKEY) || defined(USE_SEAMONKEY_BUILD) || defined(USE_THUNDERBIRD) || defined(USE_THUNDERBIRD_BUILD))
-Gecko_Pre_Include=			bsd.gecko.mk
-
-# Ports can use the following:
-#
-# USE_FIREFOX             Add runtime dependency on Firefox. If no version
-#                         is given by the maintainer via the port or by the
-#                         user via defined variable try to find the highest
-#                         stable installed version.
-#                         Available values: yes 24+ 28+ 24 28
-#                         NOTE:
-#                         default value 24 is used in case of USE_FIREFOX=yes
-#
-# USE_FIREFOX_BUILD       Add buildtime dependency on Firefox.
-#                         Available values: see USE_FIREFOX
-#
-# USE_SEAMONKEY           Add runtime dependency on SeaMonkey. If no
-#                         version is given by the maintainer via the port
-#                         or by the user via defined variable try to find
-#                         the highest stable installed version.
-#                         Available values: yes 25+ 25
-#                         NOTE:
-#                         default value 25 is used in case of USE_SEAMONKEY=yes
-#
-# USE_SEAMONKEY_BUILD     Add buildtime dependency on SeaMonkey.
-#                         Available values: see USE_SEAMONKEY
-#
-# USE_THUNDERBIRD         Add runtime dependency on Thunderbird. If no
-#                         version is given by the maintainer via the port
-#                         or by the user via defined variable try to find
-#                         the highest stable installed version.
-#                         Available values: yes 24+ 24
-#                         NOTE:
-#                         default value 24 is used in case of USE_THUNDERBIRD=yes
-#
-# USE_THUNDERBIRD_BUILD   Add buildtime dependency on Thunderbird.
-#                         Available values: see USE_THUNDERBIRD
-#
-
-#
-# Firefox part
-#
-.if defined(USE_FIREFOX) || defined(USE_FIREFOX_BUILD)
-
-# Process USE_FIREFOX_BUILD
-.if defined(USE_FIREFOX_BUILD)
-USE_FIREFOX:=				${USE_FIREFOX_BUILD}
-_FIREFOX_BUILD_DEPENDS=		yes
-.endif
-
-_FIREFOX_DEFAULT_VERSION=	24
-_FIREFOX_VERSIONS=			24 28
-_FIREFOX_RANGE_VERSIONS=	24+ 28+
-
-# For specifying [24, ..]+
-_FIREFOX_28P=	28 ${_FIREFOX_24P}
-_FIREFOX_24P=	24
-
-# Set the default Firefox version and check if USE_FIREFOX=yes was given
-.if ${USE_FIREFOX} == "yes"
-USE_FIREFOX=	${_FIREFOX_DEFAULT_VERSION}
-.endif
-
-# Setting/finding Firefox version we want.
-.if exists(${LOCALBASE}/bin/firefox)
-_FIREFOX_VER!=	${LOCALBASE}/bin/firefox --version 2>/dev/null | ${HEAD} -1 | ${SED} -e 's/Mozilla Firefox \([0-9]\{1,2\}\)\.\([0-9]*\).*/\1/'
-.endif
-
-# Check if installed Firefox version matches the wanted one
-.if defined(_FIREFOX_VER)
-_SUPFIREFOX=		no
-.if ${USE_FIREFOX:C/[0-9][0-9]//} == "+"
-.for ver in ${_FIREFOX_RANGE_VERSIONS}
-.if ${USE_FIREFOX} == "${ver}"
-_MATCHED_FIREFOX_VER:=	${ver:S/+//}
-.for firefox in ${_FIREFOX_${_MATCHED_FIREFOX_VER}P}
-.if ${_FIREFOX_VER} == ${firefox}
-_SUPFIREFOX=		yes
-USE_FIREFOX=		${_FIREFOX_VER}
-.endif
-.endfor
-.endif
-.endfor
-.else
-.if ${_FIREFOX_VER} == ${USE_FIREFOX}
-_SUPFIREFOX=		yes
-.endif
-.endif
-.if ${_SUPFIREFOX} == no
-_DISPLAY_VERSION_HAVE= ${_FIREFOX_VER}
-_DISPLAY_VERSION_WANT= ${USE_FIREFOX}
-
-IGNORE=			cannot install: Firefox versions mismatch: firefox-${_DISPLAY_VERSION_HAVE} is installed and wanted version is firefox-${_DISPLAY_VERSION_WANT}
-.endif
-.endif
-
-.if !defined(_FIREFOX_${USE_FIREFOX:S/+//}P)
-IGNORE=			cannot install: unknown Firefox version: firefox-${USE_FIREFOX:C/([0-9])([0-9])/\1.\2/}
-.endif
-
-# Dependence lines for different Firefox versions
-24_DEPENDS=		${LOCALBASE}/lib/firefox/firefox:${PORTSDIR}/www/firefox-esr
-28_DEPENDS=		${LOCALBASE}/lib/firefox/firefox:${PORTSDIR}/www/firefox
-
-# Add dependencies
-.if defined(USE_FIREFOX)
-.if defined(_FIREFOX_BUILD_DEPENDS)
-BUILD_DEPENDS+= ${${USE_FIREFOX}_DEPENDS}
-.endif
-RUN_DEPENDS+=	${${USE_FIREFOX}_DEPENDS}
-.endif
-
-.endif # defined(USE_FIREFOX)
-#
-# SeaMonkey part
-#
-.if defined(USE_SEAMONKEY) || defined(USE_SEAMONKEY_BUILD)
-
-# Process USE_SEAMONKEY_BUILD
-.if defined(USE_SEAMONKEY_BUILD)
-USE_SEAMONKEY:=				${USE_SEAMONKEY_BUILD}
-_SEAMONKEY_BUILD_DEPENDS=	yes
-.endif
-
-_SEAMONKEY_DEFAULT_VERSION=	25
-_SEAMONKEY_VERSIONS=		25
-_SEAMONKEY_RANGE_VERSIONS=	25+
-
-# For specifying [25, ..]+
-_SEAMONKEY_25P=	25
-
-# Set the default SeaMonkey version and check if USE_SEAMONKEY=yes was given
-.if ${USE_SEAMONKEY} == "yes"
-USE_SEAMONKEY=	${_SEAMONKEY_DEFAULT_VERSION}
-.endif
-
-# Setting/finding SeaMonkey version we want.
-.if exists(${LOCALBASE}/bin/seamonkey)
-_SEAMONKEY_VER!=	${LOCALBASE}/bin/seamonkey --version 2>/dev/null | ${HEAD} -1 | ${SED} -e 's/Mozilla SeaMonkey \([0-9]\{1,2\}\)\.\([0-9]*\).*/\2/'
-.endif
-
-# Check if installed SeaMonkey version matches the wanted one
-.if defined(_SEAMONKEY_VER)
-_SUPSEAMONKEY=		no
-.if ${USE_SEAMONKEY:C/[0-9][0-9]//} == "+"
-.for ver in ${_SEAMONKEY_RANGE_VERSIONS}
-.if ${USE_SEAMONKEY} == "${ver}"
-_MATCHED_SEAMONKEY_VER:=	${ver:S/+//}
-.for seamonkey in ${_SEAMONKEY_${_MATCHED_SEAMONKEY_VER}P}
-.if ${_SEAMONKEY_VER} == ${seamonkey}
-_SUPSEAMONKEY=		yes
-USE_SEAMONKEY=		${_SEAMONKEY_VER}
-.endif
-.endfor
-.endif
-.endfor
-.else
-.if ${_SEAMONKEY_VER} == ${USE_SEAMONKEY}
-_SUPSEAMONKEY=		yes
-.endif
-.endif
-.if ${_SUPSEAMONKEY} == no
-IGNORE=			cannot install: SeaMonkey versions mismatch: seamonkey-2.${_SEAMONKEY_VER} is installed and wanted version is seamonkey-2.${USE_SEAMONKEY}
-.endif
-.endif
-
-.if !defined(_SEAMONKEY_${USE_SEAMONKEY:S/+//}P)
-IGNORE=			cannot install: unknown SeaMonkey version: seamonkey-2.${USE_SEAMONKEY}
-.endif
-
-# Dependence lines for different SeaMonkey versions
-25_DEPENDS=		${LOCALBASE}/lib/seamonkey/seamonkey:${PORTSDIR}/www/seamonkey
-
-# Add dependencies
-.if defined(USE_SEAMONKEY)
-.if defined(_SEAMONKEY_BUILD_DEPENDS)
-BUILD_DEPENDS+= ${${USE_SEAMONKEY}_DEPENDS}
-.endif
-RUN_DEPENDS+=	${${USE_SEAMONKEY}_DEPENDS}
-.endif
-
-.endif # defined(USE_SEAMONKEY)
-#
-# Thunderbird part
-#
-.if defined(USE_THUNDERBIRD) || defined(USE_THUNDERBIRD_BUILD)
-
-# Process USE_THUNDERBIRD_BUILD
-.if defined(USE_THUNDERBIRD_BUILD)
-USE_THUNDERBIRD:=			${USE_THUNDERBIRD_BUILD}
-_THUNDERBIRD_BUILD_DEPENDS=		yes
-.endif
-
-_THUNDERBIRD_DEFAULT_VERSION=	24
-_THUNDERBIRD_VERSIONS=			24
-_THUNDERBIRD_RANGE_VERSIONS=	24+
-
-# For specifying [24, ..]+
-_THUNDERBIRD_24P=	24
-
-# Set the default Thunderbird version and check if USE_THUNDERBIRD=yes was given
-.if ${USE_THUNDERBIRD} == "yes"
-USE_THUNDERBIRD=	${_THUNDERBIRD_DEFAULT_VERSION}
-.endif
-
-# Setting/finding Thunderbird version we want.
-.if exists(${LOCALBASE}/bin/thunderbird)
-_THUNDERBIRD_VER!=	${LOCALBASE}/bin/thunderbird --version 2>/dev/null | ${HEAD} -1 | ${SED} -e 's/ Thunderbird \([0-9]\{1,2\}\)\.\([0-9]*\).*/\1/'
-.endif
-
-# Check if installed Thunderbird version matches the wanted one
-.if defined(_THUNDERBIRD_VER)
-_SUPTHUNDERBIRD=		no
-.if ${USE_THUNDERBIRD:C/[0-9][0-9]//} == "+"
-.for ver in ${_THUNDERBIRD_RANGE_VERSIONS}
-.if ${USE_THUNDERBIRD} == "${ver}"
-_MATCHED_THUNDERBIRD_VER:=	${ver:S/+//}
-.for thunderbird in ${_THUNDERBIRD_${_MATCHED_THUNDERBIRD_VER}P}
-.if ${_THUNDERBIRD_VER} == ${thunderbird}
-_SUPTHUNDERBIRD=		yes
-USE_THUNDERBIRD=		${_THUNDERBIRD_VER}
-.endif
-.endfor
-.endif
-.endfor
-.else
-.if ${_THUNDERBIRD_VER} == ${USE_THUNDERBIRD}
-_SUPTHUNDERBIRD=		yes
-.endif
-.endif
-.if ${_SUPTHUNDERBIRD} != yes
-_DISPLAY_VERSION_HAVE= ${_THUNDERBIRD_VER}
-_DISPLAY_VERSION_WANT= ${USE_THUNDERBIRD}
-IGNORE=			cannot install: Thunderbird versions mismatch: thunderbird-${_DISPLAY_VERSION_HAVE} is installed and wanted version is thunderbird-${_DISPLAY_VERSION_WANT}
-.endif
-.endif
-
-.if !defined(_THUNDERBIRD_${USE_THUNDERBIRD:S/+//}P)
-IGNORE=			cannot install: unknown Thunderbird version: thunderbird-${USE_THUNDERBIRD:C/([0-9])([0-9])/\1.\2/}
-.endif
-
-# Dependence lines for different Thunderbird versions
-24_DEPENDS=		${LOCALBASE}/lib/thunderbird/thunderbird:${PORTSDIR}/mail/thunderbird
-
-# Add dependencies
-.if defined(USE_THUNDERBIRD)
-.if defined(_THUNDERBIRD_BUILD_DEPENDS)
-BUILD_DEPENDS+= ${${USE_THUNDERBIRD}_DEPENDS}
-.endif
-RUN_DEPENDS+=	${${USE_THUNDERBIRD}_DEPENDS}
-.endif
-
-.endif # defined(USE_THUNDERBIRD)
-
-.else # split
-
+.if defined(USE_GECKO)
 .if !defined(_POSTMKINCLUDED) && !defined(Gecko_Pre_Include)
 Gecko_Pre_Include=	bsd.gecko.mk
 
@@ -440,11 +33,8 @@ Gecko_Pre_Include=	bsd.gecko.mk
 # 						listed in '_ALL_DEPENDS'. If your port doesn't
 # 						need one of those then you can use '-' like
 # 						'USE_MOZILLA= -png -vpx' to subtract the
-# 						dependencies.
-#
-# GECKO_PLIST_PRE_FILES	Manual add files in the plist if it needs.
-#
-# GECKO_PLIST_PRE_DIRS  Manual directories in the plist if it needs.
+# 						dependencies. Experimental deps use '+' like
+# 						'USE_MOZILLA= +speex +theora'.
 #
 # MOZILLA_PLIST_DIRS	List of directories to descend into when installing
 # 						and creating the plist
@@ -483,11 +73,6 @@ Gecko_Pre_Include=	bsd.gecko.mk
 # PORT_MOZCONFIG		Defaults to ${FILESDIR}/mozconfig.in, but can be
 # 						set to a generic mozconfig included with the port
 #
-# NOGECKO_INSTALL		Don't install the built gecko (most likely for
-# 						testing)
-#
-# NOGECKO_PLIST			Don't create a dynamically-generated playlist
-#
 # NOMOZCONFIG			Don't drop a customized .mozconfig into the build
 # 						directory. Options will have to be specified in
 # 						CONFIGURE_ARGS instead
@@ -500,18 +85,13 @@ MOZILLA_VER?=	${PORTVERSION}
 MOZILLA_BIN?=	${PORTNAME}-bin
 MOZILLA_EXEC_NAME?=${MOZILLA}
 MOZ_RPATH?=	${MOZILLA}
-USE_GNOME+=	desktopfileutils
-USES+=		compiler:c++11-lib gmake iconv perl5 pkgconfig
+USES+=		compiler:c++11-lib gmake iconv perl5 pkgconfig desktop-file-utils
 USE_PERL5=	build
 USE_XORG=	xext xrender xt
-
-NO_STAGE=	yes
 
 MOZILLA_SUFX?=	none
 MOZSRC?=	${WRKSRC}
 WRKSRC?=	${WRKDIR}/mozilla
-FAKEDIR?=	${WRKDIR}/fake
-PLIST?=		${WRKDIR}/plist
 PLISTD?=	${WRKDIR}/plist_dirs
 PLISTF?=	${WRKDIR}/plist_files
 
@@ -519,7 +99,7 @@ MOZ_PIS_DIR?=		lib/${MOZILLA}/init.d
 
 PORT_MOZCONFIG?=	${FILESDIR}/mozconfig.in
 MOZCONFIG?=		${WRKSRC}/.mozconfig
-MOZILLA_PLIST_DIRS?=	bin lib
+MOZILLA_PLIST_DIRS?=	bin lib share/pixmaps share/applications
 PKGINSTALL?=	${WRKDIR}/pkg-install
 PKGDEINSTALL?=	${WRKDIR}/pkg-deinstall
 PKGINSTALL_INC?=	${.CURDIR}/../../www/firefox/files/pkg-install.in
@@ -534,8 +114,8 @@ MOZ_PKGCONFIG_FILES?=	${MOZILLA}-gtkmozembed ${MOZILLA}-js \
 			${MOZILLA}-xpcom ${MOZILLA}-plugin
 
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
-				LIBS="${LIBS}" PERL="${PERL}"
-MOZ_OPTIONS+=	--prefix="${FAKEDIR}"
+				PERL="${PERL}"
+MOZ_OPTIONS+=	--prefix="${PREFIX}"
 
 CPPFLAGS+=		-isystem${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib -Wl,-rpath,${PREFIX}/lib/${MOZILLA}
@@ -547,7 +127,7 @@ MOZ_OPTIONS+=	--enable-jemalloc
 .endif
 
 # Standard depends
-_ALL_DEPENDS=	cairo event ffi harfbuzz hunspell icu jpeg nspr nss opus png pixman sqlite vorbis vpx
+_ALL_DEPENDS=	cairo event ffi graphite harfbuzz hunspell icu jpeg nspr nss opus png pixman soundtouch sqlite vorbis vpx
 
 cairo_LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo
 cairo_MOZ_OPTIONS=	--enable-system-cairo
@@ -562,10 +142,13 @@ ffi_MOZ_OPTIONS=	--enable-system-ffi
 ffi_EXTRACT_AFTER_ARGS=	--exclude mozilla*/js/src/ctypes/libffi
 
 .if exists(${FILESDIR}/patch-bug847568) || exists(${FILESDIR}/patch-z-bug847568)
+graphite_LIB_DEPENDS=	libgraphite2.so:${PORTSDIR}/graphics/graphite2
+graphite_MOZ_OPTIONS=	--with-system-graphite2
+graphite_EXTRACT_AFTER_ARGS=	--exclude mozilla*/gfx/graphite2
+
 harfbuzz_LIB_DEPENDS=	libharfbuzz.so:${PORTSDIR}/print/harfbuzz
-harfbuzz_MOZ_OPTIONS=	--with-system-harfbuzz --with-system-graphite2
-harfbuzz_EXTRACT_AFTER_ARGS=	--exclude mozilla*/gfx/harfbuzz \
-								--exclude mozilla*/gfx/graphite2
+harfbuzz_MOZ_OPTIONS=	--with-system-harfbuzz
+harfbuzz_EXTRACT_AFTER_ARGS=	--exclude mozilla*/gfx/harfbuzz
 .endif
 
 hunspell_LIB_DEPENDS=	libhunspell-1.3.so:${PORTSDIR}/textproc/hunspell
@@ -604,11 +187,27 @@ png_LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
 png_MOZ_OPTIONS=	--with-system-png=${LOCALBASE}
 png_EXTRACT_AFTER_ARGS=	--exclude mozilla*/media/libpng
 
+.if exists(${FILESDIR}/patch-z-bug517422) || exists(${FILESDIR}/patch-zz-bug517422)
+soundtouch_LIB_DEPENDS=	libSoundTouch.so:${PORTSDIR}/audio/soundtouch
+soundtouch_MOZ_OPTIONS=	--with-system-soundtouch
+soundtouch_EXTRACT_AFTER_ARGS=	--exclude mozilla*/media/libsoundtouch
+
+# XXX disabled: bug 913854 not yet upstreamed
+speex_LIB_DEPENDS=	libspeexdsp.so:${PORTSDIR}/audio/speex
+speex_MOZ_OPTIONS=	--with-system-speex
+speex_EXTRACT_AFTER_ARGS=	--exclude mozilla*/media/libspeex_resampler
+.endif
+
 sqlite_LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 sqlite_MOZ_OPTIONS=	--enable-system-sqlite
 sqlite_EXTRACT_AFTER_ARGS=	--exclude mozilla*/db/sqlite3
 
 .if exists(${FILESDIR}/patch-z-bug517422) || exists(${FILESDIR}/patch-zz-bug517422)
+# XXX disabled: update to 1.2.x or review backported fixes
+theora_LIB_DEPENDS=	libtheora.so:${PORTSDIR}/multimedia/libtheora
+theora_MOZ_OPTIONS=	--with-system-theora
+theora_EXTRACT_AFTER_ARGS=	--exclude mozilla*/media/libtheora
+
 vorbis_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 vorbis_MOZ_OPTIONS=	--with-system-vorbis --with-system-ogg
 vorbis_EXTRACT_AFTER_ARGS=	--exclude mozilla*/media/libvorbis \
@@ -624,7 +223,7 @@ vpx_EXTRACT_AFTER_ARGS=	--exclude mozilla*/media/libvpx
 ${use:S/-/_WITHOUT_/}=	${TRUE}
 .endfor
 
-.for dep in ${_ALL_DEPENDS}
+.for dep in ${_ALL_DEPENDS} ${USE_MOZILLA:M+*:S/+//}
 .if !defined(_WITHOUT_${dep})
 BUILD_DEPENDS+=	${${dep}_BUILD_DEPENDS}
 LIB_DEPENDS+=	${${dep}_LIB_DEPENDS}
@@ -686,6 +285,9 @@ USE_QT4+=	qmake_build moc_build rcc_build gui network opengl
 MOZ_EXPORT+=	HOST_QMAKE="${QMAKE}" HOST_MOC="${MOC}" HOST_RCC="${RCC}"
 .elif ${MOZ_TOOLKIT:Mcairo-gtk3}
 USE_GNOME+=	gtk30
+. if ${MOZILLA_VER:R:R} >= 32
+USE_GNOME+= gtk20 # bug 624422
+. endif
 .else # gtk2, cairo-gtk2
 USE_GNOME+=	gtk20
 .endif
@@ -708,7 +310,7 @@ MOZ_OPTIONS+=	--disable-dbus --disable-libnotify
 .endif
 
 .if ${PORT_OPTIONS:MGSTREAMER}
-. if ${MOZILLA_VER:R:R} >= 30 || exists(${FILESDIR}/patch-bug806917)
+. if ${MOZILLA_VER:R:R} >= 30 || ${MOZILLA} == "seamonkey"
 USE_GSTREAMER1?=good libav
 MOZ_OPTIONS+=	--enable-gstreamer=1.0
 . else
@@ -774,7 +376,12 @@ MOZ_OPTIONS+=	--enable-alsa
 .endif
 
 .if ${PORT_OPTIONS:MPULSEAUDIO}
+. if ${PORT_OPTIONS:MALSA}
 BUILD_DEPENDS+=	pulseaudio>0:${PORTSDIR}/audio/pulseaudio
+. else
+# pull pulse package if we cannot fallback to another backend
+LIB_DEPENDS+=	libpulse.so:${PORTSDIR}/audio/pulseaudio
+. endif
 MOZ_OPTIONS+=	--enable-pulseaudio
 .else
 MOZ_OPTIONS+=	--disable-pulseaudio
@@ -818,7 +425,6 @@ MOZ_SED_ARGS+=	-e's|@CPPFLAGS@|${CPPFLAGS}|g'		\
 		-e 's|@LDFLAGS@|${LDFLAGS}|g'		\
 		-e 's|@LIBS@|${LIBS}|g'			\
 		-e 's|@LOCALBASE@|${LOCALBASE}|g'	\
-		-e 's|@FAKEDIR@|${FAKEDIR}|g'		\
 		-e 's|@PERL@|${PERL5}|g'			\
 		-e 's|@MOZDIR@|${PREFIX}/lib/${MOZILLA}|g'	\
 		-e 's|%%PREFIX%%|${PREFIX}|g'		\
@@ -826,7 +432,6 @@ MOZ_SED_ARGS+=	-e's|@CPPFLAGS@|${CPPFLAGS}|g'		\
 		-e 's|%%LDFLAGS%%|${LDFLAGS}|g'		\
 		-e 's|%%LIBS%%|${LIBS}|g'		\
 		-e 's|%%LOCALBASE%%|${LOCALBASE}|g'	\
-		-e 's|%%FAKEDIR%%|${FAKEDIR}|g'		\
 		-e 's|%%PERL%%|${PERL5}|g'		\
 		-e 's|%%MOZILLA%%|${MOZILLA}|g'		\
 		-e 's|%%MOZILLA_BIN%%|${MOZILLA_BIN}|g'	\
@@ -834,7 +439,7 @@ MOZ_SED_ARGS+=	-e's|@CPPFLAGS@|${CPPFLAGS}|g'		\
 MOZCONFIG_SED?= ${SED} ${MOZ_SED_ARGS}
 
 .if ${ARCH} == amd64
-CONFIGURE_TARGET=x86_64-unknown-${OPSYS:L}${OSREL}
+CONFIGURE_TARGET=x86_64-unknown-${OPSYS:tl}${OSREL}
 . if ${USE_MOZILLA:M-nss}
 USE_BINUTILS=	# intel-gcm.s
 CFLAGS+=	-B${LOCALBASE}/bin
@@ -984,102 +589,35 @@ post-configure: gecko-post-configure
 gecko-post-configure:
 	@${ECHO_CMD} "#define JNIIMPORT" >> ${MOZSRC}/mozilla-config.h
 
-pre-install: gecko-moz-pis-pre-install gecko-pre-install port-pre-install gecko-create-plist
+pre-install: gecko-moz-pis-pre-install
+post-install-script: gecko-create-plist
 
-.if !target(port-pre-install)
-port-pre-install:
+gecko-create-plist: port-post-install
+
+.if !target(port-post-install)
+port-post-install:
 		@${DO_NADA}
 .endif
 
-gecko-pre-install:
-.if !defined(NOGECKO_PLIST)
-	@${RM} -rf ${FAKEDIR} ${PLIST} ${PLISTD} ${PLISTF}
-	@${TOUCH} -f ${PLIST} ${PLISTD} ${PLISTF}
-	@cd ${INSTALL_WRKSRC} && ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} \
-		${MAKEFILE} ${MAKE_ARGS} prefix=${FAKEDIR} ${INSTALL_TARGET}
-.if defined(MOZILLA_SUFX) && ${MOZILLA_SUFX}!="none"
-	${MV} ${FAKEDIR}/bin/${MOZILLA_EXEC_NAME:S/${MOZILLA_SUFX}//} ${FAKEDIR}/bin/${MOZILLA}
-.if exists(${FAKEDIR}/bin/${MOZILLA_EXEC_NAME:S/${MOZILLA_SUFX}//}-config)
-	${MV} ${FAKEDIR}/bin/${MOZILLA_EXEC_NAME:S/${MOZILLA_SUFX}//}-config ${FAKEDIR}/bin/${MOZILLA}-config
-.endif
-.for pc in ${MOZ_PKGCONFIG_FILES:S|${MOZILLA_SUFX}||}
-	${SED} -e 's|Requires: ${MOZILLA:S/${MOZILLA_SUFX}//}|Requires: ${MOZILLA}|' \
-	${FAKEDIR}/lib/pkgconfig/${pc}.pc > ${FAKEDIR}/lib/pkgconfig/${pc:S/${MOZILLA:S,${MOZILLA_SUFX},,}/${MOZILLA}/}.pc
-.endfor
-	@${REINPLACE_CMD} -e 's|${MOZILLA_BIN}|${MOZILLA:S/${MOZILLA_SUFX}//}|; \
-		s|$${progbase}-bin|${MOZILLA:S/${MOZILLA_SUFX}//}-bin|' \
-		-e 's|${FAKEDIR}|${PREFIX}|g' \
-		-i '' $$(${REALPATH} ${FAKEDIR}/bin/${MOZILLA}*)
-.else
-	@${REINPLACE_CMD} -e 's|${FAKEDIR}|${PREFIX}|g' \
-		-i '' $$(${REALPATH} ${FAKEDIR}/bin/${MOZILLA_EXEC_NAME}*)
-.endif
-.endif
-
 gecko-create-plist:
-.if !defined(NOGECKO_PLIST)
 # Create the plist
-.for f in ${GECKO_PLIST_PRE_FILES}
-	${ECHO_CMD} ${f} >> ${PLISTF}
-.endfor
-.for f in ${GECKO_PLIST_PRE_DIRS}
-	${ECHO_CMD} "@dirrm ${f}" >> ${PLISTD}
-.endfor
-	${MKDIR} ${FAKEDIR}/libdata
-	${MV} -f ${FAKEDIR}/lib/pkgconfig ${FAKEDIR}/libdata/ || ${TRUE}
-	${RM} -f ${FAKEDIR}/lib/pkgconfig
+	${RM} -f ${PLISTF} ${PLISTD}
 .for dir in ${MOZILLA_PLIST_DIRS}
-	@cd ${FAKEDIR}/${dir} && ${FIND} -H -s * ! -type d | \
+	@cd ${STAGEDIR}${PREFIX}/${dir} && ${FIND} -H -s * ! -type d | \
 		${SED} -e 's|^|${dir}/|' >> ${PLISTF} && \
 		${FIND} -d * -type d | \
 		${SED} -e 's|^|@dirrm ${dir}/|' >> ${PLISTD}
 .endfor
-.for pcfile in ${MOZ_PKGCONFIG_FILES}
-	${ECHO_CMD} "libdata/pkgconfig/${pcfile}.pc" >> ${PLISTF}
-	@${REINPLACE_CMD} -e 's|${FAKEDIR}|${PREFIX}|g' \
-		-e 's|${MOZILLA}-nspr = ${PORTVERSION}|nspr|' \
-		${FAKEDIR}/libdata/pkgconfig/${pcfile}.pc
-.endfor
-	${CAT} ${PLISTF} | ${SORT} >> ${PLIST}
-	${CAT} ${PLISTD} | ${SORT} -r >> ${PLIST}
-	${ECHO_CMD} "@exec ${LOCALBASE}/bin/update-desktop-database > /dev/null || ${TRUE}" >> ${PLIST}
-	${ECHO_CMD} "@unexec ${LOCALBASE}/bin/update-desktop-database > /dev/null || ${TRUE}" >> ${PLIST}
-.endif # !defined(NOGECKO_PLIST)
-
-do-install: gecko-do-install
-
-gecko-do-install:
-.if !defined(NOGECKO_INSTALL)
-.for dir in ${MOZILLA_PLIST_DIRS}
-.if !exists(${PREFIX}/${dir})
-	${MKDIR} ${PREFIX}/${dir}
-.endif
-	${TAR} cf - -C${FAKEDIR}/${dir} -s'|${FAKEDIR}|${PREFIX}|s' . | \
-		${TAR} xof - -C${PREFIX}/${dir}
-.endfor
-.for pcfile in ${MOZ_PKGCONFIG_FILES}
-	${INSTALL_DATA} ${FAKEDIR}/libdata/pkgconfig/${pcfile}.pc \
-		${PREFIX}/libdata/pkgconfig/${pcfile}.pc
-.endfor
-.endif # !defined(NOGECKO_INSTALL)
+	${CAT} ${PLISTF} | ${SORT} >> ${TMPPLIST}
+	${CAT} ${PLISTD} | ${SORT} -r >> ${TMPPLIST}
 
 gecko-moz-pis-pre-install:
 .if defined(MOZ_PIS_SCRIPTS)
-	${MKDIR} ${FAKEDIR}/${MOZ_PIS_DIR}
+	${MKDIR} ${STAGEDIR}${PREFIX}/${MOZ_PIS_DIR}
 .for moz in ${MOZ_PIS_SCRIPTS}
-	${INSTALL_SCRIPT} ${WRKDIR}/${moz} ${FAKEDIR}/${MOZ_PIS_DIR}
+	${INSTALL_SCRIPT} ${WRKDIR}/${moz} ${STAGEDIR}${PREFIX}/${MOZ_PIS_DIR}
 .endfor
 .endif
-
-post-install: gecko-post-install
-
-gecko-post-install:
-.if !defined(PACKAGE_BUILDING) && !defined(NO_MOZPKGINSTALL)
-	@if [ -e ${PKGINSTALL} ] ; then \
-		${SETENV} PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL; \
-	fi
-.endif
-	@-update-desktop-database
 
 .endif
 .endif

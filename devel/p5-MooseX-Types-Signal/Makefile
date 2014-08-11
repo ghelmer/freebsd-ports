@@ -7,8 +7,8 @@ CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	catone@cpan.org
-COMMENT=	A type to represent valid UNIX or Perl signals
+MAINTAINER=	culot@FreeBSD.org
+COMMENT=	Type to represent valid UNIX or Perl signals
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual

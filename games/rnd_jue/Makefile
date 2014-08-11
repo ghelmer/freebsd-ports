@@ -1,4 +1,4 @@
-# Created by: nemysis <nemysis@gmx.ch>
+# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	rnd_jue
@@ -6,13 +6,12 @@ PORTVERSION=	3.3.0.0
 PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.artsoft.org/RELEASES/unix/rocksndiamonds/:game \
-		http://www.bd-fans.com/Files/RnD/Levels/ \
-		SF/nemysisfreebsdp/${CATEGORIES}/rocksndiamonds/:icons
+		SF/nemysisfreebsdp/${CATEGORIES}/rocksndiamonds/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}:game \
 		rocksndiamonds-3.3.1.0${EXTRACT_SUFX}:game \
 		${LEVELS_BD_FANS:S/$/.zip/} \
 		Tutorial_Alpha.zip \
-		${PORTNAME}_icons.tar.gz:icons
+		${PORTNAME}_icons.tar.gz
 DIST_SUBDIR=	rocksndiamonds
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		rocksndiamonds-3.3.1.0${EXTRACT_SUFX} \
@@ -28,7 +27,7 @@ EXTRACT_DEPENDS+=${UNZIP_CMD}:${PORTSDIR}/archivers/unzip
 
 USES=		gmake
 USE_SDL=	image mixer net sdl
-MAKE_ARGS=	CC="${CC}" MAKE="${GMAKE}" OPTIONS="${CFLAGS}" \
+MAKE_ARGS=	CC="${CC}" MAKE="${MAKE_CMD}" OPTIONS="${CFLAGS}" \
 		RO_GAME_DIR="${DATADIR}" \
 		X11_PATH="${LOCALBASE}"
 ALL_TARGET=	sdl

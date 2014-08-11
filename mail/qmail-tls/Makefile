@@ -3,19 +3,18 @@
 
 PORTNAME=	qmail
 PORTVERSION=	${QMAIL_VERSION}.${TLS_PATCH_DATE}
-PORTREVISION=	6
+PORTREVISION=	0
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-tls
 
 COMMENT=	Secure, reliable, and fast MTA for UNIX systems with TLS support
 
-CONFLICTS=	qmail-[0-9]* qmail-ldap-[0-9]* qmail-mysql-[0-9]* qmail-spamcontrol-[0-9]*
+CONFLICTS=	*qmail-[0-9]* qmail-ldap-[0-9]* *qmail-mysql-[0-9]* qmail-spamcontrol-[0-9]*
 
 SLAVE_TLS=	yes
 
-TLS_PATCH_DATE=	20021228
+TLS_PATCH_DATE=	20110119
 
-NO_STAGE=	yes
 USE_OPENSSL=	yes
 
 # Local overrides

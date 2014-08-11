@@ -3,23 +3,23 @@
 
 PORTNAME=	xmakemol
 PORTVERSION=	5.16
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	science
 MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Molecule Viewer Program Based on Motif Widget
 
-USES=		gmake motif
+USES=		gmake motif shebangfix
 USE_XORG=	xpm
 USE_GL=		glut glw
 GNU_CONFIGURE=	yes
+SHEBANG_FILES=	xmake_anim.pl
 
-MAN1=		xmakemol.1
 PLIST_FILES=	bin/xmake_anim.pl \
 		bin/xmakemol \
+		man/man1/xmakemol.1.gz \
 		%%DATADIR%%/elements
 PLIST_DIRS=	%%DATADIR%%
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

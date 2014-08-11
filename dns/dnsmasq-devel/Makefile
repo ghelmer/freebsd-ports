@@ -14,7 +14,7 @@ COMMENT=	Lightweight DNS forwarder, DHCP, and TFTP server
 LICENSE=	GPLv2
 
 CONFLICTS_INSTALL=dnsmasq-2*
-#IGNORE=		- build stable version instead, it is newer than this release candidate
+IGNORE=		- build stable version instead, it is newer than this release candidate
 
 PORTDOCS=	CHANGELOG CHANGELOG.archive FAQ doc.html setup.html
 
@@ -62,7 +62,7 @@ CFLAGS+=	-DHAVE_DBUS
 
 .if ${PORT_OPTIONS:MLUA}
 CFLAGS+=	-DHAVE_LUASCRIPT
-USE_LUA=	5.1
+USES+=		lua
 .endif
 
 .if ${PORT_OPTIONS:MDNSSEC}
@@ -76,7 +76,7 @@ USE_RC_SUBR=	dnsmasq
 .include <bsd.port.pre.mk>
 
 post-patch:
-	${REINPLACE_CMD} -e "s/lua5\.1/lua-5.1/" ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e "s/lua5\.1/lua-${LUA_VER}/" ${WRKSRC}/Makefile
 
 pre-configure:
 	@:

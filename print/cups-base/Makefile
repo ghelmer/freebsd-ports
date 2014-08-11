@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cups
-PORTVERSION=	1.7.1
+PORTVERSION=	1.7.2
 DISTVERSIONSUFFIX=	-source
 #PORTREVISION=	defined further
 CATEGORIES=	print
@@ -22,19 +22,16 @@ UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
 USES+=		gmake pkgconfig tar:bzip2
 DESTDIRNAME=	DSTROOT
 GNU_CONFIGURE=	yes
-CFLAGS+=	${PTHREAD_CFLAGS}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-DSOFLAGS=	-Wl,-rpath,${PREFIX}/lib -L${PREFIX}/lib ${LDFLAGS}
+DSOFLAGS=	-Wl,-rpath,${PREFIX}/lib ${LDFLAGS} ${LIBS}
 CONFIGURE_ENV=	DSOFLAGS="${DSOFLAGS}"
 CONFIGURE_ARGS+=	--localstatedir=/var			\
-			--disable-slp				\
 			--disable-gssapi			\
 			--with-cups-user=${USERS}		\
 			--with-cups-group=${GROUPS}		\
 			--with-system-groups=${CUPSSYSGRP}	\
 			--with-docdir=${DOCSDIR}		\
-			--with-icondir=${PREFIX}/share/icons	\
 			--with-menudir=${DESKTOPDIR}		\
 			--with-domainsocket=${CUPS_SOCKET}	\
 			--with-cachedir=${CUPS_CACHEDIR}	\
@@ -64,14 +61,14 @@ CUPS_SUFFIX=	-image
 LICENSE=	LGPL21
 OPTIONS_DEFINE=	GNUTLS
 .else
-INSTALLS_ICONS=	yes
-PORTREVISION=	1
+PORTREVISION=	2
 CUPS_SUFFIX=	-base
-OPTIONS_DEFINE=	GNUTLS LIBPAPER PHP PYTHON PAM DBUS LIBUSB XDG_OPEN AVAHI MDNSRESPONDER
-OPTIONS_DEFAULT=	LIBPAPER
+OPTIONS_DEFINE=	GNUTLS LIBPAPER PHP PYTHON PAM DBUS LIBUSB XDG_OPEN AVAHI MDNSRESPONDER ICONS
+OPTIONS_DEFAULT=	LIBPAPER MDNSRESPONDER ICONS
 NO_OPTIONS_SORT=	yes
 .endif
 
+ICONS_DESC=		Desktop icons
 LIBUSB_DESC=		USB support
 XDG_OPEN_DESC=		Build with XDG_OPEN as browser
 
@@ -82,7 +79,7 @@ COMMENT2=	Library cups
 INSTALL_WRKSRC=	${WRKSRC}/cups
 PLIST=		${MASTERDIR}/pkg-plist.client
 USES+=		iconv
-LDFLAGS+=	${ICONV_LIB}
+LIBS+=		${ICONV_LIB}
 USE_LDCONFIG=	yes
 PKGMESSAGE=	${NONEXISTENT}
 DESCR=		${MASTERDIR}/pkg-descr.client
@@ -158,16 +155,15 @@ IGNORE=			You must select one and only one option to build for Zeroconf
 .endif
 LIB_DEPENDS+=		libdns_sd.so:${PORTSDIR}/net/mDNSResponder
 CONFIGURE_ARGS+=	--with-dnssd-includes=${LOCALBASE}/include
-PLIST_SUB+=		WITH_MDNSRESPONDER=""
+PLIST_SUB+=		MDNSRESPONDER="" DNSSD="@comment "
 .elif !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MAVAHI}
-CONFIGURE_ARGS+=	--enable-dnssd \
-			--with-dnssd-libs=${LOCALBASE}/lib/
-LIB_DEPENDS+=		libdns_sd.so:${PORTSDIR}/net/avahi-libdns
-CONFIGURE_ARGS+=	--with-dnssd-includes=${LOCALBASE}/include/avahi-compat-libdns_sd/
-BROKEN=			missing function, see http://www.avahi.org/ticket/303
+CONFIGURE_ARGS+=	--enable-avahi
+LIB_DEPENDS+=		libavahi-client.so:${PORTSDIR}/net/avahi-app
+PLIST_SUB+=		MDNSRESPONDER="@comment " DNSSD=""
 .else
 CONFIGURE_ARGS+=	--disable-dnssd
-PLIST_SUB+=		WITH_MDNSRESPONDER="@comment "
+CONFIGURE_ARGS+=	--disable-avahi
+PLIST_SUB+=		MDNSRESPONDER="@comment " DNSSD="@comment "
 .endif
 
 .if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MPAM}
@@ -192,13 +188,22 @@ RUN_DEPENDS+=		xdg-open:${PORTSDIR}/devel/xdg-utils
 .endif
 
 .if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MLIBUSB}
-CPPFLAGS+=		-I/usr/include
-LDFLAGS+=		-L/usr/lib
 CONFIGURE_ARGS+=	--enable-libusb
 .else
 CONFIGURE_ARGS+=	--disable-libusb
 .endif
-CONFIGURE_ARGS+=	LIBS="-lssp_nonshared"
+
+.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MICONS}
+INSTALLS_ICONS=	yes
+CONFIGURE_ARGS+=	--with-icondir=${PREFIX}/share/icons
+PLIST_SUB+=		WITH_ICONS=""
+.else
+PLIST_SUB+=		WITH_ICONS="@comment "
+.endif
+
+.if ${OSVERSION} < 1000036 && ${ARCH} == i386
+LIBS+=		-lssp_nonshared
+.endif
 
 .if ! defined(CUPS_CLIENT) && ! defined(CUPS_IMAGE)
 SUB_FILES+=	ulpt-cupsd.conf ulpt-cupsd.sh
@@ -282,8 +287,11 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/cups/libcups.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_MAN} ${WRKSRC}/man/cups-config.man ${STAGEDIR}${PREFIX}/man/man1/cups-config.1
 .elif defined(CUPS_IMAGE)
-	${INSTALL_DATA} ${WRKSRC}/cups/raster.h ${STAGEDIR}${PREFIX}/include/cups
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupsimage.so.2
 .else
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupscgi.so.1
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupsppdc.so.1
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupsmime.so.1
 .if  ${PORT_OPTIONS:MGHOSTSCRIPT} || ${PORT_OPTIONS:MXPDF}
 	${INSTALL_PROGRAM} ${WRKSRC}/filter/pdftops  ${STAGEDIR}${PREFIX}/libexec/cups/filter/
 .endif

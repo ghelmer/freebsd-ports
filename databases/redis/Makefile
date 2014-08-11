@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	2.8.8
+DISTVERSION=	2.8.11
 CATEGORIES=	databases
 MASTER_SITES=	http://download.redis.io/releases/
 
 MAINTAINER=	osa@FreeBSD.org
-COMMENT=	A persistent key-value database with built-in net interface
+COMMENT=	Persistent key-value database with built-in net interface
 
 LICENSE=	BSD3CLAUSE
 
@@ -23,7 +23,7 @@ TESTS_DESC=	Install lang/tcl for redis unit tests
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLUA}
-USE_LUA?=	5.1
+USES+=		lua:51
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.lua
 CFLAGS+=	-fPIC
 LDFLAGS+=	-Wl,-E

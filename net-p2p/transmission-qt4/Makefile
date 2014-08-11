@@ -30,14 +30,14 @@ post-patch: general-patch
 		${WRKSRC}/qt/qtr.pro
 
 post-build:
-	@(cd ${WRKSRC}/qt ; ${QMAKE} ${QMAKE_ARGS} qtr.pro ; ${GMAKE})
+	@(cd ${WRKSRC}/qt ; ${QMAKE} ${QMAKE_ARGS} qtr.pro ; ${MAKE_CMD})
 
 do-install:
 	@(cd ${WRKSRC}/qt ; \
 		${SETENV} INSTALL_ROOT=${STAGEDIR}${PREFIX} ${MAKE} install)
 
 post-install: general-install
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/qt/README.txt \
 		${STAGEDIR}${DOCSDIR}/README-qt4
 	@${INSTALL_DATA} ${WRKSRC}/qt/transmission-qt.desktop \

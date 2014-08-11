@@ -2,22 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	align
-PORTVERSION=	1.7.2
+PORTVERSION=	1.7.3
 CATEGORIES=	textproc
-MASTER_SITES=	http://www.cs.indiana.edu/~kinzler/align/
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	http://www.cs.indiana.edu/~kinzler/align/ \
+		http://bitrote.org/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jharris@widomaker.com
 COMMENT=	Text column alignment filter
 
 LICENSE=	GPLv2 # (or later)
 
 NO_BUILD=	yes
 
-USES=		shebangfix perl5
-USE_PERL5=	run
-
+USES=		perl5 shebangfix tar:tgz
 SHEBANG_FILES=	align width
+USE_PERL5=	run
 
 PLIST_FILES=	bin/align bin/width
 

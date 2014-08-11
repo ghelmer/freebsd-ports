@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	reshape
-PORTVERSION=	0.8.4
-PORTREVISION=	12
+PORTVERSION=	0.8.5
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
-COMMENT=	An R package for flexibly restructuring and aggregating data
+COMMENT=	R package for flexibly restructuring and aggregating data
 
 LICENSE=	MIT
 

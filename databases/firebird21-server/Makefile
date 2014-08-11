@@ -20,10 +20,8 @@ CONFLICTS?=	${PORTNAME}20-client-* \
 
 LIB_DEPENDS=	libicuuc.so:${PORTSDIR}/devel/icu
 
-USES=		bison
-USE_BZIP2=	yes
+USES=		bison gmake tar:bzip2
 USE_GCC=	any
-USE_GMAKE=	yes
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	autoconf aclocal libtool
 ACLOCAL_ARGS=	--automake-acdir=${ACLOCAL_DIR} -I ${LOCALBASE}/share/aclocal \
@@ -143,7 +141,7 @@ post-build:
 .endif
 
 do-configure:
-	@(cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${MAKE_ENV} MAKE=${GMAKE}	\
+	@(cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${MAKE_ENV} MAKE=${MAKE_CMD}	\
 	${AUTOTOOLS_VARS} ./autogen.sh --localstatedir=${LOCALSTATEDIR} \
 		--prefix=${LOCALSTATEDIR} --exec-prefix=${PREFIX} \
 		--libexecdir=${LIBEXECDIR} \

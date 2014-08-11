@@ -3,7 +3,7 @@
 
 PORTNAME=	eaglemode
 PORTVERSION=	0.84.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -15,8 +15,7 @@ LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
-USES=		perl5 pkgconfig
-USE_BZIP2=	yes
+USES=		tar:bzip2 perl5 pkgconfig
 USE_PERL5=	build
 USE_XORG=	x11 xext xxf86vm
 SUB_FILES=	eaglemode.sh

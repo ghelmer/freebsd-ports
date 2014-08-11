@@ -11,8 +11,6 @@
 #
 # $FreeBSD$
 
-.MAKE.FreeBSD_UL=	yes
-
 MESAVERSION=	${MESABASEVERSION}${MESASUBVERSION:C/^(.)/.\1/}
 MESADISTVERSION=${MESABASEVERSION}${MESASUBVERSION:C/^(.)/-\1/}
 
@@ -27,8 +25,7 @@ MESASUBVERSION=
 PLIST_SUB+=	OLD="" NEW="@comment "
 .endif
 
-MASTER_SITES=	ftp://ftp.freedesktop.org/pub/mesa/${MESABASEVERSION}/ \
-		http://files.etoilebsd.net/mesa/
+MASTER_SITES=	ftp://ftp.freedesktop.org/pub/mesa/older-versions/${MESABASEVERSION:R:R}.x/${MESABASEVERSION}/
 DISTFILES=	MesaLib-${MESADISTVERSION}${EXTRACT_SUFX}
 MAINTAINER=	x11@FreeBSD.org
 
@@ -36,14 +33,13 @@ BUILD_DEPENDS+=	makedepend:${PORTSDIR}/devel/makedepend \
 		python2:${PORTSDIR}/lang/python2 \
 		${PYTHON_SITELIBDIR}/libxml2.py:${PORTSDIR}/textproc/py-libxml2
 
-USES+=		bison gmake pathfix pkgconfig shebangfix
-USE_PYTHON_BUILD=-2.7
-USE_BZIP2=	yes
+USES+=		bison gmake pathfix pkgconfig shebangfix tar:bzip2
+USE_PYTHON_BUILD=2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-isystem${LOCALBASE}/include
+LDFLAGS+=	-Wl,-Y${LOCALBASE}/lib
 
 .if ${OSVERSION} < 1000033
 BUILD_DEPENDS+=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
@@ -51,19 +47,8 @@ CONFIGURE_ENV+=ac_cv_prog_LEX=${LOCALBASE}/bin/flex
 .endif
 
 .if defined(WITH_NEW_XORG)
-USE_AUTOTOOLS=	autoconf:env automake:env libtool:env
-# probably be shared lib, and in it own port.
-CONFIGURE_ARGS+=        --enable-shared-glapi=no
-# we need to reapply these patches because we doing wierd stuff with autogen
-REAPPLY_PATCHES= \
-		${PATCHDIR}/patch-configure \
-		${PATCHDIR}/patch-src_egl_main_Makefile.in \
-		${PATCHDIR}/patch-src_glx_Makefile.in \
-		${PATCHDIR}/patch-src_mapi_es2api_Makefile.in \
-		${PATCHDIR}/patch-src_mapi_shared-glapi_Makefile.in \
-		${PATCHDIR}/patch-src_mesa_drivers_dri_common_Makefile.in \
-		${PATCHDIR}/patch-src_mesa_drivers_dri_common_xmlpool_Makefile.in \
-		${PATCHDIR}/patch-src_mesa_libdricore_Makefile.in
+INSTALL_TARGET=	install-strip
+USES+=		libtool:keepla
 
 python_OLD_CMD=	"/usr/bin/env[[:space:]]python"
 python_CMD=	${LOCALBASE}/bin/python2
@@ -71,6 +56,11 @@ SHEBANG_FILES=	src/gallium/*/*/*.py src/gallium/tools/trace/*.py \
 		src/gallium/drivers/svga/svgadump/svga_dump.py \
 		src/glsl/tests/compare_ir src/mapi/glapi/gen/*.py \
 		src/mapi/mapi/mapi_abi.py
+
+# i386 triggers clang bug 19778. This happens with clang 3.4.1 and older. 
+. if ${ARCH} == i386
+USE_GCC=yes
+. endif
 .else
 CONFIGURE_ARGS+=--disable-glut --disable-glw --disable-glu
 
@@ -87,7 +77,7 @@ DESCR=			${.CURDIR}/pkg-descr
 PLIST=			${.CURDIR}/pkg-plist
 WRKSRC=			${WRKDIR}/Mesa-${MESADISTVERSION}
 
-COMPONENT=		${PORTNAME:L:C/^lib//:C/mesa-//}
+COMPONENT=		${PORTNAME:tl:C/^lib//:C/mesa-//}
 
 .if ${COMPONENT:Mglesv2} == ""
 CONFIGURE_ARGS+=	--disable-gles2
@@ -129,27 +119,11 @@ post-patch:
 		${WRKSRC}/src/mesa/Makefile \
 		${WRKSRC}/src/mesa/drivers/dri/Makefile
 .else
-	@${REINPLACE_CMD} -e 's|#!/use/bin/python|#!${LOCALBASE}/bin/python2|g' \
+	@${REINPLACE_CMD} -e 's|#!/usr/bin/python|#!${PYTHON_CMD}|g' \
 		${WRKSRC}/src/mesa/drivers/dri/common/xmlpool/gen_xmlpool.py \
 		${WRKSRC}/src/glsl/builtins/tools/*.py
-	@${REINPLACE_CMD} -e 's|!/use/bin/python2|!${LOCALBASE}/bin/python2|g' \
+	@${REINPLACE_CMD} -e 's|!/usr/bin/python2|!${PYTHON_CMD}|g' \
 		${WRKSRC}/src/mesa/main/get_hash_generator.py \
 		${WRKSRC}/src/mapi/glapi/gen/gl_enums.py \
-		${WRKSRC}/src/mapi/glapi/gen/gl_table.py \
-
+		${WRKSRC}/src/mapi/glapi/gen/gl_table.py
 .endif
-
-pre-configure:
-# workaround for stupid rerunning configure in do-build step
-# xxx
-.if defined(WITH_NEW_XORG)
-	cd ${WRKSRC} && env NOCONFIGURE=1 sh autogen.sh
-. for file in ${REAPPLY_PATCHES}
-	@cd ${WRKSRC} && ${PATCH} -p0 --quiet  < ${file}
-. endfor
-# make sure the pkg-config files are installed in the correct place.
-# this was reverted by running autogen.sh
-	@${FIND} ${WRKSRC} -name Makefile.in -type f | ${XARGS} ${REINPLACE_CMD} -e \
-		's|[(]libdir[)]/pkgconfig|(prefix)/libdata/pkgconfig|g' ;
-.endif
-

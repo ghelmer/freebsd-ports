@@ -10,10 +10,10 @@
     SUBDIR += bitcoin-daemon
     SUBDIR += bitflu
     SUBDIR += bitmessage
-    SUBDIR += bittyrant
     SUBDIR += bnbt
     SUBDIR += btpd
     SUBDIR += btqueue
+    SUBDIR += btsync
     SUBDIR += cdonkey
     SUBDIR += cpuminer
     SUBDIR += createtorrent
@@ -75,7 +75,6 @@
     SUBDIR += p5-Net-DirectConnect-TigerHash
     SUBDIR += p5-WWW-BitTorrent
     SUBDIR += phex
-    SUBDIR += py-fngrab
     SUBDIR += py-kenosis
     SUBDIR += py-py2play
     SUBDIR += py-transmissionrpc
@@ -98,6 +97,7 @@
     SUBDIR += transmission-qt4
     SUBDIR += transmission-remote-gui
     SUBDIR += tribler
+    SUBDIR += twister
     SUBDIR += uhub
     SUBDIR += unworkable
     SUBDIR += valknut

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	httrack
-PORTVERSION=	3.47.27
+PORTVERSION=	3.48.13
 CATEGORIES=	www
 MASTER_SITES=	http://download.httrack.com/ \
 		http://mirror.httrack.com/historical/ \
@@ -14,30 +14,34 @@ COMMENT=	Easy-to-use offline browser utility and website copier
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS ICONS
+OPTIONS_SUB=	yes
 
-PORTSCOUT=	skipv:3.47.99
-
-CONFIGURE_ARGS=	--docdir="${DOCSDIR}"
+CONFIGURE_ARGS=	--docdir=${DOCSDIR} --with-zlib=/usr
 CPPFLAGS+=	-I${LOCALBASE}/include
+GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
-USE_AUTOTOOLS=	libtool
-USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
-USES=		gmake iconv
+USE_LDCONFIG=	${PREFIX}/lib/httrack
+USES=		gmake iconv libtool shebangfix
+
+PORTDATA=	*
+PORTDOCS=	*
+
+SHEBANG_FILES=	src/webhttrack
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MICONS}
+INSTALLS_ICONS=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/DEFAULT_CFLAGS=/ s|-O -g3 ||g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/ install-data-hook/d' ${WRKSRC}/html/Makefile.in
 	@${REINPLACE_CMD} -e 's|/usr/share|${PREFIX}/share|' ${WRKSRC}/html/server/div/WebHTTrack*
-.if ! ${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e '/^SUBDIRS = / s| html||' ${WRKSRC}/Makefile.in
-.endif
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	${INSTALL_DATA} ${WRKSRC}/html/httrack.css ${STAGEDIR}${DOCSDIR}/httrack.css
-.endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so ${STAGEDIR}${PREFIX}/lib/httrack/lib*.so
 
 .include <bsd.port.mk>

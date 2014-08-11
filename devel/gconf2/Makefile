@@ -4,7 +4,7 @@
 
 PORTNAME=	gconf2
 PORTVERSION=	2.32.0
-PORTREVISION?=	3
+PORTREVISION?=	4
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 MASTER_SITE_SUBDIR=	sources/GConf/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
@@ -12,7 +12,7 @@ DISTNAME=	GConf-${PORTVERSION}
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	A configuration database system for GNOME
+COMMENT=	Configuration database system for GNOME
 
 USE_BZIP2=	yes
 

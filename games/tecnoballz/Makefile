@@ -3,14 +3,14 @@
 
 PORTNAME=	tecnoballz
 PORTVERSION=	0.92
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	http://linux.tlk.fr/games/TecnoballZ/download/ \
 		http://mirror.amdmi3.ru/distfiles/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	A brick breaker (Arkanoid-like game)
+COMMENT=	Brick breaker (Arkanoid-like game)
 
 LIB_DEPENDS=	libmikmod.so:${PORTSDIR}/audio/libmikmod \
 		libvorbisfile.so:${PORTSDIR}/audio/libvorbis \

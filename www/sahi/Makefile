@@ -34,7 +34,8 @@ CHROME_DESC=	Use Chrome as default browser
 FIREFOX_DESC=	Use Firefox as default browser
 OPERA_DESC=	Use Opera as default browser
 
-USES=		zip
+USES=		dos2unix zip
+DOS2UNIX_GLOB=	linux.xml os.properties sahi.properties
 
 NO_STAGE=	yes
 .include <bsd.port.options.mk>
@@ -58,8 +59,6 @@ REINPLACE_ARGS=	-i '' -E \
 
 SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	BROWSER=${BROWSER} JAVA_HOME=${JAVA_HOME}
-
-USE_DOS2UNIX=	linux.xml os.properties sahi.properties
 
 post-patch:
 	@${FIND} ${WRKSRC} -type f \( -name "*.orig" -or -name "*.bat" \) -delete

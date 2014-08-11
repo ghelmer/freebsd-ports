@@ -12,16 +12,15 @@ PKGNAMESUFFIX=	-theme
 DISTNAME=	Milk-${PORTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
-COMMENT=	A port of Milk, Mac OS X theme
+COMMENT=	Port of Milk, Mac OS X theme
 
-TYPE?=		gtk
-
-THEME_NAME=	Milk
-
-USE_BZIP2=	yes
+USES=		tar:bzip2
 NO_BUILD=	yes
 
-.if ${TYPE} == "gtk"
+TYPE?=		gtk
+THEME_NAME=	Milk
+
+.if ${TYPE} == gtk
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="" METACITY="@comment "
 USE_GNOME=	gtk20
@@ -31,19 +30,16 @@ PLIST_SUB+=	GTK20="@comment " METACITY=""
 USE_GNOME=	gnomehier
 .endif
 
-NO_STAGE=	yes
 post-extract:
 	@${FIND} ${WRKSRC} -type f -print0 | ${XARGS} -0 ${CHMOD} 644
 
 do-install:
-	@${MKDIR} ${THEME_DIR}
-	${INSTALL_DATA} ${WRKSRC}/index.theme ${THEME_DIR}
-.if ${TYPE} == "gtk"
-	cd ${WRKSRC} && ${FIND} gtk-2.0 | \
-		${CPIO} -pdu -R ${SHAREOWN}:${SHAREGRP} ${THEME_DIR}
+	@${MKDIR} ${STAGEDIR}${THEME_DIR}
+	${INSTALL_DATA} ${WRKSRC}/index.theme ${STAGEDIR}${THEME_DIR}
+.if ${TYPE} == gtk
+	cd ${WRKSRC} && ${COPYTREE_SHARE} gtk-2.0 ${STAGEDIR}${THEME_DIR}
 .else
-	cd ${WRKSRC} && ${FIND} metacity-1 | \
-		${CPIO} -pdu -R ${SHAREOWN}:${SHAREGRP} ${THEME_DIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} metacity-1 ${STAGEDIR}${THEME_DIR}
 .endif
 
 .include <bsd.port.mk>

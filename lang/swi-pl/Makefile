@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	swi-pl
-PORTVERSION=	6.6.4
+PORTVERSION=	6.6.6
 CATEGORIES=	lang
 MASTER_SITES=	http://www.swi-prolog.org/download/stable/src/
 DISTNAME=	pl-${PORTVERSION}
@@ -11,14 +11,8 @@ MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Edinburgh-style Prolog compiler
 
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
-
-# note that the ports unixodbc and libiodbc conflict
-OPTIONS_SINGLE=	ODBC
-OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
-OPTIONS_DEFAULT=UNIXODBC
-UNIXODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC
-IODBC_LIB_DEPENDS=	libiodbc.so:${PORTSDIR}/databases/libiodbc
+		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+		libodbc.so:${PORTSDIR}/databases/unixODBC
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -30,8 +24,8 @@ USE_XORG=	xft xpm xt
 USES=		pkgconfig pathfix gmake shebangfix
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ARCH=${ARCH}-${OPSYS:L}
-CONFIGURE_TARGET=	${ARCH}-${OPSYS:L}
+CONFIGURE_ENV=	ARCH=${ARCH}-${OPSYS:tl}
+CONFIGURE_TARGET=	${ARCH}-${OPSYS:tl}
 CONFIGURE_ARGS=	--with-world --without-jpl --enable-shared
 MAKE_ARGS=	DISABLE_PKGS=jpl \
 		ac_cv_lib_ossp_uuid_uuid_create=no ac_cv_lib_uuid_uuid_create=no
@@ -42,7 +36,7 @@ swipl_CMD=	${LOCALBASE}/bin/swipl
 SHEBANG_FILES=	library/dialect/sicstus/swipl-lfr.pl \
 		packages/http/examples/demo_inetd
 
-PLIST_SUB=	DISTNAME=${SWIPLDIR} ARCH=${ARCH} OS=${OPSYS:L} \
+PLIST_SUB=	DISTNAME=${SWIPLDIR} ARCH=${ARCH} OS=${OPSYS:tl} \
 		VER=${PORTVERSION}
 
 .include <bsd.port.pre.mk>

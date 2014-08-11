@@ -11,37 +11,23 @@ MAINTAINER=	clsung@FreeBSD.org
 COMMENT=	ClamAV anti-virus SMTP Filter
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 USE_RC_SUBR=	clamsmtpd
 SUB_LIST=	CLAMAV_PID_DIR=${CLAMAV_PID_DIR}
 SUB_FILES+=	pkg-message
 
 CLAMAV_PID_DIR?=	/var/run/clamav
 
-MAN5=		clamsmtpd.conf.5
-MAN8=		clamsmtpd.8
-
 PORTDOCS=	README
 
-OPTIONS_RADIO=	CLAMAV
-OPTIONS_RADIO_CLAMAV=	LOCAL_CLAMAV LOCAL_CLAMAV_DEVEL
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS LOCAL_CLAMAV
 OPTIONS_DEFAULT=	LOCAL_CLAMAV
 LOCAL_CLAMAV_DESC=		RUN_DEPEND on security/clamav
-LOCAL_CLAMAV_DEVEL_DESC=	RUN_DEPEND on security/clamav-devel
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLOCAL_CLAMAV}
 RUN_DEPENDS+=	clamav>=0:${PORTSDIR}/security/clamav
-.endif
-
-.if ${PORT_OPTIONS:MLOCAL_CLAMAV_DEVEL}
-RUN_DEPENDS+=	clamav-devel>=0:${PORTSDIR}/security/clamav-devel
-.endif
-
-.if ${PORT_OPTIONS:MLOCAL_CLAMAV} || ${PORT_OPTIONS:MLOCAL_CLAMAV_DEVEL}
 SUB_LIST+=	CLAMD=clamd
 .else
 SUB_LIST+=	CLAMD=
@@ -55,13 +41,12 @@ post-patch:
 		${WRKSRC}/src/clamsmtpd.c
 
 post-install:
-	@${INSTALL_DATA} ${WRKSRC}/doc/clamsmtpd.conf ${PREFIX}/etc/clamsmtpd.conf-sample
+	@${INSTALL_DATA} ${WRKSRC}/doc/clamsmtpd.conf ${STAGEDIR}${PREFIX}/etc/clamsmtpd.conf-sample
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 .endif
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/scripts/virus_action.sh ${EXAMPLESDIR}
-	@${CAT} ${PKGMESSAGE}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/scripts/virus_action.sh ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

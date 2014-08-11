@@ -106,7 +106,7 @@ CONFIGURE_ARGS+=	--without-mysql
 .endif
 
 .if ${LIBGDA4_SLAVE}=="postgresql"
-USE_PGSQL=		yes
+USES+=			pgsql
 CONFIGURE_ARGS+=	--with-postgres=${LOCALBASE}
 .else
 CONFIGURE_ARGS+=	--without-postgres
@@ -122,6 +122,7 @@ CONFIGURE_ARGS+=	--without-mdb
 
 .if ${LIBGDA4_SLAVE}=="jdbc"
 USE_JAVA=		yes
+JAVA_VERSION=		1.6
 JAVA_VENDOR=		openjdk
 .else
 CONFIGURE_ARGS+=	--without-java
@@ -148,11 +149,11 @@ post-patch:
 
 pre-build:
 .if ${LIBGDA4_SLAVE}=="postgresql"
-	cd ${WRKSRC}/providers/reuseable/postgres && ${GMAKE} libgda-postgres.la
+	cd ${WRKSRC}/providers/reuseable/postgres && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} libgda-postgres.la
 .endif
 
 .if ${LIBGDA4_SLAVE}=="mysql"
-	cd ${WRKSRC}/providers/reuseable/mysql && ${GMAKE} libgda-mysql.la
+	cd ${WRKSRC}/providers/reuseable/mysql && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} libgda-mysql.la
 .endif
 
 .if ${LIBGDA4_SLAVE}=="no"

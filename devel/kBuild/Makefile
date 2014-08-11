@@ -16,7 +16,7 @@ COMMENT=	Makefile framework
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
 
 USE_AUTOTOOLS=	automake autoconf
-USES=		gmake
+USES=		gmake makeinfo
 
 CONFLICTS_INSTALL=	kBuild-devel-[0-9]*
 
@@ -29,7 +29,7 @@ KBUILD_ENV=	ACLOCAL=${ACLOCAL} \
 		AUTORECONF=${AUTORECONF} \
 		AUTOPOINT=true
 USE_GCC=	any
-KBUILD_TARGET=	${OPSYS:L}
+KBUILD_TARGET=	${OPSYS:tl}
 
 KBUILD_BINS=	kDepIDB kDepPre kObjCache kmk kmk_append kmk_ash kmk_cat \
 		kmk_chmod kmk_cmp kmk_cp kmk_echo kmk_expr kmk_gmake \
@@ -62,7 +62,7 @@ run-autotools:
 do-configure:
 
 do-build:
-	cd ${WRKSRC} && ${SETENV} ${KBUILD_ENV} ./kBuild/env.sh --full ${GMAKE} -f bootstrap.gmk
+	cd ${WRKSRC} && ${SETENV} ${KBUILD_ENV} ./kBuild/env.sh --full ${MAKE_CMD} -f bootstrap.gmk
 	cd ${WRKSRC} && ${RM} -rf out
 	cd ${WRKSRC} && ./kBuild/env.sh kmk
 	cd ${WRKSRC} && ./kBuild/env.sh kmk NIX_INSTALL_DIR=${PREFIX} BUILD_TYPE=release -C ${WRKSRC}

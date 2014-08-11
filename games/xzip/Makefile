@@ -11,8 +11,8 @@ MASTER_SITES=	ftp://ftp.ifarchive.org/if-archive/infocom/interpreters/zip/ \
 DISTNAME=	xzip182
 EXTRACT_SUFX=	.tar.Z
 
-MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	An Infocom game interpreter that runs under X11
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Infocom game interpreter that runs under X11
 
 USE_XORG=	x11
 WRKSRC=		${WRKDIR}/xzip

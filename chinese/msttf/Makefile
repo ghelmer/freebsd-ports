@@ -13,13 +13,14 @@ EXTRACT_ONLY=	# none
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Three TrueType fonts from Microsoft Windows(TM) 2000/XP
 
+BROKEN=		no distinfo provided
+
 RUN_DEPENDS=	ttfm.sh:${PORTSDIR}/chinese/ttfm
 
 MSTTF_SIMHEI=	simhei.ttf
 MSTTF_SIMSUN=	simsun.ttc
 MSTTF_TAHOMA=	tahoma.ttf
 
-IGNOREFILES=	${MSTTF_SIMHEI} ${MSTTF_SIMSUN} ${MSTTF_TAHOMA}
 RESTRICTED=	Redistribution of pre-compiled binaries is not permitted
 
 NO_BUILD=	yes
@@ -35,7 +36,7 @@ NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if !exists(${DISTDIR}/${DIST_SUBDIR}/${MSTTF_SIMHEI})
-IGNORE= Because of licensing restrictions, you must copy the three TrueType \
+IGNORE=	Because of licensing restrictions, you must copy the three TrueType \
 	fonts from your copy of Microsoft Windows(TM) 2000/XP manually. End \
 	user can use these fonts freely in his/her own computers. Please \
 	place these fonts in ${DISTDIR}/${DIST_SUBDIR}. \
@@ -53,7 +54,7 @@ IGNORE=	Because of licensing restrictions, you must copy the three \
 .endif
 
 .if !exists(${DISTDIR}/${DIST_SUBDIR}/${MSTTF_TAHOMA})
-IGNORE= Because of licensing restrictions, you must copy the three \
+IGNORE=	Because of licensing restrictions, you must copy the three \
 	TrueType fonts from your copy of Microsoft Windows(TM) \
 	2000/XP manually. End user can use these fonts freely in \
 	his/her own computers. Please place these fonts in \

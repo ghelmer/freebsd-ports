@@ -2,45 +2,44 @@
 # $FreeBSD$
 
 PORTNAME=	feh
-PORTVERSION=	2.9.3
-PORTREVISION=	2
+PORTVERSION=	2.12
 CATEGORIES=	graphics
 MASTER_SITES=	http://feh.finalrewind.org/ \
 		${MASTER_SITE_LOCAL}
 MASTER_SITE_SUBDIR=	uqs
 
 MAINTAINER=	zeising@FreeBSD.org
-COMMENT=	An image viewer that utilizes Imlib2
+COMMENT=	Image viewer that utilizes Imlib2
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	curl:${PORTSDIR}/ftp/curl \
-		giblib.1:${PORTSDIR}/graphics/giblib
+LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 
 USE_XORG=	x11 xt xinerama
-USES=		gmake perl5
+USES=		gmake perl5 tar:bzip2 shebangfix desktop-file-utils
+USE_EFL=	imlib2
 USE_PERL5=	run
-USE_BZIP2=	yes
-
-MAN1=		feh.1 feh-cam.1 gen-cam-menu.1
 
 CPPFLAGS+=	-I${LOCALBASE}/include -std=c99
 LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_ENV+=	LDFLAGS="${LDFLAGS}"
 
-PORTDOCS=	AUTHORS ChangeLog README TODO
+OPTIONS_DEFINE=	CAM
+CAM_DESC=	Install feh-cam and related tools
+OPTIONS_DEFAULT=CAM
 
-NO_STAGE=	yes
-.include	<bsd.port.options.mk>
+.include <bsd.port.options.mk>
 
-post-patch:
-	@${REINPLACE_CMD} 's/install-man install-doc/install-man/' \
-		${WRKSRC}/Makefile
+.if ${PORT_OPTIONS:MCAM}
+MAKE_ENV+=	cam=1
+SHEBANG_FILES=	${WRKSRC}/cam/feh-cam
+PLIST_SUB=	CAM=""
+.else
+MAKE_ENV+=	cam=0
+PLIST_SUB=	CAM="@comment "
+.endif
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/feh
 
 .include <bsd.port.mk>

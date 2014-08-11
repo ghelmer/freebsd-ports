@@ -3,7 +3,13 @@
 # Bring libtool scripts up to date.
 #
 # Feature:	libtool
-# Usage:	USES=libtool
+# Usage:	USES=libtool or USES=libtool:args
+# Valid args:	keepla	Normally libtool libraries (*.la) are not installed.
+#			With this option they are.  This is needed as long
+#			as there are dependent ports with .la libraries that
+#			refer to .la libraries in this port.  As soon as all
+#			those dependent ports have some form of USES=libtool
+#			keepla can be removed.
 #
 # MAINTAINER:	autotools@FreeBSD.org
 
@@ -29,6 +35,12 @@ patch-libtool:
 
 	@${FIND} ${WRKDIR} -type f -name ltmain.sh |			\
 		${XARGS} ${REINPLACE_CMD}				\
+		-e '/link) libs=/s/ $$dependency_libs//'		\
+		-e '/elif.*linkmode.*prog.*linkmode.*lib/,/continue/ {	\
+		    /elif/,/fi/ { /elif/ { h; d; }; H; d; };		\
+		    /continue/ { H; g; }; }'				\
+		-e '/if.*linkmode.*prog.*mode.*!= relink/s/if.*;/if :;/'\
+		-e '/if.*linkmode.*prog.*mode.* = relink/s/||.*;/;/'	\
 		-e 's/|-p|-pg|/|-B*|-p|-pg|/'
 
 .if ! ${libtool_ARGS:Moldver}
@@ -52,6 +64,15 @@ patch-libtool:
 		-e '/freebsd-elf)/,+2 {					\
 		    /major=/s/=.*/=.$$(($$current - $$age))/;		\
 		    /versuffix=/s/=.*/="$$major.$$age.$$revision"/; }'
+.endif
+
+patch-lafiles:
+.if ${libtool_ARGS} == keepla || ${libtool_ARGS} == oldver
+	@${FIND} ${STAGEDIR} -type f -name '*.la' |			\
+		${XARGS} ${SED} -i '' -e "/dependency_libs=/s/=.*/=''/"
+.else
+	@${FIND} ${STAGEDIR} -type f -name '*.la' |			\
+		${XARGS} ${GREP} -l 'libtool library' | ${XARGS} ${RM}
 .endif
 
 .endif

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	netwalk
-PORTVERSION=	0.4.10
-PORTREVISION=	3
+PORTVERSION=	0.4.11
 CATEGORIES=	games
 
 MAINTAINER=	nemysis@FreeBSD.org
@@ -24,14 +23,13 @@ MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 ALL_TARGET=
 
 PORTDOCS=	README
+OPTIONS_DEFINE=	DOCS
 
 INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 96x96 128x128
 
 DESKTOP_ENTRIES="NetWalk" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;LogicGame;" ""
-
-OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -42,6 +40,8 @@ post-patch:
 		${WRKSRC}/Makefile
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
 .for s in ${ICON_SIZES}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}/apps/
 	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}_${s}.png \

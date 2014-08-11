@@ -3,11 +3,12 @@
 
 PORTNAME=	rubrica
 PORTVERSION=	2.0.12
+PORTREVISION=	2
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	BERLIOS
 DISTNAME=	${PORTNAME}2-${PORTVERSION}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Addressbook for the GNOME 2 desktop
 
 LICENSE=	GPLv3
@@ -15,16 +16,17 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify
 RUN_DEPENDS=	gnome-icon-theme>=0:${PORTSDIR}/misc/gnome-icon-theme
 
-USE_BZIP2=	yes
-USES=		desktop-file-utils gmake pathfix pkgconfig
+USES=		desktop-file-utils gmake libtool pathfix pkgconfig tar:bzip2
+GNU_CONFIGURE=	yes
 USE_GNOME=	gconf2 gnomeprefix libglade2
-USE_AUTOTOOLS=	libtool
 USE_LDCONFIG=	yes
+MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
 
 GCONF_SCHEMAS=	rubrica2.schemas
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		`pkg-config --libs gthread-2.0`
 
 PORTDOCS=	*
 
@@ -52,7 +54,8 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|_Modifica|_Edit|' \
 		-e 's|A_iuto|_Help|' \
 		${WRKSRC}/interface/MainWindow.glade
-	${REINPLACE_CMD} -e 's|^Categories=.*|Categories=GNOME;Application;Office;System;Utility;|' \
+	${REINPLACE_CMD} -e \
+		's|^Categories=.*|Categories=GNOME;Application;Office;System;Utility;|' \
 		${WRKSRC}/rubrica2.desktop.in
 
 .if ! ${PORT_OPTIONS:MNLS}
@@ -63,9 +66,8 @@ post-install:
 	@${LN} -sf ${LOCALBASE}/share/icons/gnome \
 		${STAGEDIR}${PREFIX}/share/pixmaps/rubrica2/22x22/hicolor
 
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
+	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
 
 .include <bsd.port.mk>

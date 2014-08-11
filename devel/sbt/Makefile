@@ -2,23 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	sbt
-PORTVERSION=	0.13.1
+PORTVERSION=	0.13.5
 CATEGORIES=	devel java
-MASTER_SITES=	http://scalasbt.artifactoryonline.com/scalasbt/sbt-native-packages/org/scala-sbt/sbt/${PORTVERSION}/
-DISTNAME=	${PORTNAME}
-EXTRACT_SUFX=	.tgz
-DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	http://dl.bintray.com/sbt/native-packages/sbt/${PORTVERSION}/
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A build tool for Scala projects
+COMMENT=	Build tool for Scala projects
 
 LICENSE=	APACHE20
 
 OPTIONS_DEFINE=	ADVANCED
 ADVANCED_DESC=	Install advanced bash shell-script
 
+USES=		tar:tgz
 NO_BUILD=	yes
 USE_JAVA=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PLIST_FILES=	bin/sbt \
 		%%DATADIR%%/sbt-launch.jar

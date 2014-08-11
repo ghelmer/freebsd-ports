@@ -3,7 +3,7 @@
 
 PORTNAME=	gd
 PORTVERSION=	0.8.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics ruby
 MASTER_SITES=	http://www.daifukuya.com/archive/kagemai/lib/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
@@ -22,7 +22,7 @@ NEED_ROOT=	yes
 USE_RUBY=	yes
 USE_RUBY_EXTCONF=	yes
 
-RUBY_MODNAME=	${PORTNAME:L}
+RUBY_MODNAME=	${PORTNAME:tl}
 
 CONFIGURE_ARGS=	--with-gd-lib="${LOCALBASE}/lib" \
 		--with-jpeg \

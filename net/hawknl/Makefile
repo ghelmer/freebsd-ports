@@ -11,8 +11,7 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Portable networking library
 
-USE_DOS2UNIX=	yes
-USE_GMAKE=	yes
+USES=		dos2unix gmake
 MAKEFILE=	makefile.linux
 USE_LDCONFIG=	yes
 
@@ -35,7 +34,7 @@ CFLAGS+=	-funroll-all-loops -ffast-math -fomit-frame-pointer -D_GNU_SOURCE -D_RE
 .endif
 
 post-patch:
-	${REINPLACE_CMD} -e 's|make -f|${GMAKE} -f|g' ${WRKSRC}/${MAKEFILE}
+	${REINPLACE_CMD} -e 's|make -f|${MAKE_CMD} -f|g' ${WRKSRC}/${MAKEFILE}
 	${REINPLACE_CMD} -e 's|malloc.h|stdlib.h|g' ${WRKSRC}/src/nlinternal.h
 
 post-install:

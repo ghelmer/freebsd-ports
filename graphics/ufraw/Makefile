@@ -3,7 +3,7 @@
 
 PORTNAME=	ufraw
 PORTVERSION=	0.19.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -81,12 +81,8 @@ CONFIGURE_ARGS+=--without-gtk
 .if ${PORT_OPTIONS:MGNOME}
 CATEGORIES+=	gnome
 USE_GNOME=	gconf2
-USES+=		desktop-file-utils
 CONFIGURE_ARGS+=	--enable-mime
 GCONF_SCHEMAS=	${PORTNAME}.schemas
-PLIST_SUB+=	GNOME=""
-.else
-PLIST_SUB+=	GNOME="@comment "
 .endif
 
 post-patch:
@@ -101,9 +97,5 @@ post-patch:
 	@${REINPLACE_CMD} -e '/PKG_CONFIG.*${i}/s|$$PKG_CONFIG|${FALSE}|' \
 		${WRKSRC}/configure
 .endfor
-
-pre-build:
-	@${INSTALL_SCRIPT} ${LOCALBASE}/share/icu/52.1/mkinstalldirs \
-		${WRKSRC}
 
 .include <bsd.port.mk>

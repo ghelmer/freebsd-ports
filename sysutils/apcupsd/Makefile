@@ -16,13 +16,13 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	itetcu@FreeBSD.org
 COMMENT=	Set of programs for controlling APC UPS
 
-IGNOREFILES=	${PORTNAME}.pdf
+BROKEN=		no distinfo provided for some of the distfiles
 
 USE_RC_SUBR=	apcupsd
 SUB_FILES=	pkg-message
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 CONFIGURE_ARGS=	--sbindir=${PREFIX}/sbin \
 		--with-nologin=/var/run \
 		--disable-install-distdir \
@@ -30,10 +30,8 @@ CONFIGURE_ARGS=	--sbindir=${PREFIX}/sbin \
 		--with-serial-dev=/dev/usv
 
 CONFIGURE_ENV+= LD="${CXX}" 
-#CONFIGURE_ENV+=	LIBS="-lstdc++"
-CPPFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 MAN5=		apcupsd.conf.5
 MAN8=		apcaccess.8 apccontrol.8 apctest.8 apcupsd.8

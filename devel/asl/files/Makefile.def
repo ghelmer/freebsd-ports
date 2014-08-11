@@ -8,10 +8,13 @@ LDFLAGS = -s
 # -------------------------------------------------------------------------
 # directories where binaries and includes should go during installation
 
-BINDIR = ${PREFIX}/bin
+BINDIR = ${STAGEDIR}/${PREFIX}/bin
+# *INST are where things are installed to, vs where they are searched for
 INCDIR = ${PREFIX}/share/asl
+INCDIRINST = ${STAGEDIR}/${PREFIX}/share/asl
 LIBDIR = ${PREFIX}/share/asl
-MANDIR = ${PREFIX}/man
+LIBDIRINST = ${STAGEDIR}/${PREFIX}/share/asl
+MANDIR = ${STAGEDIR}/${PREFIX}/man
 DOCDIR =
 
 # -------------------------------------------------------------------------

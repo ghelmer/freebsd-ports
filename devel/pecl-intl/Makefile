@@ -7,16 +7,16 @@ PORTREVISION=	1
 CATEGORIES=	devel pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	PECL
 
 MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	A PECL extension to support Internationalization(ICU)
+COMMENT=	PECL extension to support Internationalization(ICU)
 
 LICENSE=	PHP301
 
 LIB_DEPENDS=	icui18n:${PORTSDIR}/devel/icu
 
+USES=		tar:tgz
 USE_PHP=	yes
 USE_PHPEXT=	yes
 

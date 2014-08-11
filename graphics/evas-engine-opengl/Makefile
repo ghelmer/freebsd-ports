@@ -3,6 +3,7 @@
 
 PORTNAME=	engine-opengl
 PORTVERSION=	1.7.9
+PORTREVISION=	1
 CATEGORIES=	graphics enlightenment
 MASTER_SITES=	http://download.enlightenment.org/releases/ \
 		LOCAL/gblach/e17/
@@ -10,7 +11,7 @@ PKGNAMEPREFIX=	evas-
 DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}
 
 MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	A hardware accelerated canvas API (OpenGL engine)
+COMMENT=	Hardware accelerated canvas API (OpenGL engine)
 
 LICENSE=	BSD
 
@@ -39,7 +40,7 @@ post-patch:
 
 pre-build:
 	@(cd ${WRKSRC}/src/modules/engines/gl_common; ${SETENV} ${MAKE_ENV} \
-		${GMAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET})
+		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET})
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/evas-opengl-x11.pc \

@@ -3,6 +3,7 @@
 
 PORTNAME=	gitg
 PORTVERSION=	0.0.8
+PORTREVISION=	1
 CATEGORIES=	devel deskutils gnome
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	0
@@ -16,10 +17,10 @@ RUN_DEPENDS=	git:${PORTSDIR}/devel/git
 
 CONFLICTS=	gitg-[0-9]*
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 gmake pkgconfig pathfix libtool
 GNU_CONFIGURE=	yes
-USE_GNOME=	gconf2 gtk20 gtksourceview2 gnomehack
-USES=		gmake pkgconfig
+USE_GNOME=	gconf2 gtk20 gtksourceview2
+INSTALL_TARGET=	install-strip
 
 INSTALLS_ICONS=	yes
 GCONF_SCHEMAS=	gitg.schemas
@@ -33,5 +34,9 @@ NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=nls
 NLS_CPPFLAGS=	-I${LOCALBASE}/include
 NLS_LDFLAGS=	-L${LOCALBASE}/lib
+
+post-patch:
+	@${REINPLACE_CMD} '/shell_LDADD =/s/$$/ -lgio-2.0 -lgobject-2.0 -lglib-2.0/' \
+		${WRKSRC}/tests/Makefile.in ${WRKSRC}/tools/Makefile.in
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	tickr
 PORTVERSION=	0.6.4
-#PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.newsrssticker.com/src/ \
 		LOCAL/nivit/
@@ -19,9 +19,9 @@ PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,${PREFIX}/,,}
 
 REINPLACE_ARGS=	-e 's,%%PREFIX%%,${PREFIX},1' -i.bak
 
-USE_DOS2UNIX=	tickr.h
+DOS2UNIX_GLOB=	tickr.h
 USE_GNOME=	desktopfileutils gtk20 libxml2
-USES=		pkgconfig
+USES=		dos2unix pkgconfig
 
 NO_STAGE=	yes
 post-patch:

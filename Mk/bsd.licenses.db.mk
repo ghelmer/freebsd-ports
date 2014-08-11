@@ -3,6 +3,8 @@
 #
 # $FreeBSD$
 
+# ** Please run changes to this file by eadler@ first **
+
 Licenses_db_Include_MAINTAINER=         portmgr@FreeBSD.org
 
 #
@@ -13,10 +15,11 @@ Licenses_db_Include_MAINTAINER=         portmgr@FreeBSD.org
 # Please view me with 4 column tabs!
 #
 
-# Possible sources for information:
+# The canonical source of license names and short-name identifiers:
 # - SPDX License List
 #   https://spdx.org/licenses/
 #
+# See also:
 # - Wikipedia (article "Comparison of Free Software Licenses")
 #   http://en.wikipedia.org/wiki/Comparison_of_free_software_licences
 #
@@ -37,10 +40,10 @@ Licenses_db_Include_MAINTAINER=         portmgr@FreeBSD.org
 #
 
 _LICENSE_LIST= 	AGPLv3 APACHE10 APACHE11 APACHE20 ART10 ARTPERL10 ART20 \
-				BSD BSD2CLAUSE BSD3CLAUSE BSD4CLAUSE BSL CDDL EPL GFDL \
+				BSD BSD2CLAUSE BSD3CLAUSE BSD4CLAUSE BSL CC0-1.0 CDDL ClArtistic EPL GFDL \
 				GMGPL GPLv1 GPLv2 GPLv3 GPLv3RLE ISCL LGPL20 LGPL21 LGPL3 \
 				LPPL10 LPPL11 LPPL12 LPPL13 LPPL13a LPPL13b LPPL13c MIT \
-				MPL OFL10 OFL11 OWL PostgreSQL PHP202 PHP30 PHP301 PSFL RUBY \
+				MPL OpenSSL OFL10 OFL11 OWL PostgreSQL PHP202 PHP30 PHP301 PSFL RUBY \
 				ZLIB ZPL21
 
 # List of groups (only names must be present)
@@ -107,8 +110,14 @@ _LICENSE_GROUPS_BSD4CLAUSE=	FSF
 _LICENSE_NAME_BSL=	Boost Software License
 _LICENSE_GROUPS_BSL=	FSF OSI COPYFREE
 
+_LICENSE_NAME_CC0-1.0=		Creative Commons Zero v1.0 Universal
+_LICENSE_GROUPS_CC0-1.0=	FSF GPL COPYFREE
+
 _LICENSE_NAME_CDDL=	Common Development and Distribution License
 _LICENSE_GROUPS_CDDL=	FSF OSI
+
+_LICENSE_NAME_ClArtistic=	Clarified Artistic License
+_LICENSE_GROUPS_ClArtistic=	FSF GPL OSI
 
 _LICENSE_NAME_EPL=	Eclipse Public License
 _LICENSE_GROUPS_EPL=	FSF OSI
@@ -161,7 +170,7 @@ _LICENSE_PERMS_LPPL13=	dist-mirror dist-sell
 
 _LICENSE_NAME_LPPL13a=	LaTeX Project Public License version 1.3a
 _LICENSE_GROUPS_LPPL13a=	FSF OSI
-_LICENSE_PERMS_LPPL13a=	xdist-mirror dist-sell
+_LICENSE_PERMS_LPPL13a=	dist-mirror dist-sell
 
 _LICENSE_NAME_LPPL13b=	LaTeX Project Public License version 1.3b
 _LICENSE_GROUPS_LPPL13b=	FSF OSI
@@ -182,6 +191,9 @@ _LICENSE_GROUPS_OFL10=	FONTS
 
 _LICENSE_NAME_OFL11=	SIL Open Font License version 1.1 (http://scripts.sil.org/OFL)
 _LICENSE_GROUPS_OFL11=	FONTS
+
+_LICENSE_NAME_OpenSSL=	OpenSSL License
+_LICENSE_GROUPS_OpenSSL=	FSF
 
 _LICENSE_NAME_OWL=	Open Works License (owl.apotheon.org)
 _LICENSE_GROUPS_OWL=	COPYFREE

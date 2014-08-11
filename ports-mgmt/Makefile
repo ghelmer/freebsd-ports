@@ -39,7 +39,6 @@
     SUBDIR += pkg_add_it
     SUBDIR += pkg_cleanup
     SUBDIR += pkg_cutleaves
-    SUBDIR += pkg_install
     SUBDIR += pkg_jail
     SUBDIR += pkg_remove
     SUBDIR += pkg_replace
@@ -49,7 +48,6 @@
     SUBDIR += pkg_tree
     SUBDIR += pkgfe
     SUBDIR += pkgs_which
-    SUBDIR += pkgsearch
     SUBDIR += port-authoring-tools
     SUBDIR += port-maintenance-tools
     SUBDIR += portaudit
@@ -79,7 +77,6 @@
     SUBDIR += poudriere-devel
     SUBDIR += prhistory
     SUBDIR += psearch
-    SUBDIR += pver
     SUBDIR += symports
     SUBDIR += tinderbox
     SUBDIR += tinderbox-devel

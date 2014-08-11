@@ -13,7 +13,7 @@ COMMENT=	Printer Job Language library and tool
 
 NO_WRKSUBDIR=	yes
 ALL_TARGET=	libPJL.a
-USE_GMAKE=	yes
+USES=		gmake
 
 PLIST_FILES=	bin/pft lib/libPJL.a
 
@@ -23,7 +23,7 @@ post-patch:
 		${WRKSRC}/pft/Makefile
 
 post-build:
-	@(cd ${WRKSRC}/pft; ${SETENV} ${MAKE_ENV} ${GMAKE} pft)
+	@(cd ${WRKSRC}/pft; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} pft)
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pft/pft ${PREFIX}/bin

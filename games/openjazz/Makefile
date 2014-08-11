@@ -3,7 +3,7 @@
 
 PORTNAME=	openjazz
 PORTVERSION=	20120819
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	http://alister.eu/jazz/oj/ \
 		LOCAL/martymac
@@ -17,7 +17,7 @@ LICENSE=	GPLv2
 WRKSRC=	${WRKDIR}/${PORTNAME}
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 
-USES=	dos2unix gmake zip:infozip
+USES=	dos2unix gmake zip
 DOS2UNIX_REGEX=	.*\.(h|cpp)
 ALL_TARGET=	OpenJazz
 USE_XORG=	x11 xext xrandr xrender xau xdmcp

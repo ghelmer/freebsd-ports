@@ -3,20 +3,26 @@
 
 PORTNAME=	mscgen
 PORTVERSION=	0.20
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.mcternan.me.uk/mscgen/software/ \
 		http://romain.blogreen.org/distfiles/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	romain@FreeBSD.org
-COMMENT=	A Message Sequence Chart Renderer
+COMMENT=	Message Sequence Chart Renderer
 
-OPTIONS_DEFINE=	PNG
-OPTIONS_DEFAULT=	PNG
+OPTIONS_DEFINE=	FREETYPE PNG
+OPTIONS_DEFAULT=FREETYPE PNG
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MFREETYPE}
+CONFIGURE_ARGS+=--with-freetype
+LIB_DEPENDS+=	freetype:${PORTSDIR}/print/freetype2
+.else
+CONFIGURE_ARGS+=--without-freetype
+.endif
 
 .if ${PORT_OPTIONS:MPNG}
 CONFIGURE_ARGS+=--with-png

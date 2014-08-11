@@ -3,7 +3,7 @@
 
 PORTNAME=	foobillard
 PORTVERSION=	3.0a
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	http://foobillard.sunsite.dk/dnl/
 
@@ -11,18 +11,17 @@ MAINTAINER=	thomas@bsdunix.ch
 COMMENT=	Free OpenGL billiards game
 
 LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
-		freetype.9:${PORTSDIR}/print/freetype2
+		libfreetype.so:${PORTSDIR}/print/freetype2
 
 OPTIONS_DEFINE=	SDL NVIDIA_BUMPREF
 SDL_DESC=	SDL instead of glut
 NVIDIA_BUMPREF_DESC=	NVidia extensions
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 FREETYPE_CONFIG?=	${LOCALBASE}/bin/freetype-config
 
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 USE_XORG=	xaw ice
 
@@ -48,13 +47,11 @@ CONFIGURE_ARGS+=	--enable-glut
 CONFIGURE_ARGS+=	--disable-nvidia
 .endif
 
-MAN6=		foobillard.6
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%FREETYPE_CONFIG%%|${FREETYPE_CONFIG}|g' \
 		${WRKSRC}/src/Makefile.in
 
 post-install:
-	@${INSTALL_MAN} ${WRKSRC}/foobillard.6 ${MAN6PREFIX}/man/man6/foobillard.6
+	@${INSTALL_MAN} ${WRKSRC}/foobillard.6 ${STAGEDIR}${PREFIX}/man/man6/foobillard.6
 
 .include <bsd.port.mk>

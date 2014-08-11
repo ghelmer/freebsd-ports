@@ -10,19 +10,16 @@ PKGNAMEPREFIX=	evas-
 DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}
 
 MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	A hardware accelerated canvas API (generic loader)
+COMMENT=	Hardware accelerated canvas API (generic loader)
 
 LICENSE=	BSD
 
 EVAS_GENERIC_LOADERS=	gst pdf ps raw svg xcf
 
-#bmake compatibility
-.MAKE.FreeBSD_UL= yes
-
 .for NODE in ${EVAS_GENERIC_LOADERS}
-OPTIONS_DEFINE+=	${NODE:U}
-OPTIONS_DEFAULT+=	${NODE:U}
-${NODE:U}_DESC=	Install ${NODE} evas generic loader
+OPTIONS_DEFINE+=	${NODE:tu}
+OPTIONS_DEFAULT+=	${NODE:tu}
+${NODE:tu}_DESC=	Install ${NODE} evas generic loader
 .endfor
 
 DIST_SUBDIR=	e17
@@ -40,7 +37,7 @@ CONFIGURE_ARGS+=	--enable-image-loader-generic
 .include <bsd.port.options.mk>
 
 .for NODE in ${EVAS_GENERIC_LOADERS}
-. if ${PORT_OPTIONS:M${NODE:U}}
+. if ${PORT_OPTIONS:M${NODE:tu}}
 RUN_DEPENDS+=	${LOCALBASE}/lib/evas/utils/evas_image_loader.${NODE}:${PORTSDIR}/graphics/evas_generic_loaders-${NODE}
 . endif
 .endfor
@@ -52,11 +49,11 @@ post-patch:
 		${MAKEDIRS:S,$,/Makefile.in,}
 
 do-build:
-	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${GMAKE} \
+	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 	    ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET}; done)
 
 do-install:
-	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${GMAKE} \
+	@(for DIR in ${MAKEDIRS}; do cd $${DIR}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 	    ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}; done)
 
 .include <bsd.port.mk>

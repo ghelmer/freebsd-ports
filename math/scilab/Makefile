@@ -3,7 +3,7 @@
 
 PORTNAME=	scilab
 PORTVERSION=	5.3.3
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	math cad parallel java
 MASTER_SITES=	http://www.scilab.org/download/${PORTVERSION}/:scilab \
 		http://www.predatorlabs.net/dl/:jgraphx \
@@ -12,7 +12,7 @@ MASTER_SITES=	http://www.scilab.org/download/${PORTVERSION}/:scilab \
 DISTFILES=	${DISTNAME}-src.tar.gz:scilab
 EXTRACT_ONLY=	${DISTNAME}-src.tar.gz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Scientific software package for numerical computations
 
 EXTRACT_DEPENDS+=	${UNZIP_CMD}:${PORTSDIR}/archivers/unzip
@@ -27,11 +27,12 @@ USE_LDCONFIG=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFIGURE_ARGS=	--with-gfortran
+CONFIGURE_ARGS=	--with-gfortran \
+		--without-hdf5
 CONFIGURE_ENV=	ac_cv_search_pthread_join="${PTHREAD_LIBS}" \
 	BLAS_LIBS="${BLAS_LIBS}" LAPACK_LIBS="${LAPACK_LIBS}"
-# prevert from creating $HOME/.Scilab during build
-MAKE_ENV=	HOME=/dev/null
+MAKE_ENV=	LANG=en_US.UTF-8 \
+		LC_ALL=en_US.UTF-8
 
 OPTIONS_DEFINE=	ATLAS FFTW GUI HELP NLS MATIO OCAML PVM TK UMFPACK
 OPTIONS_DEFAULT=	FFTW GUI HELP
@@ -82,7 +83,6 @@ DISTFILES+=	${SAXON_DISTFILE}:saxon
 .if ! ${PORT_OPTIONS:MGUI}
 CONFIGURE_ARGS+=	--without-gui \
 			--without-javasci \
-			--without-hdf5 \
 			--without-xcos \
 			--disable-build-help
 CONFIGURE_ENV +=	JAVADOC="${TRUE}"
@@ -93,8 +93,6 @@ JGRAPHX_VERSION=	1.4.1.0
 JGRAPHX_JAR=	jgraphx-${JGRAPHX_VERSION:C/\./_/g}.jar
 
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-bin-JAVA_HOME
-
-LIB_DEPENDS+=	libhdf5.so:${PORTSDIR}/science/hdf5-18
 
 GUI_DEPENDS=	${JAVALIBDIR}/flexdock.jar:${PORTSDIR}/devel/flexdock \
 		${JAVALIBDIR}/jogl.jar:${PORTSDIR}/graphics/jogl \
@@ -113,7 +111,6 @@ GUI_DEPENDS=	${JAVALIBDIR}/flexdock.jar:${PORTSDIR}/devel/flexdock \
 		${JAVALIBDIR}/avalon-framework.jar:${PORTSDIR}/devel/avalon-framework \
 		${LOCALBASE}/share/xsl/docbook/javahelp/javahelp.xsl:${PORTSDIR}/textproc/docbook-xsl \
 		xsltproc:${PORTSDIR}/textproc/libxslt \
-		${JAVALIBDIR}/jhdf5.jar:${PORTSDIR}/science/hdf-java \
 		${JAVALIBDIR}/commons-beanutils.jar:${PORTSDIR}/java/jakarta-commons-beanutils
 
 # Can't use USE_ANT because it overrides do-build target
@@ -220,6 +217,7 @@ post-patch:
 	@# Run fixes
 	@${REINPLACE_CMD} -e 's|%%JAVALIBDIR%%|${JAVALIBDIR}|' ${WRKSRC}/etc/librarypath.xml
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/etc/librarypath.xml
+	@${REINPLACE_CMD} -e 's, gfortran, ${FC},' ${WRKSRC}/modules/dynamic_link/src/scripts/configure
 .if ${PORT_OPTIONS:MGUI}
 	@# Configure fixes
 	@${REINPLACE_CMD} -e 's|/usr/lib/java|${JAVALIBDIR}|g' ${WRKSRC}/configure

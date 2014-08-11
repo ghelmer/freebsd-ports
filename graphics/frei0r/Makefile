@@ -29,13 +29,13 @@ IGNORE=		cannot build OpenCV and gavl plugins simultaneously
 .if defined(BUILDING_FREI0R_OPENCV)
 PORTREVISION=	3
 COMMENT=	Frei0r OpenCV plugins
-PKGNAMESUFFIX=  -plugins-opencv
+PKGNAMESUFFIX=	-plugins-opencv
 LIB_DEPENDS+=	opencv_legacy.2:${PORTSDIR}/graphics/opencv
 FREI0R_PLUGINS=	facebl0r facedetect
 .elif defined(BUILDING_FREI0R_GAVL)
 PORTREVISION=	2
 COMMENT=	Frei0r gavl plugins
-PKGNAMESUFFIX=  -plugins-gavl
+PKGNAMESUFFIX=	-plugins-gavl
 LIB_DEPENDS+=	gavl.1:${PORTSDIR}/multimedia/gavl
 FREI0R_PLUGINS=	rgbparade scale0tilt vectorscope
 .else
@@ -91,10 +91,10 @@ post-patch:
 		${WRKSRC}/doc/Makefile.in
 .else
 do-install:
-	@${MKDIR} ${PREFIX}/lib/frei0r-1
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/frei0r-1
 . for FILE in ${FREI0R_PLUGINS}
 	@${INSTALL_LIB} ${BUILD_WRKSRC}/.libs/${FILE}.so \
-		${PREFIX}/lib/frei0r-1/${FILE}.so
+		${STAGEDIR}${PREFIX}/lib/frei0r-1/${FILE}.so
 . endfor
 .endif #!defined(FREI0R_PLUGINS)
 

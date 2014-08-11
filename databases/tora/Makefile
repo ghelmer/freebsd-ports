@@ -21,7 +21,7 @@ OPTIONS_DEFAULT=	PGSQL MYSQL
 
 USE_AUTOTOOLS=	aclocal automake autoconf autoheader libtool
 USE_QT4=	gui corelib sql xml network linguist moc_build uic_build rcc_build
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 
 PREFIX2FIX=	doc/help/preferences.texi doc/help/preferences.html
@@ -30,6 +30,7 @@ NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
+USES+=		makeinfo
 INFO=		tora
 .endif
 
@@ -47,7 +48,7 @@ RUN_DEPENDS+=	${ORACLE_HOME}/network/admin/tnsnames.ora:${PORTSDIR}/databases/or
 
 ORACLE_HOME?=	${LOCALBASE}/oracle8-client
 ORACLE_VER=	8i	# Client version
-CONFIGURE_ARGS+=	--with-oracle=${ORACLE_HOME} --with-oci-version=${ORACLE_VER:U}
+CONFIGURE_ARGS+=	--with-oracle=${ORACLE_HOME} --with-oci-version=${ORACLE_VER:tu}
 .endif
 
 run-autotools:

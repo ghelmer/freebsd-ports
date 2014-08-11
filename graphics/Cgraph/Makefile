@@ -9,11 +9,11 @@ MASTER_SITES=	http://www.tobez.org/download/port-mirrors/graphics/Cgraph/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	tobez@FreeBSD.org
-COMMENT=	A PostScript plotting library in C
+COMMENT=	PostScript plotting library in C
 
 WRKSRC=		${WRKDIR}/Cgraph/source
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:L}
-EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME:L}
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:tl}
+EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME:tl}
 
 USE_LDCONFIG=	yes
 

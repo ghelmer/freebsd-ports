@@ -23,8 +23,7 @@ LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
 		jpeg:${PORTSDIR}/graphics/jpeg
 
 USE_XORG=	x11
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	autoconf
 
@@ -70,7 +69,7 @@ post-patch:
 .endif
 
 do-install:
-	@(cd ${WRKSRC} ; ${GMAKE} install)
+	@(cd ${WRKSRC} ; ${MAKE_CMD} install)
 
 post-install:
 	@${SED} -e 's,/usr/local,${PREFIX},g' ${DESCR}

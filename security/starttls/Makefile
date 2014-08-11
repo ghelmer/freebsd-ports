@@ -10,8 +10,7 @@ MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Simple wrapper program for STARTTLS on ${EMACS_PORT_NAME}
 
 GNU_CONFIGURE=	yes
-USE_GMAKE=	yes
+USES=		gmake
 USE_EMACS=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

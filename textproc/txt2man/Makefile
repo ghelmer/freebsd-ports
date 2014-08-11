@@ -12,14 +12,14 @@ COMMENT=	Converts flat ASCII text to man page format
 BUILD_DEPENDS=	gawk:${PORTSDIR}/lang/gawk
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_GMAKE=	yes
-INSTALL_TARGET=	install prefix=${PREFIX}
+USES=		gmake
+MAKE_ENV=	prefix=${STAGEDIR}${PREFIX}
 
-MAN1=		bookman.1 src2man.1 txt2man.1
-PLIST_FILES=	bin/bookman bin/src2man bin/txt2man
+PLIST_FILES=	bin/bookman bin/src2man bin/txt2man \
+		man/man1/bookman.1.gz man/man1/src2man.1.gz man/man1/txt2man.1.gz
 
-NO_STAGE=	yes
 post-patch:
-	@${REINPLACE_CMD} -e "s,awk,gawk," ${WRKSRC}/bookman ${WRKSRC}/src2man
+	@${REINPLACE_CMD} 's,awk,gawk,' ${WRKSRC}/bookman ${WRKSRC}/src2man
+	@${REINPLACE_CMD} '/exec ksh/d' ${WRKSRC}/txt2man
 
 .include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	netpbm
-PORTVERSION=	10.35.89
+PORTVERSION=	10.35.92
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/netpbm/super_stable/${PORTVERSION} \
 		${MASTER_SITE_LOCAL:S/$/:man/}
@@ -19,13 +20,16 @@ LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
 		libjasper.so:${PORTSDIR}/graphics/jasper \
 		libxml2.so:${PORTSDIR}/textproc/libxml2
 
-USES=		gmake perl5
+USES=		gmake perl5 shebangfix
 CFLAGS+=	-DPNG_DEPSTRUCT= -Iutil
 MAKE_ENV=	LN="${LN}" RANLIB="${RANLIB}"
 MAKEFILE=	GNUmakefile
 MAKEFILE2=	Makefile
 INSTALL_TARGET=	install.bin install.lib install.data install-dev
 USE_LDCONFIG=	yes
+
+SHEBANG_FILES=	editor/pnmflip editor/pnmquant editor/ppmfade \
+		editor/ppmquant editor/ppmshadow generator/ppmrainbow
 
 OPTIONS_DEFINE=	X11 MANPAGES
 OPTIONS_SUB=	yes
@@ -120,7 +124,7 @@ pre-configure:
 
 # This snippet is all it takes to make the port as of 10.35.80 MAKE_JOBS_SAFE:
 pre-build:
-	(cd ${BUILD_WRKSRC}/lib/util; if ! ${SETENV} ${MAKE_ENV} ${GMAKE} ${MAKE_FLAGS} ${MAKEFILE2} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET}; then \
+	(cd ${BUILD_WRKSRC}/lib/util; if ! ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE2} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET}; then \
 	if [ x != x${BUILD_FAIL_MESSAGE} ] ; then \
 	    ${ECHO_MSG} "===> Compilation failed unexpectedly."; \
 	    (${ECHO_CMD} ${BUILD_FAIL_MESSAGE}) | ${FMT} 75 79 ; \

@@ -12,7 +12,7 @@ DISTFILES=	Super-Mario-Bros-Python-v${DISTVERSION}release${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	Super-Mario-Bros-Python-v${DISTVERSION}release${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	games@FreeBSD.org
 COMMENT=	Clone of the original Super Mario Bros
 
 LICENSE=	GPLv3
@@ -21,11 +21,13 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/Super-Mario-Bros-Python-v${DISTVERSION}release
 
-USES=		zip
+USES=		shebangfix zip
+SHEBANG_FILES=	gamelib/*.py
+python_OLD_CMD?=	/usr/bin/env python
+python_CMD?=		${PYTHON_CMD}
 USE_PYTHON=	2
 
 PORTDOCS=	changelog.txt readme.txt
-
 OPTIONS_DEFINE=	DOCS
 
 SUB_FILES=	${PORTNAME}
@@ -34,7 +36,9 @@ DESKTOP_ENTRIES="Super Mario Bros. Python" "" ${PORTNAME} \
 		"${PORTNAME}" "Game;ArcadeGame;" ""
 
 post-patch:
-	@${REINPLACE_CMD} -i '' -e '1d' ${WRKSRC}/start.py
+	@${REINPLACE_CMD} -i '' -e '1d' \
+		-e 's|#! /usr/bin/env python|#!${PYTHON_CMD}|' \
+		${WRKSRC}/start.py
 	@${FIND} ${WRKSRC} -name "*.py~" -delete -or -name "*.sav~" -delete
 
 do-build:
@@ -49,9 +53,8 @@ do-install:
 .for d in data gamelib
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ${d} ${STAGEDIR}${DATADIR})
 .endfor
-
-.for d in  *.py *.pyc *.pyo
-	@(cd ${WRKSRC} ; ${INSTALL_SCRIPT} ${d} ${STAGEDIR}${DATADIR})
+.for f in *.py *.pyc *.pyo
+	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${STAGEDIR}${DATADIR}
 .endfor
 
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \

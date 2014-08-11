@@ -7,15 +7,16 @@ PORTREVISION=	1
 CATEGORIES=	multimedia kld
 MASTER_SITES=	http://www.mavetju.org/download/adopted/
 DISTFILES=	${CXMSHAR} ${PVRTOOLS}.tar.gz hcwPVRP2.sys HcwMakoA.ROM pvrxxx_gpl.tgz
-IGNOREFILES=	hcwPVRP2.sys	# Varies from month to month
 
-MAINTAINER=	usleep@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Hauppauge PVR-150/500 TV cards driver for the cxm device, based on the pv250-port
 
 CONFLICTS=	pvr250-*
 
 PVRTOOLS=	pvr250-1.2
 CXMSHAR=	cxm-20051030.shar
+
+BROKEN=		no distinfo provided for some of the distfiles
 
 WRKSRC=		${WRKDIR}
 NOFETCHFILES=	hcwPVRP2.sys HcwMakoA.ROM
@@ -37,7 +38,7 @@ IGNORE=		you need the file hcwPVRP2.sys from the CD coming with the PVR-150/500 
 .endif
 
 .if !exists(${DISTDIR}/HcwMakoA.ROM)
-IGNORE=         you need the file HcwMakoA.ROM from the CD coming with the PVR-150/500 card. Please place this file in ${DISTDIR} and run make again. Check http://ivtvdriver.org/index.php/Firmware for the recommended version
+IGNORE=		you need the file HcwMakoA.ROM from the CD coming with the PVR-150/500 card. Please place this file in ${DISTDIR} and run make again. Check http://ivtvdriver.org/index.php/Firmware for the recommended version
 .endif
 
 .if !exists(${SRC_BASE}/sys/dev/iicbus/iicbb.c)

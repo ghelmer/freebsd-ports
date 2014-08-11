@@ -7,19 +7,19 @@
 
 PORTNAME=	dspam
 PORTVERSION=	3.9.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail
 MASTER_SITES=	SF \
 		http://T32.TecNik93.com/FreeBSD/ports/${PORTNAME}/sources/
 MASTER_SITE_SUBDIR=${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	itetcu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bayesian spam filter
 
 MIN_OPTIONS_VER=	${PORTNAME}-3.9.0
 
 OPTIONS_DEFINE=	SYSLOG DEBUG VERBOSE_DEBUG BNR_DEBUG PREF_EXT DAEMON \
-		CLAMAV CLAMAV_DEVEL CLAMAV_LOCAL EXTERNAL_LOOKUP \
+		CLAMAV CLAMAV_LOCAL EXTERNAL_LOOKUP \
 		USER_HOMEDIR TRUSTED_USERS VIRT_USERS LONG_USERNAMES \
 		LARGE_SCALE DOMAIN_SCALE NICESENDMAIL POSTFIX_MBC \
 		QMAIL WEBUI LIGHTTPD
@@ -29,7 +29,7 @@ OPTIONS_MULTI_DB=	HASH MYSQL MYSQL_COMPRESS MYSQL_LOCAL \
 			PGSQL PGSQL_LOCAL SQLITE2 SQLITE3
 
 OPTIONS_RADIO=	LDA
-OPTIONS_RADIO_LDA=	CYRUS21 CYRUS22 CYRUS23 CYRUS24 DOVECOT1 \
+OPTIONS_RADIO_LDA=	CYRUS23 CYRUS24 DOVECOT1 \
 		DOVECOT2 EXIM MAILDROP PROCMAIL SAFECAT SENDMAIL
 
 VERBOSE_DEBUG_DESC=	Debug in LOGDIR/dspam.debug
@@ -37,7 +37,6 @@ BNR_DEBUG_DESC=	Debug for BNR
 PREF_EXT_DESC=	Preferences in database not in files
 DAEMON_DESC=	Daemonize dspam; speaks LMTP or DLMTP
 CLAMAV_DESC=	ClamAV support
-CLAMAV_DEVEL_DESC=	ClamAV devel version support
 CLAMAV_LOCAL_DESC=	RUN_DEPEND on selected ClamAV
 MYSQL_DESC=	MySQL 5.X.x as back-end
 MYSQL_COMPRESS_DESC=	Compress dspam <--> MySQL
@@ -54,8 +53,6 @@ VIRT_USERS_DESC=	Virtual users (needs SQL back-end)
 LONG_USERNAMES_DESC=	Usernames longer that OS supports
 LARGE_SCALE_DESC=	File structure for large scale
 DOMAIN_SCALE_DESC=	File structure for multiple domains
-CYRUS21_DESC=	Cyrus's 2.1 deliver as LDA
-CYRUS22_DESC=	Cyrus's 2.2 deliver as LDA
 CYRUS23_DESC=	Cyrus's 2.3 deliver as LDA
 CYRUS24_DESC=	Cyrus's 2.4 deliver as LDA
 DOVECOT1_DESC=	Dovecot 1.2 deliver as LDA
@@ -74,14 +71,21 @@ OPTIONS_DEFAULT=	SYSLOG DEBUG DAEMON CLAMAV CLAMAV_LOCAL \
 			HASH MYSQL MYSQL_COMPRESS PGSQL SQLITE3
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		perl5
-USE_AUTOTOOLS=	libtool
+USES=		perl5 libtool shebangfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	LIBS="-L${LOCALBASE}/lib ${PTHREAD_LIBS}"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	${PTHREAD_CFLAGS}
+
+SHEBANG_FILES=	src/tools/dspam_logrotate \
+		src/tools/dspam_notify.pl \
+		src/tools/dspam_train.in \
+		webui/cgi-bin/templates/de/strings.pl \
+		webui/cgi-bin/templates/strings.pl \
+		webui/cgi-bin/templates/fr/strings.pl \
+		webui/cgi-bin/templates/es-es/strings.pl \
+		webui/cgi-bin/templates/pt-br/strings.pl \
+		webui/cgi-bin/*.cgi
 
 .ifdef(GDBS)
 CFLAGS+=	-g -DDEBUG
@@ -172,15 +176,6 @@ _SED_SCRIPT+=	-e '/%%DAEMON%%/D'
 CONFIGURE_ARGS+=	--enable-clamav
 .	if ${PORT_OPTIONS:MCLAMAV_LOCAL}
 RUN_DEPENDS+=	clamav>=0:${PORTSDIR}/security/clamav
-SUB_LIST+=	CLAMD=clamd
-.	else
-SUB_LIST+=	CLAMD=
-.	endif
-.endif
-.if ${PORT_OPTIONS:MCLAMAV_DEVEL}
-CONFIGURE_ARGS+=	--enable-clamav
-.	if ${PORT_OPTIONS:MCLAMAV_LOCAL}
-RUN_DEPENDS+=	clamav-devel>=0:${PORTSDIR}/security/clamav-devel
 SUB_LIST+=	CLAMD=clamd
 .	else
 SUB_LIST+=	CLAMD=
@@ -297,16 +292,6 @@ CONFIGURE_ARGS+=	--enable-large-scale
 .endif
 .if ${PORT_OPTIONS:MDOMAIN_SCALE}
 CONFIGURE_ARGS+=	--enable-domain-scale
-.endif
-
-.if ${PORT_OPTIONS:MCYRUS21}
-RUN_DEPENDS+=	${LOCALBASE}/cyrus/bin/deliver:${PORTSDIR}/mail/cyrus-imapd2
-CONFIGURE_ARGS+=	--with-delivery-agent='${LOCALBASE}/cyrus/bin/deliver'
-.endif
-
-.if ${PORT_OPTIONS:MCYRUS22}
-RUN_DEPENDS+=	${LOCALBASE}/cyrus/bin/deliver:${PORTSDIR}/mail/cyrus-imapd22
-CONFIGURE_ARGS+=	--with-delivery-agent='${LOCALBASE}/cyrus/bin/deliver'
 .endif
 
 .if ${PORT_OPTIONS:MCYRUS23}
@@ -490,10 +475,6 @@ pre-configure:
 .endif
 
 post-install:
-	${CP} ${WRKSRC}/src/dspam.conf ${WRKSRC}/src/dspam.conf.sample
-	cd ${WRKSRC}/src/ && \
-		${INSTALL_DATA} dspam.conf.sample ${STAGEDIR}${PREFIX}/etc
-
 ########
 # stupid hack until I figure out where/how to patch
 	@${MKDIR} ${STAGEDIR}${PREFIX}/libdata/pkgconfig
@@ -525,9 +506,6 @@ post-install:
 .endif	# NOPORTEXAMPLES
 
 .if ${PORT_OPTIONS:MWEBUI}
-.	for I in admin.cgi admingraph.cgi configure.pl dspam.cgi graph.cgi templates/strings.pl
-		${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL},g" ${WRKSRC}/webui/cgi-bin/${I}
-.	endfor
 	${MV} ${WRKSRC}/webui/cgi-bin/configure.pl ${WRKSRC}/webui/cgi-bin/configure.pl.sample
 	cd ${WRKSRC}/webui/cgi-bin && ${MKDIR} ${STAGEDIR}${WWWDIR} && \
 		${INSTALL_SCRIPT} configure.pl.sample ${STAGEDIR}${WWWDIR}/ && \
@@ -541,7 +519,7 @@ post-install:
 		${INSTALL_DATA} admins ${STAGEDIR}${WWWDIR}/admins.sample
 	${MKDIR} ${STAGEDIR}${WWWDIR}/templates && cd ${WRKSRC}/webui/cgi-bin/templates && \
 		${INSTALL_DATA} *.html ${STAGEDIR}${WWWDIR}/templates/ && \
-		${INSTALL_SCRIPT} strings.pl ${STAGEDIR}${WWWDIR}/templates/ &&
+		${INSTALL_SCRIPT} strings.pl ${STAGEDIR}${WWWDIR}/templates/ && \
 		for _dir in de es-es fr he pt-br ro; do \
 			${INSTALL_DATA} -d ${STAGEDIR}${WWWDIR}/templates/$${_dir} && \
 			cd ${WRKSRC}/webui/cgi-bin/templates/$${_dir} && \

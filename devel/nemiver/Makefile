@@ -3,14 +3,14 @@
 
 PORTNAME=	nemiver
 PORTVERSION=	0.8.2
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITE_GNOME}
 MASTER_SITE_SUBDIR=	sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	romain@FreeBSD.org
-COMMENT=	A C/C++ Debugger for GNOME
+COMMENT=	C/C++ Debugger for GNOME
 
 LIB_DEPENDS=	libboost_unit_test_framework.so:${PORTSDIR}/devel/boost-libs \
 		libgtop-2.0.so:${PORTSDIR}/devel/libgtop \

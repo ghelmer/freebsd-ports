@@ -13,19 +13,16 @@ PATCH_SITES=	${MASTER_SITE_SOURCEFORGE:C/%SUBDIR%/${TRUEPORTNAME}\/${TRUEPORTNAM
 PATCHFILES=	nh-3.2.2-3.2.3.diff
 
 MAINTAINER=	glewis@FreeBSD.org
-COMMENT=	A dungeon explorin', slashin', hackin' game
+COMMENT=	Dungeon explorin', slashin', hackin' game
 
 WRKSRC=		${WRKDIR}/${TRUEPORTNAME}-3.2.2
 
-USE_GMAKE=	yes
+USES=		gmake
 USE_XORG=	xaw xpm
 PLIST_SUB=	HACKNAME="${HACKNAME}" \
 		HACKEXT="${HACKEXT}"
 MAKE_JOBS_UNSAFE=	yes
 TRUEPORTNAME=	nethack
-
-MAN6=		dgn_comp${HACKEXT}.6 dlb${HACKEXT}.6 lev_comp${HACKEXT}.6 \
-		${HACKNAME}.6 recover${HACKEXT}.6
 
 HACKEXT?=	32
 HACKNAME?=	${TRUEPORTNAME}${HACKEXT}
@@ -36,7 +33,6 @@ DATADIR=	${PREFIX}/${HACKDIR}
 DOCSDIR=	${PREFIX}/share/doc/${HACKNAME}
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if !exists(${PREFIX}/bin/${HACKLINK}) && ${HACKNAME} != ${HACKLINK}
@@ -45,7 +41,7 @@ PLIST_SUB+=	HACKLINK=""
 PLIST_SUB+=	HACKLINK="@comment "
 .endif
 
-pre-configure:
+post-patch:
 .for f in include/config.h sys/unix/Makefile.top sys/unix/Makefile.doc
 	@${REINPLACE_CMD} -e 's|%%HACKNAME%%|${HACKNAME}|g' \
 		-e 's|%%HACKDIR%%|${PREFIX}/${HACKDIR}|g' \
@@ -58,6 +54,8 @@ pre-configure:
 		-e 's|%%HACKEXT%%|${HACKEXT}|g' \
 		${WRKSRC}/doc/${f}
 .endfor
+
+do-configure:
 	@cd ${WRKSRC}/sys/unix && ${SH} setup.sh
 
 pre-install:
@@ -66,12 +64,12 @@ pre-install:
 
 post-install:
 .if !exists(${PREFIX}/bin/${HACKLINK}) && ${HACKNAME} != ${HACKLINK}
-	@${LN} -s -f ${PREFIX}/bin/${HACKNAME} ${PREFIX}/bin/${HACKLINK}
+	@${LN} -s -f ${PREFIX}/bin/${HACKNAME} ${STAGEDIR}${PREFIX}/bin/${HACKLINK}
 .endif
-	@cd ${WRKSRC}/doc && ${SETENV} ${MAKE_ENV} ${MAKE} manpages
+	@cd ${WRKSRC}/doc && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} manpages
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/doc/Guidebook.txt ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/doc/Guidebook.txt ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.post.mk>

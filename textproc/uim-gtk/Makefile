@@ -6,7 +6,7 @@ PKGNAMESUFFIX=	-gtk
 COMMENT=	GTK+ modules of uim input method
 
 USE_GNOME=	gtk20
-LIB_DEPENDS=	uim:${PORTSDIR}/textproc/uim
+LIB_DEPENDS=	libuim.so:${PORTSDIR}/textproc/uim
 
 MASTERDIR=	${.CURDIR}/../../textproc/uim
 PKGDIR=		${.CURDIR}
@@ -24,20 +24,19 @@ EXTRA_PATCHES=	${PATCHDIR}/extra-patch-gtk2_immodule_Makefile.in \
 IGNORE=		requires X11
 .endif
 
-NO_STAGE=	yes
 do-build:
-	(cd ${WRKSRC}/uim && ${GMAKE} libuim-x-util.la libuim-counted-init.la)
-	(cd ${WRKSRC}/gtk2/immodule && ${GMAKE})
-	(cd ${WRKSRC}/gtk2/pad && ${GMAKE})
-	(cd ${WRKSRC}/gtk2/pref && ${GMAKE})
-	(cd ${WRKSRC}/gtk2/switcher && ${GMAKE})
-	(cd ${WRKSRC}/gtk2/toolbar && ${GMAKE})
+	(cd ${WRKSRC}/uim && ${MAKE_CMD} libuim-x-util.la libuim-counted-init.la)
+	(cd ${WRKSRC}/gtk2/immodule && ${MAKE_CMD})
+	(cd ${WRKSRC}/gtk2/pad && ${MAKE_CMD})
+	(cd ${WRKSRC}/gtk2/pref && ${MAKE_CMD})
+	(cd ${WRKSRC}/gtk2/switcher && ${MAKE_CMD})
+	(cd ${WRKSRC}/gtk2/toolbar && ${MAKE_CMD})
 
 do-install:
-	(cd ${WRKSRC}/gtk2/immodule && ${GMAKE} install)
-	(cd ${WRKSRC}/gtk2/pad && ${GMAKE} install)
-	(cd ${WRKSRC}/gtk2/pref && ${GMAKE} install)
-	(cd ${WRKSRC}/gtk2/switcher && ${GMAKE} install)
-	(cd ${WRKSRC}/gtk2/toolbar && ${GMAKE} install)
+	(cd ${WRKSRC}/gtk2/immodule && ${MAKE_CMD} DESTDIR=${STAGEDIR} install)
+	(cd ${WRKSRC}/gtk2/pad && ${MAKE_CMD} DESTDIR=${STAGEDIR} install)
+	(cd ${WRKSRC}/gtk2/pref && ${MAKE_CMD} DESTDIR=${STAGEDIR} install)
+	(cd ${WRKSRC}/gtk2/switcher && ${MAKE_CMD} DESTDIR=${STAGEDIR} install)
+	(cd ${WRKSRC}/gtk2/toolbar && ${MAKE_CMD} DESTDIR=${STAGEDIR} install)
 
 .include "${MASTERDIR}/Makefile"

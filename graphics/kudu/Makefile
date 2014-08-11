@@ -14,16 +14,13 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 pkgconfig
 GNU_CONFIGURE=	yes
-USES=		pkgconfig
 USE_GL=		gl
 USE_PYTHON=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	${PTHREAD_CFLAGS}
-CONFIGURE_ENV=	LIBS="${PTHREAD_LIBS} -lcompat"
+LIBS+=		-L${LOCALBASE}/lib -lcompat
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*

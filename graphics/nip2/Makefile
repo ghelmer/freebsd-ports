@@ -3,14 +3,14 @@
 
 PORTNAME=	nip2
 PORTVERSION=	7.26.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.vips.ecs.soton.ac.uk/supported/${PORTVERSION:R}/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Graphical user interface for VIPS
 
-LIB_DEPENDS=	vips.3[0-9]:${PORTSDIR}/graphics/vips	\
+LIB_DEPENDS=	libvips.so:${PORTSDIR}/graphics/vips	\
 		gsl:${PORTSDIR}/math/gsl	\
 		xml2:${PORTSDIR}/textproc/libxml2
 

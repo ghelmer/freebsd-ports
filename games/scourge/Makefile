@@ -3,7 +3,7 @@
 
 PORTNAME=	scourge
 PORTVERSION=	0.21.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/$/.src/}
@@ -12,13 +12,13 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Rogue-like game
 
-LIB_DEPENDS=	freetype.9:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 RUN_DEPENDS=	${DATADIR}/config/scourge.cfg:${PORTSDIR}/games/scourge-data
 
 USE_AUTOTOOLS=	autoconf:env automake:env
 USE_GL=		gl
 USE_SDL=	sdl image mixer net ttf
-USE_GMAKE=	yes
+USES=		gmake
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_LIBS}
 LDFLAGS+=	-L${LOCALBASE}/lib

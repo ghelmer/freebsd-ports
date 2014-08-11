@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libesedb
-DISTVERSION=	alpha-20120102
+# If/When moving from experimental to alpha, override DISTNAME to prevent PORTEPOCH
+DISTVERSION=	experimental-20140406
 CATEGORIES=	devel
 MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSN082cmxsbHB0anc/ \
 		LOCAL/antoine
@@ -13,21 +14,19 @@ COMMENT=	Library and tools to access the ESEDB format
 LICENSE=	LGPL3
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-libintl-prefix=${LOCALBASE} ${ICONV_CONFIGURE_ARG}
-USES=		gettext iconv pathfix
+CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} ${ICONV_CONFIGURE_ARG}
+USES=		gettext iconv libtool pathfix
+USE_PYTHON=	2
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:E}
 
 PORTDOCS=	AUTHORS ChangeLog
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

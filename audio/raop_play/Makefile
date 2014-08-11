@@ -8,7 +8,7 @@ CATEGORIES=	audio
 MASTER_SITES=	SF/raop-play/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	sumikawa@FreeBSD.org
-COMMENT=	A music file player for Apple Airport Express
+COMMENT=	Music file player for Apple Airport Express
 
 LIB_DEPENDS=	libsamplerate.so:${PORTSDIR}/audio/libsamplerate \
 		libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
@@ -21,7 +21,6 @@ RUN_DEPENDS=	mpg321:${PORTSDIR}/audio/mpg321 \
 GNU_CONFIGURE=	yes
 LDFLAGS+=	`fltk-config --ldflags`
 USES=		gmake
-NO_STAGE=	yes
 USE_GNOME=	glib20
 
 pre-build:

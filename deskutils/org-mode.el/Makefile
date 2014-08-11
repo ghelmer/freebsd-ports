@@ -10,9 +10,9 @@ PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 DISTNAME=	org-${PORTVERSION}
 
 MAINTAINER=	jhein@symmetricom.com
-COMMENT=	An Emacs mode for notes and project planning
+COMMENT=	Emacs mode for notes and project planning
 
-USES=		gmake
+USES=		gmake makeinfo
 DOCSDIR=	${PREFIX}/share/doc/org-mode
 USE_EMACS=	yes
 

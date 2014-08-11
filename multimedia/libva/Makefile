@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libva
-PORTVERSION=	1.3.0
+PORTVERSION=	1.3.1
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://cgit.freedesktop.org/${PORTNAME}/snapshot/
 
@@ -14,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat
 LIB_DEPENDS=	libdrm.so:${PORTSDIR}/graphics/libdrm
 
-USES=		pkgconfig tar:bzip2
+USES=		libtool:keepla pkgconfig tar:bzip2
 USE_XORG=	glproto pciaccess xext xfixes
 USE_GL=		gl
 USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtoolize
@@ -39,11 +40,6 @@ CFLAGS+=	-DNDEBUG
 .endif
 
 .include <bsd.port.pre.mk>
-
-# add strnlen(3) from head/lib/libc/string/strnlen.c
-.if ${OSVERSION} < 800067
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-va-va_trace.c
-.endif
 
 .if ${ARCH} == "sparc64"
 BROKEN=		glXCreateContext fails during configure

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ffmpeg
-PORTVERSION=	2.1.1
-PORTREVISION=	1
+PORTVERSION=	2.2.4
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -20,9 +19,8 @@ BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm \
 
 HAS_CONFIGURE=	yes
 CONFIGURE_LOG=	config.err
-USES=		gmake pkgconfig perl5
+USES=		gmake pkgconfig perl5 tar:bzip2
 USE_PERL5=	build
-USE_BZIP2=	yes
 WANT_SDL=	yes
 
 OPTIONS_DEFINE=	AACPLUS ALSA AMR_NB AMR_WB ASS CDIO CELT DEBUG FAAC \
@@ -138,7 +136,7 @@ OPENCV_LIB_DEPENDS=	libopencv_imgproc.so:${PORTSDIR}/graphics/opencv-core
 OPENCV_CONFIGURE_ENABLE=	libopencv
 
 # openjpeg
-OPENJPEG_LIB_DEPENDS=	libopenjpeg.so:${PORTSDIR}/graphics/openjpeg
+OPENJPEG_LIB_DEPENDS=	libopenjpeg.so:${PORTSDIR}/graphics/openjpeg15
 OPENJPEG_CONFIGURE_ENABLE=	libopenjpeg
 
 # opus
@@ -376,7 +374,7 @@ post-install:
 .endfor
 .if ${PORT_OPTIONS:MFFSERVER}
 	${INSTALL_DATA} ${WRKSRC}/doc/ffserver.conf \
-		${STAGEDIR}${PREFIX}/etc/ffserver.conf-dist
+		${STAGEDIR}${PREFIX}/etc/ffserver.conf.sample
 .endif
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in ${DOC_FILES}

@@ -3,6 +3,7 @@
 
 PORTNAME=	createrepo
 PORTVERSION=	0.9.8
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://createrepo.baseurl.org/download/
 
@@ -15,12 +16,12 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/sqlitecachec.py:${PORTSDIR}/devel/py-yum-metad
 		${PYTHON_SITELIBDIR}/yum/__init__.py:${PORTSDIR}/sysutils/yum
 
 USE_PYTHON=	yes
-USE_GMAKE=	yes
+USES=		gmake
 
 BUILD_DEPENDS+=	ginstall:${PORTSDIR}/sysutils/coreutils
 GINSTALL=	ginstall
 
-MAKE_ARGS=	MAKE=${GMAKE} INSTALL="${GINSTALL} -p -v" PYTHON=${PYTHON_CMD} \
+MAKE_ARGS=	MAKE=${MAKE_CMD} INSTALL="${GINSTALL} -p -v" PYTHON=${PYTHON_CMD} \
 		prefix=${PREFIX} mandir=${MANPREFIX}/man sysconfdir=${PREFIX}/etc
 
 MAN1=		mergerepo.1 modifyrepo.1

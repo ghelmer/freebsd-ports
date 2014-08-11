@@ -3,12 +3,14 @@
 
 PORTNAME=	lasso
 PORTVERSION=	2.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://labs.libre-entreprise.org/frs/download.php/594/
 
 MAINTAINER=	tj@FreeBSD.org
 COMMENT=	Free Liberty Alliance Implementation
+
+BROKEN=		Fails to build
 
 RUN_DEPENDS=	xmlsec1:${PORTSDIR}/security/xmlsec1
 BUILD_DEPENDS:=	${RUN_DEPENDS}
@@ -23,7 +25,6 @@ USE_PYTHON_BUILD=	yes
 
 OPTIONS_DEFINE=	PERL PHP PYTHON
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if !empty(PORT_OPTIONS:MPERL)
@@ -58,9 +59,9 @@ PLIST_SUB+=	WITH_PYTHON="@comment "
 .endif
 
 post-install:
-	${RM} -f ${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod
+	${RM} -f ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod
 .ifdef(NOPORTDOCS)
-	${RM} -rf ${DOCSDIR}
+	${RM} -rf ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

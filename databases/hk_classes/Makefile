@@ -3,6 +3,7 @@
 
 PORTNAME=	hk_classes
 PORTVERSION=	0.8.3
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	SF/hk-classes/${PORTNAME}/${PORTVERSION}
 
@@ -13,11 +14,9 @@ BUILD_DEPENDS=	${LOCALBASE}/include/argp.h:${PORTSDIR}/devel/argp-standalone
 LIB_DEPENDS=	libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
 		libxml2.so:${PORTSDIR}/textproc/libxml2
 
-USES=	pkgconfig gettext iconv
-USE_BZIP2=	yes
+USES=	pkgconfig gettext iconv tar:bzip2
 USE_PYTHON=	yes
-CXXFLAGS+=	${PTHREAD_CFLAGS}
-LDFLAGS+=	${PTHREAD_LIBS} -L${LOCALBASE}/lib -largp -lintl
+LIBS+=		-L${LOCALBASE}/lib -largp -lintl
 USE_AUTOTOOLS=	libtool
 CONFIGURE_ENV+=	PYTHON_VERSION=${PYTHON_VERSION:S/python//}
 CONFIGURE_ARGS+=--with-python-libdir=${PYTHON_LIBDIR} \
@@ -64,7 +63,7 @@ PLIST_SUB+=	DBASE="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPOSTGRESQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 CONFIGURE_ARGS+=	--with-postgres-incdir=${LOCALBASE}/include/ \
 			--with-postgres-libdir=${LOCALBASE}/lib
 CONFIGURE_ENV+=	LIBS="-L${LOCALBASE}/lib"

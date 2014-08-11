@@ -3,29 +3,37 @@
 
 PORTNAME=	libnetdude
 PORTVERSION=	0.12
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	SF/netdude/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A library for manipulating libpcap/tcpdump trace files
+COMMENT=	Library for manipulating libpcap/tcpdump trace files
 
-LIB_DEPENDS=	pcapnav.0:${PORTSDIR}/net/libpcapnav
+LIB_DEPENDS=	libpcapnav.so:${PORTSDIR}/net/libpcapnav
 
-USE_AUTOTOOLS=	libtool
+USES=		libtool
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-gtk-doc --disable-static --with-html-dir=${DOCSDIR}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
+USE_AUTOTOOLS=	libltdl
 USE_GNOME=	glib12
-CONFIGURE_ARGS=	--disable-gtk-doc --with-html-dir=${DOCSDIR}
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|netinet/if_fddi.h|net/fddi.h|g" \
-	${WRKSRC}/protocols/fddi/libnd_fddi.h
+		${WRKSRC}/protocols/fddi/libnd_fddi.h
 	@${REINPLACE_CMD} -e 's|DOC_MODULE = libnetdude|DOC_MODULE =|' \
-	${WRKSRC}/docs/Makefile.in
-.if defined(NOPORTDOCS)
-	@${REINPLACE_CMD} -e 's|docs||' ${WRKSRC}/Makefile.in
-.endif
+		${WRKSRC}/docs/Makefile.in
+	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} \
+		-e 's,-I$$(top_srcdir)/libltdl,@INCLTDL@,' \
+		-e '/LIBADD/s,$$(top_builddir)/libltdl/libltdlc.la,@LIBLTDL@,'
 
 .include <bsd.port.mk>

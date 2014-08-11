@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	ipmitool
-PORTVERSION=	1.8.12
-PORTREVISION=	5
+PORTVERSION=	1.8.14
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
-MAINTAINER=	spolyack@collaborativefusion.com
+MAINTAINER=	steve.polyack@intermedix.com
 COMMENT=	CLI to manage IPMI systems
 
-USE_BZIP2=	yes
-USE_GMAKE=	yes
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		tar:bzip2 gmake
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-intf-lan --enable-intf-lanplus \

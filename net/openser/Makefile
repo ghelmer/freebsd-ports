@@ -3,7 +3,7 @@
 
 PORTNAME=	openser
 PORTVERSION=	1.2.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	http://openser.org/pub/openser/${PORTVERSION}/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-tls_src
@@ -15,7 +15,7 @@ LIB_DEPENDS=	radiusclient-ng.2:${PORTSDIR}/net/radiusclient
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-tls
 
-USE_GMAKE=	yes
+USES=		gmake
 USE_GNOME=	libxml2
 MAKE_ENV=	CC_EXTRA_OPTS="${CFLAGS}" \
 		PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \

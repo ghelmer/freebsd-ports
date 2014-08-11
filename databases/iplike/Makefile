@@ -6,16 +6,16 @@ PORTVERSION=	2.0.3
 CATEGORIES=	databases
 MASTER_SITES=	SF/opennms/IPLIKE/stable-2.0/
 
-MAINTAINER=	venture37@geeklan.co.uk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C implementation of the OpenNMS iplike stored procedure
 
+USES=		libtool pgsql
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USE_PGSQL=	yes
 SUB_FILES=	pkg-message
+INSTALL_TARGET=	install-strip
 
-PLIST_FILES=	lib/postgresql/iplike.la \
-	lib/postgresql/iplike.so \
-	sbin/install_iplike.sh
+PLIST_FILES=	lib/postgresql/iplike.so \
+		sbin/install_iplike.sh
 
 .include <bsd.port.mk>

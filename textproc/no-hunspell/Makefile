@@ -23,8 +23,8 @@ PLIST_DIRSTRY=	%%DATADIR%%
 
 post-extract:
 	@${MKDIR} ${WRKSRC}
-	@${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${WRKDIR}/nb_NO.zip -C ${WRKSRC}/
-	@${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${WRKDIR}/nn_NO.zip -C ${WRKSRC}/
+	@${TAR} -xf ${WRKDIR}/nb_NO.zip --directory ${WRKSRC}
+	@${TAR} -xf ${WRKDIR}/nn_NO.zip --directory ${WRKSRC}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

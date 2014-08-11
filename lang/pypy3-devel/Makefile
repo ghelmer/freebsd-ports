@@ -3,6 +3,7 @@
 
 PORTNAME=	pypy3
 DISTVERSION=	2.1-beta1
+PORTREVISION=	1
 CATEGORIES=	lang python java
 MASTER_SITES=	http://cdn.bitbucket.org/pypy/pypy/downloads/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-src
@@ -38,8 +39,7 @@ CONFLICTS_INSTALL=	pypy3-[0-9]*
 
 ALL_TARGET=	${PYPY_NAMES}
 BUILD_WRKSRC=	${WRKDIR}
-USE_BZIP2=	yes
-USES=		compiler:c11 gettext iconv
+USES=		compiler:c11 gettext iconv tar:bzip2
 MAKEFILE=	${FILESDIR}/Makefile
 PKGINSTALL=	${WRKDIR}/pkg-install
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
@@ -268,9 +268,6 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/${name} ${STAGEDIR}${PREFIX}/bin/${name}3-${PYPY_VER}
 	${ECHO} bin/${name}3-${PYPY_VER} >> ${TMPPLIST}
 .endfor
-
-post-install:
-	${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
 
 test: patch
 .for inst in ${PYPY_INST}

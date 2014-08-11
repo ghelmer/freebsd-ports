@@ -26,14 +26,10 @@
 # Where to put distfiles that don't have any other master site
 .if !defined(IGNORE_MASTER_SITE_LOCAL)
 MASTER_SITE_LOCAL+= \
-	http://ftp.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.se.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.uk.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.ru.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.jp.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.tw.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/ \
-	ftp://ftp.cn.FreeBSD.org/pub/FreeBSD/ports/local-distfiles/%SUBDIR%/
+	http://distcache.FreeBSD.org/local-distfiles/%SUBDIR%/ \
+	http://distcache.us-east.FreeBSD.org/local-distfiles/%SUBDIR%/ \
+	http://distcache.eu.FreeBSD.org/local-distfiles/%SUBDIR%/ \
+	http://distcache.us-west.FreeBSD.org/local-distfiles/%SUBDIR%/
 
 MASTER_SITE_PORTS_JP+= \
 	ftp://ports.jp.FreeBSD.org/pub/FreeBSD-jp/ports-jp/LOCAL_PORTS/%SUBDIR%/ \
@@ -480,7 +476,7 @@ MASTER_SITE_GENTOO+= \
 	ftp://ftp.ussg.iu.edu/pub/linux/gentoo/%SUBDIR%/ \
 	ftp://ftp.ucsb.edu/pub/mirrors/linux/gentoo/%SUBDIR%/ \
 	ftp://gentoo.mirrors.pair.com/%SUBDIR%/ \
-	ftp://mirrors.tds.net/pub/gentoo/%SUBDIR% \
+	ftp://mirrors.tds.net/pub/gentoo/%SUBDIR%/ \
 	ftp://ftp.belnet.be/mirror/rsync.gentoo.org/gentoo/%SUBDIR%/ \
 	ftp://ftp.snt.utwente.nl/pub/os/linux/gentoo/%SUBDIR%/ \
 	ftp://trumpetti.atm.tut.fi/gentoo/%SUBDIR%/ \
@@ -627,7 +623,7 @@ MASTER_SITE_HORDE+= \
 
 .if !defined(IGNORE_MASTER_SITE_IDSOFTWARE)
 MASTER_SITE_IDSOFTWARE+= \
-	ftp://ftp.chg.ru/pub/games/idgames/idstuff/%SUBDIR%/ \
+	ftp://ftp.gwdg.de/pub/misc2/ftp.idsoftware.com/idstuff/%SUBDIR%/ \
 	http://ftp4.de.freesbie.org/pub/misc/ftp.idsoftware.com/idstuff/%SUBDIR%/ \
 	ftp://ftp.fu-berlin.de/pc/games/idgames/idstuff/%SUBDIR%/ \
 	ftp://ftp.gamers.org/pub/idgames/idstuff/%SUBDIR%/ \
@@ -954,7 +950,7 @@ MASTER_SITE_PERL_CPAN_BY+= \
 _PERL_CPAN_FLAG=${MASTER_SITE_SUBDIR:C/(CPAN):.*$/\1/}
 _PERL_CPAN_ID=	${MASTER_SITE_SUBDIR:C/^CPAN:(.)(.)(.*)$/\1\/\1\2\/\1\2\3/}
 
-.if !empty(_PERL_CPAN_ID) && ${_PERL_CPAN_FLAG:L} == "cpan"
+.if !empty(_PERL_CPAN_ID) && ${_PERL_CPAN_FLAG:tl} == "cpan"
     _PERL_CPAN_SORT=authors/id/${_PERL_CPAN_ID}
     MASTER_SITE_PERL_CPAN=${MASTER_SITE_PERL_CPAN_BY:S/%CPANSORT%/${_PERL_CPAN_SORT}/:S/%SUBDIR%\///}
 .else
@@ -1028,22 +1024,13 @@ MASTER_SITE_PYTHON+= \
 
 .if !defined(IGNORE_MASTER_SITE_QMAIL)
 MASTER_SITE_QMAIL+= \
-	http://qmail.geto.net/%SUBDIR%/ \
-	http://qmail.palomine.net/%SUBDIR%/ \
-	http://qmail.mirrors.summersault.com/%SUBDIR%/ \
-	http://qmail.cdsinet.net/%SUBDIR%/ \
 	http://qmail.glasswings.com.au/%SUBDIR%/ \
 	http://qmail.psshee.com/%SUBDIR%/ \
 	http://mirrors.sunsite.dk/qmailwww/%SUBDIR%/ \
 	http://www.agria.hu/qmail/%SUBDIR%/ \
-	http://qmail.rhnet.is/%SUBDIR%/ \
-	http://mirrors.dataloss.nl/www.qmail.org/%SUBDIR%/ \
-	http://www.math.ntnu.no/mirror/www.qmail.org/%SUBDIR%/ \
 	http://qmail.netvisao.pt/%SUBDIR%/ \
 	http://qmail.ipg.sk/%SUBDIR%/ \
 	http://qmail.omnis.ch/%SUBDIR%/ \
-	http://qmail.asylog.net/%SUBDIR%/ \
-	http://qmail.blueyonder.co.uk/%SUBDIR%/ \
 	http://www.qmail.org/%SUBDIR%/
 .endif
 
@@ -1147,8 +1134,16 @@ MASTER_SITE_SAVANNAH+= \
 	http://download-mirror.savannah.gnu.org/releases/%SUBDIR%/
 .endif
 
+# List:		http://sourceforge.net/apps/trac/sourceforge/wiki/Mirrors
+# Updated:	2013-03-25
 .if !defined(IGNORE_MASTER_SITE_SOURCEFORGE)
 MASTER_SITE_SOURCEFORGE+= http://downloads.sourceforge.net/project/%SUBDIR%/
+.for mirror in heanet sunet iweb switch freefr garr aarnet jaist master \
+	nchc ncu internode waix hivelocity superb-dca3 ufpr tenet \
+	netcologne ignum kent kaz
+MASTER_SITE_SOURCEFORGE+= \
+	http://${mirror}.dl.sourceforge.net/project/%SUBDIR%/
+.endfor
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_SOURCEFORGE_JP)
@@ -1440,12 +1435,8 @@ MASTER_SITE_XFCE+= \
 	http://xfce.mirror.uber.com.au/%SUBDIR%/ \
 	http://archive.be.xfce.org/%SUBDIR%/ \
 	http://archive.be2.xfce.org/%SUBDIR%/ \
-	http://archive.se.xfce.org/%SUBDIR%/ \
 	http://archive.al-us.xfce.org/%SUBDIR%/ \
-	http://mirrors.tummy.com/pub/archive.xfce.org/%SUBDIR%/ \
-	http://mirror.yongbok.net/X11/xfce-mirror/%SUBDIR%/ \
-	http://xfce.ognisco.com/%SUBDIR%/ \
-	http://mirror.sinn3r.org/xfce/%SUBDIR%/
+	http://mirrors.tummy.com/pub/archive.xfce.org/%SUBDIR%/
 .endif
 
 .if !defined(IGNORE_MASTER_SITE_XORG)
@@ -1493,7 +1484,7 @@ MASTER_SITES_ABBREVS=	CPAN:PERL_CPAN \
 			RG:RUBYGEMS \
 			RF:RUBYFORGE
 MASTER_SITES_SUBDIRS=	APACHE_JAKARTA:${PORTNAME:S,-,/,}/source \
-			BERLIOS:${PORTNAME:L} \
+			BERLIOS:${PORTNAME:tl} \
 			CENKES:myports \
 			CHEESESHOP:source/${DISTNAME:C/(.).*/\1/}/${DISTNAME:C/(.*)-[0-9].*/\1/} \
 			CSME:myports \
@@ -1506,16 +1497,16 @@ MASTER_SITES_SUBDIRS=	APACHE_JAKARTA:${PORTNAME:S,-,/,}/source \
 			HORDE:${PORTNAME} \
 			LOGILAB:${PORTNAME} \
 			MATE:${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/} \
-			MOZDEV:${PORTNAME:L} \
+			MOZDEV:${PORTNAME:tl} \
 			NETLIB:${PORTNAME} \
 			PERL_CPAN:${PORTNAME:C/-.*//} \
 			PNET:${PNET_MASTER_SITE_SUBDIR} \
 			PYTHON:${PYTHON_MASTER_SITE_SUBDIR} \
 			RUBY_DBI:${RUBY_DBI_MASTER_SITE_SUBDIR} \
 			RUBY_GNOME:${RUBY_GNOME_MASTER_SITE_SUBDIR} \
-			SAVANNAH:${PORTNAME:L} \
-			SOURCEFORGE:${PORTNAME:L}/${PORTNAME:L}/${PORTVERSION} \
-			RUBYFORGE:${PORTNAME:L}
+			SAVANNAH:${PORTNAME:tl} \
+			SOURCEFORGE:${PORTNAME:tl}/${PORTNAME:tl}/${PORTVERSION} \
+			RUBYFORGE:${PORTNAME:tl}
 
 .if defined(MASTER_SITES) && ${MASTER_SITES:N*\:/*}
 

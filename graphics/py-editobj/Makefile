@@ -3,6 +3,7 @@
 
 PORTNAME=	editobj
 PORTVERSION=	0.5.7
+PORTREVISION=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	http://download.gna.org/songwrite/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,11 +19,8 @@ PYDISTUTILS_PKGNAME=	EditObj
 WRKSRC=		${WRKDIR}/EditObj-${PORTVERSION}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-editobj
 
-NO_STAGE=	yes
 post-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/demo/* ${EXAMPLESDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/demo/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

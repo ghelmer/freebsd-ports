@@ -2,13 +2,13 @@
 
 PORTNAME=	sdl2_ttf
 PORTVERSION=	2.0.12
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.libsdl.org/projects/SDL_ttf/release/
 DISTNAME=	SDL2_ttf-${PORTVERSION}
 
 MAINTAINER=	mva@FreeBSD.org
-COMMENT=	A library to use TrueType fonts to render text in SDL applications
+COMMENT=	Library to use TrueType fonts to render text in SDL applications
 
 LICENSE=	ZLIB
 

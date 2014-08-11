@@ -3,19 +3,22 @@
 
 PORTNAME=	clisp
 PORTVERSION=	2.49
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang lisp
 MASTER_SITES=	GNU/${PORTNAME}/release/${PORTVERSION}
 
-MAINTAINER=	jsa@FreeBSD.org
-COMMENT=	A Common Lisp implementation
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Common Lisp implementation
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/GNU-GPL
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libavcall.a:${PORTSDIR}/devel/ffcall
 LIB_DEPENDS=	readline.6:${PORTSDIR}/devel/readline \
 		sigsegv.2:${PORTSDIR}/devel/libsigsegv
 
-LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/GNU-GPL
+DEPRECATED=	development has ceased, not staged
+EXPIRATION_DATE=	2014-07-28
 
 USE_GCC=	any
 USES=		iconv
@@ -25,7 +28,7 @@ WANT_GNOME=	yes
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --mandir="${MANPREFIX}/man" \
 		--elispdir="${DATADIR}/emacs" --vimdir="${DATADIR}/vim" \
-		--docdir="${DOCSDIR}"
+		--docdir="${DOCSDIR}" --with-libiconv=${ICONV_PREFIX}
 CONFIGURE_TARGET=	${ARCH:S/amd64/x86_64/}-portbld-freebsd${OSREL}
 # Complaints if the environment changes between build stages.
 MAKE_ENV=	${CONFIGURE_ENV}
