@@ -15,10 +15,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/Crypto/__init__.py:${PORTSDIR}/security/py-pycrypto
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-USE_WX=		2.6+
+USES=		python
+USE_PYTHON=	autoplist distutils
+USE_WX=		3.0+
 WX_COMPS=	python
 WANT_UNICODE=	yes
 
