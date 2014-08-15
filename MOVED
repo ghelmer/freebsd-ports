@@ -6269,3 +6269,7 @@ net/desktop-data-model||2014-07-21|Has expired: gnome-desktop 2.x will be update
 net/online-desktop||2014-07-21|Has expired: Disappeared upstream, depends on expired ports
 x11-toolkits/libgail-gnome||2014-07-21|Has expired: gnome-panel 2.x will be updated in the GNOME 3 import
 security/gnutls3|security/gnutls|2014-07-22|Moved to replace GnuTLS 2.x port
+archivers/unzip-iconv|archivers/unzip|2014-08-15|Merged with archivers/unzip as a new non-default option
+chinese/unzip|archivers/unzip|2014-08-15|Merged with archivers/unzip as a new non-default option
+korean/unzip|archivers/unzip|2014-08-15|Merged with archivers/unzip as a new non-default option
+russian/unzip|archivers/unzip|2014-08-15|Merged with archivers/unzip as a new non-default option
