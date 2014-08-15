@@ -13,9 +13,7 @@ MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Create high quality Encapsulated Postscript, PDF, or PNG charts
 
 USE_GHOSTSCRIPT_RUN=	yes
-
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_PKGNAME=	PyChart
+USE_PYTHON=	distutils autoplist
+USES=		python:2.7
 
 .include <bsd.port.mk>
