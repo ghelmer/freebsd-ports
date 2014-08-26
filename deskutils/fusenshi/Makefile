@@ -11,11 +11,9 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ozawa@ongs.co.jp
 COMMENT=	Post-it(R) like application with network support
 
-LIB_DEPENDS=	libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24 \
-		libgtksourceview-1.0.so:${PORTSDIR}/x11-toolkits/gtksourceview
-
-USES=		pkgconfig
-USE_GNOME=	libxml2
+USES=		pkgconfig tar:tgz
+USE_GNOME=	gtkmm24 gtksourceview libxml2
+USE_XORG=	x11
 MAKE_JOBS_UNSAFE=	yes
 
 .ifdef WITHOUT_SSL

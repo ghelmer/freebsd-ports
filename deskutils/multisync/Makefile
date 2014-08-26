@@ -11,24 +11,17 @@ DISTNAME=	multisync-${PORTVERSION}
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Synchronize calendars, addressbooks, and other PIM data
 
-WRKSRC?=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
-WRKSRCMASTER=	${WRKDIR}/multisync-${PORTVERSION}
-USE_BZIP2=	yes
 USE_GNOME=	gnomeprefix libgnomeui
-USES=		gmake pathfix pkgconfig
-USE_AUTOTOOLS=	automake:env libtool
+USES=		gmake libtool pathfix pkgconfig tar:bzip2
+USE_AUTOTOOLS=	libtoolize aclocal autoconf autoheader automake
+AUTOMAKE_ARGS=	-a -c -f
+GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 MAKE_JOBS_UNSAFE=	yes
 
 pre-configure:
 	@${FIND} ${WRKDIR} -type l -delete
-.for FILE in missing install-sh mkinstalldirs config.guess config.sub depcomp
-	@${CP} -f ${AUTOMAKE_DIR}/${FILE} ${WRKSRC}
-	@${CP} -f ${AUTOMAKE_DIR}/${FILE} ${WRKSRCMASTER}
-.endfor
-	@${FIND} ${WRKSRC} -name "Makefile.in" | ${XARGS} ${REINPLACE_CMD} -e \
-		's|-lpthread||'
 
 post-configure:
 	${CP} ${LIBTOOL} ${WRKSRC}/libtool

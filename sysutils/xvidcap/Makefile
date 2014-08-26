@@ -38,12 +38,18 @@ CFLAGS+=	-O2 -fno-strict-aliasing
 PORTDOCS=		AUTHORS ChangeLog README
 NULLDOCS=		COPYING
 
-pre-configure:
-.if defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+post-patch:
+.if empty(PORT_OPTIONS:MDOCS)
 	${REINPLACE_CMD} -e 's|pkgdataDATA install-xvidcapdocDATA|pkgdataDATA|'	\
 		${WRKSRC}/Makefile.in
 .endif
 	${REINPLACE_CMD} -e 's|/bin/bash | /bin/sh|' ${WRKSRC}/ppm2mpeg.sh
+	@${REINPLACE_CMD} '/^xvidcap_LDADD =/s/$$/ -lXext -lX11/' \
+		${WRKSRC}/src/Makefile.in
 
 post-install:
 .if !defined(NOPORTDOCS)

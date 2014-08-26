@@ -18,8 +18,8 @@ OPTIONS_DEFINE=	DOCS
 LIB_DEPENDS=	webkitgtk-1.0:${PORTSDIR}/www/webkit-gtk2
 RUN_DEPENDS=	dmenu:${PORTSDIR}/x11/dmenu
 
-USE_CSTD=	c99
 USE_GNOME=	gtk20
+USE_XORG=	x11
 USES=		pkgconfig
 
 MAN1=		surf.1
@@ -30,10 +30,6 @@ DESKTOP_ENTRIES="Surf" "" "${PREFIX}/share/pixmaps/surf.png" "surf" "" true
 
 CONFLICTS=	surf-1* # math/surf
 
-# Name conflicts with the math/surf port
-NO_LATEST_LINK=	yes
-
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 pre-everything::
@@ -48,11 +44,14 @@ post-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		's|^\(PREFIX\)|#\1| ; \
+		'/^PREFIX/d ; \
 		 s|/share/man|/man| ; \
-		 s|^\(CFLAGS\) =.*|\1 += -I. $${GTKINC} $${CPPFLAGS}| ; \
-		 s|^\(LDFLAGS\) =.*|\1 += $${GTKLIB}| ; \
-		 s|^\(CC\)|#\1|' ${WRKSRC}/config.mk
+		 /^X11INC =/s/=.*/= `pkg-config --cflags x11`/ ; \
+		 /^X11LIB =/s/=.*/= `pkg-config --libs x11`/ ; \
+		 /^CPPFLAGS =/s|$$| ${CPPFLAGS}| ; \
+		 /^CFLAGS =/s|-Os| ${CFLAGS}| ; \
+		 /^LDFLAGS =/s|$$| ${LDFLAGS}| ; \
+		 /^CC =/d' ${WRKSRC}/config.mk
 
 post-install:
 	@${STRIP_CMD} ${PREFIX}/bin/surf

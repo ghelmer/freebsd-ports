@@ -17,10 +17,16 @@ GNU_CONFIGURE=	yes
 USES=		gmake pkgconfig pathfix
 USE_GNOME=	gtk20 intltool intlhack libxslt
 INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=	gettext
+
+post-patch:
+	@${REINPLACE_CMD} '/^SUBDIRS =/s/doc//' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} '/^imagination_LDADD =/s/$$/ -lm/' \
+		${WRKSRC}/src/Makefile.in
 
 .include <bsd.port.mk>

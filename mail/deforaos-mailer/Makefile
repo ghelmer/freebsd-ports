@@ -33,5 +33,8 @@ MAKE_JOBS_UNSAFE=	yes
 post-patch:
 	${REINPLACE_CMD} -e 's|/lib/|/libdata/|g' \
 		${WRKSRC}/data/pkgconfig.sh
+	@${REINPLACE_CMD} 's/-lssl/& -lcrypto/' \
+		${WRKSRC}/src/Makefile ${WRKSRC}/src/account/Makefile \
+		${WRKSRC}/src/plugins/Makefile ${WRKSRC}/tests/Makefile
 
 .include <bsd.port.mk>

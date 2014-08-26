@@ -17,11 +17,16 @@ LICENSE=	GPLv3
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
 		${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
+		liburiparser.so:${PORTSDIR}/net/uriparser
+RUN_DEPENDS=	dtv-scan-tables>=0:${PORTSDIR}/multimedia/dtv-scan-tables
 
-USES=		pkgconfig gmake
-USE_PYTHON=	yes
+USE_GITHUB=	yes
+GH_ACCOUNT=	${PORTNAME}
+GH_TAGNAME=	${GH_COMMIT}
+GH_COMMIT=	6d19440
+
+USES=		execinfo gmake pkgconfig python shebangfix
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 USE_RC_SUBR=	${PORTNAME}
@@ -40,7 +45,7 @@ DVBCSA_DESC=	Replace internal ffdecsa with dvbcsa
 CONFIGURE_ENV+=	PLATFORM=freebsd
 CONFIGURE_ARGS+=--disable-dvbscan --disable-zlib --disable-libav
 CFLAGS+=	-I${LOCALBASE}/include -Wno-conversion -Wno-int-to-pointer-cast
-LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo -lssl -lz
+LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo -lssl -lcrypto -lz
 
 AVAHI_LIB_DEPENDS=	libavahi-client.so:${PORTSDIR}/net/avahi-app
 

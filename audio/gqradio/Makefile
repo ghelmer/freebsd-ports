@@ -14,10 +14,11 @@ LICENSE=	GPLv2
 
 USES=		gettext pathfix pkgconfig
 USE_GNOME=	gtk20
+USE_XORG=	x11
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib -lm -lX11
 
 OPTIONS_DEFINE=		DOCS V4L
 

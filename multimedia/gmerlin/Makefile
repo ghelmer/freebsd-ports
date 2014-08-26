@@ -29,7 +29,7 @@ USE_LDCONFIG=	yes
 INSTALL_ICONS=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 INFO=		gmerlin
 
@@ -63,21 +63,27 @@ QUICKTIME_CONFIGURE_OFF=--disable-lqt
 TIFF_LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
 TIFF_CONFIGURE_OFF=	--disable-libtiff
 
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MCDIO}
+BROKEN=	Fails to build with new libcdio
+.endif
+
+.if !(${OPSYS} == FreeBSD && ${OSVERSION} < 900033)
+LDFLAGS+=	-Wl,--add-needed
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/LIBS/s|-ldl || ; \
-		 s|^LDFLAGS="|&$${LDFLAGS} | ; \
 		 s|-DGTK_DISABLE_DEPRECATED|| ; \
-		 s|-lpthread|-pthread| ; \
 		 s|-O3.*-ffast-math||' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e \
 		's|^texinfo_|#texinfo_|g' ${WRKSRC}/doc/Makefile.in
 	@${REINPLACE_CMD} -e \
 		's|ln -sf $$(DESTDIR)|ln -sf |' ${WRKSRC}/icons/Makefile.in
 	@${FIND} ${WRKSRC} -name "Makefile.in" | ${XARGS} ${REINPLACE_CMD} -e \
-		's|-ldl||g ; \
-		 s|-lpthread|-pthread|g ; \
-		 /^LIBS = /s|$$| @LIBINTL@ -pthread|g'
+		's|-ldl||g'
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

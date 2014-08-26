@@ -30,14 +30,10 @@ PLIST_FILES=	bin/${PORTNAME} bin/${PORTNAME}-server
 
 NO_STAGE=	yes
 post-patch:
-# Sanitize Makefile: honor CC/CXX and C[XX]FLAGS, trim `-mt' suffix from boost
-# libraries, remove superfluous libraries when linking server executable (add
-# missing -pthread instead), etc.
-	@${REINPLACE_CMD} -E -e 's,= (ccache )?gcc,:= $$(CC) $$(CFLAGS),' \
-		-e 's,= (ccache )?g\+\+,:= $$(CXX) $$(CXXFLAGS),' \
-		-e 's, -O2,, ; s, -g,, ; s, -L/usr/lib,, ; s, -L/sw/lib,,' \
-		-e '/server/s,`.*mixer,-L${LOCALBASE}/lib ${PTHREAD_LIBS},' \
-		-e 's,-mt,,g' -e 's,-lpng,-lpng15,g' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's|-Werror||' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's,%lu,%u,' ${WRKSRC}/src/server.cpp
+	@${REINPLACE_CMD} -e 's,__linux__,__${OPSYS}__,' \
+		${WRKSRC}/src/clipboard.cpp
 # Point to the right location where to look for resources on FreeBSD
 	@${REINPLACE_CMD} -e 's,HAVE_CONFIG_H,__FreeBSD__,' \
 		-e 's,DATADIR,"${DATADIR}",' ${WRKSRC}/src/filesystem.cpp
