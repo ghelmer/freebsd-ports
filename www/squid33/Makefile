@@ -88,20 +88,20 @@ CACHE_DIGESTS_DESC=	Use cache digests
 DEBUG_DESC=	Build with extended debugging support
 DELAY_POOLS_DESC=	Enable delay pools (bandwidth limiting)
 DNS_HELPER_DESC=	Use external dnsserver processes for DNS
-ECAP_DESC=	Enable loadable content adaptation modules
-ESI_DESC=	Enable support for ESI
-FOLLOW_XFF_DESC=	Enable support for the X-Following-For header
-FS_AUFS_DESC=	Enable AUFS (async-io) support
-FS_COSS_DESC=	Enable COSS (not stable yet)
-HTCP_DESC=	Enable HTCP support
-ICAP_DESC=	Enable the ICAP client
-ICMP_DESC=	Enable ICMP pinging and network measurement
-IDENT_DESC=	Enable Ident lookups (RFC 931)
-KQUEUE_DESC=	Enable kqueue(2) support
-LARGEFILE_DESC=	Support large (>2GB) cache and log files
-SNMP_DESC=	Enable SNMP support
-SSL_CRTD_DESC=	Use ssl_crtd to handle SSL cert requests
-SSL_DESC=	Enable SSL gatewaying support
+ECAP_DESC=		Loadable content adaptation modules
+ESI_DESC=		ESI support
+FOLLOW_XFF_DESC=	Support for the X-Following-For header
+FS_AUFS_DESC=		AUFS (async-io) support
+FS_COSS_DESC=		COSS (not stable yet)
+HTCP_DESC=		HTCP support
+ICAP_DESC=		the ICAP client
+ICMP_DESC=		ICMP pinging and network measurement
+IDENT_DESC=		Ident lookups (RFC 931)
+KQUEUE_DESC=		Kqueue(2) support
+LARGEFILE_DESC=		Support large (>2GB) cache and log files
+SNMP_DESC=		SNMP support
+SSL_CRTD_DESC=		Use ssl_crtd to handle SSL cert requests
+SSL_DESC=		SSL gatewaying support
 STACKTRACES_DESC=	Enable automatic backtraces on fatal errors
 STRICT_HTTP_DESC=	Make Squid strictly HTTP compliant
 TP_IPFW_DESC=	Enable transparent proxying with IPFW
@@ -369,104 +369,7 @@ CONFIGURE_ARGS+=	--enable-ssl \
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 .endif
-.if ${PORT_OPTIONS:MSSL_CRTD}
-CONFIGURE_ARGS+=	--enable-ssl-crtd
-libexec+=	ssl_crtd
-.endif
-.if ${PORT_OPTIONS:MICMP}
-CONFIGURE_ARGS+=	--enable-icmp
-libexec+=	pinger
-.endif
-.if ${PORT_OPTIONS:MDNS_HELPER}
-CONFIGURE_ARGS+=	--disable-internal-dns
-libexec+=	dnsserver
-.endif
-.if empty(PORT_OPTIONS:MHTCP)
-CONFIGURE_ARGS+=	--disable-htcp
-.else
-CONFIGURE_ARGS+=	--enable-htcp
-.endif
-.if ${PORT_OPTIONS:MVIA_DB}
-CONFIGURE_ARGS+=	--enable-forw-via-db
-.else
-CONFIGURE_ARGS+=	--disable-forw-via-db
-.endif
-.if ${PORT_OPTIONS:MCACHE_DIGESTS}
-CONFIGURE_ARGS+=	--enable-cache-digests
-.else
-CONFIGURE_ARGS+=	--disable-cache-digests
-.endif
-.if ${PORT_OPTIONS:MWCCP}
-CONFIGURE_ARGS+=	--enable-wccp
-.else
-CONFIGURE_ARGS+=	--disable-wccp
-.endif
-.if ${PORT_OPTIONS:MWCCPV2}
-CONFIGURE_ARGS+=	--enable-wccpv2
-.else
-CONFIGURE_ARGS+=	--disable-wccpv2
-.endif
-.if ${PORT_OPTIONS:MSTRICT_HTTP}
-CONFIGURE_ARGS+=	--disable-http-violations
-.endif
-.if empty(PORT_OPTIONS:MIDENT)
-CONFIGURE_ARGS+=	--disable-ident-lookups
-.endif
-.if ${PORT_OPTIONS:MARP_ACL}
-CONFIGURE_ARGS+=	--enable-eui
-.else
-CONFIGURE_ARGS+=	--disable-eui
-.endif
-.if ${PORT_OPTIONS:MTP_IPFW}
-CONFIGURE_ARGS+=	--enable-ipfw-transparent
-.else
-CONFIGURE_ARGS+=	--disable-ipfw-transparent
-.endif
-.if ${PORT_OPTIONS:MTP_PF}
-CONFIGURE_ARGS+=	--enable-pf-transparent
-.else
-CONFIGURE_ARGS+=	--disable-pf-transparent
-.endif
-.if ${PORT_OPTIONS:MTP_IPF}
-CONFIGURE_ARGS+=	--enable-ipf-transparent
-.else
-CONFIGURE_ARGS+=	--disable-ipf-transparent
-.endif
-.if ${PORT_OPTIONS:MFOLLOW_XFF}
-CONFIGURE_ARGS+=	--enable-follow-x-forwarded-for
-.else
-CONFIGURE_ARGS+=	--disable-follow-x-forwarded-for
-.endif
-.if ${PORT_OPTIONS:MECAP}
-CONFIGURE_ARGS+=	--enable-ecap
-LIB_DEPENDS+=	libecap.so:${PORTSDIR}/www/libecap
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-.else
-CONFIGURE_ARGS+=	--disable-ecap
-.endif
-.if ${PORT_OPTIONS:MICAP}
-CONFIGURE_ARGS+=	--enable-icap-client
-.else
-CONFIGURE_ARGS+=	--disable-icap-client
-.endif
-.if ${PORT_OPTIONS:MESI}
-CONFIGURE_ARGS+=	--enable-esi
-LIB_DEPENDS+=	libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libxml2.so:${PORTSDIR}/textproc/libxml2
-CFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libxml2
-LDFLAGS+=	-L${LOCALBASE}/lib
-.else
-CONFIGURE_ARGS+=	--disable-esi
-.endif
-.if ${PORT_OPTIONS:MKQUEUE}
-CONFIGURE_ARGS+=	--enable-kqueue
-.else
-CONFIGURE_ARGS+=	--disable-kqueue
-.endif
-.if ${PORT_OPTIONS:MLARGEFILE}
-CONFIGURE_ARGS+=	--with-large-files
-.endif
+
 .if ${PORT_OPTIONS:MSTACKTRACES}
 CONFIGURE_ARGS+=	--enable-stacktraces
 CFLAGS+=		-g
