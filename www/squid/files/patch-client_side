@@ -1,0 +1,30 @@
+--- src/client_side.cc.orig	2014-03-08 23:24:25.000000000 -0600
++++ src/client_side.cc	2014-03-13 10:51:50.000000000 -0500
+@@ -3481,6 +3481,27 @@
+             debugs(83, DBG_IMPORTANT, "clientNegotiateSSL: Error negotiating SSL connection on FD " <<
+                    fd << ": " << ERR_error_string(ERR_get_error(), NULL) <<
+                    " (" << ssl_error << "/" << ret << ")");
++#if SQUID_USE_SSLGETCERTIFICATE_HACK
++	    SSL_CTX *my_ssl_ctx = SSL_get_SSL_CTX(ssl);
++	    X509 ***my_pCert = (X509 ***)(my_ssl_ctx ? my_ssl_ctx->cert : NULL);
++	    X509 * my_cert = my_pCert && *my_pCert ? **my_pCert : NULL;
++#elif SQUID_SSLGETCERTIFICATE_BUGGY
++	    X509 *my_cert = NULL;
++#else
++	    X509 *my_cert = SSL_get_certificate(ssl);
++#endif
++	    if (my_cert != NULL) {
++		    debugs(83, DBG_IMPORTANT, "clientNegotiateSSL: FD " << fd <<
++			   " server certificate: subject: " <<
++			   X509_NAME_oneline(X509_get_subject_name(my_cert), 0, 0));
++		    debugs(83, DBG_IMPORTANT, "clientNegotiateSSL: FD " << fd <<
++			   " server certificate: issuer: " <<
++			   X509_NAME_oneline(X509_get_issuer_name(my_cert), 0, 0));
++		    //X509_free(my_cert);
++	    } else {
++		    debugs(83, 5, "clientNegotiateSSL: FD " << fd <<
++			   " has no server certificate.");
++	    }
+             comm_close(fd);
+             return;
+         }
