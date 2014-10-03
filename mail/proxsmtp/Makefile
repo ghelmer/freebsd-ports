@@ -13,6 +13,7 @@ COMMENT=	Flexible SMTP filter which can act also as transparent proxy
 LICENSE=	BSD3CLAUSE
 
 USES=		gmake
+USE_AUTOTOOLS=	autoconf
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+= --enable-ssl
 
