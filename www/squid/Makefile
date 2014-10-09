@@ -1,25 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	squid
-PORTVERSION=	2.7.${SQUID_STABLE_VER}
-PORTREVISION=	5
-CATEGORIES=	www
-MASTER_SITES=	ftp://ftp.squid-cache.org/pub/%SUBDIR%/ \
-		http://mirrors.ccs.neu.edu/Squid/ \
-		ftp://ftp.fu-berlin.de/unix/www/squid/squid/ \
-		ftp://ftp.nl.uu.net/pub/unix/www/squid/ \
-		ftp://ftp.solnet.ch/mirror/squid/ \
-		ftp://ftp.ntua.gr/pub/www/Squid/squid/ \
-		http://mirror.aarnet.edu.au/pub/squid/squid/ \
-		${MASTER_SITE_RINGSERVER:S,%SUBDIR%,net/www/squid,} \
-		http://www.squid-cache.org/Versions/v2/2.7/ \
-		http://www2.us.squid-cache.org/Versions/v2/2.7/ \
-		http://www1.at.squid-cache.org/Versions/v2/2.7/ \
-		http://www2.de.squid-cache.org/Versions/v2/2.7/ \
-		http://www.eu.squid-cache.org/Versions/v2/2.7/ \
-		http://www1.ie.squid-cache.org/Versions/v2/2.7/ \
-		http://www1.jp.squid-cache.org/Versions/v2/2.7/ \
-		http://www2.tw.squid-cache.org/Versions/v2/2.7/
+PORTVERSION=	3.4.8
+PORTREVISION=	1
+CATEGORIES=	www ipv6
+MASTER_SITES=	http://www.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
+		http://www2.us.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
+		http://www1.at.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
+		http://www.eu.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
+		http://www1.jp.squid-cache.org/Versions/v3/${PORTVERSION:R}/
 MASTER_SITE_SUBDIR=	squid
 DIST_SUBDIR=	squid3.4
 
