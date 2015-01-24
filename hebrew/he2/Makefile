@@ -10,7 +10,9 @@ MASTER_SITES=	SF/${PORTNAME}/HebrewEditor/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Editor for editing (primarily LaTeX) Hebrew files
 
-RUN_DEPENDS=	${LOCALBASE}/lib/X11/fonts/hebrew:${PORTSDIR}/hebrew/elmar-fonts
+LICENSE=	GPLv2
+
+RUN_DEPENDS=	iw-elmar-fonts>0:${PORTSDIR}/hebrew/elmar-fonts
 
 USES=		gmake
 GNU_CONFIGURE=	yes

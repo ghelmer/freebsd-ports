@@ -13,9 +13,9 @@ DIST_SUBDIR=	eclipse
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Data Tools Platform for the Eclipse IDE
 
-RUN_DEPENDS=	eclipse:${PORTSDIR}/java/eclipse \
-		${LOCALBASE}/share/eclipse/dropins/emf:${PORTSDIR}/java/eclipse-emf \
-		${LOCALBASE}/share/eclipse/dropins/gef:${PORTSDIR}/java/eclipse-gef
+RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:${PORTSDIR}/java/eclipse \
+		eclipse-emf>0:${PORTSDIR}/java/eclipse-emf \
+		eclipse-gef>0:${PORTSDIR}/java/eclipse-gef
 
 LICENSE=	EPL
 

@@ -83,7 +83,7 @@ EXTRA_PATCHES+=		${FILESDIR}/thirdparty-json.diff
 .endif
 
 .if exists(${LOCALBASE}/lib/X11/fonts/dejavu) || ${PORT_OPTIONS:MDEJAVU}
-RUN_DEPENDS+=	${LOCALBASE}/lib/X11/fonts/dejavu:${PORTSDIR}/x11-fonts/dejavu
+RUN_DEPENDS+=	dejavu>0:${PORTSDIR}/x11-fonts/dejavu
 .endif
 
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/freetype2

@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	mainland@apeiron.net
 COMMENT=	Plots data on map projections (with continental and political boundaries)
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/matplotlib/:${PORTSDIR}/math/py-matplotlib
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:${PORTSDIR}/math/py-matplotlib
 
 USE_PYTHON=	yes
 USE_PYDISTUTILS=	yes

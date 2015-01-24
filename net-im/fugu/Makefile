@@ -12,7 +12,7 @@ COMMENT=	A graphical client for the Gale instant messaging system
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/Pmw:${PORTSDIR}/x11-toolkits/py-Pmw
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}Pmw>0:${PORTSDIR}/x11-toolkits/py-Pmw
 
 USE_OPENSSL=	yes
 USE_PYTHON=	yes

@@ -12,6 +12,8 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-${RPMVERSION}
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Advanced Linux Sound Architecture libraries (Linux Fedora 10)
 
+RUN_DEPENDS=	alsa-lib>0:${PORTSDIR}/audio/alsa-lib
+
 CONFLICTS=	linux-alsa-lib-[0-9]* linux-f8-alsa-lib-[0-9]*
 
 ONLY_FOR_ARCHS=	i386 amd64

@@ -12,7 +12,7 @@ COMMENT=	SVG/Mathml renderer and editor
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${LOCALBASE}/lib/X11/fonts/stix:${PORTSDIR}/x11-fonts/stix-fonts
+RUN_DEPENDS=	stixfonts>0:${PORTSDIR}/x11-fonts/stix-fonts
 
 USES=	tar:xz pkgconfig pathfix gmake gettext
 GNU_CONFIGURE=	yes

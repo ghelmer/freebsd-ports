@@ -12,9 +12,9 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Polygon mesh modeler written in Erlang
 
 BUILD_DEPENDS=	erlc:${PORTSDIR}/lang/erlang \
-		${LOCALBASE}/lib/erlang/lib/esdl/include/sdl.hrl:${PORTSDIR}/devel/esdl
+		esdl>0:${PORTSDIR}/devel/esdl
 RUN_DEPENDS=	erl:${PORTSDIR}/lang/erlang \
-		${LOCALBASE}/lib/erlang/lib/esdl/include/sdl.hrl:${PORTSDIR}/devel/esdl
+		esdl>0:${PORTSDIR}/devel/esdl
 
 MAKE_ENV=	ESDL_PATH=${LOCALBASE}/lib/erlang/lib/esdl
 PLIST_SUB=	VERSION="${PORTVERSION}"
