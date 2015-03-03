@@ -1,0 +1,14 @@
+--- src/wccp2.cc.ORIG	2015-03-03 11:08:18.000000000 -0600
++++ src/wccp2.cc	2015-03-03 11:10:37.000000000 -0600
+@@ -2264,7 +2264,10 @@
+         if (i >= WCCP2_NUMPORTS) {
+             fatalf("parse_wccp2_service_ports: too many ports (maximum: 8) in list '%s'\n", options);
+         }
+-        int p = xatoi(tmp);
++        char copy[len + 1];
++        memcpy(copy, tmp, len);
++        copy[len] = '\0';
++        int p = xatoi(copy);
+ 
+         if (p < 1 || p > 65535) {
+             fatalf("parse_wccp2_service_ports: port value '%s' isn't valid (1..65535)\n", tmp);
