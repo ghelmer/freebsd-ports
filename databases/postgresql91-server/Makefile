@@ -16,6 +16,7 @@ CONFLICTS?=	${PORTNAME}[^${PORTVERSION:R:R}]?-client* \
 		${PORTNAME}${COMPONENT}-[^${PORTVERSION:R:R}].* \
 		${PORTNAME}9[^${PORTVERSION:R:E}]-client* \
 		${PORTNAME}${COMPONENT}-9.[^${PORTVERSION:R:E}].*
+USES+=	cpe
 
 WRKSRC=		${WRKDIR}/postgresql-${DISTVERSION}
 DIST_SUBDIR=	postgresql
