@@ -29,7 +29,7 @@ UNIQUENAME?=	${PORTNAME}${DISTVERSION:R:S/.//}${PKGNAMESUFFIX}
 .endif
 
 PKGINSTALL?=	${PKGDIR}/pkg-install${COMPONENT}
-USES+=		tar:bzip2
+USES+=		tar:bzip2 cpe
 .if !defined(NO_BUILD)
 USES+=	gmake
 GNU_CONFIGURE=	yes
