@@ -21,7 +21,7 @@ USES+=	cpe
 WRKSRC=		${WRKDIR}/postgresql-${DISTVERSION}
 DIST_SUBDIR=	postgresql
 
-ICU_PATCHFILE?=	pg-928-icu-2014-06-09.diff.gz
+ICU_PATCHFILE?=	pg-929-icu-2015-04-18.diff.gz
 
 .if !defined(SLAVE_ONLY)
 UNIQUENAME?=	${PORTNAME}${DISTVERSION:R:S/.//}

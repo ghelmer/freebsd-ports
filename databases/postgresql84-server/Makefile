@@ -20,7 +20,12 @@ CONFLICTS?=	${PORTNAME}[^${PORTVERSION:R:R}]?-client* \
 WRKSRC=		${WRKDIR}/postgresql-${DISTVERSION}
 DIST_SUBDIR=	postgresql
 
-ICU_PATCHFILE?=	pg-8421-icu-2014-06-09.diff.gz
+# EOL was reached in July 2014
+# http://www.postgresql.org/support/versioning/
+DEPRECATED=	"EOL was reached in July 2014"
+EXPIRATION_DATE=2015-05-10
+
+ICU_PATCHFILE?=	pg-8421-icu-2015-04-18.diff.gz
 
 UNIQUENAME?=	${PORTNAME}${DISTVERSION:R:S/.//}
 
