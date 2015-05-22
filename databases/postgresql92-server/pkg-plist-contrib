@@ -71,7 +71,10 @@ share/postgresql/extension/btree_gist.control
 share/postgresql/extension/chkpass--1.0.sql
 share/postgresql/extension/chkpass--unpackaged--1.0.sql
 share/postgresql/extension/chkpass.control
+share/postgresql/extension/citext--1.0--1.1.sql
 share/postgresql/extension/citext--1.0.sql
+share/postgresql/extension/citext--1.1--1.0.sql
+share/postgresql/extension/citext--1.1.sql
 share/postgresql/extension/citext--unpackaged--1.0.sql
 share/postgresql/extension/citext.control
 share/postgresql/extension/cube--1.0.sql

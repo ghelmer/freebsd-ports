@@ -5,6 +5,7 @@ PORTNAME=	postgresql
 PKGNAMESUFFIX?=	${DISTVERSION:R:S/.//}${COMPONENT}
 
 COMMENT=	PostgreSQL database (client)
+PORTREVISION=	0
 
 MASTERDIR=	${.CURDIR}/../postgresql92-server
 

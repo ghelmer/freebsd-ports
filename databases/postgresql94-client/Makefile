@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	postgresql
-PORTREVISION=	1
 PKGNAMESUFFIX?=	${DISTVERSION:R:S/.//}${COMPONENT}
 
 COMMENT=	PostgreSQL database (client)
+PORTREVISION=	0
 
 MASTERDIR=	${.CURDIR}/../postgresql94-server
 
