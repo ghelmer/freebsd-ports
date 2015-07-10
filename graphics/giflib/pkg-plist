@@ -9,7 +9,6 @@ bin/giftext
 bin/giftool
 include/gif_lib.h
 lib/libgif.a
-lib/libgif.la
 lib/libgif.so
 lib/libgif.so.6
 lib/libgif.so.6.0.1
