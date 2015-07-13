@@ -274,13 +274,13 @@ do-install:
 	    ${FIND} bin jre/bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	    ${CHMOD} ${BINMODE} jre/lib/${ARCH}/jexec \
 	    jre/lib/${ARCH}/jspawnhelper lib/${ARCH}/jexec
-	@${ECHO} "@dir ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
+	@${ECHO} "@dirrm ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
 .else
 	@cd ${JRE_IMAGEDIR} && ${COPYTREE_SHARE} . ${STAGEDIR}${INSTALLDIR}
 	@cd ${STAGEDIR}${INSTALLDIR} && \
 	    ${FIND} bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	    ${CHMOD} ${BINMODE} lib/${ARCH}/jexec lib/${ARCH}/jspawnhelper
-	@${ECHO} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
+	@${ECHO} "@dirrm ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
 .endif
 	@${ECHO} "@unexec ${LOCALBASE}/bin/unregistervm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
 	@${FIND} -s ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \
