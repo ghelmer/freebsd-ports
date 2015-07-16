@@ -10,8 +10,6 @@ MASTER_SITES=	http://www.jstrack.org/${PORTNAME}/downloads/ \
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Freeware hurricane tracking program
 
-BROKEN=		Checksum and size mismatch
-
 LICENSE=	JStrack
 LICENSE_NAME=	JStrack
 LICENSE_TEXT=	It is and always will be free, and [Jim Graham] wrote it...\

@@ -46,10 +46,6 @@ USES=		libtool pathfix perl5 tar:lzma
 USE_LDCONFIG=	yes
 USES+=		cpe
 
-.if !defined(BUILDING_HIPHOP)
-USE_LDCONFIG=	yes
-USES+=		cpe
-
 PORTDOCS=	*
 PORTEXAMPLES=	*
 

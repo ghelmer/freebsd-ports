@@ -9,8 +9,6 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-0
 MAINTAINER=	mono@FreeBSD.org
 COMMENT=	MonoDevelop database support
 
-BROKEN=		Fails to build with monodevelop-5.0.1
-
 LICENSE=	MIT
 
 BROKEN=		Fails to package, missing Npgsql Version 2 with mono 4

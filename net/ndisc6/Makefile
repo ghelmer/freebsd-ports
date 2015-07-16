@@ -28,7 +28,7 @@ OPTIONS_DEFINE=	DOCS NLS
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}
-USES+=		gettext tar:bzip2
+USES+=		gettext
 LDFLAGS+=	-lintl
 PLIST_SUB+=	NLS=""
 .else

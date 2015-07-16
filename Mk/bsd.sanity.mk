@@ -149,37 +149,6 @@ DEV_WARNING+=	"PYDISTUTILS_INSTALLNOSINGLE is deprecated, please do not use it a
 DEV_ERROR+=	"INSTALLS_EGGINFO is no longer supported, please add the entry directly to the plist"
 .endif
 
-.if defined(USE_PYTHON) && (${USE_PYTHON} == "yes" || ${USE_PYTHON:C/[-0-9.+]*//} == "")
-_PYTHON_VAL := ${USE_PYTHON}
-.if ${_PYTHON_VAL} != "yes"
-DEV_WARNING+=	"USE_PYTHON=${_PYTHON_VAL} is deprecated, please use USES=python:${_PYTHON_VAL}"
-.else
-DEV_WARNING+=	"USE_PYTHON=yes is deprecated, please use USES=python"
-.endif
-.endif
-.if defined(USE_PYTHON_RUN)
-.if ${USE_PYTHON_RUN} != "yes"
-DEV_WARNING+=	"USE_PYTHON_RUN is deprecated, please use USES=python:${USE_PYTHON_RUN},run"
-.else
-DEV_WARNING+=	"USE_PYTHON_RUN is deprecated, please use USES=python:run"
-.endif
-.endif
-.if defined(USE_PYTHON_BUILD)
-.if ${USE_PYTHON_BUILD} != "yes"
-DEV_WARNING+=	"USE_PYTHON_BUILD is deprecated, please use USES=python:${USE_PYTHON_BUILD},build"
-.else
-DEV_WARNING+=	"USE_PYTHON_BUILD is deprecated, please use USES=python:build"
-.endif
-.endif
-
-.if defined(PYDISTUTILS_INSTALLNOSINGLE)
-DEV_WARNING+=	"PYDISTUTILS_INSTALLNOSINGLE is deprecated, please do not use it anymore"
-.endif
-
-.if defined(INSTALLS_EGGINFO)
-DEV_WARNING+=	"INSTALLS_EGGINFO is deprecated, please add the entry directly to the plist"
-.endif
-
 SANITY_UNSUPPORTED=	USE_OPENAL USE_FAM USE_MAKESELF USE_ZIP USE_LHA USE_CMAKE \
 		USE_READLINE USE_ICONV PERL_CONFIGURE PERL_MODBUILD \
 		USE_PERL5_BUILD USE_PERL5_RUN USE_DISPLAY USE_FUSE \

@@ -25,7 +25,7 @@ OPTIONS_DEFINE=	DOCS NLS
 CONFIGURE_ARGS+=	--disable-nls
 PLIST_SUB+=	NLS="@comment "
 .else
-USES+=		gettext tar:bzip2
+USES+=		gettext
 PLIST_SUB+=	NLS=""
 .endif
 

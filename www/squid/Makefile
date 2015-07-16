@@ -261,12 +261,6 @@ BROKEN=			Squid with eCAP enabled can't be compiled by clang
 . endif
 .endif
 
-CONFIGURE_ARGS+=	--enable-auth-basic="${basic_auth}" \
-			--enable-auth-digest="${digest_auth}" \
-			--enable-external-acl-helpers="${external_acl}" \
-			--enable-auth-negotiate="${negotiate_auth}" \
-			--enable-auth-ntlm="${ntlm_auth}"
-
 # Storage schemes:
 storage_schemes=	ufs
 diskio_modules=		AIO Blocking IpcIo Mmapped
@@ -372,12 +366,4 @@ CXXFLAGS+=	-Wno-undefined-bool-conversion -Wno-tautological-undefined-compare -W
 .endif
 .endif
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/helpers/basic_auth/DB/passwd.sql \
-		${STAGEDIR}${EXAMPLESDIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${MYDOCS} ${STAGEDIR}${DOCSDIR})
-	${MKDIR} ${STAGEDIR}/var/squid/logs
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
