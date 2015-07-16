@@ -4,12 +4,11 @@
 PORTNAME=	netpipes
 PORTVERSION=	4.2
 CATEGORIES=	net
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=kris
+MASTER_SITES=	LOCAL/kris
 DISTNAME=	netpipes-4.2-export
 
 MAINTAINER=	doconnor@gsoft.com.au
-COMMENT=	A group of shell utilities to connect programs to sockets
+COMMENT=	Group of shell utilities to connect programs to sockets
 
 CONFLICTS=	timelimit-[0-9]*
 

@@ -2,13 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	gmsh
-PORTVERSION=	2.8.4
-PORTREVISION=	4
+PORTVERSION=	2.9.3
 CATEGORIES=	cad
 MASTER_SITES=	http://www.geuz.org/gmsh/src/ \
 		http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
-EXTRACT_SUFX=	.tgz
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	gmsh
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -17,21 +15,23 @@ MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Automatic 3D finite element mesh generator
 
 LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		liblapack.so:${PORTSDIR}/math/lapack
+RUN_DEPENDS=	getdp:${PORTSDIR}/science/getdp
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-source
 
 SLAVEDIRS=	cad/gmsh-occ
 
-USES=		cmake fortran gmake
+USES=		cmake fortran gmake jpeg tar:tgz
 USE_GL=		yes
 ALL_TARGET=	all
 
 MAKE_JOBS_UNSAFE=	yes
 
 CMAKE_ARGS+=	-DCMAKE_SKIP_RPATH:BOOL=YES
+
+OPTIONS_DEFINE=	DOCS
 
 .if !defined(WITHOUT_STATIC_LIB)
 CMAKE_ARGS+=	-DENABLE_BUILD_LIB=ON
@@ -44,7 +44,7 @@ PLIST_SUB+=	STATIC_LIB="@comment "
 .if !defined(WITHOUT_SHARED_LIB)
 CMAKE_ARGS+=	-DENABLE_BUILD_SHARED=ON
 ALL_TARGET+=	shared
-PLIST_SUB+=	SHARED_LIB=""
+PLIST_SUB+=	SHARED_LIB="" VER=${PORTVERSION} VE=${PORTVERSION:R}
 USE_LDCONFIG=	yes
 .else
 PLIST_SUB+=	SHARED_LIB="@comment "
@@ -192,7 +192,7 @@ post-extract:
 	@${ECHO} "because Taucs requires Metis." >> ${PKGMESSAGE}
 .endif
 
-post-patch:
+pre-configure:
 	${REINPLACE_CMD} -e s+share/doc/gmsh+${DOCSDIR_REL}+ \
 		-e s+share/man/man1+man/man1+ ${WRKSRC}/CMakeLists.txt
 

@@ -1,27 +1,39 @@
 # Created by: Yen-Ming Lee <leeym@leeym.com>
 # $FreeBSD$
 
-PORTNAME=		GeoIP
-PORTVERSION=	1.4.8
-PORTREVISION=	5
-CATEGORIES=		net geography
-MASTER_SITES=	http://geolite.maxmind.com/download/geoip/api/c/
+PORTNAME=	GeoIP
+PORTVERSION=	1.6.5
+DISTVERSIONPREFIX=	v
+PORTREVISION=	2
+CATEGORIES=	net geography
 
-MAINTAINER=		adamw@FreeBSD.org
-COMMENT=		Find the country that any IP address or hostname originates from
+MAINTAINER=	adamw@FreeBSD.org
+COMMENT=	Find the country that any IP address or hostname originates from
 
-GNU_CONFIGURE=	yes
-USES=			libtool:oldver
+LICENSE=	GPLv2
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	maxmind
+GH_PROJECT=	geoip-api-c
+
+USES=		autoreconf libtool pathfix
+PATHFIX_MAKEFILEIN=	Makefile.am
+
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
 
-SUB_FILES=		geoipupdate.sh
+SUB_FILES=	geoipupdate.sh pkg-message
+PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
+
+OPTIONS_DEFINE=	DOCS
+PORTDOCS=	COPYING ChangeLog LICENSE README.md
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/geoipupdate.sh ${STAGEDIR}${PREFIX}/bin
-	${MV} ${STAGEDIR}${DATADIR}/GeoIP.dat \
-		${STAGEDIR}${DATADIR}/GeoIP.dat.sample
-	${MV} ${STAGEDIR}${PREFIX}/etc/GeoIP.conf.default \
-		${STAGEDIR}${PREFIX}/etc/GeoIP.conf.sample
-	${RM} ${STAGEDIR}${PREFIX}/etc/GeoIP.conf
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libGeoIP.so.*
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:C|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

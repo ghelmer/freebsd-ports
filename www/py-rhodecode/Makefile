@@ -38,9 +38,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pylons>=1.0:${PORTSDIR}/www/py-pylons \
 		${PYTHON_PKGNAMEPREFIX}celery>=0:${PORTSDIR}/devel/py-celery \
 		mercurial>=2.6:${PORTSDIR}/devel/mercurial
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 USE_RC_SUBR=		rhodecode
 SUB_FILES=		pkg-message
@@ -54,7 +53,7 @@ GIT_DESC=	GIT support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLDAP}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ldap>=2.4.6:${PORTSDIR}/net/py-ldap2
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ldap>=2.4.6:${PORTSDIR}/net/py-ldap
 .endif
 
 .if ${PORT_OPTIONS:MGIT}

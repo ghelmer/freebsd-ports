@@ -3,20 +3,18 @@
 
 PORTNAME=	ppolicy
 PORTVERSION=	2.6.6
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	mail python
 MASTER_SITES=	http://kmlinux.fjfi.cvut.cz/~vokac/activities/ppolicy/download/%SUBDIR%/ \
 		http://www.chifeng.name/dist/ppolicy/%SUBDIR%/
 
-MAINTAINER?=	chifeng@gmail.com
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT=	PPolicy is tool for extending Postfix checking capabilities
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/dns/__init__.py:${PORTSDIR}/dns/py-dnspython
 
-USES=		twisted
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python twisted
+USE_PYTHON=	distutils autoplist
 NO_BUILD=	yes
 USE_RC_SUBR=	ppolicyd
 DOCSDIR?=	${PREFIX}/share/doc/py-${PORTNAME}
@@ -36,7 +34,7 @@ RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/GeoIP.so:${PORTSDIR}/net/py-GeoIP
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:${PORTSDIR}/databases/py-MySQLdb
 .endif
 .if ${PORT_OPTIONS:MLDAP}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ldap2>=2.3.1:${PORTSDIR}/net/py-ldap2
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ldap>=2.3.1:${PORTSDIR}/net/py-ldap
 .endif
 
 post-install:
@@ -47,7 +45,7 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/TODO ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/TESTS ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/ppolicy.sql ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} -m 0644 ${WRKSRC}/ppolicy.conf ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_DATA} ${WRKSRC}/ppolicy.conf ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_DATA} ${WRKSRC}/ppolicy.tap ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>

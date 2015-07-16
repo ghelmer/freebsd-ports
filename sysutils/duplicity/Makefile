@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	duplicity
-PORTVERSION=	0.6.24
+PORTVERSION=	0.6.25
 CATEGORIES=	sysutils
 MASTER_SITES=	http://launchpad.net/duplicity/0.6-series/${PORTVERSION}/+download/
 
@@ -13,9 +13,8 @@ LIB_DEPENDS=	librsync.so:${PORTSDIR}/net/librsync
 RUN_DEPENDS=	gpg:${PORTSDIR}/security/gnupg \
 				${PYTHON_PKGNAMEPREFIX}lockfile>=0:${PORTSDIR}/devel/py-lockfile
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	NLS DOCS SSH FTP FTPS S3 GDOCS CLOUDFILES GIO

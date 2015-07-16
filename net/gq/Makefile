@@ -3,7 +3,7 @@
 
 PORTNAME=	gq
 PORTVERSION=	1.3.4
-PORTREVISION=	10
+PORTREVISION=	13
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}client/GQ%20Unstable/${PORTVERSION}
@@ -11,7 +11,7 @@ MASTER_SITES=	SF/${PORTNAME}client/GQ%20Unstable/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK-based LDAP client
 
-LIB_DEPENDS=	libgnome-keyring.so:${PORTSDIR}/security/gnome-keyring
+LIB_DEPENDS=	libgnome-keyring.so:${PORTSDIR}/security/libgnome-keyring
 
 OPTIONS_DEFINE=	DND CACHE
 OPTIONS_DEFAULT=	DND CACHE
@@ -23,13 +23,13 @@ USE_OPENSSL=	yes
 USE_OPENLDAP=	yes
 USES=		gettext gmake pkgconfig shared-mime-info desktop-file-utils
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-ldap-prefix=${LOCALBASE}
+CONFIGURE_ARGS=	--with-ldap-prefix=${LOCALBASE} --disable-update-mimedb
 DND_CONFIGURE_ENABLE=	browser-dns
 CACHE_CONFIGURE_ENABLE=	cache
 INSTALLS_ICONS=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS} -Wno-return-type
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include -Wno-return-type
+LIBS+=		-L${LOCALBASE}/lib -lcrypto
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' \

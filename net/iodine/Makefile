@@ -3,6 +3,7 @@
 
 PORTNAME=	iodine
 PORTVERSION=	0.7.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://code.kryo.se/iodine/ \
 		http://redundancy.redundancy.org/mirror/
@@ -12,12 +13,12 @@ COMMENT=	Tunnel IPv4 data through a DNS server
 
 LICENSE=	ISCL
 
+USES=		cpe
+CPE_VENDOR=	kryo
 USE_RC_SUBR=	iodined
 
-USERS=	_iodined
-GROUPS=	_iodined
-
-.include <bsd.port.pre.mk>
+USERS=		_iodined
+GROUPS=		_iodined
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/iodine ${STAGEDIR}${PREFIX}/bin
@@ -29,7 +30,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-post-install:
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

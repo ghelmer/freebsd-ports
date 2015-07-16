@@ -2,16 +2,15 @@
 
 PORTNAME=	mod_auth_tkt
 PORTVERSION=	2.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
+MASTER_SITES=	LOCAL/kuriyama \
 		http://www.openfusion.com.au/labs/dist/mod_auth_tkt/
-MASTER_SITE_SUBDIR=	kuriyama
 
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Lightweight single-sign-on authentication module for apache
 
-USE_APACHE=	22
+USE_APACHE=	22+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 PATCH_WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 PATCH_STRIP=	-p1
@@ -19,7 +18,7 @@ AP_FAST_BUILD=	yes
 SRC_FILE=	${PORTNAME}.c sha2.c
 AP_EXTRAS=	-DAPACHE22
 
-OPTIONS_DEFINE=	QUERY_SEP
+OPTIONS_DEFINE=	QUERY_SEP DOCS EXAMPLES
 QUERY_SEP_DESC=	Experimental TKTAuthQuerySeparator directive
 OPTIONS_DEFAULT=QUERY_SEP
 
@@ -37,7 +36,6 @@ post-build:
 
 post-install:
 	cd ${WRKSRC}/../doc; ${MAKE} ${.TARGET:S/post-//}
-.if !defined(NOPORTEXAMPLES)
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/cgi/Apache ${STAGEDIR}${EXAMPLESDIR}/conf
 .for i in cgi/AuthTktConfig.pm cgi/Apache/AuthTkt.pm cgi/tkt.css \
 	conf/02_auth_tkt.conf conf/auth_tkt_cgi.conf
@@ -46,10 +44,7 @@ post-install:
 .for i in logout.cgi login.cgi
 	${INSTALL_SCRIPT} ${WRKSRC}/../cgi/${i} ${STAGEDIR}${EXAMPLESDIR}/cgi/${i}
 .endfor
-.endif
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/../README ${STAGEDIR}${DOCSDIR}/
-.endif
 
 .include <bsd.port.mk>

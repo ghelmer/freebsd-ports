@@ -2,19 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	3.0.0-beta6
+DISTVERSION=	3.0.2
 CATEGORIES=	databases
-MASTER_SITES=	https://github.com/antirez/redis/archive/
+MASTER_SITES=	http://download.redis.io/releases/
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${DISTVERSION}
-DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Persistent key-value database with built-in net interface
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+USES=		execinfo
 
 OPTIONS_DEFINE=	TESTS
 OPTIONS_RADIO=	EXTLUA
@@ -23,21 +21,19 @@ LUA_DESC=	Use lang/lua instead of builtin lua
 LUAJIT_DESC=	Use lang/luajit instead of builtin lua
 TESTS_DESC=	Install lang/tcl for redis unit tests
 
-FETCH_ARGS=	-Fpr
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MLUA}
 USES+=		lua:51
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.lua
-CFLAGS+=	-fPIC
-LDFLAGS+=	-Wl,-E
 .endif
 
 .if ${PORT_OPTIONS:MLUAJIT}
 LIB_DEPENDS+=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.luajit
+.endif
+
+.if ${PORT_OPTIONS:MLUA} || ${PORT_OPTIONS:MLUAJIT}
 CFLAGS+=	-fPIC
 LDFLAGS+=	-Wl,-E
 .endif
@@ -47,9 +43,9 @@ USES+=		tcl:build
 .endif
 
 CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS} -lm -lexecinfo
+LDFLAGS+=	-L${LOCALBASE}/lib -lpthread -lm -lexecinfo
 
-CONFLICTS?=	redis-2.*
+CONFLICTS?=	redis-3.*
 
 USES+=		gmake
 MAKE_ENV=	"V=yo"
@@ -81,7 +77,7 @@ PLIST_SUB+=	REDIS_USER=${USERS} \
 
 .if ${PORT_OPTIONS:MLUAJIT} || ${PORT_OPTIONS:MLUA}
 post-patch:
-	@cd ${WRKSRC}/deps/lua/src && ${CP} lua_* strbuf.* ${WRKSRC}/src/
+	@cd ${WRKSRC}/deps/lua/src && ${CP} fpconv.* lua_* strbuf.* ${WRKSRC}/src/
 .endif
 
 post-build:
@@ -92,6 +88,9 @@ do-install:
 	${INSTALL_PROGRAM} ${BIN_FILES:C!^!${WRKSRC}/src/!} ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKDIR}/redis.conf ${STAGEDIR}${PREFIX}/etc/redis.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/sentinel.conf ${STAGEDIR}${PREFIX}/etc/sentinel.conf.sample
+	${MKDIR} ${STAGEDIR}${REDIS_LOGDIR} \
+		${STAGEDIR}${REDIS_DBDIR} \
+		${STAGEDIR}${REDIS_RUNDIR}
 
 regression-test: build
 	@cd ${WRKSRC} && ${TCLSH} tests/test_helper.tcl

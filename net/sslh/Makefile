@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sslh
-PORTVERSION=	1.16
+PORTVERSION=	1.17
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 MASTER_SITES=	http://www.rutschle.net/tech/
@@ -31,6 +31,8 @@ PLIST_FILES=	sbin/sslh-fork \
 USE_RC_SUBR=	sslh
 
 PORTEXAMPLES=	example.cfg
+
+MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.options.mk>
 

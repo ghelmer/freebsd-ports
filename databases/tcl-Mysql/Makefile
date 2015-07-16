@@ -7,7 +7,6 @@ PORTREVISION=	7
 CATEGORIES=	databases tcl
 MASTER_SITES=	SF/tcl-sql/tcl-sql/${PORTVERSION}
 DISTNAME=	tcl-sql-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	TCL module for accessing MySQL databases
@@ -16,13 +15,12 @@ OPTIONS_DEFINE=	DOCS
 
 PATCH_DEPENDS=	rcsdiff:${PORTSDIR}/devel/rcs
 
-BROKEN=		Does not build
 USE_MYSQL=	41+
-USES=		tcl
+USES=		tcl tar:tgz
 TCL_NODOT=	tcl${TCL_VER:S/.//}
-WRKSRC=		${WRKDIR}/tcl-sql/
+WRKSRC=		${WRKDIR}/tcl-sql
 LIB_NAME=	libTclMySQL.so.1
-MAKE_ARGS+=	SHLIB_NAME=${LIB_NAME} ${PLIST_SUB}
+MAKE_ARGS+=	SHLIB_NAME=${LIB_NAME} ${PLIST_SUB} TCL_VERSION=tcl${TCL_VER}
 REINPLACE_ARGS=	-i ""
 MAKEFILE=	${FILESDIR}/Makefile.bsd
 
@@ -30,7 +28,6 @@ DOCSDIR?=	${PREFIX}/share/doc/tcl-MySQL
 
 PLIST_FILES=	lib/sql1.0/${LIB_NAME} \
 		lib/sql1.0/pkgIndex.tcl
-PLIST_DIRS=	lib/sql1.0
 PORTDOCS=	*
 
 post-patch:

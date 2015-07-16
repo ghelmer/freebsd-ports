@@ -5,36 +5,30 @@ PORTNAME=	gazpacho
 PORTVERSION=	0.7.2
 PORTREVISION=	4
 CATEGORIES=	devel python
-MASTER_SITES=	${MASTER_SITE_GNOME}
-MASTER_SITE_SUBDIR=	sources/gazpacho/0.7
+MASTER_SITES=	GNOME/sources/gazpacho/0.7
 
-MAINTAINER=	gustavofukao@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI builder for the GTK+ toolkit
 
 RUN_DEPENDS=	${LOCALBASE}/bin/kiwi-i18n:${PORTSDIR}/x11-toolkits/py-kiwi
 BUILD_DEPENDS=	${LOCALBASE}/bin/kiwi-i18n:${PORTSDIR}/x11-toolkits/py-kiwi
 
 NO_BUILD=	yes
-
+NO_ARCH=	yes
 USE_GNOME=	pygtk2
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-USES=		gettext
+USE_PYTHON=	distutils
+USES=		desktop-file-utils gettext python
+DOCS=		AUTHORS ChangeLog CONTRIBUTORS COPYING README NEWS
 
-PORTDOCS=	AUTHORS ChangeLog CONTRIBUTORS COPYING README NEWS
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/doc/gazpacho/examples|${EXAMPLESDIR}|g' ${WRKSRC}/setup.py
 
 post-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-. for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+. for f in ${DOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 . endfor
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

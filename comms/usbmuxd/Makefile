@@ -1,50 +1,40 @@
 # $FreeBSD$
 
 PORTNAME=	usbmuxd
-PORTVERSION=	1.0.8
+DISTVERSION=	1.1.0
 CATEGORIES=	comms
 MASTER_SITES=	http://www.libimobiledevice.org/downloads/
 
 MAINTAINER=	avilla@FreeBSD.org
 COMMENT=	Daemon for multiplexing connections over USB to iPhone/iPod Touch
 
-LIB_DEPENDS=	libplist.so:${PORTSDIR}/devel/libplist
+LICENSE=	GPLv2 GPLv3
+LICENSE_COMB=	dual
 
-USES=		cmake pkgconfig tar:bzip2
-USE_LDCONFIG=	yes
+LIB_DEPENDS=	libplist.so:${PORTSDIR}/devel/libplist \
+		libimobiledevice.so:${PORTSDIR}/comms/libimobiledevice
 
-PORTDOCS=	AUTHORS README README.devel
+USES=		autoreconf cpe libtool pathfix pkgconfig tar:bzip2
+CPE_VENDOR=	nikias_bassen
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--without-systemd \
+		libusb_CFLAGS="-I/usr/include" \
+		libusb_LIBS="-lusb"
 
-OPTIONS_DEFINE=	INOTIFY
+PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
+		sbin/${PORTNAME}
 
-INOTIFY_DESC=	Use inotify instead of polling (saves energy)
+PORTDOCS=	AUTHORS NEWS README
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MINOTIFY}
-LIB_DEPENDS+=	libinotify.so:${PORTSDIR}/devel/libinotify
-CMAKE_ARGS+=	-DWANT_INOTIFY:BOOL=TRUE
-.else
-CMAKE_ARGS+=	-DWANT_INOTIFY:BOOL=FALSE
-.endif
-
-.if ${OSVERSION} <= 800107 || ${OSVERSION} >= 900000 && ${OSVERSION} <= 900002
-IGNORE=		requires libusb 1.0.3
-.endif
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	@${REINPLACE_CMD} -e 's,$${LIB_SUFFIX}/pkgconfig,data/pkgconfig,' \
-		${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},g' \
-		${WRKSRC}/Modules/FindInotify.cmake
-
-pre-install:
-	@${REINPLACE_CMD} -e '1 s,python,env python,' \
-		${WRKSRC}/python-client/*.py
+# TODO: add devd(8) rule.
+	@${REINPLACE_CMD} \
+		-e '/*cygwin*/ s,),|*bsd*),' \
+		${WRKSRC}/configure.ac
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/python-client/*.py ${STAGEDIR}${DATADIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

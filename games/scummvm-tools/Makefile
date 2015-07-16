@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scummvm-tools
-DISTVERSION=	1.6.0
+DISTVERSION=	1.7.0
 PORTREVISION=	2
 CATEGORIES=	games emulators
 MASTER_SITES=	SF/scummvm/${PORTNAME}/${DISTVERSION}
@@ -12,13 +12,12 @@ COMMENT=	Tools for use with the SCUMMVM game emulator
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	scummvm:${PORTSDIR}/games/scummvm
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 BUILD_DEPENDS=	lame:${PORTSDIR}/audio/lame \
 		flac:${PORTSDIR}/audio/flac \
-		oggenc:${PORTSDIR}/audio/vorbis-tools \
-		oggdec:${PORTSDIR}/audio/vorbis-tools \
+		oggenc:${PORTSDIR}/audio/vorbis-tools
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis
 
 USES=		gmake tar:bzip2
@@ -30,10 +29,9 @@ STRIP_FILES=	construct_mohawk create_sjisfnt decine degob dekyra \
 		deriven descumm desword2 extract_mohawk gob_loadcalc \
 		scummvm-tools-cli
 
-OPTIONS_DEFINE=	WXGTK
+OPTIONS_DEFINE=	WXGTK DOCS
 OPTIONS_DEFAULT=	WXGTK
 
-.include <bsd.port.options.mk>
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MWXGTK}
@@ -54,12 +52,10 @@ pre-patch:
 		${WRKSRC}/configure
 
 pre-install:
-.for f in ${STRIP_FILES}
-	@${STRIP_CMD} ${WRKSRC}/$f
-.endfor
+	@${STRIP_CMD} ${STRIP_FILES:S|^|${WRKSRC}/|}
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	RDF-Core
 PORTVERSION=	0.51
+PORTREVISION=	1
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,13 +22,13 @@ USE_PERL5=	configure
 DOCSUBDIR=	/ RDF RDF/Core RDF/Core/Enumerator RDF/Core/Model \
 		RDF/Core/Storage
 
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-.ifndef(NOPORTDOCS)
 	@${ECHO_MSG} "===>   Installing documentation for ${PKGNAME}"
 .for DOCDIR in ${DOCSUBDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/${DOCDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/${DOCDIR}/*.html	${STAGEDIR}${DOCSDIR}/${DOCDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

@@ -7,7 +7,6 @@ PORTREVISION=	7
 CATEGORIES=	lang
 MASTER_SITES=	http://compsoc.dur.ac.uk/whitespace/downloads/
 DISTNAME=	wspace-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interpreter for the Whitespace programming language
@@ -16,9 +15,9 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	ghc:${PORTSDIR}/lang/ghc
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libffi.so:${PORTSDIR}/devel/libffi
+		libffi.so.6:${PORTSDIR}/devel/libffi
 
-USES=		perl5 gmake
+USES=		perl5 gmake tar:tgz
 USE_PERL5=	build
 WRKSRC=	${WRKDIR}/WSpace
 ALL_TARGET=	${TARGET}

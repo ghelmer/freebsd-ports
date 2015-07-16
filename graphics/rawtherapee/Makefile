@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rawtherapee
-PORTVERSION=	4.1
+PORTVERSION=	4.2
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://rawtherapee.com/shared/source/
 
@@ -13,22 +14,21 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24 \
 		libiptcdata.so:${PORTSDIR}/graphics/libiptcdata \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		liblcms2.so:${PORTSDIR}/graphics/lcms2 \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
 		libfftw3.so:${PORTSDIR}/math/fftw3 \
 		libfftw3f.so:${PORTSDIR}/math/fftw3-float \
 		libcanberra-gtk3.so:${PORTSDIR}/audio/libcanberra-gtk3
 
-USES=		cmake:outsource pkgconfig compiler:features desktop-file-utils dos2unix tar:xz
+USES=		cmake:outsource compiler:features desktop-file-utils dos2unix jpeg pkgconfig tar:xz
 DOS2UNIX_REGEX=	.*\.(cc|h)
 USE_GNOME=	gtk20 glib20
 USE_LDCONFIG=	yes
-CFLAGS+=	-I${LOCALBASE}/include -fPIC ${PTHREAD_CFLAGS}
-CXXFLAGS+=	-I${LOCALBASE}/include -fPIC ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CFLAGS+=	-I${LOCALBASE}/include -fPIC
+CXXFLAGS+=	-I${LOCALBASE}/include -fPIC
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 CMAKE_ENV=	CFLAGS="${CFLAGS}" \
 		LDFLAGS="${LDFLAGS:C|-Wl,-rpath=${_GCC_RUNTIME}||:C|-L${_GCC_RUNTIME}||}"
 CMAKE_ARGS+=	-DDOCDIR="${DOCSDIR}" \
@@ -57,7 +57,7 @@ OPTIMIZED_CFLAGS_DESC=	Use extra compiler optimizations (requires SSE support)
 # that the base C++ standard library switched to libc++:
 # We also must pin 4.8+ because 4.6 and 4.7 segfault on 10.0-RELEASE amd64
 # wwhen compiling improcfun.cc:
-USE_GCC=	4.8+
+USE_GCC=	yes
 
 .if ${COMPILER_FEATURES:Mlibc++}
 LDFLAGS+=	-L/usr/local/lib/c++
@@ -94,6 +94,8 @@ post-patch:
 		${WRKSRC}/rtgui/icmpanel.h
 	@${REINPLACE_CMD} -e 's#DESTINATION "$${CMAKE_INSTALL_PREFIX}/share/man/man1"#DESTINATION "${MANPREFIX}/man/man1/"#' \
 		${WRKSRC}/CMakeLists.txt
+	${RM} ${WRKSRC}/rtengine/dcraw.patch \
+		${WRKSRC}/rtengine/dcraw.c
 
 # paranoia: run rawtherapee --help to be sure it finds all its
 # shared libraries (this hinges on proper RPATH setting and propagation)

@@ -3,8 +3,8 @@
 
 PORTNAME=	craft
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	games
-MASTER_SITES=	GH
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Simple Minecraft clone written in C using modern OpenGL
@@ -21,13 +21,11 @@ SERVER_DESC=		Install the craft server
 OPTIONS_DEFAULT=	SERVER
 OPTIONS_SUB=		yes
 
-WRKSRC=		${WRKDIR}/${GH_ACCOUNT}-${GH_PROJECT}-fdf801f
-
 USES=		cmake compiler:c11
 USE_XORG=	x11 xi xrandr
 USE_GL=		gl glu
 
-SERVER_USE=		PYTHON=yes
+SERVER_USES=		python
 SERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.2:${PORTSDIR}/www/py-requests \
 			${PYTHON_PKGNAMEPREFIX}sqlite3>=0:${PORTSDIR}/databases/py-sqlite3
 SERVER_CMAKE_ON=	-DSERVER:BOOL=ON

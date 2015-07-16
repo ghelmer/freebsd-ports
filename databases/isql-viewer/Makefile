@@ -6,18 +6,15 @@ PORTVERSION=	2.1.8
 PORTREVISION=	4
 CATEGORIES=	databases java
 MASTER_SITES=	SF/isql/Stand%20Alone%20Jars/Version%20${PORTVERSION}:isql \
-		${MASTER_SITE_APACHE:S/$/:bsf/}
-MASTER_SITE_SUBDIR=	isql/:isql \
-			ws/soap/version-2.2/:bsf
+		APACHE/ws/soap/version-2.2:bsf
 DISTFILES=	${ISQL_JAR}:isql \
 		${BSF_JAR}:bsf
 EXTRACT_ONLY=	# none
 
-MAINTAINER=	stefan.schmidt@stadtbuch.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JDBC 2.x compliant database front end
 
-RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper \
-		${JYTHON_PREFIX}/${JYTHON_JAR}:${PORTSDIR}/lang/jython \
+RUN_DEPENDS=	${JYTHON_PREFIX}/${JYTHON_JAR}:${PORTSDIR}/lang/jython \
 		${JAVALIBDIR}/postgresql.jar:${PORTSDIR}/databases/postgresql-jdbc \
 		${JAVALIBDIR}/mysql-connector-java.jar:${PORTSDIR}/databases/mysql-connector-java
 
@@ -46,20 +43,14 @@ JAR_DEPENDS=	mysql-connector-java.jar \
 
 CLASSPATH=	"${JARFILES:S,^,${JAVAJARDIR}/,}:${JYTHON_PREFIX}/${JYTHON_JAR}:${JAR_DEPENDS:S,^,${JAVALIBDIR}/,:S| |:|g}"
 
-NO_STAGE=	yes
 do-configure:
 	@${SED} -e 's|%%CLASSPATH%%|${CLASSPATH:C,[[:space:]],:,g}|g'	\
 		-e 's|%%JAVA_VERSION%%|${JAVA_VERSION}|g'	\
 		${FILESDIR}/iSQL-Viewer.sh > ${WRKDIR}/iSQL-Viewer.sh
 
 do-install:
-	@${INSTALL_DATA} ${_DISTDIR}${ISQL_JAR} ${JAVAJARDIR}/${DEST_ISQL_JAR}
-	@${INSTALL_DATA} ${_DISTDIR}${BSF_JAR} ${JAVAJARDIR}/${DEST_BSF_JAR}
-	@${INSTALL_SCRIPT} ${WRKDIR}/iSQL-Viewer.sh ${PREFIX}/bin/iSQL-Viewer
-
-post-install:
-	@${ECHO_MSG}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG}
+	${INSTALL_DATA} ${_DISTDIR}${ISQL_JAR} ${STAGEDIR}${JAVAJARDIR}/${DEST_ISQL_JAR}
+	${INSTALL_DATA} ${_DISTDIR}${BSF_JAR} ${STAGEDIR}${JAVAJARDIR}/${DEST_BSF_JAR}
+	${INSTALL_SCRIPT} ${WRKDIR}/iSQL-Viewer.sh ${STAGEDIR}${PREFIX}/bin/iSQL-Viewer
 
 .include <bsd.port.mk>

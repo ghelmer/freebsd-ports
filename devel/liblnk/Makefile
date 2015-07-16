@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	liblnk
-PORTVERSION=	20140622
+PORTVERSION=	20150617
+DISTVERSIONPREFIX=	alpha-
 CATEGORIES=	devel
-MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSQmluVC1YeDVvZWM/ \
+MASTER_SITES=	https://github.com/libyal/liblnk/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
-DISTNAME=	${PORTNAME}-alpha-${PORTVERSION}
 
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Library and tools to access the Windows shortcut file (LNK) format
 
 LICENSE=	LGPL3
 
+LIB_DEPENDS=	libfwsi.so:${PORTSDIR}/devel/libfwsi
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} ${ICONV_CONFIGURE_ARG}
-USES=		gettext iconv libtool pathfix
-USE_PYTHON=	2
+CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} --with-libfwsi=${LOCALBASE}
+USES=		gettext libtool pathfix python
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

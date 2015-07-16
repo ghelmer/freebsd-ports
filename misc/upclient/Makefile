@@ -39,7 +39,7 @@ post-patch:
 		${WRKSRC}/src/Makefile
 
 do-install:
-	${INSTALL_PROGRAM} -m 2555 ${WRKSRC}/src/products/upclient \
+	${INSTALL_PROGRAM} ${WRKSRC}/src/products/upclient \
 		${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_MAN} ${WRKSRC}/src/products/upclient.8 \
 		${STAGEDIR}${MAN8PREFIX}/man/man8
@@ -47,7 +47,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/etc/upclient.conf.sample
 	${INSTALL_SCRIPT} ${WRKSRC}/scripts/upchk ${WRKSRC}/scripts/clientchk \
 		${STAGEDIR}${PREFIX}/sbin
-	@cd ${WRKSRC}/src; ${MAKE_CMD} destdir=${STAGEDIR} install-locales
+	@(cd ${WRKSRC}/src; ${MAKE_CMD} destdir=${STAGEDIR} install-locales)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for file in ${DOC_FILES}
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}

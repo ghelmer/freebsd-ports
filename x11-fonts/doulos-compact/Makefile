@@ -3,7 +3,7 @@
 
 PORTNAME=	DoulosSILCompact
 PORTVERSION=	4.110
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 #unfortunately, the SIL server embeds timestamps in the distfile, so we use a static local copy
 .if defined(MAINTAINER_MODE)
@@ -11,43 +11,28 @@ MASTER_SITES=	http://scripts.sil.org/ttw/fonts2go.cgi?family=DoulosSIL&pkg=Compa
 .else
 MASTER_SITES=	LOCAL/bf
 .endif
-MASTER_SITE_SUBDIR=	#prevent bsd.xorg.mk from setting a default subdirectory
 
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Doulos SIL TrueType font collection, compact variant
 
 LICENSE=	OFL11
 
-USES=		zip
-XORG_CAT=	font
+USES=		fonts zip
 
-FONTROOTDIR=	${PREFIX}/lib/X11/fonts
-INSTALLS_TTF=	yes
 NO_BUILD=	yes
-USE_TGZ=	yes	#prevent bsd.xorg.mk from setting USE_BZIP
 
-PLIST_FILES=	${FONTROOTDIR:S/${PREFIX}\///}/${FONTDIR}/${PORTNAME}-R.ttf
+PLIST_FILES=	${FONTSDIR}/${PORTNAME}-R.ttf
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 PORTDOCS=	FONTLOG.txt OFL-FAQ.txt OFL.txt README.txt feat_set_tuned.xml
-.endif
 
-SUB_LIST=	DIR="${FONTROOTDIR}/${FONTDIR}"
 SUB_FILES=	pkg-message
 
-NO_STAGE=	yes
-do-configure:
-	@${DO_NADA}
-
 do-install:
-	@${MKDIR} ${FONTROOTDIR}/${FONTDIR}
-	@(cd ${WRKSRC} ; ${INSTALL_DATA} *.ttf ${FONTROOTDIR}/${FONTDIR})
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@(cd ${WRKSRC} ; ${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR})
-.endif
-	@${ECHO_MSG}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG}
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	@(cd ${WRKSRC} ; ${INSTALL_DATA} *.ttf ${STAGEDIR}${FONTSDIR})
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@(cd ${WRKSRC} ; ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

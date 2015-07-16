@@ -8,10 +8,10 @@ CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.ibiblio.org/icpld/download/ \
 		http://freebsd.unixfreunde.de/sources/
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Internet connection performance logging daemon
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	README

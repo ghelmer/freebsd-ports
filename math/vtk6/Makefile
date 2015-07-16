@@ -3,35 +3,32 @@
 
 PORTNAME=	vtk
 PORTVERSION=	6.1.0
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${VTK_SHORT_VER}/
 PKGNAMESUFFIX=	6
 DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Visualization Toolkit
 
 LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
     		libpng.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libexpat.so:${PORTSDIR}/textproc/expat2
 
 #
 # TODO
-# * PYTHON wrap
 # * VTK Groups
 
 UNIQUENAME=	${PKGBASE}
 
 CONFLICTS=	vtk-4*
-USE_GL=		gl
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${VTK_SHORT_VER}
 USE_XORG=	xt
-USES=		cmake:outsource
+USES=		cmake:outsource jpeg
 CXXFLAGS+=	-I${LOCALBASE}/include
 
 VTK_SHORT_VER=	${PORTVERSION:R}
@@ -40,20 +37,21 @@ PLIST_SUB+=	VER2=${VTK_SHORT_VER}
 DOCSDIR=	${PREFIX}/share/doc/vtk-${VTK_SHORT_VER}
 DATADIR=	${PREFIX}/share/vtk-${VTK_SHORT_VER}
 
+# Options
+OPTIONS_DEFINE=	DESIGNER DOCS OSMESA EXAMPLES SHARED
+OPTIONS_DEFAULT=SHARED
+#OPTIONS_DEFAULT=MPI Qt JAVA PYTHON TCLTK DESIGNER
+OSMESA_DESC=	Use Mesa for off-screen rendering
+DESIGNER_DESC=	Build the Qt Designer plugin
+OPTIONS_SUB=	yes
+
+# Options groups
 #VTK_GROUPS=	Imaging MPI Qt Rendering StandAlone Views
 VTK_GROUPS=	MPI
-VTK_WRAPS=	JAVA TCLTK # PYTHON
+VTK_WRAPS=	JAVA TCLTK PYTHON
 OPTIONS_GROUP=	Groups Wrapping
 OPTIONS_GROUP_Groups=${VTK_GROUPS}
 OPTIONS_GROUP_Wrapping=${VTK_WRAPS}
-OPTIONS_DEFINE=	DESIGNER DOCS
-OPTIONS_RADIO=	Qt
-OPTIONS_RADIO_Qt=	QT4 QT5
-Qt_DESC=	Qt GUI support
-QT4_DESC=	Qt 4 toolkit support
-QT5_DESC=	Qt 5 toolkit support
-#OPTIONS_DEFAULT=MPI Qt JAVA PYTHON TCLTK DESIGNER
-
 .for g in ${VTK_GROUPS}
 $g_DESC=	Build the $g group
 .endfor
@@ -61,7 +59,13 @@ $g_DESC=	Build the $g group
 $w_DESC=	$w wrapping
 .endfor
 
-DESIGNER_DESC=	Build the Qt Designer plugin
+# Qt radio
+OPTIONS_RADIO=	Qt
+OPTIONS_RADIO_Qt=	QT4 QT5
+Qt_DESC=	Qt GUI support
+QT4_DESC=	Qt 4 toolkit support
+QT5_DESC=	Qt 5 toolkit support
+
 
 CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DVTK_INSTALL_ARCHIVE_DIR=lib/vtk-${VTK_SHORT_VER} \
@@ -77,6 +81,10 @@ CMAKE_ARGS+=	-DVTK_INSTALL_LIBRARY_DIR=lib/vtk-${VTK_SHORT_VER} \
 		-DModule_vtkTestingCore:BOOL=ON \
 		-DModule_vtkTestingRendering:BOOL=ON
 
+SHARED_CMAKE_ON=	-DBUILD_SHARED_LIBS:BOOL=ON
+SHARED_CMAKE_OFF=	-DBUILD_SHARED_LIBS:BOOL=OFF
+
+
 .include <bsd.port.options.mk>
 
 .for g in ${VTK_GROUPS}
@@ -87,8 +95,19 @@ CMAKE_ARGS+=	-DVTK_Group_${g}:BOOL=OFF
 .  endif
 .endfor
 
-.if ${PORT_OPTIONS:MDOCS}
-CMAKE_ARGS+=	-DBUILD_DOCUMENTATION:BOOL=ON
+.if ${PORT_OPTIONS:MOSMESA}
+LIB_DEPENDS+=	libOSMesa.so:${PORTSDIR}/graphics/libosmesa
+CMAKE_ARGS+=	-DVTK_OPENGL_HAS_OSMESA:BOOL=ON \
+		-DOSMESA_INCLUDE_DIR:PATH=${LOCALBASE}/include/Mesa \
+		-DOSMESA_LIBRARY:FILEPATH=${LOCALBASE}/lib/libOSMesa.so \
+		-DOPENGL_gl_LIBRARY:FILEPATH=${LOCALBASE}/lib/libOSMesa.so \
+		-DVTK_USE_X:BOOL=OFF
+PLIST_SUB+=	X11="@comment " \
+		OSMESA=""
+.else
+USE_GL=		gl
+PLIST_SUB+=	X11="" \
+		OSMESA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MEXAMPLES}
@@ -156,9 +175,13 @@ PLIST_SUB+=	JAVA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
-CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON
+USES+=		python
+CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON \
+    		-DVTK_INSTALL_PYTHON_MODULE_DIR:STRING=${PYTHONPREFIX_SITELIBDIR} \
+		-DModule_vtkRenderingMatplotlib:BOOL=ON \
+		-DModule_vtkPythonInterpreter:BOOL=ON
 PLIST_SUB+=	PYTHON=""
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/matplotlib/__init__.py:${PORTSDIR}/math/py-matplotlib
 .else
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=OFF
 PLIST_SUB+=	PYTHON="@comment "

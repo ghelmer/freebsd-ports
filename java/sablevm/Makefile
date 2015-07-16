@@ -2,7 +2,7 @@
 
 PORTNAME=	sablevm
 PORTVERSION=	1.13
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	java devel
 MASTER_SITES=	SF
 
@@ -12,37 +12,28 @@ COMMENT=	Java VM created by McGill University's Sable Research Group
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt \
-		libffi.so:${PORTSDIR}/devel/libffi
+		libffi.so:${PORTSDIR}/devel/libffi \
+		libltdl.so:${PORTSDIR}/devel/libltdl
 RUN_DEPENDS=	fastjar:${PORTSDIR}/archivers/fastjar
 
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	libltdl
+INSTALL_TARGET=	install-strip
+USES=		gettext gmake iconv libtool pkgconfig
 USE_LDCONFIG=	yes
-USES=		pkgconfig gettext iconv gmake
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/${PORTNAME}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	MAN SVMCP
-OPTIONS_DEFAULT=MAN SVMCP
-MAN_DESC=	Build and install man pages
+OPTIONS_DEFINE=	SVMCP
+OPTIONS_DEFAULT=SVMCP
 SVMCP_DESC=	Install SableVM classpath
 
-.include <bsd.port.options.mk>
+SVMCP_RUN_DEPENDS=	${LOCALBASE}/lib/sablevm-classpath/libjavalang.so:${PORTSDIR}/java/sablevm-classpath
 
-.if ${PORT_OPTIONS:MMAN}
-MAN1=		java-sablevm.1 sablevm.1
-.endif
-
-.if ${PORT_OPTIONS:MSVMCP}
-RUN_DEPENDS+=	${LOCALBASE}/lib/sablevm-classpath/libjavalang.so:${PORTSDIR}/java/sablevm-classpath
-.endif
-
-post-extract:
+post-patch:
 	@${REINPLACE_CMD} -e 's,^subdirs=".*,,' ${WRKSRC}/configure
-.if empty(PORT_OPTIONS:MMAN)
-	@${REINPLACE_CMD} -e 's,^\(man_MANS = \).*,\1,' ${WRKSRC}/doc/Makefile.in
-.endif
+	@${REINPLACE_CMD} -e '/^sablevm_LDADD =/s/$$/ -lpopt/' \
+		${WRKSRC}/src/sablevm/Makefile.in
 
 .include <bsd.port.mk>

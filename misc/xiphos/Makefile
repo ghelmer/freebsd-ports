@@ -2,11 +2,12 @@
 
 PORTNAME=	xiphos
 PORTVERSION=	3.1.6
+PORTREVISION=	4
 CATEGORIES=	misc gnome
 MASTER_SITES=	SF/gnomesword/Xiphos/${PORTVERSION}
 
 MAINTAINER=	tabthorpe@FreeBSD.org
-COMMENT=	A bible interface utilizing the sword framework
+COMMENT=	Bible interface utilizing the sword framework
 
 LICENSE=	GPLv2
 
@@ -15,24 +16,24 @@ BUILD_DEPENDS:=	${RUN_DEPENDS} \
 		docbook2html:${PORTSDIR}/textproc/docbook-utils \
 		gnome-doc-tool:${PORTSDIR}/textproc/gnome-doc-utils \
 		nspr>=4.8:${PORTSDIR}/devel/nspr
-LIB_DEPENDS=	webkitgtk-1.0:${PORTSDIR}/www/webkit-gtk2 \
+LIB_DEPENDS=	libwebkitgtk-3.0.so:${PORTSDIR}/www/webkit-gtk3 \
+		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib  \
 		libsword.so:${PORTSDIR}/misc/sword
 
-USE_PYTHON_BUILD=	yes
-USES=		gettext pkgconfig
+USES=		gettext pkgconfig waf
 INSTALLS_OMF=	yes
 INSTALLS_ICONS=	yes
-USE_GNOME=	gnomehack gnomeprefix gtkhtml3 intlhack libgsf
+USE_GNOME=	gtkhtml4 intlhack gtk30 gconf2 libgsf
 
-do-configure:
-	@cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ./waf configure \
-		--prefix=${STAGEDIR}${PREFIX} --destdir=${STAGEDIR}${PREFIX} \
-		${WAF_CONFIGURE_ARGS}
+OPTIONS_DEFINE=	DOCS
 
-do-build:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./waf build
+post-install:
+	@${RM} ${STAGEDIR}${PREFIX}/share/icons/hicolor/icon-theme.cache
 
-do-install:
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./waf install
+.include <bsd.port.options.mk>
+
+.if ${OSVERSION} < 1000000
+BROKEN=	Does not build on FreeBSD < 10.X
+.endif
 
 .include <bsd.port.mk>

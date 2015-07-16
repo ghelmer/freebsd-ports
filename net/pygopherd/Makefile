@@ -3,7 +3,7 @@
 
 PORTNAME=	pygopherd
 PORTVERSION=	2.0.16
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net python
 MASTER_SITES=	http://gopher.quux.org:70/devel/gopher/Downloads/pygopherd/ \
 		http://gopher.quux.org:70/devel/gopher/Downloads/pygopherd/old/
@@ -12,8 +12,8 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiprotocol Information Server
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGVERSION=	2.0.15
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

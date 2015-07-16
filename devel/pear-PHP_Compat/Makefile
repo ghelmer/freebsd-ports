@@ -5,15 +5,10 @@ PORTNAME=	PHP_Compat
 PORTVERSION=	1.5.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides missing functionality for older versions of PHP
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-
 PORTSCOUT=	skipv:1.6.0a1,1.6.0a2
-PEAR_AUTOINSTALL=	yes
+USES=	pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -31,15 +31,29 @@ include/weed/weed-palettes.h
 include/weed/weed-plugin.h
 include/weed/weed-utils.h
 include/weed/weed.h
+lib/libOSC.a
+lib/libOSC.so
+lib/libOSC.so.0
+lib/libOSC.so.0.0.0
+lib/libOSC_client.a
+lib/libOSC_client.so
+lib/libOSC_client.so.0
+lib/libOSC_client.so.0.0.0
 lib/libweed-utils.so
 lib/libweed-utils.so.0
-lib/libweed-utils.so.0.0.6
+lib/libweed-utils.so.0.0.8
+lib/libweed-utils_scripting.so
+lib/libweed-utils_scripting.so.0
+lib/libweed-utils_scripting.so.0.0.8
 lib/libweed.so
 lib/libweed.so.0
-lib/libweed.so.0.0.6
+lib/libweed.so.0.0.8
 lib/libweed_slice.so
 lib/libweed_slice.so.0
-lib/libweed_slice.so.0.0.6
+lib/libweed_slice.so.0.0.8
+lib/libweed_slice_scripting.so
+lib/libweed_slice_scripting.so.0
+lib/libweed_slice_scripting.so.0.0.8
 lib/lives/plugins/decoders/asf_decoder.so
 lib/lives/plugins/decoders/dv_decoder.so
 lib/lives/plugins/decoders/flv_decoder.so
@@ -96,6 +110,7 @@ lib/lives/plugins/effects/realtime/weed/onedTV.so
 lib/lives/plugins/effects/realtime/weed/palette_test.so
 lib/lives/plugins/effects/realtime/weed/plasma.so
 lib/lives/plugins/effects/realtime/weed/posterise.so
+lib/lives/plugins/effects/realtime/weed/projectM.so
 lib/lives/plugins/effects/realtime/weed/puretext.so
 lib/lives/plugins/effects/realtime/weed/randomiser.so
 lib/lives/plugins/effects/realtime/weed/revTV.so
@@ -191,7 +206,7 @@ lib/lives/plugins/playback/video/vloopback.so
 lib/lives/plugins/playback/video/vloopback2.so
 lib/lives/plugins/playback/video/yuv4mpeg_stream.so
 libdata/pkgconfig/libweed-compat.pc
-libdata/pkgconfig/libweed-plugin-utils.pc
+libdata/pkgconfig/libweed-plugin.pc
 libdata/pkgconfig/libweed-utils.pc
 libdata/pkgconfig/libweed.pc
 libdata/pkgconfig/libweed_slice.pc
@@ -339,49 +354,4 @@ share/applications/LiVES.desktop
 %%NLS%%share/locale/uz/LC_MESSAGES/lives.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/lives.mo
 share/pixmaps/lives.xpm
-%%NLS%%@dirrmtry share/locale/ug/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/ug
-%%NLS%%@dirrmtry share/locale/te/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/te
-%%NLS%%@dirrmtry share/locale/pms/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/pms
-%%NLS%%@dirrmtry share/locale/oc/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/oc
-%%NLS%%@dirrmtry share/locale/nl_NL/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/nl_NL
-%%NLS%%@dirrmtry share/locale/de_DE/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/de_DE
-@dirrm %%DATADIR%%/themes/pinks
-@dirrm %%DATADIR%%/themes/editor
-@dirrm %%DATADIR%%/themes/cutting_room
-@dirrm %%DATADIR%%/themes/crayons-bright
-@dirrm %%DATADIR%%/themes/crayons
-@dirrm %%DATADIR%%/themes/camera
-@dirrm %%DATADIR%%/themes
-@dirrm %%DATADIR%%/resources
-@dirrm %%DATADIR%%/plugins/effects/compound
-@dirrm %%DATADIR%%/plugins/effects/RFXscripts
-@dirrm %%DATADIR%%/plugins/effects
-@dirrm %%DATADIR%%/plugins
-@dirrm %%DATADIR%%/icons
-@dirrm %%DATADIR%%
-%%PORTDOCS%%@dirrmtry %%DOCSDIR%%
-@dirrm share/app-install/icons
-@dirrm share/app-install
-@dirrm lib/lives/plugins/playback/video
-@dirrm lib/lives/plugins/playback/audiostream
-@dirrm lib/lives/plugins/playback
-@dirrm lib/lives/plugins/encoders
-@dirrm lib/lives/plugins/effects/rendered
-@dirrm lib/lives/plugins/effects/realtime/weed/libvisual
-%%FREI0R%%@dirrm lib/lives/plugins/effects/realtime/weed/frei0r
-@dirrm lib/lives/plugins/effects/realtime/weed/data/fourKlives/songs
-@dirrm lib/lives/plugins/effects/realtime/weed/data/fourKlives
-@dirrm lib/lives/plugins/effects/realtime/weed/data
-@dirrm lib/lives/plugins/effects/realtime/weed
-@dirrm lib/lives/plugins/effects/realtime
-@dirrm lib/lives/plugins/effects
-@dirrm lib/lives/plugins/decoders
-@dirrm lib/lives/plugins
-@dirrm lib/lives
-@dirrm include/weed
+@dir lib/lives/plugins/effects/realtime/weed/icons

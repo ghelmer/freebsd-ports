@@ -3,7 +3,6 @@ bin/flickcurl-config
 bin/flickrdf
 include/flickcurl.h
 lib/libflickcurl.a
-lib/libflickcurl.la
 lib/libflickcurl.so
 lib/libflickcurl.so.0
 lib/libflickcurl.so.0.0.0
@@ -84,4 +83,3 @@ man/man1/flickrdf.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/right.png
 %%PORTDOCS%%%%DOCSDIR%%/style.css
 %%PORTDOCS%%%%DOCSDIR%%/up.png
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

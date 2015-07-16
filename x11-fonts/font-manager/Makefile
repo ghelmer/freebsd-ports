@@ -5,7 +5,7 @@ PORTNAME=	font-manager
 PORTVERSION=	0.5.7
 PORTREVISION=	5
 CATEGORIES=	x11-fonts gnome
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Font management application for the GNOME desktop
@@ -17,10 +17,9 @@ LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2.py:${PORTSDIR}/textproc/py-libxml2 \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3
 
-USE_PYTHON=	2
 USE_GNOME=	pygtk2
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig tar:bzip2
+USES=		gmake pkgconfig python:2 tar:bzip2
 
 PORTDATA=	*
 

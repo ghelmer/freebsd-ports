@@ -3,6 +3,7 @@
 
 PORTNAME=	wavelet-denoise
 PORTVERSION=	0.3.1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://registry.gimp.org/files/
 PKGNAMEPREFIX=	gimp-
@@ -20,7 +21,7 @@ OPTIONS_DEFINE=	NLS OPTIMIZED_CFLAGS
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
 OPTIONS_SUB=	yes
 
-USES=		gettext gmake
+USES=		gettext gmake pkgconfig
 
 PLIST_SUB=	GIMP_PLUGIN_DIR=${GIMP_PLUGIN_DIR}
 GIMP_PLUGIN_DIR=	libexec/gimp/2.2/plug-ins

@@ -3,7 +3,7 @@
 
 PORTNAME=	openpgm
 PORTVERSION=	5.2.122
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net devel
 MASTER_SITES=	GOOGLE_CODE
 DISTNAME=	libpgm-${PORTVERSION}
@@ -11,36 +11,23 @@ DISTNAME=	libpgm-${PORTVERSION}
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Implementation of the PGM reliable multicast protocol
 
-LICENSE=	LGPL3
+LICENSE=	LGPL21 # and newer
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		pathfix perl5 tar:bzip2 libtool
+USES=		pathfix perl5 tar:bzip2 libtool python:build
 USE_LDCONFIG=	yes
-USE_PYTHON=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}/openpgm/pgm
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-DOCS_DESC=	Install documetation
-EXAMPLES_DESC=	Install examples
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MEXAMPLES}
-PLIST_SUB+=	EXAMPLES=""
-.else
-PLIST_SUB+=	EXAMPLES="@comment "
-.endif
+PORTDOCS=	draft-ietf-rmt-bb-pgmcc-03.txt rfc3208.txt
+PORTEXAMPLES=	*
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/../doc/draft-ietf-rmt-bb-pgmcc-03.txt ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/../doc/rfc3208.txt ${STAGEDIR}${DOCSDIR}
-.endif
-
-.if ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} examples ${STAGEDIR}${EXAMPLESDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/../doc/,} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

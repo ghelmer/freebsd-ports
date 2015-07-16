@@ -4,8 +4,7 @@
 PORTNAME=	langscan
 PORTVERSION=	1.2.20070115
 CATEGORIES=	devel ruby
-MASTER_SITES=	LOCAL
-MASTER_SITE_SUBDIR=	tota/${PORTNAME}
+MASTER_SITES=	LOCAL/tota/${PORTNAME}
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DIST_SUBDIR=	${RUBY_PKGNAMEPREFIX:S|${RUBY_SUFFIX}-||}
 
@@ -60,4 +59,10 @@ x-generate-plist:
 	${FIND} ${RUBY_SITELIBDIR}/${PORTNAME} -type d -depth | ${SORT} -r | ${SED} -e 's,${RUBY_SITELIBDIR},@dirrm %%RUBY_SITELIBDIR%%,' >> pkg-plist.new
 	${FIND} ${RUBY_SITEARCHLIBDIR}/${PORTNAME} -type d -depth | ${SORT} -r | ${SED} -e 's,${RUBY_SITEARCHLIBDIR},@dirrm %%RUBY_SITEARCHLIBDIR%%,' >> pkg-plist.new
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.1
+BROKEN=		Does not build
+.endif
+
+.include <bsd.port.post.mk>

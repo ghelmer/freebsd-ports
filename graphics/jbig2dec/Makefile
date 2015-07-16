@@ -2,7 +2,7 @@
 
 PORTNAME=	jbig2dec
 PORTVERSION=	0.11
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics devel
 MASTER_SITES=	SF
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -25,16 +25,15 @@ TESTS_DESC=	Download and use test-images for post-build testing
 
 EXTRACT_AFTER_ARGS+=	--exclude sha1.h --exclude 'getopt*'
 
-PNG_LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
+PNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 PNG_CONFIGURE_ON=	--with-libpng=${LOCALBASE}
-PNG_CFLAGS=		-I${LOCALBASE}/include/libpng15
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MTESTS}
 MASTER_SITES+=	http://jbig2dec.sourceforge.net/ubc/:tests
 DISTFILES+=	jb2streams.zip:tests
-USE_PYTHON_BUILD=yes
+USES+=		python:build
 KNOWN_BAD_JB2S=	042_11 042_13 042_14 042_24 042_25 amb_1 amb_2
 
 post-extract:

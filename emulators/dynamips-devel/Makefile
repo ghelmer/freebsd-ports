@@ -8,31 +8,26 @@ CATEGORIES=	emulators
 MASTER_SITES=	http://www.ipflow.utc.fr/dynamips/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	pavelivolkov@googlemail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cisco 1700/2600/3600/3700/7200 Simulator
 
-LIB_DEPENDS=	elf.0:${PORTSDIR}/devel/libelf
+LICENSE=	GPLv2
+
+LIB_DEPENDS=	libelf.so.0:${PORTSDIR}/devel/libelf
 
 CONFLICTS=	dynamips-[0-9]* dynamips-community-[0-9]*
-LICENSE=	GPLv2
 
 USES=		gmake
 ALL_TARGET=	${PORTNAME} nvram_export
-MAKE_ENV=	DYNAMIPS_ARCH=${DYNAMIPS_ARCH}\
-		PTHREAD_CFLAGS=${PTHREAD_CFLAGS}\
-		PTHREAD_LIBS=${PTHREAD_LIBS}
+MAKE_ENV=	DYNAMIPS_ARCH=${DYNAMIPS_ARCH} \
+		HAS_POSIX_MEMALIGN=1
 MAKE_JOBS_UNSAFE=	yes
 
 PLIST_FILES=	bin/${PORTNAME} bin/nvram_export
-.if !defined(NOPORTDOCS)
+PLIST_FILES+=	man/man1/${PORTNAME}.1.gz man/man1/nvram_export.1.gz
+PLIST_FILES+=	man/man7/hypervisor_mode.7.gz
 PORTDOCS=	README README.hypervisor
-.endif
-.if !defined(NO_INSTALL_MANPAGES)
-MAN1=		${PORTNAME}.1 nvram_export.1
-MAN7=		hypervisor_mode.7
-.endif
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "sparc64"
@@ -47,31 +42,14 @@ DYNAMIPS_ARCH=	"amd64"
 DYNAMIPS_ARCH=	"nojit"
 .endif
 
-# It required libpcap version 0.9.4 or is higher.
-.if ${OSVERSION} < 700021
-BUILD_DEPENDS+=	${LOCALBASE}/lib/libpcap.a:${PORTSDIR}/net/libpcap
-MAKE_ENV+=	PCAP_LIB=${LOCALBASE}/lib/libpcap.a
-#.warning Do not overlook, make libpcap with LIBPCAP_OVERWRITE_BASE parameter, for use with shared library.
-#LIB_DEPENDS+=	pcap.\(0.9.\)?[2-9]:${PORTSDIR}/net/libpcap
-#MAKE_ENV+=	PCAP_LIB=-lpcap.2
-.endif
-
-.if ${OSVERSION} >= 700013
-MAKE_ENV+=	HAS_POSIX_MEMALIGN=1
-.endif
-
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${PREFIX}/bin
-	${INSTALL_PROGRAM} ${WRKSRC}/nvram_export ${PREFIX}/bin
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.hypervisor ${DOCSDIR}
-.endif
-.if !defined(NO_INSTALL_MANPAGES)
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/nvram_export.1 ${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/hypervisor_mode.7 ${PREFIX}/man/man7
-.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/nvram_export ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.hypervisor ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/nvram_export.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/hypervisor_mode.7 ${STAGEDIR}${PREFIX}/man/man7
 
 .include <bsd.port.post.mk>

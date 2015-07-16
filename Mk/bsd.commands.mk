@@ -18,6 +18,7 @@ _COMMANDSMKINCLUDED=	yes
 AWK?=			/usr/bin/awk
 BASENAME?=		/usr/bin/basename
 BRANDELF?=		/usr/bin/brandelf
+BSDMAKE?=		/usr/bin/make
 BZCAT?=			/usr/bin/bzcat
 BZIP2_CMD?=		/usr/bin/bzip2
 CAT?=			/bin/cat
@@ -72,7 +73,7 @@ PRINTF?=		/usr/bin/printf
 PS_CMD?=		/bin/ps
 PW?=			/usr/sbin/pw
 REALPATH?=		/bin/realpath
-RM?=			/bin/rm
+RM?=			/bin/rm -f
 RMDIR?=			/bin/rmdir
 SED?=			/usr/bin/sed
 SETENV?=		/usr/bin/env
@@ -104,6 +105,11 @@ XZ_CMD?=		/usr/bin/xz ${XZ}
 
 MD5?=			/sbin/md5
 SHA256?=		/sbin/sha256
+.if exists(/usr/bin/soeliminate)
+SOELIM?=		/usr/bin/soeliminate
+.else
+SOELIM?=		/usr/bin/soelim
+.endif
 
 # ECHO is defined in /usr/share/mk/sys.mk, which can either be "echo",
 # or "true" if the make flag -s is given.  Use ECHO_CMD where you mean
@@ -115,7 +121,6 @@ ECHO_MSG?=		${ECHO_CMD}
 
 .elif !defined(_PKGTOOLSDEFINED)
 _PKGTOOLSDEFINED=	yes
-.if defined(WITH_PKGNG)
 PKG_BIN?=		${LOCALBASE}/sbin/pkg-static
 PKG_CMD?=		${PKG_BIN} register
 PKG_DELETE?=		${PKG_BIN} delete -y
@@ -124,20 +129,5 @@ PKG_VERSION?=		${PKG_BIN} version
 PKG_CREATE?=		${PKG_BIN} create
 PKG_ADD?=		${PKG_BIN} add
 PKG_QUERY?=		${PKG_BIN} query
-.else
-.if exists(${LOCALBASE}/sbin/pkg_info)
-PKG_CMD?=		${LOCALBASE}/sbin/pkg_create
-PKG_ADD?=		${LOCALBASE}/sbin/pkg_add
-PKG_DELETE?=		${LOCALBASE}/sbin/pkg_delete
-PKG_INFO?=		${LOCALBASE}/sbin/pkg_info
-PKG_VERSION?=		${LOCALBASE}/sbin/pkg_version
-.else
-PKG_CMD?=		/usr/sbin/pkg_create
-PKG_ADD?=		/usr/sbin/pkg_add
-PKG_DELETE?=		/usr/sbin/pkg_delete
-PKG_INFO?=		/usr/sbin/pkg_info
-PKG_VERSION?=		/usr/sbin/pkg_version
-.endif
-.endif
 
 .endif

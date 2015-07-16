@@ -3,11 +3,12 @@
 
 PORTNAME=	Unicode-UTF8simple
 PORTVERSION=	1.06
+PORTREVISION=	1
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Conversions to/from UTF-8 from/to charactersets
 
 USES=		perl5

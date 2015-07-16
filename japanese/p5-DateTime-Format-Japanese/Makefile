@@ -3,12 +3,13 @@
 
 PORTNAME=	DateTime-Format-Japanese
 PORTVERSION=	0.04000
+PORTREVISION=	1
 CATEGORIES=	japanese devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DMAKI
 
 MAINTAINER=	markun@onohara.to
-COMMENT=	A Japanese DateTime Formatter
+COMMENT=	Japanese DateTime Formatter
 
 BUILD_DEPENDS=	p5-DateTime>=0:${PORTSDIR}/devel/p5-DateTime \
 		p5-DateTime-Calendar-Japanese>=0.05:${PORTSDIR}/devel/p5-DateTime-Calendar-Japanese \

@@ -3,20 +3,20 @@
 
 PORTNAME=	vtk
 PORTVERSION=	5.10.1
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	math graphics
 MASTER_SITES=	http://www.vtk.org/files/release/${PORTVERSION:R}/
 PKGNAMESUFFIX=	5
 UNIQUENAME=	${PKGBASE}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Visualization Toolkit
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 
 WRKSRC=		${WRKDIR}/VTK${PORTVERSION}
@@ -25,13 +25,13 @@ CONFLICTS=	vtk-4*
 
 SUB_FILES=	vtk.3
 
-USES=		cmake:outsource
+USES=		cmake:outsource jpeg
 USE_XORG=	xt
 USE_LDCONFIG=	${PREFIX}/lib/vtk-${PORTVERSION:R}
 CXXFLAGS+=	-DUSE_INTERP_ERRORLINE
 
 OPTIONS_DEFINE=	SHARED THEORA VTKMPEG2 GL2PS OSMESA QT4 JAVA \
-		PYTHON TCLTK DBGLEAKS LEGACY
+		PYTHON TCLTK DBGLEAKS LEGACY DOCS
 OPTIONS_DEFAULT=SHARED GL2PS QT4 TCLTK LEGACY
 
 SHARED_DESC=	Build shared libraries
@@ -144,9 +144,11 @@ IGNORE=		python wrapping does not stage properly
 IGNORE=		python wrapping requires shared libraries.\
 		Run make config again and enable the SHARED option
 .endif
-USE_PYTHON=	yes
+USES+=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	VTK
-INSTALLS_EGGINFO=	yes
+# INSTALLS_EGGINFO support has been removed
+# INSTALLS_EGGINFO=	yes
 CMAKE_ARGS+=	-DVTK_WRAP_PYTHON:BOOL=ON \
     		-DVTK_PYTHON_SETUP_ARGS:STRING='--prefix="${PREFIX}"'
 PLIST_SUB+=	PYTHON=""
@@ -251,11 +253,12 @@ LIBS_TOFIX=	vtkNetCDF_cxx vtkhdf5 vtkhdf5_hl
 LIBDIR=		${PREFIX}/lib/vtk-${PORTVERSION:R}/
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/qt4/plugins/designer/libQVTKWidgetPlugin.so
 # Ports system wants us to conform to lib.so.x format, but VTK5
 # only installs lib.so.x.y and lib.so.x.y.z.
 .if ${PORT_OPTIONS:MSHARED}
 	@for lib in ${LIBS_TOFIX}; do \
-		${CP} ${STAGEDIR}${LIBDIR}/lib$$lib.so ${STAGEDIR}${LIBDIR}/lib$$lib.so.${PORTVERSION}; \
+		${INSTALL_LIB} ${STAGEDIR}${LIBDIR}/lib$$lib.so ${STAGEDIR}${LIBDIR}/lib$$lib.so.${PORTVERSION}; \
 		${LN} -sf lib$$lib.so.${PORTVERSION} ${STAGEDIR}${LIBDIR}/lib$$lib.so.${PORTVERSION:R}; \
 	done
 	@cd ${STAGEDIR}${LIBDIR}; \

@@ -3,25 +3,25 @@
 
 PORTNAME=	tinypy
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	lang python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	saper@saper.info
-COMMENT=	A minimalist implementation of python in 64k of code
+COMMENT=	Minimalist implementation of python in 64k of code
 
 LICENSE=	MIT PSFL
 LICENSE_COMB=	multi
 LICENSE_FILE=	LICENSE.txt
 
-USE_PYTHON_BUILD=	yes
-USE_PYDISTUTILS=	yes
+USES=		python:build
+USE_PYTHON=	distutils noegginfo
 
 PYDISTUTILS_BUILD_TARGET=	linux
-PYDISTUTILS_NOEGGINFO=		yes
 
 PLIST_FILES=	bin/tinypy
 
-OPTIONS_DEFINE=	PYGAME
+OPTIONS_DEFINE=	PYGAME EXAMPLES
 PYGAME_DESC=	PyGame support (requires SDL)
 
 .include <bsd.port.options.mk>

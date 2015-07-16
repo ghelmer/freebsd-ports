@@ -1,21 +1,26 @@
 # $FreeBSD$
 
 PORTNAME=	xpdf
-PORTVERSION=	3.03
-PORTREVISION=	6
+PORTVERSION=	3.04
+PORTREVISION=	4
 CATEGORIES=	graphics print
-MASTER_SITES=	ftp://ftp.foolabs.com/pub/xpdf/ \
-		${MASTER_SITE_TEX_CTAN}
-MASTER_SITE_SUBDIR=	support/xpdf
+MASTER_SITES=	http://mirrors.rit.edu/zi/ \
+		ftp://ftp.foolabs.com/pub/xpdf/ \
+		TEX_CTAN/support/xpdf \
+		http://komquats.com/distfiles/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Display PDF files and convert them to other formats
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+LICENSE=	GPLv2
+
+LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libpng.so:${PORTSDIR}/graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		gmake
-CFLAGS+=	-I${LOCALBASE}/include
+USES=		gmake cpe
+CPE_VENDOR=	foolabs
+CFLAGS+=	-I${LOCALBASE}/include -O0
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--enable-opi \

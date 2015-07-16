@@ -3,19 +3,18 @@
 
 PORTNAME=	bindgraph
 PORTVERSION=	0.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	dns
 MASTER_SITES=	http://www.linux.it/~md/software/
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	rafan@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	RRDtool frontend for BIND statistics
 
 RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool	\
 		p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
 
 NO_BUILD=	yes
-USES=		perl5 shebangfix
+USES=		perl5 shebangfix tar:tgz
 SHEBANG_FILES=	bindgraph.pl bindgraph.cgi
 
 CGIDIR?=	${PREFIX}/www/cgi-bin
@@ -25,12 +24,14 @@ BINDGRAPH_GROUP?=	${WWWGRP}
 
 USE_RC_SUBR=	${PORTNAME}
 SUB_LIST+=	BINDGRAPH_USER=${BINDGRAPH_USER} BINDGRAPH_GROUP=${BINDGRAPH_GROUP}
-PLIST_SUB=	CGIDIR=${CGIDIR:S,${PREFIX}/,,}
+PLIST_SUB=	CGIDIR=${CGIDIR:S,${PREFIX}/,,} \
+		BINDGRAPH_USER="${BINDGRAPH_USER}" \
+		BINDGRAPH_GROUP="${BINDGRAPH_GROUP}"
 
 DOCS=		README ChangeLog
-.if !defined(NOPORTDOCS)
 PORTDOCS=	${DOCS}
-.endif
+
+OPTIONS_DEFINE=	DOCS
 
 pre-everything::
 	@${ECHO_MSG} ""
@@ -47,19 +48,11 @@ post-patch:
 do-install:
 	${MKDIR} ${STAGEDIR}${CGIDIR}
 	${MKDIR} ${STAGEDIR}${DATADIR}
-	@${CHOWN} -R ${BINDGRAPH_USER}:${BINDGRAPH_GROUP} ${STAGEDIR}${DATADIR}/
 	@${INSTALL_SCRIPT} ${WRKSRC}/bindgraph.pl ${STAGEDIR}${PREFIX}/sbin/
 	@${INSTALL_SCRIPT} ${WRKSRC}/bindgraph.cgi ${STAGEDIR}${CGIDIR}/
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	for f in ${DOCS}; do \
 	  ${INSTALL_DATA} ${WRKSRC}/$$f ${STAGEDIR}${DOCSDIR}/; \
 	done
-.endif
-
-post-install:
-	@${ECHO_MSG} ""
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG} ""
 
 .include <bsd.port.mk>

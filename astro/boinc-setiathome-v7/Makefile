@@ -3,12 +3,10 @@
 
 PORTNAME=	boinc-setiathome-v7
 PORTVERSION=	7.00
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	astro
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
-		ftp://rene-ladan.nl/pub/distfiles/
+MASTER_SITES=	LOCAL/rene
 DISTNAME=	setiathome-svn-1924 # modified archive, see leftout in top directory
-MASTER_SITE_SUBDIR=rene
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Setiathome Enhanced for BOINC
@@ -42,7 +40,7 @@ X11_DESC=	Build screensaver (requires net/boinc-client with X11)
 OPTIONS_SUB=	yes
 
 X11_BUILD_DEPENDS=	${LOCALBASE}/lib/libboinc_graphics2.a:${PORTSDIR}/net/boinc-client
-X11_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+X11_USES=		jpeg
 X11_USE=		GL=gl,glu,glut \
 			XORG=ice,sm,x11,xau,xcb,xext,xi,xdamage,xdmcp,xfixes,xmu,xt,xxf86vm
 X11_CONFIGURE_ENABLE=	graphics

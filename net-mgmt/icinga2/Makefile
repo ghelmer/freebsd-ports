@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	icinga2
-DISTVERSION=	2.0.0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2.3.4
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://github.com/Icinga/${PORTNAME}/archive/v${DISTVERSION}.tar.gz?dummy=/
 
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Monitoring and management system for hosts, services and networks
@@ -11,22 +11,31 @@ COMMENT=	Monitoring and management system for hosts, services and networks
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
+		libyajl.so:${PORTSDIR}/devel/yajl \
 		libexecinfo.so:${PORTSDIR}/devel/libexecinfo # for better debugging
-RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/monitoring-plugins \
-		${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
 
-USES=		bison cmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	icinga
+
+USES=		alias bison cmake
 USE_LDCONFIG=	yes
 
 USE_RC_SUBR=	${PORTNAME}
 
-OPTIONS_SINGLE=		BACKEND
-OPTIONS_SINGLE_BACKEND=	MYSQL PGSQL
+OPTIONS_DEFINE=		DOCS
+OPTIONS_MULTI=		BACKEND
+OPTIONS_MULTI_BACKEND=	MYSQL PGSQL
+OPTIONS_RADIO=		PLUGINS
+OPTIONS_RADIO_PLUGINS=	MONPLUGINS NAGPLUGINS
 
-OPTIONS_DEFAULT=	MYSQL
+OPTIONS_DEFAULT=	MYSQL PGSQL MONPLUGINS
 
-MYSQL_CMAKE_ON=	-DWITH_MYSQL:BOOL=true
-PGSQL_CMAKE_ON=	-DWITH_PGSQL:BOOL=true
+MONPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/monitoring-plugins
+NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/nagios-plugins
+
+MYSQL_CMAKE_ON=	-DICINGA2_WITH_MYSQL:BOOL=true
+PGSQL_CMAKE_ON=	-DICINGA2_WITH_PGSQL:BOOL=true
 
 ICINGA2USER?=	icinga
 ICINGA2GROUP?=	icinga
@@ -40,6 +49,7 @@ CMAKE_ARGS+=	-DICINGA2_USER=${ICINGA2USER} \
 		-DICINGA2_GROUP=${ICINGA2GROUP} \
 		-DICINGA2_COMMAND_USER=${ICINGA2USER} \
 		-DICINGA2_COMMAND_GROUP=${ICINGA2USER} \
+		-DICINGA2_PLUGINDIR=${LOCALBASE}/libexec/nagios \
 		-DCMAKE_INSTALL_SYSCONFDIR=${PREFIX}/etc \
 		-DCMAKE_INSTALL_LOCALSTATEDIR=${LOCALSTATEDIR} \
 		-DCMAKE_INSTALL_MANDIR=${MANPREFIX}/man \
@@ -49,44 +59,29 @@ SUB_LIST=	ICINGA2LOGDIR=${ICINGA2LOGDIR} \
 		ICINGA2GROUP=${ICINGA2GROUP} \
 		WWWGRP=${WWWGRP}
 
-LINUX_CONFIG=	groups.conf services.conf hosts/localhost.conf
+# Config files with references to "Linux"
+LINUX_CONFIG=	groups.conf services.conf hosts.conf
 
-.include <bsd.port.pre.mk>
+MYSQL_USE=	mysql=yes
+PGSQL_USES=	pgsql
+
+OPTIONS_SUB=	yes
+
+.include <bsd.port.options.mk>
 .if ${OSVERSION} < 1000033
 BUILD_DEPENDS+=	flex>=2.5.31:${PORTSDIR}/textproc/flex
 CMAKE_ARGS+=	-DFLEX_EXECUTABLE:STRING=${LOCALBASE}/bin/flex
 CXXFLAGS+=	-I${LOCALBASE}/include/flex
 .endif
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=	yes
-PLIST_SUB+=	MYSQL=""
-.else
-PLIST_SUB+=	MYSQL="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
-PLIST_SUB+=	PGSQL=""
-.else
-PLIST_SUB+=	PGSQL="@comment "
-.endif
-
 post-patch:
-	${REINPLACE_CMD} -e '/^add_subdirectory(initsystem)/d' \
-	                 -e '/logrotate\.d/d' ${WRKSRC}/etc/CMakeLists.txt
-	${REINPLACE_CMD} 's,/usr/lib/nagios/plugins,${LOCALBASE}/libexec/nagios,g' \
-	                 ${WRKSRC}/etc/icinga2/constants.conf
 .for f in ${LINUX_CONFIG}
 	${REINPLACE_CMD} 's,[Ll]inux,FreeBSD,g' ${WRKSRC}/etc/icinga2/conf.d/${f}
 .endfor
-.if !${PORT_OPTIONS:MMYSQL}
-	${REINPLACE_CMD} '/^add_subdirectory(db_ido_mysql)/d' ${WRKSRC}/components/CMakeLists.txt
-.endif
-.if !${PORT_OPTIONS:MMYSQL}
-	${REINPLACE_CMD} '/^add_subdirectory(db_ido_pgsql)/d' ${WRKSRC}/components/CMakeLists.txt
-.endif
 
-.include <bsd.port.post.mk>
+pre-install:
+	${FIND} ${WRKSRC}/etc -type f -name "*.conf" -exec ${MV} {} {}.sample \;
+	${FIND} ${WRKSRC}/etc/icinga2/scripts -type f -name "*.sh" \
+		-exec ${MV} {} {}.sample \;
+
+.include <bsd.port.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	opensmtpd
-PORTVERSION=	201405202105
-PORTREVISION=	1
+PORTVERSION=	201506112227
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://www.opensmtpd.org/archives/ \
@@ -12,60 +11,40 @@ PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-${PORTVERSION}p1
 
 MAINTAINER=	ashish@FreeBSD.org
-COMMENT=	OpenSMTPD is a free MTA (development snapshot)
+COMMENT=	Security- and simplicity-focused SMTP server from OpenBSD
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libevent-1.4.so:${PORTSDIR}/devel/libevent
+LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
 
-OPENSMTPD_SNAPSHOT_VER=	p1
-
-OPTIONS_DEFINE=	CA_BUNDLE PAM SQLITE MYSQL PGSQL LDAP REDIS
+OPTIONS_DEFINE=	CA_BUNDLE LIBASR MAILERCONF
 
 OPTIONS_DEFAULT=	CA_BUNDLE PAM
 
 CA_BUNDLE_DESC=	Install CA bundle for OpenSSL
+LIBASR_DESC=	Use stable version of libasr
+MAILERCONF_DESC=	Activate OpenSMTPD in mailer.conf(5)
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libevent-dir=${LOCALBASE} --sysconfdir=${PREFIX}/etc/mail/ \
-		--with-mailwrapper
+		--with-mailwrapper --with-ssl-dir=${OPENSSLBASE} --enable-table-db
 
 USE_RC_SUBR=	smtpd
 SUB_FILES=	pkg-install pkg-deinstall
 
 CONFLICTS_INSTALL=	postfix-[0-9]* sendmail-[0-9]* opensmtpd-[0-9]*
 
-MAN8=		makemap.8 newaliases.8 sendmail.8 smtpctl.8 smtpd.8
-MAN5=		smtpd.conf.5 aliases.5 forward.5
-
 USERS=		_smtpd _smtpq
 GROUPS=		_smtpd
 
-OPTIONS_SUB=		MYSQL SQLITE PGSQL LDAP REDIS
+OPTIONS_SUB=		yes
+
+LIBASR_LIB_DEPENDS_OFF=	libasr.so:${PORTSDIR}/dns/libasr-devel
+LIBASR_LIB_DEPENDS=	libasr.so:${PORTSDIR}/dns/libasr
 
 CA_BUNDLE_CONFIGURE_ON=	--with-ca-file=${LOCALBASE}/share/certs/ca-root-nss.crt
 CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
-
-MYSQL_USE=		MYSQL=yes
-MYSQL_CFLAGS=		-I${LOCALBASE}/include/mysql
-MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql
-MYSQL_CONFIGURE_ON=	--with-experimental-mysql
-
-SQLITE_USE=		SQLITE=3
-SQLITE_CFLAGS=		-I${LOCALBASE}/include
-SQLITE_LDFLAGS=		-L${LOCALBASE}/lib
-SQLITE_CONFIGURE_ON=	--with-experimental-sqlite
-
-PGSQL_USE=		PGSQL=yes
-PGSQL_CONFIGURE_ON=	--with-experimental-postgres
-
-LDAP_CONFIGURE_ON=	--with-experimental-ldap
-
-PAM_CONFIGURE_ON=	--with-pam --with-pam-service=smtpd
-
-REDIS_LIB_DEPENDS=	hiredis:${PORTSDIR}/databases/hiredis
-REDIS_CONFIGURE_ON=	--with-experimental-redis
 
 USE_OPENSSL=		yes
 WITH_OPENSSL_PORT=	yes

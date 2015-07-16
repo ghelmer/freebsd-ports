@@ -17,17 +17,14 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django>0:${PORTSDIR}/www/py-django \
 		${PYTHON_PKGNAMEPREFIX}nose>=1.1.2:${PORTSDIR}/devel/py-nose \
 		${PYTHON_PKGNAMEPREFIX}unittest2:${PORTSDIR}/devel/py-unittest2
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 PORTDOCS=	README.rst
 
 DOCSDIR=	${PREFIX}/share/doc/${PYTHON_PKGNAMEPREFIX}${PORTNAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dcramer
-GH_COMMIT=	7bf71b5
-GH_TAGNAME=	0.5.10
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

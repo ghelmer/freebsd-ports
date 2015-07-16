@@ -1,14 +1,19 @@
 # $FreeBSD$
 
 PORTNAME=	bacula
+PORTREVISION=	2
 PKGNAMESUFFIX=	-client-static
 
 COMMENT=	Network backup solution (static client)
 
+PLIST=		${.CURDIR}/pkg-plist
 MASTERDIR=	${.CURDIR}/../../sysutils/bacula-server
 
-OPTIONS_DEFINE=	NLS OPENSSL
-OPTIONS_DEFAULT=NLS OPENSSL
+PLIST_FILES=	sbin/bacula-fd-static \
+		sbin/bconsole-static
+
+OPTIONS_DEFINE=	NLS
+OPTIONS_DEFAULT=#
 
 CONFIGURE_ARGS+=	--enable-client-only \
 			--enable-static-fd \
@@ -17,5 +22,4 @@ CONFIGURE_ARGS+=	--enable-client-only \
 			--disable-build-dird \
 			--disable-build-stored
 
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

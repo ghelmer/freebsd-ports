@@ -2,22 +2,25 @@
 # $FreeBSD$
 
 PORTNAME?=	percona
-DISTVERSION=	5.6.17-66.0
+DISTVERSION=	5.6.24-72.2
 PORTREVISION?=	0
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-${DISTVERSION}/source/tarball/
 PKGNAMESUFFIX?=	56-server
-DISTNAME=	percona-server-5.6.17-66.0
+DISTNAME=	percona-server-${DISTVERSION}
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT?=	Multithreaded SQL database (server)
 
 SLAVEDIRS=	databases/percona56-client
-USES=		bison cmake shebangfix
+USES=		bison cmake perl5 shebangfix
 
-OPTIONS_DEFINE=	OPENSSL FASTMTX
-OPTIONS_DEFAULT=	OPENSSL
+OPTIONS_DEFINE=	OPENSSL FASTMTX INNODBMEMCACHED
+OPTIONS_DEFAULT=	OPENSSL INNODBMEMCACHED
+OPTIONS_SUB=    yes
 FASTMTX_DESC=	Replace mutexes with spinlocks
+INNODBMEMCACHED_DESC= InnoDB Memcached plugin
+INNODBMEMCACHED_CMAKE_ON=-DWITH_INNODB_MEMCACHED=1
 
 DATADIR=	${PREFIX}/share/mysql
 
@@ -60,7 +63,9 @@ CMAKE_ARGS+=	-DWITH_FAST_MUTEXES=1
 USE_MYSQL=	yes
 WANT_MYSQL_VER=	56p
 
-CONFLICTS_INSTALL=	mysql[0-9][0-9]-server-* mariadb[0-9][0-9]-server-* percona5.[0-57-9]-server-* percona[0-46-9][0-9]-server-*
+CONFLICTS_INSTALL=	mysql*-server-* \
+			mariadb*-server-* \
+			percona5[0-57-9]-server-*
 
 USE_RC_SUBR=	mysql-server
 
@@ -81,6 +86,9 @@ CMAKE_ARGS+=	-DWITH_EMBEDDED_SERVER="ON"
 post-install:
 	@${MKDIR} ${STAGEDIR}/var/db/mysql
 
+.else
+BUILD_DEPENDS+=	libedit>=0:${PORTSDIR}/devel/libedit
+RUN_DEPENDS+=	libedit>=0:${PORTSDIR}/devel/libedit
 .endif
 
 post-patch:

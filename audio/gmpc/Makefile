@@ -3,13 +3,13 @@
 
 PORTNAME=	gmpc
 PORTVERSION=	11.8.16
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/ \
 		http://freebsd.unixfreunde.de/sources/
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full featured GTK2 client for musicpd
 
 BUILD_DEPENDS=	gob2:${PORTSDIR}/devel/gob2 \
@@ -26,7 +26,7 @@ USE_GNOME=	glib20 gtk20 libglade2
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS=	--enable-system-libsexy
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib -lm
 
 OPTIONS_DEFINE=	MMKEYS XSPF
 OPTIONS_DEFAULT=	MMKEYS

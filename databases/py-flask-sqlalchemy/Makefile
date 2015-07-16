@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Flask-SQLAlchemy
-PORTVERSION=	1.0
+PORTVERSION=	2.0
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,13 +10,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	olivierd@FreeBSD.org
 COMMENT=	Adds SQLAlchemy support to Flask
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0.10:${PORTSDIR}/www/py-flask \
 	${PYTHON_PKGNAMEPREFIX}sqlalchemy>=0.7:${PORTSDIR}/databases/py-sqlalchemy
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=	python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

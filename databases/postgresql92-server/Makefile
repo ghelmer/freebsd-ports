@@ -5,8 +5,7 @@ PORTNAME?=	postgresql
 DISTVERSION?=	9.2.13
 PORTREVISION?=	0
 CATEGORIES?=	databases
-MASTER_SITES=	PGSQL
-MASTER_SITE_SUBDIR=	source/v${DISTVERSION}
+MASTER_SITES=	PGSQL/source/v${DISTVERSION}
 PKGNAMESUFFIX?=	${DISTVERSION:R:S/.//}${COMPONENT}
 
 MAINTAINER?=	pgsql@FreeBSD.org
@@ -47,9 +46,9 @@ CONFIGURE_ARGS+=--with-libraries=${PREFIX}/lib \
 		--with-includes=${PREFIX}/include \
 		--enable-thread-safety
 CONFIGURE_ENV+=	INCLUDES="${INCLUDES}" \
-		PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}" \
+		PTHREAD_LIBS="-lpthread" \
 		LDFLAGS_SL="${LDFLAGS_SL}"
+LDFLAGS+=	-lpthread
 
 PLIST=		${PKGDIR}/pkg-plist${COMPONENT}
 
@@ -66,22 +65,24 @@ INSTALL_TARGET?=install-strip
 SERVER_ONLY=	yes
 COMPONENT=	-server
 USE_RC_SUBR=	postgresql
-USE_PGSQL=	yes
-WANT_PGSQL_VER=	${DISTVERSION:C/([0-9][0-9]*)\.([0-9][0-9]*).*/\1\2/g}
+USES+=		pgsql:${DISTVERSION:C/([0-9][0-9]*\.[0-9][0-9]*).*/\1/g}
 USERS=		${PG_USER}
 GROUPS=	${PG_GROUP}
 SUB_FILES+=	502.pgsql
 .endif
 
-.if !defined(CLIENT_ONLY)
+.if defined(CLIENT_ONLY)
+OPTIONS_DEFINE+=LIBEDIT
+LIBEDIT_DESC=	Use non-GPL libedit instead of readline
+.else
 MAKE_ENV=	PATH=${PREFIX}/bin:${PATH}
 CONFIGURE_ENV+=	PATH=${PREFIX}/bin:${PATH}
 .endif
 
 .if !defined(SLAVE_ONLY)
-OPTIONS_DEFINE+=	NLS DTRACE PAM LDAP GSSAPI OPTIMIZED_CFLAGS XML TZDATA DEBUG KRB5
-OPTIONS_SINGLE= KRB5
-OPTIONS_SINGLE_KRB5= MIT_KRB5 HEIMDAL_KRB5
+OPTIONS_DEFINE+=	NLS DTRACE PAM LDAP GSSAPI OPTIMIZED_CFLAGS XML TZDATA DEBUG
+OPTIONS_RADIO= KRB5
+OPTIONS_RADIO_KRB5= MIT_KRB5 HEIMDAL_KRB5
 
 KRB5_DESC=       Build with kerberos provider support
 NLS_DESC=	Use internationalized messages
@@ -112,6 +113,15 @@ OPTIONS_DEFAULT=	NLS XML TZDATA INTDATE SSL
 .endif # !SLAVE_ONLY
 
 .include <bsd.port.options.mk>
+
+.if defined(CLIENT_ONLY)
+.  if ${PORT_OPTIONS:MLIBEDIT}
+CONFIGURE_ARGS+=--with-libedit-preferred
+LIB_DEPENDS=    libedit.so.0:${PORTSDIR}/devel/libedit
+.  else
+USES+=		readline
+.  endif
+.endif # CLIENT_ONLY
 
 .if ${PORT_OPTIONS:MSSL}
 USE_OPENSSL=	yes

@@ -22,6 +22,9 @@ PLIST_SUB=	JAR_DIR=${JAR_DIR}
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
+OPTIONS_DEFINE=	DOCS
+
+
 JAVAVM=		${LOCALBASE}/bin/java
 JAR_DIR=	${JAVAJARDIR:S,^${PREFIX}/,,}/${PORTNAME}
 JAR_FILE=	frost.jar
@@ -51,10 +54,6 @@ PLIST_FILES+=	%%JAR_DIR%%/${jar}
 PLIST_FILES+=	%%DATADIR%%/${file}
 .endfor
 
-PLIST_DIRS+=	\
-		%%JAR_DIR%% \
-		%%DATADIR%%
-
 DESKTOP_ENTRIES=	"Frost" "Freenet Client" \
 			"${JAVASHAREDIR}/${PORTNAME}/jtc.ico" \
 			"frost" "P2P;Network;Java;" \
@@ -73,12 +72,10 @@ post-patch:
 
 do-install:
 # docs
-.ifndef(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in ${DOC_FILES}
 	@${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 # jars
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${JAR_DIR}
 .for jar in ${JAR_FILES}

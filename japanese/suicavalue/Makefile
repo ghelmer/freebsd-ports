@@ -13,16 +13,15 @@ EXTRACT_ONLY=
 MAINTAINER=	sarumaru@jp.FreeBSD.org
 COMMENT=	Utility to print a statement of Suica
 
-LIB_DEPENDS=	pasori.1:${PORTSDIR}/devel/libpasori
+LIB_DEPENDS=	libpasori.so:${PORTSDIR}/devel/libpasori
+
+USES=		uidfix
+MAKEFILE=	${FILESDIR}/Makefile
 
 PLIST_FILES=	bin/SuicaValue
 
 post-extract:
 	@${MKDIR} ${WRKSRC}
 	@${CP} -f ${DISTDIR}/${DIST_SUBDIR}/${DISTFILES} ${WRKSRC}
-	@${CP} -f ${FILESDIR}/Makefile ${WRKSRC}
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

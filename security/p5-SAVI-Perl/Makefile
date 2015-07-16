@@ -3,10 +3,9 @@
 
 PORTNAME=	SAVI-Perl
 PORTVERSION=	0.30
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security perl5
 MASTER_SITES=	http://www.csupomona.edu/~henson/archive/projects/SAVI-Perl/dist/
-MASTER_SITE_SUBDIR=	security
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	pi@FreeBSD.org

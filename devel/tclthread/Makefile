@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	thread
-PORTVERSION=	2.7.0
+PORTVERSION=	2.7.2
 CATEGORIES=	devel
-MASTER_SITES=	SF/tcl/Tcl/8.6.0
+MASTER_SITES=	SF/tcl/Thread%20Extension/${PORTVERSION}
 PKGNAMEPREFIX=	tcl
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
@@ -42,6 +42,9 @@ CONFIGURE_ARGS+=--with-gdbm
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		${WRKSRC}/configure
+	@${REINPLACE_CMD} -e \
+	    '/^INSTALL_PROGRAM/s|$$| -s|; /^INSTALL_LIBRARY/s|$$| -s|' \
+	    ${WRKSRC}/Makefile.in
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/html
@@ -51,5 +54,8 @@ post-install:
 .for FILE in thread.html tpool.html tsv.html ttrace.html
 	${INSTALL_DATA} ${WRKSRC}/doc/html/${FILE} ${STAGEDIR}${DOCSDIR}/html
 .endfor
+
+regression-test: build
+	cd ${WRKSRC} && ${MAKE} test
 
 .include <bsd.port.mk>

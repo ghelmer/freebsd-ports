@@ -3,18 +3,20 @@
 
 PORTNAME=	ttf2pt1
 PORTVERSION=	3.4.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	print
 MASTER_SITES=	SF
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	True Type Font to Postscript Type 1 Converter
 
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 RUN_DEPENDS=	t1asm:${PORTSDIR}/print/t1utils
 
-USES=		pkgconfig shebangfix perl5 uidfix
+USES=		pkgconfig shebangfix perl5 uidfix tar:tgz
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} ${CPPFLAGS}" LIBS="${LIBS}" \
 		INSTDIR="${STAGEDIR}${PREFIX}" LIBXDIR="${STAGEDIR}${PREFIX}/bin" \
 		OWNER=${BINOWN} GROUP=${BINGRP}
@@ -37,6 +39,7 @@ LIBS+=		`pkg-config --libs freetype2` \
 		-L${LOCALBASE}/lib -lm
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ttf2pt1
 	@${SED} -i '' 's,${STAGEDIR},,' ${STAGEDIR}${PREFIX}/bin/ttf2pt1_convert \
 		${STAGEDIR}${PREFIX}/man/man1/ttf2pt1_x2gs.1 \
 		${STAGEDIR}${PREFIX}/man/man1/ttf2pt1.1 \

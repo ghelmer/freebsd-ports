@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Template
-PORTVERSION=	2.0.1
+PORTVERSION=	2.0.2
 CATEGORIES=	www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Template System
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+USES=	horde
+
+.include <bsd.port.mk>

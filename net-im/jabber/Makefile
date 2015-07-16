@@ -3,7 +3,7 @@
 
 PORTNAME=	jabber
 PORTVERSION=	1.6.1.1
-PORTREVISION=	16
+PORTREVISION=	18
 PORTEPOCH=	1
 CATEGORIES=	net-im ipv6
 MASTER_SITES=	http://download.jabberd.org/jabberd14/%SUBDIR%/
@@ -22,11 +22,12 @@ LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt \
 		libgnutls.so:${PORTSDIR}/security/gnutls \
 		libexpat.so:${PORTSDIR}/textproc/expat2
 
-OPTIONS_DEFINE= IPV6 MYSQL PGSQL
+OPTIONS_DEFINE= IPV6 MYSQL PGSQL DOCS
 
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		gettext gmake iconv libtool pkgconfig
 USE_RC_SUBR=	jabber
-USES=		gettext gmake iconv pkgconfig
-USE_AUTOTOOLS=	libtool
 CONFIGURE_ARGS=	--localstatedir=/var \
 		--sysconfdir=${JABBER_ETCDIR} \
 		--includedir=${PREFIX}/include/jabber \
@@ -39,22 +40,28 @@ CPPFLAGS+=	$$(pth-config --cflags) \
 LDFLAGS+=	$$(pth-config --ldflags) \
 		-L${LOCALBASE}/lib
 
-SUB_FILES=	pkg-install pkg-deinstall pkg-message
-SUB_LIST=	JABBER_USER=${JABBER_USER} JABBER_UID=${JABBER_UID} \
-		JABBER_GROUP=${JABBER_GROUP} JABBER_GID=${JABBER_GID} \
+SUB_FILES=	pkg-message
+SUB_LIST=	JABBER_USER=${JABBER_USER} \
+		JABBER_GROUP=${JABBER_GROUP} \
 		JABBER_ETCDIR="${JABBER_ETCDIR}" \
 		JABBER_LOGDIR="${JABBER_LOGDIR}" \
 		JABBER_SPOOLDIR="${JABBER_SPOOLDIR}" \
 		JABBER_RUNDIR="${JABBER_RUNDIR}"
+PLIST_SUB=	JABBER_USER=${JABBER_USER} \
+		JABBER_GROUP=${JABBER_GROUP} \
+		JABBER_LOGDIR="${JABBER_LOGDIR}" \
+		JABBER_SPOOLDIR="${JABBER_SPOOLDIR}" \
+		JABBER_RUNDIR="${JABBER_RUNDIR}"
+
+USERS=		${JABBER_USER}
+GROUPS=		${JABBER_GROUP}
 
 JABBER_USER=	jabber
-JABBER_UID=	93
-JABBER_GROUP=	${JABBER_USER}
-JABBER_GID=	${JABBER_UID}
-JABBER_ETCDIR=	"${PREFIX}/etc"
-JABBER_RUNDIR=	"/var/run/jabberd"
-JABBER_SPOOLDIR="/var/spool/jabberd"
-JABBER_LOGDIR=	"/var/log/jabberd"
+JABBER_GROUP=	jabber
+JABBER_ETCDIR=	${PREFIX}/etc
+JABBER_RUNDIR=	/var/run/jabberd
+JABBER_SPOOLDIR=/var/spool/jabberd
+JABBER_LOGDIR=	/var/log/jabberd
 
 .include <bsd.port.options.mk>
 
@@ -64,7 +71,7 @@ CONFIGURE_ARGS+=	--with-mysql=${LOCALBASE}
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 CONFIGURE_ARGS+=	--with-postgresql=${LOCALBASE}
 .endif
 

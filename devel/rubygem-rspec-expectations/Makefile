@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rspec-expectations
-PORTVERSION=	2.14.4
+PORTVERSION=	3.3.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,10 +11,11 @@ COMMENT=	Rspec-expectations adds should and should_not to every object
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-diff-lcs>=1.1.3:${PORTSDIR}/textproc/rubygem-diff-lcs
+RUN_DEPENDS=	rubygem-diff-lcs>=1.2.0:${PORTSDIR}/textproc/rubygem-diff-lcs \
+		rubygem-rspec-support>=${PORTVERSION:R}:${PORTSDIR}/devel/rubygem-rspec-support
 
+NO_ARCH=	yes
 USE_RUBY=	yes
-#USE_RAKE=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 

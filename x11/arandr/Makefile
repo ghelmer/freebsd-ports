@@ -6,7 +6,7 @@ PORTVERSION=	0.1.7.1
 PORTREVISION=	2
 CATEGORIES=	x11 deskutils
 MASTER_SITES=	http://christian.amsuess.com/tools/arandr/files/ \
-		LOCAL/${MAINTAINER:C/([^@]*)@.*/\1/}
+		LOCAL/sbz
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Another XRandR GUI
@@ -19,10 +19,8 @@ RUN_DEPENDS=	xrandr>0:${PORTSDIR}/x11/xrandr \
 
 OPTIONS_DEFINE=	DOCS
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-
-USES+=		gettext desktop-file-utils
+USE_PYTHON=	distutils
+USES+=		gettext desktop-file-utils python
 
 PORTDOCS=	ChangeLog NEWS README TODO
 

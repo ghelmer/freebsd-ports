@@ -1,4 +1,2 @@
-SHA256 (libassuan-2.1.1.tar.bz2) = 23e2d67779b88e90d29fe1df6b157109f1c2a647d0f1b2a0f4295bb3c0b2039d
-SIZE (libassuan-2.1.1.tar.bz2) = 538155
-SHA256 (libassuan-2.1.1.tar.bz2.sig) = 765ff2bfb73e9ec5cd9af1eb58b1c29f292e031e1aeeefe2e6fd23c860019d00
-SIZE (libassuan-2.1.1.tar.bz2.sig) = 287
+SHA256 (libassuan-2.2.1.tar.bz2) = 949285bb79345362cb72a40c798defefc007031c60f2f10251720bf60a9de2de
+SIZE (libassuan-2.2.1.tar.bz2) = 542381

@@ -9,10 +9,7 @@ MASTER_SITES=	http://dindin.ru/download/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Protect process from killing when the swap space is exhausted
 
-NO_PACKAGE=	Needs to be compiled for specific kernel
-SSP_UNSAFE=	kernel module does not support ssp
-
-USES=		kmod
+USES=		kmod uidfix
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -20,8 +17,8 @@ CFLAGS+=	-DWITH_SCPROTECT_LIST
 
 .include <bsd.port.pre.mk>
 
-.if !exists(${SRC_BASE}/sys/Makefile)
-IGNORE=		requires kernel sources
+.if ${OSVERSION} >= 1100000
+BROKEN=		does not build on 11.x
 .endif
 
 post-extract:

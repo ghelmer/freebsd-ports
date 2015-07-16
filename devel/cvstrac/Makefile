@@ -3,16 +3,15 @@
 
 PORTNAME?=	cvstrac
 PORTVERSION=	2.0.1
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.cvstrac.org/
 DISTNAME=	cvstrac-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT?=	Web-Based Bug And Patch-Set Tracking System For CVS
 
 LICENSE=	GPLv2
-
-WRKSRC=		${WRKDIR}/${DISTNAME}
 
 USES=		gmake pkgconfig
 USE_SQLITE=	yes
@@ -27,7 +26,6 @@ LDFLAGS+=	$$(pkg-config --libs sqlite3) -lcrypt -lm
 PLIST_FILES=	bin/${PORTNAME}
 
 do-install:
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${PORTNAME} \
-		${STAGEDIR}${PREFIX}/bin)
+	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

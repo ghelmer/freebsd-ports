@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	lime-rade8
-PORTVERSION=	1.01
-MASTER_SITES=	SF/graphitekde/OldFiles
-DISTNAME=	Lime-Rade8-${PORTVERSION}
+PORTVERSION=	3.1
+MASTER_SITES=	SF/graphitekde/graphitekde/Lime-RAD.E8-${PORTVERSION}/
+DISTNAME=	Lime-RAD.E8-${PORTVERSION}
 
 COMMENT=	KDE Mac OS X like iconset, most from rad-e8 design
 
-USE_BZIP2=	yes
-WRKSRC=		${WRKDIR}/${DISTNAME:C|-${PORTVERSION}$||}
+USES=		tar:bzip2
+WRKSRC=		${WRKDIR}/Lime-RAD.E8-${PORTVERSION}
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../kde-icons-noia/Makefile.icons"

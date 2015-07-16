@@ -3,10 +3,9 @@
 
 PORTNAME=	lincity-ng
 PORTVERSION=	2.0
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_BERLIOS}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	BERLIOS
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved rich city simulation game for X
@@ -23,7 +22,15 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libphysfs=${PREFIX} \
 		--x-libraries=${LOCALBASE}/lib --x-includes=${LOCALBASE}/include
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
+
+PLIST_FILES=	bin/lincity-ng \
+		share/applications/lincity-ng.desktop \
+		share/pixmaps/lincity-ng.png
+PORTDATA=	*
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| -O| -I${LOCALBASE}/include&|g' \

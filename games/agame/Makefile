@@ -3,20 +3,18 @@
 
 PORTNAME=	agame
 PORTVERSION=	1577
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://zevv.nl/play/code/game/ \
-		http://critical.ch/distfiles/ \
-		http://energy.critical.ch/distfiles/
+		LOCAL/ehaupt
 DISTNAME=	game-src-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Simple Tetris-like game
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
 
-USES=		gmake
+USES=		gmake tar:tgz
 USE_SDL=	sdl image mixer
 
 WRKSRC=		${WRKDIR}/game

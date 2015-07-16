@@ -3,19 +3,18 @@
 
 PORTNAME=	asteroid
 PORTVERSION=	1.2.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern version of the arcade classic Asteroid
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	chazomaticus
-GH_PROJECT=	asteroid
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	ffeb0fd
+GH_TAGNAME=	ffeb0fd
 
 USES=		cmake
 USE_GL=		glut

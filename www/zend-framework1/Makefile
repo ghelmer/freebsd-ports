@@ -3,6 +3,7 @@
 
 PORTNAME=	ZendFramework
 PORTVERSION=	1.12.7
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://packages.zendframework.com/releases/${DISTNAME}/
 PKGNAMESUFFIX=	1
@@ -19,6 +20,7 @@ USES=		gettext
 
 CONFLICTS=	ZendFramework-2.*
 
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS EXAMPLES MYSQL MYSQLI DBLIB PGSQL ODBC SQLITE REQPHP OPTPHP
@@ -36,8 +38,8 @@ OPTPHP_DESC=	Install optional PHP dependencies
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
-		${PORTNAME}-${PORTVERSION}-manual-en${EXTRACT_SUFX}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		${DISTNAME}-manual-en${EXTRACT_SUFX}
 .endif
 
 INSTALL_DIRS=	library extras/library externals/dojo/dijit \
@@ -92,13 +94,11 @@ USE_PHP+=	pdo_sqlite
 
 do-install:
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} "${INSTALL_DIRS}" ${STAGEDIR}${DATADIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${DATADIR}
 	@${FIND} ${STAGEDIR}${DATADIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 644
 	@${FIND} ${STAGEDIR}${DATADIR} -type d -print0 | ${XARGS} -0 ${CHMOD} 755
 	@cd ${WRKSRC}/bin && ${INSTALL_SCRIPT} zf.sh ${STAGEDIR}${PREFIX}/bin/zf
 	@cd ${WRKSRC}/bin && ${INSTALL_DATA} zf.php ${STAGEDIR}${PREFIX}/bin/zf.php
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} "demos tests" ${STAGEDIR}${EXAMPLESDIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${EXAMPLESDIR}
 	@${FIND} ${STAGEDIR}${EXAMPLESDIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 644
 	@${FIND} ${STAGEDIR}${EXAMPLESDIR} -type d -print0 | ${XARGS} -0 ${CHMOD} 755
 

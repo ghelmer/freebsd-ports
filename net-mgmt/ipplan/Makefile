@@ -7,7 +7,7 @@ PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/iptrack/${PORTNAME}/Release%204.92
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IP address management and tracking
 
 RUN_DEPENDS=	nmap:${PORTSDIR}/security/nmap
@@ -62,6 +62,5 @@ post-install:
 .if ${PORT_OPTIONS:MPGSQL}
 	@${REINPLACE_CMD} -e 's|INSTALL|INSTALL-POSTGRESQL|g' ${PKGMESSAGE}
 .endif
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

@@ -3,11 +3,12 @@
 
 PORTNAME=	C-Scan
 PORTVERSION=	0.74
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module to scan C language files for easily recognized constructs
 
 BUILD_DEPENDS=	p5-Data-Flow>=0:${PORTSDIR}/devel/p5-Data-Flow

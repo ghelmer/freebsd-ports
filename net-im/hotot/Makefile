@@ -3,7 +3,7 @@
 
 PORTNAME=	hotot
 PORTVERSION=	0.9.8.14
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im www
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -14,10 +14,8 @@ LICENSE=	LGPL3
 USE_GITHUB=	yes
 GH_ACCOUNT=	lyricat
 GH_PROJECT=	Hotot
-GH_COMMIT=	1f68d33
 
-USES=		cmake gettext
-USE_PYTHON=	yes
+USES=		cmake gettext python
 USE_GNOME=	intltool
 INSTALLS_ICONS=	yes
 

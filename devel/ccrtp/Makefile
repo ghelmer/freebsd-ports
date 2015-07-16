@@ -3,6 +3,7 @@
 
 PORTNAME=	ccrtp
 PORTVERSION=	2.0.9
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -13,7 +14,7 @@ LIB_DEPENDS=	libcommoncpp.so:${PORTSDIR}/devel/ucommon \
 		libgcrypt.so:${PORTSDIR}/security/libgcrypt
 
 GNU_CONFIGURE=	yes
-USES=		gmake gettext iconv pkgconfig
+USES=		gmake gettext libtool iconv pkgconfig
 USE_LDCONFIG=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include

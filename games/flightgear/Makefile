@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear
-PORTVERSION=	3.0.0
+PORTVERSION=	3.4.0
 PORTREVISION=	1
 CATEGORIES=	games
 # see http://www.flightgear.org/templates.js
@@ -17,12 +17,11 @@ COMMENT=	The FlightGear flight simulator
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
 		libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
 		libosg.so:${PORTSDIR}/graphics/osg \
-		libdbus-1.so:${PORTSDIR}/devel/dbus
+		libspeex.so:${PORTSDIR}/audio/speex
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib \
 		${LOCALBASE}/lib/libSimGearCore.a:${PORTSDIR}/devel/simgear
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib \
@@ -32,21 +31,27 @@ RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib \
 USE_XORG=	ice sm x11 xext xft xi xinerama xt xmu
 USE_GL=		gl glu glut
 USE_SQLITE=	3
+USE_QT5=	core buildtools qmake widgets
 
-USES=		tar:bzip2 dos2unix cmake compiler:features openal:al,alut
+USES=		cpe dos2unix cmake compiler jpeg openal:al,alut tar:bzip2
 DOS2UNIX_REGEX=	.*\.(c|h|cxx|cpp|hxx|hpp)
-CMAKE_ARGS+=	-DJPEG_FACTORY:BOOL=ON \
-		-DENABLE_JS_SERVER:BOOL=ON \
-		-DUSE_DBUS:BOOL=ON \
+CMAKE_ARGS+=	-DENABLE_JS_SERVER:BOOL=ON \
 		-DSYSTEM_SQLITE:BOOL=ON \
 		-DFG_DATA_DIR:PATH=${LOCALBASE}/share/${PORTNAME} \
 		-DCMAKE_INSTALL_MANDIR:PATH=${MANPREFIX}/man \
 		-DFGCOM_DATA_PATH:PATH=${DATADIR}
 
+OPTIONS_DEFINE=	DBUS
+OPTIONS_DEFAULT=	DBUS
+DBUS_LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus
+DBUS_CMAKE_ON=	-DUSE_DBUS:BOOL=ON
+DBUS_CMAKE_OFF=	-DUSE_DBUS:BOOL=OFF
+
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_FEATURES:Mlibc++}
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src-FDM-JSBSim-input_output-string_utilities.h
+# Chase devel/simgear compiler version
+.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 46
+USE_GCC=	yes
 .endif
 
 post-install:

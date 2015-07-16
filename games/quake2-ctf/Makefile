@@ -4,12 +4,10 @@
 PORTNAME=	ctf
 PORTVERSION=	1.52
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_IDSOFTWARE:S|$|:data|} \
+MASTER_SITES=	IDSOFTWARE/quake2/ctf/:data \
 		http://offload1.icculus.org/quake2/files/:src
-MASTER_SITE_SUBDIR=	quake2/ctf/:data
 PKGNAMEPREFIX=	${Q2PKGNAMEPREFIX}
-DISTFILES=	${CTF_DATA}:data \
-		${CTF_SRC}:src
+DISTFILES=	${CTF_DATA}:data ${CTF_SRC}:src
 DIST_SUBDIR=	quake2lnx
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -27,7 +25,6 @@ CTF_SRC=	quake2-r0.16.2.tar.gz
 
 OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
 .include "${.CURDIR}/../quake2-data/Makefile.include"
 .include <bsd.port.options.mk>
 
@@ -42,15 +39,13 @@ post-extract:
 	@${CP} ${FILESDIR}/${MAKEFILE} ${WRKSRC}
 
 do-install:
-	@${MKDIR} ${Q2DIR}/ctf
-	${INSTALL_PROGRAM} ${WRKSRC}/game.so ${Q2DIR}/ctf
+	@${MKDIR} ${STAGEDIR}${Q2DIR}/ctf
+	${INSTALL_PROGRAM} ${WRKSRC}/game.so ${STAGEDIR}${Q2DIR}/ctf
 .for f in *.cfg *.pak
-	${INSTALL_DATA} ${WRKDIR}/ctf/${f} ${Q2DIR}/ctf
+	${INSTALL_DATA} ${WRKDIR}/ctf/${f} ${STAGEDIR}${Q2DIR}/ctf
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/* ${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/ctf/readme.txt ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/* ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/ctf/readme.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,16 +3,14 @@
 
 PORTNAME=	pinba_engine
 PORTVERSION=	2011.08.18
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/tony2001/pinba_engine/tarball/${GITVERSION}/
-DISTNAME=	tony2001-pinba_engine-${GITVERSION}
 
 MAINTAINER=	raven428@gmail.com
 COMMENT=	Mysql-engine part of statistics server for PHP
 
 BUILD_DEPENDS=	${LOCALBASE}/include/google/protobuf/descriptor.h:${PORTSDIR}/devel/protobuf \
- 		${LOCALBASE}/include/event.h:${PORTSDIR}/devel/libevent \
+ 		${LOCALBASE}/include/event.h:${PORTSDIR}/devel/libevent2 \
 		${LOCALBASE}/include/Judy.h:${PORTSDIR}/devel/judy \
 		${LOCALBASE}/lib/mysql/plugin:${PORTSDIR}/${_MYSQL_SERVER} \
  		${NONEXISTENT}:${PORTSDIR}/${_MYSQL_SERVER}:configure \
@@ -20,24 +18,21 @@ BUILD_DEPENDS=	${LOCALBASE}/include/google/protobuf/descriptor.h:${PORTSDIR}/dev
 		cmake:${PORTSDIR}/devel/cmake
 LIB_DEPENDS=	libprotobuf.so:${PORTSDIR}/devel/protobuf
 
-GITVERSION=	3a0cb51
+USE_GITHUB=	yes
+GH_ACCOUNT=	tony2001
+GH_TAGNAME=	3a0cb51
 
-WRKSRC=		${WRKDIR}/${DISTNAME}
 USE_MYSQL=	yes
 IGNORE_WITH_MYSQL=	50
 
 MYSQL_WRKSRC=	$$(cd ${PORTSDIR}/${_MYSQL_SERVER} && ${MAKE} -V WRKSRC)
 
-USES=		gmake
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtoolize
+INSTALL_TARGET=	install-strip
+USES=		autoreconf gmake libtool
 USE_LDCONFIG=	${PREFIX}/lib/mysql/plugin
 
-AUTOMAKE_ARGS+=	--add-missing --copy --force-missing
-LIBTOOLIZE_ARGS+=--force --copy
-ACLOCAL_ARGS+=	-I ${LOCALBASE}/share/aclocal
-
-CONFIGURE_ARGS+=	\
+CONFIGURE_ARGS=	--disable-static \
 		--with-mysql=${MYSQL_WRKSRC} \
 		--libdir=${PREFIX}/lib/mysql/plugin
 CFLAGS+=	-I${LOCALBASE}/include/mysql

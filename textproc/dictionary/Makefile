@@ -3,14 +3,14 @@
 
 PORTNAME=	dictionary
 PORTVERSION=	1.8.7
-PORTREVISION=	14
+PORTREVISION=	17
 CATEGORIES=	textproc net elisp
 MASTER_SITES=	http://me.in-berlin.de/~myrkr/dictionary/ \
 		http://bsdchat.com/dist/dryice/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A dictionary client for Emacs
+COMMENT=	Dictionary client for Emacs
 
 USE_EMACS=	yes
 

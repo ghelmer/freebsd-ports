@@ -2,20 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	termit
-PORTVERSION=	2.9.6
-PORTREVISION=	4
+PORTVERSION=	2.10.1
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	x11-toolkits gnome
-MASTER_SITES=	http://cloud.github.com/downloads/nonstop/termit/
 
 MAINTAINER=	pawel@FreeBSD.org
-COMMENT=	Small terminal emulator
+COMMENT=	Small terminal emulator with Lua scripting
 
 LICENSE=	GPLv2
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	nonstop
 
 USES=		cmake lua pkgconfig tar:bzip2
 USE_GNOME=	gdkpixbuf2 vte
 
-CFLAGS+=	-I${LOCALBASE}/include/vte-0.0
+CPPFLAGS+=	-I${LOCALBASE}/include/vte-0.0
 
 TERMIT_ETC=	${STAGEDIR}${PREFIX}/etc/xdg/${PORTNAME}
 
@@ -28,11 +30,12 @@ NLS_CMAKE_OFF=	-DENABLE_NLS:BOOL=NO
 NLS_USES=	gettext
 
 post-patch:
-	@${REINPLACE_CMD} 's|share/man|man|' ${WRKSRC}/doc/CMakeLists.txt
+	@${REINPLACE_CMD} 's|share/man|man|; s|../COPYING||' \
+		${WRKSRC}/doc/CMakeLists.txt
+	@${REINPLACE_CMD} 's|OpenBSD|${OPSYS}|; s|lua52|lua-${LUA_VER}|' \
+		${WRKSRC}/src/CMakeLists.txt
 	@${REINPLACE_CMD} 's|ADD_SUBDIRECTORY(etc)||' ${WRKSRC}/CMakeLists.txt
 	@${REINPLACE_CMD} 's|/etc|${PREFIX}/etc|' ${WRKSRC}/src/lua_conf.c
-	@${REINPLACE_CMD} 's|/usr/lib/liblua.a|${LUA_LIBDIR}/liblua.a|' \
-		${WRKSRC}/src/CMakeLists.txt
 
 post-install:
 	@${MKDIR} ${TERMIT_ETC}

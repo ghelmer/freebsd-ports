@@ -4,43 +4,40 @@
 PORTNAME=	mgen
 PORTVERSION=	4.2b6
 CATEGORIES=	net
-MASTER_SITES=	http://downloads.pf.itd.nrl.navy.mil/mgen/mgen4/ \
-	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	miwi
+MASTER_SITES=	http://downloads.pf.itd.nrl.navy.mil/mgen/archive/mgen4/ \
+		LOCAL/miwi
 DISTNAME=	src-${PORTNAME}-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	jmohacsi@bsd.hu
-COMMENT=	An IP network performance tests and measurements
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	IP network performance tests and measurements
 
 # Dumps core on 64-bit architectures. This was reported to the upstream
 # author, who promised to fix it in one of the next releases.
 ONLY_FOR_ARCHS=	i386
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		gmake
+USES=		gmake tar:tgz
+MAKEFILE=	Makefile.freebsd
 
 PLIST_FILES=	bin/mgen
 PORTDOCS=	README.TXT VERSION.TXT mgen.html example.mgn
 
-NO_STAGE=	yes
-post-patch:
-	@${REINPLACE_CMD} -e 's|-lpthread|${PTHREAD_LIBS}|g' ${WRKSRC}/unix/Makefile.common \
-		${WRKSRC}/protolib/unix/Makefile.common
+OPTIONS_DEFINE=	DOCS
 
-	@${REINPLACE_CMD} -e 's|%%PTHREAD_CFLAGS%%|${PTHREAD_CFLAGS}|g' ${WRKSRC}/unix/Makefile.freebsd \
-	                ${WRKSRC}/protolib/unix/Makefile.freebsd
+post-patch:
+	@${REINPLACE_CMD} -e 's|g++|${CXX}|; s|gcc|${CC}|; \
+		/CFLAGS =/s|$$|${CFLAGS}|' \
+		${WRKSRC}/unix/Makefile.freebsd \
+		${WRKSRC}/protolib/unix/Makefile.freebsd
 
 do-build:
-	cd ${WRKSRC}/unix && ${MAKE_CMD} -f Makefile.freebsd ${PORTNAME}
+	${DO_MAKE_BUILD} -C ${WRKSRC}/unix ${PORTNAME}
 
 do-install:
-	${INSTALL_PROGRAM}	${WRKSRC}/unix/mgen ${PREFIX}/bin
-.ifndef(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
+	${INSTALL_PROGRAM} ${WRKSRC}/unix/mgen ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${FILE} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

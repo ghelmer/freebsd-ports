@@ -2,16 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	codelite
-DISTVERSION=	6.0.1
+DISTVERSION=	6.1.1
+PORTREVISION=	1
 CATEGORIES=	editors devel
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open Source IDE for C/C++
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 RUN_DEPENDS=	xterm:${PORTSDIR}/x11/xterm
+
+BROKEN_FreeBSD_8=	does not build on FreeBSD < 10.x
+BROKEN_FreeBSD_9=	does not build on FreeBSD < 10.x
 
 OPTIONS_DEFINE=	CSCOPE CLANG NLS
 CSCOPE_DESC=	CScope integration
@@ -20,8 +24,6 @@ OPTIONS_SUB=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	eranif
-GH_PROJECT=	${PORTNAME}
-GH_COMMIT=	5bc3080
 
 USE_WX=		3.0
 WX_UNICODE=	yes

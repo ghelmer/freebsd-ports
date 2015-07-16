@@ -3,7 +3,7 @@
 
 PORTNAME=	nagios-plugins
 PORTVERSION=	2.0.3
-PORTREVISION=	1
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://www.nagios-plugins.org/download/ \
@@ -18,15 +18,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 CONFLICTS_INSTALL=	monitoring-plugins-*
 
 USES=		charsetfix gmake perl5 libtool
-CHARSETFIX_MAKEFILEIN=Makefile.am
+USE_OPENSSL=	yes
 USE_SUBMAKE=	yes
-USE_AUTOTOOLS=	aclocal autoconf automake
-ACLOCAL_ARGS=	-I m4 -I gl/m4
-AUTOMAKE_ARGS=	--add-missing
 
-OPTIONS_DEFINE=	QSTAT FPING NETSNMP RADIUS MYSQL PGSQL LDAP IPV6 JAIL NLS DBI EXTRAOPTS
+OPTIONS_DEFINE=	QSTAT FPING NETSNMP RADIUS MYSQL PGSQL LDAP IPV6 NLS DBI EXTRAOPTS SSH_PORTABLE
 OPTIONS_SINGLE=	DNS
-OPTIONS_SINGLE_DNS=	DNS_BASE DNS_BINDTOOLS DNS_BIND98 DNS_BIND99 DNS_BIND910
+OPTIONS_SINGLE_DNS=	DNS_BASE DNS_BINDTOOLS DNS_BIND99 DNS_BIND910
 OPTIONS_DEFAULT=IPV6 EXTRAOPTS DNS_BASE
 OPTIONS_SUB=	yes
 
@@ -37,15 +34,14 @@ RADIUS_DESC=	Radius support (check_radius)
 MYSQL_DESC=	MySQL support (check_mysql)
 PGSQL_DESC=	PostgreSQL support (check_pgsql)
 LDAP_DESC=	OpenLDAP support (check_ldap)
-JAIL_DESC=	Compilation within jail(8) (see help)
 DBI_DESC=	Check database using DBI
 EXTRAOPTS_DESC=	Parsing of plugins ini config files for extra options
+SSH_PORTABLE_DESC=	Build check_ssh with ports openssh (instead of base)
 
 DNS_DESC=	Configuration of check_dig and check_dns (see help)
 
 DNS_BASE_DESC=	>= 10 means drill for check_dig and no check_dns
 DNS_BINDTOOLS_DESC=	Use dig and nslookup from dns/bind-tools
-DNS_BIND98_DESC=	Use dig and nslookup from dns/bind98
 DNS_BIND99_DESC=	Use dig and nslookup from dns/bind99
 DNS_BIND910_DESC=	Use dig and nslookup from dns/bind910
 
@@ -61,9 +57,6 @@ NAGIOSWWWDIR?=	www/nagios
 NAGIOSHTMURL?=	/nagios
 NAGIOSCGIURL?=	${NAGIOSHTMURL}/cgi-bin
 
-NAGIOSPOLLIP?=	127.0.0.1
-NAGIOSPOLLIP6?=	::1
-
 CONFIGURE_ARGS+=--with-nagios-user=${NAGIOSUSER} \
 		--with-nagios-group=${NAGIOSGROUP} \
 		--with-cgiurl=${NAGIOSCGIURL} \
@@ -72,43 +65,48 @@ CONFIGURE_ARGS+=--with-nagios-user=${NAGIOSUSER} \
 		--datadir=${PREFIX}/share \
 		--sysconfdir=${PREFIX}/etc/nagios \
 		--localstatedir=${NAGIOSDIR} \
+		--with-perl=${PERL} \
 		--prefix=${PREFIX}
 
 # Also, force some commands with their expected paths so that they don't get
 # disabled.
-CONFIGURE_ARGS+=--with-qmail-qstat-command=/var/qmail/bin/qmail-qstat
+CONFIGURE_ARGS+=ac_cv_path_PATH_TO_QMAIL_QSTAT=/var/qmail/bin/qmail-qstat \
+		ac_cv_path_PATH_TO_PING=/sbin/ping \
+		ac_cv_path_PATH_TO_PING6=/sbin/ping6 \
+		--with-ping-command="/sbin/ping -n -c %d %s" \
+		--with-ping6-command="/sbin/ping6 -n -c %d %s" \
+		ac_cv_path_PATH_TO_SMBCLIENT=${LOCALBASE}/bin/smbclient
 
-CONFIGURE_ENV=	PERL=${PERL}
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 QSTAT_BUILD_DEPENDS=	qstat:${PORTSDIR}/games/qstat
 QSTAT_RUN_DEPENDS=	qstat:${PORTSDIR}/games/qstat
-QSTAT_CONFIGURE_ENABLE=	qstat
+QSTAT_CONFIGURE_OFF=	ac_cv_path_PATH_TO_QUAKESTAT= \
+			ac_cv_path_PATH_TO_QSTAT=
 
 IPV6_CONFIGURE_WITH=	ipv6
 
 FPING_BUILD_DEPENDS=	fping:${PORTSDIR}/net/fping
 FPING_RUN_DEPENDS=	fping:${PORTSDIR}/net/fping
-FPING_CONFIGURE_ENABLE=	fping
+FPING_CONFIGURE_OFF=	ac_cv_path_PATH_TO_FPING= \
+			ac_cv_path_PATH_TO_FPING6=
 
 NETSNMP_BUILD_DEPENDS=	snmpcheck:${PORTSDIR}/net-mgmt/net-snmp \
 		p5-Net-SNMP>=0:${PORTSDIR}/net-mgmt/p5-Net-SNMP
 NETSNMP_RUN_DEPENDS=	snmpcheck:${PORTSDIR}/net-mgmt/net-snmp \
 		p5-Net-SNMP>=0:${PORTSDIR}/net-mgmt/p5-Net-SNMP
-NETSNMP_CONFIGURE_ENABLE=	snmp
+NETSNMP_CONFIGURE_OFF=	ac_cv_path_PATH_TO_SNMPGET= \
+			ac_cv_path_PATH_TO_SNMPGETNEXT=
 
 RADIUS_LIB_DEPENDS=	libradiusclient-ng.so:${PORTSDIR}/net/radiusclient
 RADIUS_CONFIGURE_WITH=	radius
 
 MYSQL_USE=	mysql=yes
-MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}
-MYSQL_CONFIGURE_OFF=	--without-mysql
+MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}
 
-PGSQL_USE=	pgsql=yes
-PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
-PGSQL_CONFIGURE_OFF=	--without-pgsql
+PGSQL_USES=	pgsql
+PGSQL_CONFIGURE_WITH=	pgsql=${LOCALBASE}
 
 LDAP_USE=	openldap=yes
 LDAP_CONFIGURE_WITH=	ldap
@@ -122,9 +120,6 @@ DBI_CONFIGURE_WITH=	dbi
 DNS_BINDTOOLS_BUILD_DEPENDS=	${LOCALBASE}/bin/dig:${PORTSDIR}/dns/bind-tools
 DNS_BINDTOOLS_CONFIGURE_ON=	--with-dig-command=${LOCALBASE}/bin/dig \
 				--with-nslookup-command=${LOCALBASE}/bin/nslookup
-DNS_BIND98_BUILD_DEPENDS=	${LOCALBASE}/bin/dig:${PORTSDIR}/dns/bind98
-DNS_BIND98_CONFIGURE_ON=	--with-dig-command=${LOCALBASE}/bin/dig \
-				--with-nslookup-command=${LOCALBASE}/bin/nslookup
 DNS_BIND99_BUILD_DEPENDS=	${LOCALBASE}/bin/dig:${PORTSDIR}/dns/bind99
 DNS_BIND99_CONFIGURE_ON=	--with-dig-command=${LOCALBASE}/bin/dig \
 				--with-nslookup-command=${LOCALBASE}/bin/nslookup
@@ -132,11 +127,16 @@ DNS_BIND910_BUILD_DEPENDS=	${LOCALBASE}/bin/dig:${PORTSDIR}/dns/bind910
 DNS_BIND910_CONFIGURE_ON=	--with-dig-command=${LOCALBASE}/bin/dig \
 				--with-nslookup-command=${LOCALBASE}/bin/nslookup
 
+SSH_PORTABLE_BUILD_DEPENDS=	${LOCALBASE}/bin/ssh:${PORTSDIR}/security/openssh-portable
+SSH_PORTABLE_RUN_DEPENDS:=	${SSH_PORTABLE_BUILD_DEPENDS}
+SSH_PORTABLE_CONFIGURE_ON=	--with-ssh-command=${LOCALBASE}/bin/ssh
+
 .include <bsd.port.options.mk>
 
 .if ${OSVERSION} > 1000055 && ${PORT_OPTIONS:MDNS_BASE}
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-dig-to-drill.diff
-CONFIGURE_ARGS+=--with-dig-command=/usr/bin/drill
+CONFIGURE_ARGS+=--with-dig-command=/usr/bin/drill \
+		ac_cv_path_PATH_TO_NSLOOKUP=
 PLIST_SUB+=	CHECK_DNS="@comment "
 .else
 .  if ${PORT_OPTIONS:MDNS_BASE}
@@ -146,7 +146,7 @@ CONFIGURE_ARGS+=	--with-dig-command=/usr/bin/dig \
 PLIST_SUB+=	CHECK_DNS=""
 .endif
 
-.if !exists(/usr/bin/ssh)
+.if !exists(/usr/bin/ssh) && empty(PORT_OPTIONS:MSSH_PORTABLE)
 PLIST_SUB+=	SSH="@comment "
 .else
 PLIST_SUB+=	SSH=""
@@ -159,12 +159,8 @@ post-patch:
 	check_users.c
 	@${REINPLACE_CMD} -e 's|setlocale (LC_ALL, "");|setlocale (LC_ALL, ""); setlocale(LC_NUMERIC, "C");|g' ${WRKSRC}/plugins/${file}
 .endfor
-	@${REINPLACE_CMD} -e 's|chown root|${TRUE}|g' ${WRKSRC}/plugins-root/Makefile.am
+	@${REINPLACE_CMD} -e 's|chown root|${TRUE}|g' ${WRKSRC}/plugins-root/Makefile.in
 	# add a fake PATH so that it gets set to a correct value during build.
 	@${REINPLACE_CMD} -e "s|$$ENV{'PATH'}=''|$$ENV{'PATH'}='foo'|" ${WRKSRC}/plugins-scripts/*.pl
-.if ${PORT_OPTIONS:MJAIL}
-	@${REINPLACE_CMD} -e 's# 127.0.0.1 # ${NAGIOSPOLLIP} #g' ${WRKSRC}/configure.ac
-	@${REINPLACE_CMD} -e 's# ::1 # ${NAGIOSPOLLIP6} #g' ${WRKSRC}/configure.ac
-.endif
 
 .include <bsd.port.mk>

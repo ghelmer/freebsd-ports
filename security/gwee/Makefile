@@ -4,15 +4,13 @@
 PORTNAME=	gwee
 PORTVERSION=	1.36
 CATEGORIES=	security www
-MASTER_SITES=	PACKETSTORM
-MASTER_SITE_SUBDIR=	UNIX/utilities
+MASTER_SITES=	PACKETSTORM/UNIX/utilities
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to exploit command execution vulnerabilities in web scripts
 
-USES=		perl5
+USES=		perl5 python
 USE_OPENSSL=	yes
-USE_PYTHON=	yes
 
 LDFLAGS+=	-lssl -lcrypto
 CFLAGS+=	-DWITH_SSL

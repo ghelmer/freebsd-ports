@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Core
-PORTVERSION=	2.11.1
+PORTVERSION=	2.20.5
 CATEGORIES=	devel www pear
 PKGNAMEPREFIX=	pear-
 
@@ -11,11 +11,12 @@ COMMENT=	Horde Core Framework libraries
 
 CONFLICTS=	horde-3*
 
-OPTONS_DEFINE=	KOLAB LZF SOCKETS
+OPTIONS_DEFINE=	KOLAB LZF SOCKETS
 KOLAB_DESC=	Enable Kolab server support
 LZF_DESC=	Depend on lzf PHP extension
 SOCKETS_DESC=	Depend on sockets PHP extension
 
+USES=	horde
 USE_PHP=	session
 
 USE_HORDE_BUILD=	Horde_Role
@@ -32,18 +33,21 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Compress_Fast \
 		Horde_Controller \
 		Horde_Css_Parser \
+		Horde_CssMinify \
 		Horde_Data \
 		Horde_Date \
 		Horde_Exception \
 		Horde_Group \
 		Horde_History \
 		Horde_Injector \
+		Horde_JavascriptMinify \
 		Horde_Lock \
 		Horde_Log \
 		Horde_LoginTasks \
 		Horde_Mime \
 		Horde_Mime_Viewer \
 		Horde_Notification \
+		Horde_Pack \
 		Horde_Perms \
 		Horde_Prefs \
 		Horde_Secret \
@@ -63,21 +67,8 @@ USE_HORDE_RUN=	Horde_Role \
 # Not required but wanted
 USE_HORDE_RUN+=	Horde_Routes
 
-.include <bsd.port.pre.mk>
+KOLAB_USE=	HORDE_RUN=Horde_Kolab_Server,Horde_Kolab_Session,Horde_Kolab_Storage
+LZF_RUN_DEPENDS=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/lzf.so:${PORTSDIR}/archivers/pecl-lzf
+SOCKETS_USE=	PHP=sockets
 
-.if defined(WITH_KOLAB)
-USE_HORDE_RUN+=	Horde_Kolab_Server \
-		Horde_Kolab_Session \
-		Horde_Kolab_Storage
-.endif
-
-.if ${PORT_OPTIONS:MLZF}
-RUN_DEPENDS+=	${PHPBASE}/lib/php/${PHP_EXT_DIR}/lzf.so:${PORTSDIR}/archivers/pecl-lzf
-.endif
-
-.if ${PORT_OPTIONS:MSOCKETS}
-USE_PHP+=	sockets
-.endif
-
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

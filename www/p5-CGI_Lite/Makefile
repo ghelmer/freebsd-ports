@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	CGI-Lite
-PORTVERSION=	2.02
+PORTVERSION=	2.05
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,6 +15,8 @@ USE_PERL5=	configure
 
 DOCS=		CHANGES README TODO
 EXAMPLES=	cookies get_post print upload file post reference
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

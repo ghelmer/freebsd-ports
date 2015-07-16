@@ -16,15 +16,15 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		kye-data_extra_levels.20120818.tar.gz:levels
 DIST_SUBDIR=	kye
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Puzzle game with arcade game elements
 
 RESTRICTED=	kye-data_nuke_levels is charityware
 RESTRICTED_FILES=	 kye-data_nuke_levels.20121101.tar.gz
 
 USE_GNOME=	pygtk2 librsvg2
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 
 PORTDOCS=	NEWS README
 OPTIONS_DEFINE=	DOCS

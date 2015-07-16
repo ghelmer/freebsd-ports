@@ -3,7 +3,7 @@
 
 PORTNAME=	xtrader
 PORTVERSION=	0.99.9
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	finance
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 
@@ -21,7 +21,6 @@ USES=		gmake
 
 PLIST_FILES=	bin/xtrader \
 		%%DATADIR%%/sample.xt
-PLIST_DIRS=	%%DATADIR%%
 
 post-patch:
 	${REINPLACE_CMD} -e 's|char|const char|' \

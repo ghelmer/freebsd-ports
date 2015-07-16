@@ -3,7 +3,7 @@
 
 PORTNAME=	dmd
 PKGNAMESUFFIX=	2
-PORTVERSION=	2.065.0
+PORTVERSION=	2.067.0
 CATEGORIES=	lang
 MASTER_SITES=	http://ftp.digitalmars.com/
 DISTNAME=	dmd.${PORTVERSION}
@@ -15,7 +15,7 @@ USES=		gmake zip
 MAKEFILE=	posix.mak
 EXAMPLESDIR=	${PREFIX}/share/examples/dmd2
 DOCSDIR=	${PREFIX}/share/doc/dmd2
-PORTDOCS=	*.txt druntime/ html/
+PORTDOCS=	*.txt html/
 WRKSRC=		${WRKDIR}/dmd2/src/${PORTNAME}
 LICENSE_COMB=	multi
 LICENSE=	ART10 DMD BSL
@@ -23,11 +23,9 @@ LICENSE_NAME_DMD=	Digital Mars license
 LICENSE_FILE_DMD=	${WRKSRC}/backendlicense.txt
 LICENSE_PERMS_DMD=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell auto-accept
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
-.if ${OSVERSION} < 800000
-BROKEN=		does not compile
-.endif
+.include <bsd.port.pre.mk>
 
 NOT_FOR_ARCHS=		powerpc
 NOT_FOR_ARCHS_REASON=	not yet ported to this architecture
@@ -38,15 +36,15 @@ BROKEN=		Does not install on sparc64: divide-by-zero error
 
 .if ${ARCH} == "amd64"
 MAKE_ARGS+=	MODEL=64
+MODEL=		64
 .else
 MAKE_ARGS+=	MODEL=32
+MODEL=		32
 .endif
 
 .if defined(WITH_DEBUG)
 BUILD=		debug
 MAKE_ARGS+=	DEBUG_FLAGS=-g\ -DDEBUG=1\ -DUNITTEST
-.else
-BUILD=		release
 .endif
 
 MODULEDIR=	${PREFIX}/include/d/phobos2
@@ -63,30 +61,18 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|%@P%/../../src/phobos|${MODULEDIR}|"	\
 			  -e "s|%@P%/../lib|${PREFIX}/lib|"		\
 			  -e "s|%@P%/../../src/druntime|${PREFIX}/include/d/druntime|"	\
-			  ${WRKDIR}/dmd2/linux/bin32/dmd.conf
-	@${ECHO_CMD} >> ${WRKDIR}/dmd2/linux/bin32/dmd.conf
-	@${SED} -e "s|Environment32|Environment64|" ${WRKDIR}/dmd2/linux/bin32/dmd.conf >>${WRKDIR}/dmd2/linux/bin32/dmd.conf
-
-post-build:
-	cd ${WRKSRC}/../druntime && \
-		${SETENV} PATH=${WRKSRC}:${PATH} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS}
-	cd ${WRKSRC}/../phobos && \
-		${SETENV} PATH=${WRKSRC}:${PATH} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${BUILD}
+			  ${WRKDIR}/dmd2/freebsd/bin${MODEL}/dmd.conf
+	@${ECHO_CMD} >> ${WRKDIR}/dmd2/freebsd/bin${MODEL}/dmd.conf
 
 do-install:
 	${INSTALL_MAN} ${WRKDIR}/dmd2/man/man1/dmd.1 ${STAGEDIR}${MANPREFIX}/man/man1/dmd.1
 	${INSTALL_MAN} ${WRKDIR}/dmd2/man/man5/dmd.conf.5 ${STAGEDIR}${MANPREFIX}/man/man5/dmd.conf.5
-.if !exists(${STAGEDIR}${PREFIX}/etc/dmd.conf)
-	${INSTALL_DATA} ${WRKDIR}/dmd2/linux/bin32/dmd.conf ${STAGEDIR}${PREFIX}/etc/dmd.conf
-.endif
+	${INSTALL_DATA} ${WRKDIR}/dmd2/freebsd/bin${MODEL}/dmd.conf ${STAGEDIR}${PREFIX}/etc/dmd.conf.sample
 	${INSTALL_PROGRAM} ${WRKSRC}/dmd ${STAGEDIR}${PREFIX}/bin/dmd
-.if ${ARCH} == "amd64"
-	${INSTALL_DATA} ${WRKSRC}/../phobos/generated/freebsd/${BUILD}/64/libphobos2.a ${STAGEDIR}${PREFIX}/lib
-.else
-	${INSTALL_DATA} ${WRKSRC}/../phobos/generated/freebsd/${BUILD}/32/libphobos2.a ${STAGEDIR}${PREFIX}/lib
-.endif
+	${INSTALL_DATA} ${WRKSRC}/../../freebsd/lib${MODEL}/libphobos2.a ${STAGEDIR}${PREFIX}/lib
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKDIR}/dmd2/linux/bin32/dmd.conf ${STAGEDIR}${EXAMPLESDIR}/dmd.conf
+	${INSTALL_DATA} ${WRKDIR}/dmd2/freebsd/bin32/dmd.conf ${STAGEDIR}${EXAMPLESDIR}/dmd32.conf
+	${INSTALL_DATA} ${WRKDIR}/dmd2/freebsd/bin64/dmd.conf ${STAGEDIR}${EXAMPLESDIR}/dmd64.conf
 	cd ${WRKDIR}/dmd2 && ${COPYTREE_SHARE} samples ${STAGEDIR}${EXAMPLESDIR}
 	${MKDIR} ${STAGEDIR}${MODULEDIR}/etc/c
 	${INSTALL_DATA} ${WRKSRC}/../phobos/*.d ${STAGEDIR}${MODULEDIR}
@@ -96,14 +82,8 @@ do-install:
 	cd ${WRKSRC}/../phobos && ${COPYTREE_SHARE} std ${STAGEDIR}${MODULEDIR}
 	${MKDIR} ${STAGEDIR}${MODULEDIR}/../druntime
 	cd ${WRKSRC}/../druntime && ${COPYTREE_SHARE} import ${STAGEDIR}${MODULEDIR}/../druntime
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.txt ${STAGEDIR}${DOCSDIR}
 	cd ${WRKDIR}/dmd2 && ${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/druntime
-	${INSTALL_DATA} ${WRKSRC}/../druntime/LICENSE ${STAGEDIR}${DOCSDIR}/druntime
-	${INSTALL_DATA} ${WRKSRC}/../druntime/README.md ${STAGEDIR}${DOCSDIR}/druntime
-	cd ${WRKSRC}/../druntime && ${COPYTREE_SHARE} doc ${STAGEDIR}${DOCSDIR}/druntime
-.endif
 
 .include <bsd.port.post.mk>

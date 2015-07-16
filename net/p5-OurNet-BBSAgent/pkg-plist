@@ -1,4 +1,3 @@
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/OurNet/BBSAgent/.packlist
 %%SITE_PERL%%/OurNet/BBSAgent.pm
 %%SITE_PERL%%/OurNet/BBSAgent/aquaphoto.bbs
 %%SITE_PERL%%/OurNet/BBSAgent/bahamut.bbs
@@ -55,12 +54,3 @@
 %%SITE_PERL%%/OurNet/BBSAgent/wretch.bbs
 %%SITE_PERL%%/OurNet/BBSAgent/zoo.bbs
 %%PERL5_MAN3%%/OurNet::BBSAgent.3.gz
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/OurNet/BBSAgent
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/OurNet
-@dirrmtry %%SITE_PERL%%/OurNet/BBSAgent/firebird2
-@dirrmtry %%SITE_PERL%%/OurNet/BBSAgent/firebird3
-@dirrmtry %%SITE_PERL%%/OurNet/BBSAgent/maple2
-@dirrmtry %%SITE_PERL%%/OurNet/BBSAgent/maple3
-@dirrmtry %%SITE_PERL%%/OurNet/BBSAgent/melix
-@dirrmtry %%SITE_PERL%%/OurNet/BBSAgent
-@dirrmtry %%SITE_PERL%%/OurNet

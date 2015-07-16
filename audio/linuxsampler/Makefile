@@ -3,7 +3,7 @@
 
 PORTNAME=	linuxsampler
 PORTVERSION=	1.0.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	http://download.linuxsampler.org/packages/
 
@@ -27,6 +27,7 @@ GNU_CONFIGURE=	yes
 USE_SQLITE=	3
 CONFIGURE_ENV=	HAVE_UNIX98=1
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

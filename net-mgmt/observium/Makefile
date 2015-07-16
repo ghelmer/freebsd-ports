@@ -2,24 +2,56 @@
 # $FreeBSD$
 
 PORTNAME=	observium
-PORTVERSION=	0.11.5.2261
-PORTREVISION=	1
+PORTVERSION=	0.15.06.6430
+PORTREVISION=	0
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://observium.org/ \
-		http://cpansearch.perl.org/src/BBB/Net-Ping-2.31/demo/
-DISTNAME=	${PORTNAME}-latest
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # prevent being 'fping' with JAIL
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	http://www.observium.org/
+DISTNAME=	${PORTNAME}-community-latest
+DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	An autodiscovering PHP/MySQL/SNMP based network monitoring
+MAINTAINER=	feld@FreeBSD.org
+COMMENT=	Autodiscovering PHP/MySQL/SNMP based network monitoring
 
 LICENSE=	GPLv3
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_PHP=	snmp ctype gd mysql session xml
+USES=		python shebangfix
+SHEBANG_FILES=	html/js/makemini.pl \
+	mibs/process.pl \
+	scripts/agent-local/areca-hw \
+	scripts/agent-local/asterisk \
+	scripts/agent-local/bind \
+	scripts/agent-local/crashplan \
+	scripts/agent-local/edac \
+	scripts/agent-local/exim-mailqueue.sh \
+	scripts/agent-local/hdarray \
+	scripts/agent-local/ipmitool-sensor \
+	scripts/agent-local/ksm \
+	scripts/agent-local/lmsensors \
+	scripts/agent-local/postfix_mailgraph \
+	scripts/agent-local/postfix_qshape \
+	scripts/agent-local/postgresql.pl \
+	scripts/agent-local/sabnzbd-qstatus \
+	scripts/agent-local/temperature \
+	scripts/agent-local/vmwaretools \
+	scripts/agent-local/zimbra \
+	scripts/cron-hourly.sh \
+	scripts/cron-minute.sh \
+	scripts/cron.sh \
+	scripts/get-geshi.sh \
+	scripts/get-jpgraph.sh \
+	scripts/ifAlias scripts/rename-mibs.pl \
+	scripts/makecss.sh \
+	scripts/observium_agent \
+	scripts/removespikes.php scripts/rrdtoolx.py \
+	scripts/removespikes.pl scripts/add_ds.pl \
+	scripts/watchmaillog/watchmaillog.pl
+
+USE_PHP=	ctype filter gd json mcrypt mysql session snmp tokenizer xml
 WANT_PHP_CLI=	yes
+
+NO_BUILD=	yes
 
 RUN_DEPENDS+=	rrdtool:${PORTSDIR}/databases/rrdtool \
 		dot:${PORTSDIR}/graphics/graphviz \
@@ -29,33 +61,41 @@ RUN_DEPENDS+=	rrdtool:${PORTSDIR}/databases/rrdtool \
 		${LOCALBASE}/share/pear/Net/IPv6.php:${PORTSDIR}/net/pear-Net_IPv6 \
 		snmpget:${PORTSDIR}/net-mgmt/net-snmp
 
-OPTIONS_DEFINE=	APACHEMOD MYSQLD JAIL
-OPTIONS_DEFAULT=	APACHEMOD
+OPTIONS_DEFINE=	APACHEMOD FPING IPMITOOL LIBVIRT MYSQLD NAGPLUGINS NMAP PYPOLLER SVN WMIC
+OPTIONS_DEFAULT=	APACHEMOD FPING IPMITOOL LIBVIRT NAGPLUGINS NMAP PYPOLLER SVN WMIC
 APACHEMOD_DESC=	Use PHP with Apache 2.2+ module
+FPING_DESC=	Enable fping support ping monitoring
+IPMITOOL_DESC=	Enable support for monitoring hardware IPMI
 MYSQLD_DESC=	Use local MySQL server
-JAIL_DESC=	This is a jail installation
+WMIC_DESC=	Enable support for WMI polling
+PYPOLLER_DESC=	Enable Python Poller Wrapper
 
-NO_STAGE=	yes
+FPING_RUN_DEPENDS=	fping:${PORTSDIR}/net/fping
+IPMITOOL_RUN_DEPENDS=	ipmitool:${PORTSDIR}/sysutils/ipmitool
+LIBVIRT_RUN_DEPENDS=	virsh:${PORTSDIR}/devel/libvirt
+NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/nagios-plugins
+NMAP_RUN_DEPENDS=	nmap:${PORTSDIR}/security/nmap
+PYPOLLER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>0:${PORTSDIR}/databases/py-MySQLdb
+SVN_RUN_DEPENDS=	svn:${PORTSDIR}/devel/subversion
+WMIC_RUN_DEPENDS=	wmic:${PORTSDIR}/net-mgmt/wmi-client
+
 .include <bsd.port.options.mk>
 
 SUB_FILES+=	pkg-message
 SUB_LIST+=	PHP="${PHPBASE}/bin/php"
 
-# :r!ls *.php *.sql
-ROOT_FILES=	addhost.php adduser.php alerts.php check-errors.php \
-		check-services.php delhost.php discovery.php \
-		generate-iplist.php irc.php poll-billing.php \
-		poll-device.php poller.php renamehost.php snmptrap.php \
-		syslog.php database-schema.sql database-update-pre1000.sql \
-		database-update-pre1435.sql database-update-pre2245.sql \
-		database-update.sql config.php.default
-ROOT_DIRS=	attic contrib html includes mibs scripts upgrade-scripts
-PORTDOCS=	CHANGELOG INSTALL README
+ROOT_FILES=	rename_device.php snmptrap.php .scrutinizer.yml add_device.php \
+		snmpd.conf.example check-errors.php config_to_json.php delete_device.php \
+		syslog.php irc.php snmp.conf.example adduser.php discovery.php \
+		check-services.php poller.php config.php.default poller-wrapper.py
+ROOT_DIRS=	html scripts includes update mibs
+
+PORTDOCS=	INSTALL README
 PORTEXAMPLES=	snmp.conf.example snmpd.conf.example
 
 .if ${PORT_OPTIONS:MAPACHEMOD} && !defined(PACKAGE_BUILDING)
 WANT_PHP_MOD=	yes
-USE_APACHE=	22+
+USE_APACHE_RUN=	22+
 .else
 # Package builder doesn't create php5 with module
 WANT_PHP_WEB=	yes
@@ -67,63 +107,38 @@ USE_MYSQL=	server
 USE_MYSQL=	client
 .endif
 
-.if ${PORT_OPTIONS:MJAIL}
-RUN_DEPENDS+=	p5-Net-Ping>=0:${PORTSDIR}/net/p5-Net-Ping
-DISTFILES+=	fping
-SUB_LIST+=	FPING="${LOCALBASE}/bin/fping-perl"
-PLIST_SUB+=	JAIL=""
-.else
-RUN_DEPENDS+=	fping:${PORTSDIR}/net/fping
-SUB_LIST+=	FPING="${LOCALBASE}/sbin/fping"
-PLIST_SUB+=	JAIL="@comment "
-.endif
-
-post-extract:
-	@${FIND} ${WRKSRC} -name '.svn' -exec ${RM} -rf {} +
-.if defined(WITH_JAIL)
-	@${CP} ${DISTDIR}/fping ${WRKDIR}/fping
-.endif
-
-do-build:
-.if ${PORT_OPTIONS:MJAIL}
-	@${REINPLACE_CMD} -e 's,^#!.*$$,#!${PERL},' ${WRKDIR}/fping
-.endif
-	@${FIND} ${WRKSRC} -name '*.pl' | ${XARGS} ${REINPLACE_CMD} \
-		-e 's,#!/usr/bin/perl,#!${PERL},'
-	@${REINPLACE_CMD} -E 's,<\?=([^?]+)\?>,<?php echo \1;?>,g' \
-		${WRKSRC}/html/graph-realtime.php
-	@${RM} ${WRKSRC}/html/includes/geshi/docs/COPYING
-	@${RM} ${WRKSRC}/html/pages/addhost.inc.php.orig
+post-patch:
+	${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/poller-wrapper.py ${WRKSRC}/poller.php
 
 do-install:
-	@${MKDIR} ${WWWDIR}
-	@${FIND} ${WRKSRC} -name '*.bak' -delete
+	${MKDIR} ${STAGEDIR}/${WWWDIR}
 .for dir in ${ROOT_DIRS}
-	@${MKDIR} ${WWWDIR}/${dir}
-	@${ECHO_MSG} "===>   Installing ${dir}"
-	@cd ${WRKSRC}/${dir} && ${COPYTREE_SHARE} . ${WWWDIR}/${dir}
+	${MKDIR} ${STAGEDIR}/${WWWDIR}/${dir}
+	cd ${WRKSRC}/${dir} && ${COPYTREE_SHARE} . ${STAGEDIR}/${WWWDIR}/${dir}
 .endfor
-	@${ECHO_MSG} "===>   Installing root files"
 .for f in ${ROOT_FILES}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${WWWDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${WWWDIR}
 .endfor
+	# Create empty rrd dir writable by www
+	${MKDIR} ${STAGEDIR}/${WWWDIR}/rrd
+	# Files in scripts dir should be executable
+	${FIND} ${STAGEDIR}/${WWWDIR}/scripts -type f -exec ${CHMOD} +x {} \;
+	# Ensure PHP and Python scripts are executable
+	${FIND} ${STAGEDIR}/${WWWDIR} -type f -name '*.py' -or -type f -name '*.php' -exec ${CHMOD} +x {} \;
+	# Rename for @sample
+	${MV} ${STAGEDIR}/${WWWDIR}/config.php.default ${STAGEDIR}/${WWWDIR}/config.php.default.sample
+
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}/${DOCSDIR}
 .for f in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${DOCSDIR}
 .endfor
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 .for f in ${PORTEXAMPLES}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${EXAMPLESDIR}
 .endfor
 .endif
-.if ${PORT_OPTIONS:MJAIL}
-	@${INSTALL_SCRIPT} ${WRKDIR}/fping ${PREFIX}/bin/fping-perl
-.endif
-
-post-install:
-	@${ECHO_CMD}; ${CAT} ${PKGMESSAGE}; ${ECHO_CMD}
 
 .include <bsd.port.mk>

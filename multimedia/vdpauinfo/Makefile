@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	vdpauinfo
-PORTVERSION=	0.1
+PORTVERSION=	1.0
 CATEGORIES=	multimedia
 MASTER_SITES=	http://people.freedesktop.org/~aplattner/vdpau/
 
 MAINTAINER=	madpilot@FreeBSD.org
-COMMENT=	A tool to query VDPAU capabilities
+COMMENT=	Tool to query VDPAU capabilities
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	nvidia-settings
-PORTVERSION=	310.14
+PORTVERSION=	340.24
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	ftp://download.nvidia.com/XFree86/nvidia-settings/ \
 		ftp://download1.nvidia.com/XFree86/nvidia-settings/
@@ -12,6 +13,9 @@ COMMENT=	Display Control Panel for X NVidia driver
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libjansson.so:${PORTSDIR}/devel/jansson \
+		libvdpau.so:${PORTSDIR}/multimedia/libvdpau
+
 USE_GNOME=	gtk20
 USES=		gmake pkgconfig tar:bzip2
 USE_GL=		gl
@@ -20,19 +24,17 @@ USE_XORG=	xv xext
 PLIST_FILES=	bin/nvidia-settings \
 		man/man1/nvidia-settings.1.gz
 
-MAKE_ENV=	NV_VERBOSE= \
+LDFLAGS+=	-Wl,--as-needed
+MAKE_ENV=	NV_USE_BUNDLED_LIBJANSSON=0 \
+		NV_VERBOSE= \
 		STRIP_CMD=${TRUE} \
-		INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
-		INSTALL_MAN="${INSTALL_MAN}" \
-		prefix=${PREFIX} \
+		INSTALL_BIN_ARGS="${INSTALL_PROGRAM:Ninstall}" \
+		INSTALL_DOC_ARGS="${INSTALL_MAN:Ninstall}" \
 		X_CFLAGS=-I${LOCALBASE}/include \
 		X_LDFLAGS=-L${LOCALBASE}/lib
 
-post-extract:	.SILENT
-	${RM} -f ${WRKSRC}/src/libXNVCtrl/libXNVCtrl.a
-
 post-patch:	.SILENT
-	${REINPLACE_CMD} -e '/^prefix/s/=/?&/' \
+	${REINPLACE_CMD} \
 		 -e '/^MANDIR/s|share/||' ${WRKSRC}/utils.mk
 
 .include <bsd.port.mk>

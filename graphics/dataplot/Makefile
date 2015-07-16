@@ -3,7 +3,7 @@
 
 PORTNAME=	dataplot
 PORTVERSION=	20132012
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.nist.gov/pub/dataplot/unix/:source \
 		LOCAL/beech:source \
@@ -17,13 +17,12 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free software system for statistical visualization
 
 LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
-		libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
+		libpng.so:${PORTSDIR}/graphics/png
 
 OPTIONS_DEFINE=	DOCS
 DOCS_DISTFILES=	dpsnapsh.pdf:doc
 
-USES=		fortran
+USES=		fortran jpeg
 USE_XORG=	x11 xi
 NO_WRKSUBDIR=	yes
 MAXOBV?=	400000	# Change if you need more observations/variable

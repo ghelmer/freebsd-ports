@@ -17,12 +17,12 @@ PORTEXAMPLES=	*
 
 BUILD_DEPENDS=	cython>=0.11.2:${PORTSDIR}/lang/cython
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-USE_PYTHON_PREFIX=	yes
+USES=		python
+USE_PYTHON=	distutils pythonprefix
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
-.include <bsd.port.pre.mk>
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
@@ -35,4 +35,4 @@ post-install:
 	cd ${WRKSRC}/scripts && ${INSTALL_DATA} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,15 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	c3p0
-PORTVERSION=	0.9.2
+PORTVERSION=	0.9.5.1
 CATEGORIES=	databases java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-bin/${PORTNAME}-${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.bin
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Library for augmenting JDBC drivers with JNDI-bindable DataSources
 
+LICENSE=	LGPL21 EPL
+LICENSE_COMB=	dual
+
+USES=		tar:tgz
 USE_JAVA=	yes
 NO_BUILD=	yes
 JAVA_VERSION=	1.6+

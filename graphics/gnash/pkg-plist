@@ -190,10 +190,10 @@ include/gnash/vm/SafeStack.h
 include/gnash/vm/VM.h
 include/gnash/vm/fn_call.h
 include/gnash/zlib_adapter.h
-%%KPARTS4%%kde4/share/apps/klash/pluginsinfo
-%%KPARTS4%%kde4/share/apps/klash/klashpartui.rc
-%%KPARTS4%%kde4/share/kde4/services/klash_part.desktop
-%%KPARTS4%%kde4/lib/kde4/libklashpart.so
+%%KPARTS4%%/share/apps/klash/pluginsinfo
+%%KPARTS4%%/share/apps/klash/klashpartui.rc
+%%KPARTS4%%/share/kde4/services/klash_part.desktop
+%%KPARTS4%%/lib/kde4/libklashpart.so
 %%CYGNAL%%lib/cygnal/plugins/echo.so
 %%CYGNAL%%lib/cygnal/plugins/oflaDemo.so
 %%CYGNAL%%lib/gnash/libgnashamf-%%GNASHVER%%.so
@@ -203,7 +203,6 @@ lib/gnash/libgnashbase.so
 lib/gnash/libgnashcore-%%GNASHVER%%.so
 lib/gnash/libgnashcore.so
 lib/gnash/libgnashdevice-%%GNASHVER%%.so
-lib/gnash/libgnashdevice.la
 lib/gnash/libgnashdevice.so
 lib/gnash/libgnashmedia-%%GNASHVER%%.so
 lib/gnash/libgnashmedia.so
@@ -231,9 +230,9 @@ man/man1/soldumper.1.gz
 %%DATADIR%%/GnashG.png
 %%DATADIR%%/gnash-splash.swf
 %%DATADIR%%/gnash_128_96.ico
-%%DOCSDIR%%/gnashref.html
-%%DOCSDIR%%/gnashuser.html
-%%DOCSDIR%%/images/rtmp.png
+%%PORTDOCS%%%%DOCSDIR%%/gnashref.html
+%%PORTDOCS%%%%DOCSDIR%%/gnashuser.html
+%%PORTDOCS%%%%DOCSDIR%%/images/rtmp.png
 %%GTK2%%share/icons/hicolor/32x32/apps/gnash.xpm
 %%KDE4%%share/icons/hicolor/32x32/apps/klash.xpm
 share/locale/cs/LC_MESSAGES/gnash.mo
@@ -250,21 +249,3 @@ share/locale/km/LC_MESSAGES/gnash.mo
 share/locale/ne/LC_MESSAGES/gnash.mo
 share/locale/ru/LC_MESSAGES/gnash.mo
 share/locale/zh_TW/LC_MESSAGES/gnash.mo
-@dirrmtry share/locale/km/LC_MESSAGES
-@dirrmtry share/locale/km
-@dirrmtry share/icons/hicolor/32x32/apps
-@dirrmtry share/icons/hicolor/32x32
-@dirrmtry share/icons/hicolor
-@dirrmtry share/icons
-@dirrm %%DOCSDIR%%/images
-@dirrm %%DOCSDIR%%
-@dirrm %%DATADIR%%
-@dirrm lib/gnash
-%%CYGNAL%%@dirrmtry lib/cygnal/plugins
-%%CYGNAL%%@dirrmtry lib/cygnal
-@dirrm include/gnash/vm
-@dirrm include/gnash/parser
-@dirrm include/gnash/asobj
-@dirrm include/gnash
-%%KPARTS4%%@dirrm kde4/share/apps/klash
-%%NPAPI%%@dirrmtry %%WEBPLUGIN_DIR%%

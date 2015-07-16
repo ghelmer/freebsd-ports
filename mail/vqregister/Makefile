@@ -13,24 +13,19 @@ COMMENT=	Admin-configurable email user signup CGI
 BUILD_DEPENDS=	vpopmail>0:${PORTSDIR}/mail/vpopmail
 RUN_DEPENDS=	vpopmail>0:${PORTSDIR}/mail/vpopmail
 
+USES=		fakeroot
 USE_APACHE_RUN=	22+
 VPOPMAIL_DIR?=	${LOCALBASE}/vpopmail
 
 USE_MYSQL=	yes
 MAKE_ENV=	VDIR=${VPOPMAIL_DIR} WWWDIR=${STAGEDIR}${WWWDIR}
 
-NEED_ROOT=	yes
-
 DOCS=		CONFIG CONTRIBUTORS FORM HISTORY TEMPLATE
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
 post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

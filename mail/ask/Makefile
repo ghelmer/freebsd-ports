@@ -9,7 +9,7 @@ MASTER_SITES=	SF/a-s-k/${PORTNAME}-beta/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Anti Spam Killer content filtering
 
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 
 ASKLIBDIR=	${PREFIX}/lib/${PORTNAME}
@@ -17,7 +17,7 @@ BINS=		askfilter asksetup utils/asksenders
 SUB_FILES=	pkg-message
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-extract:
 	@${REINPLACE_CMD} -E \

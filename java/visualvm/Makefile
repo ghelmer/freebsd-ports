@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	visualvm
-PORTVERSION=	1.3.7
+PORTVERSION=	1.3.8
 CATEGORIES=	java devel
 MASTER_SITES=	https://java.net/downloads/visualvm/release${PORTVERSION:S/.//g}/
 DISTNAME=	visualvm_${PORTVERSION:S/.//g}-ml
@@ -13,7 +13,7 @@ COMMENT=	GUI tool combining CLI JDK tools and profiling capabilities
 LICENSE=	VISUALVM
 LICENSE_NAME=	VISUALVM with ClassPath Exception
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
-LICENSE_PERMS=	${_LICENSE_PERMS_DEFAULT}
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		zip:infozip
 NO_BUILD=	yes
@@ -37,7 +37,7 @@ do-install:
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} ${i} ${STAGEDIR}${PREFIX}/share/visualvm/)
 .endfor
 .for i in visualvm.conf visualvm.clusters visualvm.icns
-	@${INSTALL_DATA} ${WRKSRC}/etc/${i} ${STAGEDIR}${PREFIX}/etc/${i}-dist
+	@${INSTALL_DATA} ${WRKSRC}/etc/${i} ${STAGEDIR}${PREFIX}/etc/${i}.sample
 .endfor
 	@${UNZIP_CMD} -q -j -d ${STAGEDIR}${DATADIR} ${WRKSRC}/visualvm/modules/com-sun-tools-visualvm-application.jar com/sun/tools/visualvm/application/resources/visualvm.png
 	@${INSTALL_DATA} ${WRKDIR}/*.desktop ${STAGEDIR}${PREFIX}/share/applications/

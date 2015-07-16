@@ -15,9 +15,33 @@ bin/zmupdate.pl
 bin/zmvideo.pl
 bin/zmwatch.pl
 bin/zmx10.pl
-@unexec if cmp -s %D/etc/zm.conf.sample %D/etc/zm.conf; then rm -f %D/etc/zm.conf; fi
-etc/zm.conf.sample
-lib/perl5/%%PERL_VER%%/%%PERL_ARCH%%/perllocal.pod
+@sample(,,600) etc/zm.conf.sample
+%%DOCSDIR%%/zm_create.sql
+%%PERL5_MAN3%%/ZoneMinder.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Base.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Config.3.gz
+%%PERL5_MAN3%%/ZoneMinder::ConfigAdmin.3.gz
+%%PERL5_MAN3%%/ZoneMinder::ConfigData.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control::AxisV2.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control::Ncs370.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control::PanasonicIP.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control::PelcoD.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control::Visca.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Control::mjpgStreamer.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Database.3.gz
+%%PERL5_MAN3%%/ZoneMinder::General.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Logger.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Memory.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel::File.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel::Handle.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel::Inet.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel::Serial.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel::Spawning.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Channel::Unix.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Connection.3.gz
+%%PERL5_MAN3%%/ZoneMinder::Trigger::Connection::Example.3.gz
 %%SITE_PERL%%/ZoneMinder.pm
 %%SITE_PERL%%/ZoneMinder/Base.pm
 %%SITE_PERL%%/ZoneMinder/Config.pm
@@ -45,7 +69,6 @@ lib/perl5/%%PERL_VER%%/%%PERL_ARCH%%/perllocal.pod
 %%SITE_PERL%%/ZoneMinder/Trigger/Channel/Unix.pm
 %%SITE_PERL%%/ZoneMinder/Trigger/Connection.pm
 %%SITE_PERL%%/ZoneMinder/Trigger/Connection/Example.pm
-%%SITE_PERL%%/mach/auto/ZoneMinder/.packlist
 %%WWWDIR%%/cgi-bin/nph-zms
 %%WWWDIR%%/cgi-bin/zms
 %%WWWDIR%%/data/ajax/alarm.php
@@ -275,48 +298,15 @@ lib/perl5/%%PERL_VER%%/%%PERL_ARCH%%/perllocal.pod
 %%WWWDIR%%/data/tools/mootools/mootools-more.js
 %%WWWDIR%%/data/views/file.php
 %%WWWDIR%%/data/views/image.php
-@dirrm %%WWWDIR%%/data/views
-@dirrm %%WWWDIR%%/data/tools/mootools
-@dirrm %%WWWDIR%%/data/tools
-@dirrm %%WWWDIR%%/data/temp
-@dirrm %%WWWDIR%%/data/sounds
-@dirrm %%WWWDIR%%/data/skins/xml/views
-@dirrm %%WWWDIR%%/data/skins/xml/includes
-@dirrm %%WWWDIR%%/data/skins/xml
-@dirrm %%WWWDIR%%/data/skins/mobile/views/css
-@dirrm %%WWWDIR%%/data/skins/mobile/views
-@dirrm %%WWWDIR%%/data/skins/mobile/lang
-@dirrm %%WWWDIR%%/data/skins/mobile/includes
-@dirrm %%WWWDIR%%/data/skins/mobile/graphics
-@dirrm %%WWWDIR%%/data/skins/mobile/css
-@dirrm %%WWWDIR%%/data/skins/mobile/ajax
-@dirrm %%WWWDIR%%/data/skins/mobile
-@dirrm %%WWWDIR%%/data/skins/classic/views/js
-@dirrm %%WWWDIR%%/data/skins/classic/views/css
-@dirrm %%WWWDIR%%/data/skins/classic/views
-@dirrm %%WWWDIR%%/data/skins/classic/lang
-@dirrm %%WWWDIR%%/data/skins/classic/js
-@dirrm %%WWWDIR%%/data/skins/classic/includes
-@dirrm %%WWWDIR%%/data/skins/classic/graphics
-@dirrm %%WWWDIR%%/data/skins/classic/css
-@dirrm %%WWWDIR%%/data/skins/classic/ajax
-@dirrm %%WWWDIR%%/data/skins/classic
-@dirrm %%WWWDIR%%/data/skins
-@dirrm %%WWWDIR%%/data/lang
-@dirrm %%WWWDIR%%/data/js
-@dirrm %%WWWDIR%%/data/includes
-@dirrm %%WWWDIR%%/data/images
-@dirrm %%WWWDIR%%/data/graphics
-@dirrm %%WWWDIR%%/data/events
-@dirrm %%WWWDIR%%/data/css
-@dirrm %%WWWDIR%%/data/ajax
-@dirrm %%WWWDIR%%/data
-@dirrm %%WWWDIR%%/cgi-bin
-@dirrm %%WWWDIR%%
-@dirrm %%SITE_PERL%%/mach/auto/ZoneMinder
-@dirrm %%SITE_PERL%%/ZoneMinder/Trigger/Connection
-@dirrm %%SITE_PERL%%/ZoneMinder/Trigger/Channel
-@dirrm %%SITE_PERL%%/ZoneMinder/Trigger
-@dirrm %%SITE_PERL%%/ZoneMinder/Memory
-@dirrm %%SITE_PERL%%/ZoneMinder/Control
-@dirrm %%SITE_PERL%%/ZoneMinder
+@dir(%%WEB_USER%%,%%WEB_GROUP%%,0700) %%ZM_TMPDIR%%
+@dir(%%WEB_USER%%,%%WEB_GROUP%%,0755) %%ZM_RUNDIR%%
+@dir(%%WEB_USER%%,%%WEB_GROUP%%,0755) %%ZM_LOGDIR%%
+@dir %%WWWDIR%%/data/temp
+@dir %%WWWDIR%%/data/sounds
+@dir %%WWWDIR%%/data/skins/mobile/lang
+@dir %%WWWDIR%%/data/skins/mobile/graphics
+@dir %%WWWDIR%%/data/skins/mobile/ajax
+@dir %%WWWDIR%%/data/skins/classic/lang
+@dir %%WWWDIR%%/data/skins/classic/ajax
+@dir %%WWWDIR%%/data/images
+@dir %%WWWDIR%%/data/events

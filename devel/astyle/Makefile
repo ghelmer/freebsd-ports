@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	astyle
-PORTVERSION=	2.04
-PORTREVISION=	1
+PORTVERSION=	2.05.1
 CATEGORIES=	devel textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}%20${PORTVERSION}
 DISTNAME=	${PORTNAME}_${PORTVERSION}_linux
@@ -21,6 +20,8 @@ USES=		compiler gmake iconv
 
 WRKSRC=		${WRKDIR}/astyle/build/gcc
 
+OPTIONS_DEFINE=	DOCS
+
 pre-patch:
 	@${REINPLACE_CMD} -e 's,^CFLAGS,#CFLAGS,; s,g++,${CXX},; \
 		s,\(CFLAGSr.*=.*\),\1 -I${LOCALBASE}/include,' \
@@ -30,6 +31,6 @@ do-install:
 	${STRIP_CMD} ${WRKSRC}/bin/astyle
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/astyle ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/astyle/doc/*.html ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/astyle/doc/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

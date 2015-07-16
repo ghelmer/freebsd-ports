@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	makeself
-PORTVERSION=	2.1.5
-PORTREVISION=	1
+PORTVERSION=	2.2.0
 CATEGORIES=	archivers
-MASTER_SITES=	http://www.megastep.org/makeself/
+MASTER_SITES=	http://cdn.megastep.org/makeself/
 EXTRACT_SUFX=	.run
 
 MAINTAINER=	jadawin@FreeBSD.org
@@ -22,11 +21,7 @@ NO_BUILD=	yes
 PLIST_FILES=	bin/makeself bin/makeself-header \
 		bin/makeself-header.sh bin/makeself.sh
 
-PORTDOCS=	README
-
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -37,10 +32,5 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${i}.sh ${STAGEDIR}${PREFIX}/bin
 	@${LN} -sf ${i}.sh ${STAGEDIR}${PREFIX}/bin/${i}
 .endfor
-
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

@@ -16,12 +16,16 @@ USE_OCAML=		yes
 USE_OCAML_FINDLIB=	yes
 USE_OCAML_LDCONFIG=	yes
 
+MAKE_JOBS_UNSAFE=	yes
+
 USES=		gmake
 GNU_CONFIGURE=	yes
 
 ALL_TARGET+=	doc examples
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 EXAMPLESDIR=	${OCAML_EXAMPLESDIR}/${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 # This really is overzealous but I work this way
 .if !exists(/usr/lib/libmagic.so)

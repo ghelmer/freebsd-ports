@@ -3,11 +3,12 @@
 
 PORTNAME=	Lingua-RU-Charset
 PORTVERSION=	0.02
+PORTREVISION=	1
 CATEGORIES=	russian perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for detecting and converting Russian character sets
 
 USES=		perl5

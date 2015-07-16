@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	portlint
-PORTVERSION=	2.15.2
+PORTVERSION=	2.16.4
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	# none
 DISTFILES=	# none
@@ -10,7 +10,10 @@ DISTFILES=	# none
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Verifier for FreeBSD port directory
 
-LICENSE=	BSD
+LICENSE=	ITOJUN
+LICENSE_NAME=	Itojun License
+LICENSE_TEXT=	All rights reserved. Freely redistributable.  Absolutely no warranty.
+LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/src
@@ -23,6 +26,8 @@ PLIST_FILES=	bin/portlint \
 		man/man1/portlint.1.gz
 
 PORTEXAMPLES=	portlintgrep
+
+OPTIONS_DEFINE=	EXAMPLES
 
 pre-patch:
 	@${CP} -R ${SRC} ${WRKDIR}

@@ -5,7 +5,7 @@ PORTNAME=	ish
 PORTVERSION=	2.01a5
 CATEGORIES=	converters
 MASTER_SITES=	http://www.unix.gr.jp/jnetcex/soft/\
-		${MASTER_SITE_PORTS_JP}
+		PORTS_JP
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -18,6 +18,6 @@ ALL_TARGET=	ish
 PLIST_FILES=	bin/ish
 
 do-install:
-	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ish ${STAGEDIR}${PREFIX}/bin)
+	${INSTALL_PROGRAM} ${WRKSRC}/ish ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

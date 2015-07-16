@@ -3,6 +3,7 @@
 
 PORTNAME=	surf
 PORTVERSION=	0.6
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://dl.suckless.org/${PORTNAME}/
 PKGNAMESUFFIX=	-browser
@@ -13,18 +14,16 @@ COMMENT=	Simple Web browser based on WebKit/Gtk+
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	DOCS
-
-LIB_DEPENDS=	webkitgtk-1.0:${PORTSDIR}/www/webkit-gtk2
+LIB_DEPENDS=	libwebkitgtk-1.0.so:${PORTSDIR}/www/webkit-gtk2
 RUN_DEPENDS=	dmenu:${PORTSDIR}/x11/dmenu
 
 USE_GNOME=	gtk20
 USE_XORG=	x11
 USES=		pkgconfig
 
-MAN1=		surf.1
 PORTDOCS=	README
-PLIST_FILES=	bin/surf share/pixmaps/surf.png
+PLIST_FILES=	bin/surf share/pixmaps/surf.png man/man1/surf.1.gz
+OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="Surf" "" "${PREFIX}/share/pixmaps/surf.png" "surf" "" true
 
@@ -54,11 +53,11 @@ post-patch:
 		 /^CC =/d' ${WRKSRC}/config.mk
 
 post-install:
-	@${STRIP_CMD} ${PREFIX}/bin/surf
-	(cd ${WRKSRC} && ${INSTALL_DATA} surf.png ${PREFIX}/share/pixmaps)
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/surf
+	(cd ${WRKSRC} && ${INSTALL_DATA} surf.png ${STAGEDIR}${PREFIX}/share/pixmaps)
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} README ${DOCSDIR})
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} README ${STAGEDIR}${DOCSDIR})
 .endif
 
 .include <bsd.port.mk>

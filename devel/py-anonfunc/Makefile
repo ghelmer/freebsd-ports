@@ -3,22 +3,26 @@
 
 PORTNAME=	anonfunc
 PORTVERSION=	1.0
+PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
+MASTER_SITES=	LOCAL/perky \
 		http://people.freebsd.org/~perky/distfiles/
-MASTER_SITE_SUBDIR=	perky
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python module that provides easy anonymous function
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+LICENSE=	BSD2CLAUSE
+
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@${REINPLACE_CMD} \
 		-e 's,distutils\.command\.install ,setuptools\.command\.install ,' \
 		${WRKSRC}/setup.py
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/anonfunc.so
 
 .include <bsd.port.mk>

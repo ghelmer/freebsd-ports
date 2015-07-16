@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	timezonedb
-DISTVERSION=	2014.3
+PORTVERSION=	2015.5
 CATEGORIES=	misc
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -17,8 +17,5 @@ CONFIGURE_ARGS=	--enable-timezonedb
 USE_PHP=	yes
 USE_PHPEXT=	yes
 USES=		tar:tgz
-
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/modules/${PORTNAME}.so
 
 .include <bsd.port.mk>

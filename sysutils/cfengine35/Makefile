@@ -3,19 +3,22 @@
 
 PORTNAME=	cfengine
 PORTVERSION=	3.5.3
-PORTREVISION=	4
+PORTREVISION=	10
 CATEGORIES=	sysutils
 MASTER_SITES=	https://s3.amazonaws.com/cfengine.package-repos/tarballs/
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port
-COMMENT=	A systems administration tool for networks
+COMMENT=	Systems administration tool for networks
 
 LICENSE=	GPLv3
 
+CPE_VENDOR=	gnu
+
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	35
-LATEST_LINK=	cfengine35
 .endif
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
@@ -24,11 +27,10 @@ CONFLICTS=	cfengine-[234]*
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 
-USES=		libtool
+USES=		cpe gmake libtool
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake
 CFLAGS+=	-Wno-return-type
 # EXAMPLESDIR=	${PREFIX}/share/examples/cfengine3
 DOCSDIR=	${PREFIX}/share/doc/cfengine
@@ -40,8 +42,7 @@ CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
 		--with-workdir=/var/cfengine \
 		--with-pcre=${LOCALBASE} \
 		--enable-fhs
-
-LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	PGSQL MYSQL LIBVIRT
 OPTIONS_SINGLE=	DB
@@ -50,7 +51,7 @@ TOKYOCABINET_DESC=	Enable TokyoCabinet database backend
 QDBM_DESC=	Enable QDBM database backend
 OPTIONS_DEFAULT=TOKYOCABINET
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MTOKYOCABINET}
 CONFIGURE_ARGS+=	--with-tokyocabinet=${LOCALBASE}
@@ -63,9 +64,8 @@ LIB_DEPENDS+=	libqdbm.so:${PORTSDIR}/databases/qdbm
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=		yes
+USES+=			pgsql
 CONFIGURE_ARGS+=	--with-postgresql=${LOCALBASE}
-LIB_DEPENDS+=		libpq.so:${PORTSDIR}/databases/postgresql${PGSQL_VER}-client
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
@@ -80,4 +80,4 @@ CONFIGURE_ARGS+=	--with-libvirt=${LOCALBASE}
 LIB_DEPENDS+=		libvirt.so:${PORTSDIR}/devel/libvirt
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

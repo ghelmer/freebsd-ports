@@ -3,14 +3,13 @@
 
 PORTNAME=	mh
 PORTVERSION=	${VERSION}.j${JP_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese mail
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
-		ftp://ftp.laic.u-hyogo.ac.jp/pub/net/mh/
-MASTER_SITE_SUBDIR=	motoyuki
+MASTER_SITES=	ftp://ftp.laic.u-hyogo.ac.jp/pub/net/mh/ \
+		http://mirror.amdmi3.ru/distfiles/
 DISTNAME=	${PORTNAME}-${VERSION}-JP-${JP_VERSION}
 
-MAINTAINER=	motoyuki@FreeBSD.org
+MAINTAINER=	CQG00620@nifty.ne.jp
 COMMENT=	Rand MH mail handling system + Japanese patches
 
 BUILD_DEPENDS=	jless:${PORTSDIR}/japanese/less
@@ -21,42 +20,35 @@ JP_VERSION=	3.05
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-batchmode \
-		--enable-apop=${PREFIX}/etc/pop.auth --enable-rpop
+		--enable-apop=${PREFIX}/etc/pop.auth \
+		--enable-jmandir=${MANPREFIX}/man/ja
 MAKE_JOBS_UNSAFE=	yes
 CFLAGS+=	-Wno-return-type
 
-MAN1=	ali.1 anno.1 bbc.1 burst.1 comp.1 dist.1 folder.1 forw.1 inc.1 mark.1 \
-	mh-chart.1 mh.1 mhl.1 mhmail.1 mhn.1 mhook.1 mhparam.1 mhpath.1 \
-	msgchk.1 msh.1 next.1 packf.1 pgped.1 pick.1 prev.1 prompter.1 rcvstore.1 \
-	refile.1 repl.1 rmf.1 rmm.1 scan.1 send.1 show.1 slocal.1 sortm.1 \
-	vmh.1 whatnow.1 whom.1
-MAN5=	mh-alias.5 mh-format.5 mh-mail.5 mh-profile.5 mh-sequence.5 mh-tailor.5
-MAN8=	ap.8 conflict.8 dp.8 fmtdump.8 install-mh.8 post.8
-MANLANG=	"" ja
-MANCOMPRESSED=	yes
 USE_LDCONFIG=	yes
 
-DOCDIR=		${PREFIX}/share/doc/${PKGBASE}
-READMES=	00.READ.ME.1ST CHANGES.JP COMMANDS.JP FAQ.JP FEATURES.JP \
+PORTDOCS=	00.READ.ME.1ST CHANGES.JP COMMANDS.JP FAQ.JP FEATURES.JP \
 		INSTALL.JP OPTIONS.JP READ-ME.JP TODO.JP
+DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 
 CONFLICTS=	nmh-[0-9]*
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	${REINPLACE_CMD} -e "s/-O /${CFLAGS} /g" ${WRKSRC}/configure
 
-.if !defined(NOPORTDOCS)
-pre-install:
-	${MKDIR} ${PREFIX}/share/doc/ja-mh
-.endif
-
-.if !defined(NOPORTDOCS)
 post-install:
-	${MKDIR} ${DOCDIR}
-	(cd ${WRKSRC}/doc-JP; ${INSTALL_DATA} ${READMES} ${DOCDIR})
+.if ${PORT_OPTIONS:MDOCS}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/doc-JP && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 .endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmh.so.3
+.for i in ap conflict dp fmtdump install-mh mhl post rcvdist rcvpack rcvstore rcvtty slocal spost
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/mh/${i}
+.endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

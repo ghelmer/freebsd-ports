@@ -6,16 +6,17 @@ PORTVERSION=	1.4
 PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://www.ucw.cz/~hubicka/koules/packages/ \
-		GENTOO/distfiles \
+		GENTOO \
 		SF/nemysisfreebsdp/${CATEGORIES}/${PORTNAME}/:icons
 DISTFILES=	${PORTNAME:S/x//}${PORTVERSION}-src${EXTRACT_SUFX} \
 		${PORTNAME:S/x//}.png:icons
 EXTRACT_ONLY=	${PORTNAME:S/x//}${PORTVERSION}-src${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast action arcade-style game for X Window
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/x//}${PORTVERSION}
 

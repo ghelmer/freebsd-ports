@@ -4,14 +4,13 @@
 PORTNAME=	vexim
 DISTVERSION=	2.2.2_rc1
 CATEGORIES=	mail www
-MASTER_SITES=	LOCAL
-MASTER_SITE_SUBDIR=	feld
+MASTER_SITES=	LOCAL/feld
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Web interface for managing virtual domains for exim
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/DB.php:${PORTSDIR}/databases/pear-DB
@@ -37,7 +36,7 @@ USE_PHP+=	mysql
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 USE_PHP+=	pgsql
 .endif
 
@@ -67,8 +66,5 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

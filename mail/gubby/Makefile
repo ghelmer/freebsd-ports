@@ -7,14 +7,14 @@ CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	mich@FreeBSD.org
-COMMENT=	A program showing where new mail has been placed
+COMMENT=	Program showing where new mail has been placed
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 LDFLAGS+=	-lncurses
 CFLAGS+=	-fno-exceptions -fno-rtti
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-build:
 	cd ${WRKSRC} && \
@@ -44,10 +44,8 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gubby ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/doc/gubby.1 ${STAGEDIR}${PREFIX}/man/man1
 
-.if ${PORT_OPTIONS:MDOCS}
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.TXT ${STAGEDIR}${DOCSDIR}/README
-.endif
 
 .include <bsd.port.mk>

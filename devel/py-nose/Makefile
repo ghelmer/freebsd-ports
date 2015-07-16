@@ -2,23 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	nose
-PORTVERSION=	1.3.0
-PORTREVISION=	1
+PORTVERSION=	1.3.7
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	nivit@FreeBSD.org
+MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Discovery-based unittest extension
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/lgpl.txt
 
-# Python3 ready
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
+
+.include <bsd.port.pre.mk>
 
 regression-test: build
-	@cd ${WRKSRC} && ${PYTHON_CMD} selftest.py
+# Extra tests for python 3, added in by setup3lib.py
+.if ${PYTHON_REL} >= 3000
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} build_tests
+.endif
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

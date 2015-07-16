@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strongswan
-PORTVERSION=	5.1.3
-PORTREVISION=	2
+PORTVERSION=	5.3.2
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -11,13 +10,14 @@ MASTER_SITES=	http://download.strongswan.org/ \
 MAINTAINER=	strongswan@nanoteq.com
 COMMENT=	Open Source IKEv2 IPsec-based VPN solution
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+LICENSE=	GPLv2
 
-USES=		libtool:keepla tar:bzip2
+USES=		cpe execinfo libtool:keepla tar:bzip2 pkgconfig
 USE_OPENSSL=	yes
 USE_RC_SUBR=	strongswan
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--enable-kernel-pfkey \
 		--enable-kernel-pfroute  \
@@ -39,22 +39,27 @@ CONFIGURE_ARGS=	--enable-kernel-pfkey \
 		--with-group=wheel  \
 		--with-lib-prefix=${PREFIX}
 
-OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE IKEv1 \
-		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MYSQL SQLITE \
-		TESTVECTOR TOOLS UNBOUND XAUTH
+OPTIONS_DEFINE=	CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS EAPSIMFILE GCM IKEv1 \
+		IPSECKEY KERNELLIBIPSEC LOADTESTER LDAP MYSQL PKI SCEP SMP \
+		SQLITE TESTVECTOR UNBOUND UNITY XAUTH
+OPTIONS_DEFAULT=	IKEv1
 OPTIONS_SUB=	yes
 CURL_DESC=	Enable CURL to fetch CRL/OCSP
 EAPAKA3GPP2_DESC=	Enable EAP AKA with 3gpp2 backend
 EAPDYNAMIC_DESC=	Enable EAP dynamic proxy module
 EAPRADIUS_DESC=		Enable EAP Radius proxy authentication
 EAPSIMFILE_DESC=	Enable EAP SIM with file backend
+GCM_DESC=		Enable GCM AEAD wrapper crypto plugin
 IKEv1_DESC=	Enable IKEv1 support
 IPSECKEY_DESC=	Enable authentication with IPSECKEY resource records with DNSSEC
 KERNELLIBIPSEC_DESC=	Enable IPSec userland backend
 LOADTESTER_DESC=	Enable load testing plugin
 TESTVECTOR_DESC=	Enable crypto test vectors
-TOOLS_DESC=	Enable PKI tools
+PKI_DESC=	Enable PKI tools
+SCEP_DESC=	Enable Simple Certificate Enrollment Protocol
+SMP_DESC=	Enable XML-based management protocol
 UNBOUND_DESC=	Enable DNSSEC-enabled resolver
+UNITY_DESC=	Enable Cisco Unity extension plugin
 XAUTH_DESC=	Enable XAuth password verification
 
 # Extra options
@@ -65,20 +70,25 @@ EAPAKA3GPP2_LIB_DEPENDS=libgmp.so:${PORTSDIR}/math/gmp
 EAPDYNAMIC_CONFIGURE_ON=--enable-eap-dynamic
 EAPRADIUS_CONFIGURE_ON=	--enable-eap-radius
 EAPSIMFILE_CONFIGURE_ON=--enable-eap-sim --enable-eap-sim-file
+GCM_CONFIGURE_ON=	--enable-gcm
 IKEv1_CONFIGURE_OFF=	--disable-ikev1
 IPSECKEY_CONFIGURE_ON=	--enable-ipseckey
 KERNELLIBIPSEC_CONFIGURE_ON=	--enable-kernel-libipsec
 LOADTESTER_CONFIGURE_ON=--enable-load-tester
 LDAP_CONFIGURE_ON=	--enable-ldap
-LDAP_USE=		USE_OPENLDAP=yes
+LDAP_USE=		OPENLDAP=yes
 MYSQL_CONFIGURE_ON=	--enable-mysql
-MYSQL_USE=		USE_MYSQL=yes
+MYSQL_USE=		MYSQL=yes
+SMP_LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
+SMP_CONFIGURE_ON=	--enable-smp
 SQLITE_CONFIGURE_ON=	--enable-sqlite
 SQLITE_LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 TESTVECTOR_CONFIGURE_ON=--enable-test-vectors
-TOOLS_CONFIGURE_OFF=	--disable-tools
+PKI_CONFIGURE_OFF=	--disable-pki
+SCEP_CONFIGURE_OFF=	--disable-scepclient
 UNBOUND_CONFIGURE_ON=	--enable-unbound
 UNBOUND_LIB_DEPENDS=	libunbound.so:${PORTSDIR}/dns/unbound
+UNITY_CONFIGURE_ON=	--enable-unity
 XAUTH_CONFIGURE_ON=	--enable-xauth-eap --enable-xauth-generic
 
 .include <bsd.port.options.mk>
@@ -87,12 +97,6 @@ XAUTH_CONFIGURE_ON=	--enable-xauth-eap --enable-xauth-generic
 PLIST_SUB+=	SIMAKA=""
 .else
 PLIST_SUB+=	SIMAKA="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MEAPDYNAMIC} || ${PORT_OPTIONS:MEAPAKA3GPP2}
-PLIST_SUB+=	DYNAKA=""
-.else
-PLIST_SUB+=	DYNAKA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL} || ${PORT_OPTIONS:MSQLITE}
@@ -107,21 +111,5 @@ PLIST_SUB+=	XAUTHGEN=""
 .else
 PLIST_SUB+=	XAUTHGEN="@comment "
 .endif
-
-post-install:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/strongswan.d
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/strongswan.d/charon
-	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/etc/strongswan.conf ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/etc/ipsec.conf ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/etc/strongswan.d/*.* ${STAGEDIR}${EXAMPLESDIR}/strongswan.d
-	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/etc/strongswan.d/charon/*.* ${STAGEDIR}${EXAMPLESDIR}/strongswan.d/charon
-.for i in strongswan hydra tls charon
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ipsec/lib${i}.so.0.0.0
-.endfor
-.for i in aes des blowfish rc2 md4 md5 sha1 sha2 random nonce hmac cmac xcbc x509 revocation constraints pubkey pkcs1 pkcs7 pkcs8 pkcs12 pgp dnskey sshkey pem openssl fips-prf attr kernel-pfkey kernel-pfroute resolve socket-default stroke updown eap-identity eap-md5 eap-mschapv2 eap-tls eap-ttls eap-peap whitelist addrblock
-	${STRIP_CMD} \
-		${STAGEDIR}${PREFIX}/lib/ipsec/plugins/libstrongswan-${i}.so
-.endfor
 
 .include <bsd.port.mk>

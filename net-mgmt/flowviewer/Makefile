@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	flowviewer
-PORTVERSION=	4.3
+PORTVERSION=	4.5
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	FlowViewer_${DISTVERSION}
@@ -25,26 +26,31 @@ NETFLOWv9_RUN_DEPENDS=	rwptoflow:${PORTSDIR}/security/silktools
 
 FLOWVIEWERDIR?=	${PREFIX}/www/flowviewer
 
-PLIST_SCRIPT=	FV.cgi FV_Relay.cgi FlowGrapher.cgi FlowGrapher_Main.cgi \
-		FlowGrapher_Replay.cgi FlowGrapher_Sort.cgi \
-		FlowTracker.cgi FlowTracker_Dashboard.cgi FlowTracker_Display.cgi \
-		FlowTracker_DisplayPublic.cgi FlowTracker_Dumper.cgi \
-		FlowTracker_Group.cgi FlowTracker_Main.cgi FlowTracker_Management.cgi \
-		FlowTracker_Replay.cgi FlowViewer.cgi dscan.suppress.dst dscan.suppress.src \
-		FlowViewer_Main.cgi FlowViewer_Replay.cgi \
-		FlowViewer_Save.cgi FlowViewer_SaveManage.cgi FlowViewer_Sort.cgi \
-		FlowViewer_UI.pm FlowViewer_Utilities.pm FlowGrapher_Colors \
-		FlowTracker_AltDashboard FlowTracker_Collector FlowTracker_Grapher \
-		FlowTracker_Recreate FlowTracker_Thumbnail FlowViewer_CleanASCache \
-		FlowViewer_CleanFiles FlowViewer_CleanHostCache FlowViewer_CleanSiLK \
-		NamedInterfaces_Devices NamedInterfaces_Exporters
-PLIST_DATA=	FG_button.png FT_button.png FV_button.png FlowViewer.css
-PLIST_TOOLS=	flowcapture_restart resize_rrdtools flowtracker_grapher_nonlazy \
-		date_to_epoch_gm performance_check flowtracker_restart \
-		convert_pre40_filters analyze_flowtracker_debug flowtracker_grapher_recent \
-		flow-capture-table.conf rsync_trackings epoch_to_date_local rwflowpack_start \
-		epoch_to_date_gm rsync_htmls flowtracker_archive_restore \
-		date_to_epoch_local analyze_netflow_packets rsync_flows
+FLOWVIEWERSCRIPTS=	FV.cgi FV_Relay.cgi FlowGrapher.cgi FlowGrapher_Analyze.cgi \
+		FlowGrapher_Main.cgi FlowGrapher_Replay.cgi FlowGrapher_Sort.cgi \
+		FlowMonitor.cgi FlowMonitor_Dashboard.cgi FlowMonitor_Display.cgi \
+		FlowMonitor_DisplayPublic.cgi FlowMonitor_Dumper.cgi \
+		FlowMonitor_Group.cgi FlowMonitor_Main.cgi FlowMonitor_Management.cgi \
+		FlowMonitor_Replay.cgi FlowViewer.cgi FlowViewer_Main.cgi \
+		FlowViewer_Replay.cgi FlowViewer_Save.cgi FlowViewer_SaveManage.cgi \
+		FlowViewer_Sort.cgi FlowViewer_UI.pm FlowViewer_Utilities.pm \
+		FlowMonitor_Collector FlowMonitor_Grapher \
+		FlowMonitor_Recreate FlowMonitor_Thumbnail FlowViewer_CleanASCache \
+		FlowViewer_CleanFiles FlowViewer_CleanHostCache FlowViewer_CleanSiLK
+FLOWVIEWERDATA=	FG_button.png FM_button.png FV_button.png FlowViewer.css
+SHEBANG_TOOLS=	tools/analyze_flowmonitor_debug tools/analyze_netflow_packets \
+		tools/convert_pre40_filters tools/create_ports_file tools/date_to_epoch_gm \
+		tools/date_to_epoch_local tools/epoch_to_date_gm tools/epoch_to_date_local \
+		tools/flowmonitor_archive_restore tools/flowmonitor_grapher_nonlazy \
+		tools/flowmonitor_grapher_recent tools/performance_check tools/resize_rrdtools
+FLOWVIEWERTOOLS=	${SHEBANG_TOOLS} \
+		tools/flowcapture_restart tools/flowmonitor_restart \
+		tools/flow-capture-table.conf tools/rsync_monitors tools/rwflowpack_start \
+		tools/rsync_htmls tools/rsync_flows
+FLOWVIEWERCONFIGS=	FlowViewer_Configuration.pm \
+		FlowGrapher_Colors FlowGrapher_Ports \
+		NamedInterfaces_Devices NamedInterfaces_Exporters \
+		dscan.suppress.dst dscan.suppress.src
 
 PLIST_SUB+=	FLOWVIEWERDIR="${FLOWVIEWERDIR}" \
 		WWWOWN=${WWWOWN} \
@@ -53,12 +59,12 @@ SUB_LIST+=	"FLOWVIEWERDIR=${FLOWVIEWERDIR}" \
 		"PKGNAME=${PKGNAME}"
 SUB_FILES=	pkg-message
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	${FLOWVIEWERSCRIPTS} ${SHEBANG_TOOLS} FlowViewer_Configuration.pm
 NO_BUILD=	yes
 
 PORTDOCS=	README
 
-.include <bsd.port.options.mk>
 post-patch:
 	@${REINPLACE_CMD} -E \
 		-e "s|%%PREFIX%%|${PREFIX}|" \
@@ -70,24 +76,23 @@ post-patch:
 do-install:
 	${MKDIR} ${STAGEDIR}${FLOWVIEWERDIR}
 	${MKDIR} ${STAGEDIR}${FLOWVIEWERDIR}/tools
-	${INSTALL_DATA} ${WRKSRC}/FlowViewer_Configuration.pm ${STAGEDIR}${FLOWVIEWERDIR}/FlowViewer_Configuration.pm.dist
-	${MKDIR} ${STAGEDIR}${FLOWVIEWERDIR}/tmp ${STAGEDIR}${FLOWVIEWERDIR}/reports \
-	${STAGEDIR}${FLOWVIEWERDIR}/graphs ${STAGEDIR}${FLOWVIEWERDIR}/tracker ${STAGEDIR}${FLOWVIEWERDIR}/working \
-	${STAGEDIR}${FLOWVIEWERDIR}/saves ${STAGEDIR}${FLOWVIEWERDIR}/names ${STAGEDIR}${FLOWVIEWERDIR}/filters \
+	${MKDIR} ${STAGEDIR}${FLOWVIEWERDIR}/tmp ${STAGEDIR}${FLOWVIEWERDIR}/reports ${STAGEDIR}${FLOWVIEWERDIR}/graphs \
+	${STAGEDIR}${FLOWVIEWERDIR}/monitor ${STAGEDIR}${FLOWVIEWERDIR}/working ${STAGEDIR}${FLOWVIEWERDIR}/saves \
+	${STAGEDIR}${FLOWVIEWERDIR}/names ${STAGEDIR}${FLOWVIEWERDIR}/ipsets ${STAGEDIR}${FLOWVIEWERDIR}/filters \
 	${STAGEDIR}${FLOWVIEWERDIR}/rrdtools ${STAGEDIR}${FLOWVIEWERDIR}/FlowViewer_Dashboard
-.for i in ${PLIST_SCRIPT}
-	@${INSTALL_SCRIPT} ${WRKSRC}/${i} ${STAGEDIR}${FLOWVIEWERDIR}
+.for i in ${FLOWVIEWERCONFIGS}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${FLOWVIEWERDIR}/${i}.sample
 .endfor
-.for i in ${PLIST_TOOLS}
-	@${INSTALL_SCRIPT} ${WRKSRC}/tools/${i} ${STAGEDIR}${FLOWVIEWERDIR}/tools
+.for i in ${FLOWVIEWERSCRIPTS}
+	${INSTALL_SCRIPT} ${WRKSRC}/${i} ${STAGEDIR}${FLOWVIEWERDIR}
 .endfor
-.for i in ${PLIST_DATA}
-	@${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${FLOWVIEWERDIR}/reports
+.for i in ${FLOWVIEWERTOOLS}
+	${INSTALL_SCRIPT} ${WRKSRC}/${i} ${STAGEDIR}${FLOWVIEWERDIR}/tools
 .endfor
-
-.if ${PORT_OPTIONS:MDOCS}
+.for i in ${FLOWVIEWERDATA}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${FLOWVIEWERDIR}/reports
+.endfor
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

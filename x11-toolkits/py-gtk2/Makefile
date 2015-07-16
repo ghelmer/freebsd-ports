@@ -6,8 +6,7 @@ PORTNAME=	gtk
 PORTVERSION=	2.24.0
 PORTREVISION=	3
 CATEGORIES=	x11-toolkits python
-MASTER_SITES=	GNOME
-MASTER_SITE_SUBDIR=	sources/pygtk/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+MASTER_SITES=	GNOME/sources/pygtk/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	2
 DISTNAME=	pygtk-${PORTVERSION}
@@ -19,9 +18,8 @@ COMMENT=	Set of Python bindings for GTK+
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/cairo/__init__.py:${PORTSDIR}/graphics/py-cairo
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/cairo/__init__.py:${PORTSDIR}/graphics/py-cairo
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES=		gettext gmake libtool pathfix pkgconfig python:2 tar:bzip2
 USE_GNOME=	libglade2 pygobject
-USE_PYTHON=	2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PYTHON="${PYTHON_VERSION}"
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -34,7 +32,7 @@ EXAMPLESDIR=	${PREFIX}/share/examples/py-gtk
 
 CONFLICTS=	py*-gtk-0*
 
-OPTIONS_DEFINE=	NUMPY
+OPTIONS_DEFINE=	NUMPY DOCS EXAMPLES
 NUMPY_DESC=	Numpy support (pulls in lang/gcc)
 
 .include <bsd.port.options.mk>
@@ -53,8 +51,7 @@ CONFIGURE_ARGS+=--disable-numpy
 #
 .if !defined(WITHOUT_THREADS)
 CONFIGURE_ARGS+=	--enable-thread
-CFLAGS+=		${PTHREAD_CFLAGS}
-LDFLAGS+=		${PTHREAD_LIBS}
+LDFLAGS+=		-lpthread
 .else
 CONFIGURE_ARGS+=	--disable-thread
 .endif

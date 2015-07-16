@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	docutils
-PORTVERSION=	0.11
+PORTVERSION=	0.12
 CATEGORIES=	textproc python
 MASTER_SITES=	SF \
 		CHEESESHOP
@@ -11,11 +11,9 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	olivierd@FreeBSD.org
 COMMENT=	Python Documentation Utilities
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYTHON_PY3K_PLIST_HACK=	yes
+USES=	python
+USE_PYTHON=	distutils autoplist
 
-OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
 OPTIONS_DEFINE=	PYGMENTS
 PYGMENTS_DESC=	Syntax highlighting
 

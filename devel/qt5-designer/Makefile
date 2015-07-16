@@ -19,14 +19,15 @@ DESKTOP_ENTRIES="Qt 5 Designer" "" \
 		"${PREFIX}/${QT_BINDIR_REL}/designer" \
 		"Development;Qt;" true
 
-WRKSRC_SUBDIR=	src/${PORTNAME}
+BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
+INSTALL_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 
 post-patch:
 	@${REINPLACE_CMD} -e '/uitools/ d' \
-		${WRKSRC}/src/src.pro
+		${WRKSRC}/src/${PORTNAME}/src/src.pro
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/src/designer/images/designer.png \
+	${INSTALL_DATA} ${WRKSRC}/src/${PORTNAME}/src/designer/images/designer.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/designer-qt5.png
 
 .include <bsd.port.mk>

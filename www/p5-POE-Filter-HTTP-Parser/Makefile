@@ -2,13 +2,13 @@
 
 PORTNAME=	POE-Filter-HTTP-Parser
 PORTVERSION=	1.06
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	lth@FreeBSD.org
-COMMENT=	A HTTP POE filter for HTTP clients or servers
+COMMENT=	HTTP POE filter for HTTP clients or servers
 
 BUILD_DEPENDS=	p5-POE>=1.003:${PORTSDIR}/devel/p5-POE \
 		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \

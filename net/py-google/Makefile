@@ -11,11 +11,13 @@ DISTNAME=	pygoogle-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python wrapper for the Google web API
 
+DEPRECATED=	Google no longer supports the SOAP API for search
+EXPIRATION_DATE=	2015-07-02
+
 RUN_DEPENDS=	${PYXML}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 PORTDOCS=	*
 DOCSDIR=	${PREFIX}/share/doc/py-google

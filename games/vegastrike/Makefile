@@ -3,12 +3,12 @@
 
 PORTNAME=	vegastrike
 PORTVERSION=	0.5.1.r1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:R}/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source 3D space simulator
 
 LICENSE=	GPLv2
@@ -19,9 +19,8 @@ LIB_DEPENDS=	libboost_python.so:${PORTSDIR}/devel/boost-python-libs \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libogg.so:${PORTSDIR}/audio/libogg
 
-USES=		dos2unix gmake openal:al pkgconfig tar:bzip2
+USES=		dos2unix gmake openal:al pkgconfig python tar:bzip2
 GNU_CONFIGURE=	yes
-USE_PYTHON=	yes
 USE_SDL=	sdl
 USE_GL=		glut
 USE_XORG=	sm ice xi x11 xext xrender xinerama xi xrandr xcursor \

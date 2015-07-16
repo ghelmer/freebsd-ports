@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	robotframework
-PORTVERSION=	2.8.5
+PORTVERSION=	2.8.7
 CATEGORIES=	devel www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,8 +12,7 @@ COMMENT=	Generic test automation framework
 
 LICENSE=	APACHE20
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

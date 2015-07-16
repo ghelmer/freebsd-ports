@@ -6,7 +6,6 @@ PORTVERSION=	1.02
 PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	http://gato.sourceforge.net/Download/
-MASTER_SITE_SUBDIR=	gato
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Gato-${PORTVERSION}
 
@@ -17,7 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinte
 
 WRKSRC=		${WRKDIR}/Gato
 
-USE_PYTHON=	yes
+USES=		python
 
 EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}
 

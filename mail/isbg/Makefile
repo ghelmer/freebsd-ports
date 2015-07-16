@@ -16,11 +16,10 @@ RUN_DEPENDS+=	spamassassin:${PORTSDIR}/mail/spamassassin
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ook
-GH_COMMIT=	44f46f0
 
 NO_BUILD=	yes
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USES=		python
+USE_PYTHON=	distutils
 
 PLIST_FILES=	bin/${PORTNAME}.py
 

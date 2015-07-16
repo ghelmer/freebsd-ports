@@ -11,6 +11,7 @@ DISTNAME=	RANDLIB_V90
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Library of Routines for Random Number Generation
 
+USES=		uidfix
 USE_LDCONFIG=	yes
 MAKE_ENV=	NO_PROFILE=true
 WRKSRC=		${WRKDIR}/source/randlib.c/src
@@ -23,10 +24,10 @@ PLIST_FILES=	include/randlib.h \
 post-extract:
 	${CP} ${FILESDIR}/Makefile.lib ${WRKSRC}/Makefile
 
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKDIR}/source/randlib.c/doc/* ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKDIR}/source/randlib.c/doc/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

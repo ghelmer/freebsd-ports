@@ -3,47 +3,33 @@
 
 PORTNAME=	pure-audio
 PORTVERSION=	0.5
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	https://cdn.bitbucket.org/purelang/pure-lang/downloads/
 DIST_SUBDIR=	pure
 
-MAINTAINER=	lichray@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Digital audio interface for the Pure language
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libportaudio.so:${PORTSDIR}/audio/portaudio2 \
+BROKEN=		Unfetchable
+LIB_DEPENDS=	libportaudio.so:${PORTSDIR}/audio/portaudio \
 		libsamplerate.so:${PORTSDIR}/audio/libsamplerate \
 		libsndfile.so:${PORTSDIR}/audio/libsndfile \
 		libfftw3.so:${PORTSDIR}/math/fftw3
 
 USES=		pure
-NO_STAGE=	yes
-
-post-patch:
-	@${REINPLACE_CMD} \
-		-e "s|-lportaudio|-I${LOCALBASE}/include/portaudio2 -L${LOCALBASE}/lib/portaudio2 -lportaudio|" \
-		-e "s|portaudio.h|portaudio2/portaudio.h|g" \
-			${WRKSRC}/Makefile
 
 PORTDOCS=	README
-
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
-
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
-	@(cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${EXAMPLESDIR})
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@(cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

@@ -4,14 +4,14 @@
 PORTNAME=	mtail
 PORTVERSION=	1.1.1
 CATEGORIES=	misc
-MASTER_SITES=	http://matt.immute.net/src/mtail/ CENKES
+MASTER_SITES=	http://matt.immute.net/src/mtail/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small tail workalike that performs output coloring
 
+USES=		python:run
 NO_BUILD=	yes
-USE_PYTHON_RUN=	yes
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	CHANGES LICENSE README
 PORTEXAMPLES=	mtailrc

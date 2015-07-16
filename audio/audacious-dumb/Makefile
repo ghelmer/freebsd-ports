@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	audacious-dumb
-PORTVERSION=	0.82
+PORTVERSION=	0.83
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.netswarm.net/misc/ \
-		CRITICAL
+		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Audacious plugin that support the IT, XM, S3M, or MOD formats
@@ -16,13 +17,14 @@ RUN_DEPENDS=	audacious:${PORTSDIR}/multimedia/audacious
 BUILD_DEPENDS=	audacious:${PORTSDIR}/multimedia/audacious \
 		${LOCALBASE}/lib/libdumb.a:${PORTSDIR}/audio/dumb
 
-BROKEN=		Does not work with audacious 3.5 or later
-
+BROKEN=		Does not compile with audacious 3.6.x.
 USES=		gmake pkgconfig
 USE_LDCONFIG=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|3\.1-alpha1|3\.1|g; \
-			s|/usr/local|${LOCALBASE}|g' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/Makefile
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/audacious/Input/dumb.so
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	exult
 PORTVERSION=	1.5.0.20130315
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://www.math.leidenuniv.nl/~wpalenst/cvs/
 DISTNAME=	exult-20130315-0400
@@ -10,16 +11,16 @@ DISTNAME=	exult-20130315-0400
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ultima VII engine
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
 RUN_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
 
 USE_SDL=	sdl mixer
 USE_XORG=	x11
-USES=		gmake pkgconfig
-USE_AUTOTOOLS=	libtool autoconf automake aclocal autoheader libtoolize
-AUTOMAKE_ARGS=	--add-missing
+USES=		autoreconf gmake libtool pkgconfig
+GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 

@@ -9,10 +9,12 @@ MASTER_SITES=	SF/w-calc/Wcalc/${PORTVERSION}
 DISTNAME=	wcalc-${PORTVERSION}
 
 MAINTAINER=	amarendra.godbole@gmail.com
-COMMENT=	A natural-expression command-line calculator
+COMMENT=	Natural-expression command-line calculator
 
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libmpfr.so:${PORTSDIR}/math/mpfr
+
+USES=		readline
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

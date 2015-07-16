@@ -4,8 +4,7 @@
 PORTNAME=	gnuls
 PORTVERSION=	8.22
 CATEGORIES=	misc
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	coreutils
+MASTER_SITES=	GNU/coreutils
 DISTNAME=	coreutils-${PORTVERSION}
 
 MAINTAINER=	bmc@clapper.org
@@ -20,10 +19,9 @@ CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
-USES=		gmake perl5
+USES=		gmake perl5 tar:xz
 USE_LDCONFIG=	yes
 USE_PERL5=	build
-USE_XZ=		yes
 
 PLIST_FILES=	bin/dir \
 		bin/dircolors \

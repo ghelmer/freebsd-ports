@@ -6,14 +6,16 @@ DISTVERSION=	2.4.0-b1
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/Jamaica%20Core/Jamaica%20${DISTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework to create fully dynamic Content Management Solutions
 
 LICENSE=	GPLv2
 
 OPTIONS_DEFINE=	PGSQL MYSQL
 
-USE_BZIP2=	yes
+USES=		cpe tar:bzip2
+CPE_VERSION=	${DISTVERSION:C/-.*//}
+CPE_UPDATE=	${DISTVERSION:C/[^-]*((-.*)?)/\1/:C/-//}
 USE_PHP=	pcre xml simplexml
 NO_BUILD=	yes
 

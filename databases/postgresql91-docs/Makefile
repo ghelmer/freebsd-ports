@@ -9,10 +9,10 @@ DISTV=	${DISTVERSION:R}
 MAINTAINER=	pgsql@FreeBSD.org
 COMMENT=	The PostgreSQL documentation set
 
-MASTERDIR=	${.CURDIR}/../../databases/postgresql${WANT_PGSQL_VER}-server
+MASTERDIR=	${.CURDIR}/../../databases/postgresql${WANT_PGSQL_VER:S/.//}-server
 
-USE_PGSQL=	YES
-WANT_PGSQL_VER?=91
+USES+=		pgsql:${WANT_PGSQL_VER}
+WANT_PGSQL_VER?=9.1
 
 SLAVE_ONLY=	YES
 COMPONENT=	-docs
@@ -27,7 +27,7 @@ BUILD_DEPENDS+=	onsgmls:${PORTSDIR}/textproc/opensp			\
 		openjade:${PORTSDIR}/textproc/openjade			\
 		${sgmldir}/iso8879/catalog:${PORTSDIR}/textproc/iso8879	\
 		${dbdir}/dsssl/modular/catalog:${PORTSDIR}/textproc/dsssl-docbook-modular \
-		${dbdir}/4.2:${PORTSDIR}/textproc/docbook-sgml
+		docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml
 
 do-build:
 	${MAKE_CMD} -C ${WRKSRC} html

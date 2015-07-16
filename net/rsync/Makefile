@@ -3,15 +3,14 @@
 
 PORTNAME=	rsync
 PORTVERSION=	3.1.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net ipv6
-MASTER_SITES=	http://rsync.samba.org/ftp/%SUBDIR%/ \
-		ftp://ftp.samba.org/pub/%SUBDIR%/ \
-		ftp://ftp.sunet.se/pub/unix/admin/%SUBDIR%/  \
-		ftp://ftp.fu-berlin.de/pub/unix/network/%SUBDIR%/ \
+MASTER_SITES=	http://rsync.samba.org/ftp/rsync/ \
+		ftp://ftp.samba.org/pub/rsync/ \
+		ftp://ftp.sunet.se/pub/unix/admin/rsync/  \
+		ftp://ftp.fu-berlin.de/pub/unix/network/rsync/ \
 		http://www.mirrorservice.org/sites/rsync.samba.org/ \
-		CRITICAL
-MASTER_SITE_SUBDIR=	rsync
+		LOCAL/ehaupt/rsync
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -19,10 +18,17 @@ COMMENT=	Network file distribution/synchronization utility
 
 LICENSE=	GPLv3
 
+USES=		cpe
+
+CPE_VENDOR=	samba
+CPE_PRODUCT=	rsync
+
 PATCH_STRIP=	-p1
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	rsyncd
 SUB_LIST=	NAME=rsyncd
+
+INSTALL_TARGET=	install-strip
 
 CONFIGURE_ARGS=	--disable-debug --enable-ipv6 \
 		--with-rsyncd-conf=${ETCDIR}/rsyncd.conf
@@ -36,7 +42,7 @@ OPTIONS_RADIO_PTS=	TIMELIMIT RENAMED FLAGS ATIMES ACL
 
 # options provided upstream
 POPT_PORT_DESC=	Use popt from devel/popt instead of bundled one
-ZLIB_BASE_DESC=	Use zlib from base instead of bundled one (BROKEN)
+ZLIB_BASE_DESC=	Use zlib from base instead of bundled one
 SSH_DESC=	Use SSH instead of RSH
 
 # options provided by patch (mutually exclusive)
@@ -89,7 +95,6 @@ post-patch:
 		${WRKSRC}/rsync.h ${WRKSRC}/rsync.1 ${WRKSRC}/rsyncd.conf.5
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rsync
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${FILESDIR}/rsyncd.conf.sample ${STAGEDIR}${ETCDIR}/
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

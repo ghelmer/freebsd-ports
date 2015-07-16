@@ -3,11 +3,12 @@
 
 PORTNAME=	Template-Plugin-Monta
 PORTVERSION=	0.03
+PORTREVISION=	1
 CATEGORIES=	www textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Template-Toolkit plugin to Monta Method
 
 BUILD_DEPENDS=	p5-Template-Toolkit>=0:${PORTSDIR}/www/p5-Template-Toolkit

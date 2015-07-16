@@ -1,4 +1,6 @@
 #!/bin/sh
+# Created by: Sean McAfee <smcafee@collaborativefusion.com>
+
 # $FreeBSD$
 
 # PROVIDE: smokeping
@@ -14,67 +16,97 @@
 #
 # smokeping_flags="<set as needed>"
 
-smokeping_enable=${smokeping_enable-"NO"}
-smokeping_pidfile=${smokeping_pidfile-"%%PREFIX%%/var/smokeping/smokeping.pid"}
-smokeping_logfile=${smokeping_logfile-"/var/log/smokeping.log"}
-smokeping_user=${smokeping_user-"%%USERS%%"}
-smokeping_group=${smokeping_group-"%%GROUPS%%"}
 
 . /etc/rc.subr
 
-name="smokeping"
-rcvar="smokeping_enable"
-load_rc_config $name
-command="/usr/local/bin/smokeping"
+name=smokeping
+rcvar=smokeping_enable
+
+extra_commands="status configtest reload"
+
+start_cmd="smokeping_start"
+status_cmd="smokeping_status"
+configtest_cmd="smokeping_configtest"
+reload_cmd="smokeping_reload"
+stop_cmd="smokeping_stop"
+
+: ${smokeping_enable:=NO}
+# pidfile is hardcoded in Smokeping.pm, not configurable
+smokeping_pidfile="%%PREFIX%%/var/smokeping/pid"
+: ${smokeping_logfile=/var/log/smokeping.log}
+: ${smokeping_user="%%USERS%%"}
+: ${smokeping_group="%%GROUPS%%"}
+
+command="%%PREFIX%%/bin/smokeping"
 command_args="--logfile=${smokeping_logfile}"
 pidfile="${smokeping_pidfile}"
+command_interpreter="%%PREFIX%%/bin/perl"
 
-extra_commands="reload"
-reload_cmd="smokeping_reloadcmd"
-start_precmd="smokeping_startprecmd"
-stop_cmd="smokeping_stopcmd"
-status_cmd="smokeping_statuscmd"
-
-smokeping_reloadcmd()
+smokeping_check_pidfile()
 {
-	$command --reload
+	rc_pid=$(check_pidfile $pidfile $command)
+	if [ -z "${rc_pid}" ]; then
+		rc_pid=$(check_pidfile $pidfile $command $command_interpreter)
+	fi
 }
 
-smokeping_statuscmd()
+smokeping_start()
 {
-	if [ ! -e $pidfile ];
-	then
-		echo "pidfile does not exist. $name is not running?";
-		exit 1;
+	smokeping_check_pidfile
+	if [ -n "$rc_pid" ]; then
+		echo 1>&2 "${name} already running? (pid=$rc_pid)."
+		return 1
 	fi
 
-	if pgrep -F $pidfile >/dev/null;
+	if [ ! -e ${smokeping_logfile} ];
 	then
-		echo "$name is running.";
+		install -o ${smokeping_user} -g ${smokeping_group} -m 644 /dev/null ${smokeping_logfile} ||\
+			 echo "ERROR: Could not initialize logfile at ${smokeping_logfile}.";
+	fi
+
+	echo "Starting ${name}."
+	${command} ${smokeping_flags} ${command_args}
+}
+
+smokeping_status()
+{
+	smokeping_check_pidfile
+	if [ -z "$rc_pid" ]; then
+		echo "${name} is not running."
+		return 1
 	else
-		echo "$name is not running.";
-		exit 1;
+		echo "${name} is running as pid $rc_pid"
 	fi
 }
 
-smokeping_stopcmd()
+smokeping_configtest()
 {
-	if pgrep -F $pidfile >/dev/null; 
-	then
-		kill $sig_stop `cat $pidfile`;
-		wait_for_pids `cat $pidfile`;
+	${command} --check
+}
+
+smokeping_reload()
+{
+	smokeping_check_pidfile
+	if [ -z "$rc_pid" ]; then
+		_run_rc_notrunning
+		return 1
 	else
-		echo "$name is not running.";
-		exit 1;
+		${command} --reload
 	fi
 }
 
-smokeping_startprecmd()
+smokeping_stop()
 {
-	if [ ! -e $smokeping_logfile ];
-	then
-		install -o %%USERS%% -g %%GROUPS%% /dev/null $smokeping_logfile || echo "ERROR: Could not initialize logfile at $smokeping_logfile.";
+	smokeping_check_pidfile
+	if [ -z "$rc_pid" ]; then
+		_run_rc_notrunning
+		return 1
+	else
+		echo "Stopping ${name}."
+		kill -TERM $rc_pid
 	fi
 }
+
+load_rc_config $name
 
 run_rc_command "$1"

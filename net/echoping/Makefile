@@ -8,12 +8,16 @@ CATEGORIES=	net ipv6
 MASTER_SITES=	SF
 
 MAINTAINER=	sumikawa@FreeBSD.org
-COMMENT=	A ping-like program that uses TCP and/or HTTP
+COMMENT=	Ping-like program that uses TCP and/or HTTP
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt \
 		libidn.so:${PORTSDIR}/dns/libidn
 
-USES=	libtool
+USES=		cpe libtool
+CPE_VENDOR=	echoping_project
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-http --enable-icp --enable-smtp --with-ssl \
@@ -36,17 +40,14 @@ PLIST_SUB=	WITH_LDAP="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 PING_PLUGINS+=	postgresql
 PLIST_SUB+=	WITH_PGSQL=""
 .else
 PLIST_SUB+=	WITH_PGSQL="@comment "
 .endif
 
-.include <bsd.port.pre.mk>
+post-patch:
+	@${REINPLACE_CMD} '/^echoping_LDADD =/s/$$/ -lm/' ${WRKSRC}/Makefile.in
 
-.if ${ARCH} == "ia64" || ${ARCH} == "powerpc"
-BROKEN=		Does not link on ia64 or powerpc
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

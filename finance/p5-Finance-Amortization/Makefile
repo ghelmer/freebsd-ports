@@ -3,11 +3,12 @@
 
 PORTNAME=	Finance-Amortization
 PORTVERSION=	0.5
+PORTREVISION=	1
 CATEGORIES=	finance perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple amortization schedules
 
 USES=		perl5

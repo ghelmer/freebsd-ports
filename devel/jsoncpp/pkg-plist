@@ -1,3 +1,4 @@
+lib/libjsoncpp.so.0.6.0
 lib/libjsoncpp.so.0
 lib/libjsoncpp.so
 lib/libjsoncpp.a
@@ -9,5 +10,3 @@ include/jsoncpp/json/value.h
 include/jsoncpp/json/reader.h
 include/jsoncpp/json/features.h
 include/jsoncpp/json/autolink.h
-@dirrm include/jsoncpp/json
-@dirrm include/jsoncpp

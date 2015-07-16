@@ -21,9 +21,7 @@ PORTDOCS=	BLURB COPYING feedback.fcn feedback.html formication.txt
 PLIST_FILES=	www/cgi-bin/formication.pl
 SUB_FILES+=	pkg-message
 
-.include <bsd.port.pre.mk>
-
-PLIST_DIRSTRY=	www/cgi-bin
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,^#!/usr/local/bin/perl,#!${PERL},g" \
@@ -33,14 +31,9 @@ post-patch:
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/www/cgi-bin
 	@${INSTALL_DATA} ${WRKSRC}/formication.pl ${STAGEDIR}${PREFIX}/www/cgi-bin
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 .	for i in ${PORTDOCS}
 	  @${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}/
 .	endfor
-.endif
 
-post-install:
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

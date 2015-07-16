@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	dbmail
-PORTVERSION=	3.1.15
-PORTREVISION=	3
+PORTVERSION=	3.2.3
 CATEGORIES=	mail
-MASTER_SITES=	http://git.dbmail.eu/paul/dbmail/snapshot/
+MASTER_SITES=	http://git.dbmail.eu/paul/dbmail/snapshot/ \
+		http://www.dbmail.org/download/3.2/
 
-MAINTAINER=	ahicks@p-o.co.uk
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	SQL database-based mail system (POP3 and IMAP)
 
 LICENSE=	GPLv2
@@ -15,16 +15,15 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libgmime-2.6.so:${PORTSDIR}/mail/gmime26 \
 		libzdb.so:${PORTSDIR}/databases/libzdb \
 		libmhash.so:${PORTSDIR}/security/mhash \
-		libevent-2.0.so:${PORTSDIR}/devel/libevent2
-
+		libevent.so:${PORTSDIR}/devel/libevent2
 BUILD_DEPENDS=	asciidoc:${PORTSDIR}/textproc/asciidoc \
 		xmlto:${PORTSDIR}/textproc/xmlto \
-		${LOCALBASE}/share/sgml/docbook/4.5:${PORTSDIR}/textproc/docbook-sgml
+		docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml
 
 CONFLICTS=	dbmail22-[0-9]*
 
-OPTIONS_DEFINE=	DOCS LDAP SIEVE THREADS
-OPTIONS_DEFAULT=	THREADS
+OPTIONS_DEFINE=	DOCS LDAP SIEVE
+OPTIONS_DEFAULT=	SIEVE
 SIEVE_DESC=	Sieve mail sorting language support
 
 OPTIONS_SUB=	yes
@@ -51,8 +50,6 @@ SIEVE_LIB_DEPENDS=	libsieve.so:${PORTSDIR}/mail/libsieve
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
 
-THREADS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-acinclude.m4
-
 DBMAIL_USER?=	mailnull
 DBMAIL_GROUP?=	mail
 PIDDIR?=	/var/run/dbmail
@@ -62,13 +59,10 @@ PLIST_SUB+=	DBMAIL_USER="${DBMAIL_USER}" \
 		PIDDIR="${PIDDIR}"
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/dbmail.conf ${STAGEDIR}${PREFIX}/etc/dbmail.conf-dist
+	${INSTALL_DATA} ${WRKSRC}/dbmail.conf ${STAGEDIR}${PREFIX}/etc/dbmail.conf.sample
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/dbmail.schema ${STAGEDIR}${DATADIR}
-	@for f in mysql oracle postgresql sqlite; do \
-		${MKDIR} ${STAGEDIR}${DATADIR}/$$f ; \
-		${INSTALL_DATA} ${WRKSRC}/sql/$$f/* ${STAGEDIR}${DATADIR}/$$f; \
-	done
+	(cd ${WRKSRC}/sql && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 	@${MKDIR} ${STAGEDIR}${PIDDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}

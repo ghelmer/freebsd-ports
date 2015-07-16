@@ -1,7 +1,7 @@
---- ./chrome/chrome_browser_extensions.gypi.orig	2014-04-30 22:42:53.000000000 +0200
-+++ ./chrome/chrome_browser_extensions.gypi	2014-05-04 14:38:46.000000000 +0200
-@@ -885,6 +885,11 @@
-         'browser/extensions/window_controller_list_observer.h',
+--- chrome/chrome_browser_extensions.gypi.orig	2014-10-10 09:15:30 UTC
++++ chrome/chrome_browser_extensions.gypi
+@@ -950,6 +950,11 @@
+         '<@(chrome_browser_extensions_enabled_sources)',
        ],
        'conditions': [
 +        ['os_bsd==1', {

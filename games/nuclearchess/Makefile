@@ -3,7 +3,7 @@
 
 PORTNAME=	nuclearchess
 PORTVERSION=	1.0.0
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://www.linux-games.com/nuclearchess/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -12,10 +12,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Chess variant designed to be short and fun for all players
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_SDL=	sdl image
 INSTALLS_ICONS=	yes

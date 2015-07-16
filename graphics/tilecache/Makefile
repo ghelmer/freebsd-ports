@@ -13,11 +13,11 @@ COMMENT=	Python-based WMS-C/TMS server
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flup>0:${PORTSDIR}/www/py-flup \
 		${PYTHON_PKGNAMEPREFIX}Paste>0:${PORTSDIR}/www/py-paste
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE MIT
+LICENSE_COMB=	multi
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 FILES_ETC=	TileCache/Service.py setup.py tilecache_install_config.py
 

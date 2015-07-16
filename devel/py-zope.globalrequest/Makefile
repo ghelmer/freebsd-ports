@@ -2,7 +2,7 @@
 
 PORTNAME=	zope.globalrequest
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel python zope
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,9 +21,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}zope.testing>=0:${PORTSDIR}/devel/py-zope.te
 		${PYTHON_PKGNAMEPREFIX}zope.app.zcmlfiles>=0:${PORTSDIR}/devel/py-zope.app.zcmlfiles \
 		${PYTHON_PKGNAMEPREFIX}zope.testbrowser>=0:${PORTSDIR}/devel/py-zope.testbrowser
 
-USES=		zip
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python zip
+USE_PYTHON=	distutils autoplist
+
+post-extract:
+	@${CHMOD} -R a+rX ${WRKSRC}
 
 .include <bsd.port.mk>

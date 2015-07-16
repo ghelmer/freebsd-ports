@@ -8,9 +8,9 @@ CATEGORIES=	textproc
 MASTER_SITES=	http://www.kitebird.com/software/xmlformat/
 
 MAINTAINER=	hrs@FreeBSD.org
-COMMENT=	An XML Document Formatter
+COMMENT=	XML Document Formatter
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_BUILD=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	gkrellmms
 PORTVERSION=	2.1.22
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://gkrellm.luon.net/files/
 PKGNAMESUFFIX=	2
@@ -24,7 +24,7 @@ PLIST_FILES=	libexec/gkrellm2/plugins/gkrellmms.so \
 		share/locale/nl/LC_MESSAGES/gkrellmms.mo \
 		share/locale/ru/LC_MESSAGES/gkrellmms.mo
 
-USES=		gmake pkgconfig
+USES=		gettext gmake pkgconfig
 
 MAKE_ENV+=	PLUGIN_DIR=${PREFIX}/libexec/gkrellm2/plugins \
 		LOCALEDIR=${PREFIX}/share/locale \

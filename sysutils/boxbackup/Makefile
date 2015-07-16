@@ -3,20 +3,19 @@
 
 PORTNAME=	boxbackup
 PORTVERSION=	0.11.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 PKGNAMESUFFIX=	${CLIENT_OR_SERVER}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	james@netinertia.co.uk
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source, completely automatic on-line backup system for Unix
 
-LICENSE=	BSD GPLv2
+LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE-DUAL.txt
 
-USES=		perl5
+USES=		perl5 tar:tgz
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	autoconf aclocal autoheader
@@ -38,8 +37,16 @@ SERVER_DESC=	Install the bbstored server
 
 OPTIONS_DEFAULT=CLIENT SERVER
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} >= 1000000
+USES+=		execinfo
+LDFLAGS+=	-lexecinfo
+.endif
+
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1000000 && ${OSVERSION} > 900000
+USE_GCC=	yes
+.endif
 
 .if ${PORT_OPTIONS:MREADLINE}
 CONFIGURE_ARGS+=--enable-gnu-readline
@@ -52,8 +59,6 @@ PLIST_SUB+=	CLIENT=""
 SUB_LIST+=	CLIENT=""
 ALL_TARGET+=	build-backup-client
 INSTALL_TARGET+=install-backup-client
-MAN5+=		bbackupd.conf.5
-MAN8+=		bbackupd.8 bbackupctl.8 bbackupd-config.8 bbackupquery.8
 SUB_FILES+=	999.boxbackup
 .else
 PLIST_SUB+=	CLIENT="@comment "
@@ -68,8 +73,6 @@ PLIST_SUB+=	SERVER=""
 SUB_LIST+=	SERVER=""
 ALL_TARGET+=	build-backup-server
 INSTALL_TARGET+=install-backup-server
-MAN5+=		bbstored.conf.5 raidfile.conf.5
-MAN8+=		bbstored.8 bbstoreaccounts.8 bbstored-certs.8 bbstored-config.8 raidfile-config.8
 .else
 PLIST_SUB+=	SERVER="@comment "
 SUB_LIST+=	SERVER="@comment "
@@ -97,15 +100,17 @@ post-configure:
 		${WRKSRC}/parcels/scripts/install-backup-*
 
 post-install:
+.for f in bbstoreaccounts bbackupctl bbstored bbackupd bbackupquery
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/${f}
+.endfor
 .if ${PORT_OPTIONS:MCLIENT}
-	@${MKDIR} -m 0700 ${PREFIX}/etc/boxbackup/bbackupd
-	@${MKDIR} ${PREFIX}/etc/periodic/monthly
-	${INSTALL_SCRIPT} ${WRKDIR}/999.boxbackup ${PREFIX}/etc/periodic/monthly
+	@${MKDIR} -m 0700 ${STAGEDIR}/${PREFIX}/etc/boxbackup/bbackupd
+	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/periodic/monthly
+	${INSTALL_SCRIPT} ${WRKDIR}/999.boxbackup ${STAGEDIR}/${PREFIX}/etc/periodic/monthly
 .endif
 .if ${PORT_OPTIONS:MSERVER}
-	@${MKDIR} -m 0700 ${PREFIX}/etc/boxbackup/bbstored
+	@${MKDIR} -m 0700 ${STAGEDIR}/${PREFIX}/etc/boxbackup/bbstored
 .endif
-	@${CAT} ${PKGMESSAGE}
 
 test:
 	 @${ECHO_CMD} "===> Running tests"

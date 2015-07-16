@@ -11,13 +11,12 @@ DISTNAME=	PHPSerialize_v${PORTVERSION}
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	jnlin@csie.nctu.edu.tw
-COMMENT=	Python implementation of PHP\'s native serialize() and unserialize()
+COMMENT=	Python implementation of PHP's native serialize() and unserialize()
 
 WRKSRC=		${WRKDIR}/v${PORTVERSION}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 post-extract:
 	${SED} -e 's|%%PORTVERSION%%|${PORTVERSION}|g' ${FILESDIR}/setup.py \

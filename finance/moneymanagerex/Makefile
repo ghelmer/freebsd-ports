@@ -3,6 +3,7 @@
 
 PORTNAME=	mmex
 PORTVERSION=	0.9.9.0
+PORTREVISION=	1
 CATEGORIES=	finance
 MASTER_SITES=	http://www.codelathe.com/${PORTNAME}/installer/linux/ \
 		SF/moneymanagerex/moneymanagerex/Version%20${PORTVERSION}
@@ -15,7 +16,7 @@ LICENSE=	GPLv2
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/version.hpp:${PORTSDIR}/devel/boost-libs
 
-USE_BZIP2=	yes
+USES=		gettext-tools tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG}
 USE_WX=		2.8+

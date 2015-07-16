@@ -18,18 +18,16 @@ TEST_DEPENDS:=	${RUN_DEPENDS} \
 		${PYTHON_PKGNAMEPREFIX}nose>0:${PORTSDIR}/devel/py-nose
 
 # Python3 ready
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PY2TO3_CMD=		${LOCALBASE}/bin/2to3-${PYTHON_VER}
-PY2TO3_ARGS=		--no-diffs --nobackups --verbose --write
+USES=		python
+USE_PYTHON=	distutils autoplist
+PY2TO3_CMD=	${LOCALBASE}/bin/2to3-${PYTHON_VER}
+PY2TO3_ARGS=	--no-diffs --nobackups --verbose --write
 
 OPTIONS_DEFINE=		DOCS EXAMPLES TESTS
 OPTIONS_MULTI=		BACKEND
-OPTIONS_MULTI_BACKEND=	FIREBIRD MSSQL MYSQL PGSQL SQLITE SYBASE
+OPTIONS_MULTI_BACKEND=	MSSQL MYSQL PGSQL SQLITE SYBASE
 OPTIONS_DEFAULT=	SQLITE
 
-FIREBIRD_DESC=	Firebird backend
 MSSQL_DESC=	MS SQL Server backend
 TESTS_DESC=	Include nose for unit tests
 SYBASE_DESC=	Sybase backend
@@ -47,10 +45,6 @@ EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
 .if ${PORT_OPTIONS:MDOCS}
 AL_PORTDOCS=	*.html *.js
 AL_PORTDOCS_SUBDIR=	core dialects orm
-.endif
-
-.if ${PORT_OPTIONS:MFIREBIRD}
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/kinterbasdb/__init__.py:${PORTSDIR}/databases/kinterbasdb
 .endif
 
 .if ${PORT_OPTIONS:MMSSQL}
@@ -87,12 +81,12 @@ post-patch:
 	${REINPLACE_CMD} -e 's/import logging/&.handlers/1' -i.bak ${WRKSRC}/test/engine/test_execute.py
 
 pre-build:
-.if ${PYTHON_REL} >= 300
+.if ${PYTHON_REL} >= 3000
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/lib
 .endif
 
 post-install:
-.if ${PYTHON_REL} >= 300
+.if ${PYTHON_REL} >= 3000
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${STAGEDIR}${WRKSRC}/doc
 .endif
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -105,12 +99,12 @@ post-install:
 .endfor
 
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-.if ${PYTHON_REL} >= 300
+.if ${PYTHON_REL} >= 3000
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/examples
 .endif
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 
-.if ${PYTHON_REL} < 300
+.if ${PYTHON_REL} < 3000
 PLIST_SUB+=	SPEEDUPS=""
 .else
 # C extensions are not supported in py3k
@@ -118,7 +112,7 @@ PLIST_SUB+=	SPEEDUPS="@comment "
 .endif
 
 regression-test: build
-.if ${PYTHON_REL} >= 300
+.if ${PYTHON_REL} >= 3000
 	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/test
 .endif
 	@cd ${WRKSRC} && ${PYTHON_CMD} sqla_nose.py

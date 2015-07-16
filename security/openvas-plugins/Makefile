@@ -3,33 +3,29 @@
 
 PORTNAME=	openvas-plugins
 PORTVERSION=	1.0.7
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	security
 MASTER_SITES=	http://wald.intevation.org/frs/download.php/588/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Plugins for OpenVAS
 
-BUILD_DEPENDS=	${LIBNET_CONFIG}:${PORTSDIR}/net/libnet \
-		openvasd:${PORTSDIR}/security/openvas-server
-LIB_DEPENDS=	libopenvas.so:${PORTSDIR}/security/openvas-libraries \
+BUILD_DEPENDS=	openvasd:${PORTSDIR}/security/openvas-server
+LIB_DEPENDS=	libnet.so:${PORTSDIR}/net/libnet \
+		libopenvas.so:${PORTSDIR}/security/openvas-libraries \
 		libopenvasnasl.so:${PORTSDIR}/security/openvas-libnasl \
 		libgnutls.so:${PORTSDIR}/security/gnutls
 RUN_DEPENDS=	openvasd:${PORTSDIR}/security/openvas-server \
 		${LOCALBASE}/bin/gmd5sum:${PORTSDIR}/sysutils/coreutils \
 		${LOCALBASE}/bin/rsync:${PORTSDIR}/net/rsync
 
-USES=		pkgconfig
-GNU_CONFIGURE=	yes
 LIBNET_CONFIG?=	${LOCALBASE}/bin/libnet11-config
-CPPFLAGS+=	"`${LIBNET_CONFIG} --cflags`"
 
-.include <bsd.port.pre.mk>
-.include "${.CURDIR}/../openvas-libraries/Makefile.common"
-
-#.if ${ARCH} != "i386"
-#BROKEN=		does not compile
-#.endif
+USES=		libtool pkgconfig
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--localstatedir=/var
+CPPFLAGS+=	"`${LIBNET_CONFIG} --cflags`" -I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lnet|`${LIBNET_CONFIG} --libs`|' \
@@ -37,4 +33,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|libnet-config|${LIBNET_CONFIG}|' \
 		${WRKSRC}/plugins/3com_hub/Makefile
 
-.include <bsd.port.post.mk>
+post-install:
+	${CHMOD} u+w ${STAGEDIR}${PREFIX}/lib/openvas/plugins/*.nes
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/openvas/plugins/*.nes
+	${CHMOD} u-w ${STAGEDIR}${PREFIX}/lib/openvas/plugins/*.nes
+
+.include <bsd.port.mk>

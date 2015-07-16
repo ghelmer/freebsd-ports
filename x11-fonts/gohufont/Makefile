@@ -2,7 +2,7 @@
 
 PORTNAME=	gohufont
 PORTVERSION=	2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://font.gohu.org/
 
@@ -12,14 +12,13 @@ COMMENT=	Monospace bitmap font well suited for programming and terminal use
 LICENSE=	WTFPL
 LICENSE_NAME=	Do What The Fuck You Want To Public License, Version 2
 LICENSE_FILE=	${WRKSRC}/COPYING-LICENSE
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-FONTDIR=	lib/X11/fonts/${PORTNAME}
+USES=		fonts
 NO_BUILD=	yes
-PLIST_SUB=	FONTDIR=${FONTDIR}
 
 do-install:
-	${MKDIR} ${STAGEDIR}${LOCALBASE}/${FONTDIR}
-	${INSTALL_DATA} ${WRKSRC}/*.pcf.gz ${STAGEDIR}${LOCALBASE}/${FONTDIR}
+	${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.pcf.gz ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

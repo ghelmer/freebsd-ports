@@ -5,11 +5,10 @@ PORTNAME=	wmicons
 PORTVERSION=	1.0
 PORTREVISION=	2
 CATEGORIES=	graphics windowmaker
-MASTER_SITES=	${MASTER_SITE_LOCAL:S|%SUBDIR%|kiri/wmicons|} \
-		${MASTER_SITE_WINDOWMAKER} \
-		${MASTER_SITE_PORTS_JP} \
+MASTER_SITES=	LOCAL/kiri/wmicons \
+		WINDOWMAKER/contrib/old/icons \
+		PORTS_JP \
 		http://www.itlb.te.noda.tus.ac.jp/~manome/wmaker/archive/
-MASTER_SITE_SUBDIR=	. contrib/old/icons
 DISTFILES=	${EXTRACT_ONLY} isiconpack4.tgz
 EXTRACT_ONLY=	DWiconpack1.tar.gz DWiconpack2.tar.gz IconFest-1.2.tgz \
 		NeXT_XEmacs_tar.gz  wm_icons_png.tar.gz wm_icons_tif.tar.gz \
@@ -25,6 +24,8 @@ PORTDOCS=	*
 
 WRKSRC=		${WRKDIR}/WindowMaker-extra-0.1
 WMICONDIR=	${STAGEDIR}${PREFIX}/share/WindowMaker/Pixmaps
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	${MKDIR} ${WRKDIR}/isiconpack4
@@ -52,7 +53,6 @@ post-install:
 	cd ${WRKDIR}/vf_tif; \
 	${INSTALL_DATA} *.tif ${WMICONDIR}
 
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKDIR}/IconFest-1.2/README \
 		${STAGEDIR}${DOCSDIR}/README.IconFest
@@ -70,6 +70,5 @@ post-install:
 		${STAGEDIR}${DOCSDIR}/README.vf_png
 	${INSTALL_DATA} ${WRKDIR}/vf_tif/README \
 		${STAGEDIR}${DOCSDIR}/README.vf_tif
-.endif
 
 .include <bsd.port.mk>

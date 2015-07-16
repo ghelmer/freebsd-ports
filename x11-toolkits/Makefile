@@ -10,7 +10,6 @@
     SUBDIR += blt
     SUBDIR += bwidget
     SUBDIR += c++-gtk-utils
-    SUBDIR += eel
     SUBDIR += elementary
     SUBDIR += flowcanvas
     SUBDIR += fltk
@@ -18,7 +17,6 @@
     SUBDIR += fox14
     SUBDIR += fox16
     SUBDIR += fox17
-    SUBDIR += fpc-gnome1
     SUBDIR += fpc-gtk1
     SUBDIR += fpc-gtk2
     SUBDIR += fpc-xforms
@@ -29,7 +27,6 @@
     SUBDIR += gdl
     SUBDIR += girara
     SUBDIR += gnocl
-    SUBDIR += gnome-desktop-sharp20
     SUBDIR += gnome-pty-helper
     SUBDIR += gnome-sharp20
     SUBDIR += gnomemm
@@ -41,6 +38,7 @@
     SUBDIR += gtk-sharp-beans
     SUBDIR += gtk-sharp10
     SUBDIR += gtk-sharp20
+    SUBDIR += gtk-sharp30
     SUBDIR += gtk12
     SUBDIR += gtk20
     SUBDIR += gtk20-reference
@@ -92,7 +90,6 @@
     SUBDIR += libXt
     SUBDIR += libbonoboui
     SUBDIR += libbonoboui-reference
-    SUBDIR += libgail-gnome
     SUBDIR += libgdiplus
     SUBDIR += libgnomeprintui
     SUBDIR += libgnomeprintuimm
@@ -100,17 +97,19 @@
     SUBDIR += libgnomeui-reference
     SUBDIR += libgnomeuimm26
     SUBDIR += libgtksourceviewmm
-    SUBDIR += libmatewnck
-    SUBDIR += libpanelappletmm
     SUBDIR += libsexy
     SUBDIR += libsexymm
     SUBDIR += libunique3
     SUBDIR += libwnck
-    SUBDIR += libwnck3
     SUBDIR += libwnck-reference
+    SUBDIR += libwnck3
     SUBDIR += libxaw3dxft
     SUBDIR += libxfce4gui
-    SUBDIR += libzvt
+    SUBDIR += linux-c6-gtk2
+    SUBDIR += linux-c6-openmotif
+    SUBDIR += linux-c6-pango
+    SUBDIR += linux-c6-qt47-x11
+    SUBDIR += linux-c6-tk85
     SUBDIR += linux-f10-blt
     SUBDIR += linux-f10-gtk2
     SUBDIR += linux-f10-openmotif
@@ -123,6 +122,7 @@
     SUBDIR += neXtaw
     SUBDIR += nucleo
     SUBDIR += ocaml-lablgtk2
+    SUBDIR += ocaml-labltk
     SUBDIR += open-motif
     SUBDIR += otk
     SUBDIR += p5-Alien-wxWidgets
@@ -130,6 +130,7 @@
     SUBDIR += p5-Gnome2
     SUBDIR += p5-Gnome2-Canvas
     SUBDIR += p5-Gnome2-VFS
+    SUBDIR += p5-Gnome2-Wnck
     SUBDIR += p5-Gtk
     SUBDIR += p5-Gtk2
     SUBDIR += p5-Gtk2-Chmod
@@ -143,6 +144,7 @@
     SUBDIR += p5-Gtk2-ImageView
     SUBDIR += p5-Gtk2-PathButtonBar
     SUBDIR += p5-Gtk2-TrayIcon
+    SUBDIR += p5-Gtk2-Unique
     SUBDIR += p5-Pango
     SUBDIR += p5-Prima
     SUBDIR += p5-Tk
@@ -168,6 +170,7 @@
     SUBDIR += p5-Tk-Sugar
     SUBDIR += p5-Tk-TableMatrix
     SUBDIR += p5-Tk-ToolBar
+    SUBDIR += p5-Tk-WaitBox
     SUBDIR += p5-Wx
     SUBDIR += p5-Wx-Perl-ProcessStream
     SUBDIR += pango
@@ -175,7 +178,6 @@
     SUBDIR += pangomm
     SUBDIR += pangox-compat
     SUBDIR += pangoxsl
-    SUBDIR += paragui-devel
     SUBDIR += phat
     SUBDIR += plib
     SUBDIR += pure-gtk
@@ -183,8 +185,6 @@
     SUBDIR += py-Pmw
     SUBDIR += py-SquareMap
     SUBDIR += py-fltk
-    SUBDIR += py-gnome-desktop
-    SUBDIR += py-gnome-extras
     SUBDIR += py-gnome2
     SUBDIR += py-gtk2
     SUBDIR += py-gtkglext
@@ -200,9 +200,11 @@
     SUBDIR += py-traitsgui
     SUBDIR += py-vte
     SUBDIR += py-wax
+    SUBDIR += py-wxPython-common
     SUBDIR += py-wxPython28
     SUBDIR += py-wxPython28-common
     SUBDIR += py-wxPython28-unicode
+    SUBDIR += py-wxPython30
     SUBDIR += py-xlib
     SUBDIR += qt4-declarative
     SUBDIR += qt4-gui
@@ -210,6 +212,7 @@
     SUBDIR += qt5-declarative
     SUBDIR += qt5-gui
     SUBDIR += qt5-quick
+    SUBDIR += qt5-quickcontrols
     SUBDIR += qt5-widgets
     SUBDIR += qtada
     SUBDIR += qwt5
@@ -217,7 +220,6 @@
     SUBDIR += qwt6
     SUBDIR += qwt6-designerplugin
     SUBDIR += rep-gtk2
-    SUBDIR += ruby-fox16
     SUBDIR += rubygem-gdk3
     SUBDIR += rubygem-gtk2
     SUBDIR += rubygem-gtk3
@@ -252,6 +254,7 @@
     SUBDIR += viewklass
     SUBDIR += vte
     SUBDIR += vte-reference
+    SUBDIR += vte290
     SUBDIR += vte3
     SUBDIR += vtkfox
     SUBDIR += wmapp

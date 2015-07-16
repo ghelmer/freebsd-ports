@@ -20,12 +20,10 @@ LIB_DEPENDS=	libboost_regex.so:${PORTSDIR}/devel/boost-libs \
 		libmythes-1.2.so:${PORTSDIR}/textproc/mythes
 
 MAJOR_VERSION=	2.1
-MINOR_VERSION=	0
+MINOR_VERSION=	3
 
-USES=		desktop-file-utils gmake iconv pkgconfig perl5
-USE_PYTHON=	2
+USES=		desktop-file-utils gmake iconv pkgconfig perl5 python:2 tar:xz
 USE_QT4=	corelib gui moc_build uic_build rcc_build
-USE_XZ=		yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-included-boost \
 		--without-included-mythes \

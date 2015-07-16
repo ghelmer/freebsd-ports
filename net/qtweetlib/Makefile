@@ -10,12 +10,10 @@ COMMENT=	C++ Qt based Twitter library
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	qjson:${PORTSDIR}/devel/qjson
+LIB_DEPENDS=	libqjson.so:${PORTSDIR}/devel/qjson
 
 GH_ACCOUNT=	minimoog
-GH_COMMIT=	2af0b78
 GH_PROJECT=	QTweetLib
-GH_TAGNAME=	${PORTVERSION}
 
 USES=		cmake
 USE_GITHUB=	yes

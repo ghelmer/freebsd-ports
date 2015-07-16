@@ -5,8 +5,7 @@ DISTVERSION=	4.1-ESV
 PORTREVISION=	${DHCP_PORTREVISION}
 PORTEPOCH=	2
 CATEGORIES=	net
-MASTER_SITES=	${MASTER_SITE_ISC}
-MASTER_SITE_SUBDIR=	${PORTNAME}/${DISTVERSION}-${PATCHLEVEL}
+MASTER_SITES=	ISC/${PORTNAME}/${DISTVERSION}-${PATCHLEVEL}
 PKGNAMEPREFIX=	isc-
 PKGNAMESUFFIX=	41-${SUBSYS}
 DISTFILES=	${PORTNAME}-${DISTVERSION}-${PATCHLEVEL}${EXTRACT_SUFX}
@@ -96,13 +95,12 @@ PLIST_SUB+=		SCHEMA_DIR="${SCHEMA_DIR:S,^${PREFIX}/,,}" LDAP=""
 PORTDOCS+=		README.ldap LICENSE.ldap
 LDAP_SCRIPT=		${WRKDIR}/${LDAPPATCHDIST}/dhcpd-conf-to-ldap
 LDAP_SCHEMA=		${WRKDIR}/${LDAPPATCHDIST}/dhcp.schema
-USES+=			perl5
+USES+=			autoreconf perl5
 USE_PERL5=		run
 USE_OPENLDAP=		yes
-USE_AUTOTOOLS=		aclocal libtoolize autoconf autoheader automake
-AUTOMAKE_ARGS=		--foreign --add-missing --copy
 CPPFLAGS+=		-I${LOCALBASE}/include
 LIBS+=			-L${LOCALBASE}/lib
+LDFLAGS+=		-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	--with-ldap
 .else
 PLIST_SUB+=	LDAP="@comment "
@@ -143,10 +141,6 @@ post-patch:
 		${MSG_FILE} > ${PKGMESSAGE}
 	@${REINPLACE_CMD} ${REINPLACE_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \
 		${WRKSRC}/client/dhclient.conf
-	@${REINPLACE_CMD} -e '/echo.*RANLIB/,+1d' \
-		${WRKSRC}/Makefile.in \
-		${WRKSRC}/*/Makefile.in
-
 
 do-install:
 	${SETENV} DESTDIR=${STAGEDIR} ${MAKE} -C ${WRKSRC}/${SUBSYS} install

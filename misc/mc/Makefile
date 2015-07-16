@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mc
-PORTVERSION=	4.8.12
-PORTREVISION=	2
+PORTVERSION=	4.8.14
+PORTREVISION=	1
 CATEGORIES=	misc shells
 MASTER_SITES=	http://ftp.midnight-commander.org/ \
 		http://ftp.osuosl.org/pub/midnightcommander/ \
@@ -12,7 +12,7 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	woodsb02@gmail.com
 COMMENT=	Midnight Commander, a free Norton Commander Clone
 
 LICENSE=	GPLv3
@@ -22,13 +22,14 @@ LIB_DEPENDS=	libssh2.so:${PORTSDIR}/security/libssh2
 CONFLICTS=	mc-light-4*
 
 USES=		gmake shebangfix perl5 pkgconfig tar:xz libtool
-SHEBANG_FILES=	misc/mcedit.menu configure configure.ac \
+SHEBANG_FILES=	misc/mcedit.menu.in configure configure.ac \
+		${WRKSRC}/src/vfs/extfs/helpers/Makefile.in \
 		${WRKSRC}/src/vfs/extfs/helpers/s3+.in \
 		${WRKSRC}/src/vfs/extfs/helpers/uc1541.in
 python_OLD_CMD=	@PYTHON@
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ZIP=${UNZIP_CMD} UNZIP=${UNZIP_CMD}
+CONFIGURE_ENV=	ZIP=${ZIP_CMD} UNZIP=${UNZIP_CMD}
 
 OPTIONS_DEFINE=	DOCS EDITOR ICONV NLS SMB SUBSHELL X11
 
@@ -59,8 +60,6 @@ SMB_CONFIGURE_ON=	--with-smb-configdir=${LOCALBASE}/etc \
 SUBSHELL_CONFIGURE_WITH=	subshell
 
 X11_CONFIGURE_ENABLE=	x
-
-SUB_FILES=	pkg-message
 
 PORTDOCS=	*
 

@@ -10,11 +10,10 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	IPy-${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
-COMMENT=	A Python module for handling IPv4 and IPv6 Addresses and Networks
+COMMENT=	Python module for handling IPv4 and IPv6 Addresses and Networks
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 test: install
 	${PYTHON_CMD} ${WRKSRC}/test/test_IPy.py

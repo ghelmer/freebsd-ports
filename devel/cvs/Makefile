@@ -2,16 +2,26 @@
 
 PORTNAME=	cvs
 PORTVERSION=	1.20120905
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/eadler
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version control system
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or any later version
 
-USES=		makeinfo tar:xz uidfix
+OPTIONS_DEFINE=	KERBEROS EXAMPLES
+OPTIONS_DEFAULT=KERBEROS
+
+KERBEROS_MAKE_ARGS=	KERBEROS_SUPPORT=yes
+
+USES=		makeinfo shebangfix tar:xz uidfix
+SHEBANG_FILES=	contrib/clmerge contrib/cln_hist \
+		contrib/commit_prep contrib/cvs_acls \
+		contrib/easy-import contrib/log \
+		contrib/log_accum contrib/mfpipe \
+		contrib/rcslock
 WRKSRC=		${WRKDIR}/call/cvs-build
 INFO=		cvs cvsclient
 
@@ -19,13 +29,7 @@ INFO=		cvs cvsclient
 DESTDIRNAME=	NADA
 MAKE_ARGS=	DESTDIR=${STAGEDIR}${PREFIX}
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 900000
-BROKEN=	does not link
-.endif
-
 pre-install:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/contrib
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/contrib
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

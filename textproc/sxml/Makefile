@@ -2,16 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	sxml
-PORTVERSION=	1.0.5
+PORTVERSION=	1.0.6
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.MysticWALL.COM/download/
 
-MAINTAINER=	kouichi@MysticWALL.COM
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Skimpy XML parsing and grafting library for C language
 
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+USES=		tar:bzip2
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
 USE_LDCONFIG=	yes
 
-NO_STAGE=	yes
+MAKE_JOBS_UNSAFE=	yes
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsxml*.so
+
 .include <bsd.port.mk>

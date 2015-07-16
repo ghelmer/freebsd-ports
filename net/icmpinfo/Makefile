@@ -4,21 +4,18 @@
 PORTNAME=	icmpinfo
 PORTVERSION=	1.11
 CATEGORIES=	net sysutils
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	system/network/admin
+MASTER_SITES=	SUNSITE/system/network/admin
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Looks at the icmp messages received by the host
 
 ALL_TARGET=	
-PLIST_FILES=	bin/icmpinfo \
+PLIST_FILES=	"@(,,4555) bin/icmpinfo" \
 		man/man1/icmpinfo.man.gz
 PORTDOCS=	README
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/icmpinfo ${STAGEDIR}${PREFIX}/bin
-	${CHOWN} root ${STAGEDIR}${PREFIX}/bin/icmpinfo
-	${CHMOD} 4555 ${STAGEDIR}${PREFIX}/bin/icmpinfo
 	${INSTALL_MAN} ${WRKSRC}/icmpinfo.man ${STAGEDIR}${PREFIX}/man/man1/${MAN1}
 
 post-install:

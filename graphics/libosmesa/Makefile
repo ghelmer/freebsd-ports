@@ -2,22 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	libosmesa
-PORTVERSION=	10.2.2
+PORTVERSION=	10.2.7
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.freedesktop.org/pub/mesa/${PORTVERSION}/
 DISTNAME=	MesaLib-${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Off-Screen Mesa implementation of the OpenGL API
 
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2mod.so:${PORTSDIR}/textproc/py-libxml2
+BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2mod.so:${PORTSDIR}/textproc/py-libxml2 \
+    		${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
 
-USES=		gmake pkgconfig tar:bzip2 libtool
+USES=		bison gmake pkgconfig tar:bzip2 libtool python:2
 USE_LDCONFIG=	yes
-USE_PYTHON=	2
-USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV+=	ac_cv_prog_YACC=${LOCALBASE}/bin/bison \
+		ac_cv_prog_LEX=${LOCALBASE}/bin/flex
 CONFIGURE_ARGS+=--enable-osmesa \
 		--disable-driglx-direct \
 		--disable-gallium-llvm \
@@ -32,6 +34,12 @@ MAKE_JOBS_UNSAFE=yes
 
 INCLUDES=	gl.h gl_mangle.h glext.h glx.h glx_mangle.h \
 		glxext.h osmesa.h wglext.h wmesa.h
+
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000 && ${ARCH} == i386
+BROKEN=		Doesn't build
+.endif
 
 post-patch:
 	${REINPLACE_CMD} \
@@ -49,4 +57,4 @@ do-install:
 	${LN} -s libOSMesa.so.9.0.0 ${STAGEDIR}${PREFIX}/lib/libOSMesa.so
 	${INSTALL_DATA} ${WRKSRC}/src/mesa/drivers/osmesa/osmesa.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/osmesa.pc
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

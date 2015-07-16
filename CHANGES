@@ -10,10 +10,399 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20150701:
+AUTHOR: mat@FreeBSD.org
+
+  Make option target helpers have been added, it allows replacing:
+
+    .include <bsd.port.options.mk>
+
+    post-patch:
+      ${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
+	${WRKSRC}/Configure ${WRKSRC}/hints/freebsd.sh
+    .if ${PORT_OPTIONS:MPTHREAD}
+      ${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%|-lpthread|g;' \
+	${WRKSRC}/hints/freebsd.sh
+    .else
+      ${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%||g;' \
+	${WRKSRC}/hints/freebsd.sh
+    .endif
+
+  with:
+
+    post-patch:
+      ${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
+	${WRKSRC}/Configure ${WRKSRC}/hints/freebsd.sh
+
+    post-patch-PTHREAD-on:
+      ${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%|-lpthread|g;' \
+	${WRKSRC}/hints/freebsd.sh
+
+    post-patch-PTHREAD-off:
+      ${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%||g;' \
+	${WRKSRC}/hints/freebsd.sh
+
+20150622:
+AUTHOR: bapt@FreeBSD.org
+
+  Remove USE_RCORDER, USE_RC_SUBR has been modified to support PREFIX=/usr
+  automatically
+
+20150529:
+AUTHOR: mat@FreeBSD.org
+
+  Extend the multiple distfiles USE_GITHUB framework by allowing it to fetch
+  only additional distfiles, but not the main one.  Set USE_GITHUB=nodefault
+  and use the GH_* variables with groups as usual.
+
+20150528:
+AUTHOR: mat@FreeBSD.org
+  
+  USE_GITHUB can now fetch multiple distfiles.  It uses a grouping feature
+  similar to MASTER_SITES/PATCH_SITES.
+  
+  Some helpful variables are provided: WRKSRC_<group> for putting things in the
+  right place in post-extract, and DISTNAME_<group>/DISTFILE_<group> for use
+  with EXTRACT_ONLY.
+
+  A simple example:
+
+    PORTNAME=     bar
+    PORTVERSION=  1.0
+    USE_GITHUB= yes
+    GH_ACCOUNT= foo
+    GH_PROJECT= ${PORTNAME}-images:images
+
+    post-extract:
+	    @${MV} ${WRKSRC_images} ${WRKSRC}/images
+
+  It will fetch those two distfiles:
+
+    $ make fetch-urlall-list
+    https://codeload.github.com/foo/bar/tar.gz/1.0?dummy=/foo-bar-1.0_GH0.tar.gz
+    https://codeload.github.com/foo/bar-images/tar.gz/1.0?dummy=/foo-bar-images-1.0-1.0.tar.gz
+
+  It will then extract them to ${WRKDIR} in their respectives directories.
+
+20150526:
+AUTHOR: antoine@FreeBSD.org
+
+  PYTHON_REL has been switched from a 3 digits number to a 4 digits number to
+  handle python 2.7.10.  Ports checking for python 2.7.9 should compare
+  PYTHON_REL against 2709 and ports checking for python 2.7.10 should compare
+  PYTHON_REL against 2710.
+
+20150521:
+AUTHOR: mat@FreeBSD.org
+
+  GH_COMMIT support has been removed, see the 20150319 for more informations.
+
+20150419:
+AUTHOR: tijl@FreeBSD.org
+
+  USE_AUTOTOOLS has been deprecated.  It can be replaced with USES=autoreconf
+  and GNU_CONFIGURE=yes.
+
+  Support for USE_AUTOTOOLS=libtoolize has been removed.  It can be replaced
+  with "USES=autoreconf libtool".
+
+20150409:
+AUTHOR: bapt@FreeBSD.org
+
+  Add a new USES=gnustep to handle the GNUstep ports. Now the dependencies on
+  GNUstep libraries is done via the regular LIB_DEPENDS
+
+  USE_GNUSTEP is now a macro that accept many arguments: back, build, gui, back
+  Depending on the feature needed for a given port
+
+  Reuse USES=objc to avoid duplicating code
+
+20150408:
+AUTHOR: bapt@FreeBSD.org
+
+  Add a new USES=waf to handle the waf building system, allowing to factorise
+  code. Plug waf into MAKE_CMD and CONFIGURE_CMD so the regular defined targets
+  can be reused.
+
+  Always define _MAKE_JOBS so that when bsd.port.mk will stop overwritting
+  _MAKE_JOBS when parallel jobs are disabled we can enforce -j1 (which is needed
+  to really disable parallelisation with waf
+
+  WAF_CMD has been created to allow one to override the location of the waf
+  script relatively to WRKSRC
+
+  CONFIGURE_TARGET is by default defined to "configure"
+  ALL_TARGET is by default defined to "build"
+  INSTALL_TARGET is by default defined to "install"
+
+  USES=waf is by default stagedir safe
+
+20150407:
+AUTHOR: bapt@FreeBSD.org
+
+  USE_XZ and USE_BZIP2 are not supported anymore, they have been replaced by
+  USES=tar:bzip2 and tar:xz
+
+20150328:
+AUTHOR: bapt@FreeBSD.org
+
+  New "metaport" USES to take care of predefining correctly the needed
+  macros as expected by meta ports.
+
+20150323:
+AUTHOR: bapt@FreeBSD.org
+
+  Remove "@fc" and "@fontsdir". All fonts should always use @fcfontsdir which
+  Properly takes care of the fonts.dir and fonts.scale cache files as well
+  as ensure to properly update the fontconfig cache
+
+  New "fonts" USES. It defines the default variables needed for fonts and also
+  takes care of the run time dependencies
+
+20150326:
+AUTHOR: bdrewery@FreeBSD.org
+
+  PTHREAD_CLFAGS and PTHREAD_LIBS have been removed.  Please see entry
+  20130207 for more information.
+
+20150319:
+  AUTHOR: bdrewery@FreeBSD.org
+
+  MASTER_SITE GHR (GITHUB_RELEASE) has been removed.  The same functionality
+  can be achieved with just USE_GITHUB/GH_ACCOUNT/GH_PROJECT. GH_TAGNAME
+  defaults to DISTVERSION. If the tag needs to be adjusted then change
+  GH_TAGNAME. No GH_COMMIT is needed.
+
+20150319:
+  AUTHOR: bdrewery@FreeBSD.org
+
+  USE_GITHUB has been updated to make GH_COMMIT optional.  Using this new
+  scheme allows only setting the _tag_ or _commit hash_ in GH_TAGNAME and
+  not having to know the hash for a tag.  This scheme will download a tarball
+  that has a different checksum than before due to a changed directory name
+  for extraction.
+
+  GH_TAGNAME can now be any length of the hash as long as it is unique.  There
+  is no longer a 7-character requirement.
+
+  The following MASTER_SITES are provided to retain the old checksum and
+  directory structure (that require GH_COMMIT):
+    GH -> GHL
+    GITHUB -> GITHUB_LEGACY
+
+20150305:
+  AUTHOR: olivierd@FreeBSD.org
+
+  Dependencies on the Xfce ports have been migrated to USES. Instead
+  of USE_XFCE= configenv, you should use USES= xfce.
+
+20150224:
+  AUTHOR: makc@FreeBSD.org
+
+  New USE_QT4 component has been introduced to reduce buildtime
+  dependencies for Qt 4 ports that use localization support. Instead
+  of USE_QT4=linguist you should now use USE_QT4=linguisttools_build.
+  Conversion of existing ports may require USE_QT4 adjustment for
+  missing components.
+
+20141217:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  Perl now links libperl.so with all .so it builds.  The stage-qa checks have
+  been extended to check that libperl.so is in fact linked with .so in
+  SITE_ARCH and errors out if none of the .so build by a port are linked with
+  it.  It also checks that the rpath and runpath elf attributes are present.
+
+20141130:
+AUTHOR: tijl@FreeBSD.org
+
+  The devel/gettext port has been split up in devel/gettext-runtime which
+  contains runtime libraries such as libintl, and devel/gettext-tools which
+  contains build tools such as msgfmt.  You can use USES=gettext-runtime to
+  set a LIB/BUILD/RUN_DEPENDS on devel/gettext-runtime and USES=gettext-tools
+  to set a BUILD/RUN_DEPENDS on devel/gettext-tools.
+
+  USES=gettext is now the same as "USES=gettext-runtime gettext-tools",
+  meaning a LIB_DEPENDS on devel/gettext-runtime and a BUILD_DEPENDS on
+  devel/gettext-tools.
+
+20141126:
+AUTHOR: mat@FreeBSD.org
+
+  The way Perl modules are installed has changed.  Before, we had
+
+    site_perl :           lib/perl5/site_perl/5.18
+    site_perl/perl_arch : lib/perl5/site_perl/5.18/mach
+    perl_man3 :           lib/perl5/5.18/man/man3
+
+  Now we have :
+
+    site_perl : lib/perl5/site_perl
+    site_arch : lib/perl5/site_perl/mach/5.18
+    perl_man3 : lib/perl5/site_perl/man/man3
+
+  Modules without any .so will be installed at the same place regardless of the
+  Perl version, minimizing the upgrade when the major Perl version is changed.
+  It uses a version dependent directory for modules with compiled bits.
+
+  As PERL_ARCH is no longer needed in plists, it has been removed from
+  PLIST_SUB.
+
+  The USE_PERL5=fixpacklist keyword is removed, the .packlist file is now
+  always removed, as is perllocal.pod.
+
+  The old site_perl and site_perl/arch directories have been kept in the
+  default Perl @INC for all Perl ports, and will be phased out as these old
+  Perl versions expire.
+
+20141122:
+AUTHOR: crees@FreeBSD.org
+
+  Dependencies on the PostgreSQL ports have been migrated
+  to USES. Instead of USE_PGSQL, please use USES=pgsql instead.
+
+    USE_PGSQL=yes becomes USES=pgsql
+    WANT_PGSQL_VER=91+ becomes USES=pgsql:9.1+
+    USE_PGSQL=server becomes USES=pgsql and WANT_PGSQL=server
+
+20141118:
+AUTHOR: mat@FreeBSD.org
+
+  To ease future work, a new SITE_ARCH variable and PLIST_SUB replacement
+  containing SITE_PERL/PERL_ARCH has been added.
+
+20141102:
+AUTHOR: bdrewery@FreeBSD.org
+
+  SSP is now default. This can be disabled with WITHOUT_SSP.
+  SSP_CFLAGS defaults to -fstack-protector.
+  SSP will be used on all amd64 releases. It will only be used on i386
+  releases over 10.0.
+
+20141007:
+AUTHOR: mat@FreeBSD.org
+
+  The @cwd [path] construct in plist files is deprecated.  Instead of adding
+  those lines to the plist:
+
+  @cwd /
+  etc/rc.d/foo
+  var/db/bar
+  @cwd /some
+  @exec mkdir -p %D/nested/dir
+
+  add this:
+
+  /etc/rc.d/foo
+  /var/db/bar
+  @exec mkdir -p /some/nested/dir
+
+20141002:
+AUTHOR: bapt@FreeBSD.org
+
+  New BUNDLE_LIBS knobs to allow a port to tell pkg(8) not to compute provided
+  libraries, this is to be used when a port bundles libraries it doesn't want
+  to expose to other ports.
+
+20141001:
+AUTHOR: tijl@FreeBSD.org
+
+  Support for autoconf213, autoheader213, aclocal14 and automake14 has been
+  removed from USE_AUTOTOOLS.
+
+20140930:
+AUTHOR: bdrewery@FreeBSD.org
+
+  Building ports in a chroot or jail have always required a particular
+  environment be setup. This was not clear though and the ports framework
+  did not enforce it. These requirements are:
+    1. Either a SRC_BASE/sys/sys/param.h, or /usr/include/sys/param.h be
+       present with the __FreeBSD_version_ number of the target system,
+       or OSVERSION be set in the environment. Lack of these would fallback
+       on kern.osreldate before, which is no longer the case.
+    2. UNAME_r,UNAME_v,UNAME_s all must be set for the target system.
+
+  Not having these values in sync will now cause the build to error until it is
+  resolved.
+
+  Setting these in the environment can be done via your own wrapper scripts,
+  or /etc/login.conf (along with cap_mkdb /etc/login.conf) or
+  via /etc/make.conf using appropriate values. Note that OSVERSION is redundant
+  if a proper param.h is in the environment:
+
+    OSVERSION+=     1100036
+    UNAME_ENV+=     OSVERSION=${OSVERSION}
+    UNAME_ENV+=     UNAME_s=FreeBSD
+    UNAME_ENV+=     UNAME_r=11.0-CURRENT
+    UNAME_ENV+=     UNAME_v="${UNAME_s} ${UNAME_r}"
+    .MAKEFLAGS:     ${UNAME_ENV}
+    MAKE_ENV+=      ${UNAME_ENV}
+    CONFIGURE_ENV+= ${UNAME_ENV}
+    SCRIPTS_ENV+=   ${UNAME_ENV}
+
+20140922:
+AUTHOR: bapt@FreeBSD.org
+
+  pkg(8) now handles the directories under PREFIX automatically,
+  and will automatically remove them as needed.
+  A new @dir keyword has been introduced to handle directories specially:
+  - directories with special owner, group, or permissions (access mode)
+  - empty directories
+  - directories out of PREFIX
+  As a consequence @dirrm and @dirrmtry are now considered deprecated.
+
+  Credentials can now be passed in arguments to keywords
+  (the empty keyword means "regular file"):
+  @(user,group,mode) file1
+  @dir(user,group,mode) directory_with_special_owner_or_mode
+
+  PLIST_DIRSTRY is now considered deprecated, use PLIST_DIRS instead.
+
+20140917:
+AUTHOR: tijl@FreeBSD.org
+
+  Support for USE_AUTOTOOLS=libtool, USE_GNOME=ltasneededhack,
+  USE_GNOME=lthack and USE_GNOME=ltverhack has been removed.
+  Ports should use USES=libtool instead.
+
+  Support for USE_AUTOTOOLS=libltdl has been removed.
+  Ports should use LIB_DEPENDS=libltdl.so:${PORTSDIR}/devel/libltdl
+
+20140916:
+AUTHOR: tijl@FreeBSD.org
+
+  The installation of *.la files without some form of USES=libtool in the
+  port Makefile will now result in a stage-qa error.
+  Previously this would only cause a warning.
+
+  The :keepla argument to USES=libtool is no longer special.  It is now
+  only needed if a port uses *.la files at run time and no longer to fix
+  link problems in other ports.
+
+20140901:
+AUTHOR: bapt@FreeBSD.org
+
+  Support for pkg_install has been removed.
+  Note that WITH_PKGNG is now called WITH_PKG (still used to define 'devel')
+  WITH_PKGNG remains for compatibility
+  @stopdaemon support has gone, pkg(8) has a generic mechanism to
+  provide the same function, see HANDLE_RC_SCRIPTS in pkg.conf(5).
+
+20140901:
+AUTHOR: bapt@FreeBSD.org
+
+  Support for NO_STAGE has been removed.
+
+20140825:
+AUTHOR: antoine@FreeBSD.org
+
+  Support for NOPORTDATA has been removed.
+
 20140809:
 AUTHOR: mva@FreeBSD.org
 
-  The Python language bits of the poorts framework have been converted
+  The Python language bits of the ports framework have been converted
   to USES. Instead of USE_PYTHON, please use USES=python instead.
 
     USE_PYTHON=yes becomes USES=python
@@ -36,7 +425,7 @@ AUTHOR: mva@FreeBSD.org
 20140715:
 AUTHOR: bapt@FreeBSD.org
 
-  Only one format is now support in LIB_DEPENDS: lib*.so
+  LIB_DEPENDS only supports one form: lib*.so
 
 20140708:
 AUTHOR: mva@FreeBSD.org

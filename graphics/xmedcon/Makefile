@@ -3,6 +3,7 @@
 
 PORTNAME=	xmedcon
 PORTVERSION=	0.13.0
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/XMedCon-Source/${PORTVERSION}
 
@@ -12,14 +13,16 @@ COMMENT=	Medical image conversion utility and library
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-USES=		pkgconfig tar:bzip2
-USE_AUTOTOOLS=	libtool
+USES=		libtool pkgconfig tar:bzip2
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/xmedcon \
 		--enable-llcheck
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		`pkg-config --libs gtk+-x11-2.0`
 
 OPTIONS_DEFINE=	X11 GLIB ACR_NEMA ANALYZE CONCORDE DICOM DICOM_LJPEG ECAT GIF \
 		INTERFILE INW PNG
@@ -59,7 +62,7 @@ INW_CONFIGURE_ENABLE=	inw
 GIF_CONFIGURE_OFF=	--disable-gif
 
 PNG_CONFIGURE_ENABLE=	png
-PNG_LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
+PNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
 .include <bsd.port.options.mk>
 

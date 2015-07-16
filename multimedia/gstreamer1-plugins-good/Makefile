@@ -12,8 +12,6 @@ GST_PLUGIN_SUFFIX=	-good
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
-CONFIGURE_ARGS+=--enable-monoscope
-
 BUILD_DEPENDS+=	gstreamer1-plugins>=${GST1_VERSION}${GST1_MINIMAL_VERSION}:${PORTSDIR}/multimedia/gstreamer1-plugins
 RUN_DEPENDS+=	gstreamer1-plugins>=${GST1_VERSION}${GST1_MINIMAL_VERSION}:${PORTSDIR}/multimedia/gstreamer1-plugins
 
@@ -27,7 +25,7 @@ NO_GSTREAMER_COMMON=	yes
 
 do-build:
 .for dir in ${GOOD_GST_DIRS}
-	@(cd ${BUILD_WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET})
+	@(cd ${BUILD_WRKSRC}/${dir}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${_MAKE_JOBS} ${MAKE_ARGS} ${ALL_TARGET})
 .endfor
 
 do-install:

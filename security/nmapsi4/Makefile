@@ -3,6 +3,7 @@
 
 PORTNAME=	nmapsi4
 PORTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	GOOGLE_CODE
 
@@ -13,8 +14,7 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${LOCALBASE}/bin/nmap:${PORTSDIR}/security/nmap
 
-USES=		cmake
-USE_XZ=		yes
+USES=		cmake tar:xz
 INSTALLS_ICONS=	yes
 USE_QT4=	gui qmake_build uic_build moc_build rcc_build network \
 		linguist_build webkit dbus

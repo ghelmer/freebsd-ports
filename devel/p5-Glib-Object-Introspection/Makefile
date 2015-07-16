@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Glib-Object-Introspection
-PORTVERSION=	0.023
+PORTVERSION=	0.028
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -30,5 +30,8 @@ USES=		perl5
 # test libraries during build phase, therefore we add them to BUILD_DEPENDS.
 TEST_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/cairo.pc:${PORTSDIR}/graphics/cairo \
 			${LOCALBASE}/libdata/pkgconfig/glib-2.0.pc:${PORTSDIR}/devel/glib20
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Glib/Object/Introspection/Introspection.so
 
 .include <bsd.port.mk>

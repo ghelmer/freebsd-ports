@@ -4,7 +4,7 @@
 PORTNAME=	PerlPoint-Package
 PORTVERSION=	0.45.2
 DISTVERSION=	${PORTVERSION:C/\.(.)$/\1/}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -18,7 +18,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		perl5
 USE_PERL5=	configure
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 PORTDOCS=	# suck all DOCSDIR
 
 post-install:
@@ -27,6 +28,5 @@ post-install:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} utilities ${STAGEDIR}${DOCSDIR})
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/demo && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
-.endif
 
 .include <bsd.port.mk>

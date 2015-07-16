@@ -3,15 +3,15 @@
 
 PORTNAME=	pydance
 PORTVERSION=	1.1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://people.freebsd.org/~sylvio/pydance/ \
 		http://icculus.org/pyddr/ \
 		http://offload1.icculus.org/pyddr/ \
 		http://www.informatik.uni-frankfurt.de/~polzer/distfiles/
-DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.gz ${SONGS}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${SONGS}
 DIST_SUBDIR=	pydance
-EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}.tar.gz
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dancing simulation game similar to the kind in arcades
@@ -19,9 +19,8 @@ COMMENT=	Dancing simulation game similar to the kind in arcades
 BUILD_DEPENDS=	${PYGAME}
 RUN_DEPENDS=	${PYGAME}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_NOEGGINFO=	yes
+USES=		python
+USE_PYTHON=	distutils noegginfo
 SUB_FILES=	pkg-message
 
 SONGS=		forkbomb.ogg forkbomb.dance forkbomb-bg.jpg forkbomb-banner.png \

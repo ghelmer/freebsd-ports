@@ -1,15 +1,16 @@
-# Created by: Kris Kennaway <kris@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	mailx
 PORTVERSION=	12.4
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF/heirloom/heirloom-${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	heirloom-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jamie@dyslexicfish.net
 COMMENT=	BSD mail utility with MIME, IMAP, POP3, SMTP, and S/MIME extensions
+
+LICENSE=	BSD4CLAUSE
 
 OPTIONS_DEFINE=	IPV6 DOCS
 

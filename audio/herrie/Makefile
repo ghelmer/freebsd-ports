@@ -3,7 +3,7 @@
 
 PORTNAME=	herrie
 PORTVERSION=	2.2
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	audio
 MASTER_SITES=	http://herrie.info/distfiles/ \
 		http://www.stack.nl/~ed/projects/herrie/distfiles/
@@ -15,7 +15,7 @@ HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=verbose
 CONFIGURE_ENV+=	PREFIX=${PREFIX}
 
-USES=		tar:bzip2
+USES=		pkgconfig tar:bzip2
 USE_GNOME=	glib20
 
 OPTIONS_DEFINE=	MAD VORBIS SNDFILE MODPLUG HTTP LIBAO XCURSES XSPF NLS
@@ -26,7 +26,7 @@ HTTP_DESC=	HTTP streams and AudioScrobbler support
 LIBAO_DESC=	LibAO support (breaks chroot)
 XCURSES_DESC=	Build XCurses version
 
-MAD_LIB_DEPENDS=	libmad.so:${PORTSDIR}/audio/mad \
+MAD_LIB_DEPENDS=	libmad.so:${PORTSDIR}/audio/libmad \
 			libid3tag.so:${PORTSDIR}/audio/libid3tag
 MAD_CONFIGURE_OFF=no_mp3
 VORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
@@ -34,6 +34,7 @@ VORBIS_CONFIGURE_OFF=no_vorbis
 SNDFILE_LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile
 SNDFILE_CONFIGURE_OFF=no_sndfile
 MODPLUG_LIB_DEPENDS=	libmodplug.so:${PORTSDIR}/audio/libmodplug
+MODPLUG_CFLAGS=		-I${LOCALBASE}/include/libmodplug
 MODPLUG_CONFIGURE_OFF=no_modplug
 HTTP_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 HTTP_CONFIGURE_OFF=no_http no_scrobbler

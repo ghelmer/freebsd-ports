@@ -3,6 +3,7 @@
 
 PORTNAME=	Tree-R
 PORTVERSION=	0.06
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,5 +13,6 @@ COMMENT=	Perl extension for the Rtree data structure and algorithms
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

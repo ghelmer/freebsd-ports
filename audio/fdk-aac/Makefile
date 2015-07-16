@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	fdk-aac
-PORTVERSION=	0.1.3
+PORTVERSION=	0.1.4
 CATEGORIES=	audio
 MASTER_SITES=	SF/opencore-amr/${PORTNAME}
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Port of the Fraunhofer FDK AAC Codec Library
 
 LICENSE=	FRAUNHOFER_FDK_AAC
@@ -20,9 +20,7 @@ NOT_FOR_ARCHS_REASON=	not yet ported to this architecture
 LIBS+=		-lm
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		pathfix
-
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/.libs/libfdk-aac.so.0
+USES=		libtool pathfix
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

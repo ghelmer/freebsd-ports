@@ -3,18 +3,17 @@
 
 PORTNAME=	memcacheq
 PORTVERSION=	0.2.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE} \
-		${MASTER_SITE_GENTOO}
-MASTER_SITE_SUBDIR=	distfiles
+MASTER_SITES=	GOOGLE_CODE \
+		GENTOO
 
 MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Simple queue service over Memcache
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libevent-1.4.so:${PORTSDIR}/devel/libevent
+LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
 
 USE_CSTD=	gnu89
 CFLAGS+=	-I"${BDB_INCLUDE_DIR}"
@@ -33,5 +32,6 @@ PLIST_SUB=	MCQDIR=${MCQDIR}
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${MCQDIR}
 
 .include <bsd.port.mk>

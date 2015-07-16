@@ -2,15 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	kqemu
-PORTVERSION=	1.3.0.p11
+DISTVERSION=	1.3.0pre11
 PORTREVISION=	12
 CATEGORIES=	emulators
 MASTER_SITES=	http://bellard.org/qemu/ \
 		http://qemu.org/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	nox
+		LOCAL/nox
 PKGNAMESUFFIX=	-kmod
-DISTNAME=	${PORTNAME}-${PORTVERSION:C/.p/pre/}
 DIST_SUBDIR=	kqemu
 
 MAINTAINER=	nox@FreeBSD.org
@@ -29,14 +27,13 @@ USE_RC_SUBR=	kqemu
 
 USES=		kmod gmake uidfix
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 PORTDOCS=	kqemu-doc.html kqemu-tech.html
-PLIST_FILES=	"include/kqemu/kqemu.h"
-PLIST_FILES+=	"@dirrm include/kqemu"
-PLIST_FILES+=	"@cwd /"
-PLIST_FILES+=	${KMODDIR:C,^/,,}/kqemu.ko
-PLIST_FILES+=	"@cwd ${PREFIX}"
+PLIST_FILES=	include/kqemu/kqemu.h
+PLIST_FILES+=	${KMODDIR}/kqemu.ko
 
 MAKEFILE=	Makefile.freebsd
 

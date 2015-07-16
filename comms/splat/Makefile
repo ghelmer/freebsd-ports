@@ -3,15 +3,14 @@
 PORTNAME=	splat
 PORTVERSION=	1.4.0
 CATEGORIES=	comms hamradio
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	apps/ham
+MASTER_SITES=	SUNSITE/apps/ham
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Used in calculating path losses, useful to ham radio and others
 
 LICENSE=	GPLv2
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 PORTDOCS=	README README2 CHANGES
 
 OPTIONS_SINGLE=	SRM

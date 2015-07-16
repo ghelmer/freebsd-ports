@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mirmon
-PORTVERSION=	2.9
+PORTVERSION=	2.10
 CATEGORIES=	misc
 MASTER_SITES=	http://www.staff.science.uu.nl/~penni101/mirmon/
 
@@ -13,19 +13,16 @@ NO_BUILD=	yes
 USES=		perl5
 USE_PERL5=	run
 
+USES=		shebangfix
+SHEBANG_FILES=	${WRKSRC}/mirmon ${WRKSRC}/probe
+
 SUB_FILES=	pkg-message
-SUB_LIST=	PREFIX=${PREFIX}
 
 PLIST_FILES=	bin/mirmon bin/probe
-MAN1=		mirmon.1
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ! ${PORT_OPTIONS:MDOCS}
 PORTDOCS=	*
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,/etc,${LOCALBASE}/etc," \
@@ -40,14 +37,7 @@ do-install:
 	${CP} -R ${WRKSRC}/countries.list ${WRKSRC}/icons ${STAGEDIR}${DATADIR}
 	@${FIND} ${STAGEDIR}${DATADIR} ! -type d | \
 		${SED} 's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
-	@${FIND} ${STAGEDIR}${DATADIR} -type d | ${SORT} -r | \
-		${SED} 's,^${STAGEDIR}${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
-.if ! ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${CP} ${WRKSRC}/mirmon.html ${STAGEDIR}${DOCSDIR}
-.endif
-
-post-install:
-	${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

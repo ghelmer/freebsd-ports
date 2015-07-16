@@ -3,6 +3,7 @@
 
 PORTNAME=	openrm
 PORTVERSION=	1.6.0.2
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-devel/${PORTVERSION:R} \
 		SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION:R}:demo
@@ -12,9 +13,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DEMO_DISTFILE:S/$/:demo/}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Development environment used to build 2D/3D/stereo graphics
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
-
-USES=		shebangfix perl5
+USES=		jpeg perl5 shebangfix
 SHEBANG_FILES=	doc/*.pl
 USE_GL=		glu
 USE_XORG=	xmu
@@ -58,7 +57,6 @@ post-patch:
 		'/^RM/s|/usr|${PREFIX}| ; \
 		 /^OPENGL/s|/usr|${LOCALBASE}| ; \
 		 /^X11/s|/usr/X11R6|${LOCALBASE}| ; \
-		 /^X11/s|-lpthread|${PTHREAD_LIBS}| ; \
 		 /^OPT/s|-g|| ; \
 		 /^ARCH/s|-m32|| ; \
 		 /^JPEG/s|/usr|${LOCALBASE}|' ${DEMO_WRKSRC}/makeinclude

@@ -3,7 +3,7 @@
 
 PORTNAME=	vice
 PORTVERSION=	2.4
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	emulators
 MASTER_SITES=	http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/ \
 		ftp://ftp.zimmers.net/pub/cbm/crossplatform/emulators/VICE/
@@ -17,14 +17,14 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf \
 		mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
 		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libgif.so:${PORTSDIR}/graphics/giflib \
 		libmp3lame.so:${PORTSDIR}/audio/lame \
 		libavcodec.so:${PORTSDIR}/multimedia/ffmpeg
 
 RESTRICTED=	ROMs are copyrighted by Commodore Business Machines
 
-USES=		iconv:patch pkgconfig gmake makeinfo
+USES=		iconv:patch gmake pkgconfig makeinfo
 USE_XORG=	xpm ice sm xext xv xt x11 xmu
 USE_XORG+=	xrender xinerama xi xrandr xcursor xcomposite xdamage xfixes
 GNU_CONFIGURE=	yes
@@ -64,7 +64,7 @@ FIX_XAW=	src/arch/unix/x11/xaw/about.c \
 		src/arch/unix/x11/xaw/widgets/MultiListP.h \
 		src/arch/unix/x11/xaw/widgets/ScrList.c \
 
-OPTIONS_DEFINE=	SDL ASOUND PULSE
+OPTIONS_DEFINE=	SDL ASOUND PULSE DOCS
 OPTIONS_SINGLE= GUI
 OPTIONS_SINGLE_GUI=	GNOMEUI XAW3D XAW
 OPTIONS_DEFAULT?=	GNOMEUI SDL

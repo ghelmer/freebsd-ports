@@ -5,12 +5,11 @@ PORTNAME=	foiltex
 PORTVERSION=	2.1.4b
 PORTREVISION=	5
 CATEGORIES=	textproc
-MASTER_SITES=	${MASTER_SITE_TEX_CTAN}
-MASTER_SITE_SUBDIR=	macros/latex/contrib/${PORTNAME}
+MASTER_SITES=	TEX_CTAN/macros/latex/contrib/${PORTNAME}
 DISTFILES=	foiltex.dtx foiltex.ins
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A collection of LaTeX files for making foils
+COMMENT=	Collection of LaTeX files for making foils
 
 NO_CDROM=	Redistribution on a not-for-profit basis only
 
@@ -28,7 +27,6 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 PORTDOCS=	foiltex.dtx foiltex.dvi
 PORTEXAMPLES=	sampfoil.tex
 PLIST_FILES=	${FOIL_FILES:S,^,${FOIL_DIR}/,}
-PLIST_DIRS=	${FOIL_DIR}
 
 do-extract:
 	${MKDIR} ${WRKDIR}

@@ -2,29 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	pinta
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 CATEGORIES=	graphics
-MASTER_SITES=	http://cloud.github.com/downloads/PintaProject/Pinta/
+MASTER_SITES=	https://github.com/PintaProject/Pinta/releases/download/1.5/
 
-MAINTAINER=	mono@FreeBSD.org
+MAINTAINER=	david.vionnet@vmailbox.org
 COMMENT=	Simple Gtk\# Paint Program
 
 LICENSE=	MIT
 
+BROKEN=		Fails to build with mono 4
+
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/mono-addins.pc:${PORTSDIR}/devel/mono-addins
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-BROKEN=		Does not build
-GNU_CONFIGURE=	yes
+USES=		desktop-file-utils gmake mono pkgconfig
+HAS_CONFIGURE=	yes
+CONFIGURE_ARGS+=	--mandir=${PREFIX}/man
+
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
+
+NLS_USES=	gettext
+NLS_CONFIGURE_ENABLE=	nls
+
 USE_GNOME=	gtksharp20
 INSTALLS_ICONS=	yes
-USES=		desktop-file-utils gettext gmake mono pkgconfig
-
-MAN1=		pinta.1
-MANCOMPRESSED=	yes
-
-NO_STAGE=	yes
-post-install:
-	-@update-desktop-database
 
 .include <bsd.port.mk>

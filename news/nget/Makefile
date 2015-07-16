@@ -12,8 +12,11 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Auto-resuming command line nntp file grabber
 
 USES=		gmake
-USE_GCC=	any
+# Fails to build with GCC 4.9, cf. PR 196913.
+USE_GCC=	4.8
 GNU_CONFIGURE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	${LN} -s nget-${PORTVERSION} ${WRKDIR}/${DISTNAME}

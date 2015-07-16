@@ -10,11 +10,11 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Comprehensive html/website development environment
 
-LIB_DEPENDS=	libtidy-0.99.so:${PORTSDIR}/www/tidy-lib \
+LIB_DEPENDS=	libtidy.so:${PORTSDIR}/www/tidy-lib \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
 USE_GNOME=	libxml2 libxslt
-USE_KDE4=	kdelibs pimlibs kdeprefix kdehier automoc4
+USE_KDE4=	kdelibs pimlibs kdeprefix automoc4
 USES=		cmake:outsource tar:xz
 USE_QT4=	dbus porting_build \
 		qmake_build moc_build rcc_build uic_build uic3_build

@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	pypy
-DISTVERSION=	2.2.1
+DISTVERSION=	2.6.0
 PORTREVISION=	1
 CATEGORIES=	lang python
-MASTER_SITES=	http://cdn.bitbucket.org/pypy/pypy/downloads/ https://bitbucket.org/pypy/pypy/downloads/
-DISTNAME=	${PORTNAME}-${DISTVERSION}-src
+MASTER_SITES=	https://bitbucket.org/pypy/pypy/get/ LOCAL/dbn/pypy
+DISTNAME=	release-${DISTVERSION}
+DIST_SUBDIR=	pypy
 
 MAINTAINER=	dbn@FreeBSD.org
 COMMENT=	Fast, compliant implementation of the Python language
@@ -16,7 +17,8 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libffi.so:${PORTSDIR}/devel/libffi \
-		libsqlite3.so:${PORTSDIR}/databases/sqlite3
+		libsqlite3.so:${PORTSDIR}/databases/sqlite3 \
+		libgdbm.so:${PORTSDIR}/databases/gdbm
 
 PYTHON_DESC=	Use Python-2.7 to translate (slowest)
 PYPY_DESC=	Use PyPy to translate (fastest, highest memory usage)
@@ -35,15 +37,18 @@ OPTIONS_SINGLE_TRANS=	PYTHON PYPY PYPY_MINMEM
 OPTIONS_DEFAULT+=	PYPY_MINMEM
 .endif
 
-CONFLICTS_INSTALL=	pypy-devel-[0-9]*
+# Disable CFFI compilation and shared libraries temporarily
+PLIST_SUB+=	CFFI="@comment "
+
+CONFLICTS_INSTALL=	pypy-[0-9]*
 
 ALL_TARGET=	${PYPY_NAMES}
 BUILD_WRKSRC=	${WRKDIR}
-DATE=		20130810
 USES=		compiler:c11 gettext iconv tar:bzip2
 MAKEFILE=	${FILESDIR}/Makefile
 PKGINSTALL=	${WRKDIR}/pkg-install
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
+WRKSRC=		${WRKDIR}/pypy-pypy-295ee98b6928
 
 PYPY_VER=	${DISTVERSION:C|([0-9])\.([0-9]).*|\1.\2|}
 PYTHON_IMPL_VER=	2.7
@@ -59,9 +64,6 @@ PLIST_SUB+=	PYPY_LIBDIR=${PYPY_LIBDIR} \
 MAKE_ENV+=	DISTVERSION=${DISTVERSION} PYTHON_CMD=${PYTHON_CMD} \
 		WRKSRC=${WRKSRC} PYPY_LOCALBASE=${LOCALBASE}
 
-LOCALBASE_REFIX=	\
-		lib_pypy/_sqlite3.py
-
 .include <bsd.port.options.mk>
 .include "${MASTERDIR}/files/bsd.pypy.inst.mk"
 
@@ -70,7 +72,7 @@ PYTHON_CMD?=	${LOCALBASE}/bin/pypy
 .elif ${PORT_OPTIONS:MPYPY_MINMEM}
 PYTHON_CMD?=	"${SETENV} PYPY_GC_MAX_DELTA=200MB ${LOCALBASE}/bin/pypy --jit loop_longevity=300"
 .else
-USE_PYTHON_BUILD=	2
+USES+=		python:2,build
 .endif
 
 # List of PyPy instances
@@ -145,26 +147,27 @@ PYPY_${inst}_OPT=	2
 #
 .if ${PYPY_ARCH:M*64}
 .  if ${PORT_OPTIONS:MPYPY}
-# 64bit + pypy = 5.5 GiB
-PYPY_TRANSLATION_MEMORY=	5803684
+# 64bit + pypy = 5.1 GiB
+PYPY_TRANSLATION_MEMORY=	5347737
 .  elif ${PORT_OPTIONS:MPYPY_MINMEM}
-# 64bit + pypy (minimum memory) = 3.3 GiB
-PYPY_TRANSLATION_MEMORY=	3452308
+# 64bit + pypy (minimum memory) = 3.2 GiB
+PYPY_TRANSLATION_MEMORY=	3355443
 .  else
-# 64bit + python = 4.5 GiB
-PYPY_TRANSLATION_MEMORY=	4716500
+# 64bit + python = 4.8 GiB
+PYPY_TRANSLATION_MEMORY=	5033164
 .  endif
 # 64bit system += 366 MiB
 PYPY_MINIMUM_MEMORY=	$$((${PYPY_TRANSLATION_MEMORY} + 374784))
 .else
 .  if ${PORT_OPTIONS:MPYPY}
-# 32bit + pypy = 2.3GiB
-PYPY_TRANSLATION_MEMORY=	2438856
+# 32bit + pypy = 2.2GiB
+PYPY_TRANSLATION_MEMORY=	2306867
 .  elif ${PORT_OPTIONS:MPYPY_MINMEM}
-# 32bit + pypy (minimum memory) = 2.0GiB
-PYPY_TRANSLATION_MEMORY=	2120844
-# 32bit + python = 2.2 GiB
-PYPY_TRANSLATION_MEMORY=	2286764
+# 32bit + pypy (minimum memory) = 1.9GiB
+PYPY_TRANSLATION_MEMORY=	1992294
+.  else
+# 32bit + python = 2.5 GiB
+PYPY_TRANSLATION_MEMORY=	2558588
 .  endif
 # 32bit system += 168 MiB
 PYPY_MINIMUM_MEMORY=	$$((${PYPY_TRANSLATION_MEMORY} + 171787))
@@ -228,11 +231,6 @@ post-extract:
 .endfor
 	${LN} -s ${WRKDIR}/lib ${WRKSRC}/lib
 
-post-patch:
-.for file in ${LOCALBASE_REFIX}
-	${REINPLACE_CMD} 's|/usr/local|${LOCALBASE}|g' ${WRKSRC}/${file}
-.endfor
-
 do-configure:
 	${SED} -e 's|%%PREFIX%%|${PREFIX}|g' \
 		-e 's|%%PYPY_NAMES%%|${PYPY_NAMES}|g' \
@@ -242,11 +240,9 @@ do-configure:
 	${CP} ${WRKDIR}/use.pypy ${PKGDEINSTALL}
 
 post-build:
-# UPDATING: check pypy/tool/release/package.py for list of cffi modules
-.for mod in _sqlite3 _curses syslog
-	${WRKDIR}/${PYPY_PRIMARY} -c 'import ${mod}'
-.endfor
-	${STRIP_CMD} ${WRKDIR}/${PYPY_LIBDIR}/lib_pypy/__pycache__/_cffi__*.pypy-${PYPY_VER:C/\.//}.so
+# Disable CFFI compilation and shared libraries temporarily
+#	${SETENV} ${MAKE_ENV} LD_LIBRARY_PATH=${WRKDIR}:${LD_LIBRARY_PATH} ${WRKDIR}/${PYPY_PRIMARY} ${FILESDIR}/compile_cffi.py 
+#	${FIND} ${WRKDIR}/${PYPY_LIBDIR}/lib_pypy/ -name "*.pypy-${PYPY_VER:C/\.//}.so" | ${XARGS} ${STRIP_CMD}
 .for _path in ${PYPYDIRS}
 	-${FIND} ${WRKDIR}/${_path:C/.*://}/ -type d | \
 		${XARGS} -n1 ${WRKDIR}/${PYPY_PRIMARY} -m compileall -fl
@@ -261,7 +257,7 @@ post-build:
 
 do-install:
 .for _path in ${PYPYDIRS}
-	${RM} -f ${STAGEDIR}${PREFIX}/${_path:C/.*://}
+	${RM} -r ${STAGEDIR}${PREFIX}/${_path:C/.*://}
 	(cd ${WRKSRC}/${_path:C/:.*//}; ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${_path:C/.*://})
 .endfor
 .for name in ${PYPY_NAMES:O}
@@ -269,6 +265,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKDIR}/${name} ${STAGEDIR}${PREFIX}/bin/${name}-${PYPY_VER}
 	${ECHO} bin/${name}-${PYPY_VER} >> ${TMPPLIST}
 .endfor
+	${INSTALL_LIB} ${WRKDIR}/libpypy-c.so ${STAGEDIR}${PREFIX}/lib/
 
 test: patch
 .for inst in ${PYPY_INST}
@@ -277,27 +274,18 @@ test: patch
 .endfor
 
 pkg-plist: build
-	${RM} -f ${WRKDIR}/.plist-files-gen ${WRKDIR}/.plist-dirs-gen
+	${RM} ${WRKDIR}/.plist-files-gen ${WRKDIR}/.plist-dirs-gen
 .for path in ${PYPYDIRS}
 	cd ${WRKDIR} && ${FIND} ${path:C/.*://}/ -type f >> ${WRKDIR}/.plist-files-gen
-	cd ${WRKDIR} && ${FIND} ${path:C/.*://}/ -type d | ${SED} 's|/$$||' >> ${WRKDIR}/.plist-dirs-gen
 .endfor
+	${ECHO} lib/libpypy-c.so >> ${WRKDIR}/.plist-files-gen
 	${REINPLACE_CMD} -e 's|^${PYPY_LIBDIR}|%%PYPY_LIBDIR%%|g' \
 		-e 's|^${PYPY_INCLUDEDIR}|%%PYPY_INCLUDEDIR%%|g' \
 		-e 's|${PYPY_ARCH}|%%PYPY_ARCH%%|g' \
 		-e 's|_${PYPY_BITS}_|_%%PYPY_BITS%%_|g' \
 		-e 's|-${PYPY_VER:C/\.//}\.|-%%PYPY_VER%%.|g' \
 			${WRKDIR}/.plist-files-gen
-	${REINPLACE_CMD} -e 's|^${PYPY_LIBDIR}|@dirrm %%PYPY_LIBDIR%%|g' \
-		-e 's|^${PYPY_INCLUDEDIR}|@dirrm %%PYPY_INCLUDEDIR%%|g' \
-			${WRKDIR}/.plist-dirs-gen
 	${SORT} ${WRKDIR}/.plist-files-gen > ${WRKDIR}/pkg-plist
-	${SORT} -r ${WRKDIR}/.plist-dirs-gen >> ${WRKDIR}/pkg-plist
-	${REINPLACE_CMD} \
-		-e 's|^@dirrm %%PYPY_LIBDIR%%/site-packages$$|@dirrmtry %%PYPY_LIBDIR%%/site-packages|' \
-		-e 's|^@dirrm %%PYPY_LIBDIR%%$$|@dirrmtry %%PYPY_LIBDIR%%|' \
-		-e 's|^@dirrm %%PYPY_INCLUDEDIR%%$$|@dirrmtry %%PYPY_INCLUDEDIR%%|' \
-			${WRKDIR}/pkg-plist
 	${CP} ${WRKDIR}/pkg-plist ${.CURDIR}/pkg-plist
 
 .include <bsd.port.mk>

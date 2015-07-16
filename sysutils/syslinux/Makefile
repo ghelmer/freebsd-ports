@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	syslinux
-PORTVERSION=	6.02
+PORTVERSION=	6.03
 CATEGORIES=	sysutils
 MASTER_SITES=	KERNEL_ORG/linux/utils/boot/syslinux
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	uffe@uffe.org
 COMMENT=	Boot loader for the Linux operating system
 
 LICENSE=	GPLv2
@@ -20,9 +20,10 @@ USE_PERL5=	build
 MAKE_ARGS=	CC="${CC}"
 ALL_TARGET=	bios
 
-#.include <bsd.port.pre.mk>
+PLIST_FILES=	bin/syslinux \
+		man/man1/syslinux.1.gz
+PORTDATA=	*
 
-# convert elf_i386 to elf_i386_fbsd
 pre-patch:
 	@(cd ${WRKSRC}; 						\
 	${FIND} . -type f -exec ${GREP} -le 'elf_i386' \{\} \; | 	\
@@ -33,11 +34,11 @@ post-patch:
 		's|^UMAKEDEPS|#UMAKEDEPS|' ${WRKSRC}/mk/syslinux.mk
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/bios/mtools/syslinux ${STAGEDIR}${PREFIX}/bin
-	@${INSTALL_MAN} ${WRKSRC}/man/syslinux.1 ${STAGEDIR}${MANPREFIX}/man/man1
-	@${FIND} -d ${WRKSRC} -type d -empty -delete
-	@${MKDIR} ${STAGEDIR}${DATADIR}
-	@(cd ${WRKSRC} && ${COPYTREE_SHARE} "bios efi32 efi64" ${STAGEDIR}${DATADIR})
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/share/syslinux/bios/mtools/syslinux
+	${STRIP_CMD} ${WRKSRC}/bios/mtools/syslinux
+	${INSTALL_PROGRAM} ${WRKSRC}/bios/mtools/syslinux ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_MAN} ${WRKSRC}/man/syslinux.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${FIND} -d ${WRKSRC} -type d -empty -delete
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "bios efi32 efi64" ${STAGEDIR}${DATADIR})
 
 .include <bsd.port.mk>

@@ -26,7 +26,7 @@ BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
 LICENSE_FILE=	doc/license/MLton-LICENSE
 
-OPTIONS_DEFINE=	SMLNJ MINGW32
+OPTIONS_DEFINE=	SMLNJ MINGW32 DOCS
 SMLNJ_DESC=	Bootstrap with SML/NJ (can take >15 hours)
 MINGW32_DESC=	Add the mingw32 target (requires wine)
 
@@ -48,11 +48,11 @@ ALL_TARGET=	all-no-docs
 SRC_DIST=	${DISTNAME}.src.tgz
 
 .if ${PORT_OPTIONS:MSMLNJ}
-BROKEN=	${DISTNAME}-${PORTVERSION} does not bootstrap properly with sml-nj
+BROKEN=	${DISTNAME}-${PORTVERSION} does not bootstrap properly with smlnj
 .endif
 
 .if ${PORT_OPTIONS:MSMLNJ}
-BUILD_DEPENDS+=	smlnj-devel>=110.65:${PORTSDIR}/lang/sml-nj-devel
+BUILD_DEPENDS+=	smlnj>=110.65:${PORTSDIR}/lang/smlnj
 BOOT_DIST=
 MAKE_ENV+=	SMLNJ_DEVEL=yes
 .if ! ${PORT_OPTIONS:MDOCS}

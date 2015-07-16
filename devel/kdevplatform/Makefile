@@ -3,10 +3,8 @@
 
 PORTNAME=	kdevplatform
 PORTVERSION=	${KDEVELOP_VERSION:S/4./1./}
-PORTREVISION=	3
 CATEGORIES=	devel kde
-MASTER_SITES=	${MASTER_SITE_KDE}
-MASTER_SITE_SUBDIR=	${KDEVELOP_BRANCH}/kdevelop/${KDEVELOP_VERSION}/src
+MASTER_SITES=	KDE/${KDEVELOP_BRANCH}/kdevelop/${KDEVELOP_VERSION}/src
 DIST_SUBDIR=	KDE/kdevelop/${KDEVELOP_VERSION}
 
 MAINTAINER=	kde@FreeBSD.org
@@ -17,18 +15,17 @@ LIB_DEPENDS=	libsvn_client-1.so:${PORTSDIR}/devel/subversion \
 		libqjson.so:${PORTSDIR}/devel/qjson \
 		libgrantlee_gui.so:${PORTSDIR}/devel/grantlee
 
-USE_KDE4=	kate_run kdehier kdelibs kdeprefix automoc4
+USE_KDE4=	kate_run kdelibs kdeprefix automoc4
 USE_QT4=	qmake_build moc_build uic_build rcc_build \
 		corelib designer_build gui webkit
-USE_XZ=		yes
-USES=		cmake shebangfix
+USES=		cmake:outsource compiler:c++11-lib shebangfix tar:xz
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	util/kdev_format_source util/kdevplatform_shell_environment.sh
 
-PLIST_SUB+=	SHLIB_VER=7.0.0 \
-		SHLIB_SHVER=7 \
-		GRANTLEE_VER=0.4
+PLIST_SUB+=	SHLIB_VER=8.0.0 \
+		SHLIB_SHVER=8 \
+		GRANTLEE_VER=0.5
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

@@ -182,30 +182,30 @@ include/lmms/transformable_auto_model.h
 include/lmms/update_event.h
 include/lmms/visualization_widget.h
 include/lmms/volume.h
-lib64/lmms/RemoteZynAddSubFx
-lib64/lmms/libZynAddSubFxCore.so
-lib64/lmms/libaudiofileprocessor.so
-lib64/lmms/libbassbooster.so
-lib64/lmms/libbitinvader.so
-lib64/lmms/libflpimport.so
-lib64/lmms/libhydrogenimport.so
-lib64/lmms/libkicker.so
-lib64/lmms/libladspabrowser.so
-lib64/lmms/libladspaeffect.so
-lib64/lmms/liblb302.so
-lib64/lmms/libmidiimport.so
-lib64/lmms/liborganic.so
-lib64/lmms/libpapu.so
-lib64/lmms/libpatman.so
-lib64/lmms/libpeakcontrollereffect.so
-lib64/lmms/libsf2player.so
-lib64/lmms/libsid.so
-lib64/lmms/libspectrumanalyzer.so
-lib64/lmms/libstereoenhancer.so
-lib64/lmms/libstereomatrix.so
-lib64/lmms/libtripleoscillator.so
-lib64/lmms/libvibedstrings.so
-lib64/lmms/libzynaddsubfx.so
+lib/lmms/RemoteZynAddSubFx
+lib/lmms/libZynAddSubFxCore.so
+lib/lmms/libaudiofileprocessor.so
+lib/lmms/libbassbooster.so
+lib/lmms/libbitinvader.so
+lib/lmms/libflpimport.so
+lib/lmms/libhydrogenimport.so
+lib/lmms/libkicker.so
+lib/lmms/libladspabrowser.so
+lib/lmms/libladspaeffect.so
+lib/lmms/liblb302.so
+lib/lmms/libmidiimport.so
+lib/lmms/liborganic.so
+lib/lmms/libpapu.so
+lib/lmms/libpatman.so
+lib/lmms/libpeakcontrollereffect.so
+lib/lmms/libsf2player.so
+lib/lmms/libsid.so
+lib/lmms/libspectrumanalyzer.so
+lib/lmms/libstereoenhancer.so
+lib/lmms/libstereomatrix.so
+lib/lmms/libtripleoscillator.so
+lib/lmms/libvibedstrings.so
+lib/lmms/libzynaddsubfx.so
 man/man1/lmms.1.gz
 share/applications/lmms.desktop
 %%DATADIR%%/backgrounds/lmms_tile.png
@@ -1980,86 +1980,3 @@ share/applications/lmms.desktop
 share/menu/lmms
 share/mime/packages/lmms.xml
 share/pixmaps/lmms.png
-@dirrmtry share/mime/packages
-@dirrmtry share/menu
-@dirrm %%DATADIR%%/themes/default
-@dirrm %%DATADIR%%/themes
-@dirrm %%DATADIR%%/samples/stringsnpads
-@dirrm %%DATADIR%%/samples/shapes
-@dirrm %%DATADIR%%/samples/misc
-@dirrm %%DATADIR%%/samples/latin
-@dirrm %%DATADIR%%/samples/instruments
-@dirrm %%DATADIR%%/samples/effects
-@dirrm %%DATADIR%%/samples/drumsynth/tr909
-@dirrm %%DATADIR%%/samples/drumsynth/tr808
-@dirrm %%DATADIR%%/samples/drumsynth/tr77
-@dirrm %%DATADIR%%/samples/drumsynth/tr606
-@dirrm %%DATADIR%%/samples/drumsynth/r_n_b
-@dirrm %%DATADIR%%/samples/drumsynth/misc_synth
-@dirrm %%DATADIR%%/samples/drumsynth/misc_perc
-@dirrm %%DATADIR%%/samples/drumsynth/misc_hats
-@dirrm %%DATADIR%%/samples/drumsynth/misc_fx
-@dirrm %%DATADIR%%/samples/drumsynth/misc_electro
-@dirrm %%DATADIR%%/samples/drumsynth/misc_claps
-@dirrm %%DATADIR%%/samples/drumsynth/misc_bass
-@dirrm %%DATADIR%%/samples/drumsynth/misc
-@dirrm %%DATADIR%%/samples/drumsynth/magnetboy
-@dirrm %%DATADIR%%/samples/drumsynth/linn
-@dirrm %%DATADIR%%/samples/drumsynth/latin
-@dirrm %%DATADIR%%/samples/drumsynth/jorgensohn
-@dirrm %%DATADIR%%/samples/drumsynth/instrument
-@dirrm %%DATADIR%%/samples/drumsynth/ferraro
-@dirrm %%DATADIR%%/samples/drumsynth/farfisa
-@dirrm %%DATADIR%%/samples/drumsynth/electro
-@dirrm %%DATADIR%%/samples/drumsynth/effects
-@dirrm %%DATADIR%%/samples/drumsynth/cr8000
-@dirrm %%DATADIR%%/samples/drumsynth/cr78
-@dirrm %%DATADIR%%/samples/drumsynth/acoustic
-@dirrm %%DATADIR%%/samples/drumsynth
-@dirrm %%DATADIR%%/samples/drums
-@dirrm %%DATADIR%%/samples/beats
-@dirrm %%DATADIR%%/samples/bassloopes
-@dirrm %%DATADIR%%/samples/basses
-@dirrm %%DATADIR%%/samples
-@dirrm %%DATADIR%%/projects/tutorials
-@dirrm %%DATADIR%%/projects/Shorties
-@dirrm %%DATADIR%%/projects/OldStuff
-@dirrm %%DATADIR%%/projects/Demos
-@dirrm %%DATADIR%%/projects/Covers
-@dirrm %%DATADIR%%/projects/CoolSongs
-@dirrm %%DATADIR%%/projects
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/SynthPiano
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Synth
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Strings
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Splited
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Rhodes
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/ReedAndWind
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Plucked
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Pads
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Organ
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Noises
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Misc
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Guitar
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Fantasy
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Dual
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Drums
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Collections/WillGodfrey
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Collections
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/ChoirAndVoice
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Brass
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Bass
-@dirrm %%DATADIR%%/presets/ZynAddSubFX/Arpeggios
-@dirrm %%DATADIR%%/presets/ZynAddSubFX
-@dirrm %%DATADIR%%/presets/Vibed
-@dirrm %%DATADIR%%/presets/TripleOscillator
-@dirrm %%DATADIR%%/presets/Organic
-@dirrm %%DATADIR%%/presets/LB302
-@dirrm %%DATADIR%%/presets/BitInvader
-@dirrm %%DATADIR%%/presets/AudioFileProcessor
-@dirrm %%DATADIR%%/presets
-@dirrm %%DATADIR%%/locale
-@dirrm %%DATADIR%%/backgrounds
-@dirrm %%DATADIR%%
-@dirrm include/lmms
-@dirrm lib64/lmms
-@dirrmtry lib64

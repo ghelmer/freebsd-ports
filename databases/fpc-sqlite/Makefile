@@ -1,11 +1,11 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.rog>
 # $FreeBSD$
 
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-sqlite
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	freebsd-fpc@FreeBSD.org
 COMMENT=	Free Pascal interface to SQLite
 
 USE_FPC=	yes

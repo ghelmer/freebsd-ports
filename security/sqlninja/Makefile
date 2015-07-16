@@ -5,12 +5,12 @@ PORTNAME=	sqlninja
 DISTVERSION=	0.2.6
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sql Server exploit toolkit
 
-LICENSE=	GPLv2
+LICENSE=	GPLv3 # or later
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	p5-IO-Socket-SSL>=0:${PORTSDIR}/security/p5-IO-Socket-SSL \
 		p5-Net-DNS>=0:${PORTSDIR}/dns/p5-Net-DNS \
@@ -18,8 +18,10 @@ RUN_DEPENDS=	p5-IO-Socket-SSL>=0:${PORTSDIR}/security/p5-IO-Socket-SSL \
 		p5-Net-RawIP>=0:${PORTSDIR}/net/p5-Net-RawIP \
 		p5-NetPacket>=0:${PORTSDIR}/net/p5-NetPacket
 
-USES=		perl5
+USES=		perl5 tar:tgz
 NO_BUILD=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
@@ -34,11 +36,9 @@ do-install:
 .	for i in churrasco.exe dnstun.exe nc.exe
 		${INSTALL_SCRIPT} ${WRKSRC}/apps/${i} ${STAGEDIR}${ETCDIR}/apps
 .	endfor
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .	for i in sqlninja-howto.html sqlninja.conf.example
 		${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .	endfor
-.endif
 
 .include <bsd.port.mk>

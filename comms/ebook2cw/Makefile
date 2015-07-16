@@ -4,16 +4,17 @@ PORTNAME=	ebook2cw
 PORTVERSION=	0.8.2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://fkurz.net/ham/ebook2cw/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	db
+		LOCAL/db
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Convert text files into cw as an mp3 or ogg file
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libmp3lame.so:${PORTSDIR}/audio/lame \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|'g \

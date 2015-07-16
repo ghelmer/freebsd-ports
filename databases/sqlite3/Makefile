@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	sqlite3
-PORTVERSION=	3.8.5
-PORTREVISION=	1
+PORTVERSION=	3.8.10.2
 CATEGORIES=	databases
-MASTER_SITES=	http://www.sqlite.org/2014/ http://www2.sqlite.org/2014/ http://www3.sqlite.org/2014/
-DISTNAME=	sqlite-autoconf-3080500
+MASTER_SITES=	http://www.sqlite.org/2015/ http://www2.sqlite.org/2015/ http://www3.sqlite.org/2015/
+DISTNAME=	sqlite-autoconf-${PORTVERSION:S|.10|10|:S|.|0|g}
 
 MAINTAINER=	pavelivolkov@gmail.com
 COMMENT=	SQL database engine in a C library
@@ -18,7 +17,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS=	sqlite34-[0-9]* sqlcipher-[0-9]*
 
-USES=		pathfix libtool
+USES=		pathfix libtool ncurses
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
@@ -27,7 +26,8 @@ MAKE_JOBS_UNSAFE=	yes
 
 # Compilation Options For SQLite http://www.sqlite.org/compile.html
 OPTIONS_DEFINE=	FTS4 UPD_DEL_LIMIT URI URI_AUTHORITY SOUNDEX METADATA \
-		DIRECT_READ MEMMAN SECURE_DELETE UNLOCK_NOTIFY THREADS EXTENSION
+		DIRECT_READ MEMMAN SECURE_DELETE UNLOCK_NOTIFY THREADS \
+		EXTENSION READLINE ARMOR STMT DBSTAT
 OPTIONS_SINGLE=	RAMT
 OPTIONS_RADIO=	STAT
 OPTIONS_GROUP=	UNICODE RTREEG
@@ -44,6 +44,13 @@ SECURE_DELETE_DESC=	Overwrite deleted information with zeros
 UNLOCK_NOTIFY_DESC=	Enable notification on unlocking
 EXTENSION_DESC=		Allow loadable extensions
 
+# http://www.sqlite.org/compile.html#enable_api_armor
+ARMOR_DESC=		Detect misuse of the API
+
+# http://www.sqlite.org/c3ref/stmt_scanstatus.html
+STMT_DESC=		Prepared Statement Scan Status
+
+# http://www.sqlite.org/tempfiles.html#tempstore
 OPTIONS_SINGLE_RAMT=	TS0 TS1 TS2 TS3
 RAMT_DESC=		Where to store temporary file
 TS0_DESC=		Always use temporary file
@@ -51,10 +58,14 @@ TS1_DESC=		File by default, change allowed PRAGMA
 TS2_DESC=		Memory by default, change allowed PRAGMA
 TS3_DESC=		Always use memory
 
+# http://www.sqlite.org/queryplanner-ng.html#qpstab
 OPTIONS_RADIO_STAT=	STAT3 STAT4
 STAT_DESC=		Which query planner to use
 STAT3_DESC=		collect histogram data from leftmost column
 STAT4_DESC=		collect histogram data from all columns
+
+# http://www.sqlite.org/dbstat.html
+DBSTAT_DESC=		Enable DBSTAT Virtual Table
 
 # http://www.sqlite.org/fts3.html#tokenizer
 OPTIONS_GROUP_UNICODE=	ICU UNICODE61
@@ -67,7 +78,8 @@ RTREEG_DESC=		Index type for range queries
 RTREE_DESC=		Enable R*Tree module
 RTREE_INT_DESC=		Store 32-bit sig int (no float) coordinates
 
-OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS EXTENSION TS1 RTREE
+OPTIONS_DEFAULT=	FTS4 URI METADATA SECURE_DELETE UNLOCK_NOTIFY THREADS \
+			EXTENSION TS1 UNICODE61 RTREE READLINE
 # SECURE_DELETE, UNLOCK_NOTIFY used by www/firefox, www/libxul
 # RTREE used by graphics/mapnik, databases/spatialite
 
@@ -107,21 +119,27 @@ UNLOCK_NOTIFY_CPPFLAGS=	-DSQLITE_ENABLE_UNLOCK_NOTIFY=1
 METADATA_CPPFLAGS=	-DSQLITE_ENABLE_COLUMN_METADATA=1
 STAT3_CPPFLAGS=	-DSQLITE_ENABLE_STAT3=1
 STAT4_CPPFLAGS=	-DSQLITE_ENABLE_STAT4=1
+DBSTAT_CPPFLAGS=	-DSQLITE_ENABLE_DBSTAT_VTAB=1
 URI_CPPFLAGS=	-DSQLITE_USE_URI=1
 URI_AUTHORITY_CPPFLAGS=	-DSQLITE_ALLOW_URI_AUTHORITY=1
 DIRECT_READ_CPPFLAGS=	-DSQLITE_DIRECT_OVERFLOW_READ=1
+ARMOR_CPPFLAGS=	-DSQLITE_ENABLE_API_ARMOR=1
+STMT_CPPFLAGS=	-DSQLITE_ENABLE_STMT_SCANSTATUS=1
 
 EXTENSION_CONFIGURE_ENABLE=	dynamic-extensions
 
 THREADS_CONFIGURE_ENABLE=	threadsafe
-THREADS_LDFLAGS=	${PTHREAD_LIBS}
+THREADS_LDFLAGS=		-lpthread
 
 ICU_BUILD_DEPENDS=	${LOCALBASE}/bin/icu-config:${PORTSDIR}/devel/icu
 ICU_LIB_DEPENDS=	libicudata.so:${PORTSDIR}/devel/icu
 ICU_CPPFLAGS=	`${LOCALBASE}/bin/icu-config --cppflags` -DSQLITE_ENABLE_ICU=1
 ICU_LDFLAGS=	`${LOCALBASE}/bin/icu-config --ldflags`
 
-UNICODE61_CPPFLAGS=	-DSQLITE_ENABLE_FTS4_UNICODE61=1
+UNICODE61_CPPFLAGS_OFF=	-DSQLITE_DISABLE_FTS3_UNICODE=1
+
+READLINE_CONFIGURE_ENABLE=	readline
+READLINE_USES=	readline
 
 .include <bsd.port.options.mk>
 

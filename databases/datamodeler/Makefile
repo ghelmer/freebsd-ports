@@ -30,14 +30,12 @@ WRKSRC=		${WRKDIR}/opt/${PORTNAME}
 SUB_FILES=	${PORTNAME}.script.sh
 SUB_LIST=	JAVA_HOME=${JAVA_HOME}
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
 PORTDOCS=	readme.html
-.endif
-
-.if ${OSVERSION} < 802514
-IGNORE=		tarball will not extract
 .endif
 
 .if !exists(${DISTDIR}/${DIST_SUBDIR}/${DISTNAME}${EXTRACT_SUFX})

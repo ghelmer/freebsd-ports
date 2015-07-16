@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	xf86-video-ati
-PORTVERSION=	${ATI_VERSION}
-PORTREVISION=	${ATI_REVISION}
+PORTVERSION=	7.5.0
+PORTREVISION=	2
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
@@ -10,23 +10,26 @@ COMMENT=	X.Org ati display driver
 
 USE_GL=		gl
 XORG_CAT=	driver
-USE_XORG=	xf86driproto xineramaproto xf86miscproto glproto
+USE_XORG=	xf86driproto \
+		xineramaproto \
+		xf86miscproto \
+		glproto \
+		presentproto
+INSTALL_TARGET=	install-strip
+# No Radeon kernel driver on non-x86 and PC98.
+ONLY_FOR_ARCHS=	i386 amd64
+
+CONFIGURE_ARGS+=--disable-udev
+CONFIGURE_ARGS+=--disable-glamor
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} < 1000051 || !defined(WITH_NEW_XORG) || \
-	(${ARCH} != i386 && ${ARCH} != amd64)
-ATI_VERSION=	6.14.6
-ATI_REVISION=	3
-CONFIGURE_ARGS+=--disable-kms
-PLIST_SUB+=	OLD=""
-.else
-ATI_VERSION=	7.2.0
-ATI_REVISION=	3
-CONFIGURE_ARGS+=--disable-udev
-CONFIGURE_ARGS+=--disable-glamor
-EXTRA_PATCHES+=	${FILESDIR}/extra-src__radeon_kms.c
-PLIST_SUB+=	OLD="@comment "
+.if (${OSVERSION} >= 903000 && ${OSVERSION} < 1000000)
+RUN_DEPENDS+=	drm-kmod>=9:${PORTSDIR}/x11-drivers/drm-kmod
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|"radeonkms"|"radeonkms_port"|g' \
+		${WRKSRC}/src/radeon_kms.c
 .endif
 
 .include <bsd.port.mk>

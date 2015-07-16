@@ -1,6 +1,3 @@
-lib/libabacus-osi.a
-lib/libabacus-osi.so
-lib/libabacus-osi.so.1
 include/abacus/abacusroot.h
 include/abacus/active.h
 include/abacus/active.inc
@@ -102,4 +99,6 @@ include/abacus/timer.h
 include/abacus/valbranchrule.h
 include/abacus/variable.h
 include/abacus/vartype.h
-@dirrm include/abacus
+lib/libabacus-osi.a
+lib/libabacus-osi.so
+lib/libabacus-osi.so.1

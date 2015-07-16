@@ -9,7 +9,6 @@ include/sidplay/player.h
 include/sidplay/sidtune.h
 include/sidplay/version.h
 lib/libsidplay.a
-lib/libsidplay.la
 lib/libsidplay.so
 lib/libsidplay.so.1
-@dirrm include/sidplay
+lib/libsidplay.so.1.0.3

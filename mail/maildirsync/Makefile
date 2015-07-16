@@ -6,8 +6,11 @@ PORTVERSION=	1.2
 CATEGORIES=	mail perl5
 MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Online synchronizer for Maildir-format mailboxes
+
+LICENSE=	ART10 GPLv1
+LICENSE_COMB=	dual
 
 USES=		perl5 shebangfix
 
@@ -31,4 +34,12 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/contrib/mailbalance-0.2.0/* \
 		${STAGEDIR}${EXAMPLESDIR}/mailbalance
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PERL_VER} >= 5.18
+BROKEN=		Does not build with Perl 5.18 or above
+.endif
+DEPRECATED=	Requires an unsupported version of Perl
+EXPIRATION_DATE=	2015-07-31
+
+.include <bsd.port.post.mk>

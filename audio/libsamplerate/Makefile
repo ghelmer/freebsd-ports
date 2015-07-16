@@ -3,7 +3,7 @@
 
 PORTNAME=	libsamplerate
 PORTVERSION=	0.1.8
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	http://www.mega-nerd.com/SRC/
 
@@ -12,9 +12,10 @@ COMMENT=	Secret Rabbit Code: a Sample Rate Converter for audio
 
 LICENSE=	GPLv2
 
-USES=		libtool:oldver pathfix pkgconfig
+USES=		libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	CPU_CLIP DOCS EXAMPLES
 CPU_CLIP_DESC=	Allow machine-dependent clipping
@@ -43,21 +44,10 @@ BUILD_DEPENDS +=	libsndfile>=0:${PORTSDIR}/audio/libsndfile
 CONFIGURE_ARGS+=	--disable-sndfile
 .endif
 
-post-patch:
-.if empty(PORT_OPTIONS:MDOCS)
-	@${REINPLACE_CMD} -e '/SUBDIRS =/s/doc //' ${WRKSRC}/Makefile.in
-.endif
-.if empty(PORT_OPTIONS:MEXAMPLES)
-	@${REINPLACE_CMD} -e '/SUBDIRS =/s/examples //' ${WRKSRC}/Makefile.in
-.endif
-
-.if defined(MAINTAINER_MODE) || defined(PACKAGE_BUILDING)
+.if defined(MAINTAINER_MODE)
 check regression-test test: build
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${_MAKE_JOBS} ${MAKE_ARGS} \
 	check
 .endif
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsamplerate.so.1
 
 .include <bsd.port.mk>

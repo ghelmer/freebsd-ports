@@ -67,7 +67,6 @@
 %%QT_INCDIR%%/QtDBus/qdbusservicewatcher.h
 %%QT_INCDIR%%/QtDBus/qdbusunixfiledescriptor.h
 %%QT_INCDIR%%/QtDBus/qdbusvirtualobject.h
-%%QT_LIBDIR%%/libQtDBus.la
 %%QT_LIBDIR%%/libQtDBus.prl
 %%QT_LIBDIR%%/libQtDBus.so
 %%QT_LIBDIR%%/libQtDBus.so.4
@@ -75,7 +74,3 @@
 %%QT_LIBDIR%%/libQtDBus.so.%%FULLVER%%
 %%DEBUG%%%%QT_LIBDIR%%/libQtDBus.so.%%FULLVER%%.debug
 libdata/pkgconfig/QtDBus.pc
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtDBus
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

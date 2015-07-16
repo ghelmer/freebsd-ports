@@ -3,16 +3,17 @@
 
 PORTNAME=	Var_Dump
 PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	devel www pear
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Provides methods for dumping structured information about a variable
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICENSE=	PHP30
 
-PEAR_AUTOINSTALL=	yes
+RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+USES=		pear shebangfix
+SHEBANG_FILES=	scripts/gen_php_doc.sh
+
+.include <bsd.port.mk>

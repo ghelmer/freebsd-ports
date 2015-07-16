@@ -3,30 +3,24 @@
 
 PORTNAME=	pkpgcounter
 PORTVERSION=	3.50
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	print python
 MASTER_SITES=	http://www.pykota.com/software/pkpgcounter/download/tarballs/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Count pages and ink coverage percent
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/PIL.pth:${PORTSDIR}/graphics/py-imaging
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-
-MAN1=		${PORTNAME}.1
-
+USES=		python
+USE_PYTHON=	distutils
 PORTDOCS=	README COPYING BUGS CREDITS NEWS
-.ifdef NOPORTDOCS
-_SED_NODOCS=	-e '/^data_files.append.*docfiles/s|.*||'
-.endif
+OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} \
 		-e '/^directory.*man1/s|=.*|= "man/man1"|' \

@@ -21,13 +21,14 @@ TOUCH?=		touch
 
 REINPLACE_CMD?=	${SED} -i~
 
-BUILDDIR=	usession-release-${DISTVERSION:C/.[0-9]*$//}.x-0
+BUILDDIR=	usession-release-${DISTVERSION}-0
 
 .for inst in ${PYPY_INST}
 
 ${PYPY_${inst}_NAME}: build_${PYPY_${inst}_NAME}/${BUILDDIR}/testing_1/pypy-c
 	${CP} build_${PYPY_${inst}_NAME}/${BUILDDIR}/testing_1/pypy-c \
 		${PYPY_${inst}_NAME}
+	-${CP} build_${PYPY_${inst}_NAME}/${BUILDDIR}/testing_1/libpypy-c.so .
 
 .done_translate_${PYPY_${inst}_NAME}:
 	${RM} -rf build_${PYPY_${inst}_NAME}

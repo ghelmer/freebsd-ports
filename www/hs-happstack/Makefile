@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	happstack
-PORTVERSION=	7.0.1
-PORTREVISION=	7
+PORTVERSION=	7.0.2
+PORTREVISION=	1
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	The haskell application server stack + code generation
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	happstack-server>=7.0
 

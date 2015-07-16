@@ -3,20 +3,21 @@
 
 PORTNAME=	gdb
 PORTVERSION=	7.3.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	GNU
-MASTER_SITE_SUBDIR=	gdb
 PKGNAMEPREFIX=	avr-
 DISTNAME=	gdb-${PORTVERSION}
 
 MAINTAINER=	joerg@FreeBSD.org
 COMMENT=	GNU GDB for the AVR target
+LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
 USES=		gmake tar:bzip2
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--target=avr --program-prefix=avr --disable-nls
+CONFIGURE_ARGS=	--target=avr --program-prefix=avr --disable-nls \
+		--disable-werror
 
 pre-configure:
 	cd ${WRKSRC} ; ${RM} -rf dejagnu expect tcl texinfo

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tcpreplay
-PORTVERSION=	4.0.3
+PORTVERSION=	4.1.0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF
 
@@ -17,9 +17,6 @@ GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--program-transform-name='s|.*\(tcp.*\)|\1|' \
 		--with-pcapnav-config=${LOCALBASE}/bin/pcapnav-config
-
-# does not build on FreeBSD 8.x
-PORTSCOUT=	skipv:4.0.4
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-Wall -O3||' ${WRKSRC}/${CONFIGURE_SCRIPT}

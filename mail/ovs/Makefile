@@ -3,18 +3,24 @@
 
 PORTNAME=	ovs
 PORTVERSION=	1.05
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.oav.net/openvisp/stats/ \
 		http://mirror.amdmi3.ru/distfiles/
 
-MAINTAINER=	kiwi@oav.net
-COMMENT=	A RRDtool frontend for mail statistics
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	RRDtool frontend for mail statistics
 
-RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool	\
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool \
 		p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
 
 NO_BUILD=	yes
-USES=		perl5
+NO_ARCH=	yes
+USES=		perl5 shebangfix
+SHEBANG_FILES=	ovs.pl ovs.cgi
 
 CGIDIR?=	${PREFIX}/www/cgi-bin
 DATADIR?=	/var/db/ovs
@@ -24,14 +30,11 @@ OVS_GROUP?=	${WWWGRP}
 
 USE_RC_SUBR=	${PORTNAME}
 SUB_LIST+=	OVS_USER=${OVS_USER} OVS_GROUP=${OVS_GROUP}
-PLIST_SUB=	CGIDIR=${CGIDIR:S,${PREFIX}/,,} WWWROOT=${WWWROOT:S,${PREFIX}/,,}
+PLIST_SUB=	CGIDIR=${CGIDIR:S,${PREFIX}/,,} WWWROOT=${WWWROOT:S,${PREFIX}/,,} \
+		OVS_USER=${OVS_USER} OVS_GROUP=${OVS_GROUP}
 
-DOCS=		README CHANGES COPYING CHANGES.old README.old
-.if !defined(NOPORTDOCS)
-PORTDOCS=	${DOCS}
-.endif
+PORTDOCS=	README CHANGES COPYING CHANGES.old README.old
 
-NO_STAGE=	yes
 pre-everything::
 	@${ECHO_MSG} ""
 	@${ECHO_MSG} "You may set following options:"
@@ -46,23 +49,15 @@ post-patch:
 	@${REINPLACE_CMD} -e "s,%%DATADIR%%,${DATADIR}," ${WRKSRC}/ovs.cgi
 
 do-install:
-	@${MKDIR} ${CGIDIR}
-	@${MKDIR} ${WWWROOT}/ovs
-	@${MKDIR} ${DATADIR}
-	@${CHOWN} -R ${OVS_USER}:${OVS_GROUP} ${DATADIR}
-	@${INSTALL_SCRIPT} ${WRKSRC}/ovs.pl ${PREFIX}/sbin
-	@${INSTALL_SCRIPT} ${WRKSRC}/ovs.cgi ${CGIDIR}
-	@${INSTALL_SCRIPT} ${WRKSRC}/ovs.css ${WWWROOT}/ovs
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	for f in ${DOCS}; do \
-	  ${INSTALL_DATA} ${WRKSRC}/$$f ${DOCSDIR}; \
+	@${MKDIR} ${STAGEDIR}${CGIDIR}
+	@${MKDIR} ${STAGEDIR}${WWWROOT}/ovs
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/ovs.pl ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${WRKSRC}/ovs.cgi ${STAGEDIR}${CGIDIR}
+	${INSTALL_DATA} ${WRKSRC}/ovs.css ${STAGEDIR}${WWWROOT}/ovs
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	for f in ${PORTDOCS}; do \
+	  ${INSTALL_DATA} ${WRKSRC}/$$f ${STAGEDIR}${DOCSDIR}; \
 	done
-.endif
-
-post-install:
-	@${ECHO_MSG} ""
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG} ""
 
 .include <bsd.port.mk>

@@ -1,14 +1,14 @@
 # Created by: Martin Kammerhofer <mkamm@gmx.net>
 # $FreeBSD$
 
-PORTNAME=		libreadline-java
-PORTVERSION=		0.8.0
+PORTNAME=	libreadline-java
+PORTVERSION=	0.8.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=		3
-CATEGORIES=		devel java
-MASTER_SITES=		SF/java-readline/java-readline/${PORTVERSION}
+PORTREVISION=	4
+CATEGORIES=	devel java
+MASTER_SITES=	SF/java-readline/java-readline/${PORTVERSION}
 
-MAINTAINER=	mkamm@gmx.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JNI wrapper around GNU Readline / libedit / libgetline
 
 BUILD_DEPENDS=	${LOCALBASE}/include/editline/readline.h:${PORTSDIR}/devel/libedit
@@ -21,7 +21,7 @@ SUB_FILES=	pkg-message jython.sh
 PLIST_FILES=	%%JAVAJARDIR%%/libreadline-java.jar lib/libJavaReadline.so \
 		lib/libJavaEditline.so lib/libJavaGetline.so
 PORTDOCS=	README.1st README jython.sh JReadlineCompleter.py
-USES=		gmake
+USES=		gmake readline
 USE_JAVA=	yes
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -33,9 +33,9 @@ OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/libreadline-java.jar ${STAGEDIR}${JAVAJARDIR}
-	${INSTALL_DATA} ${WRKSRC}/libJavaReadline.so ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${WRKSRC}/libJavaEditline.so ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${WRKSRC}/libJavaGetline.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/libJavaReadline.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/libJavaEditline.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/libJavaGetline.so ${STAGEDIR}${PREFIX}/lib
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.1st ${STAGEDIR}${DOCSDIR}

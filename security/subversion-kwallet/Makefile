@@ -2,6 +2,7 @@
 # $FreeBSD$
 
 PKGNAMESUFFIX=	-kwallet
+PORTREVISION=	2
 CATEGORIES=	security kde
 
 MAINTAINER=	lev@FreeBSD.org

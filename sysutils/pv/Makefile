@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	pv
-PORTVERSION=	1.4.6
-PORTREVISION=	1
+PORTVERSION=	1.6.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.ivarch.com/programs/sources/
 
 MAINTAINER=	martymac@FreeBSD.org
-COMMENT=	A pipe throughput monitor
+COMMENT=	Pipe throughput monitor
 
 LICENSE=	ART20
 

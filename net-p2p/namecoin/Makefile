@@ -2,12 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	namecoin
-PORTVERSION=	Q.3.72
+PORTVERSION=	0.3.80
+DISTVERSIONPREFIX=	nc
+PORTEPOCH=	1
 CATEGORIES=	net-p2p dns
-MASTER_SITES=	GH
 
 MAINTAINER=	milios@ccsys.com
 COMMENT=	Decentralized, open DNS system and general purpose key/value store
+
+LICENSE=	MIT
 
 LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs
 
@@ -18,12 +21,11 @@ UPNP_DESC=	Build with UPNP support
 QRCODES_DESC=	Build with QR code display
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	namecoinq
-GH_PROJECT=	namecoinq
-GH_COMMIT=	cdf052b
-GH_TAGNAME=	v${PORTVERSION}
+GH_ACCOUNT=	namecoin
+GH_PROJECT=	namecoin
 
 USES=		gmake compiler:c++11-lib
+MAKE_JOBS_UNSAFE=yes
 USE_OPENSSL=	yes
 USE_BDB=	yes
 WANT_BDB_VER=	48
@@ -63,6 +65,7 @@ PLIST_FILES+=	bin/${BINARY}
 
 .if ${PORT_OPTIONS:MUPNP}
 LIB_DEPENDS+=	libminiupnpc.so:${PORTSDIR}/net/miniupnpc
+CXXFLAGS+=	-I${LOCALBASE}/include/miniupnpc
 QMAKE_USE_UPNP=	1
 .else
 QMAKE_USE_UPNP=	-
@@ -75,7 +78,6 @@ post-patch:
 	@cd ${WRKSRC}/src && ${CP} ${FILESDIR}/makefile.unix Makefile
 	@${REINPLACE_CMD} \
 		-e 's|^USE_UPNP.*$$|USE_UPNP=${QMAKE_USE_UPNP}|' \
-		-e 's|-l pthread|${PTHREAD_LIBS}|g' \
 		${WRKSRC}/src/Makefile
 .endif
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	modules
 PORTVERSION=	svn20130912
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 PKGNAMEPREFIX=	bennugd-
@@ -18,11 +18,12 @@ LIB_DEPENDS=	libbgdrtm.so:${PORTSDIR}/devel/bennugd-core \
 USES=		tar:bzip2 dos2unix pkgconfig libtool
 USE_SDL=	sdl mixer
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libpng15
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--libdir="${PREFIX}/lib/bennugd"
 CONFIGURE_ENV=	ZLIB_CFLAGS=" " ZLIB_LIBS="-lz"
 DOS2UNIX_GLOB=	*.c
+INSTALL_TARGET=	install-strip
 
 WRKSRC=		${WRKDIR}/bennugd/${PORTNAME}
 

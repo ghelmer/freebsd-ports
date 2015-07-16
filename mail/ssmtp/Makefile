@@ -5,7 +5,7 @@ PORTNAME=	ssmtp
 PORTVERSION=	2.64
 PORTREVISION=	1
 CATEGORIES=	mail ipv6
-MASTER_SITES=	${MASTER_SITE_DEBIAN_POOL}
+MASTER_SITES=	DEBIAN_POOL
 DISTFILES=	${PORTNAME}_${PORTVERSION}.orig${EXTRACT_SUFX}
 
 MAINTAINER=	aragon@phat.za.net
@@ -15,8 +15,6 @@ USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USES=		gmake tar:bzip2
 GROUPS=		ssmtp
-BINMODE=	2555
-SHAREMODE=	640
 
 SUB_FILES+=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -64,7 +62,6 @@ replace:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ssmtp ${STAGEDIR}${PREFIX}/sbin/ssmtp
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/ssmtp
-	@${CHMOD} 750 ${STAGEDIR}${PREFIX}/etc/ssmtp
 	${INSTALL_DATA} ${WRKSRC}/revaliases \
 		${STAGEDIR}${PREFIX}/etc/ssmtp/revaliases.sample
 	${INSTALL_DATA} ${WRKSRC}/ssmtp.conf \

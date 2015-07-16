@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aria2
-PORTVERSION=	1.18.5
-PORTREVISION=	2
+PORTVERSION=	1.19.0
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/stable/${PORTNAME}-${PORTVERSION}
 
@@ -18,22 +17,28 @@ OPTIONS_SUB=	yes
 CA_BUNDLE_DESC=	Use CA bundle from Mozilla Project
 
 CONFIGURE_ARGS=	--disable-epoll --enable-bittorrent --enable-libaria2 \
-		--enable-metalink --enable-shared --enable-static \
-		--enable-threads=posix --with-disk-cache=${ARIA2_DISK_CACHE} \
-		--with-libxml2 --with-libz --with-openssl --without-gnutls \
-		--without-libcares --without-libexpat --without-libgcrypt \
-		--without-libgmp --without-libnettle
+		--enable-metalink --enable-shared --enable-ssl --enable-static \
+		--enable-threads=posix --enable-websocket \
+		--with-disk-cache=${ARIA2_DISK_CACHE} \
+		--with-libxml2 --with-libz --with-openssl \
+		--without-appletls --without-gnutls --without-libcares \
+		--without-libexpat --without-libgcrypt --without-libgmp \
+		--without-libnettle --without-libuv
 CONFIGURE_ENV=	OPENSSL_CFLAGS=-I${OPENSSLINC} \
 		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl" \
 		ZLIB_CFLAGS=-I${INCLUDEDIR} \
 		ZLIB_LIBS="-L${LIBDIR} -lz" \
 		ac_cv_path_RST2HTML=no
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
+USE_RC_SUBR=	${PORTNAME}
 USES=		compiler:c++11-lib libtool pathfix pkgconfig tar:xz
+
+PORTDOCS=	*
 
 CA_BUNDLE_CONFIGURE_OFF=--without-ca-bundle
 CA_BUNDLE_CONFIGURE_ON=	--with-ca-bundle=${LOCALBASE}/share/certs/ca-root-nss.crt
@@ -51,19 +56,6 @@ ARIA2_DISK_CACHE?=	16M
 
 .if ${ARCH} == "powerpc" && ${OSVERSION} > 900000
 BROKEN=		Does not install on powerpc-9
-.endif
-
-post-patch:
-.if !${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e 's|\(install-exec-am\) install-data-am|\1|' ${WRKSRC}/Makefile.in ${WRKSRC}/doc/Makefile.in
-.endif
-
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/src/.libs/libaria2.so.0
-
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/README.html ${STAGEDIR}${DOCSDIR}/
 .endif
 
 .include <bsd.port.post.mk>

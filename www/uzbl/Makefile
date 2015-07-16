@@ -3,7 +3,7 @@
 
 PORTNAME=	uzbl
 DISTVERSION=	0.0.0.${GITDATE}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://www.linta.de/distfiles/
 
@@ -17,10 +17,9 @@ LIB_DEPENDS=	libwebkitgtk-1.0.so:${PORTSDIR}/www/webkit-gtk2
 RUN_DEPENDS=	socat:${PORTSDIR}/net/socat \
 		dmenu:${PORTSDIR}/x11/dmenu
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig python:2
 USE_GNOME=	gtk20 pygtk2
 USE_LDCONFIG=	yes
-USE_PYTHON=	2
 
 GITDATE=	2012.05.14
 GITVERSION=	228bc38
@@ -36,9 +35,7 @@ PORTDOCS=	AUTHORS README COMMUNITY CONTRIBUTING FAQ INSTALL TODO config-syntax \
 		multiple-instances-management performance url-editing config.h vim
 .endif
 
-.if !defined(NOPORTDATA)
 PORTDATA=	examples
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|/usr/local|${PREFIX}|" \
@@ -74,7 +71,6 @@ do-install:
 .endfor
 	(cd ${WRKSRC}/extras && ${COPYTREE_SHARE} vim ${STAGEDIR}${DOCSDIR})
 .endif
-.if !defined(NOPORTDATA)
 	${MKDIR} ${STAGEDIR}${DATADIR}/examples/data/dforms ${STAGEDIR}${DATADIR}/examples/config
 .for f in data/bookmarks \
 	data/dforms/bbs.archlinux.org \
@@ -86,6 +82,5 @@ do-install:
 		${COPYTREE_BIN} plugins ${STAGEDIR}${DATADIR}/examples/data/)
 	(cd ${WRKSRC}/examples/data && \
 		${COPYTREE_BIN} scripts ${STAGEDIR}${DATADIR}/examples/data/)
-.endif
 
 .include <bsd.port.mk>

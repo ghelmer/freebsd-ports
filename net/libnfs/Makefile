@@ -3,6 +3,7 @@
 
 PORTNAME=	libnfs
 PORTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://cloud.github.com/downloads/sahlberg/${PORTNAME}/
 
@@ -13,10 +14,8 @@ LICENSE=	LGPL21 GPLv3
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		pkgconfig gmake
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtoolize
-ACLOCAL_ARGS=	-I.
-AUTOMAKE_ARGS=	--add-missing
+GNU_CONFIGURE=	yes
+USES=		autoreconf gmake libtool pkgconfig
 USE_LDCONFIG=	yes
 
 post-patch:

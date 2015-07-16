@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Type-Tiny
-PORTVERSION=	0.044
+PORTVERSION=	1.000005
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TOBYINK
@@ -30,20 +31,26 @@ TEST_DEPENDS=	p5-Class-InsideOut>=0:${PORTSDIR}/devel/p5-Class-InsideOut \
 		p5-Sub-Exporter-Lexical>=0:${PORTSDIR}/devel/p5-Sub-Exporter-Lexical \
 		p5-Test-LeakTrace>=0:${PORTSDIR}/devel/p5-Test-LeakTrace \
 		p5-Test-Requires>=0:${PORTSDIR}/devel/p5-Test-Requires \
-		p5-Test-Tester>=0.10.9:${PORTSDIR}/devel/p5-Test-Tester \
+		p5-Test-Warnings>=0:${PORTSDIR}/devel/p5-Test-Warnings \
 		p5-Validation-Class>=0:${PORTSDIR}/devel/p5-Validation-Class \
 		p5-match-simple>=0:${PORTSDIR}/devel/p5-match-simple
+
+OPTIONS_DEFINE=	XS
+OPTIONS_DEFAULT=XS
+XS_DESC=	Use Type::Tiny::XS for speed boost (recommended)
 
 PORTSCOUT=	limit:^[0-9\.]*$$
 
 USE_PERL5=	configure
 USES=		perl5
 
+XS_BUILD_DEPENDS=	p5-Type-Tiny-XS>=0.010:${PORTSDIR}/devel/p5-Type-Tiny-XS
+XS_RUN_DEPENDS=		p5-Type-Tiny-XS>=0.010:${PORTSDIR}/devel/p5-Type-Tiny-XS
+
 .include <bsd.port.pre.mk>
 
-.if ${PERL_LEVEL} < 501600
-BUILD_DEPENDS+=	p5-CPAN-Meta-Requirements>=2:${PORTSDIR}/devel/p5-CPAN-Meta-Requirements
-RUN_DEPENDS+=	p5-CPAN-Meta-Requirements>=2:${PORTSDIR}/devel/p5-CPAN-Meta-Requirements
+.if ${PERL_LEVEL} < 502200
+TEST_DEPENDS+=	p5-Test-Simple>=1.001.014:${PORTSDIR}/devel/p5-Test-Simple
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,4 +1,3 @@
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Luka/.packlist
 %%SITE_PERL%%/Luka.pm
 %%SITE_PERL%%/Luka/Conf.pm
 %%SITE_PERL%%/Luka/Error.pm
@@ -9,5 +8,3 @@
 %%PERL5_MAN3%%/Luka::Conf.3.gz
 %%PERL5_MAN3%%/Luka::Exceptions.3.gz
 %%PERL5_MAN3%%/Luka::Mailer.3.gz
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/Luka
-@dirrmtry %%SITE_PERL%%/Luka

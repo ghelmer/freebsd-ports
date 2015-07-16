@@ -3,7 +3,7 @@
 
 PORTNAME=	nelly
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games python
 MASTER_SITES=	http://www.partiallydisassembled.net/nelly/ \
 		http://media.pyweek.org/dl/2/rushed/ \
@@ -13,13 +13,13 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nelly's Rooftop Garden, physics-based puzzle game
 
 RUN_DEPENDS=	${PYGAME} \
 		${PYTHON_PKGNAMEPREFIX}opengl>=0:${PORTSDIR}/graphics/py-opengl
 
-USE_PYTHON=	2
+USES=		python:2
 
 PORTDOCS=	README
 OPTIONS_DEFINE=	DOCS

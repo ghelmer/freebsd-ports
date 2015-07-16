@@ -4,7 +4,7 @@
 
 PORTNAME=	gnome-cups-manager
 PORTVERSION=	0.31
-PORTREVISION=	14
+PORTREVISION=	15
 PORTEPOCH=	1
 CATEGORIES=	print gnome
 MASTER_SITES=	GNOME
@@ -16,12 +16,12 @@ COMMENT=	Administration tool for cups
 LIB_DEPENDS=	libgnomecups-1.0.so:${PORTSDIR}/print/libgnomecups
 RUN_DEPENDS=	gnomesu:${PORTSDIR}/security/libgnomesu
 
-USE_AUTOTOOLS=	libtool
+USES=		gettext gmake libtool pathfix pkgconfig tar:bzip2
 USE_GNOME=	gnomeprefix intlhack libgnomeprintui libgnomeui
 USE_LDCONFIG=	yes
 USE_XORG=	x11
 INSTALLS_ICONS=	yes
-USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -D_IPP_PRIVATE_STRUCTURES
 LIBS+=		-L${LOCALBASE}/lib

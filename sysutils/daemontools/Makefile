@@ -3,7 +3,7 @@
 
 PORTNAME=	daemontools
 PORTVERSION=	0.76
-PORTREVISION=	16
+PORTREVISION=	17
 CATEGORIES=	sysutils
 MASTER_SITES=	http://cr.yp.to/daemontools/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,1 \
@@ -55,8 +55,7 @@ DISTFILES+=	${DISTNAME}-man${MANDATE}.tar.gz:1
 
 .if ${PORT_OPTIONS:MSIGQ12}
 #PATCH_SITES+=	http://thedjbway.org/patches/:sigq12
-PATCH_SITES+=		${MASTER_SITE_LOCAL:S/$/:sigq12/}
-PATCH_SITE_SUBDIR+=	bdrewery/${PORTNAME}/:sigq12
+PATCH_SITES+=		LOCAL/bdrewery/${PORTNAME}/:sigq12
 PATCHFILES+=		daemontools-0.76.sigq12.patch:-p2:sigq12
 .endif
 

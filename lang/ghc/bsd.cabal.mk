@@ -22,7 +22,8 @@ NO_INSTALL=	yes
 NO_MTREE=	yes
 .endif # !METAPORT
 
-MAKE_ENV+=	LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 DESTDIR=${STAGEDIR}
+MAKE_ENV+=	LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8 DESTDIR=${STAGEDIR} \
+		TMPDIR=${TMPDIR}
 
 SETUP_CMD?=	./setup
 
@@ -63,6 +64,7 @@ INSTALL_PORTDATA?=
 INSTALL_PORTEXAMPLES?=
 
 LOCALBASE?=	/usr/local
+TMPDIR?=	${WRKDIR}/tmp
 
 .if !defined(CABALOPTIONSMKINCLUDED)
 .include "bsd.cabal.options.mk"
@@ -86,10 +88,10 @@ CONFIGURE_ARGS+=	--with-gcc=${CC} --with-ld=${LD} --with-ar=${AR} \
 
 .if ${PORT_OPTIONS:MLLVM}
 CONFIGURE_ARGS+=	--ghc-option=-fllvm \
-			--ghc-option=-pgmlo --ghc-option=${LOCALBASE}/bin/opt32 \
-			--ghc-option=-pgmlc --ghc-option=${LOCALBASE}/bin/llc32
+			--ghc-option=-pgmlo --ghc-option=${LOCALBASE}/bin/opt34 \
+			--ghc-option=-pgmlc --ghc-option=${LOCALBASE}/bin/llc34
 
-BUILD_DEPENDS+=		${LOCALBASE}/bin/opt32:${PORTSDIR}/devel/llvm32
+BUILD_DEPENDS+=		${LOCALBASE}/bin/opt34:${PORTSDIR}/devel/llvm34
 .endif
 
 .if defined(USE_ALEX)
@@ -108,7 +110,7 @@ CONFIGURE_ARGS+=	--with-c2hs=${C2HS_CMD}
 .endif
 
 .if defined(EXECUTABLE)
-LIB_DEPENDS+=	gmp.10:${PORTSDIR}/math/gmp
+LIB_DEPENDS+=	libgmp.so:${PORTSDIR}/math/gmp
 USES+=		iconv
 
 CONFIGURE_ARGS+=	--enable-executable-stripping
@@ -167,7 +169,7 @@ HADDOCK_OPTS+=		--hyperlink-source --hscolour-css=${HSCOLOUR_DATADIR}/hscolour.c
 .endif
 
 .if defined(XMLDOCS)
-BUILD_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/html:${PORTSDIR}/textproc/docbook-xsl \
+BUILD_DEPENDS+=	docbook-xsl>0:${PORTSDIR}/textproc/docbook-xsl \
 		${LOCALBASE}/bin/xsltproc:${PORTSDIR}/textproc/libxslt
 
 USES+=		gmake
@@ -208,6 +210,7 @@ _BUILD_SETUP=	${GHC_CMD} -o ${SETUP_CMD} -package Cabal --make
 .if !defined(METAPORT)
 .if !target(do-configure)
 do-configure:
+	@${MKDIR} ${TMPDIR}
 	@if [ -f ${WRKSRC}/Setup.hs ]; then \
 	    cd ${WRKSRC} && ${_BUILD_SETUP} Setup.hs; fi
 	@if [ -f ${WRKSRC}/Setup.lhs ]; then \
@@ -249,17 +252,13 @@ do-build:
 .endif # target(do-build)
 .endif # !METAPORT
 
-.if defined(MAN1)
-.for man in ${MAN1}
-PLIST_FILES+=	man/man1/${man}.gz
+.for sect in 1 2 3 4 5 6 7 8 9
+.if defined(MAN${sect}PAGES)
+.for man in ${MAN${sect}PAGES}
+PLIST_FILES+=	man/man${sect}/${man}.gz
 .endfor
 .endif
-
-.if defined(MAN5)
-.for man in ${MAN5}
-PLIST_FILES+=	man/man5/${man}.gz
 .endfor
-.endif
 
 .if !defined(METAPORT)
 .if !target(do-install)
@@ -280,11 +279,13 @@ do-install:
 	${INSTALL_PORTEXAMPLES}
 .endif
 
-.if defined(MAN1SRC)
-.for man in ${MAN1}
-	@${INSTALL_MAN} ${WRKSRC}/${MAN1SRC}/${man} ${STAGEDIR}${PREFIX}/man/man1
+.for sect in 1 2 3 4 5 6 7 8 9
+.if defined(MAN${sect}SRC)
+.for man in ${MAN${sect}PAGES}
+	@${INSTALL_MAN} ${WRKSRC}/${MAN${sect}SRC}/${man} ${STAGEDIR}${MANPREFIX}/man/man${sect}
 .endfor
-.endif # MAN1SRC
+.endif # MAN${sect}SRC
+.endfor
 
 .if ${PORT_OPTIONS:MDOCS}
 .if !empty(XMLDOCS)
@@ -298,16 +299,13 @@ do-install:
 
 .if !target(post-install-script)
 post-install-script:
-	@for dir in ${CABAL_DIRS}; do if [ -d ${STAGEDIR}$${dir} ]; then ${FIND} -ds ${STAGEDIR}$${dir} \
-		-type f -print | ${SED} -E -e 's,^${STAGEDIR}${PREFIX}/?,,' >> ${TMPPLIST}; fi ; \
-		if [ -d ${STAGEDIR}$${dir} ]; then ${FIND} -ds ${STAGEDIR}$${dir} \
-		-type d -print | ${SED} -E -e 's,^${STAGEDIR}${PREFIX}/?,@dirrm ,' >> ${TMPPLIST}; fi ; done
 .if defined(EXECUTABLE)
 .for exe in ${EXECUTABLE}
 	@${ECHO_CMD} 'bin/${exe}' >>${TMPPLIST}
 .endfor
-.endif
-
+.endif # EXECUTABLE
+	@for dir in ${CABAL_DIRS}; do if [ -d ${STAGEDIR}$${dir} ]; then ${FIND} -ds ${STAGEDIR}$${dir} \
+		-type f -print | ${SED} -E -e 's,^${STAGEDIR}${PREFIX}/?,,' >> ${TMPPLIST}; fi ; done
 .endif # target(post-install-script)
 
 .if !defined(METAPORT)
@@ -319,19 +317,19 @@ add-plist-cabal:
 .endif
 
 .if defined(HADDOCK_AVAILABLE) && ${PORT_OPTIONS:MDOCS}
-	@(${ECHO_CMD} '@unexec ${RM} -f ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${DISTNAME}' ; \
+	@(${ECHO_CMD} '@unexec ${RM} ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${DISTNAME}' ; \
 	  ${ECHO_CMD} '@unexec cd ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL} && \
-	    ${RM} -f doc-index*.html && ./gen_contents_index') >> ${TMPPLIST}
+	    ${RM} doc-index*.html && ./gen_contents_index') >> ${TMPPLIST}
 .endif
 
 .if !defined(STANDALONE)
-	@${ECHO_CMD} '@exec ${SH} %D/${CABAL_LIBDIR_REL}/${CABAL_LIBSUBDIR}/register.sh' >> ${TMPPLIST}
+	@${ECHO_CMD} '@exec ${SH} %D/${CABAL_LIBDIR_REL}/${CABAL_LIBSUBDIR}/register.sh > /dev/null' >> ${TMPPLIST}
 .endif
 
 .if defined(HADDOCK_AVAILABLE) && ${PORT_OPTIONS:MDOCS}
 	@(${ECHO_CMD} '@exec ${LN} -s ${DOCSDIR}/html ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL}/${DISTNAME} && \
 	  cd ${LOCALBASE}/${GHC_LIB_DOCSDIR_REL} && \
-	  ${RM} -f doc-index*.html && ./gen_contents_index') >> ${TMPPLIST}
+	  ${RM} doc-index*.html && ./gen_contents_index') >> ${TMPPLIST}
 .endif
 
 .endif # !METAPORT

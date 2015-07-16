@@ -3,7 +3,7 @@
 
 PORTNAME=	xparam
 PORTVERSION=	1.22
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -12,9 +12,8 @@ COMMENT=	General-purpose tool for parameter handling in C++
 
 LICENSE=	GPLv2 # (or later)
 
-USES=		gmake libtool
-USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
+USES=		gmake libtool:build
 USE_LDCONFIG=	yes
 
 post-install:

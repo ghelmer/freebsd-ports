@@ -7,13 +7,15 @@ PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://nsd.dyndns.org/pwsafe/releases/
 
-MAINTAINER=	donnex@donnex.net
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Cmdline program that manages encrypted password databases
+
+LICENSE=	GPLv2
 
 OPTIONS_DEFINE=	SETUID X11
 SETUID_DESC=	Install setuid pwsafe binary
 
-USES=		gmake
+USES=		gmake readline
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/pwsafe man/man1/pwsafe.1.gz

@@ -3,12 +3,14 @@
 
 PORTNAME=	hgview
 PORTVERSION=	1.6.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	LOGILAB
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast Mercurial log navigator written in pyqt4
+
+BROKEN=		Logilab mirrors have gone
 
 RUN_DEPENDS=	hg:${PORTSDIR}/devel/mercurial \
 		${PYTHON_PKGNAMEPREFIX}qt4-gui>0:${PORTSDIR}/x11-toolkits/py-qt4-gui \
@@ -20,9 +22,8 @@ BUILD_DEPENDS=	hg:${PORTSDIR}/devel/mercurial \
 		xmlto:${PORTSDIR}/textproc/xmlto \
 		asciidoc:${PORTSDIR}/textproc/asciidoc
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-USES=		gmake
+USE_PYTHON=	distutils
+USES=		gmake python
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

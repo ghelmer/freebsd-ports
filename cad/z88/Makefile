@@ -3,7 +3,7 @@
 
 PORTNAME=	z88
 PORTVERSION=	13.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	cad
 MASTER_SITES=	http://www.z88.uni-bayreuth.de/download/
 DISTFILES=	${PORTNAME}130${EXTRACT_SUFX} ${PORTNAME}mane.pdf
@@ -15,6 +15,7 @@ COMMENT=	Compact Finite Element Analysis System
 
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
 
+BROKEN=		Unfetchable
 NO_WRKSUBDIR=	yes
 USES=		pkgconfig
 USE_GL=		glu

@@ -21,8 +21,8 @@
 #   USE_GCC=	yes			# port requires a current version of GCC
 #							# as defined in bsd.default-versions.mk.
 #   USE_GCC=	any			# port requires GCC 4.2 or later.
-#   USE_GCC=	4.8+		# port requires GCC 4.8 or later.
-#   USE_GCC=	4.8			# port requires GCC 4.8.
+#   USE_GCC=	4.9+		# port requires GCC 4.9 or later.
+#   USE_GCC=	4.9			# port requires GCC 4.9.
 #
 # If you are wondering what your port exactly does, use "make test-gcc"
 # to see some debugging.
@@ -35,18 +35,16 @@ GCC_Include_MAINTAINER=		gerald@FreeBSD.org
 
 # All GCC versions supported by the ports framework.  Keep them in
 # ascending order and in sync with the table below. 
-GCCVERSIONS=	040200 040600 040700 040800 040900
+GCCVERSIONS=	040200 040600 040700 040800 040900 050000
 
-# The first field if the OSVERSION in which it appeared in the base.
-# The second field is the OSVERSION in which it disappeared from the base.
-# The third field is the version as USE_GCC would use.
-GCCVERSION_040200=	700042 9999999 4.2
-GCCVERSION_040600=	     0       0 4.6
-GCCVERSION_040700=	     0       0 4.7
-GCCVERSION_040800=	     0       0 4.8
-GCCVERSION_040900=	     0       0 4.9
-
-GCC_DEFAULT_V=	${GCC_DEFAULT:S/.//}
+# The first field is the OSVERSION in which it disappeared from the base.
+# The second field is the version as USE_GCC would use.
+GCCVERSION_040200=	9999999 4.2
+GCCVERSION_040600=	      0 4.6
+GCCVERSION_040700=	      0 4.7
+GCCVERSION_040800=	      0 4.8
+GCCVERSION_040900=	      0 4.9
+GCCVERSION_050000=	      0 5
 
 # No configurable parts below this. ####################################
 #
@@ -58,9 +56,7 @@ USE_GCC=	${GCC_DEFAULT}+
 # Extract the fields from GCCVERSION_...
 .for v in ${GCCVERSIONS}
 . for j in ${GCCVERSION_${v}}
-.  if !defined(_GCCVERSION_${v}_L)
-_GCCVERSION_${v}_L=	${j}
-.  elif !defined(_GCCVERSION_${v}_R)
+.  if !defined(_GCCVERSION_${v}_R)
 _GCCVERSION_${v}_R=	${j}
 .  elif !defined(_GCCVERSION_${v}_V)
 _GCCVERSION_${v}_V=	${j}
@@ -92,7 +88,7 @@ _GCC_ORLATER:=	true
 .for v in ${GCCVERSIONS}
 . if exists(${LOCALBASE}/bin/gcc${_GCCVERSION_${v}_V:S/.//})
 _GCC_FOUND${v}=	port
-. elif ${OSVERSION} >= ${_GCCVERSION_${v}_L} && ${OSVERSION} < ${_GCCVERSION_${v}_R}
+. elif ${OSVERSION} < ${_GCCVERSION_${v}_R}
 .  if exists(/usr/bin/gcc)
 _GCC_FOUND${v}=	base
 .  endif
@@ -145,10 +141,10 @@ _USE_GCC:=	${GCC_DEFAULT}
 # dependencies, CC, CXX, CPP, and flags.
 .for v in ${GCCVERSIONS}
 . if ${_USE_GCC} == ${_GCCVERSION_${v}_V}
-.  if ${OSVERSION} < ${_GCCVERSION_${v}_L} || ${OSVERSION} > ${_GCCVERSION_${v}_R} || !exists(/usr/bin/gcc)
+.  if ${OSVERSION} > ${_GCCVERSION_${v}_R} || !exists(/usr/bin/gcc)
 V:=			${_GCCVERSION_${v}_V:S/.//}
 _GCC_PORT_DEPENDS:=	gcc${V}
-.   if ${_USE_GCC} == ${GCC_DEFAULT}
+.   if ${_USE_GCC} == ${LANG_GCC_IS}
 _GCC_PORT:=		gcc
 .   else
 _GCC_PORT:=		gcc${V}
@@ -199,8 +195,8 @@ test-gcc:
 .if defined(_GCC_FOUND${v})
 	@echo -n "(${_GCC_FOUND${v}}) "
 .endif
-	@echo "- OSVERSION from ${_GCCVERSION_${v}_L} to ${_GCCVERSION_${v}_R}"
-#	@echo ${v} - ${_GCC_FOUND${v}} - ${_GCCVERSION_${v}_L} to ${_GCCVERSION_${v}_R} - ${_GCCVERSION_${v}_V}
+	@echo "- OSVERSION up to ${_GCCVERSION_${v}_R}"
+#	@echo ${v} - ${_GCC_FOUND${v}} - up to ${_GCCVERSION_${v}_R} - ${_GCCVERSION_${v}_V}
 .endfor
 	@echo Using GCC version ${_USE_GCC}
 .endif

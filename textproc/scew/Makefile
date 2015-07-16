@@ -3,19 +3,22 @@
 
 PORTNAME=	scew
 PORTVERSION=	1.1.7
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SAVANNAH/${PORTNAME}/
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple C Expat Wrapper
 
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
+USES=		gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake pathfix pkgconfig
+INSTALL_TARGET=	install-strip
+
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
@@ -23,19 +26,15 @@ SCEW_EXAMPLES=	print stream write
 
 post-install:
 .for ex in ${SCEW_EXAMPLES}
-	${INSTALL_SCRIPT} ${WRKSRC}/examples/${PORTNAME}_${ex}/${PORTNAME}_${ex} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_SCRIPT} \
+		${WRKSRC}/examples/${PORTNAME}_${ex}/${PORTNAME}_${ex} \
+		${STAGEDIR}${PREFIX}/bin
 .endfor
 
 .ifdef MAINTAINER_MODE
 LIB_DEPENDS+=	libcheck.so:${PORTSDIR}/devel/libcheck
 regression-test: build
-	cd ${WRKSRC}/tests && ${MAKE_CMD} check
+	${MAKE_CMD} -C ${WRKSRC}/tests check
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "powerpc"
-BROKEN=		Does not compile on powerpc
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

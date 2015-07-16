@@ -1,35 +1,36 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/trunk/x11-toolkits/vte3/Makefile 18941 2013-12-08 01:18:10Z kwm $
+#   $MCom: ports/trunk/x11-toolkits/vte3/Makefile 19957 2014-10-15 11:07:14Z gusi $
 
 PORTNAME?=	vte
-PORTVERSION=	0.34.7
+PORTVERSION=	0.38.3
 PORTREVISION?=	0
 CATEGORIES=	x11-toolkits gnome
-MASTER_SITES=	GNOME
-MASTER_SITE_SUBDIR=	sources/${PORTNAME:S/gnome-pty-helper/vte/}/${PORTVERSION:R}
+MASTER_SITES=	GNOME/sources/${PORTNAME:S/gnome-pty-helper/vte/}/${PORTVERSION:R}
 DISTNAME=	vte-${PORTVERSION}
 PKGNAMESUFFIX?=	3
 DIST_SUBDIR=	gnome3
 
-MAINTAINER?=	gnome@FreeBSD.org
-COMMENT?=	Gtk 3 based terminal widget with accessibility and I18N support
+MAINTAINER=	gnome@FreeBSD.org
+COMMENT?=	Terminal widget with improved accessibility and I18N support
 
-USE_XZ=		yes
+USES=		tar:xz
 
 .if !defined(REFERENCE_PORT)
 VTE3_SLAVE?=	no
 
-.if ${VTE3_SLAVE}!="yes"
+.if ${VTE3_SLAVE} != yes
+BUILD_DEPENDS+= vapigen:${PORTSDIR}/lang/vala \
+		bash:${PORTSDIR}/shells/bash
 RUN_DEPENDS+=	${LOCALBASE}/libexec/gnome-pty-helper:${PORTSDIR}/x11-toolkits/gnome-pty-helper
 .endif
 
-USES=		bison gettext gmake pathfix pkgconfig
+USES+=		bison gettext gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USE_GNOME?=	gnomeprefix gtk30 ltverhack referencehack introspection:build
+USE_GNOME?=	gnomeprefix gtk30 referencehack introspection:build
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 CONFIGURE_ARGS?=--disable-python \
 		--with-gtk=3.0 \
 		--enable-introspection \
@@ -37,13 +38,9 @@ CONFIGURE_ARGS?=--disable-python \
 		--disable-Bsymbolic \
 		--disable-gnome-pty-helper \
 		--disable-freetypetest
+INSTALL_TARGET=	install-strip
 
-.if !defined(MASTERDIR)
-OPTIONS_DEFINE=	GLX
-GLX_DESC=	Support for DRI/GLX rendering
-.endif
-
-PLIST_SUB=	VERSION=2.90
+PLIST_SUB=	VERSION=2.91
 
 .include <bsd.port.options.mk>
 
@@ -51,14 +48,16 @@ PLIST_SUB=	VERSION=2.90
 EXTRA_PATCHES+=		${FILESDIR}/extra-patch-gnome-pty-helper_gnome-utmp.c
 .endif
 
-.if ${PORT_OPTIONS:MGLX} && !defined(MASTERDIR)
-CONFIGURE_ARGS+=	--with-glX
-USE_GL=			yes
+post-patch:
+.if ${VTE3_SLAVE} != yes
+	@${REINPLACE_CMD} -e 's|-Wno-unused-but-set-variable||g' \
+		${WRKSRC}/src/Makefile.in
 .endif
-
-.if ${VTE3_SLAVE}!=yes
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libvte2_90.so.9
+# borrowed osversion from bsd.ssp.mk
+.if ${OSVERSION} < 1000036 && ${ARCH} == i386
+	@${REINPLACE_CMD} -e 's|-fstack-protector-strong||g; \
+		s|-fstack-protector||g' \
+		${WRKSRC}/configure
 .endif
 
 .include <bsd.port.mk>

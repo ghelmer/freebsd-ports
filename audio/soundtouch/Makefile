@@ -3,6 +3,7 @@
 
 PORTNAME=	soundtouch
 PORTVERSION=	1.8.0
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.surina.net/soundtouch/
 
@@ -13,13 +14,11 @@ LICENSE=	LGPL21
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USE_AUTOTOOLS=	libtoolize aclocal autoheader automake autoconf
-ACLOCAL_ARGS=	-I config/m4
-AUTOMAKE_ARGS=	--add-missing --copy --foreign
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules
 USE_LDCONFIG=	yes
 
-USES=			pathfix
+USES=			autoreconf libtool pathfix
 PATHFIX_MAKEFILEIN=	Makefile.am
 
 OPTIONS_DEFINE=	INTEGER_SAMPLES DOCS
@@ -29,8 +28,6 @@ OPTIONS_DEFINE_i386=	SSE
 INTEGER_SAMPLES_DESC=	Use integer sample format
 INTEGER_SAMPLES_CONFIGURE_ENABLE=	integer-samples
 SSE_CONFIGURE_ENABLE=	x86-optimizations
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \

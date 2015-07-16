@@ -3,23 +3,24 @@
 
 PORTNAME=	nibbleblog
 PORTVERSION=	3.0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/v${PORTVERSION}/
 DISTNAME=	nibbleblogv302
 
 MAINTAINER=	marekholienka@gmail.com
-COMMENT=	A lightweight blog system for general use
+COMMENT=	Lightweight blog system for general use
 
 RUN_DEPENDS=	pear:${PORTSDIR}/devel/pear
 
 OPTIONS_DEFINE=	APACHE LIGHTTPD
 OPTIONS_DEFAULT=	APACHE
 
-USES=		zip
+USES=		cpe zip
 NO_BUILD=	yes
 USE_PHP=	session filter xml simplexml gd
 PKGMESSAGE=	${MASTERDIR}/pkg-message
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
 
 .include <bsd.port.options.mk>
@@ -33,10 +34,6 @@ RUN_DEPENDS+=	lighttpd:${PORTSDIR}/www/lighttpd
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
-	@${CP} -r ${WRKDIR}/${PORTNAME}/ ${STAGEDIR}${WWWDIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
-
-post-install:
-	${CAT} ${PKGMESSAGE}
+	${CP} -r ${WRKDIR}/${PORTNAME}/ ${STAGEDIR}${WWWDIR}
 
 .include <bsd.port.mk>

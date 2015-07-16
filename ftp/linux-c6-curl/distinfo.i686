@@ -1,0 +1,6 @@
+SHA256 (rpm/i686/centos/6.6/curl-7.19.7-37.el6_5.3.i686.rpm) = cf0a982bec1212cc7cbba88aa8329d6ece826ae175c65c1799d614ad326712e5
+SIZE (rpm/i686/centos/6.6/curl-7.19.7-37.el6_5.3.i686.rpm) = 198548
+SHA256 (rpm/i686/centos/6.6/libcurl-7.19.7-37.el6_5.3.i686.rpm) = 4b22a18cdd3771279425911a92adb70522a8e4681e83a04fb567b4aa1a469092
+SIZE (rpm/i686/centos/6.6/libcurl-7.19.7-37.el6_5.3.i686.rpm) = 176280
+SHA256 (rpm/i686/centos/6.6/curl-7.19.7-37.el6_5.3.src.rpm) = 0beb826caead2e6b1d3993e5c9d600dc68d2be83e6558b6b702264ab3cb6732c
+SIZE (rpm/i686/centos/6.6/curl-7.19.7-37.el6_5.3.src.rpm) = 2108264

@@ -14,8 +14,11 @@
 %%PORTNAME%%/bin/ossec-control
 %%PORTNAME%%/bin/ossec-execd
 %%PORTNAME%%/bin/ossec-logcollector
+%%PORTNAME%%/bin/ossec-lua
+%%PORTNAME%%/bin/ossec-luac
 %%PORTNAME%%/bin/ossec-syscheckd
 %%PORTNAME%%/bin/util.sh
+@group ossec
 %%PORTNAME%%/etc/shared/cis_debian_linux_rcl.txt
 %%PORTNAME%%/etc/shared/cis_rhel_linux_rcl.txt
 %%PORTNAME%%/etc/shared/cis_rhel5_linux_rcl.txt
@@ -27,7 +30,9 @@
 %%PORTNAME%%/etc/shared/win_applications_rcl.txt
 @sample %%PORTNAME%%/etc/ossec.conf.sample
 %%PORTNAME%%/etc/internal_options.conf
+@owner ossec
 %%PORTNAME%%/logs/ossec.log
+@owner
 %%PORTNAME%%/agentless/main.exp
 %%PORTNAME%%/agentless/sshlogin.exp
 %%PORTNAME%%/agentless/ssh_asa-fwsmconfig_diff
@@ -40,20 +45,25 @@
 %%PORTNAME%%/agentless/ssh.exp
 %%PORTNAME%%/agentless/register_host.sh
 %%PORTNAME%%/agentless/su.exp
-@dirrmtry %%PORTNAME%%/agentless
-@dirrmtry %%PORTNAME%%/active-response/bin
-@dirrmtry %%PORTNAME%%/active-response
-@dirrmtry %%PORTNAME%%/etc/shared
-@dirrmtry %%PORTNAME%%/etc/
-@dirrmtry %%PORTNAME%%/var/run
-@dirrmtry %%PORTNAME%%/var
-@dirrmtry %%PORTNAME%%/queue/syscheck
-@dirrmtry %%PORTNAME%%/queue/rids
-@dirrmtry %%PORTNAME%%/queue/ossec
-@dirrmtry %%PORTNAME%%/queue/diff
-@dirrmtry %%PORTNAME%%/queue/alerts
-@dirrmtry %%PORTNAME%%/queue
-@dirrmtry %%PORTNAME%%/logs
-@dirrmtry %%PORTNAME%%/bin
-@dirrmtry %%PORTNAME%%/.ssh
-@dirrmtry %%PORTNAME%%
+@dir %%PORTNAME%%/agentless
+@dir %%PORTNAME%%/active-response/bin
+@dir %%PORTNAME%%/active-response
+@dir %%PORTNAME%%/etc/shared
+@dir %%PORTNAME%%/etc
+@dir %%PORTNAME%%/tmp
+@dir %%PORTNAME%%/var/run
+@dir %%PORTNAME%%/var
+@dir %%PORTNAME%%/queue/syscheck
+@dir %%PORTNAME%%/queue/rids
+@owner ossec
+@dir %%PORTNAME%%/queue/ossec
+@dir %%PORTNAME%%/queue/diff
+@owner
+@dir %%PORTNAME%%/queue/alerts
+@dir %%PORTNAME%%/queue
+@dir %%PORTNAME%%/logs
+@dir %%PORTNAME%%/bin
+@owner ossec
+@dir %%PORTNAME%%/.ssh
+@owner
+@dir %%PORTNAME%%

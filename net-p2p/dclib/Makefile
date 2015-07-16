@@ -3,42 +3,36 @@
 
 PORTNAME=	dclib
 PORTVERSION=	0.3.23
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/wxdcgui/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Direct connect interface library for valknut
-
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
 
 WRKSRC=	${WRKDIR}/${DISTNAME}
 
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
+USES=		jpeg libtool pathfix tar:bzip2
 USE_GNOME=	libxml2
+USE_LDCONFIG=	yes
+USE_OPENSSL=	yes
 
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${OSVERSION} >= 1000015
 EXTRA_PATCHES=	${FILESDIR}/extra-dclib-core_cssl.cpp
 .endif
 
-post-extract:
-	${CHMOD} 0755 ${WRKSRC}/admin/install-sh
-
 post-patch:
-#	${REINPLACE_CMD} -e 's|-O2 ||g; s/-pedantic //g' \
-#		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
-	${REINPLACE_CMD} -e 's|$$(libdir)/pkgconfig|${PREFIX}/libdata/pkgconfig|g' \
-	    ${WRKSRC}/Makefile.am ${WRKSRC}/Makefile.in
-	${FIND} ${WRKSRC} -name "Makefile.*" | ${XARGS} \
+	${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} \
 	    ${REINPLACE_CMD} -e 's|dclib-0.3/||g'
 	${REINPLACE_CMD} -e 's|-0.3||g' ${WRKSRC}/dclib.pc.in
 	${REINPLACE_CMD} -e 's|-D_XOPEN_SOURCE=500||g; \
-	    s|-D_BSD_SOURCE||g' ${WRKSRC}/configure ${WRKSRC}/configure.in
+	    s|-D_BSD_SOURCE||g' ${WRKSRC}/configure
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

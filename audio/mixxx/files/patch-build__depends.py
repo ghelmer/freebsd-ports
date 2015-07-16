@@ -77,15 +77,14 @@
 -            build.env.Append(LIBPATH=['/usr/lib/',
 -                                      '/usr/local/lib',
 -                                      '/usr/X11R6/lib'])
--            build.env.Append(LIBS='pthread')
+             build.env.Append(LIBS='pthread')
 +            build.env.Append(CPPPATH=['%%LOCALBASE%%/include/portaudio2',
 +                                      '%%LOCALBASE%%/include/qt4',
 +                                      '%%LOCALBASE%%/include'])
 +            build.env.Append(LIBPATH=['%%LOCALBASE%%/lib/portaudio2',
 +                                      '%%LOCALBASE%%/lib/qt4',
 +                                      '%%LOCALBASE%%/lib'])
-+            build.env.Append(LINKFLAGS=['%%LOCALBASE%%/lib/portaudio2/libportaudio.so',
-+                                        '-Wl,-rpath,%%LOCALBASE%%/lib/portaudio2',
++            build.env.Append(LINKFLAGS=['%%LOCALBASE%%/lib/libportaudio.so',
 +                                        '-Wl,-rpath,%%LOCALBASE%%/lib/qt4',
 +                                        '-Wl,-rpath,%%LOCALBASE%%/lib'])
              # why do we need to do this on OpenBSD and not on Linux?  if we

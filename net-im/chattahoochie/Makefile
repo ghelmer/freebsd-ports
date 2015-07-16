@@ -2,11 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	chattahoochie
-PORTVERSION=	1.8
+PORTVERSION=	1.9
 CATEGORIES=	net-im
 MASTER_SITES=	http://www.mammothcheese.ca/
 
 MAINTAINER=	jimmy@mammothcheese.ca
 COMMENT=	Small group plain-text chat server
+
+MAKE_ENV=	INSTALL_MAN="${INSTALL_MAN}" INSTALL_PROGRAM="${INSTALL_PROGRAM}" \
+		INSTALL_SCRIPT="${INSTALL_SCRIPT}"
 
 .include <bsd.port.mk>

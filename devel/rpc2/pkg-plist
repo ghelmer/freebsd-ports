@@ -1,4 +1,3 @@
-@exec mkdir -p %D/share/rpc2
 bin/rp2gen
 include/rpc2/errors.h
 include/rpc2/multi.h
@@ -8,13 +7,12 @@ include/rpc2/se.h
 include/rpc2/secure.h
 include/rpc2/sftp.h
 lib/librpc2.a
-lib/librpc2.la
 lib/librpc2.so
-lib/librpc2.so.9
+lib/librpc2.so.5
+lib/librpc2.so.5.4.5
 lib/libse.a
-lib/libse.la
 lib/libse.so
-lib/libse.so.9
+lib/libse.so.5
+lib/libse.so.5.4.5
 libdata/pkgconfig/rpc2.pc
-@dirrm share/rpc2
-@dirrm include/rpc2
+@dir share/rpc2

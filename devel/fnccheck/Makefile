@@ -2,7 +2,7 @@
 
 PORTNAME=	fnccheck
 PORTVERSION=	3.2.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	FunctionCheck-${PORTVERSION}
@@ -13,16 +13,14 @@ COMMENT=	Profiling library/utilities for C/C++ programs
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	gnulibiberty>0:${PORTSDIR}/devel/gnulibiberty \
-		libbfd>0:${PORTSDIR}/devel/libbfd
+LIB_DEPENDS=	libbfd.so:${PORTSDIR}/devel/libbfd
 
-USE_AUTOTOOLS=	libtoolize aclocal automake autoconf
-LIBTOOLIZE_ARGS=--force
-AUTOMAKE_ARGS=	--force-missing --add-missing --foreign
+USES=		autoreconf libtool
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -pthread
+LIBS+=		-L${LOCALBASE}/lib
 
 STRIP=		# none
 
@@ -30,15 +28,9 @@ INFO=		libfc
 
 post-patch:
 	@${FIND} ${WRKSRC} -name "Makefile.am" | ${XARGS} ${REINPLACE_CMD} -e \
-		's|-ldl -lpthread|| ; \
-		 s|-lbfd$$|-lbfd -liberty| ; \
+		's|-ldl|| ; \
 		 s|-Wall -O3|-Wall|'
 	@${REINPLACE_CMD} -e \
 		'/^SUBDIRS/s|test||' ${WRKSRC}/Makefile.am
-
-# XXX: work around an issue with automake-1.13 erroring out on a
-#      non-existent m4 directory before libtoolize creates it
-pre-configure::
-	@${MKDIR} ${WRKSRC}/m4
 
 .include <bsd.port.mk>

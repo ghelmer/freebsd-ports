@@ -331,9 +331,9 @@ lib/nml/weak.cmx
 lib/nml/weak.ml
 lib/nml/weak.mli
 lib/nml/weak.p.cmx
-%%DOCSDIR%%/Changes
-%%DOCSDIR%%/LICENSE
-%%DOCSDIR%%/README
+%%PORTDOCS%%%%DOCSDIR%%/Changes
+%%PORTDOCS%%%%DOCSDIR%%/LICENSE
+%%PORTDOCS%%%%DOCSDIR%%/README
 %%DATADIR%%/contrib/emacs/Makefile
 %%DATADIR%%/contrib/emacs/README
 %%DATADIR%%/contrib/emacs/inf-n.el
@@ -341,11 +341,3 @@ lib/nml/weak.p.cmx
 %%DATADIR%%/contrib/emacs/n-font.el
 %%DATADIR%%/contrib/emacs/n.el
 %%DATADIR%%/contrib/vim/nml.vim
-@dirrm %%DATADIR%%/contrib/vim
-@dirrm %%DATADIR%%/contrib/emacs
-@dirrm %%DATADIR%%/contrib
-@dirrm %%DATADIR%%
-@dirrm %%DOCSDIR%%
-@dirrm lib/nml/threads
-@dirrm lib/nml/caml
-@dirrm lib/nml

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	doclifter
-PORTVERSION=	2.13
-PORTREVISION=	1
+PORTVERSION=	2.15
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.catb.org/~esr/doclifter/
 
@@ -12,7 +11,7 @@ COMMENT=	Translates documents written in troff macros to DocBook
 
 RUN_DEPENDS+=	python2:${PORTSDIR}/lang/python2
 
-USE_PYTHON=	2
+USES=		python:2
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/doclifter \

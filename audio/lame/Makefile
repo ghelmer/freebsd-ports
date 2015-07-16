@@ -3,14 +3,14 @@
 
 PORTNAME=	lame
 PORTVERSION=	3.99.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/3.99
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Fast MP3 encoder kit
 
-USES=		gmake iconv libtool:keepla
+USES=		gmake iconv libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-nasm --enable-mp3rtp --disable-gtktest
@@ -18,6 +18,8 @@ CONFIGURE_ARGS=	--enable-nasm --enable-mp3rtp --disable-gtktest
 RESTRICTED=	patent issues, see http://www.mp3licensing.com/
 
 DOC_FILES=	API LICENSE README TODO USAGE
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

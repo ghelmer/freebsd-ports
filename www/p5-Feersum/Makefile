@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	Feersum
-PORTVERSION=	1.400
+PORTVERSION=	1.401
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	CPAN:STASH
+MASTER_SITE_SUBDIR=	CPAN:AUDREYT
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	gblach@FreeBSD.org
-COMMENT=	A PSGI engine for Perl based on EV/libev
+MAINTAINER=	perl@FreeBSD.org
+COMMENT=	PSGI engine for Perl based on EV/libev
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
@@ -27,5 +27,8 @@ TEST_DEPENDS=	p5-AnyEvent>=5.26.1:${PORTSDIR}/devel/p5-AnyEvent \
 
 USES=		perl5
 USE_PERL5=	configure
+
+pre-install:
+	@${STRIP_CMD} ${WRKSRC}/blib/arch/auto/Feersum/Feersum.so
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gwyddion
-PORTVERSION=	2.36
+PORTVERSION=	2.41
 CATEGORIES=	science graphics
 MASTER_SITES=	SF
 
@@ -10,8 +10,11 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Gtk2 based SPM data visualization and analysis tool
 
 LICENSE=	GPLv2 # (or later)
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
+LIB_DEPENDS=	libminizip.so:${PORTSDIR}/archivers/minizip \
+		libcfitsio.so:${PORTSDIR}/astro/cfitsio \
+		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
 		libfftw3.so:${PORTSDIR}/math/fftw3 \
 		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
 
@@ -19,6 +22,7 @@ USES=		desktop-file-utils gettext gmake libtool pathfix pkgconfig \
 		shared-mime-info tar:xz
 USE_GNOME=	gconf2 gtk20 libxml2
 USE_GL=		glu
+USE_XORG=	xmu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules --disable-gtk-doc \
 		--without-kde4-thumbnailer
@@ -37,12 +41,13 @@ OPTIONS_SUB=		yes
 
 PERL_USES=		perl5
 PERL_CONFIGURE_WITH=	perl
-PYTHON_USE=		GNOME=pygtksourceview PYTHON=yes
-PYTHON_CONFIGURE_ENABLE= 	pygwy
+PYTHON_USES=		python
+PYTHON_USE=		gnome=pygtksourceview
+PYTHON_CONFIGURE_ENABLE=	pygwy
 PYTHON_CONFIGURE_WITH=	gtksourceview python
-RUBY_USE=		RUBY=yes
+RUBY_USE=		ruby=yes
 RUBY_CONFIGURE_WITH=	ruby
-UNIQUE_DESC=		Remote controle backend support
+UNIQUE_DESC=		Remote control backend support
 UNIQUE_LIB_DEPENDS=	libunique-1.0.so:${PORTSDIR}/x11-toolkits/unique
 UNIQUE_CONFIGURE_WITH=	unique
 

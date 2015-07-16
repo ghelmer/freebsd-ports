@@ -9,8 +9,11 @@ MASTER_SITES=	http://www.marcuscom.com/pam_helper/
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Authenticate applications requiring PAM services
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 uidfix
 
 PLIST_FILES=	bin/pam_helper
+
+post-patch:
+	@${REINPLACE_CMD} '/BINOWN=/d ; s,$${MINUSLPAM},-lpam,' ${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

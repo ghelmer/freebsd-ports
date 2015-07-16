@@ -15,10 +15,10 @@ _INCLUDE_USES_READLINE_MK=	yes
 readline_ARGS=	port
 .endif
 
-.if defined(readline_ARGS) && ${readline_ARGS} == port
+.if ${readline_ARGS} == port
 LIB_DEPENDS+=		libreadline.so.6:${PORTSDIR}/devel/readline
 CPPFLAGS+=		-I${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib -lreadline
+LDFLAGS+=		-L${LOCALBASE}/lib
 .endif
 
 .endif

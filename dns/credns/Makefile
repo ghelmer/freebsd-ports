@@ -1,9 +1,9 @@
-# Created by: jaap
+# Created by: Jaap Akkerhuis <jaap@NLnetLabs.nl>
 # $FreeBSD$
 
 PORTNAME=	credns
 PORTVERSION=	0.2.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	dns security
 MASTER_SITES=	http://www.nlnetlabs.nl/downloads/credns/
 
@@ -11,6 +11,7 @@ MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	Verifier performing validation in the DNS notify/transfer-chain
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_RC_SUBR=	credns
 
@@ -27,11 +28,9 @@ CONFIGURE_ARGS=	--with-user=${CREDNSUSER} \
 		--with-dbfile=${CREDNSDBDIR}/nsd.db \
 		--with-pidfile=${CREDNSRUNDIR}/nsd.pid
 
-SUB_LIST=	CREDNSUSER=${USERS} \
+PLIST_SUB=	CREDNSUSER=${USERS} \
 		CREDNSGROUP=${GROUPS} \
 		CREDNSDBDIR=${CREDNSDBDIR} \
-		CREDNSRUNDIR=${CREDNSRUNDIR}
-PLIST_SUB=	CREDNSDBDIR=${CREDNSDBDIR} \
 		CREDNSRUNDIR=${CREDNSRUNDIR}
 
 USE_OPENSSL=	yes
@@ -39,11 +38,10 @@ USE_OPENSSL=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	ROOT_SERVER IPV6 CHECKING MMAP MAXIPS DOCS
-OPTIONS_DEFAULT=	IPV6
 
 ROOT_SERVER_DESC=	Credns as proxy for a (local) root
 CHECKING_DESC=	Internal runtime checks
-MMAP_DESC=	Use mmap instead of malloc(experimental)
+MMAP_DESC=	Use mmap() instead of malloc() (experimental)
 MAXIPS_DESC=	Raise max-ips from 8 to ${NSDMAX_IPS}
 
 ROOT_SERVER_CONFIGURE_ENABLE=	root-server
@@ -53,6 +51,9 @@ MMAP_CONFIGURE_ENABLE=		mmap
 MAXIPS_CONFIGURE_ON=		--with-max-ips=${NSDMAX_IPS}
 
 post-install:
+.for f in credns credns-checkconf credns-notify credns-patch credns-xfer
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/${f}
+.endfor
 	${INSTALL_DATA} ${WRKSRC}/credns.conf.sample \
 		${STAGEDIR}${PREFIX}/etc/credns/credns.conf.sample
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

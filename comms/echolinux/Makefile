@@ -3,12 +3,12 @@
 
 PORTNAME=	echolinux
 PORTVERSION=	0.17a
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/cqinet/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio Echolink client for UNIX
 
 LICENSE=	GPLv2
@@ -16,12 +16,12 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libforms.so:${PORTSDIR}/x11-toolkits/xforms \
 		libgsm.so:${PORTSDIR}/audio/gsm
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|gcc|$${CC}|' -e 's|/usr/include/X11|$${LOCALBASE}/include|' \
-		-e 's|-o echogui -L/usr/X11R6/lib -lX11 -lXpm -lforms -lm -lpthread|$${CFLAGS} -o echogui -L$${LOCALBASE}/lib -lX11 -lXpm -lforms -lm ${PTHREAD_LIBS}|' \
-		-e 's|CARGS|CFLAGS|' -e 's|= -DNodeFont=FL_TINY_SIZE|+= ${PTHREAD_CFLAGS} -DNodeFont=FL_TINY_SIZE|' \
+		-e 's|-o echogui -L/usr/X11R6/lib|$${CFLAGS} -o echogui -L$${LOCALBASE}/lib|' \
+		-e 's|CARGS|CFLAGS|' -e 's|= -DNodeFont=FL_TINY_SIZE|+= -DNodeFont=FL_TINY_SIZE|' \
 		-e 's|/usr/local/bin/|${STAGEDIR}${PREFIX}/bin/|' \
 		${WRKSRC}/echogui/Makefile
 	@${REINPLACE_CMD} -e 's|<linux/soundcard.h>|<sys/soundcard.h>|' \

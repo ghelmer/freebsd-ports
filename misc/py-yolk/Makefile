@@ -5,8 +5,7 @@ PORTNAME=	yolk
 PORTVERSION=	0.4.3
 PORTREVISION=	0
 CATEGORIES=	misc python
-MASTER_SITES=	${MASTER_SITE_CHEESESHOP}
-MASTER_SITE_SUBDIR=	source/y/${PORTNAME}
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -14,12 +13,10 @@ COMMENT=	Command-line tool for querying PyPI and Python packages installed
 
 LICENSE=	BSD3CLAUSE
 
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=	EXAMPLES
-
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
 
 .include <bsd.port.options.mk>
 
@@ -37,7 +34,7 @@ post-install:
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} == 271 || ${PYTHON_REL} == 320
+.if ${PYTHON_REL} == 2701 || ${PYTHON_REL} == 3200
 IGNORE=	does not work with ${PYTHON_VERSION} (see http://goo.gl/SZpDN)
 .endif
 

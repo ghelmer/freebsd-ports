@@ -3,10 +3,9 @@
 
 PORTNAME=	websh
 PORTVERSION=	3.6.0b5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	www tcl
-MASTER_SITES=	${MASTER_SITE_APACHE}
-MASTER_SITE_SUBDIR=tcl/${PORTNAME}/source
+MASTER_SITES=	APACHE/tcl/${PORTNAME}/source
 EXTRACT_SUFX=	-src.tar.gz
 
 MAINTAINER=	mi@aldan.algebra.com
@@ -16,7 +15,7 @@ MAKE_JOBS_UNSAFE=	yes
 
 TCL_DVER=	${TCL_VER:S/.//}
 
-USES=		gmake tcl:84,85
+USES=		gmake tcl:84,85,86
 USE_AUTOTOOLS=	autoconf
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src/unix
 CONFIGURE_ARGS+=--with-tclinclude=${TCL_INCLUDEDIR} \
@@ -26,6 +25,7 @@ SUB_FILES=	httpd.conf pkgIndex.tcl pkg-message
 SUB_LIST+=	TCL_DVER=${TCL_DVER} WS_VER=${PORTVERSION}
 SUB_LIST+=	APACHEETCDIR=${APACHEETCDIR} APACHEMODDIR=${APACHEMODDIR}
 PLIST_SUB+=	TCL_DVER=${TCL_DVER}
+PLIST_SUB+=	NOMINORVERSION=${TCL_VER:C/8.[345]//:C/^..*/"@comment "/}
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -56,7 +56,7 @@ post-configure:
 		-e 's,-DPACKAGE_[^=]*=."[^"]*",,g' ${WRKSRC}/Makefile
 
 post-build test:
-	${SETENV} LANG=C ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
+	${SETENV} LANG=C HOME=${WRKDIR} ${MAKE_CMD} -C ${WRKSRC} test | ${AWK} '\
 		/Failed/ && $$NF {failed=1}	\
 		END {exit failed}	\
 		{print}'
@@ -68,12 +68,21 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC:H:H}/doc/mod_websh/conf/websh.conf	\
 		${STAGEDIR}${PREFIX}/etc/websh.conf.dist
 	${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}
-	${INSTALL_DATA} ${WRKSRC}/mod_websh${PORTVERSION}.so \
+	${INSTALL_LIB} ${WRKSRC}/mod_websh${PORTVERSION}.so \
 		${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_websh.so
-	${INSTALL_DATA} ${WRKSRC}/libwebsh${TCL_DVER}.so.1 \
-	    	${STAGEDIR}${PREFIX}/lib
-	${LN} -sf ${PREFIX}/lib/libwebsh${TCL_DVER}.so.1 \
-		${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so
+	if [ -f ${WRKSRC}/libwebsh${TCL_DVER}.so.1.0 ]; then	\
+		${INSTALL_LIB} ${WRKSRC}/libwebsh${TCL_DVER}.so.1.0 \
+			${STAGEDIR}${PREFIX}/lib;	\
+		${LN} -sf libwebsh${TCL_DVER}.so.1.0	\
+			${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so.1;	\
+		${LN} -sf libwebsh${TCL_DVER}.so.1.0	\
+			${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so;	\
+	else	\
+		${INSTALL_LIB} ${WRKSRC}/libwebsh${TCL_DVER}.so.1 \
+			${STAGEDIR}${PREFIX}/lib;	\
+		${LN} -sf libwebsh${TCL_DVER}.so.1	\
+			${STAGEDIR}${PREFIX}/lib/libwebsh${TCL_DVER}.so;	\
+	fi
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC:H:H}/doc/mod_websh/htdocs/*.ws3	\
 		${WRKSRC:H:H}/doc/mod_websh/htdocs/*.whtml		\

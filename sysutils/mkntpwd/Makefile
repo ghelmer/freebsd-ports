@@ -4,17 +4,16 @@
 PORTNAME=	mkntpwd
 PORTVERSION=	1.0
 CATEGORIES=	sysutils net
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	ldaputils/Contrib/mkntpwd
+MASTER_SITES=	SF/ldaputils/Contrib/mkntpwd
 DISTNAME=	${PORTNAME}
 
 MAINTAINER=	pcTA@cs.nctu.edu.tw
-COMMENT=	A utility to create Samba password hashes
+COMMENT=	Utility to create Samba password hashes
 
 NO_WRKSUBDIR=	yes
 PLIST_FILES=	bin/mkntpwd
 
-LICENSE=	GPLv2 BSD
+LICENSE=	GPLv2 MIT
 LICENSE_COMB=	multi
 
 do-install:

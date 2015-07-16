@@ -24,13 +24,13 @@ RUN_DEPENDS=	${LOCALBASE}/bin/rox:${PORTSDIR}/x11-fm/rox-filer \
 WRKSRC=		${WRKDIR}/XDG-Menu
 DATADIR=	${PREFIX}/apps/XDG-Menu
 
-USE_PYTHON=	yes
+USES=		python
 INSTALLS_ICONS=	yes
 
 PORTDOCS=	*
 
 DESKTOP_ENTRIES="XDG-Menu" "" ${PORTNAME} \
-		"${PORTNAME}" "Application;System;" ""
+		"${PORTNAME}" "System;" ""
 
 OPTIONS_DEFINE=	DOCS ROX
 ROX_DESC=	Enable ROX panel applet support

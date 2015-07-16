@@ -3,10 +3,9 @@
 
 PORTNAME=	slatec
 PORTVERSION=	4.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
-MASTER_SITES=	NL:slatec,blas
-MASTER_SITE_SUBDIR=	slatec/:slatec blas/:blas
+MASTER_SITES=	NL/slatec/:slatec NL/blas/:blas
 # Get d1mach.f, i1mach.f, r1mach.f from BLAS, rather than from Slatec:
 # See Netlib FAQ #2.17: http://netlib.org/misc/faq.html#2.17
 DISTFILES=	guide:slatec slatec_chk.tgz:slatec slatec_src.tgz:slatec \
@@ -17,7 +16,7 @@ EXTRACT_ONLY=	slatec_src.tgz slatec_chk.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SLATEC Common Mathematical Library
 
-USES=		fortran
+USES=		fortran uidfix
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/src
 SHLIB_MAJOR=	1

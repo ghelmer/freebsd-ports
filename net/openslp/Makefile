@@ -3,15 +3,16 @@
 
 PORTNAME=	openslp
 PORTVERSION=	1.2.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/OpenSLP/${PORTVERSION}
 
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Open-source implementation of the Service Location Protocol
 
-USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		libtool
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/openslp \
@@ -23,15 +24,8 @@ OPTIONS_DEFINE=	SLP_SECURITY ASYNC_API DOCS
 SLP_SECURITY_DESC=	Turn on SLPv2 security support
 ASYNC_API_DESC=		Enable asynchronous communication API
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSLP_SECURITY}
-CONFIGURE_ARGS+=	--enable-slpv2-security
-.endif
-
-.if ${PORT_OPTIONS:MASYNC_API}
-CONFIGURE_ARGS+=	--enable-async-api
-.endif
+SLP_SECURITY_CONFIGURE_ENABLE=	slpv2-security
+ASYNC_API_CONFIGURE_ENABLE=	async-api
 
 post-extract:
 	@(cd ${WRKSRC}; \
@@ -40,12 +34,9 @@ post-extract:
 
 post-install:
 .for FILE in slp.conf slp.reg slp.spi
-	${INSTALL_DATA} ${WRKSRC}/etc/${FILE} ${STAGEDIR}${PREFIX}/etc/openslp/${FILE}.default
+	${INSTALL_DATA} ${WRKSRC}/etc/${FILE} ${STAGEDIR}${PREFIX}/etc/openslp/${FILE}.sample
 .endfor
-
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${INSTALL_WRKSRC}/doc; \
-		${FIND} . -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/\{} \; ;\
-		${FIND} . -type f -exec ${INSTALL_DATA} \{} ${STAGEDIR}${DOCSDIR}/\{} \;)
+	(cd ${INSTALL_WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

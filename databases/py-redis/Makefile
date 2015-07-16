@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-PORTVERSION=	2.10.1
-PORTREVISION=	1
+PORTVERSION=	2.10.3
 CATEGORIES=	databases python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -18,15 +17,12 @@ DOCGEN=		${LOCALBASE}/bin/sphinx-apidoc
 
 HIREDIS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hiredis>0:${PORTSDIR}/databases/py-hiredis
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYTHON_CONCURRENT_INSTALL=yes
+USES=		python
+USE_PYTHON=	distutils autoplist concurrent
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	andymccurdy
 GH_PROJECT=	${PORTNAME}-py
-GH_COMMIT=	e7589d7
 
 .include <bsd.port.options.mk>
 

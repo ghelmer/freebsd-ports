@@ -2,24 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	freeminer
-PORTVERSION=	0.4.9.3
-PORTREVISION=	4
+PORTVERSION=	0.4.10.4
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Open source sandbox game inspired by Minecraft
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21 GPLv3 # or later
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME}
-GH_COMMIT=	cfd8282
 
-USES=		cmake
+USES=		compiler:c++11-lib cmake
 CMAKE_ARGS=	-DCUSTOM_MANDIR="${PREFIX}/man" \
-		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc"
+		-DCUSTOM_EXAMPLE_CONF_DIR="${PREFIX}/etc" \
+		-DRUN_IN_PLACE=0
 
 PORTDATA=	*
 PORTDOCS=	*
@@ -38,9 +39,9 @@ LUAJIT_DESC=	LuaJIT support
 
 CLIENT_CMAKE_ON=	-DBUILD_CLIENT=1
 CLIENT_CMAKE_OFF=	-DBUILD_CLIENT=0
-CLIENT_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-			libpng.so:${PORTSDIR}/graphics/png \
+CLIENT_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 			libIrrlicht.so:${PORTSDIR}/x11-toolkits/irrlicht
+CLIENT_USES=		jpeg
 CLIENT_USE=		GL=gl XORG=x11
 SERVER_CMAKE_ON=	-DBUILD_SERVER=1
 SERVER_CMAKE_OFF=	-DBUILD_SERVER=0
@@ -62,6 +63,10 @@ FREETYPE_LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 900000
+BROKEN=		does not build on 8.x (lack of long long support)
+.endif
 
 .if ${PORT_OPTIONS:MCLIENT} && ${PORT_OPTIONS:MSOUND}
 USES+=		openal
@@ -85,7 +90,7 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-irrlichtdepend
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/cmake/Modules/*.cmake
-	@${REINPLACE_CMD} -e 's|-lpthread|${PTHREAD_LIBS}|' \
+	@${REINPLACE_CMD} -e 's|-lpthread|-pthread|' \
 		${WRKSRC}/src/CMakeLists.txt
 .if ! ${PORT_OPTIONS:MLUAJIT}
 	@${REINPLACE_CMD} -e '/find_/ s|LUA_|NO&|g' \
@@ -94,5 +99,7 @@ post-patch:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/games
+	@${MV} ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.example \
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
 
 .include <bsd.port.mk>

@@ -1,9 +1,7 @@
-# Created by: Jason Harris <jharris@widomaker.com>
 # $FreeBSD$
 
 PORTNAME=	coreutils
-PORTVERSION=	8.22
-PORTREVISION=	2
+PORTVERSION=	8.23
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	GNU
 
@@ -13,7 +11,7 @@ COMMENT=	Free Software Foundation core utilities
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS=	id-utils-[0-9]* linux-gid-[0-9]*
+CONFLICTS=	idutils-[0-9]*
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -26,28 +24,24 @@ CONFIGURE_ENV=	FORCE_UNSAFE_CONFIGURE=1
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
-USES=		gmake iconv perl5 charsetfix tar:xz
+USES=		cpe gmake iconv perl5 charsetfix tar:xz
 USE_PERL5=	build	# build - required for tests and man page generation
 USE_LDCONFIG=	yes
 
 INFO=		coreutils
+CPE_VENDOR=	gnu
 
 OPTIONS_DEFINE=	GMP NLS
 OPTIONS_DEFAULT=NLS
 OPTIONS_SUB=	yes
 NLS_USES=	gettext
-NLS_CONFIGURE_ENABLE=   nls
+NLS_CONFIGURE_ENABLE=	nls
 GMP_LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
 GMP_CONFIGURE_WITH=	gmp
 
-.include <bsd.port.options.mk>
-
-.if ${OSVERSION} >= 800039
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-stty.c
-.endif
-
 post-build:
 	@${REINPLACE_CMD} -e "s/ lib / /g" ${WRKSRC}/Makefile
+	@${TOUCH} ${WRKSRC}/doc/coreutils.info
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/g* \

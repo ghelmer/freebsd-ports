@@ -3,7 +3,7 @@
 
 PORTNAME=	kbiff
 PORTVERSION=	4.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	mail kde
 MASTER_SITES=	SF
 
@@ -12,7 +12,7 @@ COMMENT=	Mail notification utility for KDE with nice features
 
 LICENSE=	GPLv2
 
-USE_KDE4=	automoc4 kdehier kdeprefix kdelibs
+USE_KDE4=	automoc4 kdeprefix kdelibs
 USE_QT4=	corelib dbus gui network svg xml \
 		qmake_build uic_build rcc_build
 USE_PERL5=	build

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	drush
-PORTVERSION=	6.2.0
+PORTVERSION=	6.5.0
 CATEGORIES=	www
 
 MAINTAINER=	dgeo@centrale-marseille.fr
@@ -10,14 +10,11 @@ COMMENT=	Drupal command line and scripting interface
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${LOCALBASE}/share/pear/Console/Table.php:${PORTSDIR}/devel/pear-Console_Table
+RUN_DEPENDS=	pear-Console_Table>0:${PORTSDIR}/devel/pear-Console_Table
 
 NO_BUILD=	yes
 
 GH_ACCOUNT=	${PORTNAME}-ops
-GH_PROJECT=	${PORTNAME}
-GH_TAGNAME=	${PORTVERSION}
-GH_COMMIT=	b1a8edb
 USE_GITHUB=	yes
 
 # set php requirements same as drupal itself
@@ -25,12 +22,9 @@ USE_PHP=	gd pcre session mbstring ctype json hash simplexml dom pdo filter
 WANT_PHP_CLI=	yes
 
 PORTDOCS=	*
-
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-.include <bsd.port.options.mk>
 
 do-configure:
 	@${REINPLACE_CMD} -e 's|XXXDATADIRXXX|${STAGEDIR}${DATADIR}|g' ${WRKSRC}/drush
@@ -42,15 +36,9 @@ do-install:
 	${INSTALL_DATA} drush_logo-black.png drush.php ${STAGEDIR}${DATADIR} && \
 	${INSTALL_SCRIPT} drush drush.complete.sh ${STAGEDIR}${DATADIR} )
 	${LN} -s ${DATADIR}/drush ${STAGEDIR}${PREFIX}/bin/drush
-
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
-		${MKDIR} ${STAGEDIR}${DOCSDIR}
-		( cd ${WRKSRC} && ${INSTALL_MAN} *.md docs/* ${STAGEDIR}${DOCSDIR} )
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-		${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-		( cd ${WRKSRC} && ${INSTALL_MAN} examples/* ${STAGEDIR}${EXAMPLESDIR} )
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	( cd ${WRKSRC} && ${INSTALL_MAN} *.md docs/* ${STAGEDIR}${DOCSDIR} )
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	( cd ${WRKSRC} && ${INSTALL_MAN} examples/* ${STAGEDIR}${EXAMPLESDIR} )
 
 .include <bsd.port.mk>

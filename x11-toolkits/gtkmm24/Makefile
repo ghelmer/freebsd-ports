@@ -4,7 +4,7 @@
 
 PORTNAME=	gtkmm
 PORTVERSION=	2.24.4
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	24
@@ -14,6 +14,8 @@ MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	C++ wrapper for Gtk+
 
 USES+=		tar:xz
+
+PORTSCOUT=	ignore:1
 
 .if !defined(REFERENCE_PORT)
 

@@ -5,13 +5,11 @@ PORTNAME=	Text_password
 PORTVERSION=	1.1.1
 CATEGORIES=	security www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR random password creator
 
 USE_PHP=	yes
-PEAR_AUTOINSTALL=	yes
+USES=	pear
 WRKSRC=		${WRKDIR}/Text_Password-${PORTVERSION}
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Compress-Raw-Bzip2
-PORTVERSION=	2.064
+PORTVERSION=	2.068
+PORTREVISION=	1
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PMQS
@@ -18,5 +19,8 @@ TEST_DEPENDS=	p5-Test-Pod>=1:${PORTSDIR}/devel/p5-Test-Pod
 
 USE_PERL5=	configure
 USES=		perl5
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Compress/Raw/Bzip2/Bzip2.so
 
 .include <bsd.port.mk>

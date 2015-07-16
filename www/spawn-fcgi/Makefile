@@ -2,15 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	spawn-fcgi
-PORTVERSION=	1.6.3
+PORTVERSION=	1.6.4
+PORTREVISION=	2
 CATEGORIES=	www
-MASTER_SITES=	http://www.lighttpd.net/download/
+MASTER_SITES=	http://download.lighttpd.net/spawn-fcgi/releases-1.6.x/
 
-MAINTAINER=	genserg@hotmail.com
-COMMENT=	spawn-fcgi is used to spawn fastcgi applications
+MAINTAINER=	rsimmons0@gmail.com
+COMMENT=	Spawns fastcgi applications
 
-USE_BZIP2=	yes
-GNU_CONFIGURE=	yes
+USES=		cmake
+CMAKE_ARGS=	-DCMAKE_MAN_DIR:string=${MANPREFIX}/man
 USE_RC_SUBR=	spawn-fcgi
 
 CFLAGS+=	-I${LOCALBASE}/include

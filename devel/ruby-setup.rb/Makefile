@@ -4,8 +4,7 @@
 PORTNAME=	setup.rb
 PORTVERSION=	3.4.1
 CATEGORIES=	devel ruby
-MASTER_SITES=	http://www.loveruby.net/archive/%SUBDIR%/
-MASTER_SITE_SUBDIR=	${PORTNAME:R}
+MASTER_SITES=	http://www.loveruby.net/archive/${PORTNAME:R}/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME:R}-${PORTVERSION}
 DIST_SUBDIR=	ruby
@@ -23,6 +22,8 @@ RUBY_SHEBANG_FILES=	${_SCRIPTS:S:^:${WRKSRC}/ruby-:}
 
 DOCS_EN=	doc.en/* NEWS.en Usage_en.txt README.en ChangeLog TODO
 DOCS_JA=	doc.ja/* NEWS.ja Usage_ja.txt README.ja
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 .for f in ${_SCRIPTS}

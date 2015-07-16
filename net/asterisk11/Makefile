@@ -1,36 +1,35 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	11.10.2
-PORTREVISION=	3
+PORTVERSION=	11.18.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/asterisk/ \
 		http://downloads.asterisk.org/pub/telephony/asterisk/old-releases/
 PKGNAMESUFFIX=	11
 
-MAINTAINER=	flo@FreeBSD.org
-COMMENT=	An Open Source PBX and telephony toolkit
+MAINTAINER=	madpilot@FreeBSD.org
+COMMENT=	Open Source PBX and telephony toolkit
 
 LIB_DEPENDS=	libspeex.so:${PORTSDIR}/audio/speex \
 		libnewt.so:${PORTSDIR}/devel/newt \
 		libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libsqlite3.so:${PORTSDIR}/databases/sqlite3 \
-		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
+		libsqlite3.so:${PORTSDIR}/databases/sqlite3
 RUN_DEPENDS=	mpg123:${PORTSDIR}/audio/mpg123
 
 ONLY_FOR_ARCHS=	i386 amd64 powerpc sparc64
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-gsm=${LOCALBASE} --with-uuid=${LOCALBASE}
 LDFLAGS+=	-L${LOCALBASE}/lib
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/openh323
 CFLAGS+=	-I${LOCALBASE}/include
-USE_GCC=	yes
+USE_CSTD=	gnu89
 USE_GNOME=	libxml2
-USES=		bison gmake
+USE_LDCONFIG=	yes
+USES=		bison cpe gmake
+CPE_VENDOR=	digium
 USE_RC_SUBR=	asterisk
-MAKE_ENV=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}" \
+MAKE_ENV=	PTHREAD_LIBS="-lpthread" \
 		MKDIR="${MKDIR}" \
 		PWLIBDIR=${LOCALBASE}/share/pwlib \
 		OPENH323DIR=${LOCALBASE}/share/openh323 \
@@ -40,12 +39,14 @@ MAKE_ENV=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
 		ASTCFLAGS="${CFLAGS}"
 
 CONFLICTS_BUILD=	linuxthreads-*
-CONFLICTS_INSTALL=	asterisk*-1.4* asterisk*-1.6* asterisk*-1.8*
+CONFLICTS_INSTALL=	asterisk*-1.8* asterisk*-13*
 
-OPTIONS_DEFINE=	VORBIS PGSQL MYSQL RADIUS SNMP FREETDS XMPP SQLITE GSM \
-		CURL SPANDSP EXCHANGE NEWG711 SRTP LUA LDAP OOH323
+OPTIONS_DEFINE=	VORBIS PGSQL MYSQL ODBC RADIUS SNMP FREETDS XMPP SQLITE GSM \
+		CURL SPANDSP EXCHANGE NEWG711 SRTP LUA LDAP OOH323 UUID SYSINFO
+OPTIONS_SINGLE=	COMPILER
+OPTIONS_SINGLE_COMPILER=	GCC BASE
 OPTIONS_DEFAULT=	VORBIS ODBC PGSQL RADIUS SNMP FREETDS \
-		XMPP GSM SQLITE CURL
+		XMPP GSM SQLITE CURL LUA UUID GCC
 
 OPTIONS_DEFINE_i386=	DAHDI
 OPTIONS_DEFINE_amd64=	DAHDI
@@ -56,11 +57,69 @@ OPTIONS_DEFAULT_amd64=	DAHDI
 OPTIONS_DEFAULT_sparc64=	DAHDI
 
 EXCHANGE_DESC?=	Exchange calendar support
-NEWG711_DESC?=	New G711 Codec
+NEWG711_DESC?=	New G711 codec
 SRTP_DESC?=	SecureRTP support
 OOH323_DESC?=	ooh323 support
 DAHDI_DESC?=	DAHDI support
 XMPP_DESC?=	XMPP/GTALK support
+UUID_DESC?=	libuuid support (required for ICE and TURN in RTP)
+SYSINFO_DESC?=	Use devel/libsysinfo to get system information
+GCC_DESC=	Use gcc from ports
+BASE_DESC=	Use base compiler (experimental)
+
+OPTIONS_SUB=	yes
+OOH323_LIB_DEPENDS=	libpt_r.so:${PORTSDIR}/devel/pwlib \
+			libh323_r.so:${PORTSDIR}/net/openh323
+DAHDI_CONFIGURE_ON=	--with-dahdi --with-openr2
+DAHDI_CONFIGURE_OFF=	--without-dahdi --without-openr2
+DAHDI_BUILD_DEPENDS=	libpri>=1.4.10:${PORTSDIR}/misc/libpri \
+			${LOCALBASE}/include/dahdi/user.h:${PORTSDIR}/misc/dahdi
+DAHDI_LIB_DEPENDS=	libpri.so:${PORTSDIR}/misc/libpri \
+			libopenr2.so:${PORTSDIR}/misc/openr2
+ODBC_CONFIGURE_WITH=	unixodbc
+ODBC_CONFIGURE_ON=	--with-ltdl
+ODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC \
+			libltdl.so:${PORTSDIR}/devel/libltdl
+FREETDS_CONFIGURE_ON=	--with-tds=${LOCALBASE}
+FREETDS_CONFIGURE_OFF=	--without-tds
+FREETDS_LIB_DEPENDS=	libsybdb.so:${PORTSDIR}/databases/freetds
+PGSQL_CONFIGURE_WITH=	postgres
+PGSQL_USES=		pgsql
+MYSQL_CONFIGURE_WITH=	mysqlclient
+MYSQL_USE=		MYSQL=yes
+VORBIS_CONFIGURE_WITH=	ogg
+VORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+RADIUS_CONFIGURE_WITH=	radius
+RADIUS_LIB_DEPENDS=	libradiusclient-ng.so:${PORTSDIR}/net/radiusclient
+SNMP_CONFIGURE_WITH=	netsnmp
+SNMP_LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+XMPP_CONFIGURE_WITH=	iksemel
+XMPP_LIB_DEPENDS=	libiksemel.so:${PORTSDIR}/textproc/iksemel
+SQLITE_CONFIGURE_WITH=	sqlite
+SQLITE_LIB_DEPENDS=	libsqlite.so:${PORTSDIR}/databases/sqlite2
+GSM_CONFIGURE_WITH=	gsm
+GSM_LIB_DEPENDS=	libgsm.so:${PORTSDIR}/audio/gsm
+CURL_CONFIGURE_ON=	--with-libcurl
+CURL_CONFIGURE_OFF=	--with-libcurl=no
+CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+SPANDSP_CONFIGURE_WITH=	spandsp
+SPANDSP_LIB_DEPENDS=	libspandsp.so:${PORTSDIR}/comms/spandsp
+EXCHANGE_CONFIGURE_OFF=	--without-neon --without-neon29
+EXCHANGE_LIB_DEPENDS=	libneon.so:${PORTSDIR}/www/neon
+SRTP_CONFIGURE_WITH=	srtp
+SRTP_BUILD_DEPENDS=	libsrtp>=1.4.4:${PORTSDIR}/net/libsrtp
+LUA_CONFIGURE_WITH=	lua
+LUA_USES=		lua:51
+LUA_CFLAGS=		-I${LUA_INCDIR}
+LUA_LDFLAGS=		-L${LUA_LIBDIR}
+LDAP_CONFIGURE_WITH=	ldap
+LDAP_USE=		OPENLDAP=yes
+UUID_LIB_DEPENDS=	libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
+UUID_CONFIGURE_ON=	--with-uuid=${LOCALBASE}
+UUID_CONFIGURE_OFF=	--disable-uuid
+UUID_CONFLICTS=		ossp-uuid-[0-9]*
+SYSINFO_LIB_DEPENDS=	libsysinfo.so:${PORTSDIR}/devel/libsysinfo
+GCC_USE=		GCC=yes
 
 ASTERISK_USER?=		asterisk
 ASTERISK_GROUP?=	asterisk
@@ -81,184 +140,23 @@ PLIST_SUB+=	ASTERISK_USER=${ASTERISK_USER}
 PLIST_SUB+=	ASTERISK_GROUP=${ASTERISK_GROUP}
 PLIST_SUB+=	VARDIR=${VARDIR}
 
-.if ${PORT_OPTIONS:MOOH323}
-PLIST_SUB+=	WITH_OOH323=""
-LIB_DEPENDS+=	libpt_r.so:${PORTSDIR}/devel/pwlib \
-		libh323_r.so:${PORTSDIR}/net/openh323
-.else
-PLIST_SUB+=	WITH_OOH323="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MDAHDI}
-PLIST_SUB+=	WITH_DAHDI=""
-CONFIGURE_ARGS+=	--with-dahdi --with-openr2
-BUILD_DEPENDS+=	libpri>=1.4.10:${PORTSDIR}/misc/libpri \
-		${LOCALBASE}/include/dahdi/user.h:${PORTSDIR}/misc/dahdi
-LIB_DEPENDS+=	libpri.so:${PORTSDIR}/misc/libpri\
-		libopenr2.so:${PORTSDIR}/misc/openr2
-.else
-PLIST_SUB+=	WITH_DAHDI="@comment "
-CONFIGURE_ARGS+=	--without-dahdi --without-openr2
-.endif
-
-#
-# WITH_FREETDS, WITH_PGSQL and WITH_SQLITE can also be added to MAKE_ENV
-# similarly
-.if empty(PORT_OPTIONS:MODBC)
-CONFIGURE_ARGS+=	--without-unixodbc
-PLIST_SUB+=	WITH_ODBC="@comment "
-.else
-PLIST_SUB+=	WITH_ODBC=""
-USE_AUTOTOOLS=	libltdl
-CONFIGURE_ARGS+=	--with-unixodbc --with-ltdl
-LIB_DEPENDS+=	libodbc.so:${PORTSDIR}/databases/unixODBC
-.endif
-
-.if ${PORT_OPTIONS:MFREETDS}
-PLIST_SUB+=	WITH_FREETDS=""
-CONFIGURE_ARGS+=	--with-tds=${LOCALBASE}
-LIB_DEPENDS+=	libtds.so:${PORTSDIR}/databases/freetds
-.else
-PLIST_SUB+=	WITH_FREETDS="@comment "
-CONFIGURE_ARGS+=	--without-tds
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-PLIST_SUB+=	WITH_PGSQL=""
-USE_PGSQL=	yes
-CONFIGURE_ARGS+=	--with-postgres
-.else
-PLIST_SUB+=	WITH_PGSQL="@comment "
-CONFIGURE_ARGS+=	--without-postgres
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL}
-PLIST_SUB+=	WITH_MYSQL=""
-USE_MYSQL=	yes
-CONFIGURE_ARGS+=	--with-mysqlclient
-.else
-PLIST_SUB+=	WITH_MYSQL="@comment "
-CONFIGURE_ARGS+=	--without-mysqlclient
-.endif
-
-.if ${PORT_OPTIONS:MVORBIS}
-PLIST_SUB+=	WITH_VORBIS=""
-CONFIGURE_ARGS+=	--with-ogg
-LIB_DEPENDS+=	libvorbis.so:${PORTSDIR}/audio/libvorbis
-.else
-PLIST_SUB+=	WITH_VORBIS="@comment "
-CONFIGURE_ARGS+=	--without-ogg
-.endif
-
-.if ${PORT_OPTIONS:MRADIUS}
-PLIST_SUB+=	WITH_RADIUS=""
-CONFIGURE_ARGS+=	--with-radius
-LIB_DEPENDS+=	libradiusclient-ng.so:${PORTSDIR}/net/radiusclient
-.else
-PLIST_SUB+=	WITH_RADIUS="@comment "
-CONFIGURE_ARGS+=	--without-radius
-.endif
-
-.if ${PORT_OPTIONS:MSNMP}
-PLIST_SUB+=	WITH_SNMP=""
-CONFIGURE_ARGS+=	--with-netsnmp
-LIB_DEPENDS+=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
-.else
-PLIST_SUB+=	WITH_SNMP="@comment "
-CONFIGURE_ARGS+=	--without-netsnmp
-.endif
-
-.if ${PORT_OPTIONS:MXMPP}
-PLIST_SUB+=	WITH_XMPP=""
-CONFIGURE_ARGS+=	--with-iksemel
-LIB_DEPENDS+=	libiksemel.so:${PORTSDIR}/textproc/iksemel
-.else
-PLIST_SUB+=	WITH_XMPP="@comment "
-CONFIGURE_ARGS+=	--without-iksemel
-.endif
-
-.if ${PORT_OPTIONS:MSQLITE}
-PLIST_SUB+=	WITH_SQLITE=""
-CONFIGURE_ARGS+=	--with-sqlite
-LIB_DEPENDS+=	libsqlite.so:${PORTSDIR}/databases/sqlite2
-.else
-PLIST_SUB+=	WITH_SQLITE="@comment "
-CONFIGURE_ARGS+=	--without-sqlite
-.endif
-
-.if ${PORT_OPTIONS:MGSM}
-PLIST_SUB+=	WITH_GSM=""
-CONFIGURE_ARGS+=	--with-gsm
-LIB_DEPENDS+=	libgsm.so:${PORTSDIR}/audio/gsm
-.else
-PLIST_SUB+=	WITH_GSM="@comment "
-CONFIGURE_ARGS+=	--without-gsm
-.endif
-
-.if ${PORT_OPTIONS:MCURL}
-PLIST_SUB+=	WITH_CURL=""
-CONFIGURE_ARGS+=	--with-libcurl
-LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
-.else
-PLIST_SUB+=	WITH_CURL="@comment "
-CONFIGURE_ARGS+=	--with-libcurl=no
-.endif
-
-.if ${PORT_OPTIONS:MSPANDSP}
-PLIST_SUB+=	WITH_SPANDSP=""
-CONFIGURE_ARGS+=	--with-spandsp
-LIB_DEPENDS+=	libspandsp.so:${PORTSDIR}/comms/spandsp-devel
-.else
-PLIST_SUB+=	WITH_SPANDSP="@comment "
-CONFIGURE_ARGS+=	--without-spandsp
-.endif
-
-.if ${PORT_OPTIONS:MEXCHANGE}
-LIB_DEPENDS+=	libneon.so:${PORTSDIR}/www/neon29
-PLIST_SUB+=	WITH_EXCHANGE=""
-.else
-CONFIGURE_ARGS+=	--without-neon --without-neon29
-PLIST_SUB+=	WITH_EXCHANGE="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MSRTP}
-PLIST_SUB+=	WITH_SRTP=""
-BUILD_DEPENDS+=	libsrtp>=1.4.4:${PORTSDIR}/net/libsrtp
-CONFIGURE_ARGS+=	--with-srtp
-.else
-PLIST_SUB+=	WITH_SRTP="@comment "
-CONFIGURE_ARGS+=	--without-srtp
-.endif
-
-.if ${PORT_OPTIONS:MLUA}
-CONFIGURE_ARGS+=	--with-lua
-CFLAGS+=	-I${LUA_INCDIR}
-USES+=		lua:51
-LDFLAGS+=	-L${LUA_LIBDIR}
-PLIST_SUB+=	WITH_LUA=""
-.else
-CONFIGURE_ARGS+=	--without-lua
-PLIST_SUB+=	WITH_LUA="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MLDAP}
-CONFIGURE_ARGS+=	--with-ldap
-USE_OPENLDAP=	yes
-PLIST_SUB+=	WITH_LDAP=""
-.else
-CONFIGURE_ARGS+=	--without-ldap
-PLIST_SUB+=	WITH_LDAP="@comment "
-.endif
-
 post-extract:
-	${FIND} ${WRKSRC} -name '*.d' -delete
+	@${FIND} ${WRKSRC} -name '*.d' -delete
 
 post-patch:
-	${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/musiconhold.conf.sample
+	@${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/musiconhold.conf.sample
+.if ${PORT_OPTIONS:MSYSINFO}
+	@${REINPLACE_CMD} -e 's/%%LIBSYSINFO%%/-lsysinfo/' ${WRKSRC}/main/Makefile
+.else
+	@${REINPLACE_CMD} -e '/#define HAVE_SYSINFO 1/d' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e '/%%LIBSYSINFO%%/d' ${WRKSRC}/main/Makefile
+.endif
 
 post-configure:
 	@cd ${WRKSRC} && ${MAKE_CMD} menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --disable res_timing_kqueue menuselect.makeopts
+	@cd ${WRKSRC} && ./menuselect/menuselect --enable chan_mgcp menuselect.makeopts
+	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_pktccops menuselect.makeopts
 .if ${PORT_OPTIONS:MMYSQL}
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_config_mysql menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable app_mysql menuselect.makeopts
@@ -270,6 +168,10 @@ post-configure:
 .if ${PORT_OPTIONS:MNEWG711}
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable  G711_NEW_ALGORITHM menuselect.makeopts
 .endif
+
+pre-build:
+	@${MKDIR} ${WRKSRC}/res/pjproject/pjnath/lib ${WRKSRC}/res/pjproject/pjlib-util/lib \
+		${WRKSRC}/res/pjproject/pjlib/lib
 
 post-install:
 	@${RM} ${STAGEDIR}${ETCDIR}/*.conf ${STAGEDIR}${ETCDIR}/extensions.ael ${STAGEDIR}${ETCDIR}/extensions.lua

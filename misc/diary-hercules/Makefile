@@ -3,7 +3,7 @@
 
 PORTNAME=	hercules
 PORTVERSION=	0.1.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	misc
 MASTER_SITES=	SF/${PORTNAME}/development%20branch/${PORTVERSION}
 PKGNAMEPREFIX=	diary-
@@ -17,9 +17,8 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlobject>=0.7:${PORTSDIR}/databases/py-sqlobject \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:${PORTSDIR}/databases/py-sqlite3
 
-USES=		gettext
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		gettext python
+USE_PYTHON=	distutils
 USE_WX=		2.6+
 WX_UNICODE=	yes
 WX_COMPS=	python

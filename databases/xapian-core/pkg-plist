@@ -45,7 +45,8 @@ lib/cmake/xapian/xapian-config.cmake
 lib/libxapian.a
 lib/libxapian.so
 lib/libxapian.so.22
-lib/libxapian.so.22.6.5
+lib/libxapian.so.22.6.8
+libdata/pkgconfig/xapian-core.pc
 man/man1/xapian-check.1.gz
 man/man1/xapian-chert-update.1.gz
 man/man1/xapian-compact.1.gz
@@ -56,6 +57,3 @@ man/man1/xapian-replicate.1.gz
 man/man1/xapian-replicate-server.1.gz
 man/man1/xapian-tcpsrv.1.gz
 share/aclocal/xapian.m4
-@dirrmtry lib/cmake/xapian
-@dirrmtry lib/cmake
-@dirrm include/xapian

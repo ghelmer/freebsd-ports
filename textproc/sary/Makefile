@@ -3,17 +3,19 @@
 
 PORTNAME=	sary
 PORTVERSION=	1.2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://sary.sourceforge.net/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A suffix array library and tools, which provide fast full-text search
+COMMENT=	Suffix array library and tools, which provide fast full-text search
 
-USES=		pathfix pkgconfig
+GNU_CONFIGURE=	yes
+USES=		libtool pathfix pkgconfig
 USE_GNOME=	glib20
-USE_AUTOTOOLS=	libtool
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS/s|docs||g' ${WRKSRC}/Makefile.in
@@ -22,5 +24,6 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/docs && ${FIND} . ! -name "*Makefile*" | \
 		${CPIO} -pdm -L -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DOCSDIR}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsary.so
 
 .include <bsd.port.mk>

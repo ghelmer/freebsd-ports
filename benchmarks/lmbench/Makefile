@@ -3,12 +3,11 @@
 
 PORTNAME=	lmbench
 PORTVERSION=	3.0.a9
-PORTREVISION=	2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	benchmarks
 MASTER_SITES=	SF/${PORTNAME}/development/${PORTNAME}-3.0-a9 http://thegaul.org/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION:C/\.a9/-a9/}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	sacchi@gmail.com
 COMMENT=	System performance measurement tool
@@ -16,16 +15,10 @@ COMMENT=	System performance measurement tool
 ALL_TARGET=	build
 MAKE_ARGS=	CC="${CC}"
 MAKE_ENV=	PATH=${PATH}:${WRKSRC}/scripts
-USES=		shebangfix perl5 gmake
+USES=		shebangfix perl5 gmake tar:tgz
 USE_PERL5=	run
 SHEBANG_FILES=	scripts/getresults
-
-# the bindir for the PLIST is:
-# (note that ./os needs to be run inside the work dir, running it
-#  outside will give a different result.)
-#LMBENCH_OS!=	cd ${WRKSRC}/scripts && ./os
-#PLIST_SUB=	LMBENCH_OS=${LMBENCH_OS}
-PLIST_SUB=	"LMBENCH_OS=$$(cd ${WRKSRC}/scripts && ./os)"
+PLIST_SUB=	LMBENCH_OS=${ARCH}-${OPSYS:tl}${OSREL}
 
 test: build
 	@(cd ${WRKSRC}; make results)
@@ -41,6 +34,8 @@ post-extract:
 	${MKDIR} ${WRKSRC}/SCCS
 	${TOUCH} -t 199901010000 ${WRKSRC}/SCCS/s.ChangeSet
 	cd ${WRKSRC}/scripts; ./version > ${WRKSRC}/src/bk.ver
+	${ECHO} "#!${SH}" > ${WRKSRC}/scripts/os
+	${ECHO} "echo ${ARCH}-${OPSYS:tl}${OSREL}" >> ${WRKSRC}/scripts/os
 
 # Clean up turds from building the library.  Some systems just have
 # .o, some also end up with .s, so clean up both.

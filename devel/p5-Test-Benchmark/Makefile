@@ -3,6 +3,7 @@
 
 PORTNAME=	Test-Benchmark
 PORTVERSION=	0.004
+PORTREVISION=	2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,11 +11,17 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Make sure something really is faster
 
-BUILD_DEPENDS=	p5-Test-Tester>=0:${PORTSDIR}/devel/p5-Test-Tester \
-		p5-Test-NoWarnings>=0:${PORTSDIR}/devel/p5-Test-NoWarnings
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+LICENSE=	LGPL21
 
-USES=		perl5
+TEST_DEPENDS=	p5-Test-NoWarnings>=0:${PORTSDIR}/devel/p5-Test-NoWarnings
+
 USE_PERL5=	configure
+USES=		perl5
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PERL_LEVEL} < 502200
+TEST_DEPENDS+=	p5-Test-Simple>=1.001.014:${PORTSDIR}/devel/p5-Test-Simple
+.endif
+
+.include <bsd.port.post.mk>

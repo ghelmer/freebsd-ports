@@ -1,69 +1,72 @@
 # $FreeBSD$
 
 PORTNAME=	groonga
-PORTVERSION=	3.0.0
-PORTREVISION=	1
+PORTVERSION=	5.0.5
 CATEGORIES=	textproc
 MASTER_SITES=	http://packages.groonga.org/source/groonga/
 
-MAINTAINER=	kuriyama@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Open-source fulltext search engine and column store
 
 LICENSE=	LGPL21
 
-USES=		gmake pkgconfig
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+
+USES=		gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-benchmark \
+		--disable-document \
+		--disable-silent-rules \
+		--localstatedir=/var \
+		--without-cutter \
+		--without-inkscape \
+		--without-kytea \
+		--without-lemon \
+		--with-log-path=/var/log/groonga.log \
+		--with-munin-plugins
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--with-munin-plugins --localstatedir=/var \
-		--with-log-path=/var/log/groonga.log
 
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--disable-silent-rules
-.endif
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	MECAB SUGGEST DOCS
-MECAB_DESC=	Enable morphological analysis
-SUGGEST_DESC=	Enable suggestions
-OPTIONS_DEFAULT=MECAB SUGGEST
+BROKEN_ia64=	does not compile on ia64
+BROKEN_powerpc=	does not compile on powerpc
+BROKEN_sparc64=	does not compile on sparc64
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=		MECAB SUGGEST
+OPTIONS_DEFAULT=	MECAB SUGGEST
+OPTIONS_SUB=		yes
 
-.if ${ARCH} == "ia64" || ${ARCH} == "powerpc" || ${ARCH} == "sparc64"
-BROKEN=		does not compile on ${ARCH}
-.endif
-
-# We cannot enable this option until textproc/py-sphinx be upgraded to 1.2
-# XXX: but it is enabled now as DOCS are on by default, so what's going on?
-.if ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
-MAN1=	groonga.1
-.else
-CONFIGURE_ARGS+=	--disable-document
-.endif
-
-.if ${PORT_OPTIONS:MMECAB} || exists(${LOCALBASE}/lib/libmecab.so)
-CONFIGURE_ARGS+=	--with-mecab
-LIB_DEPENDS+=	mecab:${PORTSDIR}/japanese/mecab
-PLIST_SUB+=	MECAB=""
-.else
-CONFIGURE_ARGS+=	--without-mecab
-PLIST_SUB+=	MECAB="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MSUGGEST}
-CONFIGURE_ARGS+=	--with-libevent=${LOCALBASE} \
+MECAB_DESC=		Morphological analysis support via MeCab
+MECAB_LIB_DEPENDS=	libmecab.so:${PORTSDIR}/japanese/mecab
+MECAB_CONFIGURE_OFF=	--without-mecab
+SUGGEST_DESC=		Suggestions support
+SUGGEST_LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2 \
+			libmsgpack.so:${PORTSDIR}/devel/msgpack \
+			libzmq.so:${PORTSDIR}/net/libzmq2
+SUGGEST_CONFIGURE_ON=	--with-libevent=${LOCALBASE} \
 			--with-message-pack=${LOCALBASE} \
 			--enable-zeromq
-LIB_DEPENDS+=	event-1.4:${PORTSDIR}/devel/libevent \
-		msgpack:${PORTSDIR}/devel/msgpack \
-		zmq:${PORTSDIR}/net/libzmq2
-PLIST_SUB+=	SUGGEST=""
-.else
-CONFIGURE_ARGS+=	--without-libevent \
+SUGGEST_CONFIGURE_OFF=	--without-libevent \
 			--without-message-pack \
 			--disable-zeromq
-PLIST_SUB+=	SUGGEST="@comment "
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.options.mk>
+
+post-patch:
+	@${REINPLACE_CMD} -e \
+		's|lib/$${PACKAGE}/db/db|db/$${PACKAGE}/db| ; \
+		 s|-lpthread|-pthread|' ${WRKSRC}/configure
+	@${REINPLACE_CMD} -e \
+		'/NGX_PID_PATH/s|mkdir|${TRUE}| ; \
+		 /NGX_HTTP_LOG_PATH/s|mkdir|${TRUE}| ; \
+		 /NGX_ERROR_LOG_PATH/s|mkdir|${TRUE}|' \
+		${WRKSRC}/vendor/nginx-1.8.0/auto/install
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/groonga-httpd
+	@${MKDIR} ${STAGEDIR}/var/log/groonga/httpd
+	@${MKDIR} ${STAGEDIR}/var/run/groonga
+
+.include <bsd.port.mk>

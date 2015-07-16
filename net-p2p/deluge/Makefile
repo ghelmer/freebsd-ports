@@ -1,17 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	deluge
-PORTVERSION=	1.3.6
-PORTREVISION=	3
+PORTVERSION=	1.3.11
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	net-p2p python
 MASTER_SITES=	http://download.deluge-torrent.org/source/
-EXTRACT_SUFX=	.tar.lzma
 
 MAINTAINER=	rm@FreeBSD.org
-COMMENT=	Bittorrent client using Python, GTK+2, and libtorrent-rasterbar
+COMMENT=	Bittorrent client using Python, GTK2, and libtorrent-rasterbar
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0.18:${PORTSDIR}/devel/py-xdg \
 		${PYTHON_PKGNAMEPREFIX}libtorrent-rasterbar>=0:${PORTSDIR}/net-p2p/libtorrent-rasterbar-python \
@@ -21,14 +21,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0.18:${PORTSDIR}/devel/py-xdg \
 
 USE_RC_SUBR=	deluged deluge_web
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
-PLIST_SUB+=	PYTHON_VER=${PYTHON_VER}
 
-WANT_GNOME=		yes
-USES=			gettext tar:xz twisted:run,web
-USE_OPENSSL=		yes
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		gettext tar:lzma python:2 twisted:run,web
+USE_PYTHON=	autoplist distutils
+USE_OPENSSL=	yes
+WANT_GNOME=	yes
 
 OPTIONS_DEFINE=	GTK2
 OPTIONS_DEFAULT=GTK2
@@ -44,7 +41,7 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}dbus>=0.83:${PORTSDIR}/devel/py-dbus \
 		${PYTHON_PKGNAMEPREFIX}notify>=0.1.1:${PORTSDIR}/devel/py-notify \
 		xdg-utils>=1.0.2:${PORTSDIR}/devel/xdg-utils
 
-USE_GNOME+=	librsvg2 pygtk2
+USE_GNOME+=	librsvg2 pygnome2 pygtk2
 USES+=		desktop-file-utils
 INSTALLS_ICONS=	yes
 .endif

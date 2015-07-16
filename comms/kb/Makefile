@@ -5,11 +5,10 @@ PORTVERSION=	8.04
 PORTREVISION=	8
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.db.net/downloads/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	db
+		LOCAL/db
 DISTFILES=	kb_src-${PORTVERSION}.tar.gz kb_inst-${PORTVERSION}.tar.gz
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio contest logger
 
 USE_GNOME=	libgnome gtk20 libbonobo
@@ -22,6 +21,8 @@ DESKTOP_ENTRIES="KB" \
 		"kb" \
 		"" \
 		true
+
+OPTIONS_DEFINE=	DOCS
 
 pre-configure:
 	@${CP}	${FILESDIR}/Makefile ${WRKSRC}

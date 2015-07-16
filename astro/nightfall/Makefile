@@ -3,7 +3,7 @@
 
 PORTNAME=	nightfall
 PORTVERSION=	1.70
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	astro
 MASTER_SITES=	http://www.la-samhna.de/nightfall/
 
@@ -11,7 +11,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive binary star application
 
 USES=		compiler gettext gmake pathfix perl5 pkgconfig
-USE_GNOME=	gnomehier gtk20
+USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -35,16 +35,13 @@ PGPLOT_CONFIGURE_ON=	--with-pgplot-include=${LOCALBASE}/include \
 			--with-pgplot-lib=${LOCALBASE}/lib
 PGPLOT_CONFIGURE_OFF=	--with-gnuplot
 PGPLOT_LIB_DEPENDS=	libpgplot.so:${PORTSDIR}/graphics/pgplot
+PGPLOT_RUN_DEPENDS_OFF=	gnuplot:${PORTSDIR}/math/gnuplot
 PGPLOT_USES=		fortran
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MGNOMEUI}
+.if ${PORT_OPTIONS:MGNOME}
 INSTALLS_OMF=	yes
-.endif
-
-.if ! ${PORT_OPTIONS:MPGPLOT}
-RUN_DEPENDS+=	gnuplot:${PORTSDIR}/math/gnuplot
 .endif
 
 post-patch:

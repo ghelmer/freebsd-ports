@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xdvik
-PORTVERSION=	22.86
-PORTREVISION=	2
+PORTVERSION=	22.87
+PORTREVISION=	3
 CATEGORIES=	print
 MASTER_SITES=	SF/xdvi/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	tex-
@@ -13,17 +13,20 @@ MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	DVI Previewer(kpathsearch) for X
 
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		paper:${PORTSDIR}/print/libpaper
+		libpaper.so:${PORTSDIR}/print/libpaper
+RUN_DEPENDS=	tex-dvipsk>=5.994_1:${PORTSDIR}/print/tex-dvipsk
 
 USES=		iconv gmake motif
-USE_TEX=	texlive web2c kpathsea texmf texhash
-TEXHASHDIRS=	${TEXMFDIR}
-USE_XORG=	ice sm x11 xmu xpm xt
+USE_TEX=	web2c kpathsea texmf texhash
+TEXHASHDIRS=	${TEXMFDISTDIR}
+USE_XORG=	ice sm x11 xmu xpm xt xi
 WRKSRC=		${WRKDIR}/${DISTNAME}/texk/xdvik
+PATCH_WRKSRC=	${WRKDIR}/${DISTNAME}	
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared \
 		--datarootdir=${LOCALBASE}/share \
 		--with-xdvi-x-toolkit=motif \
+		--enable-xi2-scrolling \
 		--with-iconv \
 		--with-xpm \
 		--with-system-kpathsea \
@@ -39,27 +42,26 @@ CONFIGURE_ENV=	INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
 		INSTALL_DATA="${INSTALL_DATA}" \
 		INSTALL_PROGRAM="${INSTALL_PROGRAM}"
 CFLAGS+=	-I${LOCALBASE}/include -DHAVE_LIBPAPER -g -O0
-PLIST_SUB=	TEXMFDIR=${TEXMFDIR} TEXMFCONFIGDIR=${TEXMFDIR}-config
+PLIST_SUB=	TEXMFDISTDIR=${TEXMFDISTDIR}
 CONFLICTS_INSTALL=	xdvi-[0-9]* xdvi-*-[0-9]* *-xdvi-[0-9]* \
 			xdvik-[0-9]* ja-xdvik-*-[0-9]*
-
-MAN1=		xdvi.1
 
 PORTDOCS=	BUGS CHANGES INSTALL README README.CVS README.coding \
 		README.config README.cross README.distro README.hacking \
 		README.layout README.xdvik README_maintainer TODO
-
-NO_STAGE=	yes
 
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
 post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${TEXMFDISTDIR}/fonts/map/xdvi
+	${INSTALL_DATA} ${WRKSRC}/xdvi-ptex.map \
+	    ${STAGEDIR}${PREFIX}/${TEXMFDISTDIR}/fonts/map/xdvi/xdvi-ptex.map
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKDIR}/${DISTNAME} && \
-		${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR}
+		${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

@@ -11,11 +11,9 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Client library for Tarantool Database
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-INSTALLS_EGGINFO=yes
-PYDISTUTILS_AUTOPLIST=yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

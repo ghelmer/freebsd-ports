@@ -6,7 +6,7 @@ PORTVERSION=	1.6.2
 CATEGORIES=	security graphics net-mgmt
 MASTER_SITES=	SF/${PORTNAME}/AfterGlow%201.x/${PORTVERSION}
 
-MAINTAINER=	pauls@utdallas.edu
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Collection of graph-generating scripts
 
 LICENSE=	GPLv2
@@ -16,6 +16,7 @@ RUN_DEPENDS=	dot:${PORTSDIR}/graphics/graphviz \
 		p5-Crypt-Rijndael>=0:${PORTSDIR}/security/p5-Crypt-Rijndael \
 		p5-IP-Anonymous>=0:${PORTSDIR}/net/p5-IP-Anonymous
 
+PORTSCOUT=	skipv:2.0
 NO_BUILD=	yes
 USE_LDCONFIG=	yes
 

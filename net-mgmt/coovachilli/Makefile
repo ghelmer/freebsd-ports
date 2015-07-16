@@ -11,7 +11,7 @@ MASTER_SITES=	http://ap.coova.org/chilli/ \
 DISTNAME=	coova-chilli-${PORTVERSION}
 
 MAINTAINER=	venture37@geeklan.co.uk
-COMMENT=	An access controller for wired & wireless clients
+COMMENT=	Access controller for wired & wireless clients
 
 CONFLICTS=	chillispot-[0-9]*
 #if __FreeBSD__ >= 10.0
@@ -25,13 +25,12 @@ USE_PERL5=	build
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	coovachilli
 
+OPTIONS_DEFINE=	EXAMPLES
+
 post-install:
-.if !defined(NOPORTEXAMPLES)
 	${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_MAN} ${FILESDIR}/main.conf.sample ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_MAN} ${FILESDIR}/pf.conf.sample ${STAGEDIR}/${EXAMPLESDIR}
 	${INSTALL_MAN} ${FILESDIR}/ipfw-config.sample ${STAGEDIR}/${EXAMPLESDIR}
-.endif
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

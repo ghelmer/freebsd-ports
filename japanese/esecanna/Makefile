@@ -3,11 +3,10 @@
 
 PORTNAME=	esecanna
 PORTVERSION=	1.0.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	japanese
 MASTER_SITES=	http://esecanna.netfort.gr.jp/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	knu
+		LOCAL/knu
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 DIST_SUBDIR=	esecanna
 
@@ -21,6 +20,8 @@ USES=		gmake
 CONFIGURE_ARGS=	--with-piddir="/var/run/esecanna"
 
 DOCS=		CREDITS CHANGES.jp README.First.jp README.jp
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${REINPLACE_CMD} -e " \

@@ -3,18 +3,18 @@
 
 PORTNAME=	Net_Gearman
 PORTVERSION=	0.2.3
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	Gearman client libraray for PHP
+
+LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	${LOCALBASE}/share/pear/PEAR.php:${PORTSDIR}/devel/pear
 RUN_DEPENDS=	${LOCALBASE}/share/pear/PEAR.php:${PORTSDIR}/devel/pear
 
-USE_PHP=	json mbstring
-PEAR_AUTOINSTALL=	yes
+USE_PHP=	json mbstring sockets
+USES=		pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

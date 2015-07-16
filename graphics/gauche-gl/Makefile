@@ -2,49 +2,62 @@
 # $FreeBSD$
 
 PORTNAME=	gl
-PORTVERSION=	0.5.1
+PORTVERSION=	0.6
 PORTREVISION=	2
 CATEGORIES=	graphics scheme
 MASTER_SITES=	SF/gauche/Gauche-gl
 PKGNAMEPREFIX=	gauche-
 DISTNAME=	Gauche-${PORTNAME}-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	erik@bz.bzflag.bz
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenGL binding for Gauche
+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gosh:${PORTSDIR}/lang/gauche
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_XORG=	ice sm
+USES=		makeinfo tar:tgz
+USE_XORG=	ice sm x11 xext xmu xi
 USE_GL=		glut
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 
-EXAMPLESDIR=	${PREFIX}/share/examples/gauche/${PORTNAME}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+
 DOCSDIR=	${PREFIX}/share/doc/gauche/${PORTNAME}
+EXAMPLESDIR=	${PREFIX}/share/examples/gauche/${PORTNAME}
+
 PLIST_SUB=	TARGET="${CONFIGURE_TARGET}"
 
-.if !defined(NOPORTDOCS)
 INFO=		gauche-gl-refe gauche-gl-refj
-.endif
 
-NO_STAGE=	yes
-do-install:
-	cd ${WRKSRC}/src; ${MAKE} ${INSTALL_TARGET}
-	cd ${WRKSRC}/lib; ${MAKE} ${INSTALL_TARGET}
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
-post-install:
-.if !defined(NOPORTDOCS)
-.for i in gauche-gl-refe.info gauche-gl-refj.info
-	${GZCAT} ${WRKSRC}/doc/${i}.gz >${PREFIX}/info/${i}
+post-patch:
+.for i in configure src/gauche-gl.c src/gauche-gl.h src/glut-lib.stub
+	@${REINPLACE_CMD} -e '/glut.h/s|GLUT|GL|' ${WRKSRC}/${i}
 .endfor
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-.endif
-.if !defined(NOPORTEXAMPLES)
-	${MKDIR} ${EXAMPLESDIR}
-	${CP} -R ${WRKSRC}/examples/* ${EXAMPLESDIR}
-.endif
+
+do-install:
+.for i in src lib
+	@(cd ${WRKSRC}/${i} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
+		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
+.endfor
+.for i in ${INFO}
+	${GZCAT} ${WRKSRC}/doc/${i}.info.gz \
+		> ${STAGEDIR}${PREFIX}/${INFO_PATH}/${i}.info
+.endfor
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} README \
+		${STAGEDIR}${DOCSDIR})
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . \
+		${STAGEDIR}${EXAMPLESDIR})
+	@(cd ${STAGEDIR}${PREFIX}/lib/gauche-0.9/site/${CONFIGURE_TARGET} && \
+		${CHMOD} u+w libgauche-*.so && ${STRIP_CMD} libgauche-*.so && \
+		${CHMOD} u-w libgauche-*.so)
 
 .include <bsd.port.mk>

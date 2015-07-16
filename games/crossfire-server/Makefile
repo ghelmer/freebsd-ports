@@ -3,33 +3,32 @@
 
 PORTNAME=	crossfire
 PORTVERSION=	1.70.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	-server
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}.maps${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Server for multiplayer graphical arcade and adventure game
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 RUN_DEPENDS=	xsltproc:${PORTSDIR}/textproc/libxslt
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libsablot.so:${PORTSDIR}/textproc/sablotron
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USES=		gmake perl5 uidfix
-USE_XORG=	ice sm x11 xaw xext xmu xpm xt
+USES=		gmake libtool perl5 python uidfix
 USE_SQLITE=	3
-USE_PYTHON=	yes
-USE_AUTOTOOLS=	libtool
-CONFIGURE_ARGS=	--with-check=no --localstatedir=/var/games
-
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-static --with-check=no --localstatedir=/var/games
+CONFIGURE_SHELL=${LOCALBASE}/bin/bash
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 PORTDOCS=	*
 
@@ -50,17 +49,12 @@ post-patch:
 		's|-ldl||g'
 	@${REINPLACE_CMD} -e 's|^#.*/bin/sh|#! ${LOCALBASE}/bin/bash|g; \
 		 s|-ldl||g; \
-		 s|python[{].*[}]|${PYTHON_VERSION}|g; \
-		 s|-lpthread|${PTHREAD_LIBS}|g' ${WRKSRC}/configure
+		 s|python[{].*[}]|${PYTHON_VERSION}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/<curl\/types.h>/d' ${WRKSRC}/socket/metaserver.c
 	@${REINPLACE_CMD} -e 's| /usr/bin/perl|${LOCALBASE}/bin/perl|' \
 		${WRKSRC}/lib/adm/map_expand.pl
 
 post-install:
-.for l in cflogger citylife cfpython cfanim cfnewspaper
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/crossfire/plugins/${l}.so
-.endfor
-
 	@${MKDIR} ${STAGEDIR}${DATADIR}/maps
 	@(cd ${WRKDIR}/maps && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/maps)
 

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tomcat
-PORTVERSION=	7.0.54
+PORTVERSION=	7.0.59
 CATEGORIES=	www java
-MASTER_SITES=	APACHE
-MASTER_SITE_SUBDIR=	tomcat/tomcat-7/v${PORTVERSION}/bin
+MASTER_SITES=	APACHE/tomcat/tomcat-7/v${PORTVERSION}/bin
 PKGNAMESUFFIX=	7
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}
 
@@ -27,7 +26,9 @@ USE_RC_SUBR=	${PKGBASE}
 
 TOMCAT_SUBDIR?=	${DISTNAME:R}
 TOMCAT_HOME=	${PREFIX}/${TOMCAT_SUBDIR}
-TOMCAT_CONF_FILES=	catalina.policy catalina.properties context.xml logging.properties server.xml tomcat-users.xml web.xml
+TOMCAT_CONF_FILES=	\
+		catalina.policy catalina.properties context.xml logging.properties \
+		server.xml tomcat-users.xml web.xml
 PLIST_SUB=	T=${TOMCAT_SUBDIR} \
 		WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 

@@ -18,13 +18,13 @@ EXTRACT_BEFORE_ARGS=	# empty
 EXTRACT_AFTER_ARGS=	.
 NO_BUILD=	yes
 
-NO_STAGE=	yes
+PLIST_FILES=	${DATADIR_REL}/xhtml1-frameset.xsd \
+		${DATADIR_REL}/xhtml1-strict.xsd \
+		${DATADIR_REL}/xhtml1-transitional.xsd
+
 do-install:
-	@${MKDIR} ${DATADIR}
-	@${CP} -R ${WRKSRC}/* ${DATADIR}
-	@${FIND} ${DATADIR} -type f | \
-		${SED} 's,^${PREFIX}/,,' >> ${TMPPLIST}
-	@${FIND} ${DATADIR} -type d | ${SORT} -r | \
-		${SED} 's,^${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PLIST_FILES:S|^${DATADIR_REL}/||} \
+		${STAGEDIR}${DATADIR})
 
 .include <bsd.port.mk>

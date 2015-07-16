@@ -2,23 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	cakephp
-PORTVERSION=	2.1.3
+PORTVERSION=	2.1.5
 CATEGORIES=	www
-MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/tarball/${PORTVERSION}/
 PKGNAMESUFFIX=	21
-DISTNAME=	${PORTNAME}-${PORTNAME}-${PORTVERSION}-${GITVERSION}
 
 MAINTAINER=	theis@gmx.at
 COMMENT=	Framework for developing PHP web applications
 
 LICENSE=	MIT
 
-GITVERSION=	0-gc26df70
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-4b81775
+USE_GITHUB=	yes
 
 PORTDOCS=	README
-
-SLAVE_PORT_MODULES=	REWRITE
 
 CONFLICTS=	cakephp-1?-* cakephp-2[2]-.* cakephp-2.3.*
 
@@ -26,7 +21,7 @@ NO_BUILD=	yes
 USES=		gettext
 USE_PHP=	ctype session
 WANT_PHP_WEB=	yes
-DEFAULT_VERSIONS=	php=5
+DEFAULT_VERSIONS+=	php=5
 
 CAKE_CONF_FILES=	\
 		app/Config/acl.php \

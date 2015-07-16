@@ -1,2 +1,2 @@
 lib/aoe/aoe.ko
-@dirrm lib/aoe
+man/man4/aoe.4.gz

@@ -1,15 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	openmsx
-PORTVERSION=	0.10.1
+PORTVERSION=	0.11.0
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Open source MSX emulator
 
-LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2 \
-		libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libogg.so:${PORTSDIR}/audio/libogg \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libtheora.so:${PORTSDIR}/multimedia/libtheora \
@@ -22,11 +22,10 @@ MAKE_ARGS+=	INSTALL_BINARY_DIR=${PREFIX}/bin \
 		CXXFLAGS="${CXXFLAGS}"
 
 MAKEFILE=	GNUmakefile
-USES=		gmake tcl
+USES=		gmake python tcl
 USE_GCC=	yes
 USE_GL=		glew
 USE_SDL=	sdl ttf
-USE_PYTHON=	yes
 
 PLIST_FILES=	bin/openmsx
 PORTDATA=	*

@@ -3,19 +3,17 @@
 
 PORTNAME=	gearmand
 PORTVERSION=	1.0.6
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	http://launchpad.net/gearmand/1.0/${PORTVERSION}/+download/
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	Gearman C Server and Library
 
-BUILD_DEPENDS=	boost-libs>=0:${PORTSDIR}/devel/boost-libs \
-		libexecinfo>=0:${PORTSDIR}/devel/libexecinfo \
-		${PYTHON_PKGNAMEPREFIX}sphinx>=0:${PORTSDIR}/textproc/py-sphinx
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent \
-		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid \
-		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:${PORTSDIR}/textproc/py-sphinx
+LIB_DEPENDS=	libboost_program_options.so:${PORTSDIR}/devel/boost-libs \
+		libevent.so:${PORTSDIR}/devel/libevent2 \
+		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
 
 CONFLICTS=	p5-Gearman-Server-1.* gearmand-1.1.*
 
@@ -24,9 +22,8 @@ GROUPS=		gearmand
 
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
-USES=		pathfix gmake perl5 libtool
+USES=		pathfix gmake perl5 python:build libtool execinfo
 USE_LDCONFIG=	yes
-USE_PYTHON_BUILD=yes
 USE_RC_SUBR=	gearmand
 SUB_LIST+=	USERS=${USERS} GROUPS=${GROUPS}
 
@@ -47,12 +44,6 @@ HIREDIS_DESC=	Hiredis support for persistent queue
 TOKYOCAB_DESC=	Tokyo Cabinet support for persistent queue
 
 .include <bsd.port.options.mk>
-
-# Workaround for missing sigignore that wasn't introduced until
-# FreeBSD 8.0
-.if ${OSVERSION} < 800041
-BROKEN=	Does not compile without POSIX spawn() support
-.endif
 
 .if ${PORT_OPTIONS:MDRIZZLE}
 LIB_DEPENDS+=		libdrizzle.so:${PORTSDIR}/databases/libdrizzle
@@ -89,7 +80,7 @@ CONFIGURE_ARGS+=	--with-mysql=no
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=		yes
+USES+=			pgsql
 CONFIGURE_ARGS+=	--enable-libpq
 .else
 CONFIGURE_ARGS+=	--disable-libpq

@@ -14,117 +14,7 @@
 set -e
 export LC_ALL=C
 
-#### EXPAND TMPPLIST TO ABSOLUTE PATHS, SPLITTING FILES AND DIRS TO
-#    Use file descriptors 1 and 3 so that the while loop can write
-#    files to the pipe and dirs to a separate file.
-parse_plist() {
-	echo "===> Parsing plist"
-	cwd=${PREFIX}
-	cwd_save=
-	commented_cwd=
-	while read line; do
-		# Handle deactivated OPTIONS. Treat "@comment file" as being in
-		# the plist so it does not show up as an orphan. PLIST_SUB uses
-		# a @comment to deactive files. XXX: It would be better to
-		# make all ports use @ignore instead of @comment.
-		comment=
-		if [ ${makeplist} -eq 0 -a -z "${line%%@comment *}" ]; then
-			line="${line##*@comment }"
-			# Remove @comment so it can be parsed as a file,
-			# but later prepend it again to create a list of
-			# all files commented and uncommented.
-			comment="@comment "
-			# Only consider comment @cwd for commented lines
-			if [ -n "${commented_cwd}" ]; then
-				[ -z "${cwd_save}" ] && cwd_save=${cwd}
-				cwd=${commented_cwd}
-			fi
-		else
-			# On first uncommented line, forget about commented
-			# @cwd
-			if [ -n "${cwd_save}" ]; then
-				cwd=${cwd_save}
-				cwd_save=
-				commented_cwd=
-			fi
-		fi
-
-		case $line in
-		@dirrm*|'@unexec rmdir'*|'@unexec /bin/rmdir'*)
-			line="$(printf %s "$line" \
-			    | sed -Ee 's/\|\|.*//;s|[[:space:]]+[0-9]*[[:space:]]*>[&]?[[:space:]]*[^[:space:]]+||g' \
-			        -e "/^@unexec[[:space:]]+(\/bin\/)?rmdir( -p)?/s|([^%])%D([^%])|\1${cwd}\2|g" \
-			        -e '/^@unexec[[:space:]]+(\/bin\/)?rmdir( -p)?/s|"(.*)"[[:space:]]*|\1|g' \
-			        -e 's/@unexec[[:space:]]+(\/bin\/)?rmdir( -p)?[[:space:]]+//' \
-				-e 's/@dirrm(try)?[[:space:]]+//' \
-				-e 's/[[:space:]]+$//')"
-			case "$line" in
-			/*) echo >&3 "${comment}${line%/}" ;;
-			*)  echo >&3 "${comment}${cwd}/${line%/}" ;;
-			esac
-		;;
-		# Handle [file] Keywords
-		@info\ *|@shell\ *)
-			set -- $line
-			shift
-			echo "${comment}${cwd}/$@"
-		;;
-		@sample\ *)
-			set -- $line
-			shift
-			# Ignore the actual file if it is in stagedir
-			echo "@comment ${cwd}/${@%.sample}"
-			echo "${comment}${cwd}/$@"
-		;;
-		# Handle [dirrmty] Keywords
-		@fc\ *|@fcfontsdir\ *|@fontsdir\ *)
-			set -- $line
-			shift
-			echo >&3 "${comment}${cwd}/$@"
-		;;
-
-		# order matters here - we must check @cwd first because
-		# otherwise the @cwd* would also match it first, shadowing the
-		# @cwd) line.
-		@cwd|@cd)
-			# Don't actually reset cwd for commented @cwd
-			if [ -n "${comment}" ]; then
-				commented_cwd=${PREFIX}
-			else
-				cwd=${PREFIX}
-			fi
-			;;
-		@cwd*|@cd*)
-			set -- $line
-			newcwd=$2
-			# Don't set cwd=/ as it causes // in plist and
-			# won't match later.
-			[ "${newcwd}" = "/" ] && newcwd=
-			# Don't actually reset cwd for commented @cwd
-			if [ -n "${comment}" ]; then
-				commented_cwd=${newcwd}
-			else
-				cwd=${newcwd}
-			fi
-			unset newcwd
-			;;
-		@*) ;;
-		/*) echo "${comment}${line}" ;;
-		*)  echo "${comment}${cwd}/${line}" ;;
-		esac
-	done < ${TMPPLIST} 3>${WRKDIR}/.plist-dirs-unsorted \
-	    >${WRKDIR}/.plist-files-unsorted
-	unset TMPPLIST
-	# Create the -no-comments files and trim out @comment from the plists.
-	# This is used for various tests later.
-	sed -e '/^@comment/d' ${WRKDIR}/.plist-dirs-unsorted \
-	    >${WRKDIR}/.plist-dirs-unsorted-no-comments
-	sed -i '' -e 's/^@comment //' ${WRKDIR}/.plist-dirs-unsorted
-	sed -e '/^@comment/d' ${WRKDIR}/.plist-files-unsorted | sort \
-	    >${WRKDIR}/.plist-files-no-comments
-	sed -e 's/^@comment //' ${WRKDIR}/.plist-files-unsorted | sort \
-	    >${WRKDIR}/.plist-files
-}
+. ${SCRIPTSDIR}/functions.sh
 
 # lists an mtree file's contents, prefixed to dir.
 listmtree() { # mtreefile prefix
@@ -151,11 +41,7 @@ parse_mtree() {
 		fi
 		listmtree "${PORTSDIR}/Templates/BSD.local.dist" "${LOCALBASE}"
 
-		if [ -n "${GNOME_MTREE_FILE}" ] && \
-		    [ -f "${GNOME_MTREE_FILE}" ]; then
-			listmtree "${GNOME_MTREE_FILE}" "${PREFIX}"
-		fi
-		unset MTREE_FILE GNOME_MTREE_FILE
+		unset MTREE_FILE
 
 		# Add LOCALBASE
 		a=${LOCALBASE}
@@ -175,53 +61,6 @@ parse_mtree() {
 			done
 		fi
 	} >${WRKDIR}/.mtree
-}
-
-pkg_get_recursive_deps() {
-	echo "$@"
-	PKG_CHECKED="${PKG_CHECKED} $@"
-	for depends in $(${PKG_QUERY} '%do' $@ | sort -u); do
-		[ -z "${depends}" ] && return
-		case " ${PKG_CHECKED} " in
-		*\ ${depends}\ *) continue ;;
-		esac
-		pkg_get_recursive_deps "${depends}"
-	done
-}
-
-### GATHER DIRS OWNED BY RUN-DEPENDS. WHY ARE WE SCREAMING?
-lookup_dependency_dirs() {
-	: >${WRKDIR}/.run-depends-dirs
-	if [ -n "${WITH_PKGNG}" ]; then
-		echo "${PACKAGE_DEPENDS}" | while read pkg; do \
-		    PKG_CHECKED= pkg_get_recursive_deps "${pkg}"; done | \
-		    sort -u | \
-		    xargs ${PKG_QUERY} "%D" | sed -e 's,/$,,' | sort -u \
-		    >>${WRKDIR}/.run-depends-dirs
-	else
-		# Evaluate ACTUAL-PACKAGE-DEPENDS
-		packagelist=
-		package_depends=$(eval ${PACKAGE_DEPENDS})
-		if [ -n "${package_depends}" ]; then
-			# This ugly mess can go away with pkg_install EOL
-			awk_script=$(cat <<'EOF'
-				/Deinstall directory remove:/ {print $4}
-				/UNEXEC 'rmdir "[^"]*" 2>\/dev\/null \|\| true'/ {
-					gsub(/"%D\//, "\"", $0)
-					match($0, /"[^"]*"/)
-					dir=substr($0, RSTART+1, RLENGTH-2)
-					print dir
-				}
-EOF
-)
-			echo "${package_depends}" | tr ' ' '\n' | \
-			    cut -d : -f 1 | sort -u | \
-			    xargs -n 1 ${PKG_QUERY} -f | \
-			    awk "${awk_script}" | \
-			    sed -e "/^[^/]/s,^,${LOCALBASE}/," | sort -u \
-			    >>${WRKDIR}/.run-depends-dirs
-		fi
-	fi
 }
 
 # Sort a directory list by the order of the dfs-sorted file (from find -ds)
@@ -252,13 +91,18 @@ setup_plist_seds() {
 
 	sed_plist_sub=$(echo "${PLIST_SUB_SED}" | /bin/sh ${SCRIPTSDIR}/plist_sub_sed_sort.sh)
 	unset PLIST_SUB_SED
-	sed_files="s!${PREFIX}/!!g; ${sed_plist_sub} ${sed_portdocsexamples} \
-	    /^share\/licenses/d;"
-
-	sed_dirs="s!${PREFIX}/!!g; ${sed_plist_sub} s,^,@dirrmtry ,; \
+	# Used for generate_plist
+	sed_files_gen="s!^${PREFIX}/!!g; ${sed_plist_sub} \
+	    ${sed_portdocsexamples} /^share\/licenses/d;"
+	sed_dirs_gen="s!^${PREFIX}/!!g; ${sed_plist_sub} s,^,@dir ,; \
 	    ${sed_portdocsexamples} \
-	    s!@dirrmtry \(/.*\)!@unexec rmdir \"\1\" >/dev/null 2>\&1 || :!; \
-	    /^@dirrmtry share\/licenses/d;"
+	    /^@dir share\/licenses/d;"
+
+	# These prevent ignoring DOCS/EXAMPLES dirs with sed_portdocsexamples
+	sed_files="s!^${PREFIX}/!!g; ${sed_plist_sub} /^share\/licenses/d;"
+	sed_dirs="s!^${PREFIX}/!!g; ${sed_plist_sub} s,^,@dir ,; \
+	    /^@dir share\/licenses/d;"
+
 }
 
 # Generate plist from staged files
@@ -269,20 +113,24 @@ generate_plist() {
 	find ${STAGEDIR} -type f -o -type l | sort | \
 	    sed -e "s,${STAGEDIR},," >${WRKDIR}/.staged-files
 	comm -13 ${WRKDIR}/.plist-files ${WRKDIR}/.staged-files | \
-	    sed -e "${sed_files}" \
+	    sed -e "${sed_files_gen}" \
 	     >>${WRKDIR}/.staged-plist || :
 
 	### HANDLE DIRS
 	cat ${WRKDIR}/.plist-dirs-unsorted ${WRKDIR}/.mtree \
-	    ${WRKDIR}/.run-depends-dirs | sort -u >${WRKDIR}/.traced-dirs
-	find -sd ${STAGEDIR} -type d | sed -e "s,^${STAGEDIR},,;/^$/d" \
+	    | sort -u >${WRKDIR}/.traced-dirs
+	find ${STAGEDIR} -type d | sed -e "s,^${STAGEDIR},,;/^$/d" | sort \
+	    >${WRKDIR}/.staged-dirrms-sorted
+	find -sd ${STAGEDIR}${PREFIX} -type d -empty | sed -e "s,^${STAGEDIR},,;\,^${PREFIX}$,d;/^$/d" \
 	    >${WRKDIR}/.staged-dirs-dfs
+	find -sd ${STAGEDIR} -type d ! -path "${STAGEDIR}${PREFIX}/*" | sed -e "s,^${STAGEDIR},,;\,^${PREFIX}$,d;/^$/d" \
+	    >>${WRKDIR}/.staged-dirs-dfs
 	sort ${WRKDIR}/.staged-dirs-dfs >${WRKDIR}/.staged-dirs-sorted
 	awk '{print FNR, $0}' ${WRKDIR}/.staged-dirs-dfs \
 	    >${WRKDIR}/.staged-dirs-dfs-sorted
 	# Find all staged dirs and then sort them by depth-first (find -ds)
 	comm -13 ${WRKDIR}/.traced-dirs ${WRKDIR}/.staged-dirs-sorted \
-	    | sort_dfs | sed "${sed_dirs}" \
+	    | sort_dfs | sed "${sed_dirs_gen}" \
 	    >>${WRKDIR}/.staged-plist || :
 }
 
@@ -298,14 +146,14 @@ check_orphans_from_plist() {
 		*.orig) ;;
 		*/.DS_Store) ;;
 		*/.cvsignore) ;;
-		*/.git/*|'@dirrmtry '*/.git) ;;
+		*/.git/*|'@dir '*/.git) ;;
 		*/.gitattributes|*/.gitignore|*/.gitmodules) ;;
-		*/.svn/*|'@dirrmtry '*/.svn) ;;
+		*/.svn/*|'@dir '*/.svn) ;;
 		*/.svnignore) ;;
-		*/CVS/*|'@dirrmtry '*/CVS) ;;
+		*/CVS/*|'@dir '*/CVS) ;;
 		*/info/dir|info/dir) ;;
-		lib/X11/fonts/*/fonts.dir) ;;
-		lib/X11/fonts/*/fonts.scale) ;;
+		share/fonts/*/fonts.dir) ;;
+		share/fonts/*/fonts.scale) ;;
 		share/applications/mimeinfo.cache) ;;
 		share/mime/XMLnamespaces) ;;
 		share/mime/aliases) ;;
@@ -319,6 +167,7 @@ check_orphans_from_plist() {
 		share/mime/treemagic) ;;
 		share/mime/types) ;;
 		share/mime/version) ;;
+		'@dir etc/gconf/gconf.xml.defaults');;
 		*)
 			# An orphan was found, return non-zero status
 			ret=1
@@ -326,58 +175,6 @@ check_orphans_from_plist() {
 		;;
 		esac
 	done < ${WRKDIR}/.staged-plist
-	return ${ret}
-}
-
-# Check for directories being removed that are handled by MTREE files.
-check_invalid_directories_mtree() {
-	local ret=0
-	# Anything listed in plist and in restricted-dirs is a failure. I.e.,
-	# it's owned by a run-time dependency or one of the MTREEs.
-	echo "===> Checking for directories owned by MTREEs"
-	cat ${WRKDIR}/.mtree | sort -u >${WRKDIR}/.restricted-dirs
-	: >${WRKDIR}/.invalid-plist-mtree
-	comm -12 ${WRKDIR}/.plist-dirs-sorted-no-comments \
-	    ${WRKDIR}/.restricted-dirs \
-	    | sort_dfs | sed "${sed_dirs}" \
-	    >>${WRKDIR}/.invalid-plist-mtree || :
-	if [ -s "${WRKDIR}/.invalid-plist-mtree" ]; then
-		while read line; do
-			# Skip removal of PREFIX and PREFIX/info from
-			# bsd.port.mk for now. The removal of info may
-			# be a bug; it's part of BSD.local.dist.
-			# See ports/74691
-			if [ "${PREFIX}" != "${LOCALBASE}" ]; then
-				case "${line}" in
-					"@dirrmtry info") continue ;;
-					"@unexec rmdir \"${PREFIX}\" >/dev/null 2>&1 || :") continue ;;
-				esac
-			fi
-			ret=1
-			echo "Error: Owned by MTREE: ${line}" >&2
-		done < ${WRKDIR}/.invalid-plist-mtree
-	fi
-	return ${ret}
-}
-
-# Check for directories in plist that dependencies already handle.
-# XXX: This goes away when pkg learns auto dir tracking
-check_invalid_directories_from_dependencies() {
-	local ret=0
-	echo "===> Checking for directories handled by dependencies"
-	cat ${WRKDIR}/.run-depends-dirs | sort -u >${WRKDIR}/.restricted-dirs
-	: >${WRKDIR}/.invalid-plist-dependencies
-	comm -12 ${WRKDIR}/.plist-dirs-sorted-no-comments \
-	    ${WRKDIR}/.restricted-dirs \
-	    | sort_dfs | sed "${sed_dirs}" \
-	    >>${WRKDIR}/.invalid-plist-dependencies || :
-	if [ -s "${WRKDIR}/.invalid-plist-dependencies" ]; then
-	#	ret=1
-		while read line; do
-			echo "Warning: Possibly owned by dependency: ${line}" \
-			    >&2
-		done < ${WRKDIR}/.invalid-plist-dependencies
-	fi
 	return ${ret}
 }
 
@@ -395,7 +192,7 @@ check_missing_plist_items() {
 	rm -rf ${WRKDIR}/.missing-dirs > /dev/null 2>&1 || :
 	mkdir ${WRKDIR}/.missing-dirs
 	comm -23 ${WRKDIR}/.plist-dirs-sorted-no-comments \
-	    ${WRKDIR}/.staged-dirs-sorted > ${WRKDIR}/.missing-plist-dirs
+	    ${WRKDIR}/.staged-dirrms-sorted > ${WRKDIR}/.missing-plist-dirs
 	# Creates the dirs in WRKDIR/.missing-dirs and ensure spaces are
 	# quoted.
 	sed -e "s,^,${WRKDIR}/.missing-dirs," \
@@ -428,8 +225,8 @@ esac
 
 # validate environment
 envfault=
-for i in STAGEDIR PREFIX LOCALBASE WRKDIR WRKSRC MTREE_FILE GNOME_MTREE_FILE \
-    TMPPLIST PLIST_SUB_SED SCRIPTSDIR PACKAGE_DEPENDS WITH_PKGNG PKG_QUERY \
+for i in STAGEDIR PREFIX LOCALBASE WRKDIR WRKSRC MTREE_FILE \
+    TMPPLIST PLIST_SUB_SED SCRIPTSDIR \
     PORT_OPTIONS NO_PREFIX_RMDIR
 do
     if ! ( eval ": \${${i}?}" ) 2>/dev/null ; then
@@ -445,7 +242,20 @@ fi
 set -u
 
 if [ $makeplist = 0 ] ; then
-	parse_plist
+	echo "===> Parsing plist"
+	parse_plist "${PREFIX}" 1 < ${TMPPLIST} \
+	    3>${WRKDIR}/.plist-dirs-unsorted \
+	    >${WRKDIR}/.plist-files-unsorted
+	unset TMPPLIST
+	# Create the -no-comments files and trim out @comment from the plists.
+	# This is used for various tests later.
+	sed -e '/^@comment/d' ${WRKDIR}/.plist-dirs-unsorted \
+	    >${WRKDIR}/.plist-dirs-unsorted-no-comments
+	sed -i '' -e 's/^@comment //' ${WRKDIR}/.plist-dirs-unsorted
+	sed -e '/^@comment/d' ${WRKDIR}/.plist-files-unsorted | sort \
+	    >${WRKDIR}/.plist-files-no-comments
+	sed -e 's/^@comment //' ${WRKDIR}/.plist-files-unsorted | sort \
+	    >${WRKDIR}/.plist-files
 else
 	# generate plist - pretend the plist had been empty
 	: >${WRKDIR}/.plist-dirs-unsorted
@@ -454,9 +264,6 @@ else
 fi
 
 parse_mtree
-
-lookup_dependency_dirs
-unset PACKAGE_DEPENDS PKG_QUERY
 
 setup_plist_seds
 generate_plist
@@ -473,8 +280,6 @@ check_orphans_from_plist || ret=1
 sort -u ${WRKDIR}/.plist-dirs-unsorted-no-comments \
     >${WRKDIR}/.plist-dirs-sorted-no-comments
 
-check_invalid_directories_mtree || ret=1
-check_invalid_directories_from_dependencies || ret=1
 check_missing_plist_items || ret=1
 
 if [ ${ret} -ne 0 ]; then

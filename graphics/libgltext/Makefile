@@ -3,7 +3,7 @@
 
 PORTNAME=	libgltext
 PORTVERSION=	0.3.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gltext/gltext/${PORTVERSION}
 DISTNAME=	gltext-${PORTVERSION}
@@ -19,7 +19,7 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 
-OPTIONS_DEFINE=	EXAMPLES
+OPTIONS_DEFINE=	EXAMPLES DOCS
 EXAMPLES_DESC=	Compile examples, need libglut
 
 .include <bsd.port.options.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	netsurf
 PORTVERSION=	3.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	http://download.netsurf-browser.org/netsurf/releases/source-full/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-full-src
@@ -16,22 +16,21 @@ LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png
+		libpng.so:${PORTSDIR}/graphics/png
 
 ALL_TARGET=	#empty
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-lssl -lcrypto -L${LOCALBASE}/lib ${ICONV_LIB}
 MAKE_ARGS=	HOST_CC="${CC}" CC="${CC}" CCOPT="" HOST="${OPSYS}" \
 		WARNFLAGS="" Q="" OPTCFLAGS="${CFLAGS}"
-USES=		bison gmake pkgconfig iconv
+USES=		bison gmake gperf iconv jpeg pkgconfig
 USE_GNOME=	gtk20 librsvg2
 
 NSFB_VERSION=	0.1.0
 WRKSRC=		${WRKDIR}/${PORTNAME}-full-${PORTVERSION}
 
 DESKTOP_ENTRIES="NetSurf" "${COMMENT}" "${DATADIR}/${PORTNAME}.xpm" \
-		"${PORTNAME}" "" "true"
+		"${PORTNAME}" "" true
 
 OPTIONS_DEFINE=	GSTREAMER WEBP
 GSTREAMER_USE=		GSTREAMER=yes
@@ -41,7 +40,6 @@ WEBP_LIB_DEPENDS=	libwebp.so:${PORTSDIR}/graphics/webp
 
 .if ${OPSYS} == DragonFly
 LIB_DEPENDS+=	libssl.so:${PORTSDIR}/security/openssl
-BUILD_DEPENDS+=	gperf:${PORTSDIR}/devel/gperf
 .endif
 
 .include <bsd.port.pre.mk>
@@ -58,6 +56,7 @@ post-patch:
 	@${REINPLACE_CMD} \
 		-e '/OpenSSL/d' -e '/lcms/d' -e 's| -g||' \
 		-e 's/-DG_DISABLE_DEPRECATED//' \
+		-e 's/-DGDK_PIXBUF_DISABLE_DEPRECATED//' \
 		${WRKSRC}/src/netsurf-${PORTVERSION}/gtk/Makefile.target
 	@${REINPLACE_CMD} -e 's| -g|| ; s|flex|${LOCALBASE}/bin/&|' \
 		${WRKSRC}/src/nsgenbind-0.0.1/src/Makefile
@@ -66,7 +65,7 @@ do-configure:
 	@${CP} ${FILESDIR}/Makefile.config  ${WRKSRC}/src/netsurf-${PORTVERSION}
 .if empty(ICONV_LIB)
 	@${REINPLACE_CMD} '/NETSURF_USE_LIBICONV_PLUG/ s|NO|YES|' \
-		${WRKSRC}/src/netsurf-${PORTVERSION}/Makefile.config	
+		${WRKSRC}/src/netsurf-${PORTVERSION}/Makefile.config
 .endif
 .if ${PORT_OPTIONS:MGSTREAMER}
 	@${REINPLACE_CMD} '/NETSURF_USE_VIDEO/ s|NO|YES|' \
@@ -76,5 +75,8 @@ do-configure:
 	@${REINPLACE_CMD} '/NETSURF_USE_WEBP/ s|NO|YES|' \
 		${WRKSRC}/src/netsurf-${PORTVERSION}/Makefile.config
 .endif
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/netsurf
 
 .include <bsd.port.post.mk>

@@ -2,23 +2,22 @@
 
 PORTNAME=	libosip2
 PORTVERSION=	4.1.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	GNU/osip
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Low layer of SIP implementation
 
 LICENSE=	LGPL21
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-debug --disable-trace
-USE_AUTOTOOLS=	libtool
+INSTALL_TARGET=	install-strip
+USES=		libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
-USES=		pathfix pkgconfig
 
 post-patch:
 	@${REINPLACE_CMD} -e "/^SUBDIRS/s| help | |g" ${WRKSRC}/Makefile.in
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libosip2.so.11 ${STAGEDIR}${PREFIX}/lib/libosipparser2.so.11
 
 .include <bsd.port.mk>

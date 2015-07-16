@@ -3,7 +3,7 @@
 
 PORTNAME=	eboard
 PORTVERSION=	1.1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/eboard-extras/pack%201%20patchlevel%202/:p1 \
@@ -16,7 +16,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	GTK+ chess board interface (mainly for FICS and chessd)
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
 EXTRAS=		1pl2 2
 USES=		shebangfix pkgconfig perl5 tar:bzip2
@@ -31,7 +31,7 @@ CONFIGURE_ARGS=	--prefix=${PREFIX} \
 
 INSTALL_TARGET=	install install-man
 
-OPTIONS_DEFINE=	JOYSTICK
+OPTIONS_DEFINE=	JOYSTICK DOCS
 JOYSTICK_DESC=	Enable joystick support
 
 DESKTOP_ENTRIES="eboard" \

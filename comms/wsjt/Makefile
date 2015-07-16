@@ -1,40 +1,38 @@
-# Created by: Diane Bruce <db@db.net>
 # $FreeBSD$
 
 PORTNAME=	wsjt
 VERSION=	9.1
-PORTREVISION=	3
+PORTREVISION=	11
 DISTVERSION=	${VERSION}.r${SVN_REV}
 CATEGORIES=	comms hamradio
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	db
+MASTER_SITES=	LOCAL/db
 DISTNAME=	wsjt-r${SVN_REV}
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Weak signal ham radio communication package
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinter \
-		${PYTHON_SITELIBDIR}/PIL.pth:${PORTSDIR}/graphics/py-imaging
-LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float \
-		libsamplerate.so:${PORTSDIR}/audio/libsamplerate
+		${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow
+LIB_DEPENDS=	libfftw3.so:${PORTSDIR}/math/fftw3 \
+		libfftw3f.so:${PORTSDIR}/math/fftw3-float \
+		libsamplerate.so:${PORTSDIR}/audio/libsamplerate \
+		libportaudio.so:${PORTSDIR}/audio/portaudio
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/scipy:${PORTSDIR}/science/py-scipy \
-		${LOCALBASE}/lib/portaudio2/libportaudio.so:${PORTSDIR}/audio/portaudio2 \
 		${PYNUMPY}
 
-ALL_TARGET=	build
-USES=		fortran gmake tar:bzip2
+USE_GCC=	yes
+USES=		fortran gmake python tar:bzip2
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-gfortran --prefix=${LOCALBASE} \
-		--with-portaudio-include-dir=${LOCALBASE}/include/portaudio2 \
-		--with-portaudio-lib-dir=${LOCALBASE}/lib/portaudio2
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-USE_PYTHON=	yes
-USE_AUTOTOOLS=	libtool
+CONFIGURE_ARGS=	--enable-gfortran --prefix=${STAGEDIR}${LOCALBASE} \
+		--with-portaudio-include-dir=${LOCALBASE}/include/ \
+		--with-portaudio-lib-dir=${LOCALBASE}/lib/
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
+# Adding this breaks configure
+#LDFLAGS+=	-shared
 PLIST_SUB=	PYVER=${PYTHON_VERSION:S/python//} \
 		VERSION=${VERSION}
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if defined(BOOTSTRAP)
@@ -59,18 +57,22 @@ do-fetch:
 .endif
 .endif
 
+pre-patch:
+	@${CP}	${FILESDIR}/configure ${WRKSRC}
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for d in ${WRKSRC}/WSJT_Quick_Reference.pdf  ${WRKSRC}/WSJT_Source_Code.txt \
 	${WRKSRC}/WSJT_User_600.pdf ${WRKSRC}/UpdateHistory.txt \
 	${WRKSRC}/WSJT_Source_Code.txt ${WRKSRC}/LICENSE.TXT
-	${INSTALL_DATA} ${WRKSRC}/${d} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${d} ${STAGEDIR}${DOCSDIR}
 .endfor
-	@${ECHO}
-	@${ECHO} "docs installed in ${DOCSDIR}"
-	@${ECHO}
-.endif
-	@${CAT} ${PKGMESSAGE}
+
+do-build:
+	(cd ${WRKSRC};${GMAKE})
+
+post-stage:
+	(cd ${STAGEDIR}${PREFIX} \
+	  && ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+	   -d ${PREFIX} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;})
 
 .include <bsd.port.post.mk>

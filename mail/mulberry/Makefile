@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	mulberry
-PORTVERSION=	4.0.8
+DISTVERSION=	4_0_8
 PORTREVISION=	2
 CATEGORIES=	mail linux
-MASTER_SITES=	http://www.mulberrymail.com/downloads/Mulberry/%SUBDIR%/
-MASTER_SITE_SUBDIR=v${PORTVERSION:S/./_/g}
+MASTER_SITES=	http://www.mulberrymail.com/downloads/Mulberry/v${DISTVERSION:S/./_/g}/
 DISTNAME=	Mulberry
 EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
@@ -48,9 +47,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/.${PORTNAME}/Plug-ins/Timezones/* ${STAGEDIR}${PLUGINSDIR}/Timezones
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${FILESDIR}/mailcap ${STAGEDIR}${EXAMPLESDIR}
-	@[ -f ${PREFIX}/etc/mailcap ] || ${INSTALL_DATA} ${FILESDIR}/mailcap ${STAGEDIR}${PREFIX}/etc/mailcap
 	${INSTALL_DATA} ${FILESDIR}/url.helpers ${STAGEDIR}${EXAMPLESDIR}
-	@[ -f ${PREFIX}/lib/url.helpers ] || ${INSTALL_DATA} ${FILESDIR}/url.helpers ${STAGEDIR}${PREFIX}/lib/url.helpers
 .if ${PORT_OPTIONS:MDOCS}
 	${INSTALL_DIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/.${PORTNAME}/CHANGES* ${STAGEDIR}${DOCSDIR}

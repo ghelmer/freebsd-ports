@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openbox
-PORTVERSION=	3.5.2
-PORTREVISION=	4
+PORTVERSION=	3.6
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://openbox.org/dist/openbox/
 
@@ -13,7 +12,7 @@ COMMENT=	Small, fast, standards compliant, extensible window manager
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool:keepla pathfix pkgconfig
+USES=		gmake libtool pathfix pkgconfig
 USE_GNOME=	glib20 libxml2
 USE_XORG=	xext xft
 USE_LDCONFIG=	yes
@@ -21,10 +20,10 @@ USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lXext
 
-PLIST_SUB=	VERSION=${PORTVERSION:C/.[0-9]+\$//}
+PLIST_SUB=	VERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=	NLS IMLIB PANGO NOTIFY
-OPTIONS_DEFAULT=	IMLIB PANGO NOTIFY
+OPTIONS_DEFINE=	NLS IMLIB PANGO SVG NOTIFY
+OPTIONS_DEFAULT=	IMLIB PANGO NOTIFY SVG
 OPTIONS_SUB=	yes
 
 NLS_USES=		gettext
@@ -37,7 +36,10 @@ NOTIFY_LIB_DEPENDS=	libstartup-notification-1.so:${PORTSDIR}/x11/startup-notific
 NOTIFY_CONFIGURE_OFF=	--disable-startup-notification
 
 IMLIB_CONFIGURE_ENABLE=	imlib2
-IMLIB_USE=	EFL=imlib2
+IMLIB_LIB_DEPENDS=	libImlib2.so:${PORTSDIR}/graphics/imlib2
+
+SVG_USE=	GNOME=librsvg2
+SVG_CONFIGURE_ENABLE=	librsvg
 
 post-configure:
 	@${CHMOD} +x ${WRKSRC}/install-sh

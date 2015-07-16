@@ -3,32 +3,28 @@
 
 PORTNAME=	kana-no-quiz
 DISTVERSION=	1.9
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	japanese
-MASTER_SITES=	${MASTER_SITE_BERLIOS}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	SF/${PORTNAME}
 DISTNAME=	${PORTNAME:S,k,K,}-${DISTVERSION}
 
-MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	A little tool to memorize Japanese KANA (Hiragana/Katakana)
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Little tool to memorize Japanese KANA (Hiragana/Katakana)
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygtk.py:${PORTSDIR}/x11-toolkits/py-gtk2 \
-		${PYTHON_SITELIBDIR}/pygame/__init__.py:${PORTSDIR}/devel/py-game
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
 
 NO_BUILD=	yes
 
 RM_FILES=	CHANGES.txt FAL.txt  GPL.txt
 RM_OPTS=	-f
 
-USES=		gettext
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-
+USES=		gettext python
+USE_GNOME=	pygtk2:run
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	Kana-no-quiz
 
 WRKSRC=		"${WRKDIR}/Kana no quiz-${DISTVERSION}"
 
-NO_STAGE=	yes
 post-extract:
 	@cd ${WRKSRC} && ${RM} ${RM_OPTS} ${RM_FILES}
 

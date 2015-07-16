@@ -3,16 +3,16 @@
 
 PORTNAME=	atlas
 PORTVERSION=	3.8.4
-PORTREVISION=	4
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/math-${PORTNAME}/Stable/${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automatically Tuned Linear Algebra Software (ATLAS)
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${NONEXISTENT}:${PORTSDIR}/math/lapack:checksum
 
@@ -22,21 +22,17 @@ USE_GCC=	yes
 CONFLICTS=	atlas-devel-[0-9]* cblas-[0-9]*
 MANUAL_PACKAGE_BUILD=	Optimizes for the local machine.
 
-OPTIONS_DEFINE=	ARCHDEF TSC WALL_TIMER
-OPTIONS_DEFAULT=	SHARED
-OPTIONS_MULTI=	BUILDTYPE
-OPTIONS_MULTI_BUILDTYPE=	SHARED STATIC
+OPTIONS_DEFINE=		DOCS DATA ARCHDEF TSC WALL_TIMER
+OPTIONS_DEFAULT=	DATA
 ARCHDEF_DESC=		Use a specified architectural default
-SHARED_DESC=		Build static PIC archives and shared libraries
-STATIC_DESC=		Build static (non-PIC) archives
+DATA_DESC=		Install tuning data and logs from the build
 TSC_DESC=		If WALL_TIMER is enabled, use the TSC
 WALL_TIMER_DESC=	Use less robust timing with higher resolution
 
 PORTSCOUT=	limitw:1,even
 WRKSRC=		${WRKDIR}/ATLAS
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 #Increase ATLAS_MAXMALLOC if the atlas threaded libraries perform poorly on large problems:
 # http://math-atlas.sourceforge.net/errata.html#MaxMalloc
@@ -55,14 +51,13 @@ POINTER?=	32
 .endif
 
 .if defined(MAINTAINER_MODE)
-LIB_DEPENDS+=	blas:${PORTSDIR}/math/blas
+LIB_DEPENDS+=	libblas.so:${PORTSDIR}/math/blas
 .endif
 
-.for i in DATA DOCS
-.  if !defined(NOPORT${i})
-PORT${i}=	*
-.  endif
-.endfor
+.if ${PORT_OPTIONS:MDATA}
+PORTDATA=	*
+.endif
+PORTDOCS=	*
 
 .if ${PORT_OPTIONS:MARCHDEF}
 .  if defined(ARCHDEF)
@@ -70,26 +65,15 @@ PORT${i}=	*
 ARCHDEFFLAG=	-Si archdef 0
 .    endif
 .  else
-IGNORE =	: You have set WITH_ARCHDEF, but have not defined ARCHDEF
+IGNORE=		you have set WITH_ARCHDEF, but have not defined ARCHDEF
 .  endif
 .endif
 
-.if ${PORT_OPTIONS:MSHARED}
 USE_LDCONFIG=	yes
-.endif
-
-.for opt in SHARED STATIC
-.  if ${PORT_OPTIONS:M${opt}}
-PLIST_SUB+=	${opt}=""
-.  else
-PLIST_SUB+=	${opt}="@comment "
-.  endif
-.endfor
 
 EXTRA_FLAGS?=	-Wl,-rpath=${_GCC_RUNTIME}
-SHARED_FLAGS=	${PTHREAD_CFLAGS} ${PICFLAG} -DPIC
+SHARED_FLAGS=	${PICFLAG} -DPIC
 SHARED_LAPACK_WRKSRC=	WRKSRC_SHARED
-STATIC_FLAGS=	${PTHREAD_CFLAGS}
 STATIC_LAPACK_WRKSRC=	WRKSRC
 
 post-patch:
@@ -110,8 +94,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "\|OS=ALL|{N; s|'gcc'|'${CC}'|; \
 		s|'gfortran'|'${FC}'|; s|-mavx|-msse3|;s|'| ${EXTRA_FLAGS}'|4;}" \
 		${WRKSRC}/CONFIG/src/atlcomp.txt
-	@${REINPLACE_CMD} -e "s|%%PTHREAD_LIBS%%|${PTHREAD_LIBS}|" \
-		-e "s|%%CC%%|${CC}|" \
+	@${REINPLACE_CMD} -e "s|%%CC%%|${CC}|" \
 		${WRKSRC}/CONFIG/src/SpewMakeInc.c
 	@${REINPLACE_CMD} -E -e \
 	"\|(#define ATL_MaxMalloc[[:blank:]]+)([[:digit:]]+)|s||\1${ATLAS_MAXMALLOC}|" \
@@ -119,9 +102,9 @@ post-patch:
 	@${CAT} ${FILESDIR}/tuning-message
 
 do-configure:
-	@if [ "x${WITH_WALL_TIMER}" != "x" ] ; then \
+	@if [ ${PORT_OPTIONS:MWALL_TIMER} ] ; then \
 		TIMEFLAG= ; \
-		if [ \( ${ARCH} = "i386" -o ${ARCH} = "amd64" \) -a "x${WITH_TSC}" != "x" ] ; then \
+		if [ \( ${ARCH} = "i386" -o ${ARCH} = "amd64" \) -a ${PORT_OPTIONS:MTSC} ] ; then \
 			freq=`${SYSCTL} -ni machdep.tsc_freq` ; \
 			if [ "x$${freq}" != "x" ] ; then \
 				if [ $${freq} -gt 1000000 ] ; then \
@@ -150,12 +133,10 @@ post-configure:
 
 do-build:
 .for opt in shared static
-.  if ${PORT_OPTIONS:M${opt:tu}}
 	@${ECHO_CMD} "Building the LAPACK archives with ${opt} ATLAS flags:"
 	F77FLAGS="`${MAKE} -f ${WRKSRC}/saved_flags -V F77FLAGS` ${EXTRA_FFLAGS}" ; \
 	LW=`${MAKE} -C ${PORTSDIR}/math/lapack -V ${${opt:tu}_LAPACK_WRKSRC}` ; \
-	${MAKE} -C ${PORTSDIR}/math/lapack WITH_${opt:tu}=yes \
-		clean patch ; \
+	${MAKE} -C ${PORTSDIR}/math/lapack WITH=${opt:tu} clean patch ; \
 	cd $${LW} ; ${SETENV} ${MAKE_ENV:NFFLAGS=*} EXTRAFLAGS="${${opt:tu}_FLAGS}" \
 		FFLAGS="-pipe $${F77FLAGS}" ${MAKE} ${_MAKE_JOBS} ${MAKE_ARGS} \
 		ARCH="${AR}" lapacklib ; \
@@ -184,23 +165,21 @@ do-build:
 		fi ; \
 	fi ; \
 	${ECHO_CMD} "Building ${opt} ATLAS:" ; cd ${WRKSRC}/${opt} ; \
-	${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} all
-.  endif
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} all
 .endfor
 
 L1=	${FC} $${F77FLAGS} ${SHARED_FLAGS} ${LDFLAGS} -shared -Wl,-x \
 	-Wl,--whole-archive -Wl,-soname,
-L2=	-Wl,--no-whole-archive -Wl,--as-needed ${PTHREAD_LIBS}
+L2=	-Wl,--no-whole-archive -Wl,--as-needed -lpthread
 
 post-build:
 .for opt in shared static
-.  if ${PORT_OPTIONS:M${opt:tu}}
 	@${ECHO_CMD} "Timing ${opt} ATLAS:"
-	@cd ${WRKSRC}/${opt} ; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} time ; \
-	cd ARCHS ; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} ArchNew tarfile
-.  endif
+	(cd ${WRKSRC}/${opt} ; ${SETENV} ${MAKE_ENV} \
+		${MAKE_CMD} ${MAKE_ARGS} time ; \
+		cd ARCHS ; ${SETENV} ${MAKE_ENV} \
+			${MAKE_CMD} ${MAKE_ARGS} ArchNew tarfile)
 .endfor
-.if ${PORT_OPTIONS:MSHARED}
 	@${ECHO_CMD} "Building ATLAS shared libraries:"
 	@F77FLAGS="`${MAKE} -f ${WRKSRC}/saved_flags -V F77FLAGS` ${EXTRA_FFLAGS}" ; \
 	cd ${WRKSRC}/shared/lib ; \
@@ -210,7 +189,6 @@ post-build:
 	${L1}libcblas.so.2 -o libcblas.so.2 libcblas.a ${L2} libatlas.so.2 ; \
 	${L1}libptcblas.so.2 -o libptcblas.so.2 libptcblas.a ${L2} libatlas.so.2 ; \
 	${L1}libalapack.so.2 -o libalapack.so.2 liblapack.a ${L2} libatlas.so.2
-.endif
 
 .if defined(MAINTAINER_MODE)
 STATIC_BLAS=	${LOCALBASE}/lib/libblas.a
@@ -218,46 +196,41 @@ SHARED_BLAS=	-L${LOCALBASE}/lib -lblas
 
 check regression-test test: build
 .  for opt in shared static
-.    if ${PORT_OPTIONS:M${opt:tu}}
 	@${ECHO_CMD} "Testing ${opt} ATLAS:"
 	@cd ${WRKSRC}/${opt} ; ${SETENV} ${MAKE_ENV} BLAS="${${opt:tu}_BLAS}" \
-	${MAKE} ${MAKE_ARGS} check ptcheck error_report
-.    endif
+	${MAKE_CMD} ${MAKE_ARGS} check ptcheck error_report
 .  endfor
 .endif
 
 do-install:
 .for i in libatlas libcblas libf77blas liblapack libptcblas libptf77blas
-.  if ${PORT_OPTIONS:MSTATIC}
-	@${INSTALL_DATA} ${WRKSRC}/static/lib/${i}.a ${PREFIX}/lib/${i:S|lapack|alapack|}.a
-.  endif
-.  if ${PORT_OPTIONS:MSHARED}
-	@${INSTALL_DATA} ${WRKSRC}/shared/lib/${i}.a ${PREFIX}/lib/${i:S|lapack|alapack|}_pic.a
-	@${INSTALL_DATA} ${WRKSRC}/shared/lib/${i:S|lapack|alapack|}.so.2 ${PREFIX}/lib
-	@${LN} -sf ${i:S|lapack|alapack|}.so.2 ${PREFIX}/lib/${i:S|lapack|alapack|}.so
-.  endif
+	${INSTALL_DATA} ${WRKSRC}/static/lib/${i}.a \
+		${STAGEDIR}${PREFIX}/lib/${i:S|lapack|alapack|}.a
+	${INSTALL_DATA} ${WRKSRC}/shared/lib/${i}.a \
+		${STAGEDIR}${PREFIX}/lib/${i:S|lapack|alapack|}_pic.a
+	${INSTALL_LIB} ${WRKSRC}/shared/lib/${i:S|lapack|alapack|}.so.2 \
+		${STAGEDIR}${PREFIX}/lib
+	${LN} -sf ${i:S|lapack|alapack|}.so.2 \
+		${STAGEDIR}${PREFIX}/lib/${i:S|lapack|alapack|}.so
 .endfor
-	@${INSTALL_DATA} ${WRKSRC}/include/cblas.h   ${PREFIX}/include
-	@${INSTALL_DATA} ${WRKSRC}/include/clapack.h ${PREFIX}/include
+	${INSTALL_DATA} ${WRKSRC}/include/cblas.h ${WRKSRC}/include/clapack.h \
+		${STAGEDIR}${PREFIX}/include
 .for opt in shared static
-.  if ${PORT_OPTIONS:M${opt:tu}}
-	@${MKDIR} ${PREFIX}/include/atlas/${opt}
-	@${INSTALL_DATA} ${WRKSRC}/${opt}/include/* ${PREFIX}/include/atlas/${opt}
-	@cd ${PREFIX} ; \
-	${FIND} include/atlas/${opt} -type f -o -type l | ${SORT} >> ${TMPPLIST}
-	@${ECHO_CMD} "@dirrm include/atlas/${opt}" >> ${TMPPLIST}
-.    if !defined(NOPORTDATA)
-	@${MKDIR} ${DATADIR}/${opt}
-	@cd ${WRKSRC}/${opt}/bin ; ${TAR} -czf INSTALL_LOG.tgz INSTALL_LOG ; \
-	${INSTALL_DATA} INSTALL_LOG.tgz ${DATADIR}/${opt}
-	@${INSTALL_DATA} ${WRKSRC}/${opt}/ARCHS/*.tgz ${DATADIR}/${opt}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/include/atlas/${opt}
+	${INSTALL_DATA} ${WRKSRC}/${opt}/include/* \
+		${STAGEDIR}${PREFIX}/include/atlas/${opt}
+.    if ${PORT_OPTIONS:MDATA}
+	@${MKDIR} ${STAGEDIR}${DATADIR}/${opt}
+	(cd ${WRKSRC}/${opt}/bin; \
+		${COPYTREE_SHARE} INSTALL_LOG ${STAGEDIR}${DATADIR}/${opt})
+	(cd ${WRKSRC}/${opt}/ARCHS; \
+		${COPYTREE_SHARE} "*" ${STAGEDIR}${DATADIR}/${opt} \
+		"! -name Makefile -and ! -name *.tgz")
 .    endif
-.  endif
 .endfor
-	@${ECHO_CMD} "@dirrm include/atlas" >> ${TMPPLIST}
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/doc/* ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

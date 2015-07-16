@@ -12,11 +12,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	wenheping@gmail.com
 COMMENT=	PostgreSQL PQ Protocol Modules
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 post-install:

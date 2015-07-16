@@ -4,19 +4,16 @@ PORTNAME=	flvstreamer
 PORTVERSION=	2.1.c.1
 PORTREVISION=	1
 CATEGORIES=	multimedia net
-MASTER_SITES=	SAVANNAH
-MASTER_SITE_SUBDIR=	${PORTNAME}/source
+MASTER_SITES=	SAVANNAH/${PORTNAME}/source
 DISTNAME=	${PORTNAME}-2.1c1
 
 MAINTAINER=	hrs@FreeBSD.org
-COMMENT=	An open source command-line RTMP client
+COMMENT=	Open source command-line RTMP client
 
 USES=		gmake
 ALL_TARGET=	posix
 WRKSRC=		${WRKDIR}/${PORTNAME}
-MAKE_ARGS=	THREADLIB="${PTHREAD_LIBS}" \
-		XCFLAGS="${CFLAGS} ${PTHREAD_CFLAGS}" \
-		XLDFLAGS="${LDFLAGS}"
+MAKE_ARGS=	THREADLIB="-lpthread" XCFLAGS="${CFLAGS}" XLDFLAGS="${LDFLAGS}"
 PLIST_FILES=	bin/flvstreamer bin/streams
 PORTDOCS=	ChangeLog ChangeLog.rtmpdump README
 

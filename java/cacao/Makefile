@@ -14,11 +14,8 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/share/classpath/glibj.zip:${PORTSDIR}/java/classpath
 RUN_DEPENDS=	${LOCALBASE}/share/classpath/glibj.zip:${PORTSDIR}/java/classpath
 
-USES=		gmake
+USES=		gmake tar:xz
 GNU_CONFIGURE=	yes
-USE_XZ=		yes
-
-MAN1=		cacao.1
 
 CONFIGURE_ARGS=	--disable-test-dependency-checks \
 		--with-java-runtime-library=gnuclasspath \
@@ -51,10 +48,6 @@ JAVACFLAGS=	-C
 CONFIGURE_ENV+=	JAVACFLAGS="${JAVACFLAGS}"
 MAKE_ENV+=	JAVACFLAGS="${JAVACFLAGS}"
 .endif
-
-post-patch:
-	${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%|${PTHREAD_LIBS}|g' \
-	    ${WRKSRC}/configure ${WRKSRC}/src/mm/boehm-gc/configure
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

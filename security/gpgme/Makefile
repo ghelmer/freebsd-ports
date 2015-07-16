@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gpgme
-PORTVERSION=	1.5.1
+PORTVERSION=	1.5.5
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/gpgme
 
@@ -15,11 +15,13 @@ LIB_DEPENDS=	libassuan.so:${PORTSDIR}/security/libassuan \
 		libgpg-error.so:${PORTSDIR}/security/libgpg-error
 
 GNU_CONFIGURE=	yes
-USES=		gmake libtool:keepla tar:bzip2
+USES=		cpe gmake libtool tar:bzip2
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/gpgme
 INSTALL_TARGET=	install-strip
+
+CPE_VENDOR=	gnu
 
 INFO=		gpgme
 PORTDOCS=	AUTHORS ChangeLog INSTALL NEWS README THANKS TODO
@@ -47,11 +49,6 @@ CONFIGURE_ARGS+=	--disable-gpgsm-test
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-lpthread|${PTHREAD_LIBS}|g' \
-					${WRKSRC}/${CONFIGURE_SCRIPT} \
-					${WRKSRC}/src/Makefile.in \
-					${WRKSRC}/src/gpgme-config.in \
-					${WRKSRC}/tests/gpg/Makefile.in
 	@${REINPLACE_CMD} -e 's|^clfilesdir.*|clfilesdir=$$\(libdir\)/common-lisp/gpgme|g' \
 					${WRKSRC}/lang/cl/Makefile.in
 

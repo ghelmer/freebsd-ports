@@ -2,24 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	ReadLine-Gnu
-PORTVERSION=	1.24
+PORTVERSION=	1.26
 CATEGORIES=	devel perl5
-MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=Term
+MASTER_SITES=	CPAN/Term
 PKGNAMEPREFIX=	p5-
 DISTNAME=	Term-${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Perl 5 module that allows Term::ReadLine to use GNU readline
+COMMENT=	Allow Term::ReadLine to use GNU readline
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-USES=		perl5
+USES=		perl5 readline
+CFLAGS+=	${CPPFLAGS}
 USE_PERL5=	configure
-WRKSRC=		${WRKDIR}/${DISTNAME:C/a$//}
-
-test:	build
-	@(cd ${WRKSRC}; make test)
 
 .include <bsd.port.mk>

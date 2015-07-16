@@ -1,44 +1,99 @@
---- Makefile.in.orig	2009-10-03 11:39:34.000000000 -0400
-+++ Makefile.in	2009-10-13 09:48:32.000000000 -0400
-@@ -1,7 +1,7 @@
+--- Makefile.in.orig	2014-11-04 10:25:00 UTC
++++ Makefile.in
+@@ -23,7 +23,7 @@
  #
  # -----------     Compilers     ----------------
- # Use gcc to compile files for Linux. 
+ # Use gcc to compile files for Linux.
 -CC=gcc
 +CC?=gcc
- # Name the output files *.ol instead of *.o 
- # so we definitely know it is for Linux. 
- # (*.o files can be present by mistake) 
-@@ -15,10 +15,8 @@
- # so we definitely know it is for Windows.
- # (*.o files can be present by mistake) 
+ # Name the output files *.ol instead of *.o
+ # so we definitely know it is for Linux.
+ # (*.o files can be present by mistake)
+@@ -42,7 +42,7 @@ WINNASM64 = C:\mingw\bin\nasm -w-orphan-
+ # (*.o files can be present by mistake)
  # Always use the same flags.
--CFL	= -g -O -DOSNUM=1 @X11@ -W -Wall -Wimplicit -Wreturn-type -Wformat \
---m32 -Wunused -Wcomment -Wchar-subscripts -Wshadow -Wuninitialized \
---Wparentheses -Wstrict-prototypes -Werror -ffast-math -Wundef \
---fomit-frame-pointer -c -o
-+CFL	= -O -DOSNUM=1 @X11@ -I%%LOCALBASE%%/include -m32 -ffast-math \
-+	-fomit-frame-pointer -c -o
+ # -Wconversion -Wno-sign-conversion -Wunreachable-code
+-CFL	= -g -O2 -DOSNUM=1 -DMEMREF_T=int @X11_32_INC@ -W -Wall -DCPU=@CPU@ \
++CFL	= -O2 -DOSNUM=1 -DMEMREF_T=int @X11_32_INC@ -W -Wall -DCPU=@CPU@ \
+ -DSHM_INSTALLED=@LIBXEXT32_OK@ -Wimplicit \
+ -DALSA_PRESENT=@ALSA32_OK@  -DIA64=0 \
+ @DARWIN@ -DLIBUDEV_PRESENT=@LIBUDEV_32_OK@ -DSERVER=@MAKE_SERVER@ \
+@@ -50,7 +50,7 @@ CFL	= -g -O2 -DOSNUM=1 -DMEMREF_T=int @X
+ -Wuninitialized -Wparentheses -Wstrict-prototypes -Werror -ffast-math \
+ -Wundef -fomit-frame-pointer -c -o
  
- CFW	= -g -O -DOSNUM=2 -W -Wall -Wimplicit -Wreturn-type -Wformat \
- -Wunused -Wcomment -Wchar-subscripts -Wshadow -Wuninitialized \
-@@ -646,7 +644,7 @@
- meter_graph.ol fonts.ol screensub.ol tx_graph.ol txssb.ol lxsys.ol 
+-CFLN	= -g -O2 -DOSNUM=1 -DMEMREF_T=int @X11_32_INC@ -W -Wall \
++CFLN	= -O2 -DOSNUM=1 -DMEMREF_T=int @X11_32_INC@ -W -Wall \
+ -DCPU=@CPU@ -DSHM_INSTALLED=@LIBXEXT32_OK@ -Wimplicit \
+ -DALSA_PRESENT=@ALSA32_OK@ -DIA64=0 \
+ @DARWIN@ -DLIBUDEV_PRESENT=@LIBUDEV_32_OK@ -DSERVER=@MAKE_SERVER@ \
+@@ -58,13 +58,13 @@ CFLN	= -g -O2 -DOSNUM=1 -DMEMREF_T=int @
+ -Wuninitialized -Wparentheses -Wstrict-prototypes -Werror -ffast-math \
+ -Wundef -fomit-frame-pointer -c -o
  
+-CFW	= -g -O2 -DOSNUM=2 -DMEMREF_T=int -W -Wall -Wimplicit -DIA64=0 \
++CFW	= -O2 -DOSNUM=2 -DMEMREF_T=int -W -Wall -Wimplicit -DIA64=0 \
+ -DLIBUDEV_PRESENT=1 -DCPU=CPU_INTEL -DSERVER=@MAKE_SERVER@ \
+ @M32@ -Wreturn-type -Wformat -Wunused -Wcomment -Wchar-subscripts \
+ -Wshadow -Wuninitialized -Wparentheses -Wstrict-prototypes -Werror \
+ -ffast-math -Wundef -fomit-frame-pointer -c -o
  
--	${CC} -m32 -olinrad -lvgagl -lvga -lpthread -lm @ALSALIB@ -lrt \
-+	${CC} -m32 -olinrad -lvgagl -lvga -lpthread -lm @ALSALIB@ \
- -Wl,-Map,linrad.lmap,-warn-common \
- 	lmain.ol lvar.ol ui.ol lsetad.ol fft1.ol buf.ol radar.ol \
- mouse.ol wide_graph.ol getiq.ol fft0.ol adtest.ol hires_graph.ol \
-@@ -703,8 +701,8 @@
+-CFL64	= -g -O2 -DOSNUM=1 -DMEMREF_T='long int' @X11_64_INC@ -W -Wall \
++CFL64	= -O2 -DOSNUM=1 -DMEMREF_T='long int' @X11_64_INC@ -W -Wall \
+ -DCPU=@CPU@ -DSHM_INSTALLED=@LIBXEXT64_OK@ -DALSA_PRESENT=@ALSA64_OK@ \
+ -DIA64=1 @DARWIN@ -DLIBUDEV_PRESENT=@LIBUDEV_64_OK@ -DSERVER=@MAKE_SERVER@ \
+ -Wimplicit -Wreturn-type -Wformat -m64 -Wunused -Wcomment \
+@@ -1040,7 +1040,7 @@ fcdpp.ol hid.ol pcie9842.ol bladerf.ol m
+ @SVGA32_LD@ \
+ @SVGAGL32_LD@ \
+ @LIBUDEV_32_LD@ \
+--lpthread @LIBRT@ -lm -ldl  
++-lpthread @LIBRT@ -lm
  
+ 	@echo " "
+ 	@echo "You may want to disable pulseaudio in Ubuntu with this command:"
+@@ -1137,7 +1137,7 @@ fcdpp.ol hid.ol pcie9842.ol bladerf.ol m
+ @X11_32_LD@ \
+ @ALSA32_LD@ \
+ @LIBUDEV_32_LD@ \
+--lpthread @LIBRT@ -lm -ldl
++-lpthread @LIBRT@ -lm
  
+ 	@echo " "
+ 	@echo "You may want to disable pulseaudio in Ubuntu with this command:"
+@@ -1210,7 +1210,7 @@ fcdpp.ol hid.ol pcie9842.ol bladerf.ol m
+ @SVGA32_LD@ \
+ @SVGAGL32_LD@ \
+ @LIBUDEV_32_LD@ \
+--lpthread @LIBRT@ -lm -ldl  
++-lpthread @LIBRT@ -lm
  
--	${CC} -m32 -oxlinrad -L/usr/X11R6/lib @SHMLIB@ -lX11 -lpthread \
---lm @ALSALIB@ -lrt -Wl,-Map,linrad.xmap,-warn-common \
-+	${CC} -m32 -oxlinrad -L%%LOCALBASE%%/lib  -L%%LOCALBASE%%/X11R6/lib @SHMLIB@ -lX11 -lpthread \
-+-lm @ALSALIB@ -Wl,-Map,linrad.xmap,-warn-common \
- xmain.ol xvar.ol ui.ol lsetad.ol fft1.ol buf.ol lvar.ol radar.ol \
- mouse.ol wide_graph.ol getiq.ol fft0.ol adtest.ol hires_graph.ol \
- fftasm.ol baseb_graph.ol mix2.ol afc_graph.ol hwaredriver.ol \
+ 	@echo " "
+ 	@echo "You may want to disable pulseaudio in Ubuntu with this command:"
+@@ -1527,7 +1527,7 @@ fcdpp.om hid.om pcie9842.om bladerf.om m
+ @SVGA64_LD@ \
+ @SVGAGL64_LD@ \
+ @LIBUDEV_64_LD@ \
+--lpthread @LIBRT@ -lm -ldl  
++-lpthread @LIBRT@ -lm
+ 
+ 	@echo " "
+ 	@echo "You may want to disable pulseaudio in Ubuntu with this command:"
+@@ -1612,7 +1612,7 @@ elektor.om fcdpp.om hid.om pcie9842.om b
+ @ALSA64_LD@ \
+ @X11_64_LD@ \
+ @LIBUDEV_64_LD@ \
+--lpthread @LIBRT@ -lm -ldl
++-lpthread @LIBRT@ -lm
+ 
+ 	@echo " "
+ 	@echo "You may want to disable pulseaudio in Ubuntu with this command:"
+@@ -1686,7 +1686,7 @@ elektor.om fcdpp.om hid.om pcie9842.om b
+ @SVGA64_LD@ \
+ @SVGAGL64_LD@ \
+ @LIBUDEV_64_LD@ \
+--lpthread @LIBRT@ -lm -ldl
++-lpthread @LIBRT@ -lm
+ 
+ 	@echo " "
+ 	@echo "You may want to disable pulseaudio in Ubuntu with this command:"

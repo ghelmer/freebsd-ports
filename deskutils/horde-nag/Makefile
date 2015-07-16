@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	nag
-PORTVERSION=	4.1.4
+PORTVERSION=	4.2.5
 CATEGORIES=	deskutils www pear
 PKGNAMEPREFIX=	horde-
 
@@ -11,8 +11,7 @@ COMMENT=	Horde web based task list manager
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LATEST_LINK=	horde-${PORTNAME}
-
+USES=	horde cpe
 USE_PHP=	gettext
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
@@ -32,6 +31,7 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Mime \
 		Horde_Perms \
 		Horde_Prefs \
+		Horde_Routes \
 		Horde_Share \
 		Horde_Support \
 		Horde_Text_Filter \
@@ -39,6 +39,4 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Util \
 		Horde_View
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

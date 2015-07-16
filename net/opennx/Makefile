@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	opennx
-PORTVERSION=	0.16.0.725
+PORTVERSION=	0.16.0.729
 PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/CI-source
 
 MAINTAINER=	beyert@cs.ucr.edu
-COMMENT=	Open source drop in replacement for NoMachine\'s NX client
+COMMENT=	Open source drop in replacement for NoMachine's NX client
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/zip:${PORTSDIR}/archivers/zip
+BUILD_DEPENDS=	${LOCALBASE}/bin/zip:${PORTSDIR}/archivers/zip \
+		cups-base>0:${PORTSDIR}/print/cups-base
+RUN_DEPENDS=	cups-base>0:${PORTSDIR}/print/cups-base
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libsmbclient.so:${PORTSDIR}/net/samba-libsmbclient \
-		libcups.so:${PORTSDIR}/print/cups-base
+		libsmbclient.so:${PORTSDIR}/net/samba-libsmbclient
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-0.16
 
@@ -33,12 +34,14 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 INSTALLS_ICONS=	yes
 
 NO_PACKAGE=	must generate a fresh private key at install time
+LEGAL_PACKAGE=	yes
 
 SSH_KEYGEN?=	ssh-keygen
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
+NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 
 # do not use default private key included with tarball

@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	camlp5
-PORTVERSION=	6.11
+PORTVERSION=	6.13
 CATEGORIES=	devel
-MASTER_SITES=	http://cristal.inria.fr/~ddr/camlp5/distrib/src/ \
+MASTER_SITES=	http://camlp5.gforge.inria.fr/distrib/src/ \
+		http://cristal.inria.fr/~ddr/camlp5/distrib/src/ \
 		http://pauillac.inria.fr/~ddr/camlp5/distrib/src/
 PKGNAMEPREFIX=	ocaml-
 DIST_SUBDIR=	${UNIQUENAME}
 
 PATCH_SITES=	${MASTER_SITES}
 
-MAINTAINER=	umq@ueo.co.jp
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Preprocessor-pretty-printer of OCaml
 
 LICENSE=	INRIA
@@ -32,9 +33,10 @@ STRICT_DESC=		New syntax tree quotations kit
 
 OPTIONS_DEFINE=	DOCS
 
+DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 PORTDOCS=	CHANGES DEVEL ICHANGES INSTALL MODE README UPGRADING
 
-MAKE_JOBS_UNSAFE= yes
+MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.options.mk>
 
@@ -45,15 +47,6 @@ CONFIGURE_ARGS+=	--strict
 .endif
 ALL_TARGET=	world.opt
 
-MLINKS=		camlp5.1 camlp5o.1 \
-		camlp5.1 camlp5o.opt.1 \
-		camlp5.1 camlp5r.1 \
-		camlp5.1 camlp5r.opt.1 \
-		camlp5.1 camlp5sch.1 \
-		camlp5.1 mkcamlp5.1 \
-		camlp5.1 mkcamlp5.opt.1 \
-		camlp5.1 ocpp5.1
-
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -63,5 +56,6 @@ post-install:
 .endif
 	${INSTALL_DATA} ${WRKSRC}/etc/META \
 		${STAGEDIR}${PREFIX}/lib/ocaml/camlp5
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/camlp5*.opt
 
 .include <bsd.port.mk>

@@ -3,26 +3,23 @@
 
 PORTNAME=	kcfonts
 PORTVERSION=	1.05
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	chinese x11-fonts
-MASTER_SITES=	${MASTER_SITE_GENTOO}
-MASTER_SITE_SUBDIR=	distfiles
+MASTER_SITES=	GENTOO
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Kuo Chauo Chinese Fonts collection
 
+USES=		fonts
 BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
-RUN_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir
 
+MAKE_ARGS=	CFONTDIR=${FONTSDIR} EFONTDIR=${FONTSDIR}
 MAKE_JOBS_UNSAFE=yes
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not build on sparc64
-.endif
+BROKEN_sparc64=		Does not build on sparc64
 
 NO_WRKSUBDIR=	yes
 
-.include <bsd.port.post.mk>
+pre-install:
+	${MKDIR} ${STAGEDIR}${FONTSDIR}
+
+.include <bsd.port.mk>

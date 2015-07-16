@@ -2,18 +2,17 @@
 
 PORTNAME=	antivirus
 PORTVERSION=	3.30
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	mail
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	dinoex
+MASTER_SITES=	LOCAL/dinoex
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Sendmail milter wich uses McAfee Virus Scan or clamav
 
 LICENSE=	BSD2CLAUSE
 
-CFLAGS+=	-Wall ${PTHREAD_CFLAGS:S=""==}
-LIBS+=		-lmilter ${PTHREAD_LIBS}
+CFLAGS+=	-Wall
+LIBS+=		-lmilter -lpthread
 PLIST_SUB+=	ANTIVIRUS=${ANTIVIRUS_DIR}
 SUB_LIST+=	ANTIVIRUS=${ANTIVIRUS_DIR}
 SED_SCRIPT=	-e 's|%%ANTIVIRUS%%|${ANTIVIRUS_DIR}|g' \
@@ -49,7 +48,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/clamav.conf \
 		${STAGEDIR}${PREFIX}/etc/antivirus.conf-clamav
 	${MKDIR} ${STAGEDIR}${ANTIVIRUS_DIR}/spool ${STAGEDIR}${ANTIVIRUS_DIR}/run ${STAGEDIR}${ANTIVIRUS_DIR}/quarantine
-	${CHOWN} -R nobody:nobody ${STAGEDIR}${ANTIVIRUS_DIR}/
 	@${ECHO_MSG} "Add to your *.mc configfile:"
 	@${ECHO_MSG} "INPUT_MAIL_FILTER(\`antivirus', \`S=local:${ANTIVIRUS_DIR}/antivirus.sock, F=')"
 

@@ -2,14 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	checkstyle
-PORTVERSION=	5.5
+PORTVERSION=	6.3
 CATEGORIES=	java devel
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	java-
 DISTNAME=	${PORTNAME}-${PORTVERSION}-bin
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Java style checker
+
+LICENSE=	LGPL21 APACHE20
+LICENSE_COMB=	dual
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -34,11 +37,10 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh \
 		${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@-${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} LICENSE* README RIGHTS.antlr \
+	(cd ${WRKSRC} && ${INSTALL_DATA} LICENSE* RIGHTS.antlr \
 		${STAGEDIR}${DOCSDIR})
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} site ${STAGEDIR}${DOCSDIR})
 	@-${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-.for EXAMPLEFILE in checkstyle_checks import-control sun_checks suppressions
+.for EXAMPLEFILE in checkstyle_checks import-control suppressions
 	${INSTALL_DATA} ${WRKSRC}/${EXAMPLEFILE}.xml ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} contrib ${STAGEDIR}${EXAMPLESDIR})

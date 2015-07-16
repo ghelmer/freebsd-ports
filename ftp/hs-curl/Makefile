@@ -2,15 +2,15 @@
 
 PORTNAME=	curl
 PORTVERSION=	1.3.8
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	ftp haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Haskell binding to libcurl
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	curl:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 
 USE_GHC_NATIVE=	yes
 

@@ -2,11 +2,12 @@
 
 PORTNAME=	sid-milter
 PORTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/SenderID%20Milter/${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	An sid and spf milter for Sendmail
+COMMENT=	sid and spf milter for Sendmail
 
 RESTRICTED=	May incorporate intellectual property, possible patent issues
 
@@ -28,7 +29,7 @@ IGNORE=		your system does not support sysvipc
 .endif
 .endif
 
-OPTIONS_DEFINE=	LIBAR NH_MFROM
+OPTIONS_DEFINE=	LIBAR NH_MFROM DOCS
 LIBAR_DESC=	build and install libar
 NH_MFROM_DESC=	use NH_MFROM
 
@@ -46,9 +47,7 @@ PLIST_FILES+=	include/libar.h lib/libar.a man/man3/ar.3.gz
 .endif
 
 pre-configure:
-	${REINPLACE_CMD} -e 's|-pthread|${PTHREAD_LIBS}|' \
-		-e 's|-D_THREAD_SAFE|${PTHREAD_CFLAGS}|' \
-		-e "s|\`-O'|\`${CFLAGS}'|g" \
+	${REINPLACE_CMD} -e "s|\`-O'|\`${CFLAGS}'|g" \
 		-e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/devtools/OS/FreeBSD
 	${SED} -e "s|%%PREFIX%%|${PREFIX}|g" \
@@ -65,7 +64,7 @@ post-install:
 	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/man/man8/
 .endfor
 .if ${PORT_OPTIONS:MLIBAR}
-	${INSTALL_LIB} ${WRKSRC}/*/libar/libar.a ${STAGEDIR}${PREFIX}/lib/libar.a
+	${INSTALL_DATA} ${WRKSRC}/*/libar/libar.a ${STAGEDIR}${PREFIX}/lib/libar.a
 	${INSTALL_DATA} ${WRKSRC}/libar/ar.h ${STAGEDIR}${PREFIX}/include/libar.h
 .for i in ${MAN3}
 	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/man/man3/

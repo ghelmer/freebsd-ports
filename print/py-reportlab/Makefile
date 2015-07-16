@@ -3,25 +3,24 @@
 
 PORTNAME=	reportlab
 PORTVERSION=	3.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print python
 MASTER_SITES=	CHEESESHOP \
 		http://www.reportlab.com/ftp/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PFBFER}
-EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library to create PDF documents using the Python language
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 CONFLICTS=	py*-reportlab[^3]-[^3].* \
 		py*-reportlab-[^3].*
@@ -35,7 +34,7 @@ MAKE_ENV=	PACKAGE_PATH="${REPORTLABDIR}"
 
 REPORTLABDIR=	${PYTHONPREFIX_SITELIBDIR}/reportlab
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
-DOCS=		reportlab-userguide.pdf
+PORTDOCS=	reportlab-userguide.pdf
 
 OPTIONS_DEFINE=	CJK FREETYPE DOCS
 OPTIONS_DEFAULT=	CJK FREETYPE
@@ -66,10 +65,11 @@ post-patch:
 .endif
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/reportlab/*/*.so
 .if ${PORT_OPTIONS:MDOCS}
 	@cd ${WRKSRC}/docs && ${PYTHON_CMD} genAll.py
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for i in ${DOCS}
+.for i in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/docs/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif

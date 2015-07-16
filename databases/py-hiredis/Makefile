@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hiredis
-PORTVERSION=	0.1.2
+PORTVERSION=	0.2.0
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,13 +10,12 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	gd.workbox@gmail.com
 COMMENT=	Python extension that wraps hiredis
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 LIB_DEPENDS=	libhiredis.so:${PORTSDIR}/databases/hiredis
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/${PYSETUP}

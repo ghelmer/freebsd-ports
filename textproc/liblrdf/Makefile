@@ -3,12 +3,15 @@
 
 PORTNAME=	liblrdf
 PORTVERSION=	0.5.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	textproc
-MASTER_SITES=	GENTOO/distfiles
+MASTER_SITES=	GENTOO
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for manipulating RDF files describing LADSPA plugins
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:${PORTSDIR}/audio/ladspa
 LIB_DEPENDS=	libicuuc.so:${PORTSDIR}/devel/icu \
@@ -16,27 +19,20 @@ LIB_DEPENDS=	libicuuc.so:${PORTSDIR}/devel/icu \
 		libcurl.so:${PORTSDIR}/ftp/curl \
 		libraptor2.so:${PORTSDIR}/textproc/raptor2
 
-USE_AUTOTOOLS=	libtoolize automake autoconf aclocal
-ACLOCAL_ARGS=	-I${LOCALBASE}/share/aclocal -I.
-AUTOMAKE_ARGS=	--add-missing
 GNU_CONFIGURE=	yes
-USES=		pathfix pkgconfig iconv
+USES=		autoreconf iconv libtool pathfix pkgconfig
 USE_GNOME=	libxml2 libxslt
-GNOME_MAKEFILEIN=	Makefile.am
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 PATHFIX_MAKEFILEIN=	Makefile.am
+INSTALL_TARGET=	install-strip
 
-CFLAGS+=	-I${OPENSSLINC} ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${OPENSSLLIB} ${PTHREAD_LIBS}
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 
 WRKSRC=		${WRKDIR}/swh-LRDF-7ebc032
 
-# XXX: work around an issue with automake-1.13 erroring out on a
-#      partially configured m4 directory before libtoolize creates it
-pre-configure::
-	@${RM} -rf ${WRKSRC}/m4
-	@${MKDIR} ${WRKSRC}/m4
-
+post-patch:
+	@${FIND} ${WRKSRC}/m4 -type l -delete
 
 .include <bsd.port.mk>

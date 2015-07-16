@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvirt
-PORTVERSION=	1.2.6
-PORTREVISION=	2
+PORTVERSION=	1.2.16
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/ \
 		ftp://libvirt.org/libvirt/
@@ -18,9 +17,15 @@ LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
 		libxml2.so:${PORTSDIR}/textproc/libxml2 \
 		libgnutls.so:${PORTSDIR}/security/gnutls \
 		libssh2.so:${PORTSDIR}/security/libssh2
+BUILD_DEPENDS=	dnsmasq:${PORTSDIR}/dns/dnsmasq
+RUN_DEPENDS=	dnsmasq:${PORTSDIR}/dns/dnsmasq \
+		dmidecode:${PORTSDIR}/sysutils/dmidecode
 
-OPTIONS_DEFINE=	DOCS NLS QEMU
+OPTIONS_DEFINE=	DOCS NLS QEMU SASL
+.if exists(/usr/sbin/bhyve)
 OPTIONS_DEFINE_amd64=	BHYVE
+OPTIONS_DEFAULT_amd64=	BHYVE
+.endif
 QEMU_DESC=	QEMU driver
 BHYVE_DESC=	bhyve driver
 
@@ -32,57 +37,58 @@ QEMU_LIB_DEPENDS=	libyajl.so:${PORTSDIR}/devel/yajl
 QEMU_RUN_DEPENDS=	dmidecode:${PORTSDIR}/sysutils/dmidecode \
 			qemu-io:${PORTSDIR}/emulators/qemu-devel
 
-BHYVE_CONFIGURE_WITH=	bhyve
-
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls
 NLS_CONFIGURE_ON=	--with-libintl-prefix=${LOCALBASE}
 
+SASL_CONFIGURE_WITH=	sasl
+SASL_LIB_DEPENDS=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
+
+VARDIR=		/var
+
 USE_RC_SUBR=	libvirtd
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--without-sasl \
-		--without-avahi \
+CONFIGURE_ARGS=	--without-avahi \
 		--without-polkit \
 		--without-hal \
 		--without-udev \
 		--without-netcf \
-		--without-network \
 		--without-sysctl \
 		--without-lxc \
-		--with-ssh2
+		--without-uml \
+		--with-ssh2 \
+		--localstatedir=${VARDIR}
 
-# workaround to override pkg-config calls
 # random_data fix can be removed when 8.x is eol
-CONFIGURE_ENV=	SSH2_LIBS="-L${LOCALBASE}/lib -lssh2 -lssl" \
-		SSH2_CFLAGS="-I${LOCALBASE}/include" \
-		ac_cv_type_struct_random_data=""
+CONFIGURE_ENV=	ac_cv_type_struct_random_data=""
 
 # limit production release x.x.x
 PORTSCOUT=	limit:\d+\.\d+\.\d+$$
 
 LDFLAGS+=	-L${LOCALBASE}/lib -fstack-protector
 
-USES=		charsetfix pathfix gmake pkgconfig perl5
+USES=		charsetfix gmake libtool pathfix pkgconfig perl5 cpe
+CPE_VENDOR=	redhat
 USE_PERL5=	build
 USE_LDCONFIG=	yes
-SHLIB_VER=	1002
+INSTALL_TARGET=	install-strip
+SHLIB_VER=	0.1002.${PORTVERSION:E}
 PLIST_SUB=	PORTVERSION="-${PORTVERSION}" \
 		SHLIB_VER=${SHLIB_VER}
 PORTDOCS=	*
-STRIP_FILES=	libvirt.so.${SHLIB_VER} \
-		libvirt-qemu.so.${SHLIB_VER} \
-		libvirt-lxc.so.${SHLIB_VER} \
-		libvirt/lock-driver/lockd.so \
-		libvirt/connection-driver/libvirt_driver_vbox.so \
-		libvirt/connection-driver/libvirt_driver_secret.so \
-		libvirt/connection-driver/libvirt_driver_storage.so
 
 .include <bsd.port.options.mk>
 
-#work around an options bug (thanks mat@)
-.if ${ARCH} != amd64
-PLIST_SUB+=	BHYVE="@comment "
+.if (exists(/usr/sbin/bhyve) && ${OSVERSION} >= 100051)
+CONFIGURE_ARGS+=	--with-bhyve
+.else
+CONFIGURE_ARGS+=	--without-bhyve
+.endif
+
+.if ${PORT_OPTIONS:MBHYVE}
+STRIP_FILES+=	lib/libvirt/connection-driver/libvirt_driver_bhyve.so
+PLIST_FILES+=	lib/libvirt/connection-driver/libvirt_driver_bhyve.so
 .endif
 
 post-patch:
@@ -104,22 +110,36 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|qemu.conf$$|qemu.conf.sample|' \
 		${WRKSRC}/src/Makefile.in
 
+	@${REINPLACE_CMD} -e 's|cp $$(DESTDIR)|cp -f $$(DESTDIR)|' \
+		${WRKSRC}/src/Makefile.in
+
 post-install:
-	@for configuration in libvirt libvirtd ${QEMU_CONFIG}; do \
-	if [ ! -e "${STAGEDIR}${ETCDIR}/$${configuration}.conf" ]; then \
-			${ECHO_MSG} "	Installing local configuration file: ${STAGEDIR}${ETCDIR}/$${configuration}.conf"; \
-			${CP} ${STAGEDIR}${ETCDIR}/$${configuration}.conf.sample ${STAGEDIR}${ETCDIR}/$${configuration}.conf; \
-		else \
-			${ECHO_MSG} "	Preserving local configuration file: ${STAGEDIR}${ETCDIR}/$${configuration}.conf"; \
-	fi; \
-	done
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in AUTHORS ChangeLog INSTALL NEWS README TODO
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.for lib in ${STRIP_FILES}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${lib}
+.if ${PORT_OPTIONS:MBHYVE}
+.for strip in ${STRIP_FILES}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${strip}
+.endfor
+.endif
+
+.for dir in run/libvirt/network \
+	run/libvirt/qemu \
+	run/libvirt/lockd \
+	log/libvirt/uml \
+	log/libvirt/qemu \
+	log/libvirt/lxc \
+	lib/libvirt/boot \
+	lib/libvirt/lockd/files \
+	lib/libvirt/images \
+	lib/libvirt/dnsmasq \
+	lib/libvirt/filesystems \
+	lib/libvirt/network \
+	lib/libvirt/qemu/channel/target \
+	cache/libvirt/qemu
+	@${MKDIR} "${STAGEDIR}/${VARDIR}/${dir}"
 .endfor
 
 regression-test: build

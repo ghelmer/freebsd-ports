@@ -1,4 +1,3 @@
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Boulder/.packlist
 %%SITE_PERL%%/Stone/Cursor.pm
 %%SITE_PERL%%/Stone/GB_Sequence.pm
 %%SITE_PERL%%/Boulder/Swissprot.pm
@@ -34,7 +33,3 @@
 %%PERL5_MAN3%%/Stone.3.gz
 %%PERL5_MAN3%%/Stone::Cursor.3.gz
 %%PERL5_MAN3%%/Stone::GB_Sequence.3.gz
-@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Boulder
-@dirrm %%SITE_PERL%%/Boulder/Blast
-@dirrm %%SITE_PERL%%/Boulder
-@dirrm %%SITE_PERL%%/Stone

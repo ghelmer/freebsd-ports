@@ -3,16 +3,17 @@
 
 PORTNAME=	b2evolution
 PORTVERSION=	4.0.5
+DISTVERSIONSUFFIX=	-${B2EVO_DATE}
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/evocms/${PORTNAME}/b2evo%20${PORTVERSION}-stable
-DISTNAME=	${PORTNAME}-${PORTVERSION}-${B2EVO_DATE}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multilingual, multiuser, multi-blog engine
 
 PATCH_DEPENDS=	unzip:${PORTSDIR}/archivers/unzip
 
-USES=		dos2unix zip
+USES=		cpe dos2unix zip
 
 B2EVO_DATE?=	stable-2011-03-23
 USE_PHP=	mysql pcre session xml
@@ -39,17 +40,18 @@ pre-everything::
 	@${SH} ${WARNING}
 
 pre-install:
+	@${ECHO_CMD} -e '@owner ${WWWOWN}\n@group ${WWWGRP}' > ${PLIST}
 	@cd ${WRKSRC} && ${FIND} -s . -type f | \
-		${SED} -e 's|^./||;s|^|${B2EVO_DIR}/|' > ${PLIST} \
+		${SED} -e 's|^./||;s|^|${B2EVO_DIR}/|' >> ${PLIST} \
 		&& ${FIND} -d * -type d | \
-		${SED} -e 's|^|@dirrm ${B2EVO_DIR}/|' >> ${PLIST} \
-		&& ${ECHO_CMD} @dirrm ${B2EVO_DIR} >> ${PLIST}
+		${SED} -e 's|^|@dir ${B2EVO_DIR}/|' >> ${PLIST} \
+		&& ${ECHO_CMD} @dir ${B2EVO_DIR} >> ${PLIST}
+	@${ECHO_CMD} -e '@owner root\n@group wheel' >> ${PLIST}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${B2EVO_DIR}
 	@${CHMOD} 755 ${STAGEDIR}${PREFIX}/${B2EVO_DIR}
 	@${CP} -R ${WRKSRC}/ ${STAGEDIR}${PREFIX}/${B2EVO_DIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${PREFIX}/${B2EVO_DIR}
 	@${CHMOD} 665 ${STAGEDIR}${PREFIX}/${B2EVO_DIR}/blogs/conf/_config.php
 
 post-install:

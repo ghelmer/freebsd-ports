@@ -14,31 +14,28 @@ COMMENT=	Python bindings for Shapelib
 
 LICENSE=	LGPL20
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-
+USES=		python
+USE_PYTHON=	distutils
 SHAPELIB=	shapelib-1.2.10
 USE_LDCONFIG=	yes
 
 PORTDOCS=	NEWS README
 PORTEXAMPLES=	pytest.py
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 post-extract:
 	${LN} -s ${WRKDIR}/${SHAPELIB} ${WRKDIR}/shapelib
 
 post-install:
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_MAN} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
-.if !defined(NOPORTEXAMPLES)
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for f in ${PORTEXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

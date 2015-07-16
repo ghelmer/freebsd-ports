@@ -3,7 +3,7 @@
 
 PORTNAME=	catdoc
 PORTVERSION=	0.94.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/ \
 		LOCAL/amdmi3 \
@@ -41,5 +41,8 @@ CONFIGURE_ARGS+=	--disable-wordview
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,%%PREFIX%%,${PREFIX},' ${WRKSRC}/doc/catdoc.1.in
+
+post-install:
+	cd ${STAGEDIR}${PREFIX}/bin && ${STRIP_CMD} catdoc catppt xls2csv
 
 .include <bsd.port.mk>

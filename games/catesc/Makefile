@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	catesc
-PORTVERSION=	0.3
+PORTVERSION=	0.4
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,8 +12,6 @@ RUN_DEPENDS=	instead:${PORTSDIR}/games/instead
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gl00my
-GH_TAGNAME=	d84d277
-GH_COMMIT=	d84d277
 
 NO_BUILD=	yes
 

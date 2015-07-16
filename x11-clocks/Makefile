@@ -5,7 +5,6 @@
 
     SUBDIR += abclock
     SUBDIR += aclock
-    SUBDIR += alarm-clock
     SUBDIR += alltraxclock
     SUBDIR += amor
     SUBDIR += asclock
@@ -20,9 +19,6 @@
     SUBDIR += dclock
     SUBDIR += emiclock
     SUBDIR += eyeclock
-    SUBDIR += gdesklets-clock
-    SUBDIR += gdesklets-countdown
-    SUBDIR += gdesklets-ebichuclock
     SUBDIR += glclock
     SUBDIR += gtubeclock
     SUBDIR += intclock
@@ -53,10 +49,8 @@
     SUBDIR += wmclockmon
     SUBDIR += wmfishtime
     SUBDIR += wmfuzzy
-    SUBDIR += wmitime
     SUBDIR += wmtime
     SUBDIR += wmtimer
-    SUBDIR += xalarm
     SUBDIR += xclock
     SUBDIR += xdaliclock
     SUBDIR += xfce4-datetime-plugin

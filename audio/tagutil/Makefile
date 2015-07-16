@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	tagutil
-PORTVERSION=	3.0
-PORTREVISION=	1
+PORTVERSION=	3.0.1
+DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	audio
-MASTER_SITES=	GH
 
 MAINTAINER=	alex@kaworu.ch
 COMMENT=	Command line interface tool to manage tags in music files
@@ -15,8 +15,6 @@ LIB_DEPENDS=	libyaml.so:${PORTSDIR}/textproc/libyaml
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kAworu
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	8e40bab
 
 USES=		pkgconfig cmake iconv
 PLIST_FILES=	bin/tagutil \

@@ -11,18 +11,18 @@ DISTFILES=	${PORTNAME:S/p/P/:S/c/C/}_v${DISTVERSION}${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME:S/p/P/:S/c/C/}_v${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small program for playing chess against the computer
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinter
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/p/P/:S/c/C/}
 
-USES=	dos2unix zip
+USES=		dos2unix python:2 zip
 DOS2UNIX_REGEX=	.*.[^p][^n][^g]$
-USE_PYTHON=	2
 
 SUB_FILES=	${PORTNAME}
 

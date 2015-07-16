@@ -8,11 +8,11 @@ CATEGORIES=	mail www pear
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR implementation of the RFC2033 LMTP protocol
 
+LICENSE=	PHP301
+
 BUILD_DEPENDS=	${PEARDIR}/Net/Socket.php:${PORTSDIR}/net/pear-Net_Socket
-RUN_DEPENDS=	${PEARDIR}/Net/Socket.php:${PORTSDIR}/net/pear-Net_Socket
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-PEAR_AUTOINSTALL=	yes
+USES=		pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

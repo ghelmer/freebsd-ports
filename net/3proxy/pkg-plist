@@ -6,15 +6,20 @@ bin/icqpr
 bin/msnpr
 bin/mycrypt
 bin/pop3p
-bin/proxy
+bin/httppr
 bin/smtpp
 bin/socks
 bin/tcppm
 bin/udppm
-etc/3proxy.cfg.sample
+@sample etc/3proxy.cfg.sample
 lib/3proxy/PCREPlugin.so
 lib/3proxy/StringsPlugin.so
 lib/3proxy/TrafficPlugin.so
-%%PORTDOCS%%%%DOCSDIR%%/Readme
-@dirrm lib/3proxy
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
+man/man3/3proxy.cfg.3.gz
+man/man8/3proxy.8.gz
+man/man8/ftppr.8.gz
+man/man8/pop3p.8.gz
+man/man8/httppr.8.gz
+man/man8/socks.8.gz
+man/man8/tcppm.8.gz
+man/man8/udppm.8.gz

@@ -6,7 +6,7 @@ PORTVERSION=	0.7
 PORTREVISION=	1
 CATEGORIES=	www ruby
 MASTER_SITES=	http://www.a-k-r.org/${PORTNAME}/ \
-		${MASTER_SITE_LOCAL:S|%SUBDIR%|tota/samidare|}
+		LOCAL/tota/samidare
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Web page update checker written in Ruby
@@ -14,11 +14,11 @@ COMMENT=	Web page update checker written in Ruby
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	${RUBY_SITELIBDIR}/htree.rb:${PORTSDIR}/textproc/ruby-htree \
-		${RUBY_ARCHLIBDIR}/iconv.so:${PORTSDIR}/converters/ruby-iconv
+RUN_DEPENDS=	${RUBY_SITELIBDIR}/htree.rb:${PORTSDIR}/textproc/ruby-htree
 
 USES=	gmake
 USE_RUBY=	yes
+USE_RUBY_FEATURES=	iconv
 
 RUBY_SHEBANG_FILES=	main.rb rb-link rb2rm rm2rb
 PORTDOCS=	README README.ja

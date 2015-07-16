@@ -4,7 +4,6 @@
     COMMENT = Ports to help disabled users
 
     SUBDIR += accerciser
-    SUBDIR += at-poke
     SUBDIR += at-spi
     SUBDIR += at-spi-reference
     SUBDIR += at-spi2-atk
@@ -12,6 +11,7 @@
     SUBDIR += atk
     SUBDIR += atk-reference
     SUBDIR += atkmm
+    SUBDIR += caribou
     SUBDIR += dasher
     SUBDIR += eflite
     SUBDIR += gnome-mag
@@ -25,11 +25,13 @@
     SUBDIR += kmag
     SUBDIR += kmousetool
     SUBDIR += kmouth
+    SUBDIR += linux-c6-atk
     SUBDIR += linux-f10-atk
     SUBDIR += mousetweaks
     SUBDIR += orca
     SUBDIR += py-atspi
     SUBDIR += py-papi
+    SUBDIR += py3-atspi
     SUBDIR += qt4-accessible
     SUBDIR += redshift
     SUBDIR += rubygem-atk

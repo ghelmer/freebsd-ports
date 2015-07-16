@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	clang
-DISTVERSION=	3.4
-PORTREVISION=	2
+DISTVERSION=	3.4.2
+PORTREVISION=	3
 CATEGORIES=	lang devel
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
@@ -13,13 +13,13 @@ DISTFILES=	${CLANG_SOURCE} \
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	C, Objective-C, and C++ compiler
 
-CLANG_NAME=	clang-${DISTVERSION}.src
+CLANG_NAME=	cfe-${DISTVERSION}.src
 CLANG_SOURCE=	${CLANG_NAME}${EXTRACT_SUFX}
-CLANG_EXTRACT=	clang-${DISTVERSION}
+CLANG_EXTRACT=	cfe-${DISTVERSION}.src
 LLVM_NAME=	llvm-${DISTVERSION}.src
 LLVM_SOURCE=	${LLVM_NAME}${EXTRACT_SUFX}
-LLVM_EXTRACT=	llvm-${DISTVERSION}
-LIBNAME=	libLLVM-${DISTVERSION:C/rc[0-9]//}.so
+LLVM_EXTRACT=	llvm-${DISTVERSION}.src
+LIBNAME=	libLLVM-${DISTVERSION:C/([0-9]\.[0-9]).*/\1/:C/rc[0-9]//}.so
 
 WRKSRC=		${WRKDIR}/${LLVM_EXTRACT}
 BUILD_WRKSRC=	${WRKSRC}/tools/clang
@@ -28,16 +28,16 @@ INSTALL_WRKSRC=	${WRKSRC}/tools/clang
 BUILD_DEPENDS+=	llc${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
 RUN_DEPENDS+=	llc${LLVM_SUFFIX}:${PORTSDIR}/devel/llvm${LLVM_SUFFIX}
 
-LLVM_SUFFIX=	${PORTVERSION:S/.//g:C/r.*//}
+LLVM_SUFFIX=	${PORTVERSION:C/([0-9]\.[0-9]).*/\1/:S/.//g:C/r.//}
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
+PYTHONLIBDIR=	${LLVM_PREFIX}/lib/python
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
-USES=		gmake perl5
+USES=		gmake perl5 python
 USE_LDCONFIG=	yes
-USE_PYTHON_BUILD=	yes
 
 MAKE_ARGS=	CLANG_TBLGEN=${WRKSRC}/${RELTYPE}/bin/clang-tblgen \
 		LLVMIncDir=${LLVM_PREFIX}/include \
@@ -75,6 +75,9 @@ PORTDATA=	scanview.css \
 
 .include <bsd.port.options.mk>
 
+# keep in sync with /usr/src/lib/clang/clang.build.mk
+CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}
+
 .if ${PORT_OPTIONS:MASSERTS}
 CONFIGURE_ARGS+=	--enable-assertions
 RELTYPE=		Release+Asserts
@@ -110,6 +113,7 @@ post-patch:
 	${REINPLACE_CMD} -e 's|/usr/local/|${LOCALBASE}/|g' \
 	    ${WRKSRC}/tools/clang/lib/Frontend/InitHeaderSearch.cpp
 	${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}/|g' \
+	    -e 's|%%LLVM_SUFFIX%%|${LLVM_SUFFIX}|g' \
 	    ${WRKSRC}/tools/clang/tools/scan-build/scan-build
 
 pre-build:
@@ -119,13 +123,13 @@ pre-build:
 	${LN} -sf ${LLVM_PREFIX}/lib/${LIBNAME} ${WRKSRC}/${RELTYPE}/lib/
 	${LN} -sf ${LLVM_PREFIX}/lib/libLLVMTableGen.a ${WRKSRC}/${RELTYPE}/lib/
 	${LN} -sf ${LLVM_PREFIX}/lib/libLLVMSupport.a ${WRKSRC}/${RELTYPE}/lib/
-	cd ${WRKSRC}/utils/unittest && ${MAKE_CMD}
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/utils/unittest
 
 post-build:
-	@cd ${WRKSRC}/tools/clang/docs/tools && ${MAKE_CMD} man
-.if ${PORT_OPTIONS:MDOCS}
-	@cd ${WRKSRC}/tools/clang/docs/tools && ${MAKE_CMD} html ps
-.endif
+	${SETENV} ${MAKE_ENV} \
+		${MAKE_CMD} -C ${WRKSRC}/tools/clang/docs/tools man
+	${SETENV} ${MAKE_ENV} \
+		${MAKE_CMD} -C ${WRKSRC}/tools/clang/docs/tools html ps
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${LLVM_PREFIX}/lib/libclang.so
@@ -147,10 +151,18 @@ post-install:
 	${LN} -f ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX} \
 	    ${STAGEDIR}${PREFIX}/bin/${command}${LLVM_SUFFIX}
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
 	cd ${WRKSRC}/tools/clang/docs/tools && \
 	    ${MAKE_CMD} DESTDIR=${STAGEDIR}/ install-html install-ps
-.endif
+	${MKDIR} ${STAGEDIR}${PYTHONLIBDIR}
+	${MKDIR} ${STAGEDIR}${PYTHONLIBDIR}/Resources
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/clang/tools/scan-view/*.py \
+	    ${STAGEDIR}${PYTHONLIBDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/clang/tools/scan-view/Resources/* \
+	    ${STAGEDIR}${PYTHONLIBDIR}/Resources
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/tools/clang/tools/scan-build/scanview.css \
+	    ${WRKSRC}/tools/clang/tools/scan-build/sorttable.js \
+	    ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/tools/clang/docs/tools/clang.1 \
 	    ${STAGEDIR}${MANPREFIX}/man/man1/clang${LLVM_SUFFIX}.1
 	${INSTALL_MAN} ${WRKSRC}/tools/clang/tools/scan-build/scan-build.1 \
@@ -160,7 +172,8 @@ PLIST_FILE_LIST=	${COMMANDS:S|^|bin/|} \
 			lib/libclang*
 PLIST_DIR_LIST=		include/clang \
 			include/clang-c \
-			lib/clang
+			lib/clang \
+			lib/python
 
 build-plist:
 	${RM} -f ${PLIST}
@@ -176,12 +189,6 @@ build-plist:
 	${FIND} ${STAGEDIR}${DOCSDIR} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%%%DOCSDIR%%|' | \
 	    ${SORT} >> ${PLIST}
-	${FIND} ${PLIST_DIR_LIST:S|^|${STAGEDIR}${LLVM_PREFIX}/|} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${PREFIX}/|@dirrm |' \
-	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' | \
-	    ${SORT} -r >> ${PLIST}
-	${FIND} ${STAGEDIR}${DOCSDIR} -type d | ${SORT} -r | \
-	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%@dirrm %%DOCSDIR%%|' \
 	    >> ${PLIST}
 
 .if make(svn-patch)

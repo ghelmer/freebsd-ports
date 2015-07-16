@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	trytond28_timesheet
-PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTVERSION=	2.8.1
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_timesheet/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
 DISTNAME=	trytond_timesheet-${PORTVERSION}
 
@@ -18,8 +17,7 @@ RUN_DEPENDS=	trytond28_company_work_time>=2.8.0:${PORTSDIR}/finance/trytond28_co
 
 CONFLICTS=	trytond_timesheet-2.[46].*
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

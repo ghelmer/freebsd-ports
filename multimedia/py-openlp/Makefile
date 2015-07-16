@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	OpenLP
-PORTVERSION=	2.0.3
-PORTREVISION=	4
+PORTVERSION=	2.1.5
 CATEGORIES=	multimedia python
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -35,10 +34,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup32>0:${PORTSDIR}/www/py-beautif
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:${PORTSDIR}/databases/py-sqlite3 \
 		unoconv:${PORTSDIR}/textproc/unoconv
 
-USES=		desktop-file-utils
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		desktop-file-utils python
+USE_PYTHON=	distutils autoplist
 USE_GSTREAMER=	good bad ugly
 USE_QT4=	linguist phonon-gst
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

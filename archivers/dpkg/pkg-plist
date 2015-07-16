@@ -29,6 +29,7 @@ include/dpkg/ar.h
 include/dpkg/arch.h
 include/dpkg/atomic-file.h
 include/dpkg/buffer.h
+include/dpkg/c-ctype.h
 include/dpkg/command.h
 include/dpkg/compress.h
 include/dpkg/deb-version.h
@@ -93,6 +94,7 @@ include/dpkg/version.h
 %%SITE_PERL%%/Dpkg/ErrorHandling.pm
 %%SITE_PERL%%/Dpkg/Exit.pm
 %%SITE_PERL%%/Dpkg/File.pm
+%%SITE_PERL%%/Dpkg/Getopt.pm
 %%SITE_PERL%%/Dpkg/Gettext.pm
 %%SITE_PERL%%/Dpkg/IPC.pm
 %%SITE_PERL%%/Dpkg/Index.pm
@@ -138,7 +140,6 @@ libexec/dpkg/methods/floppy/install
 libexec/dpkg/methods/floppy/names
 libexec/dpkg/methods/floppy/setup
 libexec/dpkg/methods/floppy/update
-libexec/dpkg/methods/ftp/README.mirrors.txt
 libexec/dpkg/methods/ftp/desc.ftp
 libexec/dpkg/methods/ftp/install
 libexec/dpkg/methods/ftp/names
@@ -160,6 +161,7 @@ libexec/pkgconfig/libdpkg.pc
 %%NLS%%man/de/man1/dpkg-checkbuilddeps.1.gz
 %%NLS%%man/de/man1/dpkg-deb.1.gz
 %%NLS%%man/de/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/de/man1/dpkg-divert.1.gz
 %%NLS%%man/de/man1/dpkg-genchanges.1.gz
 %%NLS%%man/de/man1/dpkg-gencontrol.1.gz
 %%NLS%%man/de/man1/dpkg-gensymbols.1.gz
@@ -173,10 +175,12 @@ libexec/pkgconfig/libdpkg.pc
 %%NLS%%man/de/man1/dpkg-shlibdeps.1.gz
 %%NLS%%man/de/man1/dpkg-source.1.gz
 %%NLS%%man/de/man1/dpkg-split.1.gz
+%%NLS%%man/de/man1/dpkg-statoverride.1.gz
 %%NLS%%man/de/man1/dpkg-trigger.1.gz
 %%NLS%%man/de/man1/dpkg-vendor.1.gz
 %%NLS%%man/de/man1/dpkg.1.gz
 %%NLS%%man/de/man1/dselect.1.gz
+%%NLS%%man/de/man1/update-alternatives.1.gz
 %%NLS%%man/de/man5/deb-control.5.gz
 %%NLS%%man/de/man5/deb-extra-override.5.gz
 %%NLS%%man/de/man5/deb-old.5.gz
@@ -192,65 +196,55 @@ libexec/pkgconfig/libdpkg.pc
 %%NLS%%man/de/man5/deb.5.gz
 %%NLS%%man/de/man5/dpkg.cfg.5.gz
 %%NLS%%man/de/man5/dselect.cfg.5.gz
-%%NLS%%man/de/man8/dpkg-divert.8.gz
-%%NLS%%man/de/man8/dpkg-statoverride.8.gz
 %%NLS%%man/de/man8/start-stop-daemon.8.gz
-%%NLS%%man/de/man8/update-alternatives.8.gz
-%%NLS%%man/es/man1/dpkg-deb.1.gz
 %%NLS%%man/es/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/es/man1/dpkg-divert.1.gz
 %%NLS%%man/es/man1/dpkg-genchanges.1.gz
 %%NLS%%man/es/man1/dpkg-gencontrol.1.gz
 %%NLS%%man/es/man1/dpkg-gensymbols.1.gz
 %%NLS%%man/es/man1/dpkg-mergechangelogs.1.gz
 %%NLS%%man/es/man1/dpkg-name.1.gz
-%%NLS%%man/es/man1/dpkg-parsechangelog.1.gz
-%%NLS%%man/es/man1/dpkg-query.1.gz
 %%NLS%%man/es/man1/dpkg-scanpackages.1.gz
 %%NLS%%man/es/man1/dpkg-scansources.1.gz
-%%NLS%%man/es/man1/dpkg-shlibdeps.1.gz
-%%NLS%%man/es/man1/dpkg-source.1.gz
 %%NLS%%man/es/man1/dpkg-split.1.gz
 %%NLS%%man/es/man1/dpkg-trigger.1.gz
 %%NLS%%man/es/man1/dpkg-vendor.1.gz
-%%NLS%%man/es/man1/dpkg.1.gz
 %%NLS%%man/es/man1/dselect.1.gz
-%%NLS%%man/es/man5/deb-control.5.gz
+%%NLS%%man/es/man1/update-alternatives.1.gz
 %%NLS%%man/es/man5/deb-extra-override.5.gz
 %%NLS%%man/es/man5/deb-old.5.gz
 %%NLS%%man/es/man5/deb-origin.5.gz
 %%NLS%%man/es/man5/deb-override.5.gz
 %%NLS%%man/es/man5/deb-shlibs.5.gz
 %%NLS%%man/es/man5/deb-split.5.gz
-%%NLS%%man/es/man5/deb-src-control.5.gz
 %%NLS%%man/es/man5/deb-substvars.5.gz
-%%NLS%%man/es/man5/deb-symbols.5.gz
-%%NLS%%man/es/man5/deb-triggers.5.gz
-%%NLS%%man/es/man5/deb-version.5.gz
-%%NLS%%man/es/man5/deb.5.gz
 %%NLS%%man/es/man5/dpkg.cfg.5.gz
 %%NLS%%man/es/man5/dselect.cfg.5.gz
-%%NLS%%man/es/man8/dpkg-divert.8.gz
 %%NLS%%man/es/man8/start-stop-daemon.8.gz
-%%NLS%%man/es/man8/update-alternatives.8.gz
+%%NLS%%man/fr/man1/dpkg-architecture.1.gz
+%%NLS%%man/fr/man1/dpkg-buildflags.1.gz
+%%NLS%%man/fr/man1/dpkg-buildpackage.1.gz
+%%NLS%%man/fr/man1/dpkg-checkbuilddeps.1.gz
 %%NLS%%man/fr/man1/dpkg-deb.1.gz
 %%NLS%%man/fr/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/fr/man1/dpkg-divert.1.gz
 %%NLS%%man/fr/man1/dpkg-genchanges.1.gz
 %%NLS%%man/fr/man1/dpkg-gencontrol.1.gz
 %%NLS%%man/fr/man1/dpkg-gensymbols.1.gz
+%%NLS%%man/fr/man1/dpkg-maintscript-helper.1.gz
 %%NLS%%man/fr/man1/dpkg-mergechangelogs.1.gz
 %%NLS%%man/fr/man1/dpkg-name.1.gz
-%%NLS%%man/fr/man1/dpkg-parsechangelog.1.gz
 %%NLS%%man/fr/man1/dpkg-query.1.gz
 %%NLS%%man/fr/man1/dpkg-scanpackages.1.gz
 %%NLS%%man/fr/man1/dpkg-scansources.1.gz
 %%NLS%%man/fr/man1/dpkg-shlibdeps.1.gz
-%%NLS%%man/fr/man1/dpkg-source.1.gz
 %%NLS%%man/fr/man1/dpkg-split.1.gz
+%%NLS%%man/fr/man1/dpkg-statoverride.1.gz
 %%NLS%%man/fr/man1/dpkg-trigger.1.gz
 %%NLS%%man/fr/man1/dpkg-vendor.1.gz
 %%NLS%%man/fr/man1/dpkg.1.gz
 %%NLS%%man/fr/man1/dselect.1.gz
-%%NLS%%man/fr/man5/deb-control.5.gz
+%%NLS%%man/fr/man1/update-alternatives.1.gz
 %%NLS%%man/fr/man5/deb-extra-override.5.gz
 %%NLS%%man/fr/man5/deb-old.5.gz
 %%NLS%%man/fr/man5/deb-origin.5.gz
@@ -265,25 +259,26 @@ libexec/pkgconfig/libdpkg.pc
 %%NLS%%man/fr/man5/deb.5.gz
 %%NLS%%man/fr/man5/dpkg.cfg.5.gz
 %%NLS%%man/fr/man5/dselect.cfg.5.gz
-%%NLS%%man/fr/man8/dpkg-divert.8.gz
 %%NLS%%man/fr/man8/start-stop-daemon.8.gz
-%%NLS%%man/fr/man8/update-alternatives.8.gz
 %%NLS%%man/hu/man5/dpkg.cfg.5.gz
 %%NLS%%man/hu/man5/dselect.cfg.5.gz
+%%NLS%%man/it/man1/dpkg-architecture.1.gz
 %%NLS%%man/it/man1/dpkg-buildpackage.1.gz
 %%NLS%%man/it/man1/dpkg-checkbuilddeps.1.gz
 %%NLS%%man/it/man1/dpkg-deb.1.gz
 %%NLS%%man/it/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/it/man1/dpkg-gencontrol.1.gz
+%%NLS%%man/it/man1/dpkg-maintscript-helper.1.gz
 %%NLS%%man/it/man1/dpkg-name.1.gz
-%%NLS%%man/it/man1/dpkg-parsechangelog.1.gz
 %%NLS%%man/it/man1/dpkg-query.1.gz
 %%NLS%%man/it/man1/dpkg-scanpackages.1.gz
 %%NLS%%man/it/man1/dpkg-scansources.1.gz
 %%NLS%%man/it/man1/dpkg-split.1.gz
+%%NLS%%man/it/man1/dpkg-statoverride.1.gz
 %%NLS%%man/it/man1/dpkg-vendor.1.gz
 %%NLS%%man/it/man1/dpkg.1.gz
 %%NLS%%man/it/man1/dselect.1.gz
-%%NLS%%man/it/man5/deb-control.5.gz
+%%NLS%%man/it/man1/update-alternatives.1.gz
 %%NLS%%man/it/man5/deb-extra-override.5.gz
 %%NLS%%man/it/man5/deb-old.5.gz
 %%NLS%%man/it/man5/deb-origin.5.gz
@@ -296,51 +291,38 @@ libexec/pkgconfig/libdpkg.pc
 %%NLS%%man/it/man5/deb.5.gz
 %%NLS%%man/it/man5/dpkg.cfg.5.gz
 %%NLS%%man/it/man5/dselect.cfg.5.gz
-%%NLS%%man/it/man8/dpkg-statoverride.8.gz
 %%NLS%%man/it/man8/start-stop-daemon.8.gz
-%%NLS%%man/it/man8/update-alternatives.8.gz
-%%NLS%%man/ja/man1/dpkg-deb.1.gz
 %%NLS%%man/ja/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/ja/man1/dpkg-divert.1.gz
 %%NLS%%man/ja/man1/dpkg-genchanges.1.gz
 %%NLS%%man/ja/man1/dpkg-gencontrol.1.gz
 %%NLS%%man/ja/man1/dpkg-gensymbols.1.gz
 %%NLS%%man/ja/man1/dpkg-mergechangelogs.1.gz
 %%NLS%%man/ja/man1/dpkg-name.1.gz
-%%NLS%%man/ja/man1/dpkg-parsechangelog.1.gz
-%%NLS%%man/ja/man1/dpkg-query.1.gz
 %%NLS%%man/ja/man1/dpkg-scanpackages.1.gz
 %%NLS%%man/ja/man1/dpkg-scansources.1.gz
-%%NLS%%man/ja/man1/dpkg-shlibdeps.1.gz
-%%NLS%%man/ja/man1/dpkg-source.1.gz
 %%NLS%%man/ja/man1/dpkg-split.1.gz
 %%NLS%%man/ja/man1/dpkg-trigger.1.gz
 %%NLS%%man/ja/man1/dpkg-vendor.1.gz
-%%NLS%%man/ja/man1/dpkg.1.gz
 %%NLS%%man/ja/man1/dselect.1.gz
-%%NLS%%man/ja/man5/deb-control.5.gz
+%%NLS%%man/ja/man1/update-alternatives.1.gz
 %%NLS%%man/ja/man5/deb-extra-override.5.gz
 %%NLS%%man/ja/man5/deb-old.5.gz
 %%NLS%%man/ja/man5/deb-origin.5.gz
 %%NLS%%man/ja/man5/deb-override.5.gz
 %%NLS%%man/ja/man5/deb-shlibs.5.gz
 %%NLS%%man/ja/man5/deb-split.5.gz
-%%NLS%%man/ja/man5/deb-src-control.5.gz
 %%NLS%%man/ja/man5/deb-substvars.5.gz
-%%NLS%%man/ja/man5/deb-symbols.5.gz
-%%NLS%%man/ja/man5/deb-triggers.5.gz
-%%NLS%%man/ja/man5/deb-version.5.gz
-%%NLS%%man/ja/man5/deb.5.gz
 %%NLS%%man/ja/man5/dpkg.cfg.5.gz
 %%NLS%%man/ja/man5/dselect.cfg.5.gz
-%%NLS%%man/ja/man8/dpkg-divert.8.gz
 %%NLS%%man/ja/man8/start-stop-daemon.8.gz
-%%NLS%%man/ja/man8/update-alternatives.8.gz
 man/man1/dpkg-architecture.1.gz
 man/man1/dpkg-buildflags.1.gz
 man/man1/dpkg-buildpackage.1.gz
 man/man1/dpkg-checkbuilddeps.1.gz
 man/man1/dpkg-deb.1.gz
 man/man1/dpkg-distaddfile.1.gz
+man/man1/dpkg-divert.1.gz
 man/man1/dpkg-genchanges.1.gz
 man/man1/dpkg-gencontrol.1.gz
 man/man1/dpkg-gensymbols.1.gz
@@ -354,10 +336,13 @@ man/man1/dpkg-scansources.1.gz
 man/man1/dpkg-shlibdeps.1.gz
 man/man1/dpkg-source.1.gz
 man/man1/dpkg-split.1.gz
+man/man1/dpkg-statoverride.1.gz
 man/man1/dpkg-trigger.1.gz
 man/man1/dpkg-vendor.1.gz
 man/man1/dpkg.1.gz
 man/man1/dselect.1.gz
+man/man1/update-alternatives.1.gz
+man/man3/Dpkg.3.gz
 man/man3/Dpkg::BuildEnv.3.gz
 man/man3/Dpkg::BuildFlags.3.gz
 man/man3/Dpkg::BuildOptions.3.gz
@@ -382,6 +367,7 @@ man/man3/Dpkg::Control::Info.3.gz
 man/man3/Dpkg::Control::Types.3.gz
 man/man3/Dpkg::Deps.3.gz
 man/man3/Dpkg::Exit.3.gz
+man/man3/Dpkg::Gettext.3.gz
 man/man3/Dpkg::IPC.3.gz
 man/man3/Dpkg::Index.3.gz
 man/man3/Dpkg::Interface::Storable.3.gz
@@ -408,70 +394,55 @@ man/man5/deb-version.5.gz
 man/man5/deb.5.gz
 man/man5/dpkg.cfg.5.gz
 man/man5/dselect.cfg.5.gz
-man/man8/dpkg-divert.8.gz
-man/man8/dpkg-statoverride.8.gz
 man/man8/start-stop-daemon.8.gz
-man/man8/update-alternatives.8.gz
-%%NLS%%man/pl/man1/dpkg-deb.1.gz
 %%NLS%%man/pl/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/pl/man1/dpkg-divert.1.gz
 %%NLS%%man/pl/man1/dpkg-genchanges.1.gz
 %%NLS%%man/pl/man1/dpkg-gencontrol.1.gz
 %%NLS%%man/pl/man1/dpkg-gensymbols.1.gz
 %%NLS%%man/pl/man1/dpkg-mergechangelogs.1.gz
 %%NLS%%man/pl/man1/dpkg-name.1.gz
-%%NLS%%man/pl/man1/dpkg-parsechangelog.1.gz
-%%NLS%%man/pl/man1/dpkg-query.1.gz
 %%NLS%%man/pl/man1/dpkg-scanpackages.1.gz
 %%NLS%%man/pl/man1/dpkg-scansources.1.gz
-%%NLS%%man/pl/man1/dpkg-shlibdeps.1.gz
-%%NLS%%man/pl/man1/dpkg-source.1.gz
 %%NLS%%man/pl/man1/dpkg-split.1.gz
 %%NLS%%man/pl/man1/dpkg-trigger.1.gz
 %%NLS%%man/pl/man1/dpkg-vendor.1.gz
-%%NLS%%man/pl/man1/dpkg.1.gz
 %%NLS%%man/pl/man1/dselect.1.gz
-%%NLS%%man/pl/man5/deb-control.5.gz
+%%NLS%%man/pl/man1/update-alternatives.1.gz
 %%NLS%%man/pl/man5/deb-extra-override.5.gz
 %%NLS%%man/pl/man5/deb-old.5.gz
 %%NLS%%man/pl/man5/deb-origin.5.gz
 %%NLS%%man/pl/man5/deb-override.5.gz
 %%NLS%%man/pl/man5/deb-shlibs.5.gz
 %%NLS%%man/pl/man5/deb-split.5.gz
-%%NLS%%man/pl/man5/deb-src-control.5.gz
 %%NLS%%man/pl/man5/deb-substvars.5.gz
-%%NLS%%man/pl/man5/deb-symbols.5.gz
-%%NLS%%man/pl/man5/deb-triggers.5.gz
-%%NLS%%man/pl/man5/deb-version.5.gz
-%%NLS%%man/pl/man5/deb.5.gz
 %%NLS%%man/pl/man5/dpkg.cfg.5.gz
 %%NLS%%man/pl/man5/dselect.cfg.5.gz
-%%NLS%%man/pl/man8/dpkg-divert.8.gz
 %%NLS%%man/pl/man8/start-stop-daemon.8.gz
-%%NLS%%man/pl/man8/update-alternatives.8.gz
 %%NLS%%man/sv/man1/dpkg-architecture.1.gz
 %%NLS%%man/sv/man1/dpkg-buildflags.1.gz
 %%NLS%%man/sv/man1/dpkg-buildpackage.1.gz
 %%NLS%%man/sv/man1/dpkg-checkbuilddeps.1.gz
 %%NLS%%man/sv/man1/dpkg-deb.1.gz
 %%NLS%%man/sv/man1/dpkg-distaddfile.1.gz
+%%NLS%%man/sv/man1/dpkg-divert.1.gz
 %%NLS%%man/sv/man1/dpkg-genchanges.1.gz
 %%NLS%%man/sv/man1/dpkg-gencontrol.1.gz
 %%NLS%%man/sv/man1/dpkg-gensymbols.1.gz
 %%NLS%%man/sv/man1/dpkg-maintscript-helper.1.gz
 %%NLS%%man/sv/man1/dpkg-mergechangelogs.1.gz
 %%NLS%%man/sv/man1/dpkg-name.1.gz
-%%NLS%%man/sv/man1/dpkg-parsechangelog.1.gz
 %%NLS%%man/sv/man1/dpkg-query.1.gz
 %%NLS%%man/sv/man1/dpkg-scanpackages.1.gz
 %%NLS%%man/sv/man1/dpkg-scansources.1.gz
 %%NLS%%man/sv/man1/dpkg-shlibdeps.1.gz
-%%NLS%%man/sv/man1/dpkg-source.1.gz
 %%NLS%%man/sv/man1/dpkg-split.1.gz
+%%NLS%%man/sv/man1/dpkg-statoverride.1.gz
 %%NLS%%man/sv/man1/dpkg-trigger.1.gz
 %%NLS%%man/sv/man1/dpkg-vendor.1.gz
 %%NLS%%man/sv/man1/dpkg.1.gz
 %%NLS%%man/sv/man1/dselect.1.gz
-%%NLS%%man/sv/man5/deb-control.5.gz
+%%NLS%%man/sv/man1/update-alternatives.1.gz
 %%NLS%%man/sv/man5/deb-extra-override.5.gz
 %%NLS%%man/sv/man5/deb-old.5.gz
 %%NLS%%man/sv/man5/deb-origin.5.gz
@@ -486,10 +457,7 @@ man/man8/update-alternatives.8.gz
 %%NLS%%man/sv/man5/deb.5.gz
 %%NLS%%man/sv/man5/dpkg.cfg.5.gz
 %%NLS%%man/sv/man5/dselect.cfg.5.gz
-%%NLS%%man/sv/man8/dpkg-divert.8.gz
-%%NLS%%man/sv/man8/dpkg-statoverride.8.gz
 %%NLS%%man/sv/man8/start-stop-daemon.8.gz
-%%NLS%%man/sv/man8/update-alternatives.8.gz
 sbin/start-stop-daemon
 %%DATADIR%%/abitable
 %%DATADIR%%/architecture.mk
@@ -571,101 +539,29 @@ sbin/start-stop-daemon
 %%NLS%%share/locale/th/LC_MESSAGES/dpkg.mo
 %%NLS%%share/locale/tl/LC_MESSAGES/dpkg.mo
 %%NLS%%share/locale/tl/LC_MESSAGES/dselect.mo
+%%NLS%%share/locale/tr/LC_MESSAGES/dpkg.mo
 %%NLS%%share/locale/vi/LC_MESSAGES/dpkg.mo
 %%NLS%%share/locale/vi/LC_MESSAGES/dselect.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/dpkg.mo
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/dselect.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/dpkg.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/dselect.mo
-%%NLS%%@dirrmtry share/locale/tl/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/tl
-%%NLS%%@dirrmtry share/locale/mr/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/mr
-%%NLS%%@dirrmtry share/locale/ku/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/ku
-%%NLS%%@dirrmtry share/locale/km/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/km
-%%NLS%%@dirrmtry share/locale/dz/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/dz
-%%NLS%%@dirrmtry share/locale/ast/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/ast
-@dirrm %%DATADIR%%
-@dirrm libexec/pkgconfig
-@dirrm libexec/dpkg/parsechangelog
-@dirrm libexec/dpkg/methods/multicd
-@dirrm libexec/dpkg/methods/ftp
-@dirrm libexec/dpkg/methods/floppy
-@dirrm libexec/dpkg/methods/disk
-@dirrm libexec/dpkg/methods
-@dirrm libexec/dpkg
-@dirrm %%SITE_PERL%%/Dselect
-@dirrm %%SITE_PERL%%/Dpkg/Vendor
-@dirrm %%SITE_PERL%%/Dpkg/Source/Package/V3
-@dirrm %%SITE_PERL%%/Dpkg/Source/Package
-@dirrm %%SITE_PERL%%/Dpkg/Source
-@dirrm %%SITE_PERL%%/Dpkg/Shlibs
-@dirrm %%SITE_PERL%%/Dpkg/Interface
-@dirrm %%SITE_PERL%%/Dpkg/Dist
-@dirrm %%SITE_PERL%%/Dpkg/Control
-@dirrm %%SITE_PERL%%/Dpkg/Compression
-@dirrm %%SITE_PERL%%/Dpkg/Changelog/Entry
-@dirrm %%SITE_PERL%%/Dpkg/Changelog
-@dirrm %%SITE_PERL%%/Dpkg
-@dirrm include/dpkg
-@dirrmtry etc/dpkg/dselect.cfg.d
-@dirrmtry etc/dpkg/dpkg.cfg.d
-@dirrmtry etc/dpkg
-@dirrmtry etc/alternatives
-%%NLS%%@dirrmtry man/sv/man8
-%%NLS%%@dirrmtry man/sv/man5
-%%NLS%%@dirrmtry man/sv/man1
-%%NLS%%@dirrmtry man/sv
-%%NLS%%@dirrmtry man/pl/man8
-%%NLS%%@dirrmtry man/pl/man5
-%%NLS%%@dirrmtry man/pl/man1
-%%NLS%%@dirrmtry man/pl
-%%NLS%%@dirrmtry man/it/man8
-%%NLS%%@dirrmtry man/it/man5
-%%NLS%%@dirrmtry man/it/man1
-%%NLS%%@dirrmtry man/it
-%%NLS%%@dirrmtry man/hu/man8
-%%NLS%%@dirrmtry man/hu/man5
-%%NLS%%@dirrmtry man/hu/man1
-%%NLS%%@dirrmtry man/hu
-%%NLS%%@dirrmtry man/fr/man8
-%%NLS%%@dirrmtry man/fr/man5
-%%NLS%%@dirrmtry man/fr/man1
-%%NLS%%@dirrmtry man/fr
-%%NLS%%@dirrmtry man/es/man8
-%%NLS%%@dirrmtry man/es/man5
-%%NLS%%@dirrmtry man/es/man1
-%%NLS%%@dirrmtry man/es
-%%NLS%%@dirrmtry man/de/man8
-%%NLS%%@dirrmtry man/de/man5
-%%NLS%%@dirrmtry man/de/man1
-%%NLS%%@dirrmtry man/de
-@cwd /
-@exec mkdir -p %%DPKGDIR%%/alternatives
-@exec mkdir -p %%DPKGDIR%%/info
-@exec mkdir -p %%DPKGDIR%%/methods/disk
-@exec mkdir -p %%DPKGDIR%%/methods/floppy
-@exec mkdir -p %%DPKGDIR%%/methods/ftp
-@exec mkdir -p %%DPKGDIR%%/methods/mnt
-@exec mkdir -p %%DPKGDIR%%/methods/multicd
-@exec mkdir -p %%DPKGDIR%%/parts
-@exec mkdir -p %%DPKGDIR%%/updates
-@exec [ -e %%DPKGDIR%%/available ] || touch %%DPKGDIR%%/available
-@exec [ -e %%DPKGDIR%%/diversions ] || touch %%DPKGDIR%%/diversions
-@exec [ -e %%DPKGDIR%%/statoverride ] || touch %%DPKGDIR%%/statoverride
-@exec [ -e %%DPKGDIR%%/status ] || touch %%DPKGDIR%%/status
-@dirrmtry %%DPKGDIR%%/updates
-@dirrmtry %%DPKGDIR%%/parts
-@dirrmtry %%DPKGDIR%%/methods/multicd
-@dirrmtry %%DPKGDIR%%/methods/mnt
-@dirrmtry %%DPKGDIR%%/methods/ftp
-@dirrmtry %%DPKGDIR%%/methods/floppy
-@dirrmtry %%DPKGDIR%%/methods/disk
-@dirrmtry %%DPKGDIR%%/methods
-@dirrmtry %%DPKGDIR%%/info
-@dirrmtry %%DPKGDIR%%/alternatives
-@dirrmtry %%DPKGDIR%%
+%%NLS%%@dir man/hu/man8
+%%NLS%%@dir man/hu/man1
+@dir etc/dpkg/dselect.cfg.d
+@dir etc/dpkg/dpkg.cfg.d
+@dir %%DPKGDIR%%/updates
+@dir %%DPKGDIR%%/status
+@dir %%DPKGDIR%%/statoverride
+@dir %%DPKGDIR%%/parts
+@dir %%DPKGDIR%%/methods/multicd
+@dir %%DPKGDIR%%/methods/mnt
+@dir %%DPKGDIR%%/methods/ftp
+@dir %%DPKGDIR%%/methods/floppy
+@dir %%DPKGDIR%%/methods/disk
+@dir %%DPKGDIR%%/methods
+@dir %%DPKGDIR%%/info
+@dir %%DPKGDIR%%/diversions
+@dir %%DPKGDIR%%/available
+@dir %%DPKGDIR%%/alternatives
+@dir %%DPKGDIR%%

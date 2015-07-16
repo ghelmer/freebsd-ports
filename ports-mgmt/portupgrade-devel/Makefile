@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	portupgrade
-PORTVERSION=	20140524
-PORTREVISION=	1
+PORTVERSION=	20150514
+PORTREVISION=	3
 PORTEPOCH=	3
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	GH \
-		http://mirror.shatow.net/freebsd/pkgtools/
+		http://mirror.shatow.net/freebsd/${PORTNAME}/ \
+		LOCAL/bdrewery/${PORTNAME}/
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${PORTVERSION}-0-g${GH_COMMIT}
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	FreeBSD ports/packages management tool (devel version)
@@ -22,9 +22,7 @@ USES=		uidfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_PROJECT=	portupgrade
-GH_COMMIT=	352086b
-GH_TAGNAME=	${GH_COMMIT}
+GH_TAGNAME=	2.4.13-7-g47dfa22
 
 DIST_SUBDIR=	${PORTNAME}
 USE_RUBY=	yes
@@ -35,6 +33,8 @@ MAKE_ARGS=	PREFIX="${PREFIX}" RUBY="${RUBY}" \
 EXAMPLESDIR=	${PREFIX}/share/examples/pkgtools
 DOCSDIR=	${PREFIX}/share/doc/pkgtools
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 .include <bsd.port.pre.mk>
 
 INSTALL_TARGET=		install
@@ -42,10 +42,8 @@ INSTALL_TARGET=		install
 INSTALL_TARGET+=	install-doc
 .endif
 
-# Reported that ruby-bdb is BROKEN with 2.0
-.if ${RUBY_VER} != 2.0 && ${RUBY_VER} != 2.1
+# For PKG_DBDRIVER={bdb_btree,bdb_hash}
 RUN_DEPENDS+=	${RUBY_SITEARCHLIBDIR}/bdb.so:${PORTSDIR}/databases/ruby-bdb
-.endif
 
 regression-test: patch
 	cd ${WRKSRC} && ${MAKE} test

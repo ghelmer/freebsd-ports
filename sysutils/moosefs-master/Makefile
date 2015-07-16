@@ -2,48 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	moosefs
-PORTVERSION=	#set via include
+DISTVERSION=	1.6.27-5
 CATEGORIES=	sysutils
+MASTER_SITES=	http://www.moosefs.org/tl_files/mfscode/ \
+		http://ports.quxingwen.com/dist/mfs/
 PKGNAMESUFFIX=	-master
-NO_STAGE=	yes
-.include "bsd.port.moosefs.mk"
+DISTNAME=	mfs-${DISTVERSION}
 
-MAINTAINER=	chifeng@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Managing the whole filesystem and storing metadata
 
-USE_PYTHON=	yes
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+WRKSRC=		${WRKDIR}/mfs-1.6.27
+USERS=		mfs
+GROUPS=		mfs
+GNU_CONFIGURE=	yes
+USES=		python
 
 USE_RC_SUBR=	mfsmaster mfsmetalogger mfscgiserv
-MFS_CGIDIR=	${PREFIX}/share/mfscgi
-SUB_FILES+=	pkg-install pkg-message pkg-deinstall
-SUB_LIST+=	MFS_WORKDIR="${MFS_WORKDIR}"
+SUB_FILES=	pkg-message
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
 
-CONFIGURE_ARGS+=	--localstatedir=${MFS_WORKDIR} \
-			--enable-mfsmaster \
-			--with-mfscgiserv-dir=${PREFIX}/sbin \
-			--enable-mfscgiserv \
-			--enable-mfscgi \
-			--with-mfscgi-dir=${MFS_CGIDIR} \
-			--disable-mfschunkserver \
-			--disable-mfsmount
+CONFIGURE_ARGS=	--localstatedir=/var \
+		--enable-mfsmaster \
+		--enable-mfscgiserv \
+		--enable-mfscgi \
+		--disable-mfschunkserver \
+		--disable-mfsmount \
+		--with-default-user=mfs \
+		--with-default-group=mfs \
+		--with-mfscgiserv-dir=${PREFIX}/sbin \
+		--with-mfscgi-dir=${PREFIX}/share/mfscgi
 
-MAN5=		mfsmaster.cfg.5 mfsexports.cfg.5 mfsmetalogger.cfg.5 mfstopology.cfg.5
-MAN7=		moosefs.7 mfs.7
-MAN8=		mfscgiserv.8 mfsmaster.8 mfsmetarestore.8 mfsmetalogger.8
+post-patch:
+	${REINPLACE_CMD} -e 's|#\!/usr/bin/env python|#\!${PYTHON_CMD}|' \
+		${WRKSRC}/mfscgi/cgiserv.py.in
 
-.include <bsd.port.pre.mk>
-
-pre-install:
-	${MKDIR} ${MFS_CGIDIR}
-
-post-install:
-.for FILE in mfsmaster mfsexports mfsmetalogger mfstopology
-	@if [ ! -f ${PREFIX}/etc/${FILE}.cfg ]; then \
-		${CP} ${PREFIX}/etc/mfs/${FILE}.cfg.dist ${PREFIX}/etc/${FILE}.cfg ; \
-	fi
-.endfor
-
-	PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} PRE-INSTALL
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

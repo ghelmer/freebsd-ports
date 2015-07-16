@@ -3,13 +3,16 @@
 
 PORTNAME=	mailzu
 DISTVERSION=	0.8rc3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/MailZu%200.8RC3
 DISTNAME=	MailZu_${DISTVERSION:S/rc/RC/}
 
-MAINTAINER=	sahil@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple and intuitive web interface to manage amavisd-new quarantine
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${LOCALBASE}/sbin/amavisd:${PORTSDIR}/security/amavisd-new \
 		${PEARDIR}/DB.php:${PORTSDIR}/databases/pear-DB \
@@ -17,9 +20,8 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/amavisd:${PORTSDIR}/security/amavisd-new \
 		${PEARDIR}/Net/Socket.php:${PORTSDIR}/net/pear-Net_Socket \
 		${PEARDIR}/Mail/mimeDecode.php:${PORTSDIR}/mail/pear-Mail_mimeDecode
 
-NO_INSTALL_MANPAGES=	yes
-
 PEARDIR?=	${LOCALBASE}/share/pear
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_LIST+=	PKGNAME=${PKGNAME}
 SUB_FILES=	pkg-message
 NO_BUILD=	yes
@@ -41,15 +43,14 @@ PGSQL_USE=	PHP=pgsql
 IMAP_USE=	PHP=imap
 LDAP_USE=	PHP=ldap
 
+PORTDOCS=	*
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
-	${CHOWN} ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.php* ${WRKSRC}/*.js* ${WRKSRC}/*.css* ${STAGEDIR}${WWWDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "config contrib img lang lib templates" \
 		${STAGEDIR}${WWWDIR} "! -name *.orig")
 	(cd ${WRKSRC} && ${COPYTREE_BIN} scripts ${STAGEDIR}${WWWDIR})
-
-post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/CHANGELOG ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/docs/* ${STAGEDIR}${DOCSDIR}

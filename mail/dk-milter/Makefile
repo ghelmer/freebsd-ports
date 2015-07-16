@@ -3,6 +3,7 @@
 
 PORTNAME=	dk-milter
 PORTVERSION=	1.0.2
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/DomainKeys%20Milter/${PORTVERSION}
 
@@ -38,6 +39,8 @@ DOCSFILES=	FEATURES INSTALL KNOWNBUGS LICENSE README RELEASE_NOTES \
 SITE+=		${FILESDIR}/site.config.m4
 SITE_SUB+=	-e "s|%%PREFIX%%|${PREFIX}|g" \
 		-e "s|%%LOCALBASE%%|${LOCALBASE}|g"
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -92,9 +95,7 @@ SITE_SUB+=	-e 's|%%OPENSSL%%||g' \
 
 .include	"${.CURDIR}/Makefile.features"
 pre-configure:
-	${REINPLACE_CMD} -e 's|-pthread|${PTHREAD_LIBS}|' \
-		-e 's|-D_THREAD_SAFE|${PTHREAD_CFLAGS}|' \
-		-e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		-e "s|\`-O'|\`${CFLAGS}'|g" \
 		${WRKSRC}/devtools/OS/FreeBSD
 	${SED} ${SITE_SUB} -e '\|^dnl |d' -e '/^dnl$$/d' \

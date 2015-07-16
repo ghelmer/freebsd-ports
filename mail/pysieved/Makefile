@@ -11,8 +11,7 @@ MASTER_SITES=	http://ports.internal.vlink.ru/distfiles/
 MAINTAINER=	dsh@wizard.volgograd.ru
 COMMENT=	Python Managesieve Server
 
-USE_BZIP2=	yes
-USE_PYTHON=	yes
+USES=		python tar:bzip2
 USE_RC_SUBR=	${PORTNAME}
 
 PORTEXAMPLES=	pysieved.xinetd

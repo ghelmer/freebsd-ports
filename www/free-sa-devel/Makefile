@@ -4,8 +4,7 @@
 PORTNAME=	free-sa
 PORTVERSION=	2.0.0b6.7
 CATEGORIES=	www
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	free-sa/free-sa-dev/2.0.0b6p7
+MASTER_SITES=	SF/free-sa/free-sa-dev/2.0.0b6p7
 PKGNAMESUFFIX=	-devel
 DISTNAME=	free-sa-2.0.0b6p7
 
@@ -22,7 +21,6 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${DISTVERSION}
 
 SUB_FILES=	pkg-deinstall
 SUB_LIST=	CACHEDIR="/var/cache/free-sa"
-PLIST_SUB+=	RESETPREFIX=${PREFIX}
 
 USE_CSTD=	gnu89
 
@@ -42,7 +40,7 @@ MAKE_ARGS+=	PREFIX="${PREFIX}" \
 		MANDIR="${MANPREFIX}/man" \
 		STAGEDIR="${STAGEDIR}"
 
-OPTIONS_DEFINE=		OPTIMIZED_CFLAGS SA_DEBUG
+OPTIONS_DEFINE=		OPTIMIZED_CFLAGS SA_DEBUG DOCS
 OPTIMIZED_CFLAGS_DESC=	Build with distribution-recommended CFLAGS
 SA_DEBUG_DESC=		Enable Free-SA debugging (level 1)
 

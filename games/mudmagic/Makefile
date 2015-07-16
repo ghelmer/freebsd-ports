@@ -3,28 +3,30 @@
 
 PORTNAME=	mudmagic
 PORTVERSION=	1.9
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	games
 MASTER_SITES=	http://www.mudmagic.com/mud-client/downloads/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+ based MUD client
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
 		libpcre.so:${PORTSDIR}/devel/pcre \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
-USES=		gmake pathfix pkgconfig
+USES=		gmake libtool pathfix pkgconfig python
 USE_GNOME=	gtk20 libglade2 libxml2
 GNU_CONFIGURE=	yes
-USE_PYTHON=	yes
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		`${PYTHON_CMD:T}-config --libs` `pkg-config --libs gtk+-x11-2.0` `pkg-config --libs libcurl`
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' \

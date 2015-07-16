@@ -12,8 +12,9 @@ pre-build-bj10v:
 	${LN} -s -f ${WRKSRC}/gdev10v/gdev10v.c ${WRKSRC}/src
 
 post-install-docs-bj10v:
-	${MKDIR} ${DOCSDIR}/bj10v
-	${INSTALL_DATA} ${WRKSRC}/gdev10v/gdev10v.jis ${DOCSDIR}/bj10v
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/bj10v
+	${INSTALL_DATA} ${WRKSRC}/gdev10v/gdev10v.jis \
+	    ${STAGEDIR}${DOCSDIR}/bj10v
 
 post-extract: post-extract-bj10v
 pre-build: pre-build-bj10v

@@ -3,17 +3,18 @@
 
 PORTNAME=	Unicode-MapUTF8
 PORTVERSION=	1.11
+PORTREVISION=	1
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl class that implements conversion between arbitrary charsets
 
-BUILD_DEPENDS=	p5-Unicode-Map>=0:${PORTSDIR}/converters/p5-Unicode-Map \
-		p5-Unicode-String>=0:${PORTSDIR}/converters/p5-Unicode-String \
+BUILD_DEPENDS=	ja-p5-Jcode>=0:${PORTSDIR}/japanese/p5-Jcode \
+		p5-Unicode-Map>=0:${PORTSDIR}/converters/p5-Unicode-Map \
 		p5-Unicode-Map8>=0:${PORTSDIR}/converters/p5-Unicode-Map8 \
-		ja-p5-Jcode>=0:${PORTSDIR}/japanese/p5-Jcode
+		p5-Unicode-String>=0:${PORTSDIR}/converters/p5-Unicode-String
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5

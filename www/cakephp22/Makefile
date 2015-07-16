@@ -7,17 +7,13 @@ CATEGORIES=	www
 PKGNAMESUFFIX=	22
 
 MAINTAINER=	pphillips@experts-exchange.com
-COMMENT=	A framework for developing PHP web applications
+COMMENT=	Framework for developing PHP web applications
 
 LICENSE=	MIT
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME}
-GH_COMMIT=	1bb28d3
 
 PORTDOCS=	README.md
-
-SLAVE_PORT_MODULES=	REWRITE
 
 CONFLICTS=	cakephp-1?-* cakephp-2[1]-.* cakephp-2.3.*
 
@@ -25,7 +21,7 @@ NO_BUILD=	yes
 USES=		gettext
 USE_PHP=	ctype session
 WANT_PHP_WEB=	yes
-DEFAULT_VERSIONS=	php=5
+DEFAULT_VERSIONS+=	php=5
 
 CAKE_CONF_FILES=	\
 		app/Config/acl.php \
@@ -157,7 +153,6 @@ do-install:
 	@${FIND} ${STAGEDIR}${WWWDIR} -type f -name empty -size 0 -exec ${RM} {} \;
 	@${ECHO_CMD} '@exec ${FIND} ${WWWDIR:S|^${PREFIX}/|%D/|} -type f -name empty -size 0 -exec ${RM} {} \;' >> ${TMPPLIST}
 
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
 	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} \
 		${WWWDIR:S|^${PREFIX}/|%D/|}' >> ${TMPPLIST}
 	@${FIND} ${STAGEDIR}${WWWDIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 644

@@ -7,11 +7,14 @@ MASTER_SITES=	RG
 PKGNAMESUFFIX=	01
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	Message creator and parser for the NTLM authentication.
+COMMENT=	Message creator and parser for the NTLM authentication
+
+LICENSE=	MIT
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 
+PORTSCOUT=	limit:^0\.1
 
 .include <bsd.port.mk>

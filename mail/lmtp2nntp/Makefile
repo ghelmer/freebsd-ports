@@ -4,8 +4,7 @@
 PORTNAME=	lmtp2nntp
 PORTVERSION=	1.4.1
 CATEGORIES=	mail news
-MASTER_SITES=	${MASTER_SITE_OSSP}
-MASTER_SITE_SUBDIR=	tool/${PORTNAME}
+MASTER_SITES=	OSSP/tool/${PORTNAME}
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	OSSP mail to news gateway
@@ -19,13 +18,12 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ex=${LOCALBASE} --with-str=${LOCALBASE} \
 		--with-sa=${LOCALBASE} --with-var=${LOCALBASE}
 
-MAN8=		lmtp2nntp.8
-PLIST_FILES=	sbin/lmtp2nntp
+PLIST_FILES=	sbin/lmtp2nntp \
+		man/man8/lmtp2nntp.8.gz
 PORTDOCS=	INSTALL README
 
 OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 # Try to fix parallel builds (-jX)
@@ -35,8 +33,8 @@ post-patch:
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 .endif
 
 check: build

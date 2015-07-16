@@ -3,7 +3,7 @@
 
 PORTNAME=	zebra
 PORTVERSION=	0.95a
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	net ipv6
 MASTER_SITES=	ftp://ftp.pop-pr.rnp.br/pub/GNU/ftp.zebra.org/zebra/ \
 		ftp://ftp.ripe.net/mirrors/sites/ftp.zebra.org/pub/zebra/ \
@@ -26,7 +26,9 @@ SUB_LIST=	BGPDARGS=${BGPDARGS} \
 		ZEBRAARGS=${ZEBRAARGS}
 USE_SUBMAKE=	yes
 GNU_CONFIGURE=	yes
+USES=		cpe readline
 CONFIGURE_ARGS+=	--sysconfdir=${PREFIX}/etc/zebra
+CPU_VENDOR=	gnu
 
 PORTSCOUT=	ignore:1
 
@@ -51,7 +53,7 @@ NO_OPTIONS_SORT=	yes
 PAM_CONFIGURE_WITH=		pam
 OSPFNSSA_CONFIGURE_ENABLE=	nssa
 SNMP_CONFIGURE_ENABLE=		snmp
-SNMP_LIB_DEPENDS+=		libsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+SNMP_LIB_DEPENDS+=		libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
 TCPZEBRA_CONFIGURE_ENABLE=	tcp-zebra
 BGPD_CONFIGURE_ENABLE=		bgpd
 OSPF6D_CONFIGURE_ENABLE=	ospf6d
@@ -73,10 +75,10 @@ ZEBRAARGS?=	-d
 .include <bsd.port.options.mk>
 
 .if !${PORT_OPTIONS:MIPV6} && ${PORT_OPTIONS:MOSPF6D}
-IGNORE=		OSPF6D requires IPV6 option.
+IGNORE=		OSPF6D requires IPV6 option
 .endif
 .if !${PORT_OPTIONS:MIPV6} && ${PORT_OPTIONS:MRIPNGD}
-IGNORE=		RIPNGD requires IPV6 option.
+IGNORE=		RIPNGD requires IPV6 option
 .endif
 
 post-install:

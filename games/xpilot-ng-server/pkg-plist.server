@@ -1,4 +1,5 @@
 bin/xpilot-ng-server
+man/man6/xpilot-ng-server.6.gz
 share/xpilot-ng/defaults.txt
 share/xpilot-ng/mapconvert.py
 share/xpilot-ng/maps/blood-music.xp2
@@ -15,5 +16,3 @@ share/xpilot-ng/maps/teamcup.xp
 share/xpilot-ng/maps/tourmination.xp2
 share/xpilot-ng/password.txt
 share/xpilot-ng/robots.txt
-@dirrm share/xpilot-ng/maps
-@dirrm share/xpilot-ng

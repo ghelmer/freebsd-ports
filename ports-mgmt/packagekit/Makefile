@@ -4,7 +4,7 @@
 
 PORTNAME=	PackageKit
 PORTVERSION=	0.6.11
-PORTREVISION?=	4
+PORTREVISION?=	7
 CATEGORIES=	ports-mgmt sysutils
 MASTER_SITES=	http://www.packagekit.org/releases/
 
@@ -12,30 +12,33 @@ MAINTAINER=	gnome@FreeBSD.org
 COMMENT?=	DBUS packaging abstraction layer
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/docbook2man:${PORTSDIR}/textproc/docbook-utils
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
+LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
 		libpolkit-gobject-1.so:${PORTSDIR}/sysutils/polkit \
 		libck-connector.so:${PORTSDIR}/sysutils/consolekit
-RUN_DEPENDS=	lsof:${PORTSDIR}/sysutils/lsof
+RUN_DEPENDS=	lsof:${PORTSDIR}/sysutils/lsof \
+		bash:${PORTSDIR}/shells/bash
 
-USES=		gettext gmake iconv pkgconfig shared-mime-info
-USE_GNOME=	glib20 intltool gnomehier introspection
+USES=		cpe execinfo gettext gmake iconv libtool pathfix pkgconfig \
+		python:build shared-mime-info shebangfix
+CPE_VENDOR=	packagekit_project
+SHEBANG_FILES=	backends/test/helpers/search-name.sh \
+		contrib/cron/packagekit-background.cron
+USE_GNOME=	glib20 intltool introspection
 USE_SQLITE=	3
 USE_LDCONFIG=	yes
-USE_PYTHON_BUILD=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo
+LIBS+=		-L${LOCALBASE}/lib -lexecinfo
 CONFIGURE_ARGS+=--with-security-framework=polkit \
 		--localstatedir=/var \
+		--disable-static \
 		--disable-gtk-doc \
 		--disable-managed \
 		--disable-browser-plugin \
 		--disable-gstreamer-plugin \
 		--disable-networkmanager \
 		--disable-connman
-
-MAKE_ARGS=	pkgconfigdir="${PREFIX}/libdata/pkgconfig"
+INSTALL_TARGET=	install-strip
 
 MAKE_JOBS_UNSAFE=yes
 
@@ -47,7 +50,7 @@ PORTS_DESC=Use portupgrade for management, dummy if disabled
 .include <bsd.port.options.mk>
 
 . if ${PORT_OPTIONS:MMANPAGES}
-BUILD_DEPENDS+=	${LOCALBASE}/share/sgml/docbook/4.1:${PORTSDIR}/textproc/docbook-sgml \
+BUILD_DEPENDS+=	docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml \
 		xsltproc:${PORTSDIR}/textproc/libxslt \
 		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl
 PLIST_SUB+=	MAN=''
@@ -75,7 +78,7 @@ CONFIGURE_ARGS+=--disable-qt
 LIB_DEPENDS+=	libpackagekit-glib2.so:${PORTSDIR}/ports-mgmt/packagekit
 
 CONFIGURE_ARGS+=--enable-qt
-LIB_DEPENDS+=	libcppunit-1.12.so:${PORTSDIR}/devel/cppunit
+LIB_DEPENDS+=	libcppunit.so:${PORTSDIR}/devel/cppunit
 USE_QT4+=	dbus gui xml sql moc_build
 #.include "${PORTSDIR}/Mk/bsd.qt.mk"
 .endif

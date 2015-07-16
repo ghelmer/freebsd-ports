@@ -9,7 +9,7 @@ MASTER_SITES=	SF
 DISTNAME=	Tix${DISTVERSION}-src${DISTVERSIONSUFFIX}
 
 MAINTAINER=	doconnor@gsoft.com.au
-COMMENT=	An extension to the Tk toolkit
+COMMENT=	Extension to the Tk toolkit
 
 WRKSRC=		${WRKDIR}/Tix${DISTVERSION}
 USE_LDCONFIG=	yes
@@ -27,9 +27,6 @@ CONFIGURE_ENV=	PREFIX=${PREFIX}
 
 TIX_LIB=	libTix${PORTVERSION}.so
 TIX_LIB_FILE=	${TIX_LIB}.0
-
-pre-extract:
-	@${MAKE} clean
 
 pre-configure:
 	@(cd ${WRKSRC} && \

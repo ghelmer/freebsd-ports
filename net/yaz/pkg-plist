@@ -10,6 +10,7 @@ bin/yaz-url
 bin/yaz-ztest
 bin/zoomsh
 include/yaz/backend.h
+include/yaz/backtrace.h
 include/yaz/base64.h
 include/yaz/ccl.h
 include/yaz/ccl_xml.h
@@ -80,6 +81,7 @@ include/yaz/unix.h
 include/yaz/url.h
 include/yaz/wrbuf.h
 include/yaz/xmalloc.h
+include/yaz/xml_get.h
 include/yaz/xml_include.h
 include/yaz/xmlquery.h
 include/yaz/xmltypes.h
@@ -172,8 +174,3 @@ share/aclocal/yaz.m4
 %%DATADIR%%/z39.50/univres.asn
 %%DATADIR%%/z39.50/z.tcl
 %%DATADIR%%/z39.50/z3950v3.asn
-@dirrm %%DATADIR%%/z39.50
-@dirrm %%DATADIR%%/ill
-@dirrm %%DATADIR%%/etc
-@dirrm %%DATADIR%%
-@dirrm include/yaz

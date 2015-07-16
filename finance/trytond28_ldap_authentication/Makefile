@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	trytond28_ldap_authentication
-PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTVERSION=	2.8.1
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_ldap_authentication/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
 DISTNAME=	trytond_ldap_authentication-${PORTVERSION}
 
@@ -18,8 +17,7 @@ RUN_DEPENDS=	trytond28_ldap_connection>=2.8.0:${PORTSDIR}/finance/trytond28_ldap
 
 CONFLICTS=	trytond_ldap_authentication-2.[46].*
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -2,38 +2,50 @@
 # $FreeBSD$
 
 PORTNAME=	mu
-PORTVERSION=	0.9.9
-PORTREVISION=	1
+PORTVERSION=	0.9.11
+DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
-MASTER_SITES=	http://mu0.googlecode.com/files/
 
-MAINTAINER=	rea@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mail searching frontend for Xapian
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	xapian:${PORTSDIR}/databases/xapian-core \
-		gmime:${PORTSDIR}/mail/gmime24
+LIB_DEPENDS=	libxapian.so:${PORTSDIR}/databases/xapian-core \
+		libgmime-2.6.so:${PORTSDIR}/mail/gmime26
 
-GNU_CONFIGURE=	yes
-USES=		pkgconfig gmake
+USE_GITHUB=	yes
+GH_ACCOUNT=	djcb
+
+USES=		autoreconf gmake libtool makeinfo pkgconfig
 USE_GNOME=	glib20
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-silent-rules --disable-gtk
+INSTALL_TARGET=	install-strip
 
-MAN1=		mu-cfind.1 mu-easy.1 mu-extract.1 mu-find.1 mu-index.1 \
-		mu-mkdir.1 mu-view.1 mu-add.1 mu-remove.1 mu-server.1 mu.1 \
-		mug.1
-MAN5=		mu-bookmarks.5
-
-CFLAGS+=	-I${LOCALBASE}/include
-CXXFLAGS+=	-I${LOCALBASE}/include
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFIGURE_ARGS+=	--with-gui=none
 
-NO_STAGE=	yes
-do-install:
-	cd ${WRKSRC}/mu && ${INSTALL_PROGRAM} mu ${PREFIX}/bin
-	cd ${FILESDIR} && ${INSTALL_SCRIPT} mu-ask ${PREFIX}/bin
-	cd ${WRKSRC}/man && ${INSTALL_MAN} ${MAN1} ${MANPREFIX}/man/man1
-	cd ${WRKSRC}/man && ${INSTALL_MAN} ${MAN5} ${MANPREFIX}/man/man5
+OPTIONS_DEFINE=		GUILE MU4E
+OPTIONS_SUB=		yes
 
+GUILE_LIB_DEPENDS=	libguile-2.0.so:${PORTSDIR}/lang/guile2
+GUILE_USE=		ldconfig=yes
+GUILE_CONFIGURE_ENABLE=	guile
+GUILE_INFO=		mu-guile
+MU4E_DESC=		Email client for Emacs
+MU4E_USE=		emacs=yes
+MU4E_CONFIGURE_ENABLE=	mu4e
+MU4E_INFO=		mu4e
+
+.include <bsd.port.options.mk>
+
+post-install:
+	(cd ${FILESDIR} && ${INSTALL_SCRIPT} mu-ask \
+		${STAGEDIR}${PREFIX}/bin)
+
+.if ${PORT_OPTIONS:MGUILE}
+	(${FIND} ${STAGEDIR}${PREFIX}/lib -name "*.so.*" -type f | \
+		${XARGS} ${STRIP_CMD})
+.endif
 .include <bsd.port.mk>

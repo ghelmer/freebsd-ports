@@ -5,7 +5,8 @@ PORTVERSION=	2013.09.05
 CATEGORIES=	textproc
 MASTER_SITES=	http://sourceforge.net/projects/aoo-extensions/files/1204/13/
 PKGNAMEPREFIX=	it-
-DISTFILES=	dict-it.oxt
+DISTNAME=	dict-it
+EXTRACT_SUFX=	.oxt
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
@@ -18,7 +19,6 @@ NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	%%DATADIR%%/hyph_it_CH.dic \
 		%%DATADIR%%/hyph_it_IT.dic
-PLIST_DIRSTRY=	%%DATADIR%%
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

@@ -3,15 +3,12 @@
 
 PORTNAME=	libflame
 DISTVERSION=	r7421
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	http://www.cs.utexas.edu/users/%SUBDIR%/:1,2 LOCAL/bf:3
 MASTER_SITE_SUBDIR=	flame/snapshots/:1 field/docs/:2
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:1,3
-.if !defined(NOPORTDOCS) || make(makesum)
-DISTFILES+=	libflame.pdf:2,3
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:3 libflame.pdf:3
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
-.endif
 
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	FLAME dense linear algebra library
@@ -24,13 +21,11 @@ GNU_CONFIGURE=	yes
 USE_CSTD=	c99
 USES=		gmake
 
-CONFIGURE_ARGS	=	--enable-dynamic-build --enable-static-build
-
-BROKEN=		no distinfo provided for some of the distfiles
+CONFIGURE_ARGS=		--enable-dynamic-build --enable-static-build
 
 OPTIONS_DEFINE=	BLAS3_CNTL BUILTIN_BLAS CBLAS EXTERNAL_LAPACK GOTOBLAS \
 		LAPACK2FLAME LAPACK_SUBPROBLEMS OPENMP SHARED STATIC \
-		SUPERMATRIX THREADS
+		SUPERMATRIX THREADS DOCS EXAMPLES
 OPTIONS_DEFAULT=	BLAS3_CNTL LAPACK2FLAME SHARED SUPERMATRIX THREADS
 BLAS3_CNTL_DESC=	Set Level-3 BLAS variant and blocksize
 BUILTIN_BLAS_DESC=	Build the (suboptimal) internal BLAS
@@ -44,7 +39,6 @@ SHARED_DESC=		Build a shared library and PIC archive
 STATIC_DESC=		Build a non-PIC archive
 SUPERMATRIX_DESC=	Task scheduling and parallel execution
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MBLAS3_CNTL}
@@ -54,9 +48,9 @@ CONFIGURE_ARGS+=	--disable-blas3-front-end-cntl-trees
 .endif
 
 .if ${PORT_OPTIONS:MBUILTIN_BLAS}
-IGNORE =	: WITH_BUILTIN_BLAS is an experimental option, for testing purposes only
+IGNORE=		: BUILTIN_BLAS is an experimental option, for testing purposes only
 .if ${PORT_OPTIONS:MCBLAS} || ${PORT_OPTIONS:MGOTOBLAS}
-IGNORE =	: WITH_BUILTIN_BLAS is incompatible with WITH_CBLAS and WITH_GOTOBLAS
+IGNORE=		: BUILTIN_BLAS is incompatible with CBLAS and GOTOBLAS
 .endif
 CONFIGURE_ARGS+=	--enable-builtin-blas
 .else
@@ -64,9 +58,9 @@ CONFIGURE_ARGS+=	--disable-builtin-blas
 .endif
 
 .if ${PORT_OPTIONS:MCBLAS}
-IGNORE =	: WITH_CBLAS yields an incomplete library, and is for testing purposes only
+IGNORE=		: CBLAS yields an incomplete library, and is for testing purposes only
 .if ${PORT_OPTIONS:MGOTOBLAS}
-IGNORE =	: WITH_CBLAS is incompatible with WITH_GOTOBLAS
+IGNORE=		: CBLAS is incompatible with GOTOBLAS
 .endif
 CONFIGURE_ARGS+=	--enable-cblas-interfaces
 .else
@@ -93,7 +87,7 @@ CONFIGURE_ARGS+=	--enable-default-${b:tl}-blocksize=${${b}_BLOCKSIZE}
 
 .if ${PORT_OPTIONS:MLAPACK2FLAME}
 .if ${PORT_OPTIONS:MLAPACK_SUBPROBLEMS}
-IGNORE =	: WITH_LAPACK2FLAME is incompatible with WITH_LAPACK_SUBPROBLEMS
+IGNORE=		: LAPACK2FLAME is incompatible with LAPACK_SUBPROBLEMS
 .endif
 CONFIGURE_ARGS+=	--enable-lapack2flame
 .else
@@ -102,14 +96,14 @@ CONFIGURE_ARGS+=	--disable-lapack2flame
 
 .if ${PORT_OPTIONS:MLAPACK_SUBPROBLEMS}
 .if ! ${PORT_OPTIONS:MEXTERNAL_LAPACK}
-IGNORE =	: WITH_LAPACK_SUBPROBLEMS requires WITH_EXTERNAL_LAPACK
+IGNORE=		: LAPACK_SUBPROBLEMS requires EXTERNAL_LAPACK
 .endif
 CONFIGURE_ARGS+=	--enable-external-lapack-for-subproblems
 .else
 CONFIGURE_ARGS+=	--disable-external-lapack-for-subproblems
 .endif
 
-.if ${PORT_OPTIONS:MEXTERNAL_LAPACK} || ! ${PORT_OPTIONS:MBLAS}
+.if ${PORT_OPTIONS:MEXTERNAL_LAPACK} || ! ${PORT_OPTIONS:MBUILTIN_BLAS}
 .if ${PORT_OPTIONS:MCBLAS}
 .if exists(${LOCALBASE}/lib/libatlas.so)
 WITH_BLAS?=	atlas_c
@@ -117,7 +111,7 @@ WITH_BLAS?=	atlas_c
 WITH_BLAS?=	reference_c
 .endif
 .if !(${WITH_BLAS} == "atlas_c" || ${WITH_BLAS} == "reference_c")
-IGNORE=	: WITH_CBLAS is incompatible with WITH_BLAS = ${WITH_BLAS}
+IGNORE=	: CBLAS is incompatible with WITH_BLAS = ${WITH_BLAS}
 .endif
 .elif exists(${LOCALBASE}/lib/libgoto2.so)
 WITH_BLAS?=	gotoblas
@@ -137,7 +131,7 @@ RUN_DEPENDS +=	${LOCALBASE}/lib/libatlas.so:${PORTSDIR}/math/atlas
 BLAS=		-lptcblas
 .elif ${WITH_BLAS} == gotoblas
 RUN_DEPENDS +=	${LOCALBASE}/lib/libgoto2p.so:${PORTSDIR}/math/gotoblas
-BLAS =		-lgoto2p
+BLAS=			-lgoto2p
 .elif ${WITH_BLAS} == reference
 RUN_DEPENDS +=	${LOCALBASE}/lib/libblas.so:${PORTSDIR}/math/blas
 BLAS=		-lblas
@@ -152,15 +146,15 @@ BLAS=		-lgslcblas
 .if ${PORT_OPTIONS:MBUILTIN_BLAS}
 RUN_DEPENDS +=	${LOCALBASE}/lib/libatlas.so:${PORTSDIR}/math/atlas
 .endif
-LAPACK =	-lalapack -lptcblas -lptf77blas
+LAPACK=		-lalapack -lptcblas -lptf77blas
 .elif ${WITH_BLAS} == gotoblas
 .if ${PORT_OPTIONS:MBUILTIN_BLAS}
 RUN_DEPENDS +=	${LOCALBASE}/lib/libgoto2p.so:${PORTSDIR}/math/gotoblas
 .endif
-LAPACK =	-lgoto2p
+LAPACK=		-lgoto2p
 .elif !empty(WITH_BLAS:Mreference*)
 RUN_DEPENDS +=	${LOCALBASE}/lib/liblapack.so:${PORTSDIR}/math/lapack
-LAPACK =	-llapack
+LAPACK=		-llapack
 .if ${PORT_OPTIONS:MBUILTIN_BLAS} || ${PORT_OPTIONS:MCBLAS}
 RUN_DEPENDS +=	${LOCALBASE}/lib/libblas.so:${PORTSDIR}/math/blas
 LAPACK+=	-lblas
@@ -170,18 +164,16 @@ LAPACK+=	-lblas
 
 .if ${PORT_OPTIONS:MOPENMP}
 .if ${PORT_OPTIONS:MTHREADS}
-IGNORE =	WITH_OPENMP is incompatible with WITH_THREADS
+IGNORE=		OPENMP is incompatible with THREADS
 .endif
 .if !empty(CC:M*clang*)
-IGNORE =	clang does not support WITH_OPENMP, use WITH_THREADS instead
+IGNORE=		clang does not support OPENMP, use THREADS instead
 .endif
 OPENMP_CFLAGS ?=	-fopenmp
 CFLAGS+=		${OPENMP_CFLAGS}
 LDFLAGS+=		${OPENMP_CFLAGS}
 CONFIGURE_ARGS+=	--enable-multithreading=openmp
 .elif ${PORT_OPTIONS:MTHREADS}
-CFLAGS+=		${PTHREAD_CFLAGS}
-LDFLAGS+=		${PTHREAD_CFLAGS}
 CONFIGURE_ARGS+=	--enable-multithreading=pthreads
 .else
 CONFIGURE_ARGS+=	--enable-multithreading=no
@@ -199,7 +191,7 @@ PLIST_SUB+=	${o}="@comment "
 .endif
 .endfor
 
-.if ${PORT_OPTIONS:MWITH_SUPERMATRIX}
+.if ${PORT_OPTIONS:MSUPERMATRIX}
 CONFIGURE_ARGS+=	--enable-supermatrix
 .else
 CONFIGURE_ARGS+=	--disable-supermatrix
@@ -249,7 +241,6 @@ post-patch:
 	-e 's@(#!)(/bin/bash)@\1${LOCALBASE}\2@'
 	@${FIND} ${WRKSRC} -type f \( -name 'makefile' -o -name 'config.mk.in' \) | \
 	${XARGS} ${REINPLACE_CMD} \
-	-e 's@-lpthread@${PTHREAD_LIBS}@g' \
 	-e 's@-fPIC@${PICFLAG}@g'
 	@${REINPLACE_CMD} \
 	-e '\@MK_INCL_DIR_INST_W_ARCH_VERS[[:blank:]]*:=@ \
@@ -305,6 +296,7 @@ do-install:
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
 	${MAKE_ARGS} install-headers
 .if ${PORT_OPTIONS:MSHARED}
+	@cd ${WRKSRC}/lib; ${STRIP_CMD} */libflame.so
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${_MAKE_JOBS} \
 	${MAKE_ARGS} install-libs install-lib-symlinks
 .endif
@@ -313,12 +305,12 @@ do-install:
 	${MAKE_ARGS} install-libs
 .endif
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
-	@cd ${WRKSRC}/examples; ${COPYTREE_SHARE} \* ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@cd ${WRKSRC}/examples; ${COPYTREE_SHARE} \* ${STAGEDIR}${EXAMPLESDIR}
 .endif
 
 .if defined(MAINTAINER_MODE)

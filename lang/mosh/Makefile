@@ -3,18 +3,19 @@
 
 PORTNAME=	mosh
 PORTVERSION=	0.2.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	GOOGLE_CODE
 PKGNAMESUFFIX=	-scheme
 
 MAINTAINER=	mjt@cltn.org
-COMMENT=	A Fast R6RS Scheme interpreter
+COMMENT=	Fast R6RS Scheme interpreter
 
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libonig.so:${PORTSDIR}/devel/oniguruma5
 
 USES=		gmake
+USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--datadir=${PREFIX}/lib
 CFLAGS+=	-I${LOCALBASE}/include

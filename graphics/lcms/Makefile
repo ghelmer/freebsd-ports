@@ -22,6 +22,7 @@ TIFFICC_DESC=	Build color profile applier for TIFF
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 USES=		libtool:keepla pathfix
@@ -30,7 +31,7 @@ PORTDOCS=	*
 
 JPEGICC_CONFIGURE_OFF=	--without-jpeg
 JPEGICC_CONFIGURE_ON=	--with-jpeg=${LOCALBASE}
-JPEGICC_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+JPEGICC_USES=		jpeg
 TIFFICC_CONFIGURE_OFF=	--without-tiff
 TIFFICC_CONFIGURE_ON=	--with-tiff=${LOCALBASE}
 TIFFICC_LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
@@ -44,7 +45,6 @@ post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} doc/LCMSAPI.TXT doc/TUTORIAL.TXT tifficc/tifficc.c \
 		jpegicc/jpegicc.c jpegicc/iccjpeg.c samples/wtpt.c samples/icctrans.c ${STAGEDIR}${DOCSDIR}/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/liblcms.so.1.0.19
 
 regression-test test: build
 	cd ${WRKSRC}/testbed/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check

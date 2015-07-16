@@ -9,7 +9,7 @@ MASTER_SITES=	GOOGLE_CODE
 MAINTAINER=	trociny@FreeBSD.org
 COMMENT=	Utility to store and display system statistics
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 PROJECTHOST=	gatherit
 
@@ -21,6 +21,8 @@ DATADIR=	/var/db/gather
 MAKE_ENV+=	CONFDIR=${PREFIX}/etc/gather DATADIR=${DATADIR}
 
 SUB_FILES=	pkg-message
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/gather ${STAGEDIR}${PREFIX}/bin

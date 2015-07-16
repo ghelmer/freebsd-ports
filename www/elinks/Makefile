@@ -3,7 +3,7 @@
 
 PORTNAME=	elinks
 DISTVERSION=	0.11.7
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www
 MASTER_SITES=	http://elinks.or.cz/download/
 
@@ -11,7 +11,7 @@ MAINTAINER=	beat@FreeBSD.org
 COMMENT=	Elinks - links text WWW browser with enhancements
 
 GNU_CONFIGURE=	yes
-USES=		bison gmake tar:bzip2
+USES=		bison cpe gmake tar:bzip2
 USE_OPENSSL=	yes
 
 LDFLAGS+=	-L${LOCALBASE}/lib

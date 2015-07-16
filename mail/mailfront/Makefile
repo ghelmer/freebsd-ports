@@ -3,6 +3,7 @@
 
 PORTNAME=	mailfront
 PORTVERSION=	2.01
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://untroubled.org/${PORTNAME}/ \
 		http://untroubled.org/${PORTNAME}/archive/
@@ -12,7 +13,7 @@ COMMENT=	Mail server network protocol front-ends
 
 LIB_DEPENDS=	libcvm-v2client.so:${PORTSDIR}/security/cvm
 
-OPTIONS_DEFINE=	LUA
+OPTIONS_DEFINE=	LUA DOCS
 
 OPTIONS_DEFAULT=LUA
 OPTIONS_SUB=	yes

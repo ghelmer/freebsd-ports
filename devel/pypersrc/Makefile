@@ -3,12 +3,12 @@
 
 PORTNAME=	pypersrc
 PORTVERSION=	20120106
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.jimbrooks.org/software/pypersrc/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python/Tkinter based source browser
 
 LICENSE=	GPLv2
@@ -19,8 +19,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		gmake tar:bzip2
-USE_PYTHON=	yes
+USES=		gmake python:2 tar:bzip2
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	configure.sh
 MAKE_ENV=	CXX_FLAGS="${CXXFLAGS}"

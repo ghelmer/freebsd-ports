@@ -1,5 +1,5 @@
---- CMakeLists.txt.orig	2013-09-16 04:58:51.000000000 +0200
-+++ CMakeLists.txt	2013-09-16 05:15:59.000000000 +0200
+--- CMakeLists.txt.orig	2013-09-23 16:15:52.000000000 +0400
++++ CMakeLists.txt	2014-08-20 17:37:42.000000000 +0400
 @@ -351,51 +351,81 @@
  		message("OpenMP parallelization disabled")
  	endif()
@@ -113,48 +113,20 @@
  
  	if(UNIX AND NOT APPLE)
  		# Note: The convention is to check USE_X11 or USE_WAYLAND where needed.
-@@ -455,21 +485,32 @@
- 		check_libav()
- 	endif()
+@@ -577,14 +618,14 @@
+ set(SFML_FIND_VERSION_MAJOR 1)
+ set(SFML_FIND_VERSION_MINOR 5)
+ if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND NOT ANDROID)
+-	include(FindSFML OPTIONAL)
++	#include(FindSFML OPTIONAL)
+ endif()
+ if(SFML_FOUND AND NOT SFML_VERSION_MAJOR) # SFML 1.x doesn't define SFML_VERSION_MAJOR
+ 	message("Using shared SFML")
+ else()
+ 	message("Using static SFML ${SFML_FIND_VERSION_MAJOR}.${SFML_FIND_VERSION_MINOR} from Externals")
+ 	add_subdirectory(Externals/SFML)
+-	include_directories(Externals/SFML/include)
++	include_directories(BEFORE Externals/SFML/include)
+ endif()
  
--	set(CMAKE_REQUIRED_LIBRARIES portaudio)
--	CHECK_CXX_SOURCE_RUNS(
--		"#include <portaudio.h>
--		int main(int argc, char **argv)
--		{ if(Pa_GetVersion() >= 1890) return 0; else return 1; }"
--		PORTAUDIO)
--	if(PORTAUDIO)
--		message("PortAudio found, enabling mic support")
--		add_definitions(-DHAVE_PORTAUDIO=1)
--		set(PORTAUDIO_FOUND TRUE)
-+	option(DISABLE_PORTAUDIO "Disable PortAudio (mic) support" OFF)
-+	if(NOT DISABLE_PORTAUDIO)
-+		include_directories(BEFORE ${CMAKE_INSTALL_PREFIX}/include/portaudio2)
-+		link_directories(${CMAKE_INSTALL_PREFIX}/lib/portaudio2)
-+		set(CMAKE_REQUIRED_INCLUDES ${CMAKE_INSTALL_PREFIX}/include/portaudio2)
-+		set(CMAKE_REQUIRED_FLAGS -L${CMAKE_INSTALL_PREFIX}/lib/portaudio2)
-+		set(CMAKE_REQUIRED_LIBRARIES portaudio)
-+		CHECK_CXX_SOURCE_RUNS(
-+			"#include <portaudio.h>
-+			int main(int argc, char **argv)
-+			{ if(Pa_GetVersion() >= 1890) return 0; else return 1; }"
-+			PORTAUDIO)
-+		if(PORTAUDIO)
-+			message("PortAudio found, enabling mic support")
-+			add_definitions(-DHAVE_PORTAUDIO=1)
-+			set(PORTAUDIO_FOUND TRUE)
-+		else()
-+			message("PortAudio not found, disabling mic support")
-+			add_definitions(-DHAVE_PORTAUDIO=0)
-+			set(PORTAUDIO_FOUND FALSE)
-+		endif(PORTAUDIO)
- 	else()
--		message("PortAudio not found, disabling mic support")
-+		message("PortAudio (mic) support disabled")
- 		add_definitions(-DHAVE_PORTAUDIO=0)
- 		set(PORTAUDIO_FOUND FALSE)
--	endif(PORTAUDIO)
-+	endif()
- 
- 	if(OPROFILING)
- 		check_lib(OPROFILE opagent opagent.h)
+ if(USE_UPNP)

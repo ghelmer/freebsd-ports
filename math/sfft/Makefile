@@ -3,7 +3,7 @@
 
 PORTNAME=	sfft
 PORTVERSION=	0.1.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://spiral.net/software/sfft/ LOCAL/bf
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -16,11 +16,11 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libfftw3.so:${PORTSDIR}/math/fftw3
 
-USES=		zip
+USES=		uidfix zip
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=		OPTIMIZED_CFLAGS PROFILE
+OPTIONS_DEFINE=		OPTIMIZED_CFLAGS PROFILE DOCS
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
 
 BUILD_WRKSRC=	${WRKSRC}/src
@@ -32,7 +32,6 @@ HDIR=		include/sfft
 MAKE_ENV=	LDADD="-lfftw3 ${LIBM}" LIB=sfft SHLIB_MAJOR="${SHLIB_MAJOR}" \
 		SRCCONF=/dev/null SRCS="${SRCS}"
 
-PLIST_DIRS=	${HDIR}
 PLIST_FILES=	${HEADERS:S|^|${HDIR}/|} lib/libsfft.a lib/libsfft.so \
 		lib/libsfft.so.${SHLIB_MAJOR}
 
@@ -41,7 +40,6 @@ SRCS=	common.cc computefourier-1.0-2.0.cc \
 	computefourier-3.0.cc fftw.cc filters.cc parameters.cc \
 	sfft.cc simulation.cc timer.cc utils.cc
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if !${ARCH:Mamd64} && !${MACHINE_CPU:Msse2}
@@ -66,10 +64,10 @@ CFLAGS+=	-O3 -ffast-math
 
 .if ${PORT_OPTIONS:MPROFILE}
 .if defined(NOPROFILE) || defined(NO_PROFILE) || defined(WITHOUT_PROFILE)
-IGNORE =	you have defined WITH_PROFILE, but have also defined\
+IGNORE=		you have defined WITH_PROFILE, but have also defined\
 WITHOUT_PROFILE, NOPROFILE, or NO_PROFILE
 .elif !exists(/usr/lib/libc_p.a)
-IGNORE  =	you have chosen WITH_PROFILE, but have not installed the\
+IGNORE=		you have chosen WITH_PROFILE, but have not installed the\
 base system profiling libraries
 .endif
 PLIST_FILES+=	lib/libsfft_p.a
@@ -115,11 +113,11 @@ check regression-test test: build
 	done ; done
 
 post-install:
-	@${MKDIR} ${PREFIX}/${HDIR}
-	@cd ${BUILD_WRKSRC}; ${INSTALL_DATA} ${HEADERS} ${PREFIX}/${HDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${HDIR}
+	@cd ${BUILD_WRKSRC}; ${INSTALL_DATA} ${HEADERS} ${STAGEDIR}${PREFIX}/${HDIR}
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

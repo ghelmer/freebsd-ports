@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nsd
-PORTVERSION=	4.0.3
+PORTVERSION=	4.1.2
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://www.nlnetlabs.nl/downloads/nsd/	\
 		ftp://ftp.rhnet.is/pub/nsd/
@@ -11,13 +11,17 @@ MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	Authoritative only non-recursive name server
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS=	nsd-[0-3]* nsd3-[0-9]*
 
+USES=		cpe
+CPE_VENDOR=	nlnetlabs
+
 USE_RC_SUBR=	nsd
 
-NSDUSER?=	bind
-NSDGROUP?=	bind
+NSDUSER?=	nsd
+NSDGROUP?=	nsd
 NSDLSDIR=	/var
 NSDDBDIR=	/var/db/nsd
 NSDRUNDIR=	/var/run/nsd
@@ -26,7 +30,7 @@ NSDMAX_IPS?=	512
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libevent=${LOCALBASE} \
 		--with-user=${NSDUSER} \
-		--with-configdir=${PREFIX}/etc/nsd \
+		--with-configdir=${ETCDIR} \
 		--localstatedir=${NSDLSDIR} \
 		--with-dbfile=${NSDDBDIR}/nsd.db \
 		--with-pidfile=${NSDRUNDIR}/nsd.pid
@@ -36,6 +40,9 @@ PLIST_SUB=	NSDUSER=${NSDUSER} \
 		NSDDBDIR=${NSDDBDIR} \
 		NSDRUNDIR=${NSDRUNDIR}
 
+USERS=		${NSDUSER}
+GROUPS=		${NSDGROUP}
+
 USE_OPENSSL=	yes
 
 PORTDOCS=	CREDITS ChangeLog LICENSE NSD-DATABASE NSD-DIFFFILE \
@@ -44,25 +51,23 @@ PORTDOCS=	CREDITS ChangeLog LICENSE NSD-DATABASE NSD-DIFFFILE \
 		differences.tex
 
 OPTIONS_DEFINE=		ROOT_SERVER LARGEFILE IPV6 BIND8_STATS CHECKING \
-		MINRESPSIZE NSEC3 NSEC3PREHASH MMAP MAXIPS DOCS RRL EUI_RRTYPES \
-		RECVMMSG
-OPTIONS_DEFAULT=	LARGEFILE IPV6 NSEC3 NSEC3PREHASH MINRESPSIZE RRL \
-		EUI_RRTYPES
+		MINRESPSIZE NSEC3 MMAP MAXIPS DOCS RRL ZONE_STATS MUNIN_PLUGIN
+OPTIONS_DEFAULT=	LARGEFILE IPV6 NSEC3 MINRESPSIZE RRL
+OPTIONS_SUB=	yes
 
 ROOT_SERVER_DESC=	Configure as a root server
 LARGEFILE_DESC=		Largefile support
 BIND8_STATS_DESC=	BIND8-like NSTATS & XSTATS
 CHECKING_DESC=		Internal run-time checks
 NSEC3_DESC=		NSEC3 support
-NSEC3PREHASH_DESC=	Full NSEC3 pre-hashing
 MINRESPSIZE_DESC=	Minimial response sizing
 MMAP_DESC=		Use mmap instead of malloc (experimental)
 MAXIPS_DESC=		Raise max-ips from 8 to ${NSDMAX_IPS}
 RRL_DESC=		Response Rate Limiting
-EUI_RRTYPES_DESC=	EUI48 and EUI64 RRtypes support
-RECVMMSG_DESC=		Enable use of recvmmsg and sendmmsg
+ZONE_STATS_DESC=	Separate statistics for each zone
+MUNIN_PLUGIN_DESC=	Install Munin plugin (requires BIND8_STATS)
 
-LIB_DEPENDS+=	libevent-1.4.so:${PORTSDIR}/devel/libevent
+LIB_DEPENDS+=	libevent.so:${PORTSDIR}/devel/libevent2
 
 ROOT_SERVER_CONFIGURE_ENABLE=	root-server
 LARGEFILE_CONFIGURE_ENABLE=	largefile
@@ -71,17 +76,36 @@ BIND8_STATS_CONFIGURE_ENABLE=	bind8-stats
 CHECKING_CONFIGURE_ENABLE=	checking
 NSEC3_CONFIGURE_ENABLE=		nsec3
 MINRESPSIZE_CONFIGURE_ENABLE=	minimal-responses
-NSEC3PREHASH_CONFIGURE_ENABLE=	full-prehash
 MMAP_CONFIGURE_ENABLE=		mmap
 MAXIPS_CONFIGURE_ON=		--with-max-ips=${NSDMAX_IPS}
 RRL_CONFIGURE_ENABLE=		ratelimit
-EUI_RRTYPES_CONFIGURE_ENABLE=	draft-rrtypes
-RECVMMSG_CONFIGURE_ENABLE=	enable-recvmmsg
+ZONE_STATS_CONFIGURE_ENABLE=	zone-stats
+
+.include <bsd.port.options.mk>
+
+post-build:
+.if ${PORT_OPTIONS:MMUNIN_PLUGIN}
+	${REINPLACE_CMD} \
+		-e 's|/usr/local|${LOCALBASE}|g' \
+		-e 's|/usr/local/etc/nsd.conf|${ETCDIR}/nsd.conf|g' \
+		-e 's|/usr/local/var/munin/plugin-state|/var/munin/plugin-state/root|g' \
+		-e '90s|/var/munin/plugin-state/root|$${MUNIN_PLUGSTATE}|' \
+		${WRKSRC}/contrib/nsd_munin_
+.endif
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/nsd.conf.sample \
 		${STAGEDIR}${PREFIX}/etc/nsd/nsd.conf.sample
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/nsd \
+		${STAGEDIR}${PREFIX}/sbin/nsd-checkconf \
+		${STAGEDIR}${PREFIX}/sbin/nsd-checkzone \
+		${STAGEDIR}${PREFIX}/sbin/nsd-control
+.if ${PORT_OPTIONS:MMUNIN_PLUGIN}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/munin/plugins
+	${INSTALL_SCRIPT} ${WRKSRC}/contrib/nsd_munin_ \
+		${STAGEDIR}${PREFIX}/share/munin/plugins
+.endif
 
 .include <bsd.port.mk>

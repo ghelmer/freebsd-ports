@@ -20,10 +20,11 @@ WANT_PHP_WEB=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DCRAW FFMPEG GD GRAPHMAGICK IMAGEMAGICK JHEAD \
-		NETPBM NLS UNZIP
+		NETPBM NLS UNZIP X11
 OPTIONS_DEFAULT=	IMAGEMAGICK JHEAD UNZIP
 
 .include <bsd.port.options.mk>
@@ -51,7 +52,7 @@ RUN_DEPENDS+=	gm:${PORTSDIR}/graphics/GraphicsMagick
 .endif
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
-.if !defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MX11}
 RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
 .else
 RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick-nox11
@@ -77,11 +78,5 @@ RUN_DEPENDS+=	unzip:${PORTSDIR}/archivers/unzip
 
 do-install:
 	@cd ${WRKSRC}/ && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}/
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}/
-	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} ${WWWDIR}' >> ${TMPPLIST}
-
-.if !defined(BATCH)
-	@${CAT} ${PKGMESSAGE}
-.endif
 
 .include <bsd.port.mk>

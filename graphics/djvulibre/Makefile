@@ -3,31 +3,29 @@
 
 PORTNAME=	djvulibre
 PORTVERSION=	3.5.25.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics www
 MASTER_SITES=	SF/djvu/DjVuLibre/${PORTVERSION:R}
 
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	DjVu base libraries and utilities
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
 
-USES=		pathfix iconv
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 CONFIGURE_ENV=	JPEG_CFLAGS="-I${LOCALBASE}/include" \
 		JPEG_LIBS="-L${LOCALBASE}/lib -ljpeg" \
 		TIFF_CFLAGS="-I${LOCALBASE}/include" \
-		TIFF_LIBS="-L${LOCALBASE}/lib -ltiff" \
-		PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}"
-CONFIGURE_ARGS=	--enable-threads=pthread --enable-shared
+		TIFF_LIBS="-L${LOCALBASE}/lib -ltiff"
+LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
+USES=		cpe iconv jpeg libtool pathfix
+CPE_VENDOR=	djvulibre_project
 USE_LDCONFIG=	yes
 CONFLICTS=	djvulibre-nox11-3*
-WRKSRC =	${WRKDIR}/${DISTNAME:R}
+WRKSRC=		${WRKDIR}/${DISTNAME:R}
 
 PORTDOCS=	djvu2spec.djvu djvu3spec.djvu djvuchanges.txt lizard2002.djvu lizard2007.djvu
 

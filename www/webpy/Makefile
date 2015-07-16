@@ -9,10 +9,10 @@ MASTER_SITES=	http://webpy.org/static/ \
 DISTNAME=	web.py-${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
-COMMENT=	A Web Framework For Python
+COMMENT=	Web Framework For Python
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	web.py
 
 .include <bsd.port.mk>

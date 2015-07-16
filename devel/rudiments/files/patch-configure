@@ -1,7 +1,43 @@
---- configure.orig	2012-02-17 13:38:13.000000000 +0900
-+++ configure	2012-04-13 00:56:01.000000000 +0900
-@@ -15691,6 +15691,9 @@
- 	*minix* )
+--- configure.orig	2015-04-11 01:05:36 UTC
++++ configure
+@@ -9216,7 +9216,7 @@ $as_echo_n "checking whether the $compil
+   hardcode_minus_L=no
+   hardcode_shlibpath_var=unsupported
+   inherit_rpath=no
+-  link_all_deplibs=unknown
++  link_all_deplibs=no
+   module_cmds=
+   module_expsym_cmds=
+   old_archive_from_new_cmds=
+@@ -10913,7 +10913,7 @@ freebsd* | dragonfly*)
+   version_type=freebsd-$objformat
+   case $version_type in
+     freebsd-elf*)
+-      library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext} $libname${shared_ext}'
++      library_names_spec='$libname$release$shared_ext$versuffix  $libname$release$shared_ext$major	 $libname$shared_ext'			 soname_spec='$libname$release$shared_ext$major'
+       need_version=no
+       need_lib_prefix=no
+       ;;
+@@ -12248,7 +12248,7 @@ hardcode_automatic_CXX=no
+ inherit_rpath_CXX=no
+ module_cmds_CXX=
+ module_expsym_cmds_CXX=
+-link_all_deplibs_CXX=unknown
++link_all_deplibs_CXX=no
+ old_archive_cmds_CXX=$old_archive_cmds
+ reload_flag_CXX=$reload_flag
+ reload_cmds_CXX=$reload_cmds
+@@ -14748,7 +14748,7 @@ freebsd* | dragonfly*)
+   version_type=freebsd-$objformat
+   case $version_type in
+     freebsd-elf*)
+-      library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext} $libname${shared_ext}'
++      library_names_spec='$libname$release$shared_ext$versuffix  $libname$release$shared_ext$major	 $libname$shared_ext'			 soname_spec='$libname$release$shared_ext$major'
+       need_version=no
+       need_lib_prefix=no
+       ;;
+@@ -15767,6 +15767,9 @@ case $host_os in
+ 	*mingw32* )
  		WERROR=""
  		;;
 +	freebsd* )
@@ -10,47 +46,7 @@
  	*)
  		;;
  esac
-@@ -17476,8 +17479,8 @@
- 
- 
- 	HAVE_PTHREAD=""
--	PTHREADINCLUDES=""
--	PTHREADLIB=""
-+	#PTHREADINCLUDES=""
-+	#PTHREADLIB=""
- 
- 	if ( test "$cross_compiling" = "yes" )
- 	then
-@@ -17496,7 +17499,7 @@
- 
- 	else
- 
--				for i in "pthread" "c_r" "thread" "pthreads" "gthreads" ""
-+				for i in "thread" "pthreads" "gthreads" ""
- 		do
- 			if ( test -n "$i" )
- 			then
-@@ -17530,9 +17533,6 @@
- STATIC=""
- HEADERSANDLIBSPATH=""
- 
--eval "PTHREADINCLUDES=\"\""
--eval "PTHREADLIB=\"\""
--eval "PTHREADLIBPATH=\"\""
- eval "PTHREADSTATIC=\"\""
- if ( test -n "" )
- then
-@@ -17747,9 +17747,6 @@
- LIBSTRING=`echo $LIBSTRING | sed -e "s|-L/usr/lib$||g" -e "s|-L/lib$||g" -e "s|-L/usr/lib ||g" -e "s|-L/lib ||g"`
- LIBSTRING=`echo $LIBSTRING | sed -e "s|-L/usr/lib64$||g" -e "s|-L/lib64$||g" -e "s|-L/usr/lib64 ||g" -e "s|-L/lib64 ||g"`
- 
--eval "PTHREADINCLUDES=\"$INCLUDESTRING\""
--eval "PTHREADLIB=\"$LIBSTRING\""
--eval "PTHREADLIBPATH=\"$LIBPATH\""
- eval "PTHREADSTATIC=\"$STATIC\""
- if ( test -n "" )
- then
-@@ -29618,47 +29615,47 @@
+@@ -31537,47 +31540,47 @@ fi
  # prepend DESTDIR where appropriate
  if ( test "`echo $ac_default_prefix | cut -c1`" = "/" )
  then

@@ -3,22 +3,24 @@
 
 PORTNAME=	barbie_seahorse_adventures
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	games python
 MASTER_SITES=	http://www.imitationpickles.org/barbie/files/
 DISTNAME=	barbie-${DISTVERSION}
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	python
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	You are a seahorse and you want to go to the moon!
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/barbie-${DISTVERSION}
 
-USE_PYTHON=	2
+USES=		dos2unix python:2 tar:tgz
+DOS2UNIX_GLOB= 	*.py
 NO_BUILD=	yes
 
 PORTDOCS=	CHANGES.txt LEVELS.txt NOTES.txt README.txt

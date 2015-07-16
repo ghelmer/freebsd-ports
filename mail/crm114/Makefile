@@ -15,7 +15,7 @@ MASTER_SITES=	http://crm114.sourceforge.net/tarballs/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-${CRM114RELEASENAME}.src
 
 MAINTAINER=	chalpin@cs.wisc.edu
-COMMENT=	A Markov based SpamFilter
+COMMENT=	Markov based SpamFilter
 
 LICENSE=	GPLv2
 
@@ -26,7 +26,7 @@ CRM114RELEASENAME=BlameMichelson
 USES=		gettext iconv
 USE_CSTD=gnu89
 
-OPTIONS_DEFINE=	NORMALIZEMIME
+OPTIONS_DEFINE=	NORMALIZEMIME DOCS EXAMPLES
 NORMALIZEMIME_DESC=	Normalize MIME encoding
 
 MAKE_ARGS=	CC="${CC}" prefix="${STAGEDIR}${PREFIX}" \

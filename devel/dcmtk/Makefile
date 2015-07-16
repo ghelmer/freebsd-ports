@@ -3,21 +3,20 @@
 
 PORTNAME=	dcmtk
 DISTVERSION=	3.6.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	ftp://dicom.offis.de/pub/dicom/offis/software/${PORTNAME}/${PORTNAME}${PORTVERSION:S/.//g}/
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Toolkit to work with DICOM objects
 
 LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
-    		libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
+    		libpng.so:${PORTSDIR}/graphics/png
 
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
-USES=		cmake:outsource
+USES=		cmake:outsource jpeg
 CMAKE_ARGS+=	-DDCMTK_WITH_DOXYGEN:BOOL=OFF \
     		-DDCMTK_WITH_OPENSSL:BOOL=ON
 
@@ -29,6 +28,8 @@ SHLIBVER=	${PORTVERSION:R:R}
 PLIST_SUB=	SHLIBVER=${SHLIBVER}
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

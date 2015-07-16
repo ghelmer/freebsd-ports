@@ -6,20 +6,19 @@ PORTVERSION=	2.3.1
 CATEGORIES=	security
 MASTER_SITES=	SF
 
-MAINTAINER=	pclin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File and block device wiping utility
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/wipe man/man1/wipe.1.gz
 PORTDOCS=	CHANGES INSTALL LICENSE README TESTING TODO copyright
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|@CFLAGS@|${CFLAGS}|' ${WRKSRC}/Makefile.in

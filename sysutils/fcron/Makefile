@@ -5,14 +5,13 @@ PORTNAME=	fcron
 PORTVERSION=	3.0.6
 PORTREVISION=	2
 CATEGORIES=	sysutils
-MASTER_SITES=	${MASTER_SITE_SUNSITE} \
+MASTER_SITES=	SUNSITE/system/daemons/cron \
 		http://fcron.free.fr/archives/ \
 		ftp://ftp.seul.org/pub/fcron/
-MASTER_SITE_SUBDIR=	system/daemons/cron
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
 MAINTAINER=	rde@tavi.co.uk
-COMMENT=	A periodic command scheduler
+COMMENT=	Periodic command scheduler
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

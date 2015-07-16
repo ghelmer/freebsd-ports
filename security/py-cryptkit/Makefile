@@ -3,6 +3,7 @@
 
 PORTNAME=	cryptkit
 PORTVERSION=	0.9
+PORTREVISION=	1
 CATEGORIES=	security python
 MASTER_SITES=	SF/${PORTNAME}/_${PORTNAME}/Complete%20Kit
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,8 +11,10 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cryptographic Toolkit for Python
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/*.so
 
 .include <bsd.port.mk>

@@ -3,19 +3,20 @@
 
 PORTNAME=	elk
 PORTVERSION=	3.99.8
+PORTREVISION=	1
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://sam.zoy.org/elk/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Embeddable Scheme interpreter
 
-LIB_DEPENDS=	gdbm.4:${PORTSDIR}/databases/gdbm \
-		elf.0:${PORTSDIR}/devel/libelf
+LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
+		libelf.so:${PORTSDIR}/devel/libelf
 
-USES=		motif
-USE_BZIP2=	yes
-USE_AUTOTOOLS=	libtool
+USES=		libtool motif tar:bzip2
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include/libelf -I${LOCALBASE}/include
@@ -35,7 +36,6 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@${TAR} -C ${WRKSRC}/examples --exclude "*Makefile*" -cf - . | \
 		${TAR} -C ${STAGEDIR}${EXAMPLESDIR} --unlink -xf -
-	@${CHOWN} -R ${SHAREMODE}:${SHAREGRP} ${STAGEDIR}${EXAMPLESDIR}
 	@${FIND} ${STAGEDIR}${EXAMPLESDIR}/ -type f -exec ${CHMOD} ${SHAREMODE} {} \;
 
 .include <bsd.port.post.mk>

@@ -2,17 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	giflib
-PORTVERSION=	5.0.5
+PORTVERSION=	5.0.6
 CATEGORIES=	graphics
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-5.x
+MASTER_SITES=	SF/${PORTNAME}
 
-MAINTAINER=	dinoex@FreeBSD.org
+MAINTAINER=	portmgr@FreeBSD.org
 COMMENT=	Tools and library routines for working with GIF images
 
 CONFLICTS=	libungif-[0-9]*
 
 USES=		tar:bzip2 libtool
-SHEBANG_FILES=	${WRKSRC}/util/gifburst
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -25,7 +24,7 @@ INSTALL_TARGET=	install-strip
 
 .if ${PORT_OPTIONS:MDOCBOOK} && ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	xmlto:${PORTSDIR}/textproc/xmlto \
-	${LOCALBASE}/share/xml/docbook/4.1.2:${PORTSDIR}/textproc/docbook-xml
+		docbook-xml>0:${PORTSDIR}/textproc/docbook-xml
 .endif
 
 post-patch:

@@ -3,22 +3,25 @@
 
 PORTNAME=	jdresolve
 PORTVERSION=	0.6.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	http://www.jdrowell.com/projects/jdresolve/
 PATCH_SITES=	${MASTER_SITES}
 PATCHFILES=	patch-0.6.2b1.diff
 
 MAINTAINER=	christophe@labouisse.org
-COMMENT=	A IP addresse to hostname program for httpd log files
+COMMENT=	IP addresse to hostname program for httpd log files
 
 BUILD_DEPENDS=	p5-Net-DNS>=0:${PORTSDIR}/dns/p5-Net-DNS
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		perl5 shebangfix
 NO_BUILD=	yes
+SHEBANG_FILES=	jdresolve
 
 DOC1=	AUTHORS BUGS CHANGELOG COPYING CREDITS INSTALL README TODO
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 .for file in jdresolve rhost

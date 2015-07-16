@@ -18,10 +18,22 @@ include/afflib/afflib_i.h
 include/afflib/aftimer.h
 include/afflib/utils.h
 lib/libafflib.a
-lib/libafflib.la
 lib/libafflib.so
 lib/libafflib.so.0
 lib/libafflib.so.0.0.0
 libdata/pkgconfig/afflib.pc
 man/man1/affcat.1.gz
-@dirrm include/afflib
+man/man1/affcompare.1.gz
+man/man1/affconvert.1.gz
+man/man1/affcopy.1.gz
+man/man1/affcrypto.1.gz
+man/man1/affdiskprint.1.gz
+man/man1/affinfo.1.gz
+man/man1/affix.1.gz
+man/man1/affrecover.1.gz
+man/man1/affsegment.1.gz
+man/man1/affsign.1.gz
+man/man1/affstats.1.gz
+man/man1/affuse.1.gz
+man/man1/affverify.1.gz
+man/man1/affxml.1.gz

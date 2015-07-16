@@ -5,13 +5,14 @@ PORTNAME=	play
 PORTVERSION=	1.0
 PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	${MASTER_SITE_PORTS_JP}
+MASTER_SITES=	PORTS_JP
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple audio file player
 
 CONFLICTS=	sox-[0-9]*
 
+USES=		uidfix
 MAKE_ARGS=	CFLAGS="${CFLAGS}" MANDIR="${PREFIX}/man/ja/man" BINDIR="${PREFIX}/bin"
 
 PLIST_FILES=	bin/play man/ja/man1/play.1.gz

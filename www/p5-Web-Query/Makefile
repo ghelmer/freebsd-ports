@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Web-Query
-PORTVERSION=	0.17
+PORTVERSION=	0.26
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:TOKUHIROM
@@ -11,12 +12,16 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Yet another scraping library like jQuery
 
-BUILD_DEPENDS=	p5-HTML-Selector-XPath>=0.06:${PORTSDIR}/www/p5-HTML-Selector-XPath \
+LICENSE=	ART10 GPLv1
+LICENSE_COMB=	dual
+
+BUILD_DEPENDS=	p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser \
+		p5-HTML-Selector-XPath>=0.06:${PORTSDIR}/www/p5-HTML-Selector-XPath \
 		p5-HTML-TreeBuilder-XPath>=0.12:${PORTSDIR}/www/p5-HTML-TreeBuilder-XPath \
-		p5-libwww>=5.385:${PORTSDIR}/www/p5-libwww
+		p5-libwww>=6:${PORTSDIR}/www/p5-libwww
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
 USE_PERL5=	modbuild
+USES=		perl5
 
 .include <bsd.port.mk>

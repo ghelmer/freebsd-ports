@@ -13,10 +13,7 @@ COMMENT=	Phylogenetic computing library
 
 LICENSE=	BSD3CLAUSE
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+USES=		python
+USE_PYTHON=	distutils
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	netlist
 PORTVERSION=	1.4.3
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	ftp://ftp.geda.seul.org/pub/geda/release/v1.4/${PORTVERSION}/ \
@@ -14,6 +14,7 @@ DISTNAME=	${PKGNAMEPREFIX}g${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The gEDA's netlister
 
+BROKEN=		Unfetchable
 LIB_DEPENDS=	libgeda.so:${PORTSDIR}/cad/libgeda
 RUN_DEPENDS=	geda-symbols>0:${PORTSDIR}/cad/geda-symbols
 

@@ -19,16 +19,10 @@ USE_XORG=	x11
 
 DOS2UNIX_REGEX=	.*\.(c|h|cpp)
 
+MAKE_ARGS=	prefix=${PREFIX}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PORTDOCS=	help.ncd
-INSTALL_TARGET=	install docinstall
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|^prefix=.*|prefix=${PREFIX}|' \
-		${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e 's|^docsdir=.*|docsdir=${DOCSDIR}|' \
-		${WRKSRC}/Makefile
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/notecase

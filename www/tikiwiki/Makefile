@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	tikiwiki
-PORTVERSION=	11.0
-PORTREVISION=	1
+PORTVERSION=	13.1
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME}/Tiki_11.x_Vega/${PORTVERSION}/
+MASTER_SITES=	SF/${PORTNAME}/Tiki_13.x_Fomalhaut/${PORTVERSION}/
 DISTNAME=	tiki-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful PHP based Wiki/CMS/Groupware
 
-LICENSE=	LGPL20
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/license.txt
 
 USE_PHP=	gettext pcre posix session xml zlib
 WANT_PHP_WEB=	yes
@@ -23,24 +23,27 @@ SUB_FILES=	pkg-message
 SUB_LIST+=	PORTNAME=${PORTNAME} TIKIWIKI_DIR=${TIKIWIKI_DIR}
 
 post-extract:
-	@${FIND} ${WRKSRC} -name '.DS_Store' -delete
+	@${FIND} ${WRKSRC} -name '.DS_Store' -o -name '.git' | ${XARGS} ${RM} -rf
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/${TIKIWIKI_DIR}
-	cd ${WRKSRC} && \
-		${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/${TIKIWIKI_DIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${TIKIWIKI_DIR}
+	(cd ${WRKSRC} && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${TIKIWIKI_DIR})
 
 # pkg-plist would be over 15,000 lines, consuming 1.1Mb
 # The benefits of a fixed pkg-plist aren't worth it, autogen!
 
 post-install:
-	@echo "@owner ${WWWOWN}" >> ${TMPPLIST}
-	@echo "@group ${WWWGRP}" >> ${TMPPLIST}
-	@cd ${STAGEDIR}${PREFIX}; ${FIND} * \( -type f -or -type l \) | \
-		${SORT} >> ${TMPPLIST}
-	@echo "@owner" >> ${TMPPLIST}
-	@echo "@group" >> ${TMPPLIST}
-	@cd ${STAGEDIR}${PREFIX}; ${FIND} * -type d | ${AWK} '/\//' | \
-		${SORT} -r | ${SED} -e 's/^/@dirrm /g' >> ${TMPPLIST}
+	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${TMPPLIST}
+	@${ECHO_CMD} "@group ${WWWGRP}" >> ${TMPPLIST}
+	@(cd ${STAGEDIR}${PREFIX}; ${FIND} * \( -type f -or -type l \) | \
+		${SORT} >> ${TMPPLIST})
+	@${ECHO_CMD} "@owner" >> ${TMPPLIST}
+	@${ECHO_CMD} "@group" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${TIKIWIKI_DIR}/lib/test/core/Profile" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${TIKIWIKI_DIR}/permissioncheck/meta_755" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${TIKIWIKI_DIR}/permissioncheck/meta_775" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${TIKIWIKI_DIR}/permissioncheck/meta_777" >> ${TMPPLIST}
+	@${ECHO_CMD} "@dir ${TIKIWIKI_DIR}/vendor_extra/elfinder/files" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

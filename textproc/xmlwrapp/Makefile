@@ -3,12 +3,12 @@
 
 PORTNAME=	xmlwrapp
 PORTVERSION=	0.7.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A modern style C++ library for working with XML data
+COMMENT=	Modern style C++ library for working with XML data
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,6 +27,7 @@ USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lboost_system

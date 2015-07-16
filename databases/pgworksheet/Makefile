@@ -7,17 +7,16 @@ PORTREVISION=	6
 CATEGORIES=	databases
 MASTER_SITES=	http://pgfoundry.org/frs/download.php/1695/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Simple PostreSQL GUI front end
+
+LICENSE=	GPLv2
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pyPgSQL/libpq/__init__.py:${PORTSDIR}/databases/py-pyPgSQL
 
-USES=		pgsql tar:bzip2
+USES=		pgsql python:2 tar:bzip2
 USE_GNOME=	pygtk2
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGVERSION=	1.9
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	${REINPLACE_CMD} -e \

@@ -4,7 +4,7 @@
 PORTNAME=	faenza
 PORTVERSION=	1.3
 CATEGORIES=	x11-themes gnome
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 PROJECTHOST=	${PORTNAME}-icon-theme
 PKGNAMEPREFIX=	gnome-icons-
 DISTNAME=	${PROJECTHOST}_${PORTVERSION}
@@ -38,10 +38,8 @@ do-install:
 	${LN} -sf start-here-gnome.png start-here.png
 .endfor
 .endif
-	@cd ${STAGEDIR}${PREFIX} && ${FIND} share/icons/${theme} ! \
-		-type d >> ${TMPPLIST} && \
-		${FIND} share/icons/${theme} -type d | ${SORT} -r | \
-		${SED} 's|^|@dirrm |' >> ${TMPPLIST}
+	@cd ${STAGEDIR}${PREFIX} && \
+		${FIND} share/icons/${theme} ! -type d >> ${TMPPLIST}
 .endfor
 
 .include <bsd.port.mk>

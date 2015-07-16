@@ -7,9 +7,9 @@ CATEGORIES=	textproc
 MASTER_SITES=	http://fallabs.com/${PORTNAME}/
 
 MAINTAINER=	lwhsu@FreeBSD.org
-COMMENT=	A full-text search system based on Tokyo Cabinet
+COMMENT=	Full-text search system based on Tokyo Cabinet
 
-LICENSE=	LGPL
+LICENSE=	LGPL21
 
 LIB_DEPENDS=	libtokyocabinet.so:${PORTSDIR}/databases/tokyocabinet
 
@@ -23,7 +23,7 @@ SHLIB_VER_MAJ=	1
 
 PLIST_SUB=	SHLIB_VER=${SHLIB_VER} SHLIB_VER_MAJ=${SHLIB_VER_MAJ}
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	@${RM} ${WRKSRC}/doc/index.html~
@@ -32,10 +32,5 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|@libdir@/pkgconfig|@prefix@/libdata/pkgconfig|' \
 		-e 's|DATADIR =.*|DATADIR = ${DOCSDIR}|' \
 		${WRKSRC}/Makefile.in
-.if defined(PORT_OPTIONS:MDOCS)
-	@${REINPLACE_CMD} -e 's|mkdir -p $$(DESTDIR)$$(DATADIR)||' \
-		-e 's|cp -Rf $$(DOCUMENTFILES) $$(DESTDIR)$$(DATADIR)||' \
-		${WRKSRC}/Makefile.in
-.endif
 
 .include <bsd.port.mk>

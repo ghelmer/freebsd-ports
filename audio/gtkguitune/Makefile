@@ -4,9 +4,9 @@
 PORTNAME=	gtkguitune
 PORTVERSION=	0.8
 DISTVERSIONPREFIX=	gtk2-
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	audio
-MASTER_SITES=	GENTOO/distfiles \
+MASTER_SITES=	GENTOO \
 		http://www.oocities.org/harpin_floh/mysoft/
 
 MAINTAINER=	ports@FreeBSD.org

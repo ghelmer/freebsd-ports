@@ -3,6 +3,7 @@
 
 PORTNAME=	luminance-hdr
 DISTVERSION=	2.3.1
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	SF/qtpfsgui/luminance/${DISTVERSION}
 
@@ -14,17 +15,20 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:${PORTSDIR}/math/fftw3
 LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float \
 		libexiv2.so:${PORTSDIR}/graphics/exiv2 \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libgsl.so:${PORTSDIR}/math/gsl \
 		libraw_r.so:${PORTSDIR}/graphics/libraw \
 		libboost_system.so:${PORTSDIR}/devel/boost-libs
 
-USES=		cmake tar:bzip2
+USES=		cmake jpeg tar:bzip2
 USE_QT4=	gui sql webkit xml linguist_build moc_build qmake_build \
 		rcc_build uic_build imageformats_run
 INSTALLS_ICONS=	yes
+
+CONFLICTS_INSTALL=	luminance-hdr-qt5-*
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 # Do not install yet another copy of GPL (we use license framework instead)

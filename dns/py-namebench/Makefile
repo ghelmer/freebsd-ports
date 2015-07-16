@@ -32,12 +32,10 @@ WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PORTDOCS=	README.txt
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_INSTALLARGS+=	--install-data=${PREFIX}/share
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
-NO_INSTALL_MANPAGES=	yes
+PYDISTUTILS_INSTALLARGS+=	--install-data=${PREFIX}/share
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/local,${PREFIX},' \

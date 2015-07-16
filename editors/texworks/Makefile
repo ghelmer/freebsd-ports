@@ -3,12 +3,12 @@
 
 PORTNAME=	texworks
 PORTVERSION=	0.4.5
-PORTREVISION=	1
+DISTVERSIONSUFFIX=	-r${VCS_REVISION}
+PORTREVISION=	4
 CATEGORIES=	editors
 MASTER_SITES=	GOOGLE_CODE
-DISTNAME=	${PORTNAME}-${PORTVERSION}-r${VCS_REVISION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple TeX front-end program
 
 LICENSE=	GPLv2
@@ -56,7 +56,7 @@ PLIST_FILES+=	lib/texworks/libTWLuaPlugin.so
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	3
+USES+=		python:3
 PLIST_FILES+=	lib/texworks/libTWPythonPlugin.so
 .endif
 

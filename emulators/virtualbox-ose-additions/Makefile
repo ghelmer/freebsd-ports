@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-DISTVERSION=	4.3.12
+DISTVERSION=	4.3.28
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.virtualbox.org/virtualbox/${DISTVERSION}/ \
 		http://tmp.chruetertee.ch/ \
@@ -19,13 +19,15 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm \
 		kmk:${PORTSDIR}/devel/kBuild
 
+CPE_VENDOR=	oracle
+CPE_PRODUCT=	vm_virtualbox
+
 UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
 PATCHDIR=	${.CURDIR}/../${PORTNAME}/files
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 USE_RC_SUBR=	vboxguest vboxservice
-USES=		compiler:features iconv kmod tar:bzip2
+USES=		compiler:features cpe iconv kmod python:build tar:bzip2
 ONLY_FOR_ARCHS=	i386 amd64
-USE_PYTHON_BUILD=	yes
 MAKE_JOBS_UNSAFE=	yes
 
 HAS_CONFIGURE=	yes
@@ -85,8 +87,11 @@ VBOX_LIBS=	VBoxOGL.so \
 
 .if ${PORT_OPTIONS:MX11}
 BUILD_DEPENDS+=	${LOCALBASE}/bin/X:${PORTSDIR}/x11-servers/xorg-server
-VBOX_WITH_X11=	1
 USE_XORG=	xcursor xmu inputproto xorg-server xrandr
+USES+=		pkgconfig
+VBOX_WITH_X11=	1
+XORG_DRV_ABI=	pkgconf --modversion xorg-server | \
+		${SED} -E -e 's/\.[0-9]+$$//' -e 's/\.//'
 .else
 VBOX_WITH_X11=
 .endif
@@ -97,17 +102,26 @@ KMK_ARCH=	freebsd.x86
 KMK_ARCH=	freebsd.${ARCH}
 .endif
 
-XSERVER_ABI:=	${XSERVER_VER:S/.//:R}
-
 .include <bsd.port.pre.mk>
 
 .if ${COMPILER_TYPE} == clang
 EXTRA_PATCHES=	${PATCHDIR}/extrapatch-Config.kmk \
-		${PATCHDIR}/extrapatch-src-VBox-Additions-x11-vboxvideo-Makefile.kmk
+		${PATCHDIR}/extrapatch-src-VBox-Additions-x11-vboxvideo-Makefile.kmk \
+		${PATCHDIR}/extrapatch-src-VBox-Additions-x11-x11include-xorg-server-1.17.1-compiler.h
 .if ${COMPILER_FEATURES:Mlibc++}
 EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-VBoxClient-Makefile.kmk
 .endif
 .endif
+
+.if ${OSVERSION} < 1001514
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-vboxvideo-Makefile.kmk.dri
+.else
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-freebsd-drm-Makefile
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-freebsd-drm-Makefile.kmk
+EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src-VBox-Additions-x11-vboxvideo-Makefile.kmk.dri2
+.endif
+
+SUB_LIST+=	KMODDIR=${KMODDIR}
 
 pre-everything::
 .if ${ARCH} == "amd64"
@@ -120,6 +134,7 @@ pre-everything::
 
 post-patch:
 	@${ECHO} 'VBOX_ONLY_ADDITIONS = 1' > ${WRKSRC}/LocalConfig.kmk
+	@${ECHO} 'VBOX_WITH_DRAG_AND_DROP = ${VBOX_WITH_X11}' >> ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'VBOX_WITH_X11_ADDITIONS = ${VBOX_WITH_X11}' >> ${WRKSRC}/LocalConfig.kmk
 .if ${COMPILER_TYPE} == clang
 	@${REINPLACE_CMD} -e 's| -finline-limit=8000||' \
@@ -155,8 +170,11 @@ do-install:
 .if ${PORT_OPTIONS:MDEBUG}
 	${INSTALL_KLD} ${VBOX_BIN}/src/vboxguest/vboxguest.ko.symbols ${STAGEDIR}${KMODDIR}
 .endif
-.if ${PORT_OPTIONS:MX11}
+.if ${PORT_OPTIONS:MOPENGL}
 	${INSTALL_KLD} ${VBOX_BIN}/vboxvideo.ko ${STAGEDIR}${KMODDIR}
+.if ${PORT_OPTIONS:MDEBUG}
+	${INSTALL_KLD} ${VBOX_BIN}/vboxvideo.ko.symbols ${STAGEDIR}${KMODDIR}
+.endif
 .endif
 
 	${INSTALL_PROGRAM} ${VBOX_SBINS:S|^|${VBOX_BIN}/|} \
@@ -178,11 +196,11 @@ do-install:
 	    ${STAGEDIR}${PREFIX}/share/autostart/
 
 	${MKDIR} ${STAGEDIR}${VIDEODIR}
-	${INSTALL_DATA} ${VBOX_BIN}/vboxvideo_drv_${XSERVER_ABI}.so \
+	${INSTALL_DATA} ${VBOX_BIN}/vboxvideo_drv_$$(${XORG_DRV_ABI}).so \
 	    ${STAGEDIR}${VIDEODIR}/vboxvideo_drv.so
 
 	${MKDIR} ${STAGEDIR}${INPUTDIR}
-	${INSTALL_DATA} ${VBOX_BIN}/vboxmouse_drv_${XSERVER_ABI}.so \
+	${INSTALL_DATA} ${VBOX_BIN}/vboxmouse_drv_$$(${XORG_DRV_ABI}).so \
 	    ${STAGEDIR}${INPUTDIR}/vboxmouse_drv.so
 .endif
 

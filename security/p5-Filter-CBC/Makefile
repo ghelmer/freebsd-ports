@@ -3,6 +3,7 @@
 
 PORTNAME=	Filter-CBC
 PORTVERSION=	0.10
+PORTREVISION=	2
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,14 +17,16 @@ BUILD_DEPENDS=	p5-Filter>=0:${PORTSDIR}/devel/p5-Filter \
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 PLIST_SUB=	EXAMPLESDIR="share/examples/${PORTNAME}"
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	examples/*.pl
 USE_PERL5=	configure
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
-.ifndef(NOPORTEXAMPLES)
 	@${ECHO_MSG} "===>   Installing examples for ${PKGNAME}"
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
-.endif
 
 .include <bsd.port.mk>

@@ -4,14 +4,13 @@
 PORTNAME=	viz
 PORTVERSION=	1.1.1
 CATEGORIES=	misc
-MASTER_SITES=	LOCAL
-MASTER_SITE_SUBDIR=	fenner
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	LOCAL/fenner
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert invisible (binary) characters to a visible form
 
 MAKE_ARGS=	CC="${CC}" DEFS="${CFLAGS}"
+USES=		tar:tgz
 
 PLIST_FILES=	bin/viz bin/inviz man/man1/viz.1.gz man/man1/inviz.1.gz
 

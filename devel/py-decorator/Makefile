@@ -11,10 +11,9 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	dsh@wizard.volgograd.ru
 COMMENT=	Better living through Python with decorators
 
-LICENSE=	BSD
+LICENSE=	MIT
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -8,13 +8,9 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	wg@FreeBSD.org
-COMMENT=	Ned\'s script to check McCabe complexity
+COMMENT=	Ned's script to check McCabe complexity
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYTHON_PY3K_PLIST_HACK=	yes
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|setuptools|distutils.core|' ${WRKSRC}/${PYSETUP}
+USES=		python
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

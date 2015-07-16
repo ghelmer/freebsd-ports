@@ -3,7 +3,7 @@
 
 PORTNAME=	drac
 PORTVERSION=	1.12
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.cc.umanitoba.ca/src/ \
 		http://atreides.freenix.no/~anders/ \
@@ -20,7 +20,7 @@ PLIST_FILES=	sbin/rpc.dracd include/drac.h lib/libdrac.a \
 USE_CSTD=	gnu89
 
 MAKE_JOBS_UNSAFE=	yes
-OPTIONS_DEFINE=		DB
+OPTIONS_DEFINE=		DB DOCS
 OPTIONS_RADIO=		MUA
 OPTIONS_RADIO_MUA=	POSTFIX EXIM
 POSTFIX_DESC=		Use POSTFIX

@@ -1,5 +1,9 @@
 bin/semantik
-lib/libnablah.so
+bin/semantik-d
+lib/libsemantik.so
+lib/libsemantik.so.0
+lib/libsemantik.so.%%PORTVERSION%%
+share/applications/kde4/semantik-d.desktop
 share/applications/kde4/semantik.desktop
 share/apps/semantik/filters/fvym.py
 share/apps/semantik/filters/kdissert.py
@@ -23,6 +27,7 @@ share/apps/semantik/flags/flag_tune.svg
 share/apps/semantik/flags/flag_unknown.svg
 share/apps/semantik/flags/flag_write.svg
 share/apps/semantik/images/crsc-app-colors.svg
+share/apps/semantik/semantik-dui.rc
 share/apps/semantik/semantikui.rc
 share/apps/semantik/sembind.py
 share/apps/semantik/templates/beamer.sem.py
@@ -167,36 +172,22 @@ share/apps/semantik/templates/s5/ui/default/slides.js
 share/apps/semantik/templates/semantik.sem.py
 share/apps/semantik/templates/waf
 share/apps/semantik/tips
-share/icons/hicolor/128x128/apps/semantik.png
-share/icons/hicolor/22x22/apps/semantik.png
-share/icons/hicolor/32x32/apps/semantik.png
-share/icons/hicolor/48x48/apps/semantik.png
-share/icons/hicolor/64x64/apps/semantik.png
+share/icons/oxygen/128x128/apps/semantik-d.png
+share/icons/oxygen/128x128/apps/semantik.png
+share/icons/oxygen/22x22/apps/semantik-d.png
+share/icons/oxygen/22x22/apps/semantik.png
+share/icons/oxygen/32x32/apps/semantik-d.png
+share/icons/oxygen/32x32/apps/semantik.png
+share/icons/oxygen/48x48/apps/semantik-d.png
+share/icons/oxygen/48x48/apps/semantik.png
+share/icons/oxygen/64x64/apps/semantik-d.png
+share/icons/oxygen/64x64/apps/semantik.png
+share/icons/oxygen/scalable/apps/semantik-d.svgz
+share/icons/oxygen/scalable/apps/semantik.svgz
 %%NLS%%share/locale/cs/LC_MESSAGES/semantik.mo
 %%NLS%%share/locale/el/LC_MESSAGES/semantik.mo
 %%NLS%%share/locale/es/LC_MESSAGES/semantik.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/semantik.mo
 %%NLS%%share/locale/ru/LC_MESSAGES/semantik.mo
 %%NLS%%share/locale/sk/LC_MESSAGES/semantik.mo
-@dirrm share/apps/semantik/templates/s5/ui/default
-@dirrm share/apps/semantik/templates/s5/ui
-@dirrm share/apps/semantik/templates/s5
-@dirrm share/apps/semantik/templates/pdflatex
-@dirrm share/apps/semantik/templates/odt
-@dirrm share/apps/semantik/templates/odp
-@dirrm share/apps/semantik/templates/java
-@dirrm share/apps/semantik/templates/html
-@dirrm share/apps/semantik/templates/beamer/beamermindist/themes/theme
-@dirrm share/apps/semantik/templates/beamer/beamermindist/themes/outer
-@dirrm share/apps/semantik/templates/beamer/beamermindist/themes/inner
-@dirrm share/apps/semantik/templates/beamer/beamermindist/themes/font
-@dirrm share/apps/semantik/templates/beamer/beamermindist/themes/color
-@dirrm share/apps/semantik/templates/beamer/beamermindist/themes
-@dirrm share/apps/semantik/templates/beamer/beamermindist/art
-@dirrm share/apps/semantik/templates/beamer/beamermindist
-@dirrm share/apps/semantik/templates/beamer
-@dirrm share/apps/semantik/templates
-@dirrm share/apps/semantik/images
-@dirrm share/apps/semantik/flags
-@dirrm share/apps/semantik/filters
-@dirrm share/apps/semantik
+share/mime/packages/semantik.xml

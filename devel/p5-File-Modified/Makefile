@@ -3,6 +3,7 @@
 
 PORTNAME=	File-Modified
 PORTVERSION=	0.09
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -19,7 +20,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		perl5
 USE_PERL5=	configure
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 PORTDOCS=	Changes README bug.txt
 EXAMPLES=	example/1.pl example/Export.cfg example/Import.cfg
 
@@ -27,6 +29,5 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${EXAMPLES:S|^|${WRKSRC}/|} ${STAGEDIR}${EXAMPLESDIR}
-.endif
 
 .include <bsd.port.mk>

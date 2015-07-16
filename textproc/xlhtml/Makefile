@@ -7,16 +7,14 @@ PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/chicago/${PORTNAME}/backend
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert Excel and PowerPoint files to HTML and text
 
 LICENSE=	GPLv2
 
-USES=		gmake
-
-USE_AUTOTOOLS=	automake14 autoconf
+GNU_CONFIGURE=	yes
+USES=		gmake tar:tgz
 
 OPTIONS_DEFINE=	DOCS
 
@@ -27,7 +25,5 @@ post-install:
 		${INSTALL_DATA} ChangeLog README THANKS \
 		${STAGEDIR}${DOCSDIR}/${dir}
 .endfor
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/xlhtml \
-		${STAGEDIR}${PREFIX}/bin/ppthtml
 
 .include <bsd.port.mk>

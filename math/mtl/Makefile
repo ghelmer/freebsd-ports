@@ -12,7 +12,7 @@ COMMENT=	The Matrix Template Library, Version 2
 LICENSE=	MTL
 LICENSE_NAME=	Matrix Template Library License
 LICENSE_FILE=	${WRKSRC}/license.mtl.txt
-LICENSE_PERMS=	auto-accept
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFIGURE_ENV=	CXXCPP="${CXXCPP}"
 CXXCPP?=	${CXX} -E
@@ -20,7 +20,9 @@ GNU_CONFIGURE=	yes
 NO_BUILD=	yes
 USES=		perl5
 USE_PERL5=	build
-WRKSRC =	${WRKDIR}/${DISTNAME:R}
+WRKSRC=		${WRKDIR}/${DISTNAME:R}
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e '/gnu\*)/,/;;/{/CXX=/d; /CXX_OPTIMIZE_FLAGS=/d; \
@@ -44,7 +46,6 @@ fulltest: build
 CXXFLAGS+=	-fpermissive
 .endif
 
-.if !defined(NOPORTEXAMPLES)
 PORTEXAMPLES=	*
 
 post-install:
@@ -52,5 +53,4 @@ post-install:
 	@${INSTALL_DATA} ${WRKSRC}/contrib/examples/* ${STAGEDIR}${EXAMPLESDIR}
 	@${INSTALL_DATA} ${WRKSRC}/contrib/doubledouble/* ${STAGEDIR}${EXAMPLESDIR}/doubledouble
 
-.endif
 .include <bsd.port.post.mk>

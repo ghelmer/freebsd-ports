@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	Curses
-PORTVERSION=	1.31
+PORTVERSION=	1.32
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 module for terminal screen handling and optimization
@@ -14,7 +14,7 @@ COMMENT=	Perl5 module for terminal screen handling and optimization
 OPTIONS_DEFINE=	NCURSESW
 NCURSESW_DESC=	Wide-character-capable support by ncursesw library
 
-USES=		perl5
+USES=		perl5 tar:tgz
 USE_PERL5=	configure
 CONFIGURE_ARGS=	PANELS MENUS FORMS
 CONFIGURE_ENV=	CURSES_CFLAGS="-I${WRKSRC}/usr/include/ncurses"

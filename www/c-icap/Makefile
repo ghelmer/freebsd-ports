@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	c-icap
-PORTVERSION=	0.3.3
-PORTREVISION=	3
+PORTVERSION=	0.3.5
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.3.x/
@@ -15,10 +15,11 @@ COMMENT=	ICAP server implementation
 LICENSE=	LGPL21
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		cpe libtool
+CPE_VENDOR=	c-icap_project
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	c-icap
-
-SUB_FILES=	pkg-install pkg-deinstall
 
 OPTIONS_DEFINE=	BDB IPV6 LDAP PERL POSIXSEM LARGE_FILES
 OPTIONS_DEFAULT=	IPV6
@@ -33,8 +34,7 @@ CICAP_GID=	959
 USERS=		${CICAP_USER}
 GROUPS=		${CICAP_GROUP}
 
-CONFIGURE_ARGS+=	--enable-static \
-			--sysconfdir="${PREFIX}/etc/c-icap" \
+CONFIGURE_ARGS+=	--sysconfdir="${PREFIX}/etc/c-icap" \
 			--localstatedir=/var
 
 .include <bsd.port.options.mk>
@@ -62,8 +62,6 @@ USE_OPENLDAP=	YES
 .if ${PORT_OPTIONS:MPERL}
 USES+=		perl5
 .endif
-
-.include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MBDB}
 CFLAGS+=	-I${BDB_INCLUDE_DIR}
@@ -96,17 +94,18 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 LOG_DIR=	/var/log/c-icap
 RUN_DIR=	/var/run/c-icap
-PLIST_SUB+=	LOG_DIR=${LOG_DIR} RUN_DIR=${RUN_DIR}
-
-SUB_FILES=	pkg-install pkg-deinstall
-SUB_LIST=	CICAP_USER=${CICAP_USER} CICAP_GROUP=${CICAP_GROUP} \
-		LOG_DIR=${LOG_DIR} RUN_DIR=${RUN_DIR}
+PLIST_SUB+=	LOG_DIR=${LOG_DIR} RUN_DIR=${RUN_DIR} \
+		CICAP_USER=${CICAP_USER} CICAP_GROUP=${CICAP_GROUP}
+SUB_LIST+=	RUN_DIR=${RUN_DIR} CICAP_USER=${CICAP_USER}
 
 post-patch:
 	@${REINPLACE_CMD} \
 		-e 's|@prefix@/var/log|/var/log/c-icap|g' \
 		-e 's|@prefix@/etc/|@sysconfdir@/|g' \
 		${WRKSRC}/c-icap.conf.in
+	@${REINPLACE_CMD} \
+		-e 's|\.default|.sample|g' \
+		${WRKSRC}/Makefile.am ${WRKSRC}/Makefile.in
 .if ${PORT_OPTIONS:MPOSIXSEM}
 	@${REINPLACE_CMD} \
 		-e 's|@SYSV_IPC@|0|g' \
@@ -114,9 +113,6 @@ post-patch:
 .endif
 
 post-install:
-	@${CP} -np ${STAGEDIR}${PREFIX}/etc/c-icap/c-icap.conf.default \
-		${STAGEDIR}${PREFIX}/etc/c-icap/c-icap.conf || ${TRUE}
-	@${CP} -np ${STAGEDIR}${PREFIX}/etc/c-icap/c-icap.magic.default \
-		${STAGEDIR}${PREFIX}/etc/c-icap/c-icap.magic || ${TRUE}
+	@${MKDIR} ${STAGEDIR}/${LOG_DIR} ${STAGEDIR}/${RUN_DIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

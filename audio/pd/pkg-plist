@@ -11,6 +11,9 @@ include/pd/s_stuff.h
 lib/pd/bin/pd
 lib/pd/bin/pd-watchdog
 %%PORTDOCS%%lib/pd/doc
+lib/pd/extra/bob~/bob~-help.pd
+lib/pd/extra/bob~/bob~.pd_linux
+lib/pd/extra/bob~/output~.pd
 lib/pd/extra/bonk~/bonk~-help.pd
 lib/pd/extra/bonk~/bonk~.pd_linux
 lib/pd/extra/bonk~/templates.txt
@@ -400,7 +403,7 @@ man/man1/pdsend.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/makenote-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/math-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/message-help.pd
-%%PORTDOCS%%%%DOCSDIR%%/5.reference/metro.pd
+%%PORTDOCS%%%%DOCSDIR%%/5.reference/metro-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/midi-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/moses-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/my_canvas-help.pd
@@ -412,6 +415,8 @@ man/man1/pdsend.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/openpanel-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/operators-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/osc~-help.pd
+%%PORTDOCS%%%%DOCSDIR%%/5.reference/oscformat-help.pd
+%%PORTDOCS%%%%DOCSDIR%%/5.reference/oscparse-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/otherbinops-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/pack-help.pd
 %%PORTDOCS%%%%DOCSDIR%%/5.reference/pd-help.pd
@@ -529,31 +534,3 @@ man/man1/pdsend.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/sound/bell.aiff
 %%PORTDOCS%%%%DOCSDIR%%/sound/voice.wav
 %%PORTDOCS%%%%DOCSDIR%%/sound/voice2.wav
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/sound
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/7.stuff/tools
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/7.stuff/synth
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/7.stuff/soundfile-tools
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/7.stuff
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/6.externs
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/5.reference
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/4.data.structures
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/3.audio.examples
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/2.control.examples
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/1.manual
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm lib/pd/tcl
-@dirrm lib/pd/po
-@dirrm lib/pd/extra/stdout
-@dirrm lib/pd/extra/sigmund~
-@dirrm lib/pd/extra/pique
-@dirrm lib/pd/extra/pd~
-@dirrm lib/pd/extra/lrshift~
-@dirrm lib/pd/extra/loop~
-@dirrm lib/pd/extra/fiddle~
-@dirrm lib/pd/extra/expr~
-@dirrm lib/pd/extra/choice
-@dirrm lib/pd/extra/bonk~
-@dirrm lib/pd/extra
-@dirrm lib/pd/bin
-@dirrm lib/pd
-@dirrm include/pd

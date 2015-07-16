@@ -3,11 +3,12 @@
 
 PORTNAME=	Text-NSP
 PORTVERSION=	1.27
+PORTREVISION=	1
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 modules for Ngram Statistics Package
 
 LICENSE=	GPLv2 GPLv3

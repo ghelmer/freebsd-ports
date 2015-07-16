@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-session-manager
-PORTVERSION=	1.6.1
+PORTVERSION=	1.8.1
 PORTREVISION=	1
 CATEGORIES=	x11 mate
 MASTER_SITES=	MATE
@@ -19,11 +19,10 @@ RUN_DEPENDS=	${LOCALBASE}/sbin/console-kit-daemon:${PORTSDIR}/sysutils/consoleki
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake pathfix pkgconfig
-USE_XZ=		yes
+USES=		gettext gmake libtool pathfix pkgconfig tar:xz
 USE_MATE=	settingsdaemon
 USE_XORG=	ice sm xau xext xrandr xrender xtrans xtst
-USE_GNOME=	glib20 gnomehier gtk20 intlhack librsvg2 libxslt pango
+USE_GNOME=	gtk20 intlhack librsvg2 libxslt pango
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-docbook-docs \
 		--with-gtk=2.0 \

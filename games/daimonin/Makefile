@@ -3,22 +3,25 @@
 
 PORTNAME=	daimonin
 PORTVERSION=	0.10.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 #		http://daimonin.svn.sourceforge.net/viewvc/daimonin/main/client/?view=tar&pathrev=${SVN_REVISION}&file= # disabled - weird fetch magic required
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Free open source Massively Multiplayer On-line Role-playing Game (MMORPG)
+COMMENT=	F/OSS Massively Multiplayer On-line Role-playing Game (MMORPG)
+
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/../../License
 
 LIB_DEPENDS=	libphysfs.so:${PORTSDIR}/devel/physfs \
 		libcurl.so:${PORTSDIR}/ftp/curl
 
+USES=		autoreconf
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-simplelayout --enable-getaddrinfo
 LDFLAGS+=	-L${LOCALBASE}/lib
-USE_AUTOTOOLS=	automake autoconf
 USE_SDL=	mixer image
 SUB_FILES=	daimonin.sh
 SUB_LIST=	PORTVERSION=${PORTVERSION}
@@ -54,13 +57,10 @@ post-patch:
 	@${CP} ${PORTSDIR}/Templates/config.guess ${PORTSDIR}/Templates/config.sub \
 		${WRKSRC}/make_utils/
 
-pre-configure:
-	cd ${WRKSRC}; ${LN} -sf ${AUTOMAKE_DIR}/COPYING . && ${AUTORECONF}
-
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/bin/daimonin ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/daimonin.sh ${STAGEDIR}${PREFIX}/bin/daimonin
-	@${FIND} ${STAGEDIR}${DATADIR} -name '*.orig' -exec rm {} \;
+	@${FIND} ${STAGEDIR}${DATADIR} -name '*.orig' -delete
 	${MV} ${STAGEDIR}${DATADIR}/settings/keys.dat ${STAGEDIR}${DATADIR}/settings/keys-desktop.dat
 .if ${PORT_OPTIONS:MKB_LAPTOP}
 	@${ECHO} Configuring keyboard bindings for laptop

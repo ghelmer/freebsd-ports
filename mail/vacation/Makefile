@@ -3,13 +3,15 @@
 
 PORTNAME=	vacation
 PORTVERSION=	3.3.0
+PORTREVISION=	2
 CATEGORIES=	mail
-MASTER_SITES=	${MASTER_SITE_DEBIAN}
-MASTER_SITE_SUBDIR=	pool/main/v/vacation/
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+MASTER_SITES=	DEBIAN
+DISTNAME=	${PORTNAME}_${PORTVERSION}-0.4
 
 MAINTAINER=	mcdouga9@egr.msu.edu
-COMMENT=	A email autoresponder, similar to vacation from sendmail
+COMMENT=	Email autoresponder, similar to vacation from sendmail
+
+PORTSCOUT=	ignore:1
 
 USE_BDB=	yes
 

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rgdal
-DISTVERSION=	0.8-16
-PORTREVISION=	2
+DISTVERSION=	1.0-4
 CATEGORIES=	graphics
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -15,7 +14,7 @@ LICENSE_COMB=	dual
 
 LIB_DEPENDS=	libgdal.so:${PORTSDIR}/graphics/gdal \
 		libproj.so:${PORTSDIR}/graphics/proj
-RUN_DEPENDS=	R-cran-sp>=1.0.9:${PORTSDIR}/math/R-cran-sp
+RUN_DEPENDS=	R-cran-sp>=1.1.0:${PORTSDIR}/math/R-cran-sp
 
 USES=	cran:auto-plist
 

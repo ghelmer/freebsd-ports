@@ -3,27 +3,30 @@
 
 PORTNAME=	vdr
 PORTVERSION=	1.7.29
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	ftp://ftp.tvdr.de/vdr/Developer/
 
 MAINTAINER=	nox@FreeBSD.org
 COMMENT=	Video Disk Recorder - development version
 
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=  v4l_compat>=1.0.20120501:${PORTSDIR}/multimedia/v4l_compat
-LIB_DEPENDS=    libjpeg.so:${PORTSDIR}/graphics/jpeg
 BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:${PORTSDIR}/x11-fonts/fontconfig
 RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:${PORTSDIR}/x11-fonts/fontconfig \
 		xorg-fonts-truetype>=0:${PORTSDIR}/x11-fonts/xorg-fonts-truetype
 
-OPTIONS_DEFINE=		IPTVPATCH TTXPATCH STB0899_SIGNAL
+OPTIONS_DEFINE=		IPTVPATCH TTXPATCH STB0899_SIGNAL DOCS NLS
 IPTVPATCH_DESC=		Stops EIT scans on IPTV channels
 TTXPATCH_DESC=		Support patches for teletext subtitle plugin
 DVBPATCH_DESC=		DVB audio patch for some countries
 STB0899_SIGNAL_DESC=	STB0899 signal strength patch
 OPTIONS_DEFAULT=	IPTVPATCH TTXPATCH
 
-USES=		pkgconfig gettext iconv:wchar_t gmake shebangfix tar:bzip2
+USES=		cpe gettext gmake iconv:wchar_t jpeg pkgconfig shebangfix tar:bzip2
+CPE_VENDOR=	tvdr
 SHEBANG_FILES=	svdrpsend
 DIST_SUBDIR=	vdr
 PORTDOCS=	COPYING INSTALL MANUAL README HISTORY
@@ -53,6 +56,14 @@ PLIST_SUB=	VDR_USER=${VDR_USER}
 PLIST_SUB+=	VDR_GROUP=${VDR_GROUP}
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == DragonFly
+IGNORE=		will not work due to lack of driver support
+.endif
+
+.if ${ARCH} == "i386"
+USE_GCC=	any
+.endif
 
 EXTRA_PATCHES+=	${FILESDIR}/vdr-1.7.15-disable_ca_updates.patch
 .if ${PORT_OPTIONS:MIPTVPATCH}

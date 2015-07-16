@@ -13,12 +13,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>=0:${PORTSDIR}/security/py-pycrypto
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kwaaak
-GH_PROJECT=	py-fishcrypt
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT= 	c001c75
+GH_TAGNAME=	c001c75
 
-USES=		dos2unix
-USE_PYTHON_RUN=	yes
+USES=		dos2unix python:run
 NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
@@ -26,7 +23,6 @@ SUB_FILES=	pkg-message
 PORTDOCS=	README.md
 
 PLIST_FILES=	%%DATADIR%%/fishcrypt.py
-PLIST_DIRS=     %%DATADIR%%
 
 OPTIONS_DEFINE=	DOCS HEXCHAT XCHAT
 

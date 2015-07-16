@@ -7,15 +7,15 @@ CATEGORIES=	devel www
 MASTER_SITES=	http://ocsigen.org/download/
 PKGNAMEPREFIX=	ocaml-
 
-MAINTAINER=	jaapb@kerguelen.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Function derivation library
 
 USE_OCAML=		yes
 USE_OCAML_FINDLIB=	yes
+USE_OCAML_CAMLP4=	yes
 USE_OCAMLFIND_PLIST=	yes
 USE_OCAML_LDCONFIG=	yes
 
 USES=		gmake
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

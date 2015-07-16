@@ -2,7 +2,7 @@
 
 PORTNAME=	qtoctave
 PORTVERSION=	0.10.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	math
 MASTER_SITES=	http://forja.rediris.es/frs/download.php/2054/
 
@@ -13,7 +13,7 @@ RUN_DEPENDS=	octave:${PORTSDIR}/math/octave
 
 USE_QT4=	designer gui network script svg xml \
 		qmake_build moc_build rcc_build uic_build \
-		linguist_build
+		linguisttools_build
 USES=		cmake
 CMAKE_ARGS+=	-DWITH_UseRPMTools:Bool=Off
 

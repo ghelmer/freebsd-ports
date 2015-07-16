@@ -10,9 +10,8 @@ LIB_DEPENDS=	libuim.so:${PORTSDIR}/textproc/uim
 RUN_DEPENDS=	uim-pref-qt4:${PORTSDIR}/textproc/uim-qt4
 
 USE_GCC=	any
-USE_KDE4=	kdehier kdeprefix kdelibs automoc4
+USE_KDE4=	kdeprefix kdelibs automoc4
 USE_QT4=	qmake_build moc_build qt3support uic rcc
-USE_AUTOTOOLS=	libtool
 
 MASTERDIR=	${.CURDIR}/../../textproc/uim
 PKGDIR=		${.CURDIR}

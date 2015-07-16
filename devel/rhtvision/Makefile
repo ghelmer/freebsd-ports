@@ -3,7 +3,7 @@
 
 PORTNAME=	rhtvision
 PORTVERSION=	2.2.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/tvision/UNIX/${PORTVERSION:R}%20CVS20100714%20Source%20and%20Debian%205.0
 DISTNAME=	${PORTNAME}_${PORTVERSION:R}-${PORTVERSION:E}
@@ -39,6 +39,7 @@ X11_CONFIGURE_ON=	--x-include=${LOCALBASE}/include \
 X11_CONFIGURE_OFF=	--X11lib=no
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rhtv-config
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rhtv-config \
+		${STAGEDIR}${PREFIX}/lib/librhtv.so
 
 .include <bsd.port.mk>

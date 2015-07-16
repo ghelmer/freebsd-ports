@@ -23,6 +23,8 @@ DESKTOP_ENTRIES=	"qLabels" \
 			"Office;Qt;" \
 			"true"
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} 's|/usr|${PREFIX}|g' \
 		${WRKSRC}/qlabels.pro \
@@ -30,10 +32,8 @@ post-patch:
 		${WRKSRC}/lib/papers.cpp
 
 post-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/Changelog ${WRKSRC}/LICENSE \
 		${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

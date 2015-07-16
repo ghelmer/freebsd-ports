@@ -28,7 +28,7 @@
 #		it as RUN_DEPENDS.
 #
 # If build and run are omitted, Python will be added as BUILD_DEPENDS and
-# RUN_DEPENDS.
+# RUN_DEPENDS. PYTHON_NO_DEPENDS can be set to not add any dependencies.
 #
 # Variables, which can be set by a user:
 #
@@ -142,7 +142,7 @@
 # PYTHON_PORTSDIR	- The port directory of the chosen Python interpreter
 #
 # PYTHON_REL		- The release number of the chosen Python interpreter
-#			  without dots, e.g. 276, 341, ...
+#			  without dots, e.g. 2706, 3401, ...
 #
 # PYTHON_SUFFIX		- The major-minor release number of the chosen Python
 #			  interpreter without dots, e.g. 27, 34, ...
@@ -192,21 +192,11 @@
 #	PYTHON_PLATFORM=${PYTHON_PLATFORM}
 #	PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}
 #	PYTHON_VERSION=${PYTHON_VERSION}
+#	PYTHON_VER=${PYTHON_VER}
 #
 #
 # Deprecated variables, which exist for compatibility and will be removed
 # soon:
-#
-# USE_PYDISTUTILS	- Deprecated, use USE_PYTHON=distutils instead
-#
-# PYDISTUTILS_AUTOPLIST
-#			- Deprecated, use USE_PYTHON=autoplist instead
-#
-# PYTHON_PY3K_PLIST_HACK
-#			- Deprecated, use USE_PYTHON=py3kplist instead
-#
-# PYDISTUTILS_NOEGGINFO
-#			- Deprecated, use USE_PYTHON=noegginfo instead
 #
 # PYTHON_DEFAULT_VERSION
 # PYTHON2_DEFAULT_VERSION
@@ -217,11 +207,6 @@
 # PYTHON_PKGNAMESUFFIX
 #			- Deprecated, use PYTHON_PKGNAMEPREFIX instead
 #			  default: -py${PYTHON_SUFFIX}
-#
-# PYTHON_CONCURRENT_INSTALL
-#			- Deprecated, use USE_PYTHON=concurrent instead
-#
-# USE_PYTHON_PREFIX	- Deprecated, use USE_PYTHON=pythonprefix instead
 #
 # PYDISTUTILS_INSTALLNOSINGLE
 #			- Deprecated without replacement
@@ -236,79 +221,6 @@ _PYTHON_VERSIONS=		2.7 3.4 3.3 3.2	# preferred first
 _PYTHON_PORTBRANCH=		2.7		# ${_PYTHON_VERSIONS:[1]}
 _PYTHON_BASECMD=		${LOCALBASE}/bin/python
 _PYTHON_RELPORTDIR=		${PORTSDIR}/lang/python
-
-# Check the passed arguments
-.if !defined(python_ARGS)
-python_ARGS=	#empty
-.endif
-
-# COMPAT KNOBS, remove them, once the tree is cleaned
-.undef _PY_COMPAT_OLD
-# We will reuse USE_PYTHON with a different meaning, so make sure that, while
-# we are in the transition phase from USE_PYTHON -> USES=python, it is mapped
-# and reassigned correctly
-.if defined(USE_PYTHON_BUILD) || defined(USE_PYTHON_RUN)
-# old style
-_PY_COMPAT_OLD= yes
-.elif defined(USE_PYTHON)
-.if ${USE_PYTHON} == "yes"
-# old style
-_PY_COMPAT_OLD= yes
-.elif ${USE_PYTHON:C/[-0-9.+]*//} == ""
-# old style X.Y, X.Y+, X.Y-, -X.Y, X.Y-Z.A
-_PY_COMPAT_OLD=	yes
-.endif # ${USE_PYTHON} == "yes" ...
-.endif # defined(USE_PYTHON_BUILD) || defined(USE_PYTHON_RUN)
-
-.if defined(_PY_COMPAT_OLD)
-.if defined(USE_PYTHON)
-.if ${USE_PYTHON} != "yes"
-python_ARGS:=	${USE_PYTHON}
-.endif
-.else
-.if defined(USE_PYTHON_BUILD)
-.if ${USE_PYTHON_BUILD} != "yes"
-python_ARGS=	${USE_PYTHON_BUILD},build
-.else
-python_ARGS=	build
-.endif
-.endif # defined(USE_PYTHON_BUILD)
-.if defined(USE_PYTHON_RUN)
-.if ${USE_PYTHON_RUN} != "yes"
-python_ARGS+=	${USE_PYTHON_RUN},run
-.else
-python_ARGS+=	run
-.endif
-.endif # defined(USE_PYTHON_RUN)
-.endif # defined(USE_PYTHON)
-# Everything passed to python_ARGS, undef USE_PYTHON, since we will reuse
-# it with a different meaning below
-.undef USE_PYTHON
-.endif # defined(_PY_COMPAT_OLD)
-.undef _PY_COMPAT_OLD
-
-.if !defined(USE_PYTHON)
-USE_PYTHON=
-.if defined(USE_PYDISTUTILS)
-USE_PYTHON+=	distutils
-.endif
-.if defined(PYDISTUTILS_AUTOPLIST)
-USE_PYTHON+=	autoplist
-.endif
-.if defined(PYTHON_PY3K_PLIST_HACK)
-USE_PYTHON+=	py3kplist
-.endif
-.if defined(PYTHON_CONCURRENT_INSTALL)
-USE_PYTHON+=	concurrent
-.endif
-.if defined(USE_PYTHON_PREFIX)
-USE_PYTHON+=	pythonprefix
-.endif
-.if defined(PYDISTUTILS_NOEGGINFO)
-USE_PYTHON+=	noegginfo
-.endif
-.endif # !defined(USE_PYTHON)
-# COMPAT KNOBS END
 
 # Make each individual feature available as _PYTHON_FEATURE_<FEATURENAME>
 .for var in ${USE_PYTHON}
@@ -331,7 +243,8 @@ _PYTHON_ARGS:=		${_PYTHON_ARGS:Nrun}
 
 # The port does not specify a build or run dependency, assume both are
 # required.
-.if !defined(_PYTHON_BUILD_DEP) && !defined(_PYTHON_RUN_DEP)
+.if !defined(_PYTHON_BUILD_DEP) && !defined(_PYTHON_RUN_DEP) && \
+    !defined(PYTHON_NO_DEPENDS)
 _PYTHON_BUILD_DEP=	yes
 _PYTHON_RUN_DEP=	yes
 .endif
@@ -452,6 +365,16 @@ IGNORE=		needs an unsupported version of Python
 PYTHON_VERSION?=	python${_PYTHON_VERSION}
 DEPENDS_ARGS+=		PYTHON_VERSION=${PYTHON_VERSION}
 
+# NOTE:
+#
+#  PYTHON_VERSION will hold whatever is passed down the dependency chain.
+#  If a user runs `make PYTHON_VERSION=python3.3, PYTHON_VERSION will be
+#  set to 'python3.3'. A port however may require a different version,
+#  which is stored (above) in _PYTHON_VERSION.
+#  Every python bit below hence should use python${_PYTHON_VERSION}, since
+#  this is the value, the _port_ requires
+#
+
 # Got the correct python version, set some publicly accessible variables
 PYTHON_VER=		${_PYTHON_VERSION}
 PYTHON_SUFFIX=		${_PYTHON_VERSION:S/.//g}
@@ -460,7 +383,7 @@ PYTHON_REL=		# empty
 PYTHON_ABIVER=		# empty
 PYTHON_PORTSDIR=	${_PYTHON_RELPORTDIR}${PYTHON_SUFFIX}
 PYTHON_PORTVERSION!=	${MAKE} -V PORTVERSION -C ${PYTHON_PORTSDIR}
-PYTHON_REL=		${PYTHON_PORTVERSION:S/.//g}
+PYTHON_REL=		${PYTHON_PORTVERSION:C/\.([0-9]+)$/.0\1/:C/\.0?([0-9][0-9])$/.\1/:S/.//g}
 
 # Might be overridden by calling ports
 PYTHON_CMD?=		${_PYTHON_BASECMD}${_PYTHON_VERSION}
@@ -471,8 +394,8 @@ PYTHON_ABIVER!=		${PYTHON_CMD}-config --abiflags
 PYTHONBASE!=	(${PYTHON_CMD} -c 'import sys; print(sys.prefix)' \
 			2> /dev/null || ${ECHO_CMD} ${LOCALBASE}) | ${TAIL} -1
 
-PYTHON_INCLUDEDIR=	${PYTHONBASE}/include/${PYTHON_VERSION}${PYTHON_ABIVER}
-PYTHON_LIBDIR=		${PYTHONBASE}/lib/${PYTHON_VERSION}
+PYTHON_INCLUDEDIR=	${PYTHONBASE}/include/python${_PYTHON_VERSION}${PYTHON_ABIVER}
+PYTHON_LIBDIR=		${PYTHONBASE}/lib/python${_PYTHON_VERSION}
 PYTHON_PLATFORM=	${OPSYS:tl}${OSREL:C/\.[0-9.]*//}
 PYTHON_SITELIBDIR=	${PYTHON_LIBDIR}/site-packages
 PYTHON_PKGNAMEPREFIX=	py${PYTHON_SUFFIX}-
@@ -497,9 +420,6 @@ _PYTHONPKGLIST=	${WRKDIR}/.PLIST.pymodtmp
 # - it links against libpython*.so
 # - it uses USE_PYTHON=distutils
 #
-.if defined(NO_STAGE) && defined(_PYTHON_FEATURE_CONCURRENT)
-BROKEN=		USE_PYTHON=concurrent uses USES=uniquefiles, which is not stage-safe
-.endif
 
 .if defined(_PYTHON_FEATURE_CONCURRENT)
 _USES_POST+=		uniquefiles:dirs
@@ -541,9 +461,7 @@ PYDISTUTILS_INSTALLARGS?=	-c -O1 --prefix=${PREFIX}
 . if !defined(PYDISTUTILS_INSTALLNOSINGLE)
 PYDISTUTILS_INSTALLARGS+=	--single-version-externally-managed
 . endif
-. if !defined(NO_STAGE)
 PYDISTUTILS_INSTALLARGS+=	--root=${STAGEDIR}
-. endif
 .endif
 PYDISTUTILS_INSTALLARGS:=	--record ${_PYTHONPKGLIST} \
 		${PYDISTUTILS_INSTALLARGS}
@@ -556,14 +474,13 @@ PYDISTUTILS_EGGINFODIR?=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 add-plist-egginfo:
 .if !defined(_PYTHON_FEATURE_NOEGGINFO) && \
 	!defined(_PYTHON_FEATURE_AUTOPLIST) && \
-	(defined(INSTALLS_EGGINFO) || defined(_PYTHON_FEATURE_DISTUTILS)) && \
+	defined(_PYTHON_FEATURE_DISTUTILS) && \
 	defined(PYTHON_REL)
 . for egginfo in ${PYDISTUTILS_EGGINFO}
 	if [ -d "${PYDISTUTILS_EGGINFODIR}/${egginfo}" ]; then \
 		${LS} ${PYDISTUTILS_EGGINFODIR}/${egginfo} | while read f; do \
-			${ECHO_CMD} ${PYDISTUTILS_EGGINFODIR:S;^${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}/$${f} >> ${TMPPLIST}; \
+			${ECHO_CMD} ${PYDISTUTILS_EGGINFODIR:S;^${STAGEDIR}${PREFIX}/;;}/${egginfo}/$${f} >> ${TMPPLIST}; \
 		done; \
-		${ECHO_CMD} "@dirrmtry ${PYDISTUTILS_EGGINFODIR:S;${STAGEDIR}${PYTHONBASE}/;;}/${egginfo}" >> ${TMPPLIST}; \
 	fi;
 . endfor
 .else
@@ -576,36 +493,14 @@ _RELLIBDIR=		${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;}
 
 add-plist-post:	add-plist-pymod
 add-plist-pymod:
-	@{ ${ECHO_CMD} "#mtree"; ${CAT} ${MTREE_FILE}; } | ${TAR} tf - | \
-		${SED} '/^\.$$/d' > ${WRKDIR}/.localmtree
-	@${ECHO_CMD} "${_RELSITELIBDIR}" >> ${WRKDIR}/.localmtree
-	@${ECHO_CMD} "${_RELLIBDIR}" >> ${WRKDIR}/.localmtree
 	@${SED} -e 's|^${STAGEDIR}${PREFIX}/||' \
 		-e 's|^${PREFIX}/||' \
-		-e 's|^\(man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2${MANEXT}|' \
+		-e 's|^\(man/.*man[0-9]\)/\(.*\.[0-9]\)$$|\1/\2.gz|' \
+		-e 's|[[:alnum:]|[:space:]]*/\.\./*||g; s|/\./|/|g' \
 		${_PYTHONPKGLIST} | ${SORT} >> ${TMPPLIST}
-	@${SED} -e 's|^${STAGEDIR}${PREFIX}/\(.*\)/\(.*\)|\1|' \
-		-e 's|^${PREFIX}/\(.*\)/\(.*\)|\1|' ${_PYTHONPKGLIST} | \
-		${AWK} '{ num = split($$0, a, "/"); res=""; \
-					for(i = 1; i <= num; ++i) { \
-						if (i == 1) res = a[i]; \
-						else res = res "/" a[i]; \
-						print res; \
-					} \
-				}' | \
-		while read line; do \
-			${GREP} -qw "^$${line}$$" ${WRKDIR}/.localmtree || { \
-				[ -n "$${line}" ] && \
-				${ECHO_CMD} "@dirrmtry $${line}"; \
-			}; \
-		done | ${SORT} | uniq | ${SORT} -r >> ${TMPPLIST}
-.if ${PREFIX} != ${LOCALBASE}
-	@${ECHO_CMD} "@dirrmtry ${PYTHON_SITELIBDIR:S;${PYTHONBASE}/;;}" >> ${TMPPLIST}
-	@${ECHO_CMD} "@dirrmtry ${PYTHON_LIBDIR:S;${PYTHONBASE}/;;}" >> ${TMPPLIST}
-.endif
 
 .else
-.if ${PYTHON_REL} >= 320 && defined(_PYTHON_FEATURE_PY3KPLIST)
+.if ${PYTHON_REL} >= 3200 && defined(_PYTHON_FEATURE_PY3KPLIST)
 # When Python version is 3.2+ we rewrite all the filenames
 # of TMPPLIST that end with .py[co], so that they conform
 # to PEP 3147 (see http://www.python.org/dev/peps/pep-3147/)
@@ -616,16 +511,19 @@ add-plist-post:
 		/^@dirrm / {d = substr($$0, 8); if (d in dirs) {print $$0 "/" pc}; print $$0; next} \
 		/^@dirrmtry / {d = substr($$0, 11); if (d in dirs) {print $$0 "/" pc}; print $$0; next} \
 		{print} \
-		END {if (sp in dirs) {print "@dirrm " sp "/" pc}} \
 		' \
-		pc="__pycache__" mt="$$(${PYMAGICTAG})" sp="${PYTHON_SITELIBDIR:S,${PYTHONBASE}/,,g}" \
+		pc="__pycache__" mt="$$(${PYMAGICTAG})" \
 		${TMPPLIST} > ${TMPPLIST}.pyc_tmp
 	@${MV} ${TMPPLIST}.pyc_tmp ${TMPPLIST}
-.endif # ${PYTHON_REL} >= 320 && defined(_PYTHON_FEATURE_PY3KPLIST)
+.endif # ${PYTHON_REL} >= 3200 && defined(_PYTHON_FEATURE_PY3KPLIST)
 .endif # defined(_PYTHON_FEATURE_AUTOPLIST) && defined(_PYTHON_FEATURE_DISTUTILS)
 
 # Fix for programs that build python from a GNU auto* environment
 CONFIGURE_ENV+=	PYTHON="${PYTHON_CMD}"
+
+# By default CMake picks up the highest available version of Python package.
+# Enforce the version required by the port or the default.
+CMAKE_ARGS+=	-DPython_ADDITIONAL_VERSIONS=${PYTHON_VER}
 
 # Python 3rd-party modules
 PYGAME=		${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
@@ -659,17 +557,8 @@ PLIST_SUB+=	PYTHON_INCLUDEDIR=${PYTHONPREFIX_INCLUDEDIR:S;${PREFIX}/;;} \
 		PYTHON_LIBDIR=${PYTHONPREFIX_LIBDIR:S;${PREFIX}/;;} \
 		PYTHON_PLATFORM=${PYTHON_PLATFORM} \
 		PYTHON_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} \
-		PYTHON_VERSION=${PYTHON_VERSION}
-
-# If multiple Python versions are installed and cmake is used, it might
-# happen that a cmake-enabled port using find_package(PythonLibs) and
-# find_package(PythonInterp) detects different Python versions.
-# This in turn might cause it to link against version X while using the
-# includes of version Y, leading to a broken port.
-# Enforce a certain Python version by using PYTHON_VER for cmake.
-CMAKE_ARGS+=	\
-		-DPythonLibs_FIND_VERSION:STRING="${PYTHON_VER}" \
-		-DPythonInterp_FIND_VERSION:STRING="${PYTHON_VER}"
+		PYTHON_VERSION=python${_PYTHON_VERSION} \
+		PYTHON_VER=${PYTHON_VER}
 
 _USES_POST+=	python
 .endif # _INCLUDE_USES_PYTHON_MK

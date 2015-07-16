@@ -2,6 +2,7 @@
 
 PORTNAME=	Data-Walk
 PORTVERSION=	1.00
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:GUIDO
@@ -15,5 +16,6 @@ LICENSE_COMB=	dual
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

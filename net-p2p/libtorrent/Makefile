@@ -1,42 +1,39 @@
 # $FreeBSD$
 
 PORTNAME=	libtorrent
-PORTVERSION=	0.13.2
-PORTREVISION=	3
+PORTVERSION=	0.13.4
+PORTREVISION=	2
 CATEGORIES=	net-p2p
-MASTER_SITES=	http://libtorrent.rakshasa.no/downloads/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	flz/libtorrent
+MASTER_SITES=	http://libtorrent.rakshasa.no/downloads/
 
-MAINTAINER?=	ports@FreeBSD.org
-COMMENT?=	BitTorrent Library written in C++
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	BitTorrent Library written in C++
 
-LIB_DEPENDS=	sigc-2.0.0:${PORTSDIR}/devel/libsigc++20
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-CONFLICTS?=	libtorrent-devel-[0-9]* \
-		rblibtorrent-[0-9]* \
-		rblibtorrent-devel-[0-9]*
-
-USE_AUTOTOOLS=	libtool
-USES=	pathfix pkgconfig
+USES=		compiler:c++11-lang libtool pathfix pkgconfig
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-debug
+CONFIGURE_ENV=	OPENSSL_LIBS="-L${OPENSSLBASE}/lib -ssl -crypto" OPENSSL_CFLAGS="-I${OPENSSLBASE}/include"
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	KQUEUE IPV6
 OPTIONS_DEFAULT=	KQUEUE
 KQUEUE_DESC=	Use kqueue(2) support
+KQUEUE_CONFIGURE_ON=	--with-kqueue
+IPV6_CONFIGURE_ON=	--enable-ipv6
 
 .include <bsd.port.pre.mk>
 
-.if defined(WITH_OPENSSL_BASE)
-# The reason why I use this is cause openssl from base doesn't install a .pc file
-# and configure will fail trying to find it. Setting both of those variables to
-# a *non-empty* value by-passes the pkg-config check.
-CONFIGURE_ENV=	OPENSSL_LIBS="-L/usr/lib -ssl -crypto" OPENSSL_CFLAGS="-I/usr/include"
+# Disable amd64 atomic ops on i386 when using gcc
+# undefined reference to __sync_add_and_fetch_8
+# undefined reference to __sync_fetch_and_and_8
+.if ${ARCH} == "i386" && ${COMPILER_TYPE} == "gcc"
+CONFIGURE_ARGS+=	--disable-instrumentation
 .endif
-
-CONFIGURE_ARGS+=	--disable-debug
 
 # Workaround to build on >= 10.x
 .if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
@@ -55,14 +52,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/\.assign/.fill/' \
 		${WRKSRC}/src/torrent/utils/extents.h \
 		${WRKSRC}/src/torrent/utils/log.cc
-.endif
-
-.if ${PORT_OPTIONS:MKQUEUE}
-CONFIGURE_ARGS+=	--with-kqueue
-.endif
-
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=	--enable-ipv6
 .endif
 
 .include <bsd.port.post.mk>

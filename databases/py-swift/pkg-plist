@@ -1,16 +1,17 @@
-etc/swift/account-server.conf-sample
-etc/swift/container-server.conf-sample
-etc/swift/container-sync-realms.conf-sample
-etc/swift/dispersion.conf-sample
-etc/swift/drive-audit.conf-sample
-etc/swift/memcache.conf-sample
-etc/swift/mime.types-sample
-etc/swift/object-expirer.conf-sample
-etc/swift/object-server.conf-sample
-etc/swift/proxy-server.conf-sample
-etc/swift/rsyncd.conf-sample
-etc/swift/swift-rsyslog.conf-sample
-etc/swift/swift.conf-sample
+@sample %%ETCDIR%%/account-server.conf.sample
+@sample %%ETCDIR%%/container-reconciler.conf.sample
+@sample %%ETCDIR%%/container-server.conf.sample
+@sample %%ETCDIR%%/container-sync-realms.conf.sample
+@sample %%ETCDIR%%/dispersion.conf.sample
+@sample %%ETCDIR%%/drive-audit.conf.sample
+@sample %%ETCDIR%%/memcache.conf.sample
+@sample %%ETCDIR%%/mime.types.sample
+@sample %%ETCDIR%%/object-expirer.conf.sample
+@sample %%ETCDIR%%/object-server.conf.sample
+@sample %%ETCDIR%%/proxy-server.conf.sample
+@sample %%ETCDIR%%/rsyncd.conf.sample
+@sample %%ETCDIR%%/swift-rsyslog.conf.sample
+@sample %%ETCDIR%%/swift.conf.sample
 man/man1/swift-account-auditor.1.gz
 man/man1/swift-account-info.1.gz
 man/man1/swift-account-reaper.1.gz
@@ -42,4 +43,3 @@ man/man5/dispersion.conf.5.gz
 man/man5/object-expirer.conf.5.gz
 man/man5/object-server.conf.5.gz
 man/man5/proxy-server.conf.5.gz
-@dirrmtry etc/swift

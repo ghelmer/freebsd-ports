@@ -9,7 +9,7 @@
 ### Class::Accessor 0.34
 ### Crypt::Eksblowfish
 ### DBI 1.37
-### DBIx::SearchBuilder 1.65
+### DBIx::SearchBuilder 1.66
 ### Data::GUID
 ### Date::Extract 0.02
 ### Date::Manip
@@ -23,13 +23,14 @@
 ### Digest::base                                perl std
 ### Email::Address 1.897
 ### Email::Address::List
-### Encode 2.39                                 perl std
+### Encode 2.64                                 perl std (needs newer version)
 ### Errno                                       perl std
 ### File::Glob                                  perl std
 ### File::ShareDir
 ### File::Spec 0.8                              perl std
 ### File::Temp 0.19                             perl std
 ### HTML::Entities
+### HTML::FormatExternal
 ### HTML::FormatText::WithLinks 0.14
 ### HTML::FormatText::WithLinks::AndTables
 ### HTML::Mason 1.43
@@ -80,7 +81,7 @@ CORE_DEPS=	p5-Apache-Session>=1.53:${PORTSDIR}/www/p5-Apache-Session				\
 		p5-Class-Accessor>=0.34:${PORTSDIR}/devel/p5-Class-Accessor				\
 		p5-Crypt-Eksblowfish>0:${PORTSDIR}/security/p5-Crypt-Eksblowfish			\
 		p5-DBI>=1.37:${PORTSDIR}/databases/p5-DBI						\
-		p5-DBIx-SearchBuilder>=1.59:${PORTSDIR}/databases/p5-DBIx-SearchBuilder			\
+		p5-DBIx-SearchBuilder>=1.66:${PORTSDIR}/databases/p5-DBIx-SearchBuilder			\
 		p5-Data-GUID>0:${PORTSDIR}/devel/p5-Data-GUID						\
 		p5-Date-Extract>=0.02:${PORTSDIR}/devel/p5-Date-Extract					\
 		p5-Date-Manip>0:${PORTSDIR}/devel/p5-Date-Manip						\
@@ -91,8 +92,10 @@ CORE_DEPS=	p5-Apache-Session>=1.53:${PORTSDIR}/www/p5-Apache-Session				\
 		p5-Devel-GlobalDestruction>0:${PORTSDIR}/devel/p5-Devel-GlobalDestruction		\
 		p5-Devel-StackTrace>=1.30:${PORTSDIR}/devel/p5-Devel-StackTrace				\
 		p5-Email-Address>=1.89.7:${PORTSDIR}/mail/p5-Email-Address				\
-		p5-Email-Address-List>=0.03:${PORTSDIR}/mail/p5-Email-Address-List				\
+		p5-Email-Address-List>=0.03:${PORTSDIR}/mail/p5-Email-Address-List			\
+		p5-Encode>=2.64:${PORTSDIR}/converters/p5-Encode					\
 		p5-File-ShareDir>0:${PORTSDIR}/devel/p5-File-ShareDir					\
+		p5-HTML-FormatExternal>0:${PORTSDIR}/textproc/p5-HTML-FormatExternal			\
 		p5-HTML-FormatText-WithLinks-AndTables>0:${PORTSDIR}/textproc/p5-HTML-FormatText-WithLinks-AndTables	\
 		p5-HTML-FormatText-WithLinks>=0.14:${PORTSDIR}/textproc/p5-HTML-FormatText-WithLinks	\
 		p5-HTML-Mason-PSGIHandler>=0.52:${PORTSDIR}/www/p5-HTML-Mason-PSGIHandler		\
@@ -206,7 +209,7 @@ DEVELOPER_DEPS=	p5-Email-Abstract>0:${PORTSDIR}/mail/p5-Email-Abstract				\
 		p5-Test-Pod>0:${PORTSDIR}/devel/p5-Test-Pod                                     \
 		p5-Test-WWW-Mechanize-PSGI>0:${PORTSDIR}/devel/p5-Test-WWW-Mechanize-PSGI	\
 		p5-Test-WWW-Mechanize>=1.30:${PORTSDIR}/devel/p5-Test-WWW-Mechanize		\
-		p5-Test-Warn>0:${PORTSDIR}devel/p5-Test-Warn					\
+		p5-Test-Warn>0:${PORTSDIR}/devel/p5-Test-Warn					\
 		p5-WWW-Mechanize>=1.52:${PORTSDIR}/www/p5-WWW-Mechanize				\
 		p5-XML-Simple>0:${PORTSDIR}/textproc/p5-XML-Simple
 
@@ -235,9 +238,9 @@ MYSQL_DEPS=	p5-DBD-mysql>=2.1018:${PORTSDIR}/databases/p5-DBD-mysql
 ORACLE_DEPS=	p5-DBD-Oracle>0:${PORTSDIR}/databases/p5-DBD-Oracle
 
 ### --- PGSQL ---
-### DBD::Pg 1.43
+### DBD::Pg 3.3.1
 
-PGSQL_DEPS=	p5-DBD-Pg>=1.43:${PORTSDIR}/databases/p5-DBD-Pg
+PGSQL_DEPS=	p5-DBD-Pg>=3.3.1:${PORTSDIR}/databases/p5-DBD-Pg
 
 ### --- SQLITE ---
 ### DBD::SQLite 1.00
@@ -306,3 +309,4 @@ HTML_DOC_DEPS=	p5-HTML-Parser>0:${PORTSDIR}/www/p5-HTML-Parser
 ### --- AVOID ---
 ###     'DBD::Oracle' => [qw(1.23)],
 ###     'Devel::StackTrace' => [qw(1.28 1.29)],
+###	'DBD::Pg' => [qw(3.3.0)],

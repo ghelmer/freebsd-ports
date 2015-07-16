@@ -3,7 +3,7 @@
 
 PORTNAME=	nvidia-texture-tools
 DISTVERSION=	2.0.8-1
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	GOOGLE_CODE \
 		http://mirror.amdmi3.ru/distfiles/
@@ -12,19 +12,20 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Texture Tools with support for DirectX 10 texture formats
 
 LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR
 
-USES=		cmake
+USES=		alias cmake jpeg
 CMAKE_ARGS=	-DNVTT_SHARED=TRUE
 
-CFLAGS+=	-fPIC -I${LOCALBASE}/include/libpng15
-CXXFLAGS+=	-fPIC -I${LOCALBASE}/include/libpng15
+CFLAGS+=	-fPIC
+CXXFLAGS+=	-fPIC
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PORTDOCS=	NVIDIA_Texture_Tools_README.txt ChangeLog
+
+ONLY_FOR_ARCHS=	i386 amd64 powerpc powerpc64 # see src/nvcore/nvcore.h
 
 OPTIONS_DEFINE=	COMPRESSUI DOCS
 

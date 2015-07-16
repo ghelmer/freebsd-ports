@@ -7,7 +7,7 @@
 # Valid ARGS:
 #				build	Adds twisted and any additional component as build
 #						dependency to the port
-#				run		Adds twisted and any additional component as build
+#				run	Adds twisted and any additional component as run
 #						dependency to the port
 #				comp	Adds the specified twisted component to as build or
 #						run dependency to the ports
@@ -24,32 +24,11 @@
 .if !defined(_INCLUDE_USES_TWISTED_MK)
 _INCLUDE_USES_TWISTED_MK=	yes
 
-.if !defined(twisted_ARGS)
-twisted_ARGS=	build,run
-.endif
-
-_TWISTED_ARGS=	${twisted_ARGS:S/,/ /g}
-
-.if ${_TWISTED_ARGS:Mbuild}
-_TWISTED_BUILD_DEP=	yes
-_TWISTED_ARGS:=		${_TWISTED_ARGS:Nbuild}
-.endif
-.if ${_TWISTED_ARGS:Mrun}
-_TWISTED_RUN_DEP=	yes
-_TWISTED_ARGS:=		${_TWISTED_ARGS:Nrun}
-.endif
-
-.if !defined(_TWISTED_BUILD_DEP) && !defined(_TWISTED_RUN_DEP)
-# The port only seems to specify components, but neither run or build.
-# Assume them to be build and run dependencies.
-_TWISTED_BUILD_DEP=	yes
-_TWISTED_RUN_DEP=	yes
-.endif
-
-.if defined(_TWISTED_BUILD_DEP)
+# If neither build nor run are specified add both.
+.if ${twisted_ARGS:Mbuild} || empty(twisted_ARGS:Mrun)
 BUILD_DEPENDS+=	${PYTHON_SITELIBDIR}/twisted/__init__.py:${PORTSDIR}/devel/py-twistedCore
 .endif
-.if defined(_TWISTED_RUN_DEP)
+.if ${twisted_ARGS:Mrun} || empty(twisted_ARGS:Mbuild)
 RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/twisted/__init__.py:${PORTSDIR}/devel/py-twistedCore
 .endif
 
@@ -67,15 +46,15 @@ web2_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/web2/__init__.py:${PORTSDIR}/www/py-t
 web_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/web/__init__.py:${PORTSDIR}/www/py-twistedWeb
 words_DEPENDS=	${PYTHON_SITELIBDIR}/twisted/words/__init__.py:${PORTSDIR}/net-im/py-twistedWords
 
-
-.for component in ${_TWISTED_ARGS}
+.for component in ${twisted_ARGS:Nbuild:Nrun}
 .  if ${_TWISTED_COMPONENTS:M${component}}==""
 IGNORE=	cannot install unknown twisted component ${component}
 .  endif
-.  if defined(_TWISTED_BUILD_DEP)
+# If neither build nor run are specified add both.
+.  if ${twisted_ARGS:Mbuild} || empty(twisted_ARGS:Mrun)
 BUILD_DEPENDS+=	${${component}_DEPENDS}
 .  endif
-.  if defined(_TWISTED_RUN_DEP)
+.  if ${twisted_ARGS:Mrun} || empty(twisted_ARGS:Mbuild)
 RUN_DEPENDS+=	${${component}_DEPENDS}
 .  endif
 .endfor

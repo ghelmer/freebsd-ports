@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ncurses
-DISTVERSION=	${RELEASE}-20140621
+DISTVERSION=	${RELEASE}-20150214
 CATEGORIES=	devel
 MASTER_SITES=	ftp://invisible-island.net/${PORTNAME}/current/
-MASTER_SITE_SUBDIR=	${PORTNAME}/current
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	bapt@FreeBSD.org
@@ -17,7 +16,6 @@ LICENSE=	MIT
 
 RELEASE=	5.9
 
-SHAREMODE=	0644
 GNU_CONFIGURE=	yes
 CONFIGURE_SCRIPT=../configure
 CONFIGURE_ARGS=	--datadir=${PREFIX}/share/misc --disable-overwrite \
@@ -40,7 +38,7 @@ TRACE_DESC=	Add trace() function to all models of ncurses
 CONFIGURE_ENV=	gnat_exists="no"
 
 USE_LDCONFIG=	yes
-USES=		pkgconfig tar:tgz
+USES=		tar:tgz
 
 WIDEC_WRKSRC=	${WRKSRC}/build.widec
 NOWIDEC_WRKSRC=	${WRKSRC}/build.nowidec
@@ -84,6 +82,8 @@ DEBUG_CONFIGURE_WITH=	debug
 
 OPTIONS_SUB=yes
 
+.include <bsd.port.options.mk>
+
 post-extract:
 	@${MKDIR} ${WIDEC_WRKSRC}
 	@${MKDIR} ${NOWIDEC_WRKSRC}
@@ -124,10 +124,12 @@ post-install:
 . for f in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 . endfor
+.if ${OPSYS} != FreeBSD || ${OSVERSION} > 900000
 	${RM} -f ${STAGEDIR}${PREFIX}/lib/libncurses.so \
 		${STAGEDIR}${PREFIX}/lib/libncursesw.so
 	${ECHO} "INPUT(libncurses.so.${RELEASE:R} AS_NEEDED(-ltinfo))" > ${STAGEDIR}${PREFIX}/lib/libncurses.so
 	${ECHO} "INPUT(libncursesw.so.${RELEASE:R} AS_NEEDED(-ltinfow))" > ${STAGEDIR}${PREFIX}/lib/libncursesw.so
+.endif
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.5.9
 
 .include <bsd.port.mk>

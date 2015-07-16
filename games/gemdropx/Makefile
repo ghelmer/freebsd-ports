@@ -3,7 +3,7 @@
 
 PORTNAME=	gemdropx
 PORTVERSION=	0.9
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/gemdropx/src/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,10 +11,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interesting one-player puzzle game for X (SDL)
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USES=		gmake
 USE_SDL=	image mixer sdl

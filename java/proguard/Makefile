@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	proguard
-PORTVERSION=	4.11
+PORTVERSION=	5.2.1
 CATEGORIES=	java devel
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	${PORTNAME}/${PORTNAME}/${PORTVERSION:S/.1$//}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION:C/.1$//}
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A Java class file shrinker, optimizer, and obfuscator
+COMMENT=	Java class file shrinker, optimizer, and obfuscator
 
 LICENSE=	GPLv2
-
-RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

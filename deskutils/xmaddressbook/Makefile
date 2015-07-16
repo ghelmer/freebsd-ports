@@ -5,14 +5,12 @@ PORTNAME=	xmaddressbook
 PORTVERSION=	1.5.3
 PORTREVISION=	3
 CATEGORIES=	deskutils
-MASTER_SITES=	${MASTER_SITE_XCONTRIB}
-MASTER_SITE_SUBDIR=	office
-EXTRACT_SUFX=	.tar.Z
+MASTER_SITES=	XCONTRIB/office
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11/Motif-based addressbook program
 
-USES=		imake motif
+USES=		imake motif tar:Z
 USE_XORG=	ice sm x11 xext xi xp xt oldx
 WRKSRC=		${WRKDIR}/xmaddressbook
 

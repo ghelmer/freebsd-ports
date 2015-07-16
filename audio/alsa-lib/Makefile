@@ -2,35 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	alsa-lib
-PORTVERSION=	1.0.27.2
-PORTREVISION=	2
+PORTVERSION=	1.0.29
 CATEGORIES=	audio
 MASTER_SITES=	ALSA/lib \
-		GENTOO/distfiles
+		GENTOO
 
-MAINTAINER=	aragon@phat.za.net
+MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	ALSA compatibility library
 
-USES=		tar:bzip2 libtool:keepla
+LICENSE=	LGPL21 # or any later version
+
+USES=		libtool:keepla tar:bzip2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-pkgconfdir="\$${prefix}/libdata/pkgconfig"
 INSTALL_TARGET=	install-strip
+CPPFLAGS+=	-I${FILESDIR}
 
 OPTIONS_DEFINE=	PYTHON
-OPTIONS_SUB=	${OPTIONS_DEFINE}
+OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	2
-.else
-CONFIGURE_ARGS+=--disable-python
-.endif
+PYTHON_CONFIGURE_ENABLE=python
+PYTHON_USES=	python:2
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} -e '/LIBS/ { s/-ldl//g; s/-lrt//g; }' \
 		-e 's/python-config/${PYTHON_CMD:T}-config/g' \
+		-e '/pythonlibs/s/--libs/--ldflags/' \
 		-e '/-D_GNU_SOURCE/d' \
 		-e '/lt_cv_dlopen/s/-ldl//g' ${WRKSRC}/configure
 	${REINPLACE_CMD} '/LIBADD/s/-ldl//g' \

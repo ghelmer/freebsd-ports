@@ -3,7 +3,7 @@
 
 PORTNAME=	rrdtool
 PORTVERSION=	1.2.30
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	databases graphics
 MASTER_SITES=	http://oss.oetiker.ch/rrdtool/pub/
 PKGNAMESUFFIX=	12
@@ -13,7 +13,7 @@ COMMENT=	Round Robin Database Tools v1.2
 
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libart_lgpl_2.so:${PORTSDIR}/graphics/libart_lgpl \
-		libpng15.so:${PORTSDIR}/graphics/png
+		libpng.so:${PORTSDIR}/graphics/png
 
 CONFLICTS=	rrdtool10-* rrdtool-1.*
 
@@ -29,9 +29,7 @@ OPTIONS_DEFAULT=	PERL
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
-INSTALLS_EGGINFO=yes
-PYDISTUTILS_EGGINFO=py_rrdtool-0.2.1-${PYTHON_VERSION:S/thon//}.egg-info
+USES+=		python
 PLIST_SUB+=	WITH_PYTHON=""
 CONFIGURE_ARGS+=	--enable-python
 .else
@@ -50,7 +48,7 @@ PLIST_SUB+=	WITH_RUBY="@comment "
 
 .if ${PORT_OPTIONS:MPERL}
 USES+=		perl5
-USE_PERL5=	run build fixpacklist
+USE_PERL5=	run build
 CONFIGURE_ARGS+=	--enable-perl --enable-perl-site-install
 PLIST_SUB+=	WITH_PERL=""
 .else

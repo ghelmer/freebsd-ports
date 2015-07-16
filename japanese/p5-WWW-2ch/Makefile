@@ -3,12 +3,12 @@
 
 PORTNAME=	WWW-2ch
 PORTVERSION=	0.07
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for scraping of 2ch.net BBS
 
 RUN_DEPENDS=	p5-libwww>=0:${PORTSDIR}/www/p5-libwww \

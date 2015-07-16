@@ -5,14 +5,13 @@ PORTNAME=	libarena
 PORTVERSION=	0.3.6
 CATEGORIES=	devel
 MASTER_SITES=	http://www.25thandclement.com/~william/projects/releases/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Custom Memory Allocator Interface
 
 LICENSE=	MIT
 
-USES=		gmake
+USES=		gmake tar:tgz
 
 PLIST_FILES=	include/arena/align.h \
 		include/arena/arena.h \
@@ -21,7 +20,6 @@ PLIST_FILES=	include/arena/align.h \
 		include/arena/rbits.h \
 		include/arena/util.h \
 		lib/libarena.a
-PLIST_DIRS=	include/arena
 
 post-patch:
 .for i in Epilogue.mk Prologue.mk

@@ -3,7 +3,7 @@
 
 PORTNAME=	idjc
 PORTVERSION=	0.8.14
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio python
 MASTER_SITES=	SF/idjc/idjc/0.8
 
@@ -27,13 +27,14 @@ RUN_DEPENDS=	oggenc:${PORTSDIR}/audio/vorbis-tools \
 		${PYTHON_PKGNAMEPREFIX}mutagen>=0:${PORTSDIR}/audio/py-mutagen \
 		${PYTHON_PKGNAMEPREFIX}dbus>=0.8:${PORTSDIR}/devel/py-dbus
 
+OPTIONS_DEFINE=	DOCS
+
 USES=		compiler:nestedfct desktop-file-utils gettext gmake \
-		libtool pathfix pkgconfig
+		libtool pathfix pkgconfig python:2.7
 LDFLAGS=	-L${LOCALBASE}/lib
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=		yes
-USE_PYTHON=		2.7
-USE_PYTHON_PREFIX=	yes
+USE_PYTHON=		pythonprefix
 USE_GNOME=		glib20 pygtk2
 
 PLIST_SUB+=		PORTVERSION="${PORTVERSION}"

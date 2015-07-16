@@ -4,61 +4,41 @@
 PORTNAME=	sort
 PORTVERSION=	20120716
 CATEGORIES=	textproc
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	gabor
+MASTER_SITES=	LOCAL/gabor
 PKGNAMEPREFIX=	bsd-
 
-MAINTAINER=	gabor@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BSD-licensed version of sort
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-MANCOMPRESSED=	yes
-MAN1=		sort.1
 
 MAKE_ENV+=	BINDIR="${PREFIX}/bin" \
 		MANDIR="${MANPREFIX}/man/man" \
 		CATDIR="${MANPREFIX}/man/man" \
 		NLSDIR="${PREFIX}/share/nls" \
+		NO_WERROR="defined" \
 		MK_GNU_SORT="no"
+USES=		uidfix
 
 CFLAGS+=	-std=c99
 
-OPTIONS_DEFINE=		THREADS NLS OVERWRITE_BASE
-OVERWRITE_BASE_DESC=	"Replaces base GNU sort"
+PLIST_FILES=	bin/sort \
+		bin/bsdsort \
+		bin/gnusort \
+		man/man1/sort.1.gz
+
+OPTIONS_DEFINE=		THREADS NLS
 OPTIONS_DEFAULT=	THREADS NLS
+OPTIONS_SUB=		yes
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-PLIST_SUB+=	NLS=""
-.else
-MAKE_ENV+=	WITHOUT_NLS=yes
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MTHREADS}
-MAKE_ENV+=	WITH_THREADS=yes
-.endif
-
-.if ${PORT_OPTIONS:MOVERWRITE_BASE}
-PREFIX=		/usr
-PLIST_SUB+=	OVERWRITE_BASE="" NO_OVERWRITE_BASE="@comment "
-.else
-PLIST_SUB+=	OVERWRITE_BASE="@comment " NO_OVERWRITE_BASE=""
-.endif
-
-.if defined(WITH_OVERWRITE_BASE) && exists(${PREFIX}/bin/sort)
-pre-install:
-	${INSTALL_PROGRAM} ${PREFIX}/bin/sort ${PREFIX}/bin/gnusort
-.endif
+NLS_MAKE_ENV_OFF=	WITHOUT_NLS=yes
+NLS_PLIST_FILES=	share/nls/hu_HU.ISO8859-2/sort.cat
+THREADS_MAKE_ENV=	WITH_THREADS=yes
 
 post-install:
-	${LN} -s ${PREFIX}/bin/sort ${PREFIX}/bin/bsdsort
-.if !defined(WITH_OVERWRITE_BASE)
-	${LN} -s /usr/bin/sort ${PREFIX}/bin/gnusort
-.endif
+	(cd ${STAGEDIR}${PREFIX}/bin && ${LN} -s sort bsdsort)
+	${LN} -s /usr/bin/sort ${STAGEDIR}${PREFIX}/bin/gnusort
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

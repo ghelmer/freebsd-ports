@@ -14,6 +14,7 @@ include/XmHTML/toolkit.h
 lib/libXmHTML.a
 lib/libXmHTML.so
 lib/libXmHTML.so.1
+lib/libXmHTML.so.1.0.2
 %%PORTDOCS%%%%DOCSDIR%%/GPL.html
 %%PORTDOCS%%%%DOCSDIR%%/LGPL.html
 %%PORTDOCS%%%%DOCSDIR%%/XmHTML.html
@@ -190,11 +191,3 @@ lib/libXmHTML.so.1
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/examples/test-pages/unclosed.html
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/examples/test-pages/unclosed1.html
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/examples/visual.c
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%/examples/test-pages
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%/examples
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%/contrib
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%/book
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/man
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm include/XmHTML

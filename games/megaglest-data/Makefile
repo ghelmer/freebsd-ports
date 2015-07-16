@@ -11,9 +11,8 @@ DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}
 MAINTAINER=	rnejdl@ringofsaturn.com
 COMMENT=	MegaGlest data files
 
-USES=		dos2unix
+USES=		dos2unix tar:xz
 DOS2UNIX_GLOB=	*.log *.ini *.html *.txt *.lng
-USE_XZ=		yes
 NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -26,14 +25,11 @@ pre-install:
 	${RM} -f ${PLIST}
 .for DIR in data maps scenarios techs tilesets tutorials
 	@cd ${WRKSRC} && \
-		${FIND} ${DIR} -type d -empty | ${SORT} -r | ${SED} -e 's|^|@exec ${MKDIR} %D/%%DATADIR%%/|' -e 's|$$| > /dev/null 2>\&1|' >> ${PLIST} && \
-		${FIND} ${DIR} -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST} && \
-		${FIND} ${DIR} -type d | ${SORT} -r | ${SED} -e 's|^|@dirrm %%DATADIR%%/|' >> ${PLIST}
+		${FIND} ${DIR} -type d -empty | ${SORT} -r | ${SED} -e 's|^|@dir %%DATADIR%%/|' >> ${PLIST} && \
+		${FIND} ${DIR} -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST}
 .endfor
 	@${ECHO_CMD} "share/applications/megaglest.desktop" >> ${PLIST}
 	@${ECHO_CMD} "share/icons/megaglest.png" >> ${PLIST}
-	@${ECHO_CMD} "@dirrmtry share/icons" >> ${PLIST}
-	@${ECHO_CMD} "@dirrm %%DATADIR%%" >> ${PLIST}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/glest_factions

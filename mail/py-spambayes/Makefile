@@ -17,9 +17,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bsddb>0:${PORTSDIR}/databases/py-bsddb \
 		${PYTHON_PKGNAMEPREFIX}dns>=2.0:${PORTSDIR}/dns/py-dns \
 		${PYTHON_PKGNAMEPREFIX}lockfile>=0.2:${PORTSDIR}/devel/py-lockfile
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 USE_RC_SUBR=	pyspamd
 
@@ -29,8 +28,7 @@ CACHEDIR?=	${LOCALSTATDIR}/cache
 
 PLIST_SUB+=	LOCALSTATDIR=${LOCALSTATDIR} \
 		DBDIR=${DBDIR} \
-		CACHEDIR=${CACHEDIR} \
-		RESETPREFIX=${PREFIX}
+		CACHEDIR=${CACHEDIR}
 
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
 
@@ -44,6 +42,8 @@ PORTDOCS=	CHANGELOG.txt \
 		WHAT_IS_NEW.txt \
 		utilities/ \
 		contrib/
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	@${CHMOD} -Rf u+w ${WRKSRC}

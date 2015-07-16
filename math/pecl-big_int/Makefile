@@ -6,12 +6,12 @@ PORTVERSION=	1.0.7
 CATEGORIES=	math devel pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Functions for calculations with arbitrary length integers and bitsets
 
+USES=		tar:tgz
 USE_PHP=	yes
 USE_PHPEXT=	yes
 
@@ -20,6 +20,8 @@ DOCS=		CREDITS INSTALL LICENSE README docs/index.html libbig_int/CREDITS \
 EXAMPLES=	bitset.php example.php rand.php RSA.php std_header.php
 
 CONFIGURE_ARGS=	--enable-big-int=shared
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

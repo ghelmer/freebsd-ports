@@ -2,14 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	vnstat
-PORTVERSION=	1.11
-PORTREVISION=	6
+PORTVERSION=	1.14
+PORTREVISION=	0
 CATEGORIES=	net
 MASTER_SITES=	http://humdi.net/vnstat/ \
 		http://mirror.mcx2.org/
 
 MAINTAINER=	feld@FreeBSD.org
-COMMENT=	A console-based network traffic monitor
+COMMENT=	Console-based network traffic monitor
+
+LICENSE=	GPLv2
 
 MAKE_ARGS=	CC="${CC}" CFLAGS="-I${LOCALBASE}/include" \
 		LDFLAGS="-L${LOCALBASE}/lib"
@@ -17,10 +19,16 @@ INSTALL_TARGET=	bsdinstall
 
 USE_RC_SUBR=	vnstat
 
+USES=	gmake
 USERS=	vnstat
 GROUPS=	vnstat
 
-PORTDOCS=	README INSTALL_BSD UPGRADE vnstat-cron
+BIN_BSD=	${PREFIX}/bin
+SBIN_BSD=	${PREFIX}/sbin
+MAN_BSD=	${MANDIRS}
+ETC_BSD=	${PREFIX}/etc
+
+PORTDOCS=	README INSTALL_BSD UPGRADE
 SUB_FILES=	pkg-message
 SUB_LIST=	USERS=${USERS} \
 		GROUPS=${GROUPS}
@@ -39,11 +47,6 @@ PLIST_SUB+=	GUI=""
 ALL_TARGET="vnstat"
 PLIST_SUB+=	GUI="@comment "
 .endif
-
-post-extract:
-	@cd ${WRKSRC} && ${CP} examples/vnstat.cron vnstat-cron
-	@${REINPLACE_CMD} -e 's|/usr/bin|/usr/local/bin|g' \
-		-e 's|ls /var/lib|ls -l /var/db|g' ${WRKSRC}/vnstat-cron
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/|${PREFIX}/etc/|g' \
@@ -67,9 +70,5 @@ post-install:
 	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
 	@cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}/${DOCSDIR}
 .endif
-
-	@${ECHO_MSG} ""
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG} ""
 
 .include <bsd.port.mk>

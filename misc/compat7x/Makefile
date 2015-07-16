@@ -3,13 +3,12 @@
 PORTNAME=	compat7x
 PORTVERSION=	7.4.704000.201310.1
 CATEGORIES=	misc
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	garga/compat
+MASTER_SITES=	LOCAL/garga/compat
 PKGNAMESUFFIX=	-${ARCH}
 DISTNAME=	${PORTNAME}-${ARCH}-${PORTVERSION}
 
 MAINTAINER=	garga@FreeBSD.org
-COMMENT=	A convenience package to install the compat7x libraries
+COMMENT=	Convenience package to install the compat7x libraries
 
 LICENSE=	BSD2CLAUSE
 
@@ -22,10 +21,6 @@ TARGET32_DIR=	${PREFIX}/lib32/compat
 USE_LDCONFIG=	${TARGET_DIR}
 
 .include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 700000
-IGNORE=		is for FreeBSD 7.x and newer
-.endif
 
 .if ${ARCH} == amd64
 PLIST_SUB+=	LDCONFIG_LIB32="${LDCONFIG} -32"

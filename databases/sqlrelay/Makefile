@@ -3,37 +3,74 @@
 
 PORTNAME=	${SQLRELAY_PORTNAME}
 PORTVERSION=	${SQLRELAY_PORTVERSION}
-PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Persistent DB connection pooling/proxying/load balancing system
 
 LIB_DEPENDS=	librudiments.so:${PORTSDIR}/devel/rudiments
 
-BROKEN=		Does not build
 WANT_GNOME=	yes
-USES=		gmake
-USE_AUTOTOOLS=	autoconf libtool
+USES=		gmake libtool
 CPPFLAGS+=	-I${LOCALBASE}/include
-CONFIGURE_ENV=		${SQLRELAY_CONFIGURE_ENV}
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=		${SQLRELAY_CONFIGURE_ARGS} \
 			--disable-tcl \
 			--disable-java \
+			--disable-msql \
 			--disable-perl \
 			--disable-php \
 			--disable-python \
 			--disable-ruby \
+			--disable-erlang \
 			--disable-zope
 MAKE_JOBS_UNSAFE=yes
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
 
+TOSTRIP=	bin/sqlr-start \
+		bin/sqlr-stop \
+		bin/sqlr-listener \
+		bin/sqlr-connection \
+		bin/sqlr-scaler \
+		bin/sqlr-cachemanager \
+		bin/sqlr-fields \
+		bin/sqlr-query \
+		bin/sqlr-export \
+		bin/sqlr-import \
+		bin/sqlr-pwdenc \
+		bin/sqlr-status \
+		bin/sqlrsh \
+		lib/libsqlrutil-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libsqlrclient-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libsqlrclientwrapper-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libpqsqlrelay-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libmysql3sqlrelay-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libmysql40sqlrelay-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libmysql41sqlrelay-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libmysql50sqlrelay-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libmysql51sqlrelay-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		lib/libsqlrserver-${SQLRELAY_PORTVERSION}.so.1.0.0 \
+		libexec/sqlrelay/sqlrauth_default.so \
+		libexec/sqlrelay/sqlrauth_sqlrelay.so \
+		libexec/sqlrelay/sqlrconnection_router.so \
+		libexec/sqlrelay/sqlrlogger_custom_nw.so \
+		libexec/sqlrelay/sqlrlogger_custom_sc.so \
+		libexec/sqlrelay/sqlrlogger_debug.so \
+		libexec/sqlrelay/sqlrlogger_slowqueries.so \
+		libexec/sqlrelay/sqlrparser_default.so \
+		libexec/sqlrelay/sqlrprotocol_sqlrclient.so \
+		libexec/sqlrelay/sqlrpwdenc_crypt.so \
+		libexec/sqlrelay/sqlrpwdenc_md5.so \
+		libexec/sqlrelay/sqlrpwdenc_rot.so \
+		libexec/sqlrelay/sqlrquery_sqlrcmdcstat.so \
+		libexec/sqlrelay/sqlrquery_sqlrcmdgstat.so
+
 .include "${.CURDIR}/Makefile.common"
 
-OPTIONS_DEFINE=	MSQL MYSQL ODBC ORACLE PGSQL SQLITE3 FREETDS FIREBIRD DOCS
+OPTIONS_DEFINE=	MYSQL ODBC ORACLE PGSQL SQLITE3 FREETDS FIREBIRD DOCS
 OPTIONS_SUB=	yes
 
 ORACLE_CONFIGURE_ENABLE=	oracle
@@ -53,6 +90,7 @@ CONFIGURE_ARGS+=	--without-gdbm-prefix \
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
 CONFIGURE_ARGS+=	--with-mysql-prefix="${LOCALBASE}"
+TOSTRIP+=		libexec/sqlrelay/sqlrconnection_mysql.so
 .else
 CONFIGURE_ARGS+=	--disable-mysql
 .endif
@@ -64,15 +102,8 @@ CONFIGURE_ARGS+=	--with-firebird-prefix="${LOCALBASE}"
 CONFIGURE_ARGS+=	--disable-firebird
 .endif
 
-.if ${PORT_OPTIONS:MMSQL}
-LIB_DEPENDS+=		libmsql.so:${PORTSDIR}/databases/msql
-CONFIGURE_ARGS+=	--with-msql-prefix="${LOCALBASE}"
-.else
-CONFIGURE_ARGS+=	--disable-msql
-.endif
-
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=			pgsql
 CONFIGURE_ARGS+=	--with-postgresql-prefix="${LOCALBASE}"
 .else
 CONFIGURE_ARGS+=	--disable-postgresql
@@ -97,15 +128,15 @@ post-patch:
 		-e 's,\$$\(initroot\),\$$\(initroot\)${PREFIX},g' \
 		-e 's,/etc/rc.conf,/etc/defaults/rc.conf,g' \
 			${WRKSRC}/init/Makefile
-	${REINPLACE_CMD} -E \
-		-e 's,/usr/local[[:>:]],${PREFIX},g;' \
-		-e 's,[[:<:]]gtk-config[[:>:]],${GTK_CONFIG:T},g;' \
-			${WRKSRC}/acsite.m4
-	@${REINPLACE_CMD} -e '/EXAMPLEDIR/d' ${WRKSRC}/etc/Makefile
 	${FIND} ${WRKSRC} -name Makefile | ${XARGS} ${REINPLACE_CMD} -E \
 		-e 's#-release \$$\(SQLR_VERSION\)##g;'
 
 post-configure:
 	@${REINPLACE_CMD} 's,-Werror,,' ${WRKSRC}/config.mk
+
+post-stage:
+.for f in ${TOSTRIP}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${f}
+.endfor
 
 .include <bsd.port.mk>

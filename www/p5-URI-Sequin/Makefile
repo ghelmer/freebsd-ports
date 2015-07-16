@@ -3,6 +3,7 @@
 
 PORTNAME=	URI-Sequin
 PORTVERSION=	1.2
+PORTREVISION=	1
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SARGIE
@@ -13,6 +14,8 @@ COMMENT=	Extract information from the URLs of Search-Engines
 
 USES=		perl5
 USE_PERL5=	configure
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/URI/Sequin/examples

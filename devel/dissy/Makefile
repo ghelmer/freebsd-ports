@@ -3,9 +3,9 @@
 
 PORTNAME=	dissy
 PORTVERSION=	10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Graphical frontend to the objdump disassembler
@@ -16,8 +16,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gtk2>0:${PORTSDIR}/x11-toolkits/py-gtk2 \
 		${PYTHON_PKGNAMEPREFIX}webkitgtk>0:${PORTSDIR}/www/py-webkitgtk
 LIB_DEPENDS=	librsvg-2.so:${PORTSDIR}/graphics/librsvg2
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 
 PORTDOCS=	COPYING ChangeLog README UPGRADE
 

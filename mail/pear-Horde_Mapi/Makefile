@@ -1,18 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Mapi
-PORTVERSION=	1.0.2
+PORTVERSION=	1.0.5
 CATEGORIES=	mail www pear
 PKGNAMEPREFIX=	pear-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde MAPI utility library
 
+USES=	horde
 USE_HORDE_RUN=	Horde_Date \
 		Horde_Exception
 
 USE_PHP+=	bcmath
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

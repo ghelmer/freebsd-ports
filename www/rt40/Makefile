@@ -1,10 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	rt
-PORTVERSION=	4.0.20
+PORTVERSION=	4.0.23
 CATEGORIES=	www
-MASTER_SITES=	http://download.bestpractical.com/pub/rt/release/ \
-		SF/requesttracker/
+MASTER_SITES=	http://download.bestpractical.com/pub/rt/release/
 PKGNAMESUFFIX=	40
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -32,7 +31,7 @@ NO_ARCH=	yes
 # mentioned in the docs is currently unsupported in the ports, but see
 # http://www.infracaninophile.co.uk/articles/sphinxse.html
 
-OPTIONS_DEFINE=		DEV GD GPG GRAPHVIZ SSL_MAILGATE
+OPTIONS_DEFINE=		DEV GD GPG GRAPHVIZ SSL_MAILGATE DOCS
 OPTIONS_SINGLE=		DB
 OPTIONS_SINGLE_DB=	MYSQL ORACLE PGSQL SQLITE
 OPTIONS_RADIO=		WEB
@@ -58,13 +57,14 @@ RUN_DEPENDS+=	${CORE_DEPS}       \
 		${USERLOGO_DEPS}   \
 		${HTML_DOC_DEPS}
 
-USES+=		perl5
-USE_AUTOTOOLS=	autoconf
+USES=		cpe perl5
+CPE_VENDOR=	bestpractical
 
-RT_ETC_PATH?=	${PREFIX}/etc/${PORTNAME}${PKGNAMESUFFIX}
 RT_LAYOUT=	FreeBSD
+RT_ETC_DIR?=	etc/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
+RT_ETC_PATH=	${PREFIX}/${RT_ETC_DIR}
 
 AP_MODPERL_DESC=		Deploy with apache and mod_perl
 AP_MODPERL_RUN_DEPENDS=		${MODPERL2_DEPS}
@@ -85,7 +85,7 @@ SPAWN_FCGI_RUN_DEPENDS=		${LOCALBASE}/bin/spawn-fcgi:${PORTSDIR}/www/spawn-fcgi
 MYSQL_USE=			MYSQL=yes
 MYSQL_RUN_DEPENDS=		${MYSQL_DEPS}
 
-PGSQL_USE=			PGSQL=yes
+PGSQL_USES=			pgsql
 PGSQL_RUN_DEPENDS=		${PGSQL_DEPS}
 
 ORACLE_RUN_DEPENDS=		${ORACLE_DEPS}
@@ -173,8 +173,7 @@ CONFIGURE_ENV+=	PERL=${LOCALBASE}/bin/perl
 PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message
 SUB_LIST=	RT_ETC_PATH=${RT_ETC_PATH}
-
-run-autotools:	run-autotools-autoconf
+PLIST_SUB=	RT_ETC_DIR=${RT_ETC_DIR}
 
 pre-fetch:
 	@${ECHO} ""
@@ -195,7 +194,7 @@ pre-fetch:
 post-patch:
 	@${RM} -f ${WRKSRC}/lib/RT.pm.in.orig
 	@${REINPLACE_CMD} -e 's!%%PREFIX%%!${PREFIX}!g' ${WRKSRC}/config.layout
-	@${REINPLACE_CMD} -e 's!%%SITE_PERL%%!${SITE_PERL}!g' ${WRKSRC}/config.layout
+	@${REINPLACE_CMD} -e 's!%%SITE_PERL%%!${PREFIX}/${SITE_PERL_REL}!g' ${WRKSRC}/config.layout
 	@${REINPLACE_CMD} -e 's!/path/to/your/etc!${RT_ETC_PATH}!g' ${WRKSRC}/etc/RT_SiteConfig.pm
 	@${REINPLACE_CMD} -e 's!/bin:/usr/bin!/bin:/usr/bin:${LOCALBASE}/bin!' ${WRKSRC}/lib/RT/Interface/CLI.pm && \
 	    ${RM} ${WRKSRC}/lib/RT/Interface/CLI.pm.bak
@@ -204,6 +203,7 @@ pre-install:
 	@${RM} -f ${WRKSRC}/lib/RT.pm.in
 
 post-install:
+	@${RM} -rf ${STAGEDIR}/${WWWDIR}${PKGNAMESUFFIX}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/upgrade
 	(cd ${WRKSRC}/etc && \
 	    ${COPYTREE_SHARE} upgrade ${STAGEDIR}${DOCSDIR} "! -name *\.in")

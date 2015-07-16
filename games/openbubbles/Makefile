@@ -3,16 +3,17 @@
 
 PORTNAME=	openbubbles
 PORTVERSION=	1.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/nemysisfreebsdp/${CATEGORIES}/${PORTNAME}/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clone of Evan Bailey's game Bubbles
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		tar:bzip2
 USE_SDL=	sdl gfx image

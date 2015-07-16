@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pd
-DISTVERSION=	0.45-5
+DISTVERSION=	0.46-6
 DISTVERSIONSUFFIX=	.src
 CATEGORIES=	audio
 MASTER_SITES=	http://msp.ucsd.edu/Software/
@@ -10,24 +10,22 @@ MASTER_SITES=	http://msp.ucsd.edu/Software/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI-capable real-time audio processor/synthesizer
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE LGPL21
+LICENSE_COMB=	multi
+LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils \
 		dejavu>0:${PORTSDIR}/x11-fonts/dejavu
 
-
 WRKSRC=		${WRKDIR}/${DISTNAME:S,${DISTVERSIONSUFFIX},,}
 
-USES=		gettext gmake libtool pkgconfig shebangfix tcl:wrapper \
-		tk:wrapper
+USES=		autoreconf gettext gmake libtool pkgconfig shebangfix \
+		tcl:wrapper tk:wrapper
 SHEBANG_FILES=	tcl/pkg_mkIndex.tcl
 SHEBANG_LANG=	tclsh
 tclsh_OLD_CMD=	/usr/bin/tclsh
 tclsh_CMD=	${LOCALBASE}/bin/tclsh
-USE_AUTOTOOLS=	aclocal libtoolize autoconf automake
-ACLOCAL_ARGS=	-I m4/generated -I m4
-LIBTOOLIZE_ARGS=--install --copy --force
-AUTOMAKE_ARGS=	--add-missing --copy --force-missing
+GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_lib_pthread_pthread_create=no
 
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -35,14 +33,10 @@ LDFLAGS+=	-L${LOCALBASE}/lib -pthread
 
 DESKTOP_ENTRIES="Pd" "" "${PREFIX}/lib/pd/tcl/pd.ico" "pd" "" false
 
-OPTIONS_DEFINE=		ALSA DOCS FFTW JACK
-OPTIONS_DEFAULT=	FFTW
+OPTIONS_DEFINE=		ALSA DOCS JACK
 
 ALSA_CONFIGURE_ENABLE=	alsa
 ALSA_LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib
-FFTW_CONFIGURE_ENABLE=	fftw
-FFTW_BUILD_DEPENDS=	fftw3>0:${PORTSDIR}/math/fftw3
-FFTW_LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float
 JACK_CONFIGURE_ENABLE=	jack
 JACK_LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
 
@@ -54,10 +48,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's|\*kfreebsd\*gnu\*)|*freebsd*)| ; \
 		 s|portaudio=yes|portaudio=no| ; \
-		 s|-O3|| ; \
-		 s|fftw,|fftw3f,| ; \
-		 s|fftw_one,|fftwf_execute,| ; \
-		 s|fftw"|fftw3f"|' ${WRKSRC}/configure.ac
+		 s|-O3||' ${WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e \
 		'/^pkgconfigdir/s|=.*|= $$(prefix)/libdata/pkgconfig| ; \
 		 /^libpddir/s|=.*|= $$(pkglibdir)| ; \
@@ -77,12 +68,6 @@ post-patch:
 		 s|-lc ||g' ${WRKSRC}/extra/expr~/makefile
 	@${REINPLACE_CMD} -e \
 		'/libpthread/s|_ERROR|_WARN|' ${WRKSRC}/portaudio/configure.in
-
-pre-configure:
-	@(cd ${WRKSRC}/portaudio \
-		&& ${SETENV} ${AUTOTOOLS_ENV} ${ACLOCAL} \
-		&& ${SETENV} ${AUTOTOOLS_ENV} ${LIBTOOLIZE} ${LIBTOOLIZE_ARGS} \
-		&& ${SETENV} ${AUTOTOOLS_ENV} ${AUTOCONF})
 
 do-install:
 .for i in src man tcl po extra

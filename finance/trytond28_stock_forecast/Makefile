@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	trytond28_stock_forecast
-PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTVERSION=	2.8.2
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_stock_forecast/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
 DISTNAME=	trytond_stock_forecast-${PORTVERSION}
 
@@ -19,8 +18,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=1.5:${PORTSDIR}/devel/py-dateutil 
 
 CONFLICTS=	trytond_stock_forecast-2.[46].*
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

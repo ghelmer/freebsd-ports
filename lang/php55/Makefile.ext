@@ -87,8 +87,8 @@ USE_OPENSSL=	yes
 
 .if ${PHP_MODNAME} == "gd"
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
+		libpng.so:${PORTSDIR}/graphics/png
+USES+=		jpeg
 
 CONFIGURE_ARGS+=--with-gd \
 		--with-freetype-dir=${LOCALBASE} \
@@ -132,16 +132,15 @@ USES+=	iconv:translit
 .endif
 
 .if ${PHP_MODNAME} == "imap"
-LIB_DEPENDS+=	libc-client4.so:${PORTSDIR}/mail/cclient
+OPTIONS_DEFINE=	PANDA
+PANDA_DESC=	Uses the forked panda-cclient instead of the original cclient
 
 CONFIGURE_ARGS+=--with-imap=${LOCALBASE} \
-		--with-pcre-dir=${LOCALBASE}
-.if !defined(WITHOUT_SSL)
-CONFIGURE_ARGS+=--with-imap-ssl=${OPENSSLBASE}
+		--with-pcre-dir=${LOCALBASE} \
+		--with-imap-ssl=${OPENSSLBASE}
 
 LDFLAGS+=	-L${OPENSSLLIB} -lcrypto -lssl
 USE_OPENSSL=	yes
-.endif
 .endif
 
 .if ${PHP_MODNAME} == "interbase"
@@ -178,15 +177,14 @@ PHP_HEADER_DIRS=libmbfl libmbfl/filters libmbfl/mbfl libmbfl/nls
 .endif
 
 .if ${PHP_MODNAME} == "mcrypt"
-LIB_DEPENDS+=	libmcrypt.so:${PORTSDIR}/security/libmcrypt
+LIB_DEPENDS+=	libltdl.so:${PORTSDIR}/devel/libltdl \
+		libmcrypt.so:${PORTSDIR}/security/libmcrypt
 
 CONFIGURE_ARGS+=--with-mcrypt=${LOCALBASE}
-
-USE_AUTOTOOLS=	libltdl
 .endif
 
 .if ${PHP_MODNAME} == "mssql"
-LIB_DEPENDS+=	libsybdb.so:${PORTSDIR}/databases/freetds-msdblib
+LIB_DEPENDS+=	libsybdb.so:${PORTSDIR}/databases/freetds
 
 CONFIGURE_ARGS+=--with-mssql=${LOCALBASE}
 .endif
@@ -270,7 +268,7 @@ USE_PHP_BUILD=	yes
 .endif
 
 .if ${PHP_MODNAME} == "pdo_pgsql"
-USE_PGSQL=	yes
+USES+=		pgsql
 
 CONFIGURE_ARGS+=--with-pdo-pgsql=${LOCALBASE}
 
@@ -287,7 +285,7 @@ USE_PHP_BUILD=	yes
 .endif
 
 .if ${PHP_MODNAME} == "pgsql"
-USE_PGSQL=	yes
+USES+=		pgsql
 
 CONFIGURE_ARGS+=--with-pgsql=${LOCALBASE}
 .endif
@@ -316,6 +314,7 @@ USE_PHP_BUILD=	yes
 
 .if ${PHP_MODNAME} == "readline"
 CONFIGURE_ARGS+=--with-readline=/usr
+USES+=		readline
 .endif
 
 .if ${PHP_MODNAME} == "recode"
@@ -392,7 +391,7 @@ CONFIGURE_ARGS+=--enable-sysvshm
 .if ${PHP_MODNAME} == "tidy"
 CONFIGURE_ARGS+=--with-tidy=${LOCALBASE}
 
-LIB_DEPENDS+=	libtidy-0.99.so:${PORTSDIR}/www/tidy-lib
+LIB_DEPENDS+=	libtidy.so:${PORTSDIR}/www/tidy-lib
 .endif
 
 .if ${PHP_MODNAME} == "tokenizer"
@@ -524,6 +523,14 @@ CONFIGURE_ARGS+=--with-vpx-dir=${LOCALBASE}
 .	endif
 .endif
 
+.if ${PHP_MODNAME} == "imap"
+.	if ${PORT_OPTIONS:MPANDA}
+LIB_DEPENDS+=	libc-client4.so.10:${PORTSDIR}/mail/panda-cclient
+.	else
+LIB_DEPENDS+=	libc-client4.so.9:${PORTSDIR}/mail/cclient
+.	endif
+.endif
+
 .if ${PHP_MODNAME} == "mbstring"
 .	if ${PORT_OPTIONS:MREGEX}
 LIB_DEPENDS+=	libonig.so:${PORTSDIR}/devel/oniguruma4
@@ -561,7 +568,7 @@ post-extract:
 
 .if ${PHP_MODNAME} == "pdo_dblib"
 .	if ${PORT_OPTIONS:MMSSQL}
-LIB_DEPENDS+=	libsybdb.so:${PORTSDIR}/databases/freetds-msdblib
+LIB_DEPENDS+=	libsybdb.so:${PORTSDIR}/databases/freetds
 .	else
 LIB_DEPENDS+=	libct.so:${PORTSDIR}/databases/freetds
 .	endif

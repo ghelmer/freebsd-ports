@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	fox
-PORTVERSION=	1.7.47
+PORTVERSION=	1.7.50
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://ftp.fox-toolkit.org/pub/ \
    		ftp://ftp.fox-toolkit.org/pub/
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast and extensive C++ GUI toolkit -- devel version
 
 OPTIONS_DEFINE=	DOCS JPEG PNG TIFF WEBP
@@ -19,7 +19,7 @@ PLIST_SUB+=	MAJORVER=${MAJORVER}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${MAJORVER}
 
 GNU_CONFIGURE=	yes
-USES=		libtool:keepla pathfix
+USES=		libtool pathfix
 USE_GL=		glut
 USE_XORG=	sm xft
 USE_LDCONFIG=	yes
@@ -33,13 +33,13 @@ PORTDOCS=	*
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MJPEG}
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 .else
 CONFIGURE_ARGS+=--disable-jpeg
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
 .else
 CONFIGURE_ARGS+=--disable-png
 .endif

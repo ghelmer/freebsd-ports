@@ -1,6 +1,6 @@
---- configure.orig	2014-03-23 17:47:44.000000000 +0100
-+++ configure	2014-04-08 18:30:31.000000000 +0200
-@@ -757,8 +757,8 @@
+--- configure.orig	2015-01-15 05:50:49.000000000 +0900
++++ configure	2015-01-21 16:23:01.000000000 +0900
+@@ -779,8 +779,8 @@
  
  check_ld(){
      log check_ld "$@"
@@ -11,17 +11,17 @@
      check_cc $($cflags_filter $flags) || return
      flags=$($ldflags_filter $flags)
      libs=$($ldflags_filter $libs)
-@@ -4356,7 +4356,7 @@
+@@ -4606,7 +4606,7 @@
  MANDIR=\$(DESTDIR)$mandir
  SRC_PATH=$source_path
  CC_IDENT=$cc_ident
 -ARCH=$arch
 +LIBAV_ARCH=$arch
+ INTRINSICS=$intrinsics
  CC=$cc
  AS=$as
- LD=$ld
-@@ -4524,7 +4524,7 @@
-     requires=$5
+@@ -4783,7 +4783,7 @@
+     requires=${requires%, }
      enabled ${name#lib} || return 0
      mkdir -p $name
 -    cat <<EOF > $name/$name.pc

@@ -4,10 +4,9 @@
 
 PORTNAME=	goocanvas
 PORTVERSION=	0.14.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics python
-MASTER_SITES=	GNOME
-MASTER_SITE_SUBDIR=	sources/py${PORTNAME}/${PORTVERSION:C/..$//}
+MASTER_SITES=	GNOME/sources/py${PORTNAME}/${PORTVERSION:C/..$//}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
@@ -16,14 +15,12 @@ COMMENT=	GooCanvas python bindings
 
 LIB_DEPENDS=	libgoocanvas.so:${PORTSDIR}/graphics/goocanvas
 
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/goocanvasmodule.la \
-		%%PYTHON_SITELIBDIR%%/goocanvasmodule.so \
+PLIST_FILES=	%%PYTHON_SITELIBDIR%%/goocanvasmodule.so \
 		libdata/pkgconfig/pygoocanvas.pc
-USE_PYTHON=	yes
 USE_GNOME=	pygtk2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-docs
-USES=		gmake pathfix pkgconfig tar:bzip2
+USES=		gmake libtool pathfix pkgconfig python tar:bzip2
 INSTALL_TARGET=	install-strip
 
 post-patch:

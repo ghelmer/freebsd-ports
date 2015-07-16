@@ -2,18 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	slime
-PORTVERSION=	2.7
+PORTVERSION=	2.13
+DISTVERSIONPREFIX=v
 CATEGORIES=	editors elisp
-MASTER_SITES=	https://codeload.github.com/slime/slime/legacy.tar.gz/v${PORTVERSION}?dummy=/
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Superior Lisp Interaction Mode for Emacs
 
+LICENSE=	PUBLIC_DOMAIN
+LICENSE_NAME=	${LICENSE:S/_/ /}
+LICENSE_TEXT=	The license: ${_LICENSE} (${_LICENSE_NAME}) is standard, please read from the web.
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BUILD_DEPENDS=	texinfo>=5.2:${PORTSDIR}/print/texinfo
+
 USES=		gmake
 USE_EMACS=	yes
+USE_GITHUB=	yes
 
 SLIME_LISPDIR=	${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/slime
-WRKSRC=		${WRKDIR}/slime-slime-fa7f318
 
 SUB_FILES=	pkg-message
 SUB_LIST=	SLIME_LISPDIR="${SLIME_LISPDIR}"
@@ -31,11 +38,18 @@ do-build:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/contrib
+	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/contrib/test
 	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/lib
-	cd ${WRKSRC} && ${INSTALL_DATA} *.elc *.el *.lisp ${STAGEDIR}${SLIME_LISPDIR}
+	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/swank
+	cd ${WRKSRC} && ${INSTALL_DATA} *.asd *.elc *.el *.lisp ${STAGEDIR}${SLIME_LISPDIR}
 	cd ${WRKSRC}/lib && ${INSTALL_DATA} *.el ${STAGEDIR}${SLIME_LISPDIR}/lib
-	cd ${WRKSRC}/contrib && ${INSTALL_DATA} *.el *.lisp \
+	cd ${WRKSRC}/contrib && ${INSTALL_DATA} \
+		*.el *.lisp *.ss *.scm *.sml \
 		${STAGEDIR}${SLIME_LISPDIR}/contrib
+	cd ${WRKSRC}/contrib/test && ${INSTALL_DATA} *.txt *.el \
+		${STAGEDIR}${SLIME_LISPDIR}/contrib/test
+	cd ${WRKSRC}/swank && ${INSTALL_DATA} *.lisp \
+		${STAGEDIR}${SLIME_LISPDIR}/swank
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${STAGEDIR}${SLIME_LISPDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}

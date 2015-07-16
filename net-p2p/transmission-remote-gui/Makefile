@@ -3,9 +3,9 @@
 
 PORTNAME=	transmission-remote-gui
 PORTVERSION=	5.0.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net-p2p
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 DISTNAME=	transgui-${PORTVERSION}-src
 
 MAINTAINER=	acm@FreeBSD.org
@@ -28,7 +28,7 @@ SUB_FILES=	pkg-message
 LAZARUS_PROJECT_FILE=	transgui.lpi
 LAZBUILD_CMD=		${LOCALBASE}/bin/lazbuild -d
 LCL_UNITS_DIR=		${LOCALBASE}/share/lazarus-${LAZARUS_VER}/lcl/units/${BUILDNAME}
-LAZARUS_VER=		1.2.4
+LAZARUS_VER=		1.4.0
 LAZARUS_DIR=		${LOCALBASE}/share/lazarus-${LAZARUS_VER}
 
 OPTIONS_SINGLE=		LCL
@@ -57,7 +57,7 @@ BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/edit
 .endif
 
 .if ${PORT_OPTIONS:MQT4}
-LIB_DEPENDS+=	Qt4Pas.5:${PORTSDIR}/x11-toolkits/qt4pas
+LIB_DEPENDS+=	libQt4Pas.so:${PORTSDIR}/x11-toolkits/qt4pas
 LCL_PLATFORM=	qt
 BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-qt
 .endif

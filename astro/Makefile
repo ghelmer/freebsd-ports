@@ -18,6 +18,7 @@
     SUBDIR += fowsr
     SUBDIR += foxtrotgps
     SUBDIR += garmindev
+    SUBDIR += geographiclib
     SUBDIR += gkrellmoon2
     SUBDIR += gmapcatcher
     SUBDIR += google-earth
@@ -46,7 +47,6 @@
     SUBDIR += mkgmap-splitter
     SUBDIR += mymoon
     SUBDIR += nightfall
-    SUBDIR += openmap
     SUBDIR += openuniverse
     SUBDIR += osmium
     SUBDIR += osmosis
@@ -90,6 +90,7 @@
     SUBDIR += pyephem
     SUBDIR += pyweather
     SUBDIR += qlandkartegt
+    SUBDIR += readosm
     SUBDIR += rmap
     SUBDIR += roadmap
     SUBDIR += roadnav
@@ -101,6 +102,7 @@
     SUBDIR += starplot
     SUBDIR += stars
     SUBDIR += stellarium
+    SUBDIR += stellarium-qt4
     SUBDIR += sunclock
     SUBDIR += swe
     SUBDIR += tclgeomap

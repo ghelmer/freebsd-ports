@@ -3,16 +3,15 @@
 
 PORTNAME=	kasumi
 PORTVERSION=	2.5
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	japanese
-MASTER_SITES=	${MASTER_SITE_SOURCEFORGE_JP}
-MASTER_SITE_SUBDIR=	${PORTNAME}/41436
+MASTER_SITES=	SFJP/${PORTNAME}/41436
 
 MAINTAINER=	nobutaka@FreeBSD.org
-COMMENT=	A dictionary management tool for anthy
+COMMENT=	Dictionary management tool for anthy
 
 USES=		gmake pkgconfig
-USE_GNOME=	gnomehier gtk20
+USE_GNOME=	gtk20
 LIB_DEPENDS=	libanthy.so:${PORTSDIR}/japanese/anthy
 
 GNU_CONFIGURE=	yes

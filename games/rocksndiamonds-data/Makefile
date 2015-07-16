@@ -3,6 +3,7 @@
 
 PORTNAME=	rocksndiamonds-data
 PORTVERSION=	20131106
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	http://www.artsoft.org/RELEASES/rocksndiamonds/levels/:levels \
 		http://www.artsoft.org/RELEASES/unix/rocksndiamonds/levels/:unix_levels \
@@ -111,9 +112,7 @@ do-install:
 		${STAGEDIR}${DATADIR}/levels)
 
 	@cd ${STAGEDIR}${PREFIX} && ${FIND} ${DATADIR_REL}/levels \
-		-type f >> ${TMPPLIST} && \
-		${FIND} ${DATADIR_REL}/levels -type d -o -type l | ${SORT} -r | \
-		${SED} 's|^|@dirrm |' >> ${TMPPLIST}
+		-type f >> ${TMPPLIST}
 
 # Symlink Levels which can use Rocks'n'Diamonds and R'n'D jue
 .if exists(${PREFIX}/share/rocksndiamonds) && ${PORT_OPTIONS:MRnD_jue}

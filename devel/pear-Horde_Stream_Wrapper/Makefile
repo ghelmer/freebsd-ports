@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Stream_Wrapper
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.2
 CATEGORIES=	devel www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Stream wrappers
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+USES=	horde
+
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gifsicle
-PORTVERSION=	1.83
+PORTVERSION=	1.87
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.lcdf.org/gifsicle/
 
@@ -14,24 +14,19 @@ LICENSE=	GPLv2
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	NEWS README.md
+PLIST_FILES=	bin/gifdiff bin/gifsicle \
+		man/man1/gifdiff.1.gz man/man1/gifsicle.1.gz
 
-OPTIONS_DEFINE=	X11
-OPTIONS_DEFAULT=X11
+OPTIONS_DEFINE=		DOCS X11
+OPTIONS_DEFAULT=	X11
 
-OPTIONS_SUB=	yes
-
-.include <bsd.port.options.mk>
-
-.if ! ${PORT_OPTIONS:MX11}
-CONFIGURE_ARGS+=	--without-x --disable-gifview
-.else
-USE_XORG=	x11
-.endif
+X11_USE=		xorg=x11
+X11_CONFIGURE_ENABLE=	gifview
+X11_CONFIGURE_WITH=	x
+X11_PLIST_FILES=	bin/gifview man/man1/gifview.1.gz
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-.endif
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

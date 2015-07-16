@@ -3,7 +3,7 @@
 
 PORTNAME=	pinot
 PORTVERSION=	1.06
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	deskutils
 MASTER_SITES=	GOOGLE_CODE
 #MASTER_SITES=	http://colinf.chez.com/pinot/
@@ -14,12 +14,13 @@ COMMENT=	Personal search and metasearch for the Free Desktop
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	update-desktop-database:${PORTSDIR}/devel/desktop-file-utils
+BUILD_DEPENDS=	desktop-file-install:${PORTSDIR}/devel/desktop-file-utils \
+		update-mime-database:${PORTSDIR}/misc/shared-mime-info
 LIB_DEPENDS=	libxapian.so:${PORTSDIR}/databases/xapian-core		\
 		libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24	\
 		libexttextcat-2.0.so:${PORTSDIR}/textproc/libexttextcat	\
 		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib		\
-		libxml\+\+-2.6.so:${PORTSDIR}/textproc/libxml++26	\
+		libxml++-2.6.so:${PORTSDIR}/textproc/libxml++26	\
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs		\
 		libexecinfo.so:${PORTSDIR}/devel/libexecinfo		\
 		libexif.so:${PORTSDIR}/graphics/libexif			\
@@ -38,34 +39,29 @@ RUN_DEPENDS=	update-mime-database:${PORTSDIR}/misc/shared-mime-info	\
 
 PROJECTHOST=	${PORTNAME}-search
 
-LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-http=curl --with-ssl=${OPENSSLBASE} --enable-libarchive	\
 		--enable-mempool=no
 CONFIGURE_ENV=	MKDIR_P="${MKDIR}"
 CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-USES=		gettext pkgconfig shebangfix
+USES=		gettext libtool pkgconfig python shebangfix
 USE_OPENSSL=	yes
-USE_PYTHON=	yes
 USE_SQLITE=	3
 USE_XORG=	pixman
 USE_LDCONFIG=	${PREFIX}/lib/pinot/backends ${PREFIX}/lib/pinot/filters
 SHEBANG_LANG=	bash
 SHEBANG_FILES=	scripts/bash/*.sh
 
-.if defined(WITH_DEBUG)
-CONFIGURE_ARGS+=	--enable-debug=yes
-.endif
+OPTIONS_DEFINE=	DEBUG CHMLIB DOCS
+OPTIONS_SUB=	yes
 
-.if defined(WITH_CHMLIB)
-CONFIGURE_ARGS+=	--enable-chmlib=yes
-LIB_DEPENDS+=	libchm.so:${PORTSDIR}/misc/chmlib
-PLIST_SUB+=	CHMLIB=""
-.else
-CONFIGURE_ARGS+=	--disable-chmlib
-PLIST_SUB+=	CHMLIB="@comment "
-.endif
+DEBUG_CONFIGURE_ON=	--enable-debug=yes
+
+CHMLIB_CONFIGURE_ON=	--enable-chmlib=yes
+CHMLIB_CONFIGURE_OFF=	--disable-chmlib
+CHMLIB_LIB_DEPENDS=	libchm.so:${PORTSDIR}/misc/chmlib
 
 INSTALLS_ICONS=	yes
 
@@ -85,7 +81,6 @@ post-patch:
 		${WRKSRC}/Tokenize/filters/external-filters.xml
 
 pre-configure:
-	${REINPLACE_CMD} -e 's|-lthr|${PTHREAD_LIBS}|' ${WRKSRC}/configure
 	${REINPLACE_CMD} -e 's|/usr/share|${LOCALBASE}/share|'	\
 		${LM2FIX:S|^|${WRKSRC}/|}
 	${REINPLACE_CMD} -e 's|libtextcat/|libtextcat/LM/|'	\
@@ -99,9 +94,7 @@ pre-configure:
 
 post-install:
 	${TOUCH} ${STAGEDIR}${DATADIR}/stopwords/.empty_file
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

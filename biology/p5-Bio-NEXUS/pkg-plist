@@ -29,7 +29,6 @@ bin/nextool.pl
 %%SITE_PERL%%/Bio/NEXUS/Util/Exceptions.pm
 %%SITE_PERL%%/Bio/NEXUS/Util/Logger.pm
 %%SITE_PERL%%/Bio/NEXUS/WeightSet.pm
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Bio/NEXUS/.packlist
 %%PERL5_MAN3%%/Bio::NEXUS.3.gz
 %%PERL5_MAN3%%/Bio::NEXUS::AssumptionsBlock.3.gz
 %%PERL5_MAN3%%/Bio::NEXUS::Block.3.gz
@@ -61,9 +60,3 @@ bin/nextool.pl
 man/man1/nex2text_tree.pl.1.gz
 man/man1/nexplot.pl.1.gz
 man/man1/nextool.pl.1.gz
-@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Bio/NEXUS
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/Bio
-@dirrm %%SITE_PERL%%/Bio/NEXUS/Util
-@dirrm %%SITE_PERL%%/Bio/NEXUS/Tools
-@dirrm %%SITE_PERL%%/Bio/NEXUS
-@dirrmtry %%SITE_PERL%%/Bio

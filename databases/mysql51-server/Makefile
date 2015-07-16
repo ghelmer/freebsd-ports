@@ -3,10 +3,9 @@
 
 PORTNAME?=	mysql
 PORTVERSION=	5.1.73
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	databases
-MASTER_SITES=	${MASTER_SITE_MYSQL}
-MASTER_SITE_SUBDIR=	MySQL-5.1
+MASTER_SITES=	MYSQL/MySQL-5.1
 PKGNAMESUFFIX?=	51-server
 
 MAINTAINER=	ale@FreeBSD.org
@@ -15,7 +14,7 @@ COMMENT?=	Multithreaded SQL database (server)
 SLAVEDIRS=	databases/mysql51-client databases/mysql51-scripts
 GNU_CONFIGURE=	yes
 
-USES=		makeinfo
+USES+=		libtool makeinfo
 CONFIGURE_ARGS=	--localstatedir=/var/db/mysql \
 		--without-debug \
 		--without-readline \
@@ -23,6 +22,7 @@ CONFIGURE_ARGS=	--localstatedir=/var/db/mysql \
 		--with-libwrap \
 		--with-low-memory \
 		--with-comment='FreeBSD port: ${PKGNAME}' \
+		--with-named-thread-libs=-pthread \
 		--enable-thread-safe-client
 
 CONFIGURE_ENV=	mysql_cv_btype_last_arg_accept=socklen_t
@@ -63,6 +63,10 @@ CONFIGURE_ARGS+=--with-plugins=max-no-ndb
 CONFIGURE_ARGS+=--with-collation=${WITH_COLLATION}
 .endif
 
+.if defined(CLIENT_ONLY)
+USES+=		readline
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "arm"
@@ -72,9 +76,6 @@ BROKEN=		Does not compile on arm
 .if ${ARCH} == "i386"
 CONFIGURE_ARGS+=--enable-assembler
 .endif
-
-CONFIGURE_ARGS+=--with-named-thread-libs=${PTHREAD_LIBS}
-CFLAGS+=	${PTHREAD_CFLAGS}
 
 .if defined(BUILD_OPTIMIZED)
 CFLAGS+=	-O3 -fno-omit-frame-pointer
@@ -88,7 +89,9 @@ CXXFLAGS+=	-fno-exceptions
 USE_MYSQL=	yes
 WANT_MYSQL_VER=	51
 
-CONFLICTS_INSTALL=	mysql5.[02-9]-server-* mysql[0-46-9][0-9]-server-* mariadb[0-9][0-9]-server-* percona[0-9][0-9]-server-*
+CONFLICTS_INSTALL=	mysql5[2-9]-server-* \
+			mariadb*-server-* \
+			percona*-server-*
 
 USE_RC_SUBR=	mysql-server
 
@@ -156,7 +159,9 @@ post-patch:
 .else
 # MySQL-Client part
 .if defined(CLIENT_ONLY)
-CONFLICTS_INSTALL=	mysql5.[02-9]-client-* mysql[0-46-9][0-9]-client-*
+CONFLICTS_INSTALL=	mysql5[02-9]-client-* \
+			mariadb*-client-* \
+			percona*-client-* 
 
 MAN1=		mysql_config.1 mysql_upgrade.1 mysql.1 mysqladmin.1 \
 		mysqlbinlog.1 mysqlbug.1 mysqlcheck.1 \
@@ -184,7 +189,7 @@ WANT_MYSQL_VER=	51
 
 RUN_DEPENDS=	p5-DBD-mysql51>=0:${PORTSDIR}/databases/p5-DBD-mysql51
 
-CONFLICTS_INSTALL=	mysql[0-46-9][0-9]-scripts-* mysql5.[02-9]-scripts-*
+CONFLICTS_INSTALL=	mariadb51-scripts-*
 
 MAN1=		msql2mysql.1 mysql_convert_table_format.1 mysql_find_rows.1 \
 		mysql_fix_extensions.1 mysql_secure_installation.1 \

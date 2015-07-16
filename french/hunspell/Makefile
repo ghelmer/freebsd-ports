@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hunspell
-PORTVERSION=	5.0.2
+PORTVERSION=	5.3
 CATEGORIES=	french textproc
 MASTER_SITES=	http://www.dicollecte.org/download/fr/ \
 		LOCAL/sunpoet/${PORTNAME}
@@ -11,13 +11,14 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	Modern French hunspell dictionaries
 
+LICENSE=	MPL
+
 USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	%%DATADIR%%/fr_FR.aff \
 		%%DATADIR%%/fr_FR.dic
-PLIST_DIRSTRY=	%%DATADIR%%
 
 FRALIASES=	fr_BE fr_CA fr_CH fr_LU
 .for ALIAS in ${FRALIASES}

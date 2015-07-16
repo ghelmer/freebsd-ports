@@ -3,12 +3,13 @@
 
 PORTNAME=	netspoc
 PORTVERSION=	3.2
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	BERLIOS
 DISTNAME=	Netspoc-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A Network Security Policy Compiler
+COMMENT=	Network Security Policy Compiler
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,17 +20,15 @@ USE_PERL5=	configure
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 post-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/index.shtml ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/doc
-	@(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/doc)
-.endif
-.if !defined(NOPORTEXAMPLES)
+	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/doc)
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
-.endif
+	(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

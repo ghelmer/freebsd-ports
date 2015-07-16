@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pylint
-PORTVERSION=	1.2.0
+PORTVERSION=	1.4.3
 PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	LOGILAB
+MASTER_SITES=	CHEESESHOP
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 
 MAINTAINER=	mva@FreeBSD.org
@@ -13,10 +13,11 @@ COMMENT=	Analyzes python source code looking for bugs and signs of poor quality
 
 LICENSE=	LGPL21
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astroid>=1.1.0:${PORTSDIR}/devel/py-astroid
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}astroid>=1.3.6:${PORTSDIR}/devel/py-astroid \
+		${PYTHON_PKGNAMEPREFIX}six>=1.8.0:${PORTSDIR}/devel/py-six
 
 USES=		python
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils concurrent
 
 OPTIONS_DEFINE=	GUI
 

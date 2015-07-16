@@ -3,14 +3,14 @@
 
 PORTNAME=	regexxer
 PORTVERSION=	0.10
+PORTREVISION=	1
 CATEGORIES=	devel textproc gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Interactive tool for performing search and replace operations
 
-USES=		gettext gmake pathfix pkgconfig
-USE_XZ=		yes
+USES=		gettext gmake pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 USE_GNOME=	gnomeprefix intltool intlhack gtkmm30 gtksourceviewmm3
 CPPFLAGS+=	-I${LOCALBASE}/include

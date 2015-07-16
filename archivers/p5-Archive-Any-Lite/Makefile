@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Archive-Any-Lite
-PORTVERSION=	0.09
+PORTVERSION=	0.10
+PORTREVISION=	1
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,6 +22,7 @@ TEST_DEPENDS=	p5-Parallel-ForkManager>=0:${PORTSDIR}/devel/p5-Parallel-ForkManag
 		p5-Test-Pod-Coverage>=1.04:${PORTSDIR}/devel/p5-Test-Pod-Coverage \
 		p5-Test-UseAllModules>=0.10:${PORTSDIR}/devel/p5-Test-UseAllModules
 
+NO_ARCH=	yes
 USE_PERL5=	configure
 USES=		perl5
 

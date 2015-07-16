@@ -1,11 +1,11 @@
 # Created by: John Merryweather Cooper et al
 # $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	editors lang
 PKGNAMESUFFIX=	-ide
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	freebsd-fpc@FreeBSD.org
 COMMENT=	Free Pascal integrated IDE/compiler
 
 USE_FPC=	chm fcl-async fcl-base fv gdbint graph ibase hash mysql odbc \

@@ -27,6 +27,8 @@ MAKE_ENV+=	PROCESSORS=${MAKE_JOBS_NUMBER}
 
 CONFLICTS_INSTALL=	gtkada3-*
 
+PORTSCOUT=		ignore:1
+
 OPTIONS_DEFINE=		DOCS NLS EXAMPLES
 
 .include <bsd.port.options.mk>
@@ -49,6 +51,11 @@ ALL_TARGET+= docs
 .if ${PORT_OPTIONS:MEXAMPLES}
 ALL_TARGET+= tests
 .endif
+
+post-patch:
+	# fix for gcc-5
+	@${REINPLACE_CMD} -e 's|inline gint roundint|gint roundint|' \
+		${WRKSRC}/src/gtkextra/gtkplot*
 
 do-build:
 #	This target is recreated because -j cannot be set, but

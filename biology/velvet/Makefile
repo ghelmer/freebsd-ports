@@ -3,11 +3,10 @@
 
 PORTNAME=	velvet
 PORTVERSION=	1.2.10
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	biology
 MASTER_SITES=	http://www.ebi.ac.uk/~zerbino/velvet/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	mzaki@m.u-tokyo.ac.jp
 COMMENT=	Sequence assembler for very short reads
@@ -16,9 +15,10 @@ ALL_TARGET=	default
 
 MAXKMERLENGTH?=	31
 VELVET_CATEGORIES?=	2
+MAKE_JOBS_UNSAFE=	yes
 MAKE_ENV+=	MAXKMERLENGTH=${MAXKMERLENGTH} CATEGORIES=${VELVET_CATEGORIES}
 
-USES=		perl5 gmake shebangfix
+USES=		perl5 gmake shebangfix tar:tgz
 USE_PERL5=	run
 
 BINARIES=	velvetg velveth
@@ -44,7 +44,7 @@ PERLMOD_FILES=	contrib/VelvetOptimiser-2.2.4/VelvetOpt/Assembly.pm \
 		contrib/VelvetOptimiser-2.2.4/VelvetOpt/hwrap.pm
 
 .if !defined(WITHOUT_PYTHON)
-USE_PYTHON=	yes
+USES+=		python
 SHEBANG_FILES+=	contrib/AssemblyAssembler1.3/AssemblyAssembler1.3.py
 .endif
 

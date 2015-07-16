@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jekyll-sass-converter
-PORTVERSION=	1.0.0
+PORTVERSION=	1.3.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
@@ -13,6 +13,7 @@ LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-sass>=3.2:${PORTSDIR}/textproc/rubygem-sass
 
+NO_ARCH=	yes
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	radns
-PORTVERSION=	20110809.2
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/./-/}
+DISTVERSION=	20110809-2
 CATEGORIES=	dns
 MASTER_SITES=	http://hack.org/mc/hacks/radns/
 
@@ -22,13 +21,12 @@ SUB_FILES=	pkg-message
 
 PORTDOCS=	LICENSE README README.FreeBSD NEWS
 
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-.if !defined(NOPORTDOCS)
-	@${ECHO_MSG} "Installing additional documentation to ${DOCSDIR}"
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
 	@${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

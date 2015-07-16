@@ -3,6 +3,7 @@
 
 PORTNAME=	fotaq
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/scummvm/extras/Flight%20of%20the%20Amazon%20Queen
 DISTNAME=	FOTAQ_Talkie-${PORTVERSION}
@@ -19,6 +20,8 @@ NO_WRKSUBDIR=	yes
 SUB_FILES=	pkg-message
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

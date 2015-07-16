@@ -13,10 +13,7 @@ QT_DIST=	tools
 USES=		qmake
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
-WRKSRC_SUBDIR=	src/assistant
-
-post-patch:
-	@${REINPLACE_CMD} -Ee 's,(clucene|assistant),,' \
-		${WRKSRC}/assistant.pro
+BUILD_WRKSRC=	${WRKSRC}/src/assistant
+INSTALL_WRKSRC=	${WRKSRC}/src/assistant
 
 .include <bsd.port.mk>

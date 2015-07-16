@@ -3,59 +3,51 @@
 
 PORTNAME=	eduke32
 PORTVERSION=	20110627
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://dukeworld.duke4.net/eduke32/synthesis/${PORTVERSION}-${SVNREVISION}/ \
 		http://dukeworld.duke4.net/eduke32/synthesis/old/${PORTVERSION}-${SVNREVISION}/
 DISTNAME=	${PORTNAME}_src_${PORTVERSION}-${SVNREVISION}
 
-MAINTAINER=	olivier@gid0.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Duke Nukem 3D Port based on JFDuke and EDuke
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/GNU.TXT
 
-LIB_DEPENDS=	execinfo.1:${PORTSDIR}/devel/libexecinfo
-
-USES=		gmake
+USES=		execinfo gmake tar:bzip2
+USE_GCC=	any
 USE_CSTD=	gnu89
-USE_BZIP2=	yes
 USE_GL=		gl
 USE_GNOME=	gtk20
 USE_SDL=	mixer sdl
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}-${SVNREVISION}
 SVNREVISION=	1923
 
-OPTIONS_DEFINE=	MIDI TIMIDITYPLUS VORBIS
-MIDI_DESC=	Original MIDI music support
-TIMIDITYPLUS_DESC=	Use Timidity++ instead of Timidity
+PLIST_FILES=	bin/eduke32 bin/mapster32
+PORTDOCS=	*
+PORTEXAMPLES=	*
 
-OPTIONS_DEFAULT=	MIDI VORBIS
+BROKEN_sparc64=		Does not compile on sparc64
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	VORBIS
+OPTIONS_RADIO=	MIDI
+OPTIONS_RADIO_MIDI=	TIMIDITY TIMIDITYPLUS
+OPTIONS_DEFAULT=TIMIDITY VORBIS
+
+MIDI_DESC=	MIDI music support
+TIMIDITY_DESC=	Use Timidity for music support
+TIMIDITY_RUN_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
+TIMIDITYPLUS_DESC=	Use Timidity++ for music support
+TIMIDITYPLUS_RUN_DEPENDS=	timidity:${PORTSDIR}/audio/timidity++
+VORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+
 .include "${.CURDIR}/../duke3d-data/Makefile.include"
 
-.include <bsd.port.options.mk>
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
 BUILD_DEPENDS+=	nasm:${PORTSDIR}/devel/nasm
-.endif
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.endif
-
-.if ${PORT_OPTIONS:MMIDI}
-.if ${PORT_OPTIONS:MTIMIDITYPLUS}
-RUN_DEPENDS+=	timidity:${PORTSDIR}/audio/timidity++
-.else
-RUN_DEPENDS+=	timidity:${PORTSDIR}/audio/timidity
-.endif
-.endif
-
-.if ${PORT_OPTIONS:MVORBIS}
-LIB_DEPENDS+=	vorbis.4:${PORTSDIR}/audio/libvorbis
 .endif
 
 post-patch:
@@ -82,17 +74,13 @@ post-patch:
 
 do-install:
 .for f in eduke32 mapster32
-	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${WRKSRC}/samples/*.sample ${DOCSDIR}
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${EXAMPLESDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${WRKSRC}/samples/*.sample ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 . for f in cfg map m32 txt
-	${INSTALL_DATA} ${WRKSRC}/samples/*.${f} ${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/samples/*.${f} ${STAGEDIR}${EXAMPLESDIR}
 . endfor
-.endif
 
 .include <bsd.port.post.mk>

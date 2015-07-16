@@ -1,85 +1,67 @@
-# Created by: Martin Kropfinger
 # $FreeBSD$
 
 PORTNAME=	minecraft-server
-PORTVERSION=	1.4.7
+PORTVERSION=	1.8.7
 PORTREVISION=	1
 CATEGORIES=	games java
-MASTER_SITES=	http://assets.minecraft.net/${PORTVERSION:S|.|_|g}/ \
-		http://media-mcw.cursecdn.com/f/f7/:icon
-DISTNAME=	minecraft_server
-DISTFILES=	minecraft_server.jar \
-		Bookshelf.png:icon
-DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
-EXTRACT_ONLY=	#empty
+MASTER_SITES=	https://s3.amazonaws.com/Minecraft.Download/versions/${PORTVERSION}/
+DISTNAME=	minecraft_server.${PORTVERSION}.jar
+EXTRACT_SUFX=
+EXTRACT_ONLY=
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Server for the block building game
+MAINTAINER=	freebsd@jonathanprice.org
+COMMENT=	Dedicated server for the game Minecraft
 
-RUN_DEPENDS=	tmux:${PORTSDIR}/sysutils/tmux
+OPTIONS_SINGLE=		RUN
+OPTIONS_SINGLE_RUN=	DAEMON STANDALONE
 
-OPTIONS_DEFINE=	X11
-OPTIONS_DEFAULT=X11
+DAEMON_DESC=		Run as a service
+STANDALONE_DESC=	Run the .jar file directly
+OPTIONS_SUB=		yes
 
-ETCDIR=		${PREFIX}/etc/minecraft
+OPTIONS_DEFAULT=	STANDALONE
 
-WRKSRC=		${WRKDIR}
+USERS=		mcserver
+GROUPS=		${USERS}
+
 NO_BUILD=	yes
 USE_JAVA=	yes
-USERS?=		mcserver
-GROUPS?=	${USERS}
-USE_RC_SUBR=	minecraft
-SUB_FILES=	pkg-deinstall \
-		pkg-message
+SUB_FILES=	minecraft-server \
+		pkg-message \
+		pkg-deinstall
+SUB_LIST=	VERSION=${PORTVERSION}
+PLIST_SUB=	VERSION=${PORTVERSION}
 
-SUB_LIST+=	USERS=${USERS} \
-		GROUPS=${GROUPS}
-
-CONFIG_FILES=	banned-ips.txt \
-		banned-players.txt \
-		ops.txt \
+CONFIG_FILES=	banned-ips.json \
+		banned-players.json \
+		eula.txt \
+		ops.json \
 		server.properties \
-		white-list.txt
+		usercache.json \
+		whitelist.json
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MX11}
-DESKTOP_ENTRIES="Minecraft-Server" \
-		"Block building game (server)" \
-		"${PREFIX}/share/pixmaps/minecraft-server.png" \
-		"${PORTNAME}" \
-		"Game;Java;" \
-		false
-.endif
-
-.if ${PORT_OPTIONS:MX11}
-PLIST_SUB+=	X11=""
-.else
-PLIST_SUB+=	X11="@comment "
+.if ${PORT_OPTIONS:MDAEMON}
+USE_RC_SUBR+=	minecraft
+RUN_DEPENDS+=	tmux:${PORTSDIR}/sysutils/tmux
 .endif
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/minecraft_server.jar ${STAGEDIR}${DATADIR}/
-.if ${PORT_OPTIONS:MX11}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/Bookshelf.png ${STAGEDIR}${PREFIX}/share/pixmaps/minecraft-server.png
-.endif
-	echo "#!/bin/sh"				>  ${WRKDIR}/${PORTNAME}
-	echo "if ! test -d ~/.minecraft-server ; then"	>> ${WRKDIR}/${PORTNAME}
-	echo "	mkdir ~/.minecraft-server"		>> ${WRKDIR}/${PORTNAME}
-	echo "fi"					>> ${WRKDIR}/${PORTNAME}
-	echo "cd ~/.minecraft-server"			>> ${WRKDIR}/${PORTNAME}
-	${CP} ${WRKDIR}/${PORTNAME} ${WRKDIR}/${PORTNAME}-nogui
-	echo "java -Xmx1024M -Xms1024M -jar ${DATADIR}/minecraft_server.jar"		>> ${WRKDIR}/${PORTNAME}
-	echo "java -Xmx1024M -Xms1024M -jar ${DATADIR}/minecraft_server.jar nogui"	>> ${WRKDIR}/${PORTNAME}-nogui
-.if ${PORT_OPTIONS:MX11}
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
-.endif
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}-nogui ${STAGEDIR}${PREFIX}/bin/
+	${MKDIR} ${STAGEDIR}${PREFIX}/${PORTNAME}
+	${INSTALL_DATA} ${DISTDIR}/${DISTNAME} ${STAGEDIR}${PREFIX}/${PORTNAME}
 	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${MKDIR} ${STAGEDIR}/var/db/minecraft-server
+	${MKDIR} ${STAGEDIR}/var/log/minecraft-server
+.if ${PORT_OPTIONS:MSTANDALONE}
+	${INSTALL_SCRIPT} ${WRKDIR}/minecraft-server ${STAGEDIR}${PREFIX}/bin
+	${CP} ${FILESDIR}/java-args.txt ${STAGEDIR}${ETCDIR}
+.endif
 .for file in ${CONFIG_FILES}
-	${INSTALL_DATA} ${FILESDIR}/${file}.sample ${STAGEDIR}${ETCDIR}
-	${CHMOD} 644 ${STAGEDIR}${ETCDIR}/${file}.sample
+	${LN} -s ${ETCDIR}/${file} ${STAGEDIR}${PREFIX}/${PORTNAME}/${file}
 .endfor
+	${LN} -sf /var/log/minecraft-server ${STAGEDIR}${PREFIX}/${PORTNAME}/logs
+	${LN} -sf /var/log/minecraft-server/debug ${STAGEDIR}${PREFIX}/${PORTNAME}/debug
+	${LN} -sf /var/db/minecraft-server ${STAGEDIR}${PREFIX}/${PORTNAME}/world
 
 .include <bsd.port.mk>

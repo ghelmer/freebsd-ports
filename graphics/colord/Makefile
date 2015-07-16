@@ -1,9 +1,9 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
 # $FreeBSD$
-#    $MCom: ports/trunk/graphics/colord/Makefile 18610 2013-06-30 16:33:05Z marcus $
+#    $MCom: ports/trunk/graphics/colord/Makefile 20031 2014-11-02 21:47:55Z kwm $
 
 PORTNAME=	colord
-PORTVERSION=	1.0.1
+PORTVERSION=	1.2.4
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.freedesktop.org/software/colord/releases/
@@ -18,13 +18,14 @@ LIB_DEPENDS=	libpolkit-gobject-1.so:${PORTSDIR}/sysutils/polkit \
 USERS=		colord
 GROUPS=		colord
 
-USE_GNOME=	gnomehier glib20 intlhack introspection:build
-USES=		gettext gmake pathfix pkgconfig tar:xz
+USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USE_GNOME=	glib20 intlhack introspection:build
 USE_SQLITE=	3
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=yes
-CONFIGURE_ARGS=	--disable-gudev \
+CONFIGURE_ARGS=	--disable-udev \
+		--localstatedir=/var \
 		--enable-gtk-doc-html=no \
 		--disable-bash-completion \
 		--disable-gusb \
@@ -34,8 +35,9 @@ CONFIGURE_ARGS=	--disable-gudev \
 # takes ages we don't want to wait.
 CONFIGURE_ARGS+=--disable-print-profiles
 CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
-CONFIGURE_ENV=	USB_CFLAGS=" " USB_LIBS="-lusb"
+LDFLAGS+=	-L${LOCALBASE}/lib
+CONFIGURE_ENV=	USB_CFLAGS="-I/usr/include" \
+		USB_LIBS="-L/usr/lib -lusb"
 INSTALL_TARGET=	install-strip
 
 GLIB_SCHEMAS=	org.freedesktop.ColorHelper.gschema.xml
@@ -44,12 +46,9 @@ OPTIONS_DEFINE=	MANPAGES
 
 .include <bsd.port.options.mk>
 
-# workaround for buggy handling of "@cwd" in pkg_*
-PLIST_SUB+=	REALPREFIX=${PREFIX}
-
 .if ${PORT_OPTIONS:MMANPAGES}
 BUILD_DEPENDS+=	docbook2html:${PORTSDIR}/textproc/docbook-utils \
-		${LOCALBASE}/share/sgml/docbook/4.1:${PORTSDIR}/textproc/docbook-sgml
+		docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml
 PLIST_SUB+=	MAN=""
 .else
 PLIST_SUB+=	MAN="@comment "
@@ -66,7 +65,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|lib/color|db/color|g' \
 		-e 's|/usr/share/color|${PREFIX}/share/color|g' \
 		${WRKSRC}/src/cd-main.c \
-		${WRKSRC}/src/cd-profile-store.c \
+		${WRKSRC}/lib/colord/cd-icc-store.c \
 		${WRKSRC}/src/cd-profile.c
 .if ! ${PORT_OPTIONS:MMANPAGES}
 	@${REINPLACE_CMD} -e "s|2MAN_TRUE=$$|2MAN_TRUE='#'|g ; \

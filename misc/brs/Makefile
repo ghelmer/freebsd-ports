@@ -11,15 +11,14 @@ DIST_SUBDIR=	brs
 MAINTAINER=	user@unknown.nu
 COMMENT=	Interactive King James Bible
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 NO_WRKSUBDIR=	yes
 ALL_TARGET=
 CFLAGS+=	-Wno-error=return-type
-MAN1=		bible.1
 
-NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} 's=%%PREFIX%%=${PREFIX}=g' \
 		${WRKSRC}/brl.c ${WRKSRC}/bible.1
+	${REINPLACE_CMD} '/chown.*/d' ${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

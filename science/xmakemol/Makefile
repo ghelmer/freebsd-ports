@@ -3,7 +3,7 @@
 
 PORTNAME=	xmakemol
 PORTVERSION=	5.16
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	science
 MASTER_SITES=	SAVANNAH
 
@@ -20,6 +20,5 @@ PLIST_FILES=	bin/xmake_anim.pl \
 		bin/xmakemol \
 		man/man1/xmakemol.1.gz \
 		%%DATADIR%%/elements
-PLIST_DIRS=	%%DATADIR%%
 
 .include <bsd.port.mk>

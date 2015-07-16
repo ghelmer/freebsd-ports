@@ -8,9 +8,9 @@ DISTNAME=	php-mecab-${PORTVERSION}
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	kuriyama@FreeBSD.org
-COMMENT=	A PHP5 extension for MeCab Morphological Analyzer
+COMMENT=	PHP5 extension for MeCab Morphological Analyzer
 
-LIB_DEPENDS=	mecab:${PORTSDIR}/japanese/mecab
+LIB_DEPENDS=	libmecab.so:${PORTSDIR}/japanese/mecab
 
 USE_PHP=	yes
 USE_PHPEXT=	yes

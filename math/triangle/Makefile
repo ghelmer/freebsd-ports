@@ -5,13 +5,12 @@ PORTNAME=	triangle
 PORTVERSION=	1.6
 PORTREVISION=	2
 CATEGORIES=	math
-MASTER_SITES=	NL
-MASTER_SITE_SUBDIR=	voronoi
+MASTER_SITES=	NL/voronoi
 DISTNAME=	${PORTNAME}
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	bf@FreeBSD.org
-COMMENT=	A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator
+COMMENT=	Two-Dimensional Quality Mesh Generator and Delaunay Triangulator
 
 NO_CDROM=	No commercial use without prior arrangement with the author
 

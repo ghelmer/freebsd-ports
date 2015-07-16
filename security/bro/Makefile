@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	bro
-PORTVERSION=	2.2
-PORTREVISION=	1
+PORTVERSION=	2.3.2
 CATEGORIES=	security
 MASTER_SITES=	http://www.bro.org/downloads/release/
 
@@ -16,8 +15,9 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/bison:${PORTSDIR}/devel/bison \
 		${LOCALBASE}/bin/swig:${PORTSDIR}/devel/swig13
 LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
 
-USES=		cmake:outsource perl5
-USE_PYTHON=	yes
+USES=		cmake:outsource perl5 python
+
+CMAKE_ARGS+=	-D PYTHON_EXECUTABLE:PATH=${PYTHON_CMD}
 
 SUB_FILES=	pkg-message
 NO_MTREE=	yes
@@ -25,10 +25,6 @@ NO_MTREE=	yes
 .if defined(BRO_PREFIX)
 PREFIX=${BRO_PREFIX}
 PLIST_SUB+=	CLEANUP_PREFIX=""
-.if ! defined(WITH_PKGNG) && ! exists(${BRO_PREFIX})
-NEED_ROOT=      yes
-.endif
-NO_MTREE=	yes
 .else
 PLIST_SUB+=	CLEANUP_PREFIX="@comment "
 .endif
@@ -43,16 +39,28 @@ CMAKE_ARGS+=	-D CMAKE_INSTALL_PREFIX:PATH=${PREFIX} \
 		-D INSTALL_AUX_TOOLS:BOOL=true \
 		-D BUILD_SHARED_LIBS:BOOL=true
 
-OPTIONS_DEFINE=	BROCCOLI BROCTL DEBUG IPSUMDUMP LBL_CF LBL_HF PERFTOOLS
-OPTIONS_DEFAULT=BROCCOLI BROCTL IPSUMDUMP LBL_CF LBL_HF
+BROUSER?=	bro
+BROGROUP?=	bro
+PLIST_SUB+=	BROUSER=${BROUSER} \
+		BROGROUP=${BROGROUP}
+
+USERS=		${BROUSER}
+GROUPS=		${BROGROUP}
+
+USE_OPENSSL=	yes
+
+OPTIONS_DEFINE=	BROCCOLI BROCTL DEBUG ELASTICSEARCH IPSUMDUMP LBL_CF LBL_HF PERFTOOLS PORTS_SSL
+OPTIONS_DEFAULT=BROCCOLI BROCTL IPSUMDUMP LBL_CF LBL_HF PORTS_SSL
 
 BROCCOLI_DESC=	Build support for libbroccoli communications
 BROCTL_DESC=	Build BroControl support (requires BROCCOLI)
 DEBUG_DESC=	Compile in debugging mode
+ELASTICSEARCH_DESC=	Build the ElasticSearch log writer (requires curl)
 IPSUMDUMP_DESC=	Enables traffic summaries
 LBL_CF_DESC=	Unix time to formated time/date filter support
 LBL_HF_DESC=	Address to hostname filter support
 PERFTOOLS_DESC=	Use Perftools to improve memory & CPU usage
+PORTS_SSL_DESC=	Build with OpenSSL from ports (instead of base system)
 
 OPTIONS_EXCLUDE=NLS DOCS
 
@@ -88,6 +96,13 @@ CMAKE_ARGS+=	-D INSTALL_BROCTL:BOOL=false
 PLIST_SUB+=	BROCTL="@comment "
 .endif
 
+.if ${PORT_OPTIONS:MELASTICSEARCH}
+CMAKE_ARGS+=	-D DISABLE_ELASTICSEARCH:BOOL=false
+LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
+.else
+CMAKE_ARGS+=	-D DISABLE_ELASTICSEARCH:BOOL=true
+.endif
+
 .if ${PORT_OPTIONS:MDEBUG}
 CMAKE_ARGS+=	-D ENABLE_DEBUG:BOOL=true
 .else
@@ -109,6 +124,16 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/pprof:${PORTSDIR}/devel/google-perftools
 CMAKE_ARGS+=	-D ENABLE_PERFTOOLS:BOOL=false
 .endif
 
+.if ${PORT_OPTIONS:MPORTS_SSL}
+CMAKE_ARGS+=	-D CMAKE_EXE_LINKER_FLAGS="${OPENSSL_LDFLAGS}"
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libcrypto.so:${PORTSDIR}/security/openssl
+RUN_DEPENDS+=	${LOCALBASE}/lib/libcrypto.so:${PORTSDIR}/security/openssl
+.else
+.if defined(WITH_OPENSSL_PORT)
+IGNORE=		the SSL option is requred when WITH_OPENSSL_PORT is enabled
+.endif
+.endif
+
 .if ${PORT_OPTIONS:MIPSUMDUMP}
 BUILD_DEPENDS+=	ipsumdump:${PORTSDIR}/net/ipsumdump
 RUN_DEPENDS+=	ipsumdump:${PORTSDIR}/net/ipsumdump
@@ -116,17 +141,14 @@ RUN_DEPENDS+=	ipsumdump:${PORTSDIR}/net/ipsumdump
 
 .if ${PORT_OPTIONS:MBROCTL}
 post-install:
-.if defined(BRO_PREFIX) && !defined(WITH_PKGNG) && !exists(${BRO_PREFIX})
-	# pkg_install needs PREFIX in order to make a package from STAGEDIR/PREFIX
-	@${MKDIR} ${PREFIX}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/logs
+.if ${PORT_OPTIONS:MBROCTL}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/spool/tmp
 .endif
 	@${MKDIR} ${STAGEDIR}${PREFIX}/spool/installed-scripts-do-not-touch/auto
 	@${MKDIR} ${STAGEDIR}${PREFIX}/spool/installed-scripts-do-not-touch/site
-.for F in broctl.cfg
-	@${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/aux/broctl/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.example
-.endfor
-.for F in networks.cfg node.cfg
-	@${MV} ${WRKSRC}/aux/broctl/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.example
+.for F in broctl.cfg networks.cfg node.cfg
+	@${MV} ${STAGEDIR}${PREFIX}/etc/${F} ${STAGEDIR}${PREFIX}/etc/${F}.example
 .endfor
 .endif
 

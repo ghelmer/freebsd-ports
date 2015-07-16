@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	orm_adapter
-PORTVERSION=	0.4.0
+PORTVERSION=	0.5.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Provides a single point of entry for using basic features of ruby ORMs
+
+LICENSE=	MIT
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

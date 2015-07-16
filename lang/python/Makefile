@@ -3,7 +3,7 @@
 
 PORTNAME=	python
 PORTVERSION=	${PYTHON_DEFAULT}
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	# empty
@@ -13,34 +13,27 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	The "meta-port" for the default version of Python interpreter
 
-USE_PYTHON_RUN=	yes
-NO_BUILD=	yes
-PYTHON_NO_DEPENDS=	yes
+USES=			python:run
+NO_BUILD=		yes
 
 PLIST_FILES=	bin/2to3 \
 		bin/idle \
 		bin/pydoc \
 		bin/python \
-		bin/python-config \
-		bin/python-shared \
-		bin/python-shared-config
+		bin/python-config
 
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_MAJOR_VER} == 2
 RUN_DEPENDS+=	python2:${PORTSDIR}/lang/python2
-PLIST_FILES+=	bin/smtpd.py
 .elif ${PYTHON_MAJOR_VER} == 3
 RUN_DEPENDS+=	python3:${PORTSDIR}/lang/python3
 .endif
 
 do-install:
-.for file in python python-shared
-	${LN} -sf ${file}${PYTHON_MAJOR_VER} ${STAGEDIR}${PREFIX}/bin/${file}
-.endfor
+	${LN} -sf python${PYTHON_MAJOR_VER} ${STAGEDIR}${PREFIX}/bin/python
 	${LN} -sf 2to3-${PYTHON_MAJOR_VER} ${STAGEDIR}${PREFIX}/bin/2to3
 .if ${PYTHON_MAJOR_VER} == 2
-	${LN} -sf smtpd${PYTHON_MAJOR_VER}.py ${STAGEDIR}${PREFIX}/bin/smtpd.py
 .for file in idle pydoc
 	${LN} -sf ${file}${PYTHON_MAJOR_VER} ${STAGEDIR}${PREFIX}/bin/${file}
 .endfor
@@ -52,8 +45,6 @@ do-install:
 .endif
 	${LN} -sf python${PYTHON_MAJOR_VER}-config \
 		${STAGEDIR}${PREFIX}/bin/python-config
-	${LN} -sf python-shared${PYTHON_MAJOR_VER}-config \
-		${STAGEDIR}${PREFIX}/bin/python-shared-config
 
 # Major upgrade support
 PORTUPGRADE_CMD=	${LOCALBASE}/sbin/portupgrade
@@ -62,13 +53,8 @@ PORTUPGRADE_CMD=	${LOCALBASE}/sbin/portupgrade
 PORTUPGRADE_CMD=	${LOCALBASE}/sbin/portmaster
 .endif
 
-.if defined(WITH_PKGNG)
 PKG_LIST=	${PKG_BIN} query -a '%n-%v'
 PKG_LIST_FILES=	${PKG_INFO} -l
-.else
-PKG_LIST=	${PKG_INFO} -Ea
-PKG_LIST_FILES=	${PKG_INFO} -L
-.endif
 
 upgrade-site-packages:
 	@if [ ! -x ${PORTUPGRADE_CMD} ]; then \

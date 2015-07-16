@@ -3,7 +3,7 @@
 
 PORTNAME=	avogadro
 PORTVERSION=	1.1.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	science
 MASTER_SITES=	SF
 
@@ -22,7 +22,7 @@ OPTIONS_SUB=	yes
 USES=		cmake desktop-file-utils pkgconfig tar:bzip2
 USE_GL=		glu gl
 USE_QT4=	gui network opengl \
-		linguist_build moc_build qmake_build rcc_build uic_build
+		linguisttools_build moc_build qmake_build rcc_build uic_build
 CMAKE_ARGS=	-DENABLE_GLSL=OFF \
 		-DQT_MKSPECS_RELATIVE=share/qt4/mkspecs
 USE_LDCONFIG=	yes
@@ -35,7 +35,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	2
+USES+=		python:2
 BUILD_DEPENDS+=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}sip>0:${PORTSDIR}/devel/py-sip
 LIB_DEPENDS+=	libboost_python.so:${PORTSDIR}/devel/boost-python-libs

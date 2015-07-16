@@ -3,22 +3,25 @@
 
 PORTNAME=	nocatsplash
 PORTVERSION=	0.82
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	http://farrokhi.net/distfiles/ \
 		http://nocat.net/download/NoCatSplash/
 DISTNAME=	NoCatSplash-nightly
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open 802.11 Splash Screen
+
+BROKEN=		Broken pkg-install script, should use USERS and UIDs
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2015-07-21
 
 USE_GNOME=	glib12
 
 CONFLICTS=	nocatauth-server-*
 
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake tar:tgz
 
 CONFIGURE_ARGS+=	--disable-dependency-tracking
 CONFIGURE_ARGS+=	--disable-glibtest

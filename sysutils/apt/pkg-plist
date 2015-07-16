@@ -12,9 +12,7 @@ lib/libapt-inst.so.1.1.0
 lib/libapt-pkg.so
 lib/libapt-pkg.so.3.11
 lib/libapt-pkg.so.3.11.0
-@exec mkdir -p %D/share/apt/keyrings
-@dirrm share/apt/keyrings
-@dirrm share/apt
+@dir share/apt/keyrings
 libexec/apt/methods/cdrom
 libexec/apt/methods/copy
 libexec/apt/methods/file
@@ -27,16 +25,11 @@ libexec/apt/methods/rred
 libexec/apt/methods/rsh
 libexec/apt/methods/ssh
 libexec/apt/methods/bzip2
-@dirrm libexec/apt/methods
-@dirrm libexec/apt
 libexec/dpkg/methods/apt/desc.apt
 libexec/dpkg/methods/apt/names
 libexec/dpkg/methods/apt/install
 libexec/dpkg/methods/apt/setup
 libexec/dpkg/methods/apt/update
-@dirrm libexec/dpkg/methods/apt
-@dirrmtry libexec/dpkg/methods
-@dirrmtry libexec/dpkg
 include/apt-pkg/mmap.h
 include/apt-pkg/error.h
 include/apt-pkg/configuration.h
@@ -96,32 +89,32 @@ include/apt-pkg/extract.h
 include/apt-pkg/dpkgdb.h
 include/apt-pkg/dirstream.h
 include/apt-pkg/debfile.h
-@dirrm include/apt-pkg
-@exec mkdir -p %D/etc/apt/conf.d
-@dirrm etc/apt/conf.d
-@unexec if cmp -s %D/etc/apt/sources.list.sample %D/etc/apt/sources.list; then rm -f %D/etc/apt/sources.list; fi
-etc/apt/sources.list.sample
-@exec if [ ! -f %D/etc/apt/sources.list ]; then cp -p %D/%F %B/sources.list; fi
-@unexec if cmp -s %D/etc/apt/apt.conf.sample %D/etc/apt/apt.conf; then rm -f %D/etc/apt/apt.conf; fi
-etc/apt/apt.conf.sample
-@exec if [ ! -f %D/etc/apt/apt.conf ]; then cp -p %D/%F %B/apt.conf; fi
-@dirrm etc/apt
+man/man1/apt-extracttemplates.1.gz
+man/man1/apt-ftparchive.1.gz
+man/man1/apt-sortpkgs.1.gz
+man/man5/apt.conf.5.gz
+man/man5/apt_preferences.5.gz
+man/man5/sources.list.5.gz
+man/man8/apt-cache.8.gz
+man/man8/apt-cdrom.8.gz
+man/man8/apt-config.8.gz
+man/man8/apt-get.8.gz
+man/man8/apt-key.8.gz
+man/man8/apt-secure.8.gz
+@dir etc/apt/conf.d
+@sample etc/apt/sources.list.sample
+@sample etc/apt/apt.conf.sample
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/COPYING.GPL
 %%PORTDOCS%%%%DOCSDIR%%/README.progress-reporting
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-%%PORTDOCS%%%%EXAMPLESDIR%%/apt.conf
-%%PORTDOCS%%%%EXAMPLESDIR%%/sources.list
-%%PORTDOCS%%%%EXAMPLESDIR%%/configure-index
-%%PORTDOCS%%@dirrm %%EXAMPLESDIR%%
-@cwd /
-@exec mkdir -p %%APTDIR%%/cache/archives/partial
-@dirrm %%APTDIR%%/cache/archives/partial
-@dirrm %%APTDIR%%/cache/archives
-@dirrm %%APTDIR%%/cache
-@exec mkdir -p %%APTDIR%%/state/lists/partial
-@dirrm %%APTDIR%%/state/lists/partial
-@dirrm %%APTDIR%%/state/lists
-@dirrm %%APTDIR%%/state
-@dirrm %%APTDIR%%
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/apt.conf
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/sources.list
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/configure-index
+@dir /%%APTDIR%%/cache/archives/partial
+@dir /%%APTDIR%%/cache/archives
+@dir /%%APTDIR%%/cache
+@dir /%%APTDIR%%/state/lists/partial
+@dir /%%APTDIR%%/state/lists
+@dir /%%APTDIR%%/state
+@dir /%%APTDIR%%

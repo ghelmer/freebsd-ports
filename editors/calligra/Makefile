@@ -2,16 +2,15 @@
 
 PORTNAME=	calligra
 PORTVERSION=	${CALLIGRA_VERSION}
-PORTREVISION=	6
+PORTREVISION=	15
 CATEGORIES=	editors kde
-MASTER_SITES=	${MASTER_SITE_KDE}
-MASTER_SITE_SUBDIR=	${CALLIGRA_BRANCH}/${PORTNAME}-${PORTVERSION}/
+MASTER_SITES=	KDE/${CALLIGRA_BRANCH}/${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	KDE
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE graphic art and office suite
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
 		libqca.so:${PORTSDIR}/devel/qca \
@@ -23,7 +22,6 @@ LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
 		libwpg-0.2.so:${PORTSDIR}/graphics/libwpg \
 		libpoppler-qt4.so:${PORTSDIR}/graphics/poppler-qt4 \
 		libopenjpeg.so:${PORTSDIR}/graphics/openjpeg15 \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libdcmdata.so:${PORTSDIR}/devel/dcmtk \
 		libfftw3.so:${PORTSDIR}/math/fftw3 \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
@@ -38,15 +36,14 @@ CONFLICTS_BUILD=qt-3.*
 
 USE_GL=		glew
 USE_GNOME=	glib20 libxml2 libxslt
-USE_KDE4=	kactivities kdehier kdelibs kdeprefix libkdcraw nepomuk-core \
+USE_KDE4=	kactivities kdelibs kdeprefix libkdcraw nepomuk-core \
 		okular pimlibs attica automoc4 soprano
 USE_QT4=	corelib dbus designer_build gui opengl phonon porting_build \
 		qt3support qtestlib_build script sql svg webkit xml xmlpatterns \
 		moc_build qmake_build rcc_build uic_build uic3_build
 USE_SQLITE=	3
-USES=		cmake:outsource compiler:c++11-lang iconv perl5 pkgconfig \
+USES=		cmake:outsource cpe compiler:c++11-lang iconv jpeg perl5 pkgconfig tar:xz\
 		shared-mime-info
-USE_XZ=		yes
 CMAKE_ARGS=	-DCMAKE_INCLUDE_PATH:STRING="${QT_INCDIR} ${LOCALBASE}/include" \
 		-DPRODUCTSET:STRING="DESKTOP"
 USE_LDCONFIG=	yes
@@ -71,7 +68,7 @@ MYSQL_CMAKE_OFF=-DWITH_MySQL:BOOL=FALSE
 
 PGSQL_DESC=	PostgreSQL database support in Kexi
 PGSQL_LIB_DEPENDS=libpqxx-3.1.so:${PORTSDIR}/databases/postgresql-libpqxx3
-PGSQL_USE=	PGSQL=yes
+PGSQL_USES=	pgsql
 PGSQL_CMAKE_OFF=-DWITH_PostgreSQL:BOOL=FALSE
 
 SYBASE_DESC=	Sybase database support in Kexi

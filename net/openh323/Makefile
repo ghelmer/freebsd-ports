@@ -3,7 +3,7 @@
 
 PORTNAME=	openh323
 PORTVERSION=	1.19.0.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-v${PORTVERSION:S/./_/g}-src
@@ -11,9 +11,11 @@ EXTRACT_SUFX=	-tar.gz
 DIST_SUBDIR=	openh323
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A H323 Video Conferencing library
+COMMENT=	H323 Video Conferencing library
 
 LIB_DEPENDS=	libpt_r.so:${PORTSDIR}/devel/pwlib
+
+CONFLICTS=	h323plus-1.*
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_v${PORTVERSION:S/./_/g}
 
@@ -48,7 +50,6 @@ post-patch:
 		${WRKSRC}/configure.ac
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libh323_r.so.1
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pwlib/codecs/audio/*.so
 
 .include <bsd.port.post.mk>

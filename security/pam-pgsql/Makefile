@@ -3,7 +3,7 @@
 
 PORTNAME=	pam-pgsql
 PORTVERSION=	0.7.3.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security databases
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.7/
 
@@ -12,20 +12,16 @@ COMMENT=	PAM module for authenticating with PostgreSQL
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	mhash:${PORTSDIR}/security/mhash \
-		gcrypt:${PORTSDIR}/security/libgcrypt
+LIB_DEPENDS=	libmhash.so:${PORTSDIR}/security/mhash \
+		libgcrypt.so:${PORTSDIR}/security/libgcrypt
 
-USE_PGSQL=	yes
+USES=		libtool pgsql
 GNU_CONFIGURE=	yes
-
-CONFIGURE_ARGS+=	--libdir=/usr/lib
+SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-install:
-	@${SED} -e 's,%%PREFIX%%,${PREFIX},' ${PKGMESSAGE}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${WRKSRC}/CHANGELOG ${STAGEDIR}${DOCSDIR}
 

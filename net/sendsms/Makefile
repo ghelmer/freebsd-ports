@@ -9,7 +9,7 @@ MASTER_SITES=	http://caspian.dotconf.net/menu/Software/SendSMS/ \
 DISTNAME=	sendSMS.pl
 EXTRACT_SUFX=	.gz
 
-MAINTAINER=	itetcu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple perl command-line utility to send SMS via from on provider site
 
 EXTRACT_CMD=	${GZCAT}
@@ -22,13 +22,10 @@ CONFLICTS=	gnokii-[0-9]* smstools-[0-9]*
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-USES=		perl5
-
-NO_STAGE=	yes
-post-patch:
-	@${REINPLACE_CMD} -e "s,/usr/bin/perl,${PERL},g" ${WRKSRC}/${PORTNAME}
+USES=		perl5 shebangfix
+SHEBANG_FILES=	${PORTNAME}
 
 do-install:
-	cd ${WRKSRC} && ${INSTALL_SCRIPT} ${PORTNAME} ${PREFIX}/bin/${PORTNAME}
+	cd ${WRKSRC} && ${INSTALL_SCRIPT} ${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

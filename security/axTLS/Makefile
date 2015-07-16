@@ -3,14 +3,14 @@
 
 PORTNAME=	axTLS
 PORTVERSION=	1.4.9
+PORTREVISION=	2
 CATEGORIES=	security devel net
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	${PORTNAME:tl}/${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION}
 
 MAINTAINER=	umq@ueo.co.jp
 COMMENT=	SSL/TLS client/server library implementation
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 OPTIONS_DEFINE=	COMPAT_OPENSSL HTTPD TLSWRAP X509 PERL DOCS DEBUG TEST
 OPTIONS_SINGLE=	MODE PROT
@@ -101,7 +101,7 @@ post-build:
 .endif
 
 do-install:
-	${INSTALL_LIB} ${STAGE}/libaxtls.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${STAGE}/libaxtls.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_LIB} ${STAGE}/libaxtls.so.1.2 ${STAGEDIR}${PREFIX}/lib
 	${LN} -s libaxtls.so.1.2 ${STAGEDIR}${PREFIX}/lib/libaxtls.so.1
 	${LN} -fs libaxtls.so.1 ${STAGEDIR}${PREFIX}/lib/libaxtls.so
@@ -114,10 +114,10 @@ do-install:
 	${INSTALL_PROGRAM} ${STAGE}/axtlswrap ${STAGEDIR}${PREFIX}/bin
 .endif
 .if ${PORT_OPTIONS:MPERL}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}/auto
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto
 	${INSTALL_SCRIPT} ${STAGE}/axssl.pl ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_SCRIPT} ${STAGE}/axtlsp.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}
-	${INSTALL_LIB} ${STAGE}/libaxtlsp.so ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/${PERL_ARCH}/auto
+	${INSTALL_SCRIPT} ${STAGE}/axtlsp.pm ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}
+	${INSTALL_LIB} ${STAGE}/libaxtlsp.so ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto
 .endif
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/axTLS
 	${INSTALL_DATA} ${WRKSRC}/crypto/*.h ${STAGEDIR}${PREFIX}/include/axTLS

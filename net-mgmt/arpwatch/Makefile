@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	arpwatch
-PORTVERSION=	2.1.a15
+DISTVERSION=	2.1a15
 PORTREVISION=	8
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.ee.lbl.gov/ \
-		GENTOO/distfiles
-DISTNAME=	${PORTNAME}-${PORTVERSION:C/\.([^\.]*)$/\1/}
+		GENTOO
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Monitor arp & rarp requests
@@ -16,7 +15,6 @@ LICENSE=	BSD3CLAUSE
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--quiet
-MAKE_ENV+=	BINOWN="${BINOWN}" BINGRP="${BINGRP}"
 INSTALL_TARGET=	install install-man
 
 SUB_FILES=	pkg-message
@@ -27,13 +25,7 @@ MAKE_ARGS=	ARPDIR=${ARPDIR}
 .endif
 
 post-install:
-	if [ ! -d ${STAGEDIR}${PREFIX}/arpwatch ]; then				\
-		${MKDIR} ${STAGEDIR}${PREFIX}/arpwatch;				\
-		${CHMOD} 755 ${STAGEDIR}${PREFIX}/arpwatch;			\
-		${CHOWN} root:operator ${STAGEDIR}${PREFIX}/arpwatch;		\
-	fi
-	${TOUCH} ${STAGEDIR}${PREFIX}/arpwatch/arp.dat
-	${CHMOD} 644 ${STAGEDIR}${PREFIX}/arpwatch/arp.dat
+	${MKDIR} ${STAGEDIR}${PREFIX}/arpwatch
 	for files in ethercodes.dat d.awk duplicates.awk euppertolower.awk e.awk p.awk; do \
 		${INSTALL_DATA} ${WRKSRC}/$$files ${STAGEDIR}${PREFIX}/arpwatch;	\
 	done

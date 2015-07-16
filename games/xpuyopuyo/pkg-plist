@@ -1,7 +1,5 @@
 bin/xpuyopuyo
 man/man6/xpuyopuyo.6.gz
-%%GNOME:%%share/gnome/apps/Games/xpuyopuyo.desktop
-%%GNOME:%%share/pixmaps/xpuyopuyo.xpm
 %%DATADIR%%/copying.txt
 %%DATADIR%%/sounds/game.xm
 %%DATADIR%%/sounds/gameover.xm
@@ -211,11 +209,3 @@ man/man6/xpuyopuyo.6.gz
 %%DATADIR%%/themes/spheres/img_top.xpm
 %%DATADIR%%/themes/spheres/img_trans.xpm
 %%DATADIR%%/xpuyopuyo.txt
-@dirrm %%DATADIR%%/themes/spheres
-@dirrm %%DATADIR%%/themes/smileys
-@dirrm %%DATADIR%%/themes/fabo
-@dirrm %%DATADIR%%/themes/default
-@dirrm %%DATADIR%%/themes/3dRokz
-@dirrm %%DATADIR%%/themes
-@dirrm %%DATADIR%%/sounds
-@dirrm %%DATADIR%%

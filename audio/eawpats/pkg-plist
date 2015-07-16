@@ -356,9 +356,7 @@
 %%DATADIR%%/woodflut.pat
 %%DATADIR%%/xgmap2.cfg
 %%DATADIR%%/xylophon.pat
-@unexec if cmp -s %D/share/timidity/timidity.cfg %D/share/timidity/timidity.cfg-eawpats; then rm -f %D/share/timidity/timidity.cfg; fi
 share/timidity/timidity.cfg-eawpats
-@exec [ ! -f %B/timidity.cfg ] && cp -p %B/%f %B/timidity.cfg
 %%PORTDOCS%%%%DOCSDIR%%/changelog.txt
 %%PORTDOCS%%%%DOCSDIR%%/copyrigh.txt
 %%PORTDOCS%%%%DOCSDIR%%/drumsfx.txt
@@ -372,22 +370,3 @@ share/timidity/timidity.cfg-eawpats
 %%PORTDOCS%%%%DOCSDIR%%/patref24.hlp
 %%PORTDOCS%%%%DOCSDIR%%/power/e_power.txt
 %%PORTDOCS%%%%DOCSDIR%%/wime/wime.txt
-@dirrm %%DATADIR%%/wime
-@dirrm %%DATADIR%%/sfx
-@dirrm %%DATADIR%%/power
-@dirrm %%DATADIR%%/mazpat/fx
-@dirrm %%DATADIR%%/mazpat
-@dirrm %%DATADIR%%/gus
-@dirrm %%DATADIR%%/gsdrum40
-@dirrm %%DATADIR%%/gsdrum25
-@dirrm %%DATADIR%%/gsdrum08
-@dirrm %%DATADIR%%/ethnic
-@dirrm %%DATADIR%%
-@dirrmtry share/timidity
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/wime
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/power
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/gsdrum40
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/gsdrum25
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/gsdrum08
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/ethnic
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

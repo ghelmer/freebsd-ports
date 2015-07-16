@@ -3,14 +3,15 @@
 
 PORTNAME=	xdialog
 PORTVERSION=	2.3.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11
 MASTER_SITES=	http://xdialog.free.fr/
 DISTNAME=	${PORTNAME:S/x/X/}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A drop in replacement for the "dialog" or "cdialog" programs
+COMMENT=	Drop in replacement for the "dialog" or "cdialog" programs
 
+USES=		tar:bzip2
 USE_GNOME=	gtk12
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

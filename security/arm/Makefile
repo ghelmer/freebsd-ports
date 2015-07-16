@@ -13,9 +13,8 @@ COMMENT=	Terminal status monitor for Tor
 
 LICENSE=	GPLv3
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-USE_BZIP2=	yes
+USE_PYTHON=	distutils
+USES=		python tar:bzip2
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}

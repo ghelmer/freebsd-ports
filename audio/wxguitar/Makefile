@@ -3,7 +3,7 @@
 
 PORTNAME=	wxguitar
 PORTVERSION=	1.01
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	GOOGLE_CODE \
 		http://mirror.amdmi3.ru/distfiles/
@@ -13,6 +13,8 @@ COMMENT=	Simple guitar tuning assistant
 
 RUN_DEPENDS=	wavplay:${PORTSDIR}/audio/wavplay
 
+USES=		compiler:c++11-lib
+USE_CXXSTD=	c++11
 GNU_CONFIGURE=	yes
 USE_WX=		3.0
 WX_UNICODE=	yes

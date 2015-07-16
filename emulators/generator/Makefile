@@ -3,7 +3,7 @@
 
 PORTNAME=	generator
 PORTVERSION=	0.35
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	emulators
 MASTER_SITES=	http://www.squish.net/generator/files/
 
@@ -12,9 +12,7 @@ COMMENT=	SEGA Genesis emulator
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
-
-USES=		gmake
+USES=		gmake jpeg
 USE_GNOME=	gtk12
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes

@@ -3,19 +3,20 @@
 
 PORTNAME=	kover
 PORTVERSION=	6
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	print kde
 MASTER_SITES=	http://lisas.de/kover/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WYSIWYG CD cover printer
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcddb.so:${PORTSDIR}/audio/libcddb \
 		libcdio.so:${PORTSDIR}/sysutils/libcdio
 
-USE_KDE4=	automoc4 kdehier kdeprefix kdelibs
+USE_KDE4=	automoc4 kdeprefix kdelibs
 USE_QT4=	corelib dbus gui network svg xml \
 		qmake_build uic_build rcc_build
 USE_PERL5=	build

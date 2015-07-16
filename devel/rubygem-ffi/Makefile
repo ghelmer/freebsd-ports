@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ffi
-PORTVERSION=	1.9.3
+PORTVERSION=	1.9.9
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,9 +11,8 @@ COMMENT=	Extension for dynamic libraries & binding functions
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	ffi:${PORTSDIR}/devel/libffi
+LIB_DEPENDS=	libffi.so:${PORTSDIR}/devel/libffi
 
-USE_RAKE=	yes
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes

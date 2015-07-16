@@ -6,18 +6,14 @@ PORTVERSION=	0.9.7
 CATEGORIES=	www
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A free open-source PHP accelerator & optimizer
+COMMENT=	Free open-source PHP accelerator & optimizer
 
 LICENSE=	GPLv2
-OPTIONS_DEFINE=	DOCCOMM
+OPTIONS_DEFINE=	DOCCOMM DOCS EXAMPLES
 DOCCOMM_DESC=	Retain doc-comments in internal php structures
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME}
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	42067ac
-
-OPTIONS_DEFINE=	DOCCOMM
+GH_TAGNAME=	42067ac
 
 DOCCOMM_DESC=	Retain doc-comments in internal php structures
 DOCCOMM_CONFIGURE_WITH=	eaccelerator-doc-comment-inclusion
@@ -25,6 +21,7 @@ DOCCOMM_CONFIGURE_WITH=	eaccelerator-doc-comment-inclusion
 USE_PHP=	yes
 USE_PHPIZE=	yes
 USE_PHP_BUILD=	yes
+IGNORE_WITH_PHP=	55 56
 
 CONFIGURE_ARGS=	--enable-eaccelerator=shared \
 		--with-eaccelerator-userid=80

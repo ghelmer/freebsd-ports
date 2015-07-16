@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	qcad
-PORTVERSION=	3.5.1.0
+PORTVERSION=	3.7.5.0
+DISTVERSIONPREFIX=	v
+PORTREVISION=	4
 CATEGORIES=	cad
-MASTER_SITES=	http://github.com/${PORTNAME}/${PORTNAME}/archive/${DISTNAME}.tar.gz?dummy=/	\
-		https://github.com/${PORTNAME}/${PORTNAME}/archive/${DISTNAME}.tar.gz?dummy=/
-DISTNAME=	v${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	mr@FreeBSD.org
@@ -16,14 +15,11 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash	\
 		${LOCALBASE}/lib/libopenNURBS.a:${PORTSDIR}/graphics/opennurbs
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
 
-CONFLICTS=	texlive-base-*
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_JOBS_UNSAFE=yes
 
-USES=		gmake qmake
+USES=		execinfo gmake qmake
+USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 USE_QT4=	qmake_build codecs-cn codecs-jp codecs-kr codecs-tw corelib \
 		designer gui help imageformats moc_build network opengl rcc_build script \
@@ -47,10 +43,12 @@ SHRLIBS=	qcadcore qcadecmaapi qcadentity qcadgrid qcadgui qcadoperations	\
 		qcadsnap qcadspatialindex qcadstemmer spatialindexnavel
 STALIBS=	dxflib stemmer
 SHRDIR=		fonts libraries patterns plugins scripts ts
+#QSCRIPTS should not be installed to avoid conflicts with texlive-base
 QSCRIPTS=	bbox dwg2bmp dwg2pdf dwg2svg
-SUB_FILES=	${QSCRIPTS}
 
 pre-configure:
+	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
+		${WRKSRC}/src/core/RS.cpp
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"	\
 		${WRKSRC}/src/core/RSettings.cpp
 
@@ -64,15 +62,12 @@ pre-configure:
 do-install:
 	${INSTALL_PROGRAM} ${RESDIR}/qcad-bin ${STAGEDIR}${PREFIX}/bin/
 	${LN} -sf ${PREFIX}/bin/qcad-bin ${STAGEDIR}${PREFIX}/bin/qcad
-.for prog in ${QSCRIPTS}
-	${INSTALL_SCRIPT} ${WRKDIR}/${prog} ${STAGEDIR}${PREFIX}/bin
-.endfor
 .for lib in ${SHRLIBS:C|^|lib|:C|$|.so|}
 	${INSTALL_LIB} ${RESDIR}/${lib} ${STAGEDIR}${PREFIX}/lib/${lib}.0
 	${LN} -sf ${PREFIX}/lib/${lib}.0 ${STAGEDIR}${PREFIX}/lib/${lib}
 .endfor
 .for lib in ${STALIBS:C|^|lib|:C|$|.a|}
-	${INSTALL_LIB} ${RESDIR}/${lib} ${STAGEDIR}${PREFIX}/lib/
+	${INSTALL_DATA} ${RESDIR}/${lib} ${STAGEDIR}${PREFIX}/lib/
 .endfor
 	${MKDIR} ${STAGEDIR}${DATADIR}
 .for dir in ${SHRDIR}

@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	DBIx-SearchBuilder
-PORTVERSION=	1.65
+PORTVERSION=	1.66
+PORTREVISION=	1
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	demon@FreeBSD.org
+MAINTAINER=	michelle@sorbs.net
 COMMENT=	Perl extension for easy SQL SELECT Statement generation
 
 BUILD_DEPENDS=	p5-Class-ReturnValue>=0:${PORTSDIR}/devel/p5-Class-ReturnValue \
@@ -24,5 +25,9 @@ TEST_DEPENDS=	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite
 
 USES=		perl5
 USE_PERL5=	configure
+
+post-patch:
+		${CP} ${WRKSRC}/lib/DBIx/SearchBuilder/Handle/Pg.pm ${WRKSRC}/lib/DBIx/SearchBuilder/Handle/Pg32.pm
+		${REINPLACE_CMD} -e 's/Pg/Pg32/g' ${WRKSRC}/lib/DBIx/SearchBuilder/Handle/Pg32.pm
 
 .include <bsd.port.mk>

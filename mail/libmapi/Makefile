@@ -3,7 +3,7 @@
 
 PORTNAME=	libmapi
 PORTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://tracker.openchange.org/attachments/download/${DOWNLOADCODE}/
 DISTNAME=	openchange-${PORTVERSION}-${CODENAME}
@@ -23,8 +23,7 @@ CODENAME=	QUADRANT
 DOWNLOADCODE=	244
 
 USE_SQLITE=	3
-USES=		gmake pathfix pkgconfig shebangfix
-USE_PYTHON=	yes
+USES=		compiler:c++11-lib gmake pathfix pkgconfig python shebangfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

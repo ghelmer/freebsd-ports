@@ -2,15 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	openjdk6
-PORTVERSION=	b34
-PORTREVISION=	2
+PORTVERSION=	b35
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	java devel
-MASTER_SITES=	${MASTER_SITE_APACHE:S,%SUBDIR%/,ant/binaries/:ant,} \
+MASTER_SITES=	APACHE/ant/binaries/:ant \
 		http://download.java.net/openjdk/jtreg/promoted/4.1/b05/:jtreg \
 		https://java.net/downloads/openjdk6/ \
-		LOCAL
-MASTER_SITE_SUBDIR=	jkim
+		LOCAL/jkim
 DISTNAME=	openjdk-6-src-${PORTVERSION}-${OPENJDK_BUILDDATE}
 DISTFILES=	${ANTFILE}:ant \
 		${DISTNAME}${EXTRACT_SUFX}
@@ -30,7 +29,7 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 RUN_DEPENDS=	javavm:${PORTSDIR}/java/javavmwrapper \
 		dejavu>0:${PORTSDIR}/x11-fonts/dejavu
 
-OPENJDK_BUILDDATE=	15_apr_2014
+OPENJDK_BUILDDATE=	14_apr_2015
 
 OPTIONS_DEFINE=	ICEDTEA IPV6 POLICY SOUND TZUPDATE
 OPTIONS_DEFAULT=ICEDTEA IPV6 TZUPDATE
@@ -67,7 +66,7 @@ USE_XORG=	x11 xext xi xt xtst
 
 # do not depend on devel/apache-ant to avoid circular dependency, but
 # use .tar.bz2 distfile to avoid duplicated downloads
-ANTVERSION=	1.9.3
+ANTVERSION=	1.9.4
 ANTFILE=	apache-ant-${ANTVERSION}-bin.tar.bz2
 
 JTREG_BUILD=	b05_29_nov_2012
@@ -142,6 +141,10 @@ MAKE_ENV+=	SKIP_FASTDEBUG_BUILD=true
 MAKE_ENV+=	DONT_ENABLE_IPV6="YES"
 .endif
 
+.if ${PORT_OPTIONS:MPOLICY}
+MAKE_ENV+=	UNLIMITED_CRYPTO="YES"
+.endif
+
 .if ${PORT_OPTIONS:MSOUND}
 EXTRA_PATCHES+=	${FILESDIR}/alsa-enable.patch
 LIB_DEPENDS+=	libasound.so:${PORTSDIR}/audio/alsa-lib
@@ -182,6 +185,18 @@ COPYFILES=	\
 
 .include <bsd.port.pre.mk>
 
+.if ${COMPILER_TYPE} == clang
+.if ${COMPILER_VERSION} >= 35
+MAKE_ENV+=	COMPILER_WARNINGS_FATAL=false
+.endif
+MAKE_ENV+=	USE_CLANG=true
+.endif
+
+# GCC is broken with PCH: https://lists.freebsd.org/pipermail/svn-src-all/2015-March/101722.html
+.if ${COMPILER_TYPE} == gcc
+MAKE_ENV+=	USE_PRECOMPILED_HEADER=0
+.endif
+
 .if empty(ICONV_LIB)
 ICONV_CPPFLAGS=	-DLIBICONV_PLUG
 .else
@@ -189,13 +204,6 @@ ICONV_CPPFLAGS=	-I${LOCALBASE}/include
 ICONV_LDFLAGS=	-L${LOCALBASE}/lib ${ICONV_LIB}
 .endif
 ZLIB_LDFLAGS?=	-lz
-
-.if ${COMPILER_TYPE} == "clang"
-.if ${COMPILER_VERSION} >= 35
-MAKE_ENV+=	COMPILER_WARNINGS_FATAL=false
-.endif
-MAKE_ENV+=	USE_CLANG=true
-.endif
 
 post-extract:
 	@for d in ${COPYDIRS}; do \
@@ -248,13 +256,6 @@ post-patch:
 	    ${WRKSRC}/hotspot/src/os/bsd/vm/os_bsd.cpp \
 	    ${WRKSRC}/jdk/src/share/classes/com/sun/java/swing/plaf/gtk/Metacity.java \
 	    ${WRKSRC}/jdk/src/share/classes/sun/print/PSPrinterJob.java
-.if ${PORT_OPTIONS:MPOLICY}
-	@${REINPLACE_CMD} -e 's|%%POLICY%%|unlimited|' \
-	    ${WRKSRC}/jdk/make/javax/crypto/Makefile
-.else
-	@${REINPLACE_CMD} -e 's|%%POLICY%%|limited|' \
-	    ${WRKSRC}/jdk/make/javax/crypto/Makefile
-.endif
 .if defined(BUILD_JRE)
 	@${REINPLACE_CMD} -e "s|%%JAVA_HOME%%|${PREFIX}/openjdk6-jre|" \
 	    ${WRKSRC}/hotspot/src/os/posix/launcher/java_md.c \
@@ -329,11 +330,7 @@ do-install:
 	    ${SED} -e 's,^\./,openjdk6-jre/,' >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX}/openjdk6-jre && \
 	    ${FIND} -s . -type d -empty | \
-	    ${SED} 's,^\./,@exec ${MKDIR} %D/openjdk6-jre/,' >> ${TMPPLIST}
-	@cd ${STAGEDIR}${PREFIX}/openjdk6-jre && \
-	    ${FIND} . -type d -not -depth 0 | ${SORT} -r | \
-	    ${SED} 's,^\.,@dirrm openjdk6-jre/,' >> ${TMPPLIST}
-	@${ECHO_CMD} "@dirrm openjdk6-jre" >> ${TMPPLIST}
+	    ${SED} 's,^\./,@dir openjdk6-jre/,' >> ${TMPPLIST}
 	@${ECHO_CMD} '${TEST} $$2 = DEINSTALL && ${LOCALBASE}/bin/unregistervm ${PREFIX}/openjdk6-jre/bin/java' >> ${PKGDEINSTALL}
 	@${ECHO_CMD} '${TEST} $$2 = POST-INSTALL && ${LOCALBASE}/bin/registervm "${PREFIX}/openjdk6-jre/bin/java # OpenJDK6 JRE"' >> ${PKGINSTALL}
 .else
@@ -342,11 +339,7 @@ do-install:
 	    ${SED} -e 's,^\./,openjdk6/,' >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX}/openjdk6 && \
 	    ${FIND} -s . -type d -empty | \
-	    ${SED} 's,^\./,@exec ${MKDIR} %D/openjdk6/,' >> ${TMPPLIST}
-	@cd ${STAGEDIR}${PREFIX}/openjdk6 && \
-	    ${FIND} . -type d -not -depth 0 | ${SORT} -r | \
-	    ${SED} 's,^\./,@dirrm openjdk6/,' >> ${TMPPLIST}
-	@${ECHO_CMD} "@dirrm openjdk6" >> ${TMPPLIST}
+	    ${SED} 's,^\./,@dir openjdk6/,' >> ${TMPPLIST}
 	@${ECHO_CMD} '${TEST} $$2 = DEINSTALL && ${LOCALBASE}/bin/unregistervm ${PREFIX}/openjdk6/bin/java' >> ${PKGDEINSTALL}
 	@${ECHO_CMD} '${TEST} $$2 = POST-INSTALL && ${LOCALBASE}/bin/registervm "${PREFIX}/openjdk6/bin/java # OpenJDK6"' >> ${PKGINSTALL}
 .if ${PORT_OPTIONS:MFASTDEBUG}
@@ -355,11 +348,7 @@ do-install:
 	    ${SED} -e 's,^\./,openjdk6-fastdebug/,' >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX}/openjdk6-fastdebug && \
 	    ${FIND} -s . -type d -empty | \
-	    ${SED} 's,^\./,@exec ${MKDIR} %D/openjdk6-fastdebug/,' >> ${TMPPLIST}
-	@cd ${STAGEDIR}${PREFIX}/openjdk6-fastdebug && \
-	    ${FIND} . -type d -not -depth 0 | ${SORT} -r | \
-	    ${SED} 's,^\./,@dirrm openjdk6-fastdebug/,' >> ${TMPPLIST}
-	@${ECHO_CMD} "@dirrm openjdk6-fastdebug" >> ${TMPPLIST}
+	    ${SED} 's,^\./,@dir openjdk6-fastdebug/,' >> ${TMPPLIST}
 	@${ECHO_CMD} '${TEST} $$2 = DEINSTALL && ${LOCALBASE}/bin/unregistervm ${PREFIX}/openjdk6-fastdebug/bin/java' >> ${PKGDEINSTALL}
 	@${ECHO_CMD} '${TEST} $$2 = POST-INSTALL && ${LOCALBASE}/bin/registervm "${PREFIX}/openjdk6-fastdebug/bin/java # OpenJDK6"' >> ${PKGINSTALL}
 .endif

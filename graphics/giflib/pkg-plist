@@ -45,4 +45,3 @@ man/man1/gifwedge.1.gz
 %%DOCBOOK%%%%PORTDOCS%%%%DOCSDIR%%/gifwedge.html
 %%DOCBOOK%%%%PORTDOCS%%%%DOCSDIR%%/intro.html
 %%DOCBOOK%%%%PORTDOCS%%%%DOCSDIR%%/lzgif.txt
-%%DOCBOOK%%@dirrm %%DOCSDIR%%

@@ -3,8 +3,10 @@
 
 PORTNAME=	jsdr
 PORTVERSION=	4.1
+PORTREVISION=	3
 CATEGORIES=	comms audio hamradio
-MASTER_SITES=	http://www.sdr-j.tk/
+MASTER_SITES=	http://www.sdr-j.tk/ \
+		LOCAL/nox/
 
 MAINTAINER=	nox@FreeBSD.org
 COMMENT=	SDR tools for RTL2832-based USB sticks
@@ -12,7 +14,7 @@ COMMENT=	SDR tools for RTL2832-based USB sticks
 LICENSE=	GPLv2
 
 LIB_DEPENDS+=	libqwt.so:${PORTSDIR}/x11-toolkits/qwt5 \
-		libportaudio.so.2:${PORTSDIR}/audio/portaudio2 \
+		libportaudio.so:${PORTSDIR}/audio/portaudio \
 		libsamplerate.so:${PORTSDIR}/audio/libsamplerate \
 		libsndfile.so:${PORTSDIR}/audio/libsndfile \
 		libfftw3.so:${PORTSDIR}/math/fftw3
@@ -23,6 +25,8 @@ USE_QT4=	gui qt3support qmake_build moc_build rcc_build uic_build
 PORTDOCS=	*
 PLIST_FILES+=	bin/swreceiver bin/spectrum-viewer-${PORTVERSION} \
 		bin/mini-receiver bin/fmreceiver-${PORTVERSION}
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

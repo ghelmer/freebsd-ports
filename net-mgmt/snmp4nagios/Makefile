@@ -3,7 +3,7 @@
 
 PORTNAME=	SNMP4Nagios
 PORTVERSION=	0.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 
@@ -39,7 +39,7 @@ LIBS+=		-L${LOCALBASE}/lib
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MRRDTOOL}
-LIB_DEPENDS+=	rrd:${PORTSDIR}/databases/rrdtool
+LIB_DEPENDS+=	librrd.so:${PORTSDIR}/databases/rrdtool
 CONFIGURE_ARGS+=--with-rrd
 PLIST_SUB+=	RRD=""
 .else

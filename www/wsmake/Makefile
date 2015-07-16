@@ -6,14 +6,17 @@ PORTVERSION=	0.7.901
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/OldFiles
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Software for production and maintenance of web sites
 
-OPTIONS_DEFINE=	DOCS
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gwsmake=no --enable-iswmake=no
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

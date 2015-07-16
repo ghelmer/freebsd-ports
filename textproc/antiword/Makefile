@@ -3,31 +3,43 @@
 
 PORTNAME=	antiword
 PORTVERSION=	0.37
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.winfield.demon.nl/linux/
 
 MAINTAINER=	leeym@FreeBSD.org
-COMMENT=	An application to display Microsoft(tm) Word files
+COMMENT=	Application for displaying Microsoft(R) Word documents
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/Docs/COPYING
 
-USES=	gmake
+BUILD_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/n022003l.afm:${PORTSDIR}/print/gsfonts
+RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/n022003l.afm:${PORTSDIR}/print/gsfonts
+
+USES=		cpe gmake shebangfix perl5
+CPE_VENDOR=	antiword_project
+USE_PERL5=	build
+SHEBANG_FILES=	kantiword Unix-only/fontinfo.pl
 MAKE_JOBS_UNSAFE=yes
 INSTALL_TARGET=	global_install
 
 PORTDOCS=	COPYING ChangeLog Emacs Exmh FAQ History Mozilla Mutt Netscape \
 		QandA ReadMe antiword.1 antiword.man antiword.php testdoc.doc
 
+OPTIONS_DEFINE=	DEBUG
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MDEBUG}
+CFLAGS+=	-DDEBUG
+.else
 CFLAGS+=	-DNDEBUG
+.endif
 
 post-patch:
-	@${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} \
-		-e 's,/usr/local,${PREFIX},g' \
-		-e 's,/usr/share,${PREFIX}/share,g'
-	@${REINPLACE_CMD} -E 's|LD|CC|g; /^(CC|CFLAGS)/d' ${WRKSRC}/${MAKEFILE}
-	@${TOUCH} ${WRKSRC}/fontinfo.h
-	@${REINPLACE_CMD} -e 's,/usr/bin/perl,${PERL},' ${WRKSRC}/Unix-only/fontinfo.pl
+	@${REINPLACE_CMD} -E 's,/usr/share,${LOCALBASE}/share,g; s,fonts2,fonts,' ${WRKSRC}/Unix-only/fontinfo.pl
+	@${REINPLACE_CMD} -E 's|LD|CC|g; /^(CC|CFLAGS|OPT)/d; s,/usr/share,${PREFIX}/share,g; s|/usr/local/bin|${PREFIX}/bin|g' ${WRKSRC}/${MAKEFILE}
+	@${REINPLACE_CMD} -E 's,/usr/share,${PREFIX}/share,g' ${WRKSRC}/antiword.h
 
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/Docs/antiword.1 ${STAGEDIR}${MANPREFIX}/man/man1

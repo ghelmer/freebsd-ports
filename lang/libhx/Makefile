@@ -2,32 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	libHX
-PORTVERSION=	3.14.1
+PORTVERSION=	3.22
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	C/C++ library with common data structures and functions
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-USE_XZ=		yes
+USES=		cpe libtool tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	libtool
-CONFIGURE_ARGS+=--with-pkgconfigdir=${LOCALBASE}/libdata/pkgconfig
+CONFIGURE_ARGS+=--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
+INSTALL_TARGET=	install-strip
 
-.if !defined(NOPORTDOCS)
+CPE_VENDOR=	jan_engelhardt
+
+OPTIONS_DEFINE=	DOCS
+
 PORTDOCS=	*
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME:tl}
-.endif
 
 post-patch:
 	${REINPLACE_CMD} -e 's| -lrt||g' ${WRKSRC}/src/Makefile.in
-.if defined(NOPORTDOCS)
-	${REINPLACE_CMD} -e 's|libHX_Documentation.pdf||' \
-	   ${WRKSRC}/doc/Makefile.in ${WRKSRC}/doc/Makefile.am
-.endif
 
 .include <bsd.port.mk>

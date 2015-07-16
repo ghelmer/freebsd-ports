@@ -6,14 +6,9 @@ PORTVERSION=	1.0.2
 PORTEPOCH=	1
 CATEGORIES=	net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The PEAR::Net_DIME class implements DIME encoding
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+USES=	pear
 
-PEAR_AUTOINSTALL=	yes
-
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mate-themes
-PORTVERSION=	1.6.2
+PORTVERSION=	1.8.1
 CATEGORIES=	x11-themes mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -17,8 +17,7 @@ RUN_DEPENDS=	gtk-engines2>=2.15.0:${PORTSDIR}/x11-themes/gtk-engines2 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake pathfix pkgconfig
-USE_XZ=		yes
+USES=		gettext gmake pathfix pkgconfig tar:xz
 USE_MATE=	marco
 USE_GNOME=	gdkpixbuf2 gtk20 intlhack
 GNU_CONFIGURE=	yes

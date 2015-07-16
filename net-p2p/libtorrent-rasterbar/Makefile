@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	libtorrent-rasterbar
-PORTVERSION=	0.16.17
+PORTVERSION=	1.0.4
 CATEGORIES?=	net-p2p ipv6
 MASTER_SITES=	SF/${PORTNAME:S/-rasterbar//}/${PORTNAME:S/-rasterbar//}/
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	C++ library implementing a BitTorrent client
 
 LICENSE=	BSD3CLAUSE
@@ -14,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 LIB_DEPENDS?=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
 		libGeoIP.so:${PORTSDIR}/net/GeoIP
 
-USES=		compiler:c++11-lang libtool pathfix pkgconfig iconv
+USES+=		compiler:c++11-lang iconv libtool pathfix pkgconfig
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -31,28 +31,31 @@ CONFIGURE_ARGS=	--disable-static \
 		--with-libiconv \
 		--with-openssl=${OPENSSLBASE}
 
-SHLIB_VER=	7
+SHLIB_VER=	8
 PLIST_SUB+=	SHLIB_VER="${SHLIB_VER}"
-
-SUB_FILES=	pkg-message
-
-PORTDOCS=	*
 
 DOCSRCDIR1=	${WRKSRC}
 DOC_FILES1=	AUTHORS ChangeLog README
 
 DOCSRCDIR2=	${WRKSRC}/docs
 DOCSDIR2=	${DOCSDIR}/docs
-DOC_FILES2=	*
+DOC_FILES2=	*.*
+
+DOCSRCDIR3=	${WRKSRC}/docs/img
+DOCSDIR3=	${DOCSDIR}/docs/img
+DOC_FILES3=	*
 
 PORTEXAMPLES=	*.cpp
 
-OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES STRIP
-OPTIONS_DEFAULT=	STRIP
+OPTIONS_DEFINE=	DEBUG DOCS EXAMPLES
 
 DEBUG_CONFIGURE_ENABLE=	debug
 
 .include <bsd.port.options.mk>
+
+# Restrict to stable (even) versions, indicated by the second component.
+# With Versions 1.x not build yet net-p2p/qbittorrent
+PORTSCOUT=	limit:^0.16\..*
 
 .if defined(SLAVE_PORT) && ${SLAVE_PORT:tl} == "yes" && defined(USE_PYTHON)
 CONFIGURE_ARGS+=	--enable-python-binding \
@@ -66,18 +69,20 @@ post-patch:
 		${WRKSRC}/Jamfile
 
 post-install:
-.if ${PORT_OPTIONS:MSTRIP}
+.if defined(SLAVE_PORT) && ${SLAVE_PORT:tl} == "yes" && defined(USE_PYTHON)
 	${STRIP_CMD} \
-	${STAGEDIR}${PREFIX}/lib/libtorrent-rasterbar.so.${SHLIB_VER}
+	${STAGEDIR}${PYTHON_SITELIBDIR}/libtorrent.so
 .else
 	${STRIP_CMD} \
-	${STAGEDIR}${PREFIX}/lib/${PYTHON_VERSION}/site-packages/libtorrent.so
+	${STAGEDIR}${PREFIX}/lib/libtorrent-rasterbar.so.${SHLIB_VER}
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${DOCSDIR2}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR} ${STAGEDIR}${DOCSDIR3}
 	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+	${INSTALL_DATA} ${DOC_FILES3:S|^|${DOCSRCDIR3}/|} ${STAGEDIR}${DOCSDIR3}
 .endif
 
 .if ${PORT_OPTIONS:MEXAMPLES}

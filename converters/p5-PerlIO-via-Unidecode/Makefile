@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	PerlIO-via-Unidecode
-PORTVERSION=	1.01
+PORTVERSION=	1.02
+PORTREVISION=	1
 CATEGORIES=	converters perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,5 +16,6 @@ RUN_DEPENDS=	p5-Text-Unidecode>=0:${PORTSDIR}/converters/p5-Text-Unidecode
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

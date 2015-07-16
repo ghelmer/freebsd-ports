@@ -9,10 +9,9 @@ MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dikshie@sfc.wide.ad.jp
-COMMENT=	A logging framework handler that tracks when messages above a certain level have been logged.
+COMMENT=	Logging framework handler that tracks when messages above a certain level have been logged
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

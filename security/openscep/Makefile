@@ -3,7 +3,7 @@
 
 PORTNAME=	openscep
 PORTVERSION=	0.4.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	security
 MASTER_SITES=	http://openscep.othello.ch/download/
 
@@ -18,8 +18,6 @@ USE_OPENLDAP=	yes
 USE_APACHE=	22+
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-PLIST_DIRSTRY=	www/cgi-bin
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
@@ -53,6 +51,7 @@ post-patch:
 		${WRKSRC}/html/Makefile.in
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libscep.so
 	@${MKDIR} ${STAGEDIR}${CONF_DIR}
 	${INSTALL_DATA} ${WRKSRC}/openssl/openscep.cnf \
 		${STAGEDIR}${CONF_DIR}/openscep.cnf.sample

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mongodb
-PORTVERSION=	2.6.3
+PORTVERSION=	2.6.7
 CATEGORIES=	databases net
 MASTER_SITES=	http://downloads.mongodb.org/src/
 DISTNAME=	${PORTNAME}-src-r${PORTVERSION}
@@ -14,8 +14,7 @@ COMMENT=	NOSQL distributed document-oriented database
 LICENSE=	AGPLv3 APACHE20
 LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libpcre.so:${PORTSDIR}/devel/pcre \
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 		libsnappy.so:${PORTSDIR}/archivers/snappy \
 		libv8.so:${PORTSDIR}/lang/v8 \
 # boost 1.52/1.55 from ports make mongod segfaulting with many tests
@@ -32,7 +31,7 @@ OPTIONS_DEFINE=	SSL SASL TEST
 OPTIONS_DEFAULT=SSL
 TEST_DESC=	Add support for running regression test
 
-USES=		scons
+USES=		cpe execinfo scons
 MAKE_ARGS=	--prefix=${STAGEDIR}${PREFIX} --cc=${CC} --cxx=${CXX} \
 		--use-system-pcre --use-system-snappy --use-system-v8
 
@@ -56,7 +55,8 @@ LIB_DEPENDS+=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
 .endif
 
 .if ${PORT_OPTIONS:MTEST}
-BUILD_DEPENDS=	pymongo>=2.5:${PORTSDIR}/databases/pymongo
+USES+=		python:build
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pymongo>=2.5:${PORTSDIR}/databases/pymongo
 TEST_TARGET=	smokeAll smokeCppUnittests
 .	if ${PORT_OPTIONS:MSSL}
 TEST_TARGET+=	smokeSsl
@@ -66,7 +66,7 @@ ALL_TARGET=	core tools
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} 's/\["-O3"\]/"${CFLAGS}"/' \
+	@${REINPLACE_CMD} 's/\["-O3"\]/"${CXXFLAGS}"/' \
 		${WRKSRC}/SConstruct
 
 .if ${PORT_OPTIONS:MTEST}

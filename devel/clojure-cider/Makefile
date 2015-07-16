@@ -1,7 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	clojure-cider
-PORTVERSION=	0.6.0
+PORTVERSION=	0.7.0
+DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	devel elisp
 DISTNAME=	cider-${PORTVERSION}
 
@@ -12,8 +14,6 @@ LICENSE=	GPLv3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	clojure-emacs
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	fd14211
 GH_PROJECT=	cider
 
 USE_EMACS=	yes
@@ -21,8 +21,9 @@ USE_EMACS=	yes
 NO_BUILD=	yes
 
 RUN_DEPENDS+=	clojure-mode.el>0:${PORTSDIR}/lang/clojure-mode.el \
-		pkg-info.el>0:${PORTSDIR}/devel/pkg-info.el \
-		dash.el>0:${PORTSDIR}/devel/dash.el
+		dash.el>0:${PORTSDIR}/devel/dash.el \
+		epl.el>0:${PORTSDIR}/devel/epl.el \
+		pkg-info.el>0:${PORTSDIR}/devel/pkg-info.el
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/cider-client.el \

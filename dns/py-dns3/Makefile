@@ -3,6 +3,7 @@
 
 PORTNAME=	dns
 PORTVERSION=	3.0.4
+PORTREVISION=	1
 CATEGORIES=	dns python
 MASTER_SITES=	https://launchpad.net/${DISTNAME}/trunk/${PORTVERSION}/+download/ \
 		LOCAL/sunpoet
@@ -18,8 +19,7 @@ LICENSE_NAME=	CNRI LICENSE AGREEMENT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-PYDISTUTILS_AUTOPLIST=	yes
-USE_PYDISTUTILS=yes
-USE_PYTHON=	3
+USE_PYTHON=	autoplist distutils
+USES=		python:3
 
 .include <bsd.port.mk>

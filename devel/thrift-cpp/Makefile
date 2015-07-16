@@ -3,28 +3,22 @@
 
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION} # to keep in sync with thrift
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel
+PKGNAMESUFFIX=	-cpp
+MASTER_SITES=		APACHE/thrift/${PORTVERSION}
+DISTNAME=		thrift-${PORTVERSION}
 
 MAINTAINER=	komarov@valerka.net
 COMMENT=	C++ interface to Thrift
 
-PKGNAMESUFFIX=	-cpp
-
-MASTER_SITES=		APACHE
-MASTER_SITE_SUBDIR=	thrift/${PORTVERSION}
-DISTNAME=		thrift-${PORTVERSION}
 DISTINFO_FILE=		${.CURDIR}/../thrift/distinfo
 
 LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
-		libevent-1.4.so:${PORTSDIR}/devel/libevent
+		libevent.so:${PORTSDIR}/devel/libevent2
 
-USE_AUTOTOOLS=	autoconf autoheader:env aclocal automake libtool
-ACLOCAL_ARGS=	-I${WRKSRC}/aclocal
-AUTOMAKE_ARGS=	--foreign --add-missing --copy
-
-USES=			pkgconfig gmake compiler
+USES=			autoreconf pkgconfig gmake compiler libtool
 GNU_CONFIGURE=		yes
 USE_LDCONFIG=		yes
 MAKE_JOBS_UNSAFE=	yes
@@ -34,10 +28,11 @@ INSTALL_WRKSRC=		${WRKSRC}/lib/cpp
 
 OPTIONS_DEFINE=		QT4
 QT4_CONFIGURE_WITH=	qt4
+QT4_USE=		QT4=network,moc_build,qmake_build,rcc_build,uic_build
 
 OPTIONS_SUB=		yes
 
-CONFIGURE_ARGS+=        \
+CONFIGURE_ARGS+=	\
 		--without-c_glib \
 		--with-cpp \
 		--without-csharp \
@@ -54,10 +49,6 @@ CONFIGURE_ARGS+=        \
 
 .if ${COMPILER_TYPE} == clang
 USE_CXXSTD=	c++11
-.endif
-
-.if ${PORT_OPTIONS:MQT4}
-USE_QT4=		network moc_build qmake_build rcc_build uic_build
 .endif
 
 post-patch:

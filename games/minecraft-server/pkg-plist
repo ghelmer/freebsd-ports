@@ -1,16 +1,21 @@
-@stopdaemon minecraft
-%%X11%%bin/minecraft-server
-bin/minecraft-server-nogui
+%%STANDALONE%%bin/minecraft-server
 @owner mcserver
 @group mcserver
-@sample %%ETCDIR%%/banned-ips.txt.sample
-@sample %%ETCDIR%%/banned-players.txt.sample
-@sample %%ETCDIR%%/ops.txt.sample
-@sample %%ETCDIR%%/server.properties.sample
-@sample %%ETCDIR%%/white-list.txt.sample
-%%DATADIR%%/minecraft_server.jar
+@dir minecraft-server
+@dir %%ETCDIR%%
+%%STANDALONE%%%%ETCDIR%%/java-args.txt
+minecraft-server/banned-ips.json
+minecraft-server/banned-players.json
+minecraft-server/debug
+minecraft-server/eula.txt
+minecraft-server/logs
+minecraft-server/minecraft_server.%%VERSION%%.jar
+minecraft-server/ops.json
+minecraft-server/server.properties
+minecraft-server/usercache.json
+minecraft-server/whitelist.json
+minecraft-server/world
+@dir /var/db/minecraft-server
+@dir /var/log/minecraft-server
 @owner
 @group
-%%X11%%share/pixmaps/minecraft-server.png
-@dirrmtry %%DATADIR%%
-@dirrmtry %%ETCDIR%%

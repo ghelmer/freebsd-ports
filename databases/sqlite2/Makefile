@@ -3,27 +3,29 @@
 
 PORTNAME=	sqlite
 PORTVERSION=	2.8.17
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases
 MASTER_SITES=	http://www.sqlite.org/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SQL database engine in a C library
 
-USES=		gmake pkgconfig
-USE_AUTOTOOLS=	libtool
-USE_LDCONFIG=	YES
+GNU_CONFIGURE=	yes
+USES=		gmake libtool pkgconfig readline
+USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=		--prefix=${PREFIX} --with-hints=freebsd.hints
+CONFIGURE_ARGS=	--with-hints=freebsd.hints
 
 DOCSDIR=	${PREFIX}/share/doc/sqlite2
 EXAMPLESDIR=	${PREFIX}/share/examples/sqlite2
 
-LATEST_LINK=	${PKGNAMEPREFIX}${PORTNAME}2
-
 EXTRACT_AFTER_ARGS=	--exclude CVS
 
-OPTIONS_DEFINE=	TCL THREADS DOCS
+OPTIONS_DEFINE=	TCL THREADS DOCS EXAMPLES
+
+.if !exists(/usr/lib/libreadline.so)
+MAKE_ARGS=	READLINE_FLAGS="-DHAVE_READLINE=1 -I${LOCALBASE}/include -L${LOCALBASE}/lib"
+.endif
 
 .include <bsd.port.options.mk>
 
@@ -53,7 +55,7 @@ MAKE_ENV+=	TCL_VER=${TCL_VER}
 
 post-patch:
 	@${REINPLACE_CMD} -e "s/tclsh \$$(TOP)/\$$(TCLSH) \$$(TOP)/g" \
-		 -e "s|\./libtool|${LIBTOOL}|g" ${WRKSRC}/Makefile.in
+		${WRKSRC}/Makefile.in
 .if ${PORT_OPTIONS:MTCL} || !empty(PORT_OPTIONS:MDOCS)
 	@${ECHO} "config_TARGET_TCL_INC=\"-I${TCL_INCLUDEDIR}\"" \
 		> ${WRKSRC}/freebsd.hints
@@ -63,7 +65,9 @@ post-patch:
 	@${ECHO} "" > ${WRKSRC}/freebsd.hints
 .endif
 .if ${PORT_OPTIONS:MTHREADS}
-	@${ECHO} "config_TARGET_CFLAGS=\"-DTHREADSAFE=1 ${PTHREAD_LIBS}\"" \
+	@${ECHO} "config_TARGET_CFLAGS=\"-DTHREADSAFE=1\"" \
+		>> ${WRKSRC}/freebsd.hints
+	@${ECHO} "config_TARGET_LIBS=\"-lpthread\"" \
 		>> ${WRKSRC}/freebsd.hints
 .endif
 
@@ -74,6 +78,8 @@ post-build:
 .endif
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sqlite
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libsqlite.so
 .if ${PORT_OPTIONS:MTCL}
 	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-tcl)
 	${INSTALL_DATA} ${FILESDIR}/pkgIndex.tcl ${STAGEDIR}${PREFIX}/lib/sqlite

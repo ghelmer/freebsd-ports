@@ -9,7 +9,7 @@ MASTER_SITES=	SF \
 		ftp://ftpmirror.uk/freebsd-ports/rtg/
 
 MAINTAINER=	freebsd-ports@dan.me.uk
-COMMENT=	A flexible, high-performance SNMP statistics monitoring system
+COMMENT=	Flexible, high-performance SNMP statistics monitoring system
 
 LICENSE=	GPLv2
 
@@ -43,18 +43,11 @@ WANT_PHP_WEB=	yes
 USE_PHP=	mysqli spl
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ( ${OSVERSION} >= 800040 )
 CFLAGS+=	-fstack-protector
 LDFLAGS+=	-fstack-protector
-.endif
-
-pre-configure:
-	@${REINPLACE_CMD} -e 's,-pthread,${PTHREAD_LIBS},g' ${WRKSRC}/configure
 
 post-patch:
 	@${MV} ${WRKSRC}/etc/rtg.conf ${WRKSRC}/etc/rtg.conf.sample
 	@${MV} ${WRKSRC}/etc/routers ${WRKSRC}/etc/routers.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

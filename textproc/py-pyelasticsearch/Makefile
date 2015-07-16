@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pyelasticsearch
-PORTVERSION=	0.6.1
-PORTREVISION=	2
+PORTVERSION=	1.4
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,13 +11,15 @@ MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Flexible, high-scale API to elasticsearch
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>=2.1.0:${PORTSDIR}/devel/py-simplejson \
-		${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}requests>=1.0:${PORTSDIR}/www/py-requests
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>=0:${PORTSDIR}/security/py-certifi \
+		${PYTHON_PKGNAMEPREFIX}elasticsearch-py>=1.3.0:${PORTSDIR}/textproc/py-elasticsearch-py \
+		${PYTHON_PKGNAMEPREFIX}simplejson>=3.0:${PORTSDIR}/devel/py-simplejson \
+		${PYTHON_PKGNAMEPREFIX}six>=1.4.0:${PORTSDIR}/devel/py-six \
+		${PYTHON_PKGNAMEPREFIX}urllib3>=1.8:${PORTSDIR}/net/py-urllib3
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

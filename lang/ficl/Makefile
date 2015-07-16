@@ -3,7 +3,7 @@
 
 PORTNAME=	ficl
 PORTVERSION=	4.1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-all/${PORTNAME}${PORTVERSION:C/([[:digit:]]+\.[[:digit:]]+)\.0/\1/}
 
@@ -31,7 +31,6 @@ PLIST_FILES=	bin/${PORTNAME} include/ficl.h include/ficlcompatibility.h \
 		include/ficllocal.h include/ficlplatform/unix.h \
 		include/ficltokens.h lib/lib${PORTNAME}.so \
 		lib/lib${PORTNAME}.so.${PORTVERSION} lib/lib${PORTNAME}.a
-PLIST_DIRS=	include/ficlplatform
 
 PORTDOCS=	*
 PORTDATA=	*
@@ -39,14 +38,14 @@ PORTDATA=	*
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}*.h ${STAGEDIR}${PREFIX}/include
-	${INSTALL_LIB} ${WRKSRC}/lib${PORTNAME}.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/lib${PORTNAME}.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/lib${PORTNAME}.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
 	cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf lib${PORTNAME}.so.${PORTVERSION} lib${PORTNAME}.so
 
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/ficlplatform
 	${INSTALL_DATA} ${WRKSRC}/ficlplatform/unix.h ${STAGEDIR}${PREFIX}/include/ficlplatform
 
-	@${MKDIR} ${STAGEDIR}${DATADIR}/ficlplatform 
+	@${MKDIR} ${STAGEDIR}${DATADIR}/ficlplatform
 	${INSTALL_DATA} ${WRKSRC}/ficlplatform/unix.c ${STAGEDIR}${DATADIR}/ficlplatform
 	(cd ${WRKSRC}/contrib && ${COPYTREE_SHARE} xclasses ${STAGEDIR}${DATADIR})
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} softcore ${STAGEDIR}${DATADIR})

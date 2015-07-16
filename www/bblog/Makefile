@@ -3,16 +3,16 @@
 
 PORTNAME=	bBlog
 PORTVERSION=	0.7.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/${PORTNAME}%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A elegant personal publishing system with Smarty
+COMMENT=	Elegant personal publishing system with Smarty
 
 USE_PHP=	mysql pcre session
-NO_BUILD=	YES
-WANT_PHP_WEB=	YES
+NO_BUILD=	yes
+WANT_PHP_WEB=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME:tl}
 WWWDOCROOT?=	www
@@ -21,13 +21,14 @@ BBLOGDIR?=	${WWWDOCROOT}/${BBLOGURL}
 
 SUB_FILES=	pkg-message
 SUB_LIST=	BBLOGURL=${BBLOGURL} BBLOGDIR=${BBLOGDIR}
-PLIST_SUB=	WWWDOCROOT=${WWWDOCROOT} BBLOGURL=${BBLOGURL}
+PLIST_SUB=	WWWDOCROOT=${WWWDOCROOT} BBLOGURL=${BBLOGURL} \
+		WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
 OPTIONS_DEFINE=	GD IMAGICK
 OPTIONS_DEFAULT=GD
 IMAGICK_DESC=	${IMAGEMAGICK_DESC}
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGD}
 RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/gd.so:${PORTSDIR}/${gd_DEPENDS}
@@ -44,8 +45,6 @@ pre-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${BBLOGDIR}/${PORTNAME:tl}
-	@${CHOWN} ${WWWOWN}:${WWWGRP} ${STAGEDIR}${PREFIX}/${BBLOGDIR}
-	@${CHGRP} -R ${WWWGRP} ${STAGEDIR}${PREFIX}/${BBLOGDIR}
 	@${CHMOD} 755 ${STAGEDIR}${PREFIX}/${BBLOGDIR}
 .for f in archives.php documentation.txt htaccess-cleanurls index.php item rss.php search.php section
 	${INSTALL_DATA} ${WRKDIR}/${f} ${STAGEDIR}${PREFIX}/${BBLOGDIR}
@@ -57,7 +56,4 @@ do-install:
 	@${CHMOD} 775 ${STAGEDIR}${PREFIX}/${BBLOGDIR}/${PORTNAME:tl}/config.php
 	@${MV} ${STAGEDIR}${PREFIX}/${BBLOGDIR}/${PORTNAME:tl}/config.php ${STAGEDIR}${PREFIX}/${BBLOGDIR}/${PORTNAME:tl}/config.php.sample
 
-post-install:
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

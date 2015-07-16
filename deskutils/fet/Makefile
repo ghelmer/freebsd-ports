@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	fet
-PORTVERSION=	5.21.3
+PORTVERSION=	5.27.3
 CATEGORIES=	deskutils kde
 MASTER_SITES=	http://lalescu.ro/liviu/fet/download/ \
 		http://lalescu.ro/liviu/fet/download/old/ \
 		http://timetabling.de/download/ \
 		http://timetabling.de/download/old/
 
-MAINTAINER=	salfrancl@yahoo.es
+MAINTAINER=	udvzsolt@gmail.com
 COMMENT=	Free timetabling software
 
 LICENSE=	GPLv2 GPLv3
@@ -29,7 +29,7 @@ DESKTOP_ENTRIES="FET" \
 		true
 
 OPTIONS_DEFINE=	EXAMPLES NLS ONLYCL
-ONLYCL_DESC= Build only command line version (without Qt4 GUI)
+ONLYCL_DESC=	Build only command line version (without Qt4 GUI)
 
 OPTIONS_SUB=	yes
 
@@ -49,7 +49,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${INSTALL_TARGET} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/fet-cl ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/fet.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/fet*.gz ${STAGEDIR}${MANPREFIX}/man/man1
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} \. ${STAGEDIR}${EXAMPLESDIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/translations

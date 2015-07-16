@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xmltv
-PORTVERSION=	0.5.61
-PORTREVISION=	1
+PORTVERSION=	0.5.65
+PORTREVISION=	3
 CATEGORIES=	textproc perl5
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	p5-
@@ -11,13 +11,16 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Set of programs to process TV (tvguide) listings in XML format
 
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 XMLTV_DEPENDS=	\
 	p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser \
 	p5-XML-Twig>=0:${PORTSDIR}/textproc/p5-XML-Twig \
 	p5-XML-Writer>=0:${PORTSDIR}/textproc/p5-XML-Writer \
 	p5-Date-Manip>=0:${PORTSDIR}/devel/p5-Date-Manip \
 	p5-PerlIO-gzip>=0:${PORTSDIR}/archivers/p5-PerlIO-gzip \
-	p5-CGI.pm>=0:${PORTSDIR}/www/p5-CGI.pm \
+	p5-CGI>=0:${PORTSDIR}/www/p5-CGI \
 	p5-IO-Compress>=0:${PORTSDIR}/archivers/p5-IO-Compress \
 	p5-Data-Dumper>=0:${PORTSDIR}/devel/p5-Data-Dumper \
 	p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
@@ -39,7 +42,12 @@ XMLTV_DEPENDS=	\
 	p5-Archive-Zip>=0:${PORTSDIR}/archivers/p5-Archive-Zip \
 	p5-HTTP-Cache-Transparent>=0:${PORTSDIR}/www/p5-HTTP-Cache-Transparent \
 	p5-IO-stringy>=0:${PORTSDIR}/devel/p5-IO-stringy \
-	p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate
+	p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate \
+	p5-File-Slurp>=0:${PORTSDIR}/devel/p5-File-Slurp \
+	p5-DateTime>=0:${PORTSDIR}/devel/p5-DateTime \
+	p5-DateTime-Format-Strptime>=0:${PORTSDIR}/devel/p5-DateTime-Format-Strptime \
+	p5-JSON>=0:${PORTSDIR}/converters/p5-JSON
+
 BUILD_DEPENDS=	${XMLTV_DEPENDS}
 RUN_DEPENDS=	${XMLTV_DEPENDS}
 
@@ -48,9 +56,10 @@ USE_PERL5=	configure
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 
-.ifdef(NOPORTDOCS)
-EXTRA_PATCHES+=	${FILESDIR}/extra-noportdocs-patch-Makefile.PL
-.else
+OPTIONS_DEFINE=	DOCS
+
+DOCS_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-noportdocs-patch-Makefile.PL
+
 PORTDOCS=	COPYING \
 		QuickStart \
 		README \
@@ -58,7 +67,6 @@ PORTDOCS=	COPYING \
 		README.win32 \
 		tv_check_doc.html \
 		tv_check_doc.jpg
-.endif
 
 # idea taken from devel/cvsweb port
 # Specify these directories in relative paths to ${PREFIX}.

@@ -3,13 +3,10 @@
 
 PORTNAME=	arpack
 PORTVERSION=	96
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	math
 MASTER_SITES=	http://www.caam.rice.edu/software/ARPACK/SRC/
 DISTFILES=	${PORTNAME}${PORTVERSION}.tar.gz patch.tar.gz
-.ifndef NOPORTDOCS
-DISTFILES+=	ug.ps.gz
-.endif
 DIST_SUBDIR=	arpack
 EXTRACT_ONLY=	${PORTNAME}${PORTVERSION}.tar.gz
 
@@ -25,7 +22,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 MAKE_JOBS_UNSAFE=	yes
 USES=		fortran
 USE_LDCONFIG=	yes
-WRKSRC =	${WRKDIR}/ARPACK
+WRKSRC=		${WRKDIR}/ARPACK
 
 # The following lapack symbols in arpack are renamed to avoid conflicts with other
 # lapack libraries:
@@ -70,7 +67,13 @@ SVDTESTS=	ssvd dsvd
 SYMTESTS=	ssdrv1 ssdrv2 ssdrv3 ssdrv4 ssdrv5 ssdrv6 \
 		dsdrv1 dsdrv2 dsdrv3 dsdrv4 dsdrv5 dsdrv6
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MDOCS}
+DISTFILES+=	ug.ps.gz
+.endif
 
 .if exists(${LOCALBASE}/lib/libatlas.so)
 WITH_BLAS?=	atlas
@@ -79,10 +82,10 @@ WITH_BLAS?=	reference
 .endif
 
 .if ${WITH_BLAS} == atlas
-LIB_DEPENDS+=		atlas:${PORTSDIR}/math/atlas
+LIB_DEPENDS+=		libatlas.so:${PORTSDIR}/math/atlas
 BLAS?=			-lf77blas
 .else
-LIB_DEPENDS+=		blas:${PORTSDIR}/math/blas
+LIB_DEPENDS+=		libblas.so:${PORTSDIR}/math/blas
 BLAS?=			-lblas
 .endif
 
@@ -150,7 +153,7 @@ do-install:
 	@${INSTALL_DATA} ${WRKSRC}/libarpack.a ${STAGEDIR}${PREFIX}/lib
 	@${INSTALL_DATA} -s ${WRKSRC}_SHARED/libarpack.so.1 ${STAGEDIR}${PREFIX}/lib
 	@${LN} -sf libarpack.so.1 ${STAGEDIR}${PREFIX}/lib/libarpack.so
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/DOCUMENTS/ex-*.doc.gz ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/ug.ps.gz ${STAGEDIR}${DOCSDIR}

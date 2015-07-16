@@ -14,7 +14,6 @@ include/diffmark/xbuffer.hh
 include/diffmark/xdoc.hh
 include/diffmark/xutil.hh
 lib/libdiffmark.a
-lib/libdiffmark.la
-lib/libdiffmark.so.2
 lib/libdiffmark.so
-@dirrm include/diffmark
+lib/libdiffmark.so.1
+lib/libdiffmark.so.1.1.3

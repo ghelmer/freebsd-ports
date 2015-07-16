@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	catapult
-PORTVERSION=	0.10.1
+PORTVERSION=	0.11.0
 CATEGORIES=	emulators
 MASTER_SITES=	SF/openmsx/openmsx/${PORTVERSION}
 DISTNAME=	openmsx-${PORTNAME}-${PORTVERSION}
@@ -17,13 +17,12 @@ RUN_DEPENDS=	openmsx:${PORTSDIR}/emulators/openmsx
 
 OPTIONS_DEFINE=	DEBUG DOCS
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig python:build
 USE_GCC=	yes
 USE_CXXSTD=	gnu++0x
 USE_GNOME=	gtk20 libxml2
 USE_WX=		2.8
 WX_UNICODE=	yes
-USE_PYTHON_BUILD=yes
 MAKEFILE=	GNUmakefile
 MAKE_ARGS=	INSTALL_BASE="${PREFIX}" \
 		INSTALL_SHARE_DIR="${DATADIR}" \
@@ -34,6 +33,8 @@ MAKE_ARGS=	INSTALL_BASE="${PREFIX}" \
 		CATAPULT_NO_DESKTOP_HOOKS="true" \
 		SYMLINK_FOR_BINARY="false" \
 		PYTHON="${PYTHON_CMD}"
+
+MAKE_JOBS_UNSAFE=	yes
 
 .include <bsd.port.options.mk>
 

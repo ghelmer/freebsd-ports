@@ -13,16 +13,17 @@ COMMENT=	Standalone program to browse and edit data
 
 LICENSE=	GPLv3
 
+BROKEN=		Unfetchable
+
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy06>=0.5:${PORTSDIR}/databases/py-sqlalchemy06 \
 		${PYTHON_PKGNAMEPREFIX}dateutil>=0:${PORTSDIR}/devel/py-dateutil \
 		${PYTHON_PKGNAMEPREFIX}Babel>=0:${PORTSDIR}/devel/py-babel
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
+USE_PYTHON=	distutils
 USE_GNOME=	pygtk2
-USES=		gettext
+USES=		gettext python:2
 
-OPTIONS_DEFINE=	FIREBIRD MSSQL MYSQL PGSQL SQLITE SYBASE
+OPTIONS_DEFINE=	MSSQL MYSQL PGSQL SQLITE SYBASE DOCS
 OPTIONS_DEFAULT=MYSQL PGSQL SQLITE
 
 SYBASE_DESC=	Sybase support
@@ -36,10 +37,6 @@ ALL_PORTDOCS=	*.html *.js
 ALL_PORTDOCS_SUBDIR=	_images _static debug layout misc printing sqlkit
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MFIREBIRD}
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/kinterbasdb/__init__.py:${PORTSDIR}/databases/kinterbasdb
-.endif
 
 .if ${PORT_OPTIONS:MMSSQL}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mssql>0:${PORTSDIR}/databases/py-mssql

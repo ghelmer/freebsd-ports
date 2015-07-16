@@ -3,6 +3,7 @@
 
 PORTNAME=	CGI-Framework
 PORTVERSION=	0.23
+PORTREVISION=	2
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,19 +13,19 @@ COMMENT=	Simple-to-use, lightweight web CGI framework
 
 BUILD_DEPENDS=	p5-HTML-Template>=0:${PORTSDIR}/www/p5-HTML-Template \
 		p5-CGI-Session>=0:${PORTSDIR}/www/p5-CGI-Session \
-		p5-CGI.pm>=0:${PORTSDIR}/www/p5-CGI.pm
+		p5-CGI>=0:${PORTSDIR}/www/p5-CGI
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 PORTDOCS=	Changes README
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 	@${ECHO_MSG} "===> Documentation installed in ${DOCSDIR}."
-.endif
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zutils
-PORTVERSION=	1.2
+PORTVERSION=	1.4
 CATEGORIES=	archivers
 MASTER_SITES=	SAVANNAH/zutils
 EXTRACT_SUFX=	.tar.lz
@@ -10,13 +10,14 @@ EXTRACT_SUFX=	.tar.lz
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Utilities for searching in bzip2, gzip, lzip, and xz archives
 
-LICENSE=	GPLv3
+LICENSE=	GPLv2
 
 EXTRACT_DEPENDS=	lzip:${PORTSDIR}/archivers/lzip
 
 INFO=		zutils
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 do-extract:
 	@${MKDIR} ${WRKDIR}
@@ -25,9 +26,9 @@ do-extract:
 
 post-patch:
 	# Remove compiler hardcoded flags and use environment
-	@${REINPLACE_CMD} '24,27d' ${WRKSRC}/configure
+	@${REINPLACE_CMD} '23,26d' ${WRKSRC}/configure
 
 post-install:
-	@${RM} ${STAGEDIR}${PREFIX}/info/dir
+	@-${RM} ${STAGEDIR}${PREFIX}/info/dir
 
 .include <bsd.port.mk>

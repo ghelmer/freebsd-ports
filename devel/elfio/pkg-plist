@@ -4,13 +4,12 @@ include/ELFIO.h
 include/ELFO.h
 include/ELFTypes.h
 lib/libELFIO.a
-lib/libELFIO.la
 lib/libELFIO.so
 lib/libELFIO.so.0
-%%EXAMPLES%%%%EXAMPLESDIR%%/ELFDump.cpp
-%%EXAMPLES%%%%EXAMPLESDIR%%/RelocationTable.cpp
-%%EXAMPLES%%%%EXAMPLESDIR%%/Write.cpp
-%%EXAMPLES%%%%EXAMPLESDIR%%/WriteObj.cpp
-%%EXAMPLES%%%%EXAMPLESDIR%%/WriteObj2.cpp
-%%EXAMPLES%%%%EXAMPLESDIR%%/tutorial.cpp
-%%EXAMPLES%%@dirrm %%EXAMPLESDIR%%
+lib/libELFIO.so.0.0.0
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/ELFDump.cpp
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/RelocationTable.cpp
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/Write.cpp
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/WriteObj.cpp
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/WriteObj2.cpp
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/tutorial.cpp

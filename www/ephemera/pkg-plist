@@ -1,10 +1,11 @@
 bin/ephemera
-bin/ephemera-add
-bin/ephemera-delete
-bin/ephemera-extract
-bin/ephemera-replace
-bin/ephemera-generate
-etc/ephemera.css.sample
+bin/add.munger
+bin/create.munger
+bin/delete.munger
+bin/extract.munger
+bin/replace.munger
+bin/edit.munger
 etc/rc.d/ephemera
-@unexec if cmp -s %D/etc/ephemera.config %D/etc/ephemera.config.dist; then rm -f %D/etc/ephemera.config; fi
-etc/ephemera.config.dist
+man/man8/ephemera.8.gz
+%%DATADIR%%/ephemera.css
+@sample etc/ephemera.config.sample

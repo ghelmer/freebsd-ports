@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	dvipdfmx
-PORTVERSION=	20120420
+PORTVERSION=	20140317
 PORTREVISION=	2
 CATEGORIES=	print
-MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2012/
+MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2014/
 PKGNAMEPREFIX=	tex-
 DISTNAME=	texlive-${DISTVERSION_TEXMF}-source
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -18,62 +18,60 @@ COMMENT=	DVI Previewer(kpathsearch) for X
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
-		libpaper.so:${PORTSDIR}/print/libpaper
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
+		libpaper.so:${PORTSDIR}/print/libpaper \
+		libfreetype.so:${PORTSDIR}/print/freetype2
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/adobe-cmaps/ai0/CMap/Identity-H:${PORTSDIR}/print/adobe-cmaps
 
 USES=		gmake pkgconfig tar:xz
-USE_TEX=	texlive kpathsea web2c texmf texhash
+USE_TEX=	kpathsea web2c texmf texhash
 TEXHASHDIR=	${TEXMFDISTDIR} ${TEXMFDIR}
 EXTRACT_AFTER_ARGS=	${EXTRACT_FILES:S,^,${DISTNAME}/,}
 EXTRACT_FILES= \
+	am \
 	m4 \
 	build-aux \
-	texk/am \
-	texk/dvipdfmx \
-	texk/kpathsea
+	texk/dvipdfm-x
 EXTRACT_AFTER_ARGS_TEXMF= \
-	| ${TAR} -xf - -C ${PREFIX}/share \
+	| ${TAR} -xf - -C ${STAGEDIR}${PREFIX}/share \
 	--strip-components 1 --no-same-permission --no-same-owner \
 	${EXCLUDE_FILES_TEXMF:S,^,--exclude ${DISTNAME_TEXMF}/,} \
 	${EXTRACT_FILES_TEXMF:S,^,${DISTNAME_TEXMF}/,}
-DISTVERSION_TEXMF=	20120701
+DISTVERSION_TEXMF=	20140525
 DISTNAME_TEXMF=	texlive-${DISTVERSION_TEXMF}-texmf
 EXCLUDE_FILES_TEXMF= \
-	texmf/fonts/map/dvipdfmx/updmap/kanjix.map
+	texmf-dist/fonts/map/dvipdfmx/jfontmaps \
+	texmf-dist/fonts/map/dvipdfmx/japanese-otf \
+	texmf-dist/fonts/map/dvipdfmx/ptex \
+	texmf-dist/fonts/map/dvipdfmx/updmap/kanjix.map
 EXTRACT_FILES_TEXMF= \
-	texmf-dist/fonts/map/dvipdfm/ \
-	texmf/dvipdfm/config/ \
-	texmf/dvipdfmx/ \
-	texmf/fonts/cmap/dvipdfmx/ \
-	texmf/fonts/map/dvipdfmx/ \
-	texmf/doc/dvipdfm/ \
-	texmf/doc/dvipdfmx/
-WRKSRC=	${WRKDIR}/${DISTNAME}/texk/dvipdfmx
+	texmf-dist/doc/dvipdfmx/ \
+	texmf-dist/dvipdfmx/ \
+	texmf-dist/fonts/cmap/dvipdfmx/ \
+	texmf-dist/fonts/map/dvipdfmx/ \
+	texmf-dist/fonts/map/dvipdfm/
+WRKSRC=	${WRKDIR}/${DISTNAME}/texk/dvipdfm-x
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS= --with-paper \
+CONFIGURE_ARGS= --with-system-freetype2 \
+		--with-freetype2-includes=${LOCALBASE}/include/freetype2 \
+		--with-freetype2-libdir=${LOCALBASE}/lib \
 		--with-system-kpathsea \
 		--with-kpathsea-includes=${LOCALBASE}/include \
 		--with-kpathsea-libdir=${LOCALBASE}/lib \
+		--with-system-libpaper \
+		--with-libpaper-includes=${LOCALBASE}/include \
+		--with-libpaper-libdir=${LOCALBASE}/lib \
 		--with-system-libpng \
 		--with-system-zlib
 CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+= 	-lpaper -L${LOCALBASE}/lib
+LDFLAGS+= 	-L${LOCALBASE}/lib
 
-NO_MANCOMPRESS=	yes
-MAN1=	dvipdfm.1 dvipdft.1 ebb.1 extractbb.1
-
-NO_STAGE=	yes
-pre-su-install:
+pre-install:
 	${CAT} ${DISTDIR}/${DIST_SUBDIR}/texlive-${DISTVERSION_TEXMF}-texmf${EXTRACT_SUFX} \
 		${EXTRACT_AFTER_ARGS_TEXMF}
-	${MKDIR} ${PREFIX}/${TEXMFDISTDIR}/fonts/map/dvipdfmx \
-		${PREFIX}/${TEXMFDIR}/fonts/map/dvipdfmx/updmap
-	${TOUCH} ${PREFIX}/${TEXMFDISTDIR}/fonts/map/dvipdfmx/.keep_me \
-		${PREFIX}/${TEXMFDIR}/fonts/map/dvipdfmx/updmap/.keep_me
 
 post-install:
 	${LN} -f -s ${LOCALBASE}/share/fonts/adobe-cmaps \
-		${PREFIX}/${TEXMFDIR}/fonts/cmap/adobe-cmaps
+		${STAGEDIR}${PREFIX}/${TEXMFDISTDIR}/fonts/cmap/adobe-cmaps
 
 .include <bsd.port.mk>

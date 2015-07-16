@@ -11,20 +11,19 @@ PKGNAMESUFFIX=	5
 MAINTAINER=	joehorn@gmail.com
 COMMENT=	Database library for PHP
 
-LICENSE=	BSD
+LICENSE=	BSD4CLAUSE
 
 CONFLICTS=	adodb-4.*
 
 USES=		zip
 USE_PHP=	pcre
-DEFAULT_PHP_VER=5
 
 WRKSRC=		${WRKDIR}/${PORTNAME}5
 NO_BUILD=	YES
 
 ADODB_SUBDIRS=	contrib datadict drivers lang pear perf session xsl
 
-OPTIONS_DEFINE=	TESTS
+OPTIONS_DEFINE=	TESTS DOCS
 TESTS_DESC=	Install tests
 
 .include <bsd.port.options.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libgphoto2
-PORTVERSION=	2.5.4
+PORTVERSION=	2.5.7
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gphoto/libgphoto/${PORTVERSION}
 
@@ -10,9 +10,12 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Universal digital camera control library
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake iconv libtool:keepla pkgconfig tar:bzip2
-USE_AUTOTOOLS=	libltdl
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+
+USES=		gmake iconv libtool pkgconfig tar:bzip2
+USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	LTDLINCL="-I${LOCALBASE}/include" \
 		LIBLTDL="-L${LOCALBASE}/lib -lltdl" \
@@ -26,7 +29,7 @@ USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-PLIST_SUB=	VERSION="${PORTVERSION}" VERSION_PORT=0.10.0
+PLIST_SUB=	VERSION="${PORTVERSION}" VERSION_PORT=0.12.0
 
 OPTIONS_DEFINE=		DOCS GD JPEG LIBEXIF NLS XML
 OPTIONS_DEFAULT=	GD JPEG LIBEXIF XML
@@ -34,7 +37,7 @@ OPTIONS_SUB=		yes
 
 GD_LIB_DEPENDS=		libgd.so:${PORTSDIR}/graphics/gd
 GD_CONFIGURE_WITH=	gd
-JPEG_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+JPEG_USES=		jpeg
 JPEG_CONFIGURE_WITH=	jpeg
 LIBEXIF_LIB_DEPENDS=	libexif.so:${PORTSDIR}/graphics/libexif
 LIBEXIF_CONFIGURE_OFF=	--with-libexif=no
@@ -61,8 +64,8 @@ post-patch:
 		'/^doc_DATA/s|COPYING||' \
 		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e \
-		's|ENODATA|ENOATTR|g' \
-		${WRKSRC}/libgphoto2_port/libusb1/libusb1.c
+		's|-lusb-1.0|-lusb|' \
+		${WRKSRC}/libgphoto2_port/configure
 	@${REINPLACE_CMD} -e \
 		'/^SUBDIRS/s|linux-hotplug||' \
 		${WRKSRC}/packaging/Makefile.in

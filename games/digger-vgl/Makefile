@@ -10,11 +10,11 @@ MASTER_SITES=	http://www.digger.org/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	FreeBSD graphics console (VGL) version of the famous Digger game
 
-ONLY_FOR_ARCHS=	i386	# Alphas don't have libvgl yet...
+ONLY_FOR_ARCHS=	i386 amd64	# Alphas don't have libvgl yet...
 
 MAKEFILE=	Makefile.fbsd
 
-OPTIONS_DEFINE=	SOUND
+OPTIONS_DEFINE=	SOUND DOCS
 
 .include <bsd.port.options.mk>
 

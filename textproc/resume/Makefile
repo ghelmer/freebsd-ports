@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	resume
-PORTVERSION=	1.5.1
+DISTVERSION=	1_5_1
 PORTREVISION=	2
 CATEGORIES=	textproc
 MASTER_SITES=	SF/xml${PORTNAME}/xml${PORTNAME}/${PORTVERSION}
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/./_/g}
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
@@ -17,6 +16,8 @@ NO_BUILD=	yes
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	${REINPLACE_CMD} -e 's|\.\./\.\./css|css|' ${WRKSRC}/xsl/params.xsl

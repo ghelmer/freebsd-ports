@@ -3,7 +3,7 @@
 
 PORTNAME=	glpng
 PORTVERSION=	1.45
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.wyatt100.freeserve.co.uk/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -11,6 +11,8 @@ DISTNAME=	glpng
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Library to easily load PNG files as an OpenGL textures
+
+LICENSE=	ZLIB
 
 LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
@@ -25,8 +27,9 @@ WRKSRC=		${WRKDIR}/src
 
 do-build:
 	${CC} ${CFLAGS} -fPIC -I${LOCALBASE}/include -I${WRKDIR}/include -c -o ${WRKSRC}/libglpng.o ${WRKSRC}/glpng.c
-	${CC} ${CFLAGS} -fPIC -L${LOCALBASE}/lib -shared -lGL -lpng -lz -lm -o ${WRKSRC}/libglpng.so.1 ${WRKSRC}/libglpng.o
+	${CC} ${CFLAGS} -fPIC -L${LOCALBASE}/lib -shared -Wl,-soname,libglpng.so.1 -lGL -lpng -lz -lm -o ${WRKSRC}/libglpng.so.1 ${WRKSRC}/libglpng.o
 	${AR} cqs ${WRKSRC}/libglpng.a ${WRKSRC}/libglpng.o
+	${STRIP_CMD} ${WRKSRC}/libglpng.so.1
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/libglpng.so.1 ${STAGEDIR}${PREFIX}/lib

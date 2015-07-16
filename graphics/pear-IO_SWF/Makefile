@@ -5,8 +5,7 @@ PORTNAME=	IO_SWF
 PORTVERSION=	2.2.6
 CATEGORIES=	graphics www pear
 MASTER_SITES=	http://openpear.org/get/ \
-		LOCAL
-MASTER_SITE_SUBDIR=	tota/${PKGNAMEPREFIX}${PORTNAME}
+		LOCAL/tota/${PKGNAMEPREFIX}${PORTNAME}
 PKGNAMEPREFIX=	pear-
 
 MAINTAINER=	yoya@awm.jp
@@ -19,8 +18,6 @@ RUN_DEPENDS=	pear-IO_Bit>0:${PORTSDIR}/devel/pear-IO_Bit \
 
 USE_PHP=	yes
 PEAR_CHANNEL=	openpear
-PEAR_AUTOINSTALL=	yes
+USES=	pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

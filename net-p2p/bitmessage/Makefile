@@ -1,12 +1,13 @@
-# Created by: Yuri Victorovich <yuri@tsoft.com>
+# Created by: Yuri Victorovich <yuri@rawbw.com>
 # $FreeBSD$
 
 PORTNAME=	bitmessage
-PORTVERSION=	0.4.2
+PORTVERSION=	0.4.4
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net-p2p
-MASTER_SITES=	GH
 
-MAINTAINER=	yuri@tsoft.com
+MAINTAINER=	yuri@rawbw.com
 COMMENT=	Secure P2P communications client
 
 LICENSE=	MIT
@@ -18,15 +19,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Bitmessage
 GH_PROJECT=	PyBitmessage
-GH_COMMIT=	8b189f0
-GH_TAGNAME=	v${PORTVERSION}
 
+USES=		python
 USE_OPENSSL=	yes
-USE_PYTHON=	yes
 INSTALLS_ICONS=	yes
 
 post-patch:
-	${REINPLACE_CMD} -e 's|python2|${PYTHON_CMD}|' ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's|python2|${PYTHON_CMD}| ; s|share/man|man|' ${WRKSRC}/Makefile
 
 do-build:
 	@(cd ${WRKSRC} && \

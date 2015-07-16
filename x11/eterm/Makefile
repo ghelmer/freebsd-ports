@@ -3,34 +3,36 @@
 
 PORTNAME=	eterm
 PORTVERSION=	0.9.6
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES+=	x11
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Eterm-${PORTVERSION}
 DISTNAME=	Eterm-${PORTVERSION}
 
-MAINTAINER?=	olgeni@FreeBSD.org
+MAINTAINER?=	enlightenment@FreeBSD.org
 COMMENT?=	X11 terminal emulator based on rxvt/xterm
 
 BUILD_DEPENDS=	man2html:${PORTSDIR}/textproc/man2html
-LIB_DEPENDS=	libast.so:${PORTSDIR}/devel/libast
+LIB_DEPENDS=	libast.so:${PORTSDIR}/devel/libast \
+		libImlib2.so:${PORTSDIR}/graphics/imlib2
 
-USE_AUTOTOOLS=	libtool
-USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--enable-trans --enable-utmp \
 		--enable-xim --with-theme-update \
 		--with-backspace=bs --without-terminfo \
 		--enable-multi-charset
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+USES=		iconv libtool shebangfix
+SHEBANG_FILES=	${WRKSRC}/utils/kEsetroot.in
+perl_OLD_CMD=	@PERL@
 USE_CSTD=	gnu89
+USE_LDCONFIG=	yes
+USE_XORG=	x11 xt
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_DEFINE_i386=	MMX
 
-USE_XORG=	x11 xt
-USES=		iconv
-USE_EFL=	imlib2
-MMX_CONFIGURE_ARGS=	--enable-mmx
+MMX_CONFIGURE_WITH=	mmx
 
 post-patch:
 	@${FIND} ${WRKSRC} -name '*.orig' -delete

@@ -6,8 +6,7 @@ PORTVERSION=	4.2.0
 PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	devel java
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	ale
+MASTER_SITES=	LOCAL/ale
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java-PDF Library
@@ -55,8 +54,7 @@ do-install:
 		${STAGEDIR}${PREFIX}/bin/
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/apidocs
-	@${CP} -R ${WRKDIR}/build/docs/* ${STAGEDIR}${DOCSDIR}/apidocs
-	@${CHOWN} -h -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DOCSDIR}/apidocs
+	(cd ${WRKDIR}/build/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/apidocs)
 .endif
 
 .include <bsd.port.mk>

@@ -1,18 +1,10 @@
 bin/libprelude-config
 bin/prelude-adduser
 bin/prelude-admin
-@unexec if cmp -s %D/etc/prelude/default/client.conf %D/etc/prelude/default/client.conf-dist; then rm -f %D/etc/prelude/default/client.conf; fi
-etc/prelude/default/client.conf-dist
-@exec if [ ! -f %D/etc/prelude/default/client.conf ] ; then cp -p %D/%F %B/client.conf; fi
-@unexec if cmp -s %D/etc/prelude/default/global.conf %D/etc/prelude/default/global.conf-dist; then rm -f %D/etc/prelude/default/global.conf; fi
-etc/prelude/default/global.conf-dist
-@exec if [ ! -f %D/etc/prelude/default/global.conf ] ; then cp -p %D/%F %B/global.conf; fi
-@unexec if cmp -s %D/etc/prelude/default/idmef-client.conf %D/etc/prelude/default/idmef-client.conf-dist; then rm -f %D/etc/prelude/default/idmef-client.conf; fi
-etc/prelude/default/idmef-client.conf-dist
-@exec if [ ! -f %D/etc/prelude/default/idmef-client.conf ] ; then cp -p %D/%F %B/idmef-client.conf; fi
-@unexec if cmp -s %D/etc/prelude/default/tls.conf %D/etc/prelude/default/tls.conf-dist; then rm -f %D/etc/prelude/default/tls.conf; fi
-etc/prelude/default/tls.conf-dist
-@exec if [ ! -f %D/etc/prelude/default/tls.conf ] ; then cp -p %D/%F %B/tls.conf; fi
+@sample %%ETCDIR%%/default/client.conf.sample
+@sample %%ETCDIR%%/default/global.conf.sample
+@sample %%ETCDIR%%/default/idmef-client.conf.sample
+@sample %%ETCDIR%%/default/tls.conf.sample
 include/libprelude/common.h
 include/libprelude/daemonize.h
 include/libprelude/idmef.h
@@ -72,17 +64,16 @@ include/libprelude/prelude-string.h
 include/libprelude/prelude-thread.h
 include/libprelude/prelude-timer.h
 lib/libprelude.a
-lib/libprelude.la
 lib/libprelude.so
-lib/libprelude.so.21
+lib/libprelude.so.2
+lib/libprelude.so.2.19.1
 lib/libpreludecpp.a
-lib/libpreludecpp.la
 lib/libpreludecpp.so
-lib/libpreludecpp.so.3
-%%PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/Prelude.pm
-%%PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/auto/Prelude/.packlist
-%%PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/auto/Prelude/Prelude.so
-%%PERL%%%%SITE_PERL%%/%%PERL_ARCH%%/auto/PreludeEasy/.packlist
+lib/libpreludecpp.so.0
+lib/libpreludecpp.so.0.3.0
+man/man1/prelude-admin.1.gz
+%%PERL%%%%SITE_ARCH%%/Prelude.pm
+%%PERL%%%%SITE_ARCH%%/auto/Prelude/Prelude.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/PreludeEasy-%%VERSION%%-py%%PYTHON_VER%%.egg-info
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/PreludeEasy.py
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/PreludeEasy.pyc
@@ -93,11 +84,9 @@ lib/libpreludecpp.so.3
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/prelude.pyc
 libdata/pkgconfig/libprelude.pc
 share/aclocal/libprelude.m4
-%%PERL%%@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/PreludeEasy
-%%PERL%%@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Prelude
 @dirrm include/libprelude
-@dirrm etc/prelude/default
-@dirrmtry etc/prelude/profile
-@dirrmtry etc/prelude
+@dirrmtry %%ETCDIR%%/default
+@dirrmtry %%ETCDIR%%/profile
+@dirrmtry %%ETCDIR%%
 @exec install -d -o root -g wheel -m 711 /var/spool/prelude
 @unexec rmdir /var/spool/prelude 2>/dev/null || true

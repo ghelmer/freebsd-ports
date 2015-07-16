@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	loggability
-PORTVERSION=	0.6.1
+PORTVERSION=	0.11.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A composable logging system built on the standard Logger library
+COMMENT=	Composable logging system built on the standard Logger library
+
+LICENSE=	BSD3CLAUSE
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

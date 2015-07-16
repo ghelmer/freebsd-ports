@@ -3,7 +3,7 @@
 
 PORTNAME=	libquicktime
 PORTVERSION=	1.2.4
-PORTREVISION?=	6
+PORTREVISION?=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
@@ -19,12 +19,11 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_LDCONFIG=	yes
 USES=		gettext gmake libtool pathfix pkgconfig
-USE_AUTOTOOLS=	autoconf
+GNU_CONFIGURE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib -lintl
+INSTALL_TARGET=	install-strip
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS} -lintl
-
-CFLAGS+=	-fPIC
 .if !defined(_BUILDING_LIBQUICKTIME_PLUGINS)
 USE_XORG=	xaw xv
 CONFIGURE_ARGS=	--with-x --enable-gpl --without-doxygen --without-lame
@@ -79,14 +78,14 @@ CONFIGURE_ARGS+=	--without-libdv
 .endif
 
 .if ${PORT_OPTIONS:MJPEG}
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 CONFIGURE_ARGS+=	--with-libjpeg
 .else
 CONFIGURE_ARGS+=	--without-libjpeg
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
 CONFIGURE_ARGS+=	--with-libpng
 .else
 CONFIGURE_ARGS+=	--without-libpng
@@ -114,7 +113,7 @@ CONFIGURE_ARGS+=	--without-faad2
 .endif
 
 .if ${PORT_OPTIONS:MX264}
-LIB_DEPENDS+=	libx264.so:${PORTSDIR}/multimedia/x264
+LIB_DEPENDS+=	libx264.so:${PORTSDIR}/multimedia/libx264
 CONFIGURE_ARGS+=	--with-x264
 .else
 CONFIGURE_ARGS+=	--without-x264
@@ -128,19 +127,8 @@ CONFIGURE_ARGS+=	--without-schroedinger
 
 .endif
 
-AUTOTOOLSFILES=	aclocal.m4
-
 post-patch:
-	@${REINPLACE_CMD} -e 's|2.64|%%AUTOCONF_VERSION%%|g' ${WRKSRC}/aclocal.m4
-	@${REINPLACE_CMD} -e 's|stdint.h|inttypes.h|' \
-		${WRKSRC}/plugins/audiocodec/* \
-		${WRKSRC}/plugins/videocodec/*
-	@${REINPLACE_CMD} -E -e 's|objformat=aout|objformat=elf|g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|-DG.*_DISABLE_DEPRECATED||g' \
-		${WRKSRC}/configure*
-
-pre-configure:
-	@${CHMOD} +x ${WRKSRC}/configure
+	@${REINPLACE_CMD} 's/-DGTK_DISABLE_DEPRECATED//' ${WRKSRC}/configure
 
 .if ${PORT_OPTIONS:MDOCS} && !defined(_BUILDING_LIBQUICKTIME_PLUGINS)
 post-install:

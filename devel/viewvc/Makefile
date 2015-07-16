@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	viewvc
-PORTVERSION=	1.1.22
+PORTVERSION=	1.1.23
 CATEGORIES=	devel python
 MASTER_SITES=	http://www.viewvc.org/ \
 		LOCAL/ohauer
@@ -10,7 +10,7 @@ MASTER_SITES=	http://www.viewvc.org/ \
 MAINTAINER=	ohauer@FreeBSD.org
 COMMENT=	Web-based Version Control Repository Browsing
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 NO_OPTIONS_SORT=	yes
 OPTIONS_DEFINE=		WEBSRV APMOD SVN MYSQL
@@ -38,13 +38,13 @@ MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=0:${PORTSDIR}/databases/py-My
 
 .include <bsd.port.options.mk>
 
+USES=		cpe python:2.7
 NO_BUILD=	yes
 USE_RC_SUBR=	viewvc
-USE_PYTHON=	2
 SUB_FILES=	pkg-message
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \
 		ECHO=${ECHO} EGREP=${EGREP} TOUCH=${TOUCH} \
-		CHOWN=${CHOWN} RM=${RM}
+		CHOWN=${CHOWN} RM=${RM:Q}
 
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}pygments>=1.6:${PORTSDIR}/textproc/py-pygments
 
@@ -52,6 +52,20 @@ pre-everything::
 .if ${PORT_OPTIONS:MAPMOD} && !${PORT_OPTIONS:MAPACHE}
 IGNORE=	apache module needs Apache server, please re-run 'make config' then choose WEBSRV and APACHE
 .endif
+
+post-patch:
+.for i in cvsgraph.conf mimetypes.conf viewvc.conf
+	${MV} ${WRKSRC}/conf/${i}.dist ${WRKSRC}/conf/${i}.sample
+	${REINPLACE_CMD} -e '/"${i}"/d' ${WRKSRC}/viewvc-install
+.endfor
+	${REINPLACE_CMD} -e 's/conf.dist/conf.sample/g' \
+		${WRKSRC}/viewvc-install \
+		${WRKSRC}/bin/standalone.py
+# to much files, use own shebangfix	
+	${FIND} ${WRKSRC} -type f | ${GREP} -v -e 'png' -e 'images' \
+		| xargs ${REINPLACE_CMD} -i '' \
+		-e '1s|^\#![[:space:]]*/usr/bin/env python|\#!${PYTHON_CMD}|' \
+		-e '1s|^\#![[:space:]]*/usr/bin/python|\#!${PYTHON_CMD}|'
 
 do-install:
 	@(cd ${WRKSRC} && ${PYTHON_CMD} viewvc-install --prefix=${PREFIX}/${PORTNAME} --destdir="${STAGEDIR}" --clean-mode=false)

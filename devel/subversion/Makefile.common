@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME?=	subversion
-PORTVERSION=	1.8.9
-PORTREVISION?=	5
+PORTVERSION=	1.8.13
+PORTREVISION?=	2
 CATEGORIES+=	devel
-MASTER_SITES=	${MASTER_SITE_APACHE}
+MASTER_SITES=	APACHE/subversion
 DIST_SUBDIR=	subversion18
-MASTER_SITE_SUBDIR=	subversion
 
 GNU_CONFIGURE=	yes
 USES+=		tar:bzip2 pkgconfig libtool cpe
@@ -50,10 +49,10 @@ SASL_CONFIGURE_ON=		--with-sasl=${LOCALBASE}
 SASL_LIB_DEPENDS=		libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
 
 SERF_CONFIGURE_OFF=		--without-serf
-SERF_CONFIGURE_ON=		--with-serf=${LOCALBASE}
+SERF_CONFIGURE_ON=		--with-serf
 SERF_LIB_DEPENDS=		libserf-1.so:${PORTSDIR}/www/serf
 
-STATIC_CONFIGURE_ON=		--enable-all-static
+STATIC_CONFIGURE_ON=		--enable-all-static PKG_CONFIG="${LOCALBASE}/bin/pkg-config --static"
 
 # ===============================================================
 .include <bsd.port.options.mk>
@@ -90,6 +89,11 @@ pre-everything::
 .endif
 .endif
 
+pre-patch:
+.if defined(SVN_BUILD_ADDONS)
+	@${CP} ${FILESDIR}/build-outputs.mk.addons ${WRKSRC}/build-outputs.mk
+.endif
+
 post-patch:
 .if ${PREFIX} != "/usr"
 	@${REINPLACE_CMD} "s#/etc/subversion#${ETCDIR}#g" ${WRKSRC}/subversion/libsvn_subr/config_file.c
@@ -97,9 +101,6 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} "s#^swig_pydir =.*#swig_pydir = ${PYTHON_SITELIBDIR}/libsvn#" ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} "s#^swig_pydir_extra =.*#swig_pydir_extra = ${PYTHON_SITELIBDIR}/svn#" ${WRKSRC}/Makefile.in
-.if defined(SVN_BUILD_ADDONS)
-	@${CP} ${FILESDIR}/build-outputs.mk ${WRKSRC}
-.endif
 .if ( ${PORT_OPTIONS:MFREEBSD_TEMPLATE} || !${OPTIONS_FILE_UNSET:MFREEBSD_TEMPLATE} ) && defined(ORGANIZATION)
 	@${ECHO_CMD} "#define ORGANIZATION_NAME \"${ORGANIZATION}\"" > ${WRKSRC}/subversion/freebsd-organization.h
 .endif

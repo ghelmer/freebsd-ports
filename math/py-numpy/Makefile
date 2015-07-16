@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	numpy
-PORTVERSION=	1.8.1
+PORTVERSION=	1.9.2
 PORTEPOCH=	1
 CATEGORIES=	math python
 MASTER_SITES=	http://docs.scipy.org/doc/${PORTNAME}/:doc \
 		SF/${PORTNAME}/NumPy/${PORTVERSION}:source
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	numpy-${PORTVERSION:S/r/rc/}${EXTRACT_SUFX}:source \
-		numpy-ref-${PORTVERSION}.pdf:doc \
-		numpy-user-${PORTVERSION}.pdf:doc
+		numpy-ref-${DOCVERSION}.pdf:doc \
+		numpy-user-${DOCVERSION}.pdf:doc
 EXTRACT_ONLY=	numpy-${PORTVERSION:S/r/rc/}${EXTRACT_SUFX}
 
 MAINTAINER=	python@FreeBSD.org
@@ -18,53 +18,63 @@ COMMENT=	The New Numeric Extension to Python
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	nosetests:${PORTSDIR}/devel/py-nose
+USES=		fortran python
+USE_PYTHON=	concurrent distutils py3kplist
+LDFLAGS+=	-shared
 
-OPTIONS_DEFINE=		ATLAS SUITESPARSE
-OPTIONS_DEFAULT=	SUITESPARSE
-ATLAS_DESC=		Use optimized blas library
+OPTIONS_DEFINE=		DOCS SUITESPARSE TESTS
+OPTIONS_SINGLE=		BLASLIB
+OPTIONS_DEFAULT=	NETLIB SUITESPARSE
+OPTIONS_SINGLE_BLASLIB=	ATLAS NETLIB OPENBLAS
 SUITESPARSE_DESC=	Use AMD and UMFPACK in SuiteSparse
+TESTS_DESC=		Install test suite requirements
 
-USES=				fortran
-USE_PYTHON=			yes
-USE_PYDISTUTILS=		yes
 PYDISTUTILS_CONFIGUREARGS+=	--fcompiler=gnu95
 PYDISTUTILS_BUILDARGS+=		--fcompiler=gnu95
-PYTHON_PY3K_PLIST_HACK=		yes
 
 PORTDOCS=	*
 WRKSRC=		${WRKDIR}/${DISTNAME:S/r/rc/}
+DOCVERSION=	1.9.1
+
+ATLAS_USES=	blaslapack:atlas
+NETLIB_USES=	blaslapack:netlib
+OPENBLAS_USES=	blaslapack:openblas
+SUITESPARSE_LIB_DEPENDS=libumfpack.so:${PORTSDIR}/math/suitesparse
+TESTS_RUN_DEPENDS=	nosetests:${PORTSDIR}/devel/py-nose
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MATLAS}
-LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
-.else
-LIB_DEPENDS+=	liblapack.so:${PORTSDIR}/math/lapack \
-		libblas.so:${PORTSDIR}/math/blas
+PLIST_SUB+=	PYTHON_VER=${PYTHON_VER}
+.if ${PYTHON_VERSION} == ${PYTHON_DEFAULT_VERSION}
+PLIST_FILES+=	man/man1/f2py.1.gz
 .endif
-
-.if ${PORT_OPTIONS:MSUITESPARSE}
-LIB_DEPENDS+=	libumfpack.so:${PORTSDIR}/math/suitesparse
-.endif
-
-post-extract:
-	@${CP} ${DISTDIR}/numpy-ref-${PORTVERSION}.pdf ${WRKDIR}
-	@${CP} ${DISTDIR}/numpy-user-${PORTVERSION}.pdf ${WRKDIR}
 
 post-patch:
-	@${REINPLACE_CMD} -e "s+%%FC%%+${FC}+" ${WRKSRC}/numpy/distutils/fcompiler/gnu.py
-	@${CP} ${FILESDIR}/site.cfg ${WRKSRC}/site.cfg
-# ignore LDFLAGS from env, as it overrides internal flags (e.g. -shared) for some reason
-	@${REINPLACE_CMD} -e "s|'LDFLAGS'|None|" ${WRKSRC}/numpy/distutils/fcompiler/__init__.py
+	${REINPLACE_CMD} -e "s+%%FC%%+${FC}+" ${WRKSRC}/numpy/distutils/fcompiler/gnu.py
+	${CP} ${FILESDIR}/site.cfg ${WRKSRC}/site.cfg
 
 GCCLIBDIR_CMDS=	${FC} -print-file-name=libgfortran.so|${SED} -e s/libgfortran.so//
 
 pre-configure:
-.if ${PORT_OPTIONS:MATLAS}
-	@${REINPLACE_CMD} -e "s+%%ATLASLIBS%%+alapack, f77blas, cblas, atlas+" ${WRKSRC}/site.cfg
+.if ${PORT_OPTIONS:MOPENBLAS}
+	@${REINPLACE_CMD} -e "s+%%BLASNAME%%+openblas+" \
+		-e "s+%%LIBRARIES%%+libraries+" \
+		-e "s+%%LAPACKLIBS%%+%%BLASLIBS%%+" \
+		-e "s+%%BLASLIBS%%+openblasp, gfortran+" \
+			${WRKSRC}/site.cfg
+.elif ${PORT_OPTIONS:MATLAS}
+	@${REINPLACE_CMD} -e "s+%%BLASNAME%%+atlas+" \
+		-e "s+%%LIBRARIES%%+atlas_libs+" \
+		-e "s+%%BLASLIBS%%+%%ATLASLIBS%%+" \
+		-e "s+%%LAPACKLIBS%%+alapack+" \
+		-e "s+%%ATLASLIBS%%+ptf77blas, ptcblas+" \
+			${WRKSRC}/site.cfg
 .else
-	@${REINPLACE_CMD} -e "s+%%ATLASLIBS%%+lapack, blas+" ${WRKSRC}/site.cfg
+	@${REINPLACE_CMD} -e "s+%%BLASNAME%%+atlas+" \
+		-e "s+%%LIBRARIES%%+atlas_libs+" \
+		-e "s+%%BLASLIBS%%+blas+" \
+		-e "s+%%LAPACKLIBS%%+lapack+" \
+			${WRKSRC}/site.cfg
 .endif
 .if !${PORT_OPTIONS:MSUITESPARSE}
 	@${REINPLACE_CMD} -e "s+:%%LOCALBASE%%/include/suitesparse++" ${WRKSRC}/site.cfg
@@ -75,9 +85,12 @@ pre-configure:
 	@${REINPLACE_CMD} -e "s+%%GCCLIBDIR%%+$$(${GCCLIBDIR_CMDS})+" ${WRKSRC}/numpy/distutils/system_info.py
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/numpy/f2py/f2py.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/f2py/f2py.1 ${STAGEDIR}${MANPREFIX}/man/man1/f2py-${PYTHON_VER}.1
+.if ${PYTHON_VERSION} == ${PYTHON_DEFAULT_VERSION}
+	${LN} -sf ${MANPREFIX}/man/man1/f2py-${PYTHON_VER}.1 ${STAGEDIR}${MANPREFIX}/man/man1/f2py.1
+.endif
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/numpy-ref-${PORTVERSION}.pdf ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/numpy-user-${PORTVERSION}.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/numpy-ref-${DOCVERSION}.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${DISTDIR}/numpy-user-${DOCVERSION}.pdf ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

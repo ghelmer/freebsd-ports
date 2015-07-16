@@ -2,7 +2,7 @@
 
 PORTNAME=	webalizer
 PORTVERSION=	2.23.8
-PORTREVISION=	0
+PORTREVISION=	3
 CATEGORIES+=	www
 MASTER_SITES=	ftp://ftp.mrunix.net/pub/webalizer/:main \
 MASTER_SITES=	ftp://ftp.mrunix.net/pub/webalizer/geodb/:geodb \
@@ -13,7 +13,7 @@ DISTNAME=	${PORTNAME}-2.23-08-src
 DISTFILES=	${DISTNAME}.tgz:main
 
 MAINTAINER?=	dinoex@FreeBSD.org
-COMMENT=	A web server log file analysis program
+COMMENT=	Web server log file analysis program
 
 LICENSE=	GPLv2
 
@@ -30,7 +30,8 @@ WEBALIZER_LANG?=english
 .endif
 
 OPTIONS_DEFINE=	GEOIP GEODB BDB1 BDB WEBALIZER_CONV \
-		FULL_CGI_REFS CLICKABLE_REFERER LARGE_URL
+		FULL_CGI_REFS CLICKABLE_REFERER LARGE_URL \
+		DOCS EXAMPLES
 OPTIONS_DEFAULT?=
 NO_OPTIONS_SORT=yes
 GEODB_DESC=Enable Webalizers IP-Database support
@@ -45,7 +46,7 @@ LARGE_URL_DESC=Enable URLs longer 512 bytes
 DISTFILES+=	webalizer-flags.tgz:main
 .endif
 .if ${PORT_OPTIONS:MGEODB} || make(makesum) || defined(FETCH_ALL)
-DISTFILES+=	webalizer-geodb-20130801.tgz:geodb
+DISTFILES+=	webalizer-geodb-20141101.tgz:geodb
 .endif
 
 # slave ports override with languages specific gd
@@ -67,7 +68,6 @@ PLIST_SUB+=	WITH_GEODB="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MGEOIP}
-WEBALIZER_SUFFIX=	-geoip
 CONFLICTS+=	${PKGNAMEPREFIX}webalizer-2*
 CONFIGURE_ARGS+=	--enable-geoip \
 			--with-geoip-lib=${LOCALBASE}/lib \

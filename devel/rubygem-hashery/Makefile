@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	hashery
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Hashery is a tight collection of Hash-like classes
+
+LICENSE=	BSD2CLAUSE
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

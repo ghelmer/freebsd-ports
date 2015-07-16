@@ -5,7 +5,6 @@ PORTVERSION=	3.01
 PORTREVISION=	1
 CATEGORIES=	www deskutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION:C/\..*//}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Small php webapp to manage your recipes
@@ -15,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/docs/LICENSE.TXT
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
+USES=		tar:tgz
 USE_PHP=	xml
 WANT_PHP_WEB=	yes
 SUB_FILES=	pkg-message
@@ -32,7 +32,7 @@ USE_MYSQL=	yes
 
 .if ${PORT_OPTIONS:MPGSQL}
 USE_PHP+=	pgsql
-USE_PGSQL=	yes
+USES+=		pgsql
 .endif
 
 post-extract:

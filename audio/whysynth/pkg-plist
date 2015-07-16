@@ -1,5 +1,3 @@
-lib/dssi/whysynth.a
-lib/dssi/whysynth.la
 lib/dssi/whysynth.so
 lib/dssi/whysynth/WhySynth_gtk
 %%DATADIR%%/current_default_patches.WhySynth
@@ -8,6 +6,3 @@ lib/dssi/whysynth/WhySynth_gtk
 %%DATADIR%%/version_20051231_patches.WhySynth
 %%DATADIR%%/version_20090608_patches.WhySynth
 %%DATADIR%%/version_20100922_patches.WhySynth
-@dirrmtry %%DATADIR%%
-@dirrmtry lib/dssi/whysynth
-@dirrmtry lib/dssi

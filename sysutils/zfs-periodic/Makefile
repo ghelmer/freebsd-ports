@@ -10,8 +10,7 @@ COMMENT=	Simple way of maintaining zfs snapshots using the periodic system
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ross
-GH_COMMIT=	9ffa662
-GH_TAGNAME=	${GH_COMMIT}
+GH_TAGNAME=	9ffa662
 
 NO_BUILD=	yes
 
@@ -25,7 +24,6 @@ PERIODIC_FILES=	etc/periodic/hourly/000.zfs-snapshot \
 		etc/periodic/monthly/000.zfs-snapshot
 
 PLIST_FILES=	${PERIODIC_FILES} bin/zfs-snapshot
-PLIST_DIRSTRY=	${PERIODIC_DIRS}
 
 post-patch:
 .for _file in ${PERIODIC_FILES}

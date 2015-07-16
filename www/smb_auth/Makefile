@@ -5,11 +5,10 @@ PORTNAME=	smb_auth
 PORTVERSION=	0.05
 PORTREVISION=	5
 CATEGORIES=	www
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	dinoex
+MASTER_SITES=	LOCAL/dinoex
 
 MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	A proxy authentication module against an SMB server
+COMMENT=	Proxy authentication module against an SMB server
 
 .if !defined(WITHOUT_REGISTER_SAMBA)
 RUN_DEPENDS=	${LOCALBASE}/sbin/smbd:${PORTSDIR}/${SAMBA_PORT}

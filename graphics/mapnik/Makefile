@@ -4,7 +4,7 @@
 PORTNAME=	mapnik
 PORTVERSION=	2.2.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	7
+PORTREVISION=	14
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://mapnik.s3.amazonaws.com/dist/v${PORTVERSION}/
 
@@ -21,10 +21,8 @@ LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj \
 BUILD_DEPENDS=	${LOCALBASE}/bin/freetype-config:${PORTSDIR}/print/freetype2 \
 		${PYTHON_PKGNAMEPREFIX}icu>=0.8.1:${PORTSDIR}/devel/py-icu
 
-USE_BZIP2=	yes
-USES=		pkgconfig scons
+USES=		pkgconfig python scons tar:bzip2
 USE_GNOME=	libxml2
-USE_PYTHON=	yes
 USE_LDCONFIG=	yes
 WARNING_CXXFLAGS?=	-w
 
@@ -83,7 +81,7 @@ LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
 
 .if ${PORT_OPTIONS:MPOSTGIS}
 INPUT_PLUGINS+=	postgis
-USE_PGSQL=	yes
+USES+=		pgsql
 .endif
 
 .if ${PORT_OPTIONS:MSQLITE3}
@@ -93,13 +91,13 @@ BUILD_DEPENDS+=	sqlite3>=3.7.12:${PORTSDIR}/databases/sqlite3
 .endif
 
 .if ${PORT_OPTIONS:MJPEG}
-LIB_DEPENDS+=   libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 .else
 MAKE_ARGS+=	JPEG=False
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=   libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=   libpng.so:${PORTSDIR}/graphics/png
 .else
 MAKE_ARGS+=	PNG=False
 .endif
@@ -116,9 +114,6 @@ MAKE_ARGS+=	TIFF=False
 IGNORE=		does not install: runs out of virtual memory
 .endif
 
-MAKE_ARGS+=	CUSTOM_CFLAGS=-I${LOCALBASE}/include
-MAKE_ARGS+=	CUSTOM_CXXFLAGS=-I${LOCALBASE}/include
-MAKE_ARGS+=	CUSTOM_LDFLAGS=-L${LOCALBASE}/lib
 MAKE_ARGS+=	WARNING_CXXFLAGS=${WARNING_CXXFLAGS}
 MAKE_ARGS+=	INPUT_PLUGINS="`${ECHO} ${INPUT_PLUGINS} | ${TR} ' ' ,`"
 MAKE_ARGS+=	JOBS=${MAKE_JOBS_NUMBER}
@@ -137,6 +132,7 @@ pre-configure:
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' \
+		-e 's#/usr/include#${LOCALBASE}/include#g' \
 		${WRKSRC}/SConstruct
 
 post-install:

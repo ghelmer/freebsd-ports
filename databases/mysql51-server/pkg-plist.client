@@ -45,13 +45,13 @@ include/mysql/sslopt-longopts.h
 include/mysql/sslopt-vars.h
 include/mysql/typelib.h
 lib/mysql/libmysqlclient.a
-lib/mysql/libmysqlclient.la
 lib/mysql/libmysqlclient.so
 lib/mysql/libmysqlclient.so.16
+lib/mysql/libmysqlclient.so.16.0.0
 lib/mysql/libmysqlclient_r.a
-lib/mysql/libmysqlclient_r.la
 lib/mysql/libmysqlclient_r.so
 lib/mysql/libmysqlclient_r.so.16
+lib/mysql/libmysqlclient_r.so.16.0.0
 man/man1/mysql.1.gz
 man/man1/mysql_config.1.gz
 man/man1/mysql_upgrade.1.gz
@@ -66,6 +66,3 @@ man/man1/mysqlslap.1.gz
 man/man1/mysqltest.1.gz
 share/aclocal/mysql.m4
 %%DATADIR%%/mysql_fix_privilege_tables.sql
-@dirrm include/mysql
-@dirrm lib/mysql
-@dirrm %%DATADIR%%

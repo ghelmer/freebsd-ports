@@ -7,7 +7,10 @@ CATEGORIES=	print rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	An Prawn Extension to Provides Table Support and Other Layout
+COMMENT=	Prawn Extension to Provides Table Support and Other Layout
+
+LICENSE=	GPLv2 RUBY
+LICENSE_COMB=	dual
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

@@ -3,21 +3,16 @@
 
 PORTNAME=	gbottler
 PORTVERSION=	0.1.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_SOURCEFORGE_JP}
-MASTER_SITE_SUBDIR=	gbottler/45155
+MASTER_SITES=	SFJP/gbottler/45155
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SSTP Bottle client
 
-RUN_DEPENDS=	${PYXML}
-
+NO_ARCH=	yes
+USES=		gettext-tools gmake python:2
+USE_GNOME=	pygtk2
 PLIST_SUB=	VERSION=${PORTVERSION}
 
-USE_GNOME=	pygtk2
-USE_PYTHON=	yes
-USES=		gmake
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

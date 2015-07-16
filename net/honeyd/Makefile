@@ -3,7 +3,7 @@
 
 PORTNAME=	honeyd
 PORTVERSION=	1.5c
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	http://www.honeyd.org/uploads/ \
 		http://www.citi.umich.edu/u/provos/honeyd/
@@ -13,17 +13,20 @@ COMMENT=	Simulate virtual network hosts (honeypots)
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent \
+LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2 \
 		libdnet.so:${PORTSDIR}/net/libdnet \
 		libpcre.so:${PORTSDIR}/devel/pcre
 
+USES=		libtool
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libdnet=${LOCALBASE} \
 		--with-libevent=${LOCALBASE}
 
+EXTRA_PATCHES=	${FILESDIR}/honeyd-1.5c-libevent2.patch:-p1
+
 .if defined(WITH_PYTHON)
-USE_PYTHON=	yes
+USES+=			python
 CONFIGURE_ARGS+=	--with-python
 .else
 CONFIGURE_ARGS+=	--without-python
@@ -40,7 +43,7 @@ pre-everything::
 .endif
 
 post-configure:
-	@${REINPLACE_CMD} -e 's|LIBS = |LIBS = ${PTHREAD_LIBS}|' \
+	@${REINPLACE_CMD} -e 's|LIBS = |LIBS = -lpthread|' \
 		${WRKSRC}/Makefile
 
 # Have to make this directory, the Makefile is stupid and tries to

@@ -3,7 +3,7 @@
 
 PORTNAME=	glclock
 DISTVERSION=	6.0b6.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-clocks
 MASTER_SITES=	http://www.daionet.gr.jp/~masa/archives/
 
@@ -18,7 +18,6 @@ CFLAGS+=	-DIMAGE_PATH="\\\"${PREFIX}/lib/X11/glclock/\\\""
 
 PLIST_FILES=	${PROGRAMS:S,^,bin/,} ${SCRIPTS:S,^,bin/,} \
 		${TEXTURES:S,^,lib/X11/glclock/,}
-PLIST_DIRS=	lib/X11/glclock
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS
 

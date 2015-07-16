@@ -3,14 +3,15 @@
 
 PORTNAME=	kuklomenos
 PORTVERSION=	0.4.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://mbays.freeshell.org/kuklomenos/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple but challenging abstract shoot-em-up game
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 
@@ -21,8 +22,8 @@ OPTIONS_SUB=	yes
 USE_SDL=	sdl
 GNU_CONFIGURE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHEAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
 VORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 VORBIS_CONFIGURE_ENABLE=	sound

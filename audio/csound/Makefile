@@ -3,6 +3,7 @@
 
 PORTNAME=	csound
 PORTVERSION=	5.19.01
+PORTREVISION=	4
 CATEGORIES=	audio lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}5/${PORTNAME}${PORTVERSION:R} \
 		SF/${PORTNAME}/${PORTNAME}5/${PORTNAME}${PORTVERSION:R}/manual:manual
@@ -14,6 +15,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sound synthesizer
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	swig13>0:${PORTSDIR}/devel/swig13 \
 		eigen>0:${PORTSDIR}/math/eigen3 \
@@ -22,10 +24,11 @@ LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile
 
 PORTSCOUT=	limit:^5\.
 
-OPTIONS_DEFINE=	ALSA DSSI FLTK FLUIDSYNTH JACK OSC PORTAUDIO PULSEAUDIO
+OPTIONS_DEFINE=	ALSA PNG DSSI FLTK FLUIDSYNTH JACK OSC PORTAUDIO PULSEAUDIO DOCS
 OPTIONS_DEFAULT=FLTK
 OPTIONS_SUB=	yes
 ALSA_DESC=	Build ALSA I/O module
+PNG_DESC=	Build image opcodes
 DSSI_DESC=	Build DSSI/LADSPA host opcodes
 FLUIDSYNTH_DESC=Building FluidSynth opcodes
 JACK_DESC=	Build Jack I/O module and opcodes
@@ -38,8 +41,8 @@ CONFLICTS_INSTALL=	outguess-* csound6
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/c/C/}${PORTVERSION}
 
-USES=		bison gettext scons compiler:openmp
-USE_PYTHON=	yes
+USES=		bison cpe gettext scons compiler:openmp python
+CPE_VENDOR=	csounds
 MAKE_ARGS=	instdir="${STAGEDIR}" prefix="${PREFIX}" \
 		CC="${CC}" CXX="${CXX}" \
 		buildCsoundAC=0 buildCsoundVST=0 buildInterfaces=1 \
@@ -51,6 +54,7 @@ SSP_UNSAFE=	yes
 
 CFLAGS+=	-fPIC -fopenmp -DUSE_OPENMP
 LDFLAGS+=	-pthread -Wl,-export-dynamic
+LINKFLAGS=	# empty
 
 SUB_FILES=	pkg-message
 
@@ -65,8 +69,16 @@ MAKE_ARGS+=	useALSA=0
 ALSA_H=		##alsa/asoundlib.h##
 .endif
 
+.if ${PORT_OPTIONS:MPNG}
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
+MAKE_ARGS+=	buildImageOpcodes=1
+.else
+MAKE_ARGS+=	buildImageOpcodes=0
+.endif
+
 .if ${PORT_OPTIONS:MDSSI}
 BUILD_DEPENDS+=	dssi>=0:${PORTSDIR}/audio/dssi
+LIB_DEPENDS+=	libasound.so:${PORTSDIR}/audio/alsa-lib
 RUN_DEPENDS+=	dssi>=0:${PORTSDIR}/audio/dssi
 MAKE_ARGS+=	buildDSSI=1
 .else
@@ -95,15 +107,10 @@ MAKE_ARGS+=	useOSC=0
 .endif
 
 .if ${PORT_OPTIONS:MPORTAUDIO}
-BUILD_DEPENDS+=	portaudio2>=0:${PORTSDIR}/audio/portaudio2
-RUN_DEPENDS+=	portaudio2>=0:${PORTSDIR}/audio/portaudio2
+LIB_DEPENDS+=	libportaudio.so:${PORTSDIR}/audio/portaudio
 MAKE_ARGS+=	usePortAudio=1
-PORTAUDIO_L=	"${LOCALBASE}/lib/portaudio2"
-PORTAUDIO_R=	"-Wl,-rpath,${LOCALBASE}/lib/portaudio2"
 .else
 MAKE_ARGS+=	usePortAudio=0
-PORTAUDIO_L=	# empty
-PORTAUDIO_R=	# empty
 .endif
 
 .if ${PORT_OPTIONS:MPULSEAUDIO}
@@ -141,11 +148,11 @@ CXXLIB=		c++
 CXXLIB=		# empty
 .endif
 
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${SED} -e "s|%%LOCALBASE%%|${LOCALBASE}|g; \
-		s|%%PYTHON_INCLUDEDIR%%|${PYTHON_INCLUDEDIR}|; \
-		s|%%PORTAUDIO_L%%|${PORTAUDIO_L}|; \
-		s|%%PORTAUDIO_R%%|${PORTAUDIO_R}|" \
+		s|%%PYTHON_INCLUDEDIR%%|${PYTHON_INCLUDEDIR}|" \
 		< ${FILESDIR}/custom.py.in > ${WRKSRC}/custom.py
 	@${REINPLACE_CMD} -e "s|'unsupported'|'linux'|; \
 		s|Exit(-1)|print \"\"|; \
@@ -156,7 +163,6 @@ post-patch:
 		/LINKFLAGS/s|\['-Wl,-Bdynamic'\]|Split('${LDFLAGS}')|; \
 		s|\"pthread\"|\"\"|; \
 		s|'pthread'|''|; \
-		s|\"portaudio.h\"|\"portaudio2/portaudio.h\"|; \
 		s|\"boost/any.hpp\"|\"##boost/any.hpp##\"|; \
 		s|\"alsa/asoundlib.h\"|\"${ALSA_H}\"|; \
 		s|'xmlfile.h'|'##xmlfile.h##'|; \
@@ -172,14 +178,16 @@ post-patch:
 		/jpluginEnvironment/s|'asound'|''|; \
 		/portaudioEnvironment/s|'asound'|''|; \
 		/jackEnvironment/s|'asound'|''|" ${WRKSRC}/SConstruct
-	@${REINPLACE_CMD} -e "s|<portaudio.h>|<portaudio2/portaudio.h>|" \
-		${WRKSRC}/InOut/rtpa.c
 	@${REINPLACE_CMD} -e "s|linux/if.h|sys/types.h|" \
 		${WRKSRC}/OOps/remote.c
 
 post-install:
 	${LN} -sf libcsound64.so.5 ${STAGEDIR}${PREFIX}/lib/libcsound64.so
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKDIR}/html && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+.endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/*.so* \
+		${STAGEDIR}${PREFIX}/lib/csound/plugins64/*.so
 
 .include <bsd.port.post.mk>

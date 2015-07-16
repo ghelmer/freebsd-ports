@@ -2,9 +2,9 @@
 
 PORTNAME=	apache22
 PORTVERSION=	2.2.29
-PORTREVISION?=	3
+PORTREVISION?=	5
 CATEGORIES=	www ipv6
-MASTER_SITES=	${MASTER_SITE_APACHE_HTTPD}
+MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
 DIST_SUBDIR=	apache22
 
@@ -20,11 +20,10 @@ CONFLICTS_INSTALL=	caudium14-1.* \
 		apache-*-2.4.* apache24-*-2.4.*
 
 USE_APACHE=	common22
-USES=		tar:bzip2 iconv perl5 libtool cpe
+USES=		tar:bzip2 iconv perl5 libtool cpe autoreconf
 USE_PERL5=	run
-USE_AUTOTOOLS=	autoconf
+GNU_CONFIGURE=	yes
 USE_RC_SUBR=	apache22 htcacheclean
-LIBTOOLFILES=	configure.in
 
 CPE_VENDOR=	apache
 CPE_PRODUCT=	http_server
@@ -96,13 +95,12 @@ CONFIGURE_ARGS+=--prefix=${PREFIX} \
 		--with-apr=${APR_CONFIG} \
 		--with-apr-util=${APU_CONFIG}
 
-CONFIGURE_ENV=	\
-		CONFIG_SHELL="${SH}" \
+CONFIGURE_ENV=	CONFIG_SHELL="${SH}" \
 		LOCALBASE="${LOCALBASE}"
 
 MAKE_ENV+=	EXPR_COMPAT=yes \
 		INSTALL_MAN="${INSTALL_MAN}" \
-		EXAMPLESDIR=${EXAMPLESDIR}
+		DATADIR=${DATADIR}
 
 #=====================================================
 # CONFIGURE_ARGS will be handled in Makefile.modules,
@@ -134,7 +132,13 @@ post-extract:
 # remove possible leftover .svn directories in the sources
 	@${FIND} ${WRKSRC} -type d -name .svn -print | ${XARGS} ${RM} -rf
 # limit grep results ...
-	@${FIND} ${WRKSRC} -type f \( -name 'NWGNU*' -o -name '*.ds?' -o -name '*.dep' -o -name '*.mak' -o -name '*.win' \) -delete
+	${FIND} ${WRKSRC} -type f \( -name 'NWGNU*' -o -name '*.ds?' -o -name '*.dep' -o -name '*.mak' -o -name '*.win' -o -name '*.vbs' -o -name '*.wsf' \) -delete
+
+# make qa script happy, it complains on empty dirs even 'PORTDOCS=*' is set
+# use RMDIR in case upstream ever place some files into this dirs
+.for d in xsl/util xsl lang
+	-${RMDIR} ${WRKSRC}/docs/manual/style/${d}
+.endfor
 
 post-patch:
 	@${REINPLACE_CMD} -e 's," PLATFORM ",FreeBSD,' ${WRKSRC}/server/core.c
@@ -143,7 +147,7 @@ post-patch:
 		-e 's|^perlbin=.*|perlbin=${PERL}|' \
 		${WRKSRC}/configure.in ${WRKSRC}/configure
 	@${RM} -f ${WRKSRC}/docs/docroot/*.bak
-	@${INSTALL_DATA} ${WRKSRC}/NOTICE ${WRKSRC}/docs/manual
+	${INSTALL_DATA} ${WRKSRC}/NOTICE ${WRKSRC}/docs/manual
 # we use devel/apr and devel/pcre
 	@${RM} -rf ${WRKSRC}/srclib
 	@${REINPLACE_CMD} -e 's/srclib//' ${WRKSRC}/Makefile.in
@@ -166,7 +170,7 @@ pre-configure::
 
 post-configure:
 	@FTPUSERS=`${EGREP} -v '^#' /etc/ftpusers| ${TR} -s "\n" " "` ;\
-	${REINPLACE_CMD} -e "s,%%FTPUSERS%%,$${FTPUSERS}," ${WRKSRC}/docs/conf/extra/httpd-userdir.conf
+		${REINPLACE_CMD} -e "s,%%FTPUSERS%%,$${FTPUSERS}," ${WRKSRC}/docs/conf/extra/httpd-userdir.conf
 	@${REINPLACE_CMD} -e "s,%%WWWOWN%%,${WWWOWN}," -e "s,%%WWWGRP%%,${WWWGRP}," ${WRKSRC}/docs/conf/httpd.conf
 	@${REINPLACE_CMD} -e "s,%%PREFIX%%,${PREFIX}," ${WRKSRC}/support/envvars-std
 
@@ -179,16 +183,13 @@ pre-build:
 post-install:
 	@${MKDIR} ${ETC_SUBDIRS:S|^|${STAGEDIR}${ETCDIR}/|}
 	${INSTALL_DATA} ${FILESDIR}/no-accf.conf ${STAGEDIR}${ETCDIR}/Includes/
+# place for 3rd party module configuration
 	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}${ETCDIR}/modules.d/
-# place for module configuration samples
-	@${MKDIR} ${STAGEDIR}/${EXAMPLESDIR}/modules.d
-	${INSTALL_DATA} ${FILESDIR}/README_modules.d ${STAGEDIR}${EXAMPLESDIR}/modules.d
-
-# suppress warning for non binary files
-	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* \
-		${STAGEDIR}${PREFIX}/libexec/apache22/*.so 2>/dev/null
+# strip returns an error for non binary files, but we have a big mix
+	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* 2>/dev/null
+	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/apache22/mod_*.so
 .if ${PORT_OPTIONS:MLOG_FORENSIC}
-	@${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin
 .endif
 
 # maintainer only, check for new modules

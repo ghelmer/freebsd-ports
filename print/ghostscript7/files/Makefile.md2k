@@ -15,9 +15,9 @@ pre-build-md2k:
 	${LN} -s -f ${WRKSRC}/gdevmd2k-0.2a/gdevmd2k.c ${WRKSRC}/src
 
 post-install-docs-md2k:
-	${MKDIR} ${DOCSDIR}/md2k
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/md2k
 	${INSTALL_DATA} ${WRKSRC}/gdevmd2k-0.2a/README.jis	\
-		${DOCSDIR}/md2k
+		${STAGEDIR}${DOCSDIR}/md2k
 
 post-extract: post-extract-md2k
 pre-build: pre-build-md2k

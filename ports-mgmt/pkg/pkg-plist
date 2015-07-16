@@ -4,17 +4,19 @@ etc/periodic/daily/490.status-pkg-changes
 etc/periodic/security/410.pkg-audit
 etc/periodic/security/460.pkg-checksum
 etc/periodic/weekly/400.status-pkg
-etc/pkg.conf.sample
+@sample etc/pkg.conf.sample
 include/pkg.h
 lib/libpkg.a
 lib/libpkg.so
-lib/libpkg.so.1
+lib/libpkg.so.3
+lib/libpkg.so.3.0.0
 libdata/pkgconfig/pkg.pc
 man/man3/pkg_printf.3.gz
 man/man3/pkg_repos.3.gz
 man/man5/pkg-repository.5.gz
 man/man5/pkg.conf.5.gz
 man/man8/pkg-add.8.gz
+man/man8/pkg-alias.8.gz
 man/man8/pkg-annotate.8.gz
 man/man8/pkg-audit.8.gz
 man/man8/pkg-autoremove.8.gz
@@ -38,6 +40,7 @@ man/man8/pkg-search.8.gz
 man/man8/pkg-set.8.gz
 man/man8/pkg-shell.8.gz
 man/man8/pkg-shlib.8.gz
+man/man8/pkg-ssh.8.gz
 man/man8/pkg-static.8.gz
 man/man8/pkg-stats.8.gz
 man/man8/pkg-unlock.8.gz
@@ -51,10 +54,3 @@ sbin/pkg
 sbin/pkg-static
 sbin/pkg2ng
 share/zsh/site-functions/_pkg
-@dirrmtry etc/bash_completion.d
-@dirrmtry etc/periodic/daily
-@dirrmtry etc/periodic/security
-@dirrmtry etc/periodic/weekly
-@dirrmtry etc/periodic
-@dirrmtry share/zsh/site-functions
-@dirrmtry share/zsh

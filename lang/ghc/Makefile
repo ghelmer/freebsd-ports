@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	ghc
-PORTVERSION=	7.6.3
-PORTREVISION=	4
+PORTVERSION=	7.8.3
+PORTREVISION=	1
 CATEGORIES=	lang haskell
 MASTER_SITES=	http://www.haskell.org/ghc/dist/${PORTVERSION}/:source \
-		${MASTER_SITE_LOCAL:S/$/:boot/}
-MASTER_SITE_SUBDIR=	pgj/:boot
+		LOCAL/pgj/:boot
 DISTFILES=	ghc-${PORTVERSION}-src${EXTRACT_SUFX}:source
 
 MAINTAINER=	haskell@FreeBSD.org
@@ -23,17 +22,17 @@ HSCOLOUR_VERSION=	1.20.3
 DATADIR=	${PREFIX}/share/ghc-${GHC_VERSION}
 EXAMPLESDIR=	${PREFIX}/share/examples/ghc-${GHC_VERSION}
 
-CONFLICTS=	ghc-6.8.* ghc-6.10.* ghc-6.12.* ghc-7.0.* ghc-7.2.* ghc-7.4.*
+CONFLICTS=	ghc-6.* ghc-7.0.* ghc-7.2.* ghc-7.4.* ghc-7.6.* ghc-7.7.*
 
 LIB_DEPENDS+=	libgmp.so:${PORTSDIR}/math/gmp
 
 USE_AUTOTOOLS=		autoconf autoheader
 USE_PERL5=		build
-USES=			gmake iconv perl5 ncurses tar:bzip2
+USES=			gmake iconv:translit perl5 ncurses tar:bzip2
 USE_BINUTILS=		yes
 USE_GCC=		yes
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 MAKE_ENV=	LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
@@ -68,14 +67,13 @@ OPTIONS_DEFINE+=	BOOTH
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDYNAMIC}
-LIB_DEPENDS+=	ffi.6:${PORTSDIR}/devel/libffi
+# The version number is needed as lang/gcc installs a different version
+LIB_DEPENDS+=	libffi.so.6:${PORTSDIR}/devel/libffi
 .endif
 
 .if empty(PORT_OPTIONS:MBOOT)
 
 BOOT_GHC_VERSION=	7.6.3
-
-EXTRA_PATCHES=		${PATCHDIR}/nopatch-.._ghc-${BOOT_GHC_VERSION}-boot_rts_package.conf.in
 
 .if ${ARCH} == "i386"
 
@@ -83,10 +81,8 @@ EXTRA_PATCHES=		${PATCHDIR}/nopatch-.._ghc-${BOOT_GHC_VERSION}-boot_rts_package.
 DISTFILES+=	ghc-${BOOT_GHC_VERSION}-i386-freebsd10-boot${EXTRACT_SUFX}:boot
 .elif ${OSVERSION} >= 900000
 DISTFILES+=	ghc-${BOOT_GHC_VERSION}-i386-freebsd9-boot${EXTRACT_SUFX}:boot
-.elif ${OSVERSION} >= 800000
-DISTFILES+=	ghc-${BOOT_GHC_VERSION}-i386-freebsd8-boot${EXTRACT_SUFX}:boot
 .else
-IGNORE=		unsupported
+DISTFILES+=	ghc-${BOOT_GHC_VERSION}-i386-freebsd8-boot${EXTRACT_SUFX}:boot
 .endif
 
 .elif ${ARCH} == "amd64"
@@ -95,10 +91,8 @@ IGNORE=		unsupported
 DISTFILES+=	ghc-${BOOT_GHC_VERSION}-amd64-freebsd10-boot${EXTRACT_SUFX}:boot
 .elif ${OSVERSION} >= 900000
 DISTFILES+=	ghc-${BOOT_GHC_VERSION}-amd64-freebsd9-boot${EXTRACT_SUFX}:boot
-.elif ${OSVERSION} >= 800000
-DISTFILES+=	ghc-${BOOT_GHC_VERSION}-amd64-freebsd8-boot${EXTRACT_SUFX}:boot
 .else
-IGNORE=		unsupported
+DISTFILES+=	ghc-${BOOT_GHC_VERSION}-amd64-freebsd8-boot${EXTRACT_SUFX}:boot
 .endif
 
 .endif
@@ -118,10 +112,8 @@ CONFIGURE_ARGS=		--with-gcc=${CC} \
 			--with-gmp-includes=${LOCALBASE}/include \
 			--with-gmp-libraries=${LOCALBASE}/lib
 
-.if ${OSVERSION} < 1000043
 CONFIGURE_ARGS+=	--with-iconv-includes=${LOCALBASE}/include \
 			--with-iconv-libraries=${LOCALBASE}/lib
-.endif
 
 .if ${PORT_OPTIONS:MDYNAMIC}
 CONFIGURE_ARGS+=	--with-system-libffi \
@@ -130,11 +122,11 @@ CONFIGURE_ARGS+=	--with-system-libffi \
 .endif
 
 .if ${PORT_OPTIONS:MLLVM}
-BUILD_DEPENDS+=		${LOCALBASE}/bin/opt32:${PORTSDIR}/devel/llvm32
-RUN_DEPENDS+=		${LOCALBASE}/bin/opt32:${PORTSDIR}/devel/llvm32
+BUILD_DEPENDS+=		${LOCALBASE}/bin/opt34:${PORTSDIR}/devel/llvm34
+RUN_DEPENDS+=		${LOCALBASE}/bin/opt34:${PORTSDIR}/devel/llvm34
 
-CONFIGURE_ARGS+=	--with-opt=${LOCALBASE}/bin/opt32 \
-			--with-llc=${LOCALBASE}/bin/llc32
+CONFIGURE_ARGS+=	--with-opt=${LOCALBASE}/bin/opt34 \
+			--with-llc=${LOCALBASE}/bin/llc34
 .endif
 
 .if empty(PORT_OPTIONS:MBOOT)
@@ -194,7 +186,7 @@ CONFIGURE_ENV+=	PATH=${SLAVES_PREFIX}/bin:${PATH}
 
 .endif # MBOOTH
 
-BUILD_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/html:${PORTSDIR}/textproc/docbook-xsl \
+BUILD_DEPENDS+=	docbook-xsl>0:${PORTSDIR}/textproc/docbook-xsl \
 		${LOCALBASE}/bin/xsltproc:${PORTSDIR}/textproc/libxslt
 .endif
 
@@ -231,8 +223,7 @@ post-extract:
 	@${ECHO} >> ${WRKSRC}/mk/build.mk "EXTRA_CABAL_CONFIGURE_FLAGS += --extra-include-dirs=${LOCALBASE}/include"
 	@${ECHO} >> ${WRKSRC}/mk/build.mk "EXTRA_CABAL_CONFIGURE_FLAGS += --extra-lib-dirs=${LOCALBASE}/lib"
 	@${ECHO} >> ${WRKSRC}/mk/build.mk "libraries/terminfo_CONFIGURE_OPTS += --configure-option=--with-curses-includes=${NCURSESINC} --configure-option=--with-curses-libraries=${NCURSESLIB}"
-#	@${ECHO} >> ${WRKSRC}/mk/build.mk "BIN_DIST_NAME = ghc-\$$(ProjectVersion)-boot"
-#	@${ECHO} >> ${WRKSRC}/mk/build.mk "BIN_DIST_TAR  = ghc-\$$(ProjectVersion)-amd64-ash0-freebsd8-boot.tar"
+	@${ECHO} >> ${WRKSRC}/mk/build.mk "V = 0"
 
 post-install-script:
 	@${FIND} -ds ${GHC_LIBDIR} -type f -print | ${SED} -E -e \
@@ -254,35 +245,13 @@ post-install-script:
 .if ${PORT_OPTIONS:MDOCS}
 	@${ECHO} '@exec ${SH} -c "cd %D/${DOCSDIR_REL}/html/libraries && ./gen_contents_index"' >> ${TMPPLIST}
 .endif
-	@${FIND} -ds ${STAGEDIR}${DOCSDIR} -type d -print | ${SED} -E -e \
-		's,^${STAGEDIR}${PREFIX}/?,@dirrm ,' >> ${TMPPLIST}
-	@${FIND} -ds ${GHC_LIBDIR} -type d -print | ${SED} -E -e \
-		's,^${STAGEDIR}${PREFIX}/?,@dirrm ,' >> ${TMPPLIST}
-
-#post-build:
-#	@(cd ${WRKSRC} && ${MAKE_CMD} binary-dist)
-#
-#do-install:
-#	@${NONE}
 
 post-patch:
-# Hack don't to install the internal haddock.
-	@${REINPLACE_CMD} -e 's+\(DO_NOT_INSTALL =\)+\1 haddock+' \
-		${WRKSRC}/utils/Makefile
-
-.if ${PORT_OPTIONS:MBOOT}
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${WRKSRC}/rts/package.conf.in \
-		${WRKSRC}/libraries/Makefile
-.else
-	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		${WRKSRC}/../ghc-${BOOT_GHC_VERSION}-boot/rts/package.conf.in \
-		${WRKSRC}/rts/package.conf.in \
-		${WRKSRC}/libraries/Makefile
-.endif
-
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
-		${WRKSRC}/configure
+	@${REINPLACE_CMD} -e 's|%%CC%%|${CC}|; \
+		s|%%AR%%|${AR}|; \
+		s|%%RANLIB%%|${RANLIB}|; \
+		s|%%LD%%|${LD}|' \
+		${WRKSRC}/libraries/Cabal/Cabal/Distribution/Simple/Program/Builtin.hs
 
 pre-configure:
 	@${MKDIR} ${TMPDIR}
@@ -317,14 +286,12 @@ pre-configure:
 .endif
 
 post-install:
-	# cabalised hs-foo-ghc ports
-	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/cabal/ghc-${GHC_VERSION}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/cabal/ghc-${GHC_VERSION}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/cabal/ghc-${GHC_VERSION}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/examples/cabal/ghc-${GHC_VERSION}
 	@${RM} -f ${STAGEDIR}${PREFIX}/bin/haddock
 .if ${PORT_OPTIONS:MDOCS}
 	@${LN} -sf haddock-ghc-${GHC_VERSION} ${STAGEDIR}${PREFIX}/bin/haddock
 .endif
+	@(for f in ${STAGEDIR}${PREFIX}/bin/hp2ps ${GHC_LIBDIR}/unlit ${GHC_LIBDIR}/mkGmpDerivedConstants \
+	    $$(${FIND} ${GHC_LIBDIR}/bin -type f; ${FIND} ${GHC_LIBDIR} -name '*.so'); do \
+	    ${STRIP_CMD} $$f; done)
 
 .include <bsd.port.mk>

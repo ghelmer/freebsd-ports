@@ -4,9 +4,8 @@
 PORTNAME=	slim-themes
 PORTVERSION=	1.0.1
 CATEGORIES=	x11-themes
-MASTER_SITES=	${MASTER_SITE_BERLIOS:S/$/:old_themes/g} \
-		http://slim.berlios.de/themes/:new_themes
-MASTER_SITE_SUBDIR=	slim/:old_themes
+MASTER_SITES=	http://slim.berlios.de/themes/:new_themes \
+		SF/slim.berlios/:old_themes
 DISTFILES=
 
 MAINTAINER=	rea@FreeBSD.org
@@ -84,11 +83,11 @@ PORT_OPTIONS+=	${n}
 NEWDISTFILES:=	${DISTFILES}	${${n}_DIST}
 DISTFILES:=	${NEWDISTFILES}
 SEEN_THEMES=	yes
-NEW_PLIST_SUB:=	${PLIST_SUB}	${n}=""
-PLIST_SUB:=	${NEW_PLIST_SUB}
+NEWPLIST_SUB:=	${PLIST_SUB}	${n}=""
+PLIST_SUB:=	${NEWPLIST_SUB}
 .else
-NEW_PLIST_SUB:=	${PLIST_SUB}	${n}="@comment "
-PLIST_SUB:=	${NEW_PLIST_SUB}
+NEWPLIST_SUB:=	${PLIST_SUB}	${n}="@comment "
+PLIST_SUB:=	${NEWPLIST_SUB}
 .endif # ${PORT_OPTIONS:MALL_THEMES} || ${PORT_OPTIONS:M${n}}
 .endfor # n in ${THEMELIST}
 

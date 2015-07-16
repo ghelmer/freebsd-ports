@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libcheck
-PORTVERSION=	0.9.13
+PORTVERSION=	0.9.14
 CATEGORIES=	devel
 MASTER_SITES=	SF/check/check/${PORTVERSION}
 DISTNAME=	check-${PORTVERSION}
@@ -16,6 +16,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 CONFIGURE_ENV=	ac_cv_path_AWK_PATH=${AWK}
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USES=		gmake libtool pathfix
 
@@ -32,8 +33,5 @@ post-patch:
 		-e '/^exampledir = / s|(docdir)/example|(datadir)/examples/${PORTNAME}|' \
 		-e '/^example[a-z]*dir = / s|(docdir)/example/|(exampledir)/|' \
 			${WRKSRC}/doc/Makefile.in
-
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/src/.libs/libcheck.so.0
 
 .include <bsd.port.mk>

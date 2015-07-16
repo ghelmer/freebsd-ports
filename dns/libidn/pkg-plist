@@ -10,7 +10,7 @@ info/libidn-components.png
 lib/libidn.a
 lib/libidn.so
 lib/libidn.so.11
-lib/libidn.so.11.6.11
+lib/libidn.so.11.6.12
 libdata/pkgconfig/libidn.pc
 %%NLS%%share/locale/cs/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/da/LC_MESSAGES/libidn.mo
@@ -24,6 +24,7 @@ libdata/pkgconfig/libidn.pc
 %%NLS%%share/locale/ja/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/nl/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/libidn.mo
+%%NLS%%share/locale/pt_BR/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/ro/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/sr/LC_MESSAGES/libidn.mo
 %%NLS%%share/locale/uk/LC_MESSAGES/libidn.mo
@@ -32,7 +33,6 @@ libdata/pkgconfig/libidn.pc
 %%PORTDOCS%%%%DOCSDIR%%/FAQ
 %%PORTDOCS%%%%DOCSDIR%%/NEWS
 %%PORTDOCS%%%%DOCSDIR%%/README
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
 man/man1/idn.1.gz
 man/man3/idn_free.3.gz
 man/man3/idna_strerror.3.gz

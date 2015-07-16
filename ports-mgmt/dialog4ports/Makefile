@@ -23,7 +23,6 @@ USES=		uidfix
 # CCACHE has options, so may need d4p, make d4p not ccache friendly
 # to avoid circular dependency
 NO_CCACHE=	yes
-MANCOMPRESSED=	yes
 MAKE_ENV+=	__MAKE_CONF=/dev/null SRCCONF=/dev/null
 
 .if !defined(D4P_SLAVE)
@@ -43,7 +42,7 @@ DIALOG4PORTS=	${WRKSRC}/dialog4ports
 .endif
 
 .if ${OSVERSION} < 900030 || defined(D4P_SLAVE)
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX} \
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${DIALOGNAME}.tgz:dialog
 DIALOGNAME=	dialog-1.1-20120706
 

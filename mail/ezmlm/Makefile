@@ -13,7 +13,7 @@ MASTER_SITES=	http://cr.yp.to/software/ \
 		ftp://ftp.nl.uu.net/pub/unix/mail/qmail/ \
 		ftp://ftp.archive.de.uu.net/pub/unix/mail/qmail/
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy-to-use, high-speed mailing list manager for qmail
 
 LEGAL_TEXT=	No license -- see http://cr.yp.to/softwarelaw.html
@@ -27,6 +27,8 @@ ALL_TARGET=	it
 PROGRAMS=	ezmlm-make ezmlm-manage ezmlm-send ezmlm-reject ezmlm-return \
 		ezmlm-warn ezmlm-weed ezmlm-list ezmlm-sub ezmlm-unsub
 DOCS=		BLURB INSTALL README THANKS TODO
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

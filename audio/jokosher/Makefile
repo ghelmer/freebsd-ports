@@ -2,7 +2,7 @@
 
 PORTNAME=	jokosher
 PORTVERSION=	0.11.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://launchpadlibrarian.net/43860543/
 
@@ -13,10 +13,9 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:${PORTSDIR}/devel/py-xdg
 
-USE_PYTHON=	2
-NO_STAGE=	yes
-USE_PYDISTUTILS=yes
-USE_GNOME=	gnomehier
+USES= 		desktop-file-utils python:2 shared-mime-info
+USE_PYTHON=	distutils
+WANT_GNOME=	yes
 USE_GSTREAMER=	gnonlin good python
 INSTALLS_ICONS=	yes
 

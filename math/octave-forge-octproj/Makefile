@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-octproj
 PORTVERSION=	1.1.2
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -18,7 +18,7 @@ OCTSRC=		${OCTAVE_PKGNAME}
 
 WRKSRC=		${WRKDIR}/${OCTSRC}/src
 
-LIB_DEPENDS+=	proj:${PORTSDIR}/graphics/proj
+LIB_DEPENDS+=	libproj.so:${PORTSDIR}/graphics/proj
 
 .include "${.CURDIR}/../../Mk/bsd.octave.mk"
 

@@ -5,18 +5,18 @@ PORTNAME=	chm2pdf
 PORTVERSION=	0.9.1
 PORTREVISION=	3
 CATEGORIES=	textproc python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	kevlo@FreeBSD.org
-COMMENT=	A Python script that converts CHM files into PDF files
+COMMENT=	Python script that converts CHM files into PDF files
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	htmldoc:${PORTSDIR}/textproc/htmldoc \
 		${PYTHON_SITELIBDIR}/chm/chm.py:${PORTSDIR}/textproc/pychm
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGVERSION=	0.9
 
 PLIST_FILES=	bin/chm2pdf

@@ -3,15 +3,19 @@
 
 PORTNAME=	valgrind
 DISTVERSIONPREFIX=	freebsd-
-DISTVERSION=	3.8.1
+PORTVERSION=	3.10.0.20150126
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://cdn.bitbucket.org/stass/valgrind-freebsd/downloads/ \
+MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Memory debugging and profiling tool
+
+BB_COMMIT=	963c4a777573
+BB_ACCOUNT=	stass
+BB_PROJECT=	valgrind-freebsd
 
 LICENSE=	GPLv2
 
@@ -21,7 +25,10 @@ ONLY_FOR_ARCHS=	i386 amd64
 
 LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
 
-OPTIONS_DEFINE=		MPI
+BUILD_DEPENDS+=		docbook-xsl>=0:${PORTSDIR}/textproc/docbook-xsl \
+			xsltproc:${PORTSDIR}/textproc/libxslt
+
+OPTIONS_DEFINE=		MPI DOCS
 OPTIONS_DEFINE_amd64=	32BIT
 .if exists(${LIB32_PATH})
 OPTIONS_DEFAULT_amd64=	32BIT
@@ -29,10 +36,11 @@ OPTIONS_DEFAULT_amd64=	32BIT
 32BIT_DESC=	Enable debugging of 32-bit programs (requires lib32)
 MPI_DESC=	Enable build of MPI wrappers
 
-MPI_LIB_DEPENDS=	mpich:${PORTSDIR}/net/mpich2
+MPI_LIB_DEPENDS=	libmpich.so:${PORTSDIR}/net/mpich2
 
 OPTIONS_SUB=	yes
-USES=		pathfix tar:bzip2 pkgconfig gmake perl5 shebangfix
+USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
+PATHFIX_MAKEFILEIN=	Makefile.am
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -40,7 +48,11 @@ SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in
 
 PORTDOCS=	html
 
-WRKSRC=		${WRKDIR}/${DISTNAME}
+WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
+
+CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
+
+USE_GCC=	yes
 
 .include <bsd.port.options.mk>
 
@@ -64,6 +76,12 @@ PLIST_SUB+=	AMD64="@comment "
 .if !${PORT_OPTIONS:MDOCS}
 post-patch:
 	@${RM} -rf ${WRKSRC}/docs/html
+.endif
+
+post-build:
+	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} man-pages
+.if ${PORT_OPTIONS:MDOCS}
+	cd ${WRKSRC}/docs && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} html-docs
 .endif
 
 .include <bsd.port.mk>

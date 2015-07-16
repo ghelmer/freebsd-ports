@@ -2,25 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	drupal7
-PORTVERSION=	7.28
-PORTREVISION=	1
+PORTVERSION=	7.38
 CATEGORIES=	www
 MASTER_SITES=	http://ftp.drupal.org/files/projects/
 DISTNAME=	drupal-${PORTVERSION}
 DIST_SUBDIR=	drupal
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	simon.wright@gmx.net
 COMMENT=	Database driven web content management system (CMS)
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-USES=		drupal:7
+USES=		drupal:7 shebangfix
+SHEBANG_FILES=	scripts/password-hash.sh
 
 USE_PHP=	dom filter gd hash json mbstring pcre pdo session simplexml xml
 WANT_PHP_WEB=	yes
 
-OPTIONS_DEFINE=		MYSQL SQLITE3 PGSQL
+OPTIONS_DEFINE=		MYSQL SQLITE3 PGSQL DOCS
 OPTIONS_DEFAULT=	MYSQL
 
 NO_BUILD=	yes
@@ -31,6 +31,9 @@ DOCS=		CHANGELOG.txt INSTALL.mysql.txt INSTALL.sqlite.txt \
 SUB_FILES+=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
+PGSQL_USES=	pgsql
+PGSQL_USE=	PHP=pdo_pgsql
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSQLITE3}
@@ -39,10 +42,6 @@ USE_PHP+=	pdo_sqlite
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
 USE_PHP+=	pdo_mysql
-.endif
-.if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
-USE_PHP+=	pdo_pgsql
 .endif
 
 do-install:
@@ -69,7 +68,9 @@ do-install:
 	${CP} ${WRKSRC}/update.php ${STAGEDIR}${DRUPAL_DIR}
 	${CP} ${WRKSRC}/web.config ${STAGEDIR}${DRUPAL_DIR}
 	${CP} ${WRKSRC}/xmlrpc.php ${STAGEDIR}${DRUPAL_DIR}
+.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${CP} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+.endif
 
 .include <bsd.port.mk>

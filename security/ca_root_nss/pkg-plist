@@ -1,4 +1,4 @@
 %%CERTDIR%%/ca-root-nss.crt
-@dirrmtry %%CERTDIR%%
-%%ETCSYMLINK%%@cwd /
-%%ETCSYMLINK%%etc/ssl/cert.pem
+@sample etc/ssl/cert.pem.sample
+@sample openssl/cert.pem.sample
+%%ETCSYMLINK%%/etc/ssl/cert.pem

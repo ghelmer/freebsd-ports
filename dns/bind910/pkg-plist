@@ -122,6 +122,7 @@ include/isc/buffer.h
 include/isc/bufferlist.h
 include/isc/commandline.h
 include/isc/condition.h
+include/isc/counter.h
 include/isc/crc64.h
 include/isc/dir.h
 include/isc/entropy.h
@@ -238,6 +239,7 @@ include/lwres/netdb.h
 include/lwres/platform.h
 include/lwres/result.h
 include/lwres/stdlib.h
+include/lwres/string.h
 include/lwres/version.h
 include/pk11/constants.h
 include/pk11/internal.h
@@ -407,31 +409,15 @@ sbin/rndc
 sbin/rndc-confgen
 sbin/tsig-keygen
 %%ETCDIR%%/rndc.conf.sample
+%%ETCDIR%%/bind.keys
+%%NOBASE%%etc/mtree/BIND.chroot.dist
+%%NOBASE%%etc/mtree/BIND.chroot.local.dist
 %%NOBASE%%@sample %%ETCDIR%%/named.conf.sample
 %%NOBASE%%%%ETCDIR%%/named.root
 %%NOBASE%%%%ETCDIR%%/master/empty.db
 %%NOBASE%%%%ETCDIR%%/master/localhost-forward.db
 %%NOBASE%%%%ETCDIR%%/master/localhost-reverse.db
-%%NOBASE%%@exec mkdir -p %D/%%ETCDIR%%/dynamic
-%%NOBASE%%@exec chown bind:bind %D/%%ETCDIR%%/dynamic
-%%NOBASE%%@dirrmtry %%ETCDIR%%/dynamic
-%%NOBASE%%@exec mkdir -p %D/%%ETCDIR%%/master
-%%NOBASE%%@exec chown bind:bind %D/%%ETCDIR%%/master
-%%NOBASE%%@dirrmtry %%ETCDIR%%/master
-%%NOBASE%%@exec mkdir -p %D/%%ETCDIR%%/slave
-%%NOBASE%%@exec chown bind:bind %D/%%ETCDIR%%/slave
-%%NOBASE%%@dirrmtry %%ETCDIR%%/slave
-%%NOBASE%%@exec mkdir -p %D/%%ETCDIR%%/working
-%%NOBASE%%@exec chown bind:bind %D/%%ETCDIR%%/working
-%%NOBASE%%@dirrmtry %%ETCDIR%%/working
-%%NOBASE%%@dirrmtry %%ETCDIR%%
-@dirrm include/pkcs11
-@dirrm include/pk11
-@dirrm include/lwres
-@dirrm include/isccfg
-@dirrm include/isccc
-@dirrmtry include/isc
-@dirrm include/irs
-@dirrm include/dst
-@dirrm include/dns
-@dirrm include/bind9
+%%NOBASE%%@dir(bind,bind,) %%ETCDIR%%/dynamic
+%%NOBASE%%@dir %%ETCDIR%%/master
+%%NOBASE%%@dir(bind,bind,) %%ETCDIR%%/slave
+%%NOBASE%%@dir(bind,bind,) %%ETCDIR%%/working

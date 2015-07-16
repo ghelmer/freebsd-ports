@@ -3,12 +3,12 @@
 
 PORTNAME=	twiki
 PORTVERSION=	5.1.4
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/TWiki%20for%20all%20Platforms/${DISTNAME} \
 		http://twiki.org/p/pub/Codev/Release/
 DISTNAME=	TWiki-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flexible, powerful, and easy to use enterprise wiki
@@ -27,10 +27,11 @@ RUN_DEPENDS=	\
 		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
 		twiki-TWikiUserMappingContrib>=0:${PORTSDIR}/www/twiki-TWikiUserMappingContrib
 
-USES=		perl5
+USES=		perl5 tar:tgz
 WRKSRC=	${WRKDIR}/twiki
 
-NO_STAGE=	yes
+USES+=		cpe
+
 post-extract:
 	@${RM} -rf ${WRKSRC}/lib/CPAN
 	@${CAT} ${.CURDIR}/../twiki-*/pkg-plist |\
@@ -41,10 +42,10 @@ post-extract:
 	@${FIND} ${WRKSRC} -type d -empty -delete
 
 post-patch:
-	@cd ${WRKSRC}/ &&\
-		${REINPLACE_CMD} -i "" -e "s|/home/httpd/twiki|${WWWDIR}|g" \
-		lib/TWiki.spec twiki_httpd_conf.txt
-	@${FIND} ${WRKSRC} -name \*.orig -delete
+	${SED} -i "" -e "s|/home/httpd/twiki|${WWWDIR}|g" \
+		${WRKSRC}/lib/TWiki.spec \
+		${WRKSRC}/twiki_httpd_conf.txt
+	${FIND} ${WRKSRC} -name \*.orig -delete
 
 .include "${.CURDIR}/bsd.twiki.mk"
 .include <bsd.port.mk>

@@ -4,10 +4,9 @@
 PORTNAME=	cdecl
 PORTVERSION=	2.5
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	devel/lang/c
+MASTER_SITES=	SUNSITE/devel/lang/c
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Explains complicated C/C++ declarations in plain English
 
 USE_CSTD=	c89

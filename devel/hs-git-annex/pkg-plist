@@ -1,4 +1,4 @@
 etc/xdg/autostart/git-annex.desktop
 share/applications/git-annex.desktop
-@dirrmtry etc/xdg/autostart
-@dirrmtry etc/xdg
+share/icons/hicolor/16x16/apps/git-annex.png
+share/icons/hicolor/scalable/apps/git-annex.svg

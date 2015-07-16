@@ -2,17 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	construct
-PORTVERSION=	2.06
-PORTREVISION=	1
+PORTVERSION=	2.5.2
+PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	p.florczyk@adminworkshop.pl
+MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Python module for parsing and building of data structures
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six
+
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

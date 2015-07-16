@@ -3,18 +3,18 @@
 
 PORTNAME=	dico
 PORTVERSION=	2.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net textproc
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu-
 
 MAINTAINER=	goran.tal@gmail.com
 COMMENT=	Flexible modular implementation of DICT server
 
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+
 USE_LDCONFIG=	yes
 USES=		tar:xz gmake libtool
-USE_AUTOTOOLS=	libltdl
 
 GNU_CONFIGURE=	yes
 CFLAGS+=	-Wno-error=return-type
@@ -29,7 +29,7 @@ GSASL_DESC=	GSASL support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USES+=		python
 CONFIGURE_ENV+=	PYTHON_CONFIG=${PYTHON_CMD}-config
 PLIST_SUB+=	PYTHON=""
 .else

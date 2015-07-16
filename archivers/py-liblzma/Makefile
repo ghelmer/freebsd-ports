@@ -5,8 +5,7 @@ PORTNAME=	liblzma
 PORTVERSION=	0.5.3
 PORTREVISION=	4
 CATEGORIES=	archivers python
-MASTER_SITES=	${MASTER_SITE_CHEESESHOP}
-MASTER_SITE_SUBDIR=	source/p/py${PORTNAME}
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
@@ -15,10 +14,8 @@ COMMENT=	Python binding for the LZMA compression library
 
 LICENSE=	LGPL3
 
-USES=			pkgconfig tar:bzip2
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		pkgconfig python tar:bzip2
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/pc_cflags = .*/pc_cflags = ""/' \

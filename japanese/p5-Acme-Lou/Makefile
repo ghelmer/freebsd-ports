@@ -3,7 +3,7 @@
 
 PORTNAME=	Acme-Lou
 PORTVERSION=	0.03
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	japanese textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	ja-p5-
@@ -17,5 +17,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+
+DEPRECATED=	Needs ja-p5-Text-MeCab that does not work with 5.18 or above
+EXPIRATION_DATE=2015-07-31
 
 .include <bsd.port.mk>

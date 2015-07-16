@@ -1,4 +1,3 @@
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/RPC/Simple/.packlist
 %%SITE_PERL%%/RPC/Simple.pm
 %%SITE_PERL%%/RPC/Simple/Agent.pm
 %%SITE_PERL%%/RPC/Simple/AnyLocal.pm
@@ -17,7 +16,3 @@
 %%PERL5_MAN3%%/RPC::Simple::Factory.3.gz
 %%PERL5_MAN3%%/RPC::Simple::ObjectHandler.3.gz
 %%PERL5_MAN3%%/RPC::Simple::Server.3.gz
-@dirrmtry %%SITE_PERL%%/RPC/Simple
-@dirrmtry %%SITE_PERL%%/RPC
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/RPC/Simple
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/RPC

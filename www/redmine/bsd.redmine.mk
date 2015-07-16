@@ -68,13 +68,13 @@ do-build: redmine-plugin-plist
 redmine-plugin-plist:
 .if defined(_GEN_PLIST)
 	cd ${WRKSRC} && ${FIND} . -type f | ${GREP} -v '\.orig$$' | ${SED} -e's|^\.|${WWWDIR_REL}/plugins/${REDMINE_PLUGIN_NAME}|' >> ${PLIST}
-	cd ${WRKSRC} && ${FIND} -d . -type d | ${SED} -e's|^\.|@dirrm ${WWWDIR_REL}/plugins/${REDMINE_PLUGIN_NAME}|' >> ${PLIST}
+	cd ${WRKSRC} && ${FIND} -d . -empty -type d | ${SED} -e's|^\.|@dir ${WWWDIR_REL}/plugins/${REDMINE_PLUGIN_NAME}|' >> ${PLIST}
 .else
 	@${DO_NADA}
 .endif
 
 do-install:
-	${MKDIR} "${WWWDIR}/plugins/${REDMINE_PLUGIN_NAME}"
-	${TAR} -C "${WRKSRC}" -cf - --exclude '*.orig' . | ${TAR} -C "${WWWDIR}/plugins/${REDMINE_PLUGIN_NAME}" -xf -
+	${MKDIR} "${STAGEDIR}${WWWDIR}/plugins/${REDMINE_PLUGIN_NAME}"
+	${TAR} -C "${WRKSRC}" -cf - --exclude '*.orig' . | ${TAR} -C "${STAGEDIR}${WWWDIR}/plugins/${REDMINE_PLUGIN_NAME}" -xf -
 
 .include <bsd.port.mk>

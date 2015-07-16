@@ -18,15 +18,13 @@ MAKE_ENV+=	LIBPATH=${PREFIX}/lib
 
 BROKEN_sparc64=	Does not compile on sparc64
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${LN} -sf help_eng.html ${STAGEDIR}${PREFIX}/lib/yui/yhelp.html
-.if $(PORT_OPTIONS:MDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for file in BUGS CHANGES COPYRIGHT TODO COPYRIGHT.ITK THANKS
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

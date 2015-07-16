@@ -3,7 +3,7 @@
 
 PORTNAME=	imspector
 PORTVERSION=	20111108
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im
 MASTER_SITES=	http://tsatsenko.ru/ports/distfiles/
 
@@ -31,7 +31,8 @@ IPFW_DESC=	Add IPFW support
 PLUGINS_DESC=	Build plugins
 
 IPFW_CFLAGS=	-DIPFW_TRANSPARENT=1
-PLUGINS_USE=	MYSQL=yes SQLITE=yes PGSQL=yes
+PLUGINS_USE=	MYSQL=yes SQLITE=yes
+PLUGINS_USES=	pgsql
 
 .include <bsd.port.options.mk>
 

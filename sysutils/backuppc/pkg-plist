@@ -1,3 +1,4 @@
+@mode 0555
 bin/BackupPC
 bin/BackupPC_archive
 bin/BackupPC_archiveHost
@@ -16,6 +17,7 @@ bin/BackupPC_tarPCCopy
 bin/BackupPC_trashClean
 bin/BackupPC_zcat
 bin/BackupPC_zipCreate
+@mode 0444
 lib/BackupPC/Attrib.pm
 lib/BackupPC/CGI/AdminOptions.pm
 lib/BackupPC/CGI/Archive.pm
@@ -72,6 +74,9 @@ lib/BackupPC/Xfer/Tar.pm
 lib/BackupPC/Zip/FileMember.pm
 lib/Net/FTP/AutoReconnect.pm
 lib/Net/FTP/RetrHandle.pm
+man/man1/backuppc.1.gz
+%%PORTDOCS%%%%DOCSDIR%%/BackupPC.html
+%%PORTDOCS%%%%DOCSDIR%%/BackupPC.pod
 %%WWWDIR%%/0000000.gif
 %%WWWDIR%%/0000011.gif
 %%WWWDIR%%/0001000.gif
@@ -108,6 +113,7 @@ lib/Net/FTP/RetrHandle.pm
 %%WWWDIR%%/1111101.gif
 %%WWWDIR%%/1111110.gif
 %%WWWDIR%%/1111111.gif
+%%WWWDIR%%/BackupPC.html
 %%WWWDIR%%/BackupPC_stnd.css
 %%WWWDIR%%/BackupPC_stnd_orig.css
 %%WWWDIR%%/favicon.ico
@@ -117,30 +123,26 @@ lib/Net/FTP/RetrHandle.pm
 %%WWWDIR%%/icon-symlink.png
 %%WWWDIR%%/logo.gif
 %%WWWDIR%%/sorttable.js
-%%BPC_CGIDIR%%/BackupPC_Admin
-@rmtry %%ETCDIR%%/hosts.sample
+@owner backuppc
+@group backuppc
+@mode 04554
+%%CGIDIR%%/BackupPC_Admin
+@mode
+@dir /var/log/BackupPC
+@dir /var/db/BackupPC/cpool
+@dir /var/db/BackupPC/pc
+@dir /var/db/BackupPC/pool
+@dir /var/db/BackupPC/trash
+@dir /var/db/BackupPC
+@comment .sample files actually are templates for the configuration script
+@comment and should not be installed as working configuration files.
+@mode 0640
 %%ETCDIR%%/config.pl.sample
-@dirrmtry %%BPC_CGIDIR%%
-@dirrmtry %%WWWDIR%%
-@dirrmtry share/doc/backuppc
-@dirrmtry lib/Net/FTP
-@dirrmtry lib/Net
-@dirrm lib/BackupPC/Zip
-@dirrm lib/BackupPC/Xfer
-@dirrm lib/BackupPC/Storage
-@dirrm lib/BackupPC/Lang
-@dirrm lib/BackupPC/Config
-@dirrm lib/BackupPC/CGI
-@dirrm lib/BackupPC
-@unexec echo
-@unexec echo "If you are permanently removing BackupPC, you should manually delete:"
-@unexec echo
-@unexec echo "	- the backuppc user/group:	pw userdel backuppc"
-@unexec rmdir %D/%%ETCDIR%% 2>/dev/null || echo "	- BackupPC configuration:	rm -r %D/%%ETCDIR%%"
-@dirrmtry %%BPC_DATADIR%%/cpool
-@dirrmtry %%BPC_DATADIR%%/pc
-@dirrmtry %%BPC_DATADIR%%/pool
-@dirrmtry %%BPC_DATADIR%%/trash
-@unexec rmdir %%BPC_DATADIR%% 2>/dev/null || echo "	- BackupPC data directory:	rm -r %%BPC_DATADIR%%"
-@unexec rmdir /var/log/BackupPC 2>/dev/null || echo "	- BackupPC logs directory:	rm -r /var/log/BackupPC"
-@unexec echo
+@mode 0644
+%%ETCDIR%%/hosts.sample
+@owner
+@group
+@mode 0544
+%%ETCDIR%%/update.sh
+libexec/backuppc/update.pl
+@mode

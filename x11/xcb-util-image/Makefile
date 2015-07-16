@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	xcb-util-image
-PORTVERSION=	0.3.9
-PORTREVISION=	2
+PORTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://xcb.freedesktop.org/dist/
 
 MAINTAINER=	garga@FreeBSD.org
-COMMENT=	A port of Xlib's XImage and XShmImage functions
+COMMENT=	Port of Xlib's XImage and XShmImage functions
 
 LIB_DEPENDS=	libxcb-util.so:${PORTSDIR}/x11/xcb-util
 

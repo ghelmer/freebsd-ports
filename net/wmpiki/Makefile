@@ -9,11 +9,13 @@ MASTER_SITES=	http://mirror2.unixfreunde.de/ \
 		http://freebsd.unixfreunde.de/sources/
 
 MAINTAINER=	t.kempka@web.de
-COMMENT=	A multiping host checker dockapp
+COMMENT=	Multiping host checker dockapp
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USE_XORG=	xpm
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/X11R6|$$(LOCALBASE)|g' \
@@ -27,11 +29,9 @@ post-patch:
 		${WRKSRC}/config.example
 
 do-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/config.example ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
 	${INSTALL_PROGRAM} ${WRKSRC}/wmpiki ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

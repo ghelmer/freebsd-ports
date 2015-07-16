@@ -3,7 +3,7 @@
 
 PORTNAME=	bouncy
 PORTVERSION=	r6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games python
 MASTER_SITES=	http://media.pyweek.org/dl/3/bouncy/ \
 		SF/nemysisfreebsdp/games/${PORTNAME}/:icons
@@ -12,17 +12,18 @@ DISTFILES=	${PORTNAME}-post-${DISTVERSION}.tgz \
 DIST_SUBDIR=	python
 EXTRACT_ONLY=	${PORTNAME}-post-${DISTVERSION}.tgz
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	You are a hungry rabbit. Eat food to complete the level
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/GPL.txt
 
 RUN_DEPENDS=	${PYGAME} \
 		${PYTHON_PKGNAMEPREFIX}opengl>=0:${PORTSDIR}/graphics/py-opengl
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-post-${DISTVERSION}
 
-USE_PYTHON=	2
+USES=		python:2
 
 PORTDOCS=	README.txt
 

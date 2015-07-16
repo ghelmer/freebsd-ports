@@ -3,7 +3,7 @@
 
 PORTNAME=	ogre3d
 PORTVERSION=	1.9.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics devel
 MASTER_SITES=   https://bitbucket.org/sinbad/ogre/get/
 DISTNAME=	v1-9-0
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libzzip.so:${PORTSDIR}/devel/zziplib \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libfreeimage.so:${PORTSDIR}/graphics/freeimage
 
-OPTIONS_DEFINE=	BOOST
+OPTIONS_DEFINE=	BOOST DOCS
 
 USE_LDCONFIG=	yes
 USES=		tar:bzip2 cmake pkgconfig compiler:c++11-lib

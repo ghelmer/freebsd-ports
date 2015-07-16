@@ -17,6 +17,10 @@
 # USE_OCAML_FINDLIB	-	Set if your port uses ocamlfind to install
 #				packages. Package direcories will be
 #				automatically deleted.
+# USE_OCAML_CAMLP4	-	Set if your port uses camlp4 to build.
+# USE_OCAML_TK		-	Set if you port needs ocaml-labltk.
+# NO_OCAMLTK_BUILDDEPENDS -	Don't add labltk to BUILD|EXTRACT|PATCH_DEPENDS.
+# NO_OCAMLTK_RUNDEPENDS	-	Don't add labltk to RUN_DEPENDS.
 # USE_OCAML_LDCONFIG	-	Set if your port installs shared libraries
 #				into ocaml site-lib dir. OCaml ld.conf file
 #				will be automatically processed.
@@ -44,6 +48,8 @@ OCAMLC?=		${LOCALBASE}/bin/ocamlc
 OCAMLC_OPT?=		${LOCALBASE}/bin/ocamlc.opt
 OCAMLCP?=		${LOCALBASE}/bin/ocamlcp
 OCAMLFIND?=		${LOCALBASE}/bin/ocamlfind
+CAMLP4?=		${LOCALBASE}/bin/camlp4
+OCAMLTK?=		${LOCALBASE}/bin/labltk
 
 #
 # OCaml library directory
@@ -68,6 +74,18 @@ OCAMLFIND_PORT?=	${PORTSDIR}/devel/ocaml-findlib
 OCAMLFIND_DEPEND?=	${OCAMLFIND}:${OCAMLFIND_PORT}
 
 #
+# OCaml camlp4 port dependency
+#
+CAMLP4_PORT?=		${PORTSDIR}/devel/ocaml-camlp4
+CAMLP4_DEPEND?=		${CAMLP4}:${CAMLP4_PORT}
+
+#
+# OCaml TK bindings dependency
+#
+OCAMLTK_PORT?=		${PORTSDIR}/x11-toolkits/ocaml-labltk
+OCAMLTK_DEPENDS?=	${OCAMLTK}:${OCAMLTK_PORT}
+
+#
 # Common OCaml examples and documents location
 #
 OCAML_DOCSDIR=		${PREFIX}/share/doc/ocaml
@@ -82,9 +100,7 @@ OCAML_LDCONF?=		${OCAML_LIBDIR}/ld.conf
 # work well with staging.
 .if defined(USE_OCAML_LDCONFIG)
 . if !target(ocaml-ldconfig)
-.  if !defined(NO_STAGE)
 OCAMLFIND_LDCONF?=	/dev/null
-.  endif
 . endif
 .endif
 
@@ -132,10 +148,24 @@ ocaml-findlib:
 	@${FIND} ${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/${DIR}/ -type f -print | ${SED} -e \
 		's,^${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
 .   endif
-	@${ECHO_CMD} "@unexec rmdir %D/${OCAML_SITELIBDIR}/${DIR} 2>/dev/null || true" >> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec ${OCAMLFIND} remove ${DIR} 2>/dev/null" \
 		>> ${TMPPLIST}
 .  endfor
+. endif
+.endif
+
+.if defined(USE_OCAML_CAMLP4)
+BUILD_DEPENDS+=		${CAMLP4_DEPEND}
+.endif
+
+.if defined(USE_OCAML_TK)
+. if !defined(NO_OCAMLTK_BUILDDEPENDS)
+EXTRACT_DEPENDS+=	${OCAMLTK_DEPENDS}
+PATCH_DEPENDS+=		${OCAMLTK_DEPENDS}
+BUILD_DEPENDS+=		${OCAMLTK_DEPENDS}
+. endif
+. if !defined(NO_OCAMLTK_RUNDEPENDS)
+RUN_DEPENDS+=		${OCAMLTK_DEPENDS}
 . endif
 .endif
 
@@ -147,9 +177,6 @@ OCAML_LDLIBS?=	${OCAML_SITELIBDIR}/${PORTNAME}
 . if !target(ocaml-ldconfig)
 ocaml-ldconfig:
 .  for LIB in ${OCAML_LDLIBS}
-.   if defined(NO_STAGE)
-	@${ECHO_CMD} "${PREFIX}/${LIB}" >> "${PREFIX}/${OCAML_LDCONF}"
-.   endif
 	@${ECHO_CMD} "@exec ${ECHO_CMD} "%D/${LIB}" >> %D/${OCAML_LDCONF}" \
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec ${SED} -i \"\" -e '/${LIB:S#/#\/#g}/d' %D/${OCAML_LDCONF}"  >> ${TMPPLIST}
@@ -160,12 +187,8 @@ ocaml-ldconfig:
 .if defined(USE_OCAML_WASH)
 . if !target(ocaml-wash)
 ocaml-wash:
-	@${ECHO_CMD} "@unexec rmdir %D/${OCAML_SITELIBDIR} 2>/dev/null || true"\
-		>> ${TMPPLIST}
 #	If ld.conf is empty
 	@${ECHO_CMD} "@unexec if [ ! -s %D/${OCAML_LDCONF} ]; then ${RM} -f %D/${OCAML_LDCONF}; fi || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec rmdir %D/${OCAML_LIBDIR} 2>/dev/null || true" \
-		>> ${TMPPLIST}
 . endif
 .endif
 
@@ -182,26 +205,6 @@ ocaml-ldconfig:
 .if !target(ocaml-wash)
 ocaml-wash:
 	@${DO_NADA}
-.endif
-
-#
-# XXX: temporary workaround for non-standard PREFIX
-#
-.if !target(add-plist-post)
-add-plist-post:
-. if (${PREFIX} != ${LOCALBASE} && \
-	${PREFIX} != ${LINUXBASE} && ${PREFIX} != "/usr")
-	@${ECHO_CMD} "@unexec rmdir %D 2> /dev/null || true" >> ${TMPPLIST}
-. else
-	@${DO_NADA}
-. endif
-
-# If we are using PORTDOCS macro port cannot delete OCAML_DOCSDIR, so
-# we shoud try to accomodate it
-. if defined(PORTDOCS)
-	@${ECHO_CMD} "@unexec rmdir ${OCAML_DOCSDIR} 2>/dev/null || true" \
-		>> ${TMPPLIST}
-. endif
 .endif
 
 .endif #!defined(OCAML_include)

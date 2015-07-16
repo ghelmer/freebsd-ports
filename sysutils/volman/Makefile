@@ -3,18 +3,19 @@
 
 PORTNAME=	volman
 PORTVERSION=	0.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
-MASTER_SITES=	http://cloud.github.com/downloads/jmptbl/volman/
 
-MAINTAINER=	aragon@phat.za.net
+MAINTAINER=	uffe@uffe.org
 COMMENT=	FreeBSD specific volume manager
 
-USES=		tar:xz
+USE_GITHUB=	yes
+GH_ACCOUNT=	uffejakobsen
+
 USE_RC_SUBR=	volmand
 VM_SUB_FILES=	vmount volmand
 
-OPTIONS_DEFINE=	 OPENBOX NTFS3G
+OPTIONS_DEFINE=	OPENBOX NTFS3G
 OPENBOX_DESC=	Openbox pipemenu script
 NTFS3G_DESC=	Use fusefs-ntfs extensions
 

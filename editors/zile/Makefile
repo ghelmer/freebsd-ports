@@ -15,7 +15,7 @@ LICENSE=	GPLv3
 LIB_DEPENDS=	libgc.so:${PORTSDIR}/devel/boehm-gc
 BUILD_DEPENDS=	${LOCALBASE}/bin/help2man:${PORTSDIR}/misc/help2man
 
-USES=		gmake perl5 pkgconfig
+USES=		gmake perl5 pkgconfig compiler:c++11-lang
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-included-regex
@@ -26,7 +26,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 		%%DOCSDIR%%/FAQ \
 		%%DOCSDIR%%/NEWS \
 		%%DOCSDIR%%/dotzile.sample
-PLIST_DIRS=	%%DOCSDIR%%
 
 CPPFLAGS+=	-I${LOCALBASE}/include -isystem /usr/include/gnu
 LDFLAGS+=	-L${LOCALBASE}/lib -lgnuregex

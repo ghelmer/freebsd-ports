@@ -2,11 +2,12 @@
 
 PORTNAME=	irssi
 PORTVERSION=	20140530
+PORTREVISION=	2
 CATEGORIES=	irc
 MASTER_SITES=	http://mirror.irssi.org/snapshots/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modular IRC client with many features
 
 LIB_DEPENDS=	libglib-2.0.so:${PORTSDIR}/devel/glib20
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libglib-2.0.so:${PORTSDIR}/devel/glib20
 CONFLICTS=	irssi-0.8*
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig ncurses gmake
+USES=		libtool pkgconfig ncurses gmake
 CONFIGURE_ARGS=	--with-ncurses=${NCURSESBASE}
 
 OPTIONS_DEFINE=	PERL PROXY SOCKS IPV6 BOT SSL DOCS
@@ -81,8 +82,5 @@ post-configure:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/irssi/modules
-.if ${PORT_OPTIONS:MPERL}
-	@${FIND} ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto -name .packlist -exec ${SED} -i '' 's|^${STAGEDIR}||' '{}' \;
-.endif
 
 .include <bsd.port.mk>

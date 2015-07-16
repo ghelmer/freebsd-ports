@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pymc
-PORTVERSION=	2.3
-PORTREVISION=	1
+PORTVERSION=	2.3.3
 PORTEPOCH=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
@@ -15,7 +14,7 @@ COMMENT=	Markov Chain Monte Carlo Sampling Toolkit
 LICENSE=	AFL
 LICENSE_NAME=	Academic Free License
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>0:${PORTSDIR}/math/py-matplotlib \
@@ -29,10 +28,13 @@ RUN_DEPENDS=	${PYNUMPY} \
 OPTIONS_DEFINE=	DOCS
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+LDFLAGS+=	-shared
+
+USES=			python
+USE_PYTHON=		distutils autoplist
 PORTDOCS=	*
+
+LDFLAGS+=	-shared
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/flib.so
@@ -43,6 +45,5 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/Container_values.so
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/${PORTNAME}/LazyFunction.so
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/*.rst ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nzbget
-PORTVERSION=	12.0
-PORTREVISION=	3
+PORTVERSION=	15.0
 CATEGORIES=	news
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-stable/${PORTVERSION}
 
@@ -12,41 +11,40 @@ COMMENT=	Binary newsreader supporting NZB files
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2 \
-		libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20
+LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
 
-USES=		pkgconfig
+USES=		ncurses pkgconfig shebangfix
 USE_RC_SUBR=	nzbget
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-libcurses-includes=${NCURSESINC} \
+		--with-libcurses-libraries=${NCURSESLIB}
 CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}"
 MAKE_JOBS_UNSAFE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	${PTHREAD_LIBS}
-CFLAGS+=	${PTHREAD_CFLAGS}
+LDFLAGS+=	-lpthread
+BINMODE=	0755
 
-OPTIONS_DEFINE=	7Z PAR PYTHON RAR
+SHEBANG_FILES=	scripts/*.py
+python_OLD_CMD=	/usr/bin/env python
+
+OPTIONS_DEFINE=	7Z PYTHON RAR DOCS
 OPTIONS_SINGLE=	TLSLIB
 OPTIONS_SINGLE_TLSLIB=	GNUTLS OPENSSL
-OPTIONS_DEFAULT=	GNUTLS PAR PYTHON RAR
+OPTIONS_DEFAULT=	GNUTLS PAR PYTHON RAR 7Z
 7Z_DESC=	Support extraction of 7z archives
-PAR_DESC=	Support verifying/repairing with par2 files
 PYTHON_DESC=	Support for python post-processing scripts
 RAR_DESC=	Support extraction of rar archives
 
 7Z_RUN_DEPENDS=		7z:${PORTSDIR}/archivers/p7zip
 
-PAR_CONFIGURE_ON=	--enable-parcheck --disable-libpar2-bugfixes-check
-PAR_CONFIGURE_OFF=	--disable-parcheck
-PAR_LIB_DEPENDS=	libpar2.so:${PORTSDIR}/archivers/libpar2
-
-PYTHON_USE=	PYTHON=yes
+PYTHON_USES=		python:run
 
 RAR_RUN_DEPENDS=	unrar:${PORTSDIR}/archivers/unrar
 
 OPENSSL_CONFIGURE_ON=	--with-tlslib=OpenSSL \
 			--with-openssl-includes=${OPENSSLINC} \
 			--with-openssl-libraries=${OPENSSLLIB}
-OPENSSL_USE=	OPENSSL=yes
+OPENSSL_USE=		OPENSSL=yes
 
 GNUTLS_CONFIGURE_ON=	--with-tlslib=GnuTLS
 GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
@@ -55,12 +53,8 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
 .include <bsd.port.options.mk>
 
 .if (${ARCH} == "i386")
-CONFIGURE_ARGS+=       --disable-sigchld-handler
+CONFIGURE_ARGS+=	--disable-sigchld-handler
 .endif
-
-post-configure:
-	# necessary for stage
-	@${REINPLACE_CMD} -e 's|555|655|g ; s|444|644|' ${WRKSRC}/Makefile
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/nzbget.conf \

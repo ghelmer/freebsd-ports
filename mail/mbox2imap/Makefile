@@ -10,10 +10,10 @@ DISTNAME=	${PORTNAME}
 EXTRACT_SUFX=	# none
 EXTRACT_ONLY=	# none
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Upload email stored in mbox file format to an IMAP server
 
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 
 PLIST_FILES=	bin/${PORTNAME}

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Spreadsheet-ParseExcel
-PORTVERSION=	0.59
+PORTVERSION=	0.65
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
@@ -16,16 +17,19 @@ BUILD_DEPENDS=	p5-OLE-Storage_Lite>=0.19:${PORTSDIR}/devel/p5-OLE-Storage_Lite \
 		p5-Digest-Perl-MD5>=0:${PORTSDIR}/security/p5-Digest-Perl-MD5
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	sample/parse.pl \
+		sample/xls2csv.pl
 USE_PERL5=	configure
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-install:
-.ifndef(NOPORTEXAMPLES)
 	@${ECHO_MSG} "===>   Installing examples for ${PKGNAME}"
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/Excel
 	${INSTALL_DATA} ${WRKSRC}/sample/README ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/sample/*.pl ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/sample/Excel/* ${STAGEDIR}${EXAMPLESDIR}/Excel
-.endif
 
 .include <bsd.port.mk>

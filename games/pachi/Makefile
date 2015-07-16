@@ -3,20 +3,19 @@
 
 PORTNAME=	pachi
 PORTVERSION=	1.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/dragontech/Pachi%20el%20marciano/Pachi%20el%20marciano%20${PORTVERSION}
 DISTNAME=	pachi_source
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Platform game similar to Manic Miner
 
 USE_SDL=	mixer sdl
-USES=		gmake
+USES=		gmake tar:tgz
 GNU_CONFIGURE=	yes
 
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+LDFLAGS+=	-L${LOCALBASE}/lib
 CPPFLAGS+=	-I${LOCALBASE}/include
 
 WRKSRC=		${WRKDIR}/Pachi

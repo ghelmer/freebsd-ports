@@ -14,7 +14,8 @@ LICENSE=	GPLv2
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 CFLAGS+=	-Wno-sign-compare -Wno-error
-USES=	gmake
+USES=	cpe gmake
+CPE_VENDOR=	duckcorp
 INSTALL_TARGET=	SUBDIR=src install-exec
 
 USE_OPENSSL=	yes
@@ -25,7 +26,9 @@ SUB_FILES=	pkg-message
 PORTDOCS=	AUTHORS BUGS ChangeLog NEWS README TODO
 EXAMPLEFILES=	bip.conf bip.vim
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
 
 post-install:
 	@cd ${WRKSRC} && ${INSTALL} bip.1 ${STAGEDIR}${PREFIX}/man/man1
@@ -45,6 +48,5 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/samples/${i} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 .endif
-	@${CAT} ${PKGMESSAGE}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

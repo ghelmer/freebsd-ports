@@ -8,28 +8,21 @@ CATEGORIES=	textproc
 MASTER_SITES=	https://cdn.bitbucket.org/purelang/pure-lang/downloads/
 DIST_SUBDIR=	pure
 
-MAINTAINER=	lichray@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CSV reading and writing module for the Pure language
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USES=		pure
+PORTDOCS=	README
+OPTIONS_DEFINE=	DOCS
 
 PLIST_FILES=	lib/pure/csv.pure \
 		lib/pure/csv.so
 
-NO_STAGE=	yes
-
-PORTDOCS=	README
-
-OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pure/csv.so
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

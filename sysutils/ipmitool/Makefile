@@ -3,6 +3,7 @@
 
 PORTNAME=	ipmitool
 PORTVERSION=	1.8.14
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
@@ -12,7 +13,8 @@ COMMENT=	CLI to manage IPMI systems
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2 gmake
+USES=		cpe tar:bzip2 gmake readline
+CPE_VENDOR=	sun
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-intf-lan --enable-intf-lanplus \
@@ -20,15 +22,16 @@ CONFIGURE_ARGS+=--enable-intf-lan --enable-intf-lanplus \
 PLIST_FILES=	bin/ipmitool man/man1/ipmitool.1.gz man/man8/ipmievd.8.gz \
 		sbin/ipmievd share/ipmitool/oem_ibm_sel_map \
 		${PERIODIC_DIR}/400.status-ipmi
-PLIST_DIRS=	share/ipmitool
-PLIST_DIRSTRY=	${PERIODIC_DIR} etc/periodic
 SUB_FILES=	status-ipmi.sh
 PORTDOCS=	AUTHORS COPYING ChangeLog README
 
 PERIODIC_DIR=	etc/periodic/daily
 
-OPTIONS_DEFINE=	FREEIPMI
+OPTIONS_DEFINE=	FREEIPMI DOCS
 FREEIPMI_DESC=	Enable support for freeipmi
+
+CFLAGS+=	-I${OPENSSLINC}
+LDFLAGS+=	-L${OPENSSLLIB}
 
 .if defined(WITH_DEBUG)
 CFLAGS+=	-ggdb -Wall

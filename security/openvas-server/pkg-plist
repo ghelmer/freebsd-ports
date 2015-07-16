@@ -16,26 +16,20 @@ man/man8/openvas-adduser.8.gz
 man/man8/openvas-mkcert.8.gz
 man/man8/openvas-rmuser.8.gz
 man/man8/openvasd.8.gz
-openvas/lib/openvas/openvas-services
 sbin/openvas-adduser
 sbin/openvas-mkcert
 sbin/openvas-rmuser
 sbin/openvasd
-@dirrmtry openvas/run
-@dirrmtry openvas/log/openvas
-@dirrmtry openvas/log
-@dirrmtry openvas/lib/openvas/users
-@dirrmtry openvas/lib/openvas/tmp
-@dirrmtry openvas/lib/openvas/private/CA
-@dirrmtry openvas/lib/openvas/private
-@dirrmtry openvas/lib/openvas/logs
-@dirrmtry openvas/lib/openvas/jobs
-@dirrmtry openvas/lib/openvas/CA
-@dirrmtry openvas/lib/openvas
-@dirrmtry openvas/lib
-@dirrmtry openvas/cache/openvas
-@dirrmtry openvas/cache
-@dirrmtry openvas
-@dirrmtry include/openvas
-@dirrmtry etc/openvas/gnupg
-@dirrmtry etc/openvas
+@dir(,,700) etc/openvas/gnupg
+/var/lib/openvas/openvas-services
+@dir(,,700) /var/lib/openvas/private/CA
+@dir(,,700) /var/lib/openvas/private
+@dir /var/log/openvas
+@dir /var/lib/openvas/users
+@dir /var/lib/openvas/tmp
+@dir /var/lib/openvas/logs
+@dir /var/lib/openvas/jobs
+@dir /var/lib/openvas/CA
+@dir /var/lib/openvas
+@dir /var/lib
+@dir /var/cache/openvas

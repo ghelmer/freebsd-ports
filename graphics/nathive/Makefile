@@ -6,31 +6,41 @@ PORTVERSION=	0.924
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.nathive.org/dl/ \
 		http://mirror.amdmi3.ru/distfiles/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Lightweight image editor
 
-BUILD_DEPENDS=	python:${PORTSDIR}/lang/python
-RUN_DEPENDS=	python:${PORTSDIR}/lang/python \
-		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/__init__.py:${PORTSDIR}/x11-toolkits/py-gtk2
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
-USE_PYTHON=	2
+USES=		gmake python:2 tar:tgz
+USE_GNOME=	pygtk2
 MAKEFILE=	makefile
 ALL_TARGET=	default
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-PLIST_FILES=	bin/${PORTNAME} share/applications/nathive.desktop
+PLIST_FILES=	bin/${PORTNAME} \
+		share/applications/nathive.desktop
 PORTDATA=	*
 PORTDOCS=	*
+PLIST_DIRS=	%%DATADIR%%/cfg/presets/select \
+		%%DATADIR%%/cfg/presets/picker \
+		%%DATADIR%%/cfg/presets/eraser \
+		%%DATADIR%%/cfg/presets/crop \
+		%%DATADIR%%/cfg/presets/brush \
+		%%DATADIR%%/cfg/console
 
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/BASE =/ s|=.*|= ${PREFIX}/|; \
-		s|python |${PYTHON_CMD} |' ${WRKSRC}/${MAKEFILE}
+		s|python |${PYTHON_CMD} |' \
+		${WRKSRC}/${MAKEFILE}
+.for util in shdata makeplugs.py indenter.py docgen/docfile.py cybuild.py extbuild.py
+	@${REINPLACE_CMD} -e 's|python |${PYTHON_CMD} |' \
+		${WRKSRC}/utils/${util}
+.endfor
 	@${REINPLACE_CMD} -e 's|/usr/share/nathive|${DATADIR}|' \
 		${WRKSRC}/${PORTNAME}.desktop
 

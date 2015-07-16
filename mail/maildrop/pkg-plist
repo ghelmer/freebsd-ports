@@ -1,10 +1,14 @@
-bin/maildrop-deliverquota
+@owner %%MUID%%
+@group %%MGID%%
+@mode %%MMODE%%
 bin/lockmail
+bin/maildrop
+@owner
+@group
+@mode
+bin/maildrop-deliverquota
 bin/mailbot
 bin/maildrop-maildirmake
-bin/maildrop
-bin/makedat
-bin/makedatprog
 bin/makemime
 bin/reformail
 bin/reformime
@@ -40,7 +44,6 @@ man/man8/maildrop-deliverquota.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/maildrop-deliverquota.html
 %%PORTDOCS%%%%DOCSDIR%%/lockmail.html
 %%PORTDOCS%%%%DOCSDIR%%/mailbot.html
-%%PORTDOCS%%%%DOCSDIR%%/maildir.html
 %%PORTDOCS%%%%DOCSDIR%%/maildiracl.html
 %%PORTDOCS%%%%DOCSDIR%%/maildirkw.html
 %%PORTDOCS%%%%DOCSDIR%%/maildrop-maildirmake.html
@@ -50,15 +53,9 @@ man/man8/maildrop-deliverquota.8.gz
 %%PORTDOCS%%%%DOCSDIR%%/maildropfilter.html
 %%PORTDOCS%%%%DOCSDIR%%/maildropgdbm.html
 %%PORTDOCS%%%%DOCSDIR%%/maildroptips.txt
-%%PORTDOCS%%%%DOCSDIR%%/makedat.html
 %%PORTDOCS%%%%DOCSDIR%%/makemime.html
 %%PORTDOCS%%%%DOCSDIR%%/manpage.css
 %%PORTDOCS%%%%DOCSDIR%%/reformail.html
 %%PORTDOCS%%%%DOCSDIR%%/reformime.html
 %%PORTDOCS%%%%DOCSDIR%%/rfc2045.html
 %%PORTDOCS%%%%DOCSDIR%%/rfc822.html
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@exec chown %%MUID%% %D/bin/lockmail %D/bin/maildrop
-%%MSUID%%@exec chmod u+s %D/bin/lockmail %D/bin/maildrop
-@exec chgrp %%MGID%% %D/bin/lockmail %D/bin/maildrop
-%%MSGID%%@exec chmod g+s %D/bin/lockmail %D/bin/maildrop

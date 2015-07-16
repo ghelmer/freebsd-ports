@@ -3,6 +3,7 @@
 
 PORTNAME=	avenger
 PORTVERSION=	0.8.4
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://www.mailavenger.org/dist/
 
@@ -27,7 +28,7 @@ CONFIGURE_ARGS=	--enable-ssl=${OPENSSLBASE} \
 OPTIONS_DEFINE=	SASL DOCS
 
 SASL_CONFIGURE_ON=	--enable-sasl
-SASL_LIB_DEPENDS=	sasl2:${PORTSDIR}/security/cyrus-sasl2
+SASL_LIB_DEPENDS=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -48,7 +49,5 @@ post-install:
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

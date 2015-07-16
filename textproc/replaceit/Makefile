@@ -7,10 +7,12 @@ CATEGORIES=	textproc
 MASTER_SITES=	http://pldaniels.com/replaceit/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A light replacement to the combination of sed/awk/grep/head/tail
+COMMENT=	Light replacement to the combination of sed/awk/grep/head/tail
 
-LICENSE=	BSD
+LICENSE=	Sendmail
+LICENSE_NAME=	Sendmail License
 LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 MAKE_ARGS=	CC="${CC}" PRF="${CFLAGS}"
 

@@ -7,20 +7,17 @@ CATEGORIES=	www
 MASTER_SITES=	http://www.tundraware.com/Software/mkapachepw/
 
 MAINTAINER=	mkapachepw@tundraware.com
-COMMENT=	A Group & Password Management Tool For Apache
+COMMENT=	Group & Password Management Tool For Apache
 
-USE_PYTHON=	yes
+USES=		python
+NO_ARCH=	yes
 
-MANCOMPRESSED=	yes
-MAN1=		mkapachepw.1
+OPTIONS_DEFINE=	DOCS
 
-NO_STAGE=	yes
 post-install:
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in WHATSNEW.txt mkapachepw-license.txt mkapachepw.html mkapachepw.pdf mkapachepw.ps mkapachepw.txt
-	${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

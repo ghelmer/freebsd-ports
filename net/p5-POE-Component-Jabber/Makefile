@@ -3,7 +3,7 @@
 
 PORTNAME=	POE-Component-Jabber
 PORTVERSION=	3.00
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	net devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -21,17 +21,19 @@ BUILD_DEPENDS=	p5-Authen-SASL>=0:${PORTSDIR}/security/p5-Authen-SASL \
 		p5-POE>=0:${PORTSDIR}/devel/p5-POE
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	examples/*
 USE_PERL5=	modbuild
 CONFIGURE_ARGS=	</dev/null
+NO_ARCH=	yes
 
 PORTEXAMPLES=	*
 
+OPTIONS_DEFINE=	EXAMPLES
+
 post-install:
-.ifndef(NOPORTEXAMPLES)
 	@${ECHO_MSG} "===>   Installing examples for ${PKGNAME}"
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}/
-.endif
 
 .include <bsd.port.mk>

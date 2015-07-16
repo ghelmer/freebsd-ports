@@ -5,12 +5,11 @@ PORTVERSION=	2.3.5
 PORTREVISION=	6
 CATEGORIES=	sysutils ipv6
 MASTER_SITES=	http://members.dslextreme.com/users/billw/gkrellm/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	ume
+		LOCAL/ume
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	ume@FreeBSD.org
-COMMENT=	A GTK based system monitor
+COMMENT=	GTK based system monitor
 
 LICENSE=	GPLv3
 

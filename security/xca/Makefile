@@ -3,18 +3,19 @@
 
 PORTNAME=	xca
 PORTVERSION=	0.9.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	freebsd@nagilum.org
 COMMENT=	Graphical certification authority
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
+
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
 
 USE_OPENSSL=	yes
 USE_QT4=	gui moc_build uic_build qmake_build rcc_build linguist_build
-USE_AUTOTOOLS=	libltdl
 USES=		desktop-file-utils gmake shared-mime-info
 DESTDIRNAME=	destdir
 
@@ -28,7 +29,7 @@ post-patch:
 	@echo "CPPFLAGS=-I. -I.. -I${WRKSRC}/ui -I${QT_INCDIR} -I${QT_INCDIR}/Qt -I${LOCALBASE}/include" > ${WRKSRC}/Local.mak
 	@echo "CFLAGS= ${CFLAGS} -Wall -ggdb" >> ${WRKSRC}/Local.mak
 	@echo "LDFLAGS= ${LDFLAGS}" >> ${WRKSRC}/Local.mak
-	@echo "LIBS= ${LIBS} -L${QT_LIBDIR} -L${LOCALBASE}/lib -lQtCore -lQtGui ${PTHREAD_LIBS} -lcrypto -lltdl ${LD_CXX_LIB}" >> ${WRKSRC}/Local.mak
+	@echo "LIBS= ${LIBS} -L${QT_LIBDIR} -L${LOCALBASE}/lib -lQtCore -lQtGui -lpthread -lcrypto -lltdl ${LD_CXX_LIB}" >> ${WRKSRC}/Local.mak
 	@echo "MOC=${MOC}" >> ${WRKSRC}/Local.mak
 	@echo "UIC=${QT_PREFIX}/bin/uic-qt4" >> ${WRKSRC}/Local.mak
 	@echo "RCC=${LOCALBASE}/bin/rcc"  >> ${WRKSRC}/Local.mak

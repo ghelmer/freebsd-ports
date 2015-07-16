@@ -3,12 +3,10 @@
 
 PORTNAME=	asymptote
 PORTVERSION=	2.32
-PORTREVISION=	0
+PORTREVISION=	4
 CATEGORIES=	math
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Powerful script-based vector graphics language
@@ -19,7 +17,7 @@ LICENSE_COMB=	dual
 LIB_DEPENDS=	libgc-threaded.so:${PORTSDIR}/devel/boehm-gc-threaded
 RUN_DEPENDS=	animate:${PORTSDIR}/graphics/ImageMagick \
 		gv:${PORTSDIR}/print/gv \
-		${PYTHON_PKGNAMEPREFIX}imaging>=1.1.6_3:${PORTSDIR}/graphics/py-imaging \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow \
 		${PYTHON_PKGNAMEPREFIX}tkinter>0:${PORTSDIR}/x11-toolkits/py-tkinter
 
 ALL_TARGET=	asy asy-keywords.el
@@ -36,13 +34,12 @@ MAKE_JOBS_UNSAFE=	yes
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		gmake perl5
+USES=		gmake perl5 python tar:tgz
 USE_AUTOTOOLS=	autoconf aclocal
 USE_GHOSTSCRIPT=yes
 USE_GL=	glut
 USE_PERL5=	build
-USE_PYTHON=	yes
-USE_TEX=	dvipsk formats texlive
+USE_TEX=	dvipsk formats
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -81,12 +78,6 @@ INSTALL_TARGET+=	install-html
 INFO=	asy-faq
 ALL_TARGET+=	man
 INSTALL_TARGET+=	install-man
-.endif
-
-# Examples
-.if !${PORT_OPTIONS:MEXAMPLES}
-post-install:
-	@${RM} -R ${STAGEDIR}${EXAMPLESDIR}
 .endif
 
 post-patch:

@@ -2,17 +2,20 @@
 
 PORTNAME=	delta
 PORTVERSION=	2006.08.03
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/eadler/delta
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Heuristically minimizes interesting files
 
 LICENSE=	BSD2CLAUSE
 
 PLIST_FILES=	bin/delta bin/multidelta bin/topformflat
 
-USES=		gmake
+USES=		gmake perl5 shebangfix
+USE_PERL5=	run
+SHEBANG_FILES=	delta multidelta
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/delta ${STAGEDIR}${PREFIX}/bin

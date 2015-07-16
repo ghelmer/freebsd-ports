@@ -3,7 +3,7 @@
 
 PORTNAME=	cycle
 PORTVERSION=	0.3.1
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	deskutils biology python
 MASTER_SITES=	SF
 
@@ -12,9 +12,8 @@ COMMENT=	Calendar program for women
 
 LICENSE=	GPLv2
 
-USES=		tar:bzip2
-USE_PYTHON_RUN=	yes
-USE_WX=		2.6+
+USES=		python:run tar:bzip2
+USE_WX=		3.0+
 WX_COMPS=	python
 NO_BUILD=	yes
 

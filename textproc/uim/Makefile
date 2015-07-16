@@ -3,8 +3,9 @@
 
 PORTNAME=	uim
 PORTVERSION=	1.8.6
+PORTREVISION?=	1
 CATEGORIES?=	textproc
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-nox11
 .endif
@@ -12,22 +13,25 @@ PKGNAMESUFFIX=	-nox11
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT?=	Input method library
 
-USE_BZIP2=	yes
 USE_LDCONFIG=	yes
 WANT_GNOME=	yes
 USE_GNOME+=	glib20 intltool
-USE_AUTOTOOLS=	libtool
-USES=		gettext gmake iconv pkgconfig perl5
+USES=		gettext gmake iconv libtool pkgconfig perl5 tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 
-.if !defined(WITHOUT_X11)
+OPTIONS_DEFINE=	DOCS X11
+OPTIONS_DEFAULT=	X11
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MX11}
 LIB_DEPENDS+=	libXft.so:${PORTSDIR}/x11-fonts/libXft
 CONFIGURE_ARGS+=	--with-x --with-xft
 .endif
 
 .if !defined(UIM_SLAVE)
-.if !defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MX11}
 USE_GNOME+=	gtk20
 CONFIGURE_ARGS+=	--with-gtk2
 .endif
@@ -45,7 +49,7 @@ PLIST_SUB=	DOCSDIR_JA="${DOCSDIR_JA:S,^${PREFIX}/,,}" \
 		DOCSDIR_SIGSCHEME="${DOCSDIR_SIGSCHEME:S,^${PREFIX}/,,}"
 .endif
 
-.if defined(WITHOUT_X11)
+.if empty(PORT_OPTIONS:MX11)
 PLIST_SUB+=	X11="@comment "
 .else
 PLIST_SUB+=	X11=""
@@ -80,7 +84,7 @@ do-build:
 .for d in replace sigscheme uim scm xim po fep emacs pixmaps tables
 	cd ${WRKSRC}/${d} && ${MAKE_CMD}
 .endfor
-.if !defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MX11}
 	cd ${WRKSRC}/gtk2/candwin && ${MAKE_CMD}
 .endif
 .endif
@@ -91,7 +95,7 @@ do-install:
 .for d in sigscheme uim scm xim po fep emacs pixmaps tables
 	cd ${WRKSRC}/${d} && ${MAKE_CMD} DESTDIR=${STAGEDIR} install
 .endfor
-.if !defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MX11}
 	cd ${WRKSRC}/gtk2/candwin && ${MAKE_CMD} DESTDIR=${STAGEDIR} install
 .endif
 .endif
@@ -99,7 +103,6 @@ do-install:
 .if !defined(UIM_SLAVE)
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/helperdata
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR_JA}
 	${INSTALL_DATA} ${WRKSRC}/doc/KEY ${STAGEDIR}${DOCSDIR}/KEY
@@ -107,7 +110,6 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/fep/README ${STAGEDIR}${DOCSDIR}/README.key
 	${INSTALL_DATA} ${WRKSRC}/fep/README.ja ${STAGEDIR}${DOCSDIR_JA}/README.fep
 	${INSTALL_DATA} ${WRKSRC}/xim/README ${STAGEDIR}${DOCSDIR}/README.xim
-.endif
 .endif
 
 .include <bsd.port.post.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	utils
 PORTVERSION=	1.4.3
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	ftp://ftp.geda.seul.org/pub/geda/release/v1.4/${PORTVERSION}/ \
@@ -14,21 +14,23 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The gEDA's utilities
 
+BROKEN=		Unfetchable
 RUN_DEPENDS=	geda-symbols>0:${PORTSDIR}/cad/geda-symbols
 LIB_DEPENDS=	libgeda.so:${PORTSDIR}/cad/libgeda
 
 DOCSDIR=	${PREFIX}/share/doc/geda
 DATADIR=	${PREFIX}/share/geda
 
-USES=		gmake perl5 pkgconfig shebangfix
+USES=		gmake perl5 pkgconfig python:run shebangfix
 SHEBANG_FILES=	scripts/gnet_hier_verilog.sh
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20
 USE_PERL5=	run
-USE_PYTHON_RUN=	yes
 CONFIGURE_ARGS=	--with-docdir=${DOCSDIR}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -E \

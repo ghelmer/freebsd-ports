@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	homard
-DISTVERSION=	10.6-3
+DISTVERSION=	11.2-1
 CATEGORIES=	french cad linux
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -18,9 +18,8 @@ RESTRICTED=	The free downloading of HOMARD software is only allowed for coupling
 ONLY_FOR_ARCHS=	i386 amd64
 
 USE_LINUX=	yes
-USE_PYTHON=	yes
+USES=		python
 REINPLACE_ARGS=	-i ""
-NO_BUILD=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 
@@ -38,13 +37,7 @@ DOCS=		A_Lire.txt Readme.txt
 PLIST_SUB=	HOMARDDIR=${LHOMARDDIR} AHPY=${LHOMARDDIR}/${AHPY}			\
 		UNAMES=${OPSYS} HOMARDPG=${HOMARDPG} ASTER_TOOLS=${ASTER_TOOLS}
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "i386"
-BITS=
-.else
-BITS=	64
-.endif
+OPTIONS_DEFINE=	DOCS
 
 pre-configure:
 .for sc in ${HOMARDSCRIPT}
@@ -52,12 +45,12 @@ pre-configure:
 		${WRKSRC}/${sc}
 .endfor
 
-post-build:
-	${BRANDELF} -t Linux ${WRKSRC}/Linux${BITS}/${HOMARDPG}
+do-build:
+	${BRANDELF} -t Linux ${WRKSRC}/Linux/${HOMARDPG}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${HOMARDDIR} ${STAGEDIR}${PREFIX}/apps/${OPSYS}
-	${INSTALL_PROGRAM} ${WRKSRC}/Linux${BITS}/${HOMARDPG}	\
+	${INSTALL_PROGRAM} ${WRKSRC}/Linux/${HOMARDPG}	\
 		${STAGEDIR}${PREFIX}/apps/${OPSYS}
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}_base	\
 		${STAGEDIR}${HOMARDDIR}/${PORTNAME}
@@ -69,17 +62,10 @@ do-install:
 	${MKDIR} ${STAGEDIR}${ASTER_TOOLS}/
 	${LN} -fs ${HOMARDDIR}/homard ${STAGEDIR}${ASTER_TOOLS}/
 	${LN} -fs ${HOMARDDIR}/aster_homard_py ${STAGEDIR}${ASTER_TOOLS}/
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for doc in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
-.if !defined(NOPORTEXAMPLES)
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	(cd ${WRKSRC}/Linux64/CAS_TESTS && ${COPYTREE_SHARE} .	\
-		${STAGEDIR}${EXAMPLESDIR})
-.endif
 
 .include "${.CURDIR}/../../french/aster/bsd.aster.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

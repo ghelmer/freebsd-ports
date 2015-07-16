@@ -20,9 +20,8 @@ LICENSE=	GPLv3
 RUN_DEPENDS=	box:${PORTSDIR}/graphics/box
 
 USE_GNOME=	pygtk2
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	share/pixmaps/${PORTNAME}.png
@@ -31,7 +30,7 @@ PORTDOCS=	ChangeLog
 OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="Boxer" "" "${PORTNAME}" \
-		"${PORTNAME}" "Application;Graphics;" ""
+		"${PORTNAME}" "Graphics;" ""
 
 post-install:
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \

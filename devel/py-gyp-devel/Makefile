@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gyp
-PORTVERSION=	r832
-PORTREVISION=	4
+PORTVERSION=	20150414
+PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	http://people.freebsd.org/~daichi/distfiles/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,9 +11,8 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	daichi@FreeBSD.org
 COMMENT=	Generate Your Projects
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.pre.mk>
 

@@ -4,29 +4,27 @@
 
 PORTNAME=	libsvg
 PORTVERSION=	0.1.4
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/snapshots/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Parser for SVG content in files or buffers
 
-LIB_DEPENDS=	fontconfig.1:${PORTSDIR}/x11-fonts/fontconfig \
-		png15:${PORTSDIR}/graphics/png \
-		jpeg.11:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS=	libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
+		libpng.so:${PORTSDIR}/graphics/png
 
-USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 USE_GNOME=	libxml2
-USES=		pathfix iconv pkgconfig
+USES=		iconv jpeg libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 CFLAGS+=	-I${LOCALBASE}/include
 
 PLIST_FILES=	include/svg.h \
 		lib/libsvg.a \
-		lib/libsvg.la \
 		lib/libsvg.so \
 		lib/libsvg.so.1 \
+		lib/libsvg.so.1.0.0 \
 		libdata/pkgconfig/libsvg.pc
 
 .include <bsd.port.mk>

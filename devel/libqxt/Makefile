@@ -3,17 +3,18 @@
 
 PORTNAME=	libqxt
 PORTVERSION=	0.6.2
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://dev.libqxt.org/libqxt/get/
 DISTNAME=	v${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extension library for Qt
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
 USE_BDB=	44+
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_QT4=	qmake_build moc_build rcc_build corelib gui gui \
 		designer
 USE_LDCONFIG=	${PREFIX}/lib/qxt

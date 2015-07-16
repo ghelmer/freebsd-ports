@@ -9,7 +9,6 @@
     SUBDIR += bitchx
     SUBDIR += bitlbee
     SUBDIR += bnc
-    SUBDIR += bobot++
     SUBDIR += bopm
     SUBDIR += cgiirc
     SUBDIR += charybdis
@@ -92,6 +91,7 @@
     SUBDIR += pear-Net_SmartIRC
     SUBDIR += pircbot
     SUBDIR += pisg
+    SUBDIR += polari
     SUBDIR += psybnc
     SUBDIR += py-fishcrypt
     SUBDIR += py-gozerbot
@@ -110,6 +110,7 @@
     SUBDIR += ruby-rica
     SUBDIR += ruby-rice
     SUBDIR += rubygem-cinch
+    SUBDIR += rubygem-lita-irc
     SUBDIR += rubygem-net-irc
     SUBDIR += scrollz
     SUBDIR += sic
@@ -117,7 +118,6 @@
     SUBDIR += sirc
     SUBDIR += slirc
     SUBDIR += smartirc4net
-    SUBDIR += solid-ircd
     SUBDIR += srvx
     SUBDIR += thales
     SUBDIR += tircd

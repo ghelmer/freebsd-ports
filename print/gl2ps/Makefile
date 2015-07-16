@@ -3,17 +3,20 @@
 
 PORTNAME=	gl2ps
 PORTVERSION=	1.3.8
+PORTREVISION=	1
 CATEGORIES=	print graphics
 MASTER_SITES=	http://www.geuz.org/gl2ps/src/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	araujo@FreeBSD.org
-COMMENT=	A C library providing vector output for OpenGL application
+COMMENT=	C library providing vector output for OpenGL application
 
 USE_GL=		yes
 USE_XORG=	x11 xmu xi
 USE_LDCONFIG=	yes
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}-source
+
+OPTIONS_DEFINE=	DOCS
 
 pre-build:
 	@${CP} ${FILESDIR}/Makefile.lib ${WRKSRC}/Makefile
@@ -33,9 +36,7 @@ do-install:
 		    s|%%LOCALBASE%%|${LOCALBASE}|g' \
 		<${FILESDIR}/Makefile.ex >${STAGEDIR}${EXAMPLESDIR}/Makefile
 
-.ifndef (NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/gl2ps.pdf ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

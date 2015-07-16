@@ -5,11 +5,10 @@ PORTNAME=	wmbluecpu
 PORTVERSION=	0.4
 PORTREVISION=	4
 CATEGORIES=	sysutils windowmaker
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	X11/xutils
+MASTER_SITES=	SUNSITE/X11/xutils
 
 MAINTAINER=	benjsc@FreeBSD.org
-COMMENT=	A CPU monitoring dockapp
+COMMENT=	CPU monitoring dockapp
 
 USES=		tar:bzip2
 USE_XORG=	xpm

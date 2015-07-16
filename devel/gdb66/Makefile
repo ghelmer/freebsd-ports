@@ -3,12 +3,11 @@
 
 PORTNAME=	gdb
 PORTVERSION=	6.6
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	devel
-MASTER_SITES=   ${MASTER_SITE_GNU:S,$,:gdb,}	\
+MASTER_SITES=   GNU/gdb/ \
 		http://aldan.algebra.com/~mi/:gdbtk
-MASTER_SITE_SUBDIR=gdb/:gdb
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}:gdb
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT?=	GNU GDB of newer version than comes with the system
@@ -19,16 +18,16 @@ OPTIONS_DEFINE=	INSIGHT
 INSIGHT_DESC=	Tcl/Tk GUI (experimental!)
 
 CONFLICTS?=	gdb-[7-9]*
-USE_BZIP2=	yes
 USE_GCC=	any
-USES=		gettext iconv gmake
+USES=		gettext iconv gmake readline tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	CONFIGURED_M4=m4 CONFIGURED_BISON=byacc
 CONFIGURE_ARGS=	--program-suffix=${PORTVERSION:S/.//g} \
 		--disable-werror \
 		--enable-target=all \
 		--enable-tui ${ICONV_CONFIGURE_ARG}
-CFLAGS:=	${CFLAGS:C/ +$//}	# blanks at EOL creep in sometimes
+# remove consecutive blanks, which causes configure to fail
+CFLAGS!=	echo ${CFLAGS}|sed -e 's/  / /g'
 CFLAGS+=	-DRL_NO_COMPAT
 EXCLUDE=	dejagnu expect readline sim texinfo intl
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S/^/--exclude /}
@@ -36,6 +35,10 @@ VER=		${PORTVERSION:S/.//}
 PLIST_SUB=	VER=${VER}
 
 .include <bsd.port.options.mk>
+
+.if !exists(/usr/lib/libreadline.so)
+CFLAGS+=	-Dreadline_echoing_p=_rl_echoing_p
+.endif
 
 .if ${PORT_OPTIONS:MINSIGHT}
 PKGNAMESUFFIX=	-insight
@@ -86,7 +89,7 @@ post-patch:
 		-e 's/^readline/#readline/' \
 		-e 's,^LIBICONV =.*,LIBICONV=-L${LOCALBASE}/lib ${ICONV_LIB},' \
 		${WRKSRC}/gdb/Makefile.in
-	${ECHO} 'READLINE = -lreadline_p' >> ${WRKSRC}/gdb/Makefile.in
+	${ECHO} 'READLINE = -lreadline' >> ${WRKSRC}/gdb/Makefile.in
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gdb/gdb ${STAGEDIR}${PREFIX}/bin/gdb${VER}

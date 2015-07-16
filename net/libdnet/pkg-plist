@@ -1,7 +1,6 @@
 sbin/dnet
 bin/dnet-config
 lib/libdnet.a
-lib/libdnet.la
 lib/libdnet.so
 lib/libdnet.so.1
 lib/libdnet.so.1.0.1
@@ -23,4 +22,3 @@ include/dnet/tun.h
 include/dnet/udp.h
 man/man3/dnet.3.gz
 man/man8/dnet.8.gz
-@dirrm include/dnet

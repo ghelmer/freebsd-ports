@@ -3,7 +3,7 @@
 
 PORTNAME=	grive
 PORTVERSION=	0.3.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	ktsin@acm.org
@@ -15,14 +15,12 @@ LIB_DEPENDS=	libboost_filesystem.so:${PORTSDIR}/devel/boost-libs \
 		libcurl.so:${PORTSDIR}/ftp/curl \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-		libjson.so:${PORTSDIR}/devel/json-c \
+		libjson-c.so:${PORTSDIR}/devel/json-c \
 		libyajl.so:${PORTSDIR}/devel/yajl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Grive
-GH_PROJECT=	${PORTNAME}
-GH_COMMIT=	27817e8
-GH_TAGNAME=	${GH_COMMIT}
+GH_TAGNAME=	27817e8
 
 USES=		cmake
 CXXFLAGS+=	-I${LOCALBASE}/include

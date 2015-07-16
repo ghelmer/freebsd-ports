@@ -4,8 +4,7 @@
 PORTNAME=	macutils
 PORTVERSION=	2.0b3
 CATEGORIES=	archivers emulators
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	utils/compress
+MASTER_SITES=	SUNSITE/utils/compress
 DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -18,6 +17,8 @@ BINDIR=		${STAGEDIR}${PREFIX}/bin
 DOCFILES=	README.crc README.hexbin README.macput README.unpit \
 		README.zoom README.crc.orig README.macget README.scan \
 		README.unsit ../README
+
+OPTIONS_DEFINE=	DOCS
 
 # The distribution has a naff install target which doesn't install man
 # pages so here is a decent one.

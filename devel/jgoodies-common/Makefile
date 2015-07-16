@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	jgoodies-common
-PORTVERSION=	1.2.1
+DISTVERSION=	1_2_1
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.jgoodies.com/download/libraries/common/
-DISTNAME=	${PORTNAME}-${PORTVERSION:S|.|_|g}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Abstract and helper classes used by all other JGoodies libs
@@ -14,6 +13,8 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${JAVALIBDIR}/junit.jar:${PORTSDIR}/java/junit
+
+BROKEN=		does not build: "Test com.jgoodies.common.base.ObjectsTest failed"
 
 USES=		dos2unix zip
 USE_JAVA=	yes
@@ -47,7 +48,7 @@ post-patch:
 	${REINPLACE_CMD} -E 's|<a .[^>]+>License</a>|<abbr title="BSD 3-clause. License-file installation disabled">License</abbr>|'\
 		${WRKSRC}/README.html
 .else
-	${REINPLACE_CMD} -E 's|href="LICENSE.txt"|href="../../../${_LICENSE_DIR_REL}/BSD"|' \
+	${REINPLACE_CMD} -E 's|href="LICENSE.txt"|href="../../../${_LICENSE_DIR:S,^${PREFIX}/,,}/BSD"|' \
 		${WRKSRC}/README.html
 .endif
 

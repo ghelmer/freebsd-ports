@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tryton
-PORTVERSION=	2.8.2
-PORTREVISION=	1
+PORTVERSION=	2.8.12
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/tryton/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/2.8/
 PKGNAMESUFFIX=	28
 
@@ -19,10 +18,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=1.5:${PORTSDIR}/devel/py-dateutil 
 
 CONFLICTS=	tryton-2.[46].*
 
-USES=		desktop-file-utils gettext
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		desktop-file-utils gettext python:2
+USE_PYTHON=	distutils autoplist
 USE_GNOME=	gtk20 pygtk2
 
 PLIST_FILES=	share/applications/tryton.desktop share/pixmaps/tryton-icon.png

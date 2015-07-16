@@ -4,57 +4,63 @@
 
 PORTNAME=	adonthell
 PORTVERSION=	0.3.5
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 DISTFILES=	${PORTNAME}-src-${PORTVERSION}${EXTRACT_SUFX} \
 	   	wastesedge-src-${WEDGE_VERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	rodrigo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free role playing game
 
 LICENSE=	GPLv2
 LICENSE_DISTFILES=	${DISTFILES}
 
-LIB_DEPENDS=	vorbis:${PORTSDIR}/audio/libvorbis \
+LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
+USES=		gettext gmake python
 USE_SDL=	mixer ttf sdl
-USE_PYTHON=	yes
-USES=		gettext gmake
+USE_GCC=	any
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PYPACKAGE="${PYTHON_CMD}" ac_cv_path_P_SWIG=no
 CONFIGURE_ARGS=	--disable-py-debug
 
-PLIST_SUB=	VERSION="${PORTVERSION:R}"
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+PLIST_FILES=	bin/adonthell \
+		bin/adonthell-${PORTVERSION:R} \
+		bin/adonthell-wastesedge \
+		share/pixmaps/wastesedge_16x16.xpm \
+		share/pixmaps/wastesedge_32x32.xpm
+PORTDATA=	*
+
+BROKEN_sparc64=	Does not build on sparc64
+
+DESKTOP_ENTRIES="Adonthell" "" "" "adonthell" "" ""
 
 WEDGE_VERSION=	0.3.5
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not build on sparc64
-.endif
 
 post-patch:
 	@cd ${WRKSRC} && ${REINPLACE_CMD} -e \
 		's|-g -Wall|$$CFLAGS -Wall|g ; \
-		 s|-lpthread|${PTHREAD_LIBS}|g' configure
+		 s|-lpthread|-pthread|g' configure
 	@cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${REINPLACE_CMD} -e \
-		's/test $$adonthell_major_ver -eq 0 .*/true ;/' configure
+		's|@adonthell_binary@|${PREFIX}/bin/adonthell|' Makefile.in
 	@cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${REINPLACE_CMD} -e \
-		's/^[[:space:]]*_//' scripts/modules/player_text.py
+		's|test $$adonthell_major_ver -eq 0 .*|true ;|' configure
+	@cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${REINPLACE_CMD} -e \
+		's|^[[:space:]]*_||' scripts/modules/player_text.py
 
 post-install:
 	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} \
 		&& ${SETENV} ${CONFIGURE_ENV} ./configure ${CONFIGURE_ARGS} \
-			--with-adonthell-binary=${PREFIX}/bin/${PORTNAME} \
+			--with-adonthell-binary=${STAGEDIR}${PREFIX}/bin/adonthell \
 			${CONFIGURE_TARGET}
-	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${MAKE_CMD}
-	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${MAKE_CMD} install
+	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${SETENV} HOME=${WRKDIR} \
+		${MAKE_CMD}
+	cd ${WRKDIR}/wastesedge-${WEDGE_VERSION} && ${SETENV} HOME=${WRKDIR} \
+		${MAKE_CMD} ${MAKE_ARGS} ${INSTALL_TARGET}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

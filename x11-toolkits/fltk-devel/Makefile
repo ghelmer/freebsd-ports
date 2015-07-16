@@ -3,50 +3,44 @@
 
 PORTNAME=	fltk
 DISTVERSION=	1.3.x-r${SNAPSHOT_VERS}
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://fltk.org/pub/${PORTNAME}/snapshots/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform C++ graphical user interface toolkit
 
 LICENSE=	LGPL20
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 
 OPTIONS_DEFINE=	EXAMPLES
+EXAMPLES_CMAKE_OFF=	-DOPTION_BUILD_EXAMPLES:BOOL=OFF
 
 USE_XORG=	xft
 USE_GL=		glu
 USE_LDCONFIG=	${PREFIX}/lib/fltk-devel
-USES+=		cmake:outsource
+USES+=		cmake:outsource jpeg
+LDFLAGS+=	-L${LOCALBASE}/lib
 CMAKE_ARGS+=	-DOPTION_BUILD_SHARED_LIBS:BOOL=ON \
-    		-DOPTION_PREFIX_BIN:PATH=${PREFIX}/bin/fltk-devel \
-		-DOPTION_PREFIX_DATA:PATH=${PREFIX}/share/fltk-devel \
-		-DOPTION_PREFIX_DOC:PATH=${PREFIX}/share/examples/fltk-devel \
-		-DOPTION_PREFIX_INCLUDE:PATH=${PREFIX}/include/fltk-devel \
-		-DOPTION_PREFIX_LIB:PATH=${PREFIX}/lib/fltk-devel
+    		-DPREFIX_BIN:PATH=${PREFIX}/bin/fltk-devel \
+		-DPREFIX_DATA:PATH=${PREFIX}/share/fltk-devel \
+		-DPREFIX_DOC:PATH=${PREFIX}/share/examples/fltk-devel \
+		-DPREFIX_INCLUDE:PATH=${PREFIX}/include/fltk-devel \
+		-DPREFIX_LIB:PATH=${PREFIX}/lib/fltk-devel
 
-SNAPSHOT_VERS=	10183
+
+SNAPSHOT_VERS=	10370
 PORTEXAMPLES=	*
 EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}${PKGNAMESUFFIX}
 
 PORTSCOUT=	limit:1.3.*
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MEXAMPLES}
-CMAKE_ARGS+=	-DOPTION_BUILD_EXAMPLES:BOOL=ON
-LIB_DEPENDS+=	libasound.so:${PORTSDIR}/audio/alsa-lib
-LDFLAGS+=	-L${LOCALBASE}/lib
-.else
-CMAKE_ARGS+=	-DOPTION_BUILD_EXAMPLES:BOOL=OFF
-.endif
-
 post-install:
+	${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/fltk-config ${STAGEDIR}${PREFIX}/bin/fltk-devel
 	${LN} -sf fltk-devel/libfltk.so ${STAGEDIR}${PREFIX}/lib/libfltk-devel.so
 
 .include <bsd.port.mk>

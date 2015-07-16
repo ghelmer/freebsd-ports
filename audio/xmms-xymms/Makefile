@@ -3,7 +3,7 @@
 
 PORTNAME=	xymms
 DISTVERSION=	0.9.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	xmms-
@@ -21,7 +21,6 @@ CONFIGURE_ARGS=	--disable-static
 
 PLIST_FILES=	lib/xmms/Input/libxymms.so \
 		%%EXAMPLESDIR%%/sample.gym
-PLIST_DIRS=	%%EXAMPLESDIR%%
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

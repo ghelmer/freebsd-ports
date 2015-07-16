@@ -3,7 +3,7 @@
 
 PORTNAME=	oneisenough
 PORTVERSION=	0.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games python
 MASTER_SITES=	http://hectigo.net/games/oneisenough/ \
 		SF/nemysisfreebsdp/games/:icons
@@ -11,7 +11,7 @@ DISTFILES=	${PORTNAME}_a${DISTVERSION:S/.//g}_src${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}_a${DISTVERSION:S/.//g}_src${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Economic development in the land of the balls
 
 LICENSE=	GPLv2
@@ -20,13 +20,12 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/"one is enough"
 
-USES=		dos2unix shebangfix zip
+USES=		dos2unix python:2 shebangfix zip
 DOS2UNIX_FILES=	*.txt bin/*.py
 DOS2UNIX_REGEX= .*.[^pt][^nt][^gf]
 SHEBANG_FILES=	run_game.py bin/mainmenu.py
 python_OLD_CMD?=	/usr/bin/env python
 python_CMD?=		${PYTHON_CMD}
-USE_PYTHON=	2
 
 PORTDOCS=	README.txt
 OPTIONS_DEFINE=	DOCS

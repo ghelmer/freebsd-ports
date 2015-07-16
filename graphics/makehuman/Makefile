@@ -3,7 +3,7 @@
 
 PORTNAME=	makehuman
 DISTVERSION=	0.9.1-rc1a
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/MakeHuman%20Source/MakeHuman_091
 
@@ -25,7 +25,7 @@ PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*
 PORTDATA=	*
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,find . \(-name .*\) -exec cp --parents {} \(.*\) \\;,find -d . \1 | ${CPIO} -dumpl \2,g' \

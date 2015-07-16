@@ -3,7 +3,7 @@
 
 PORTNAME=	ntop
 PORTVERSION=	5.0.1
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/Stable
 
@@ -11,9 +11,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network monitoring tool with command line and web interfaces
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libevent-1.4.so:${PORTSDIR}/devel/libevent
+		libevent.so:${PORTSDIR}/devel/libevent2
 BUILD_DEPENDS=	rrdtool>=1.2:${PORTSDIR}/databases/rrdtool \
 		dot:${PORTSDIR}/graphics/graphviz \
 		geoiplookup:${PORTSDIR}/net/GeoIP
@@ -22,10 +23,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 
 DBDIR?=		/var/db
 
-USES=		gmake libtool
-USE_AUTOTOOLS=	libtool automake autoconf
+USES=		autoreconf:build cpe gmake libtool python
 USE_GNOME=	libxml2
-USE_PYTHON=	yes
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
@@ -37,9 +36,8 @@ CONFIGURE_ARGS=	--localstatedir=${DBDIR} \
 		--with-zlib-root=/usr
 INSTALL_TARGET=	install-strip
 
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
 CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 SUB_FILES=	pkg-deinstall
 SUB_LIST=	DBDIR=${DBDIR}
@@ -79,10 +77,25 @@ CONFIGURE_ARGS+=	--enable-jumbo-frames
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}mako>0:${PORTSDIR}/textproc/py-mako
 .endif
 
+.include <bsd.port.pre.mk>
+
+# Quick and dirty hackaround - older binutils barf when asked to strip
+# an .a file, newer complain about missing sections and succeed.
+# The real fix would be for ntop to not try stripping .a files,
+# but upstream seems to have gone ahead with ntopng so this may not
+# ever be fixed.
+.if ${OSVERSION} < 900033
+USE_BINUTILS=	yes
+CONFIGURE_ARGS+=	STRIP=${LOCALBASE}/bin/strip
+.endif
+
 pre-configure:
-	@cd ${WRKSRC} && ${SETENV} ${SCRIPTS_ENV} ${SH} autogen.sh --noconfig
+	@(cd ${WRKSRC} && ./autogen.sh --noconfig)
 
 pre-install:
 	@cd ${WRKSRC} && ${MAKE_CMD} dnetter
 
-.include <bsd.port.mk>
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ntop/plugins/*.so
+
+.include <bsd.port.post.mk>

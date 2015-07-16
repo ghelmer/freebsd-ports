@@ -3,7 +3,7 @@
 
 PORTNAME=	nessus-plugins
 PORTVERSION=	2.2.9
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	ftp://ftp.nessus.org/pub/nessus/nessus-${PORTVERSION}/src/ \
 		ftp://ftp.gwdg.de/pub/linux/misc/nessus/nessus-${PORTVERSION}/src/ \
@@ -11,6 +11,7 @@ MASTER_SITES=	ftp://ftp.nessus.org/pub/nessus/nessus-${PORTVERSION}/src/ \
 		ftp://sunsite.cnlab-switch.ch/mirror/nessus/nessus-${PORTVERSION}/src/ \
 		ftp://ftp.ayamura.org/pub/nessus/nessus-${PORTVERSION}/src/
 DISTNAME=	nessus-plugins-GPL-${PORTVERSION}
+DIST_SUBDIR=	nessus
 
 MAINTAINER=	udo.schweigert@siemens.com
 COMMENT=	Plugins for Nessus, the security scanner
@@ -19,18 +20,13 @@ BUILD_DEPENDS=	${LOCALBASE}/include/nessus/nessus-devel.h:${PORTSDIR}/security/n
 RUN_DEPENDS=	${LOCALBASE}/include/nessus/nessus-devel.h:${PORTSDIR}/security/nessus \
 		nmap:${PORTSDIR}/security/nmap
 
-DIST_SUBDIR=	nessus
+USES=		libtool
 WRKSRC=		${WRKDIR}/nessus-plugins
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-fetchcmd=wget
+CONFIGURE_ARGS=	--with-fetchcmd=wget --localstatedir="${PREFIX}/var"
 
-.include <bsd.port.pre.mk>
+post-patch:
+	@${REINPLACE_CMD} 's/-o $$(installuser)//' ${WRKSRC}/Makefile
 
-post-install:
-	@${ECHO} "================================================================================"
-	@${ECHO} "Use ${PREFIX}/sbin/nessus-update-plugins to update your plugin"
-	@${ECHO} "collection."
-	@${ECHO} "================================================================================"
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	conkeror
-PORTVERSION=	20131117
-PORTREVISION=	1
+PORTVERSION=	20140911
 CATEGORIES=	www
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	dhn
+MASTER_SITES=	http://distfiles.pirateparty.in/ashish/ \
+		LOCAL/ashish
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Keyboard-oriented, customizable web browser based on Mozilla XULRunner
@@ -22,9 +21,8 @@ OPTIONS_DEFAULT+=	LIBXUL
 
 USES=		desktop-file-utils tar:xz
 
-WRKSRC=		${WRKDIR}/conkeror
 LIBXUL_USES=	gecko
-FIREFOX_USES=	gecko:firefox,25
+FIREFOX_USES=	gecko:firefox,32
 
 .include <bsd.port.options.mk>
 

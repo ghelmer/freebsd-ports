@@ -3,17 +3,17 @@
 
 PORTNAME=	nonsense
 PORTVERSION=	0.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	SF
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nonsense text generator
 
+USES=		shebangfix
+SHEBANG_FILES=	nonsense
 NO_BUILD=	yes
 NO_ARCH=	yes
-
-.include <bsd.port.options.mk>
 
 post-configure:
 		${REINPLACE_CMD} -e "s,/usr/local,${PREFIX}," ${WRKSRC}/nonsense

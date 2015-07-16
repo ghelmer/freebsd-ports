@@ -3,7 +3,7 @@
 
 PORTNAME=	pathological
 PORTVERSION=	1.1.3
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -16,7 +16,7 @@ RUN_DEPENDS=	${PYGAME}
 
 OPTIONS_DEFINE=	DOCS
 
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 
 DOC_FILES=	favicon.ico index.html

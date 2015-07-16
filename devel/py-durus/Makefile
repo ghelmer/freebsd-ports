@@ -15,10 +15,10 @@ COMMENT=	Persistent object storage system for Python
 
 LICENSE=	MIT
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGNAME=	Durus
+USES=		python
+USE_PYTHON=	distutils autoplist
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

@@ -3,12 +3,15 @@
 
 PORTNAME=	plib
 PORTVERSION=	1.8.5
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://plib.sourceforge.net/dist/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable library for joystick/sound/OpenGL GUI/3D math
+
+LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
 USE_XORG=	xt xi xmu xext x11
@@ -16,8 +19,8 @@ USE_GL=		glu
 GNU_CONFIGURE=	yes
 
 CXXFLAGS+=	-fPIC
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src-js-jsBSD.cxx
 
@@ -25,7 +28,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|-lpthread||g ; \
 		 s|-ldl||g ; \
 		 s|-lc_r||g' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e '/echo.*RANLIB/,+1d' ${WRKSRC}/src/*/Makefile.in
 	@${ECHO} "JS component is not compiled with new usb stack"
 
 post-build:

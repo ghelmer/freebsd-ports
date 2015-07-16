@@ -3,31 +3,28 @@
 
 PORTNAME=	mpdbrowser
 PORTVERSION=	0.9.20
+PORTREVISION=	1
 CATEGORIES=	audio python
 MASTER_SITES=	http://mpdbrowser.tuxfamily.org/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	mpdBrowser-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	ports@FreeBSD.org	
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+ client for the Music Player Daemon (MPD)
+
+LICENSE=	GPLv2
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpd>=0.2.0:${PORTSDIR}/audio/py-mpd
 
-PYDISTUTILS_PKGNAME=	mpdBrowser
-USES=		gettext iconv
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		gettext iconv python:2 tar:tgz
 USE_GNOME=	intltool pygtk2
+USE_PYTHON=	distutils
+PYDISTUTILS_PKGNAME=	mpdBrowser
 
 OPTIONS_DEFINE=		MPD
 OPTIONS_DEFAULT=	MPD
-MPD_DESC=	Install Music Player Daemon
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMPD}
-RUN_DEPENDS+=	musicpd:${PORTSDIR}/audio/musicpd
-.endif
+MPD_DESC=		Install Music Player Daemon
+MPD_RUN_DEPENDS=	musicpd:${PORTSDIR}/audio/musicpd
 
 .include <bsd.port.mk>

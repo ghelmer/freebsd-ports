@@ -5,8 +5,8 @@ PORTNAME=	nodewords
 DISTVERSION=	6.x-1.14
 CATEGORIES=	www
 
-MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	A drupal module which allows the end-user to set meta tags for nodes
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Drupal module which allows the end-user to set meta tags for nodes
 
 USES=		drupal:6,module
 MODULE_DIRS=	nodewords_basic nodewords_extra includes nodewords_og

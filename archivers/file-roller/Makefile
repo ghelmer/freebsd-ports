@@ -1,61 +1,55 @@
 # Created by: Anders Nordby <anders@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/archivers/file-roller/Makefile,v 1.184 2010/11/15 22:58:48 kwm Exp $
+#   $MCom: ports/trunk/archivers/file-roller/Makefile 20062 2014-11-10 22:05:52Z gusi $
 
 PORTNAME=	file-roller
-PORTVERSION=	2.32.1
-PORTREVISION=	1
+PORTVERSION=	3.14.2
 PORTEPOCH=	1
 CATEGORIES=	archivers gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome2
+DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Archive manager for zip files, tar, etc
 
-RUN_DEPENDS=	${LOCALBASE}/bin/gtar:${PORTSDIR}/archivers/gtar \
-    		${LOCALBASE}/bin/unzip:${PORTSDIR}/archivers/unzip
+BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
+RUN_DEPENDS=	gtar:${PORTSDIR}/archivers/gtar \
+    		unzip:${PORTSDIR}/archivers/unzip
 
-USE_LDCONFIG=	yes
-USES=		desktop-file-utils gettext gmake pathfix pkgconfig tar:bzip2
-INSTALLS_OMF=	yes
-INSTALLS_ICONS=	yes
-USE_GNOME=	gnomeprefix intlhack gnomedocutils gtk20 gconf2
-GNOME_DESKTOP_VERSION=2
+USES=		desktop-file-utils gettext gmake libtool \
+		pathfix pkgconfig tar:xz
+USE_GNOME=	gnomeprefix gtk30 intlhack introspection:build
 USE_XORG=	sm
+INSTALLS_ICONS=	yes
+USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--disable-packagekit
+INSTALL_TARGET=	install-strip
 
 PORTDOCS=	AUTHORS NEWS README TODO ChangeLog
-GCONF_SCHEMAS=	file-roller.schemas
+GLIB_SCHEMAS=	org.gnome.FileRoller.gschema.xml
 
-OPTIONS_DEFINE=	DOCS NAUTILUS
-NAUTILUS_DESC=	Enable Nautilus extension
-
+OPTIONS_SUB=	yes
+OPTIONS_DEFINE=	NAUTILUS
 OPTIONS_DEFAULT=NAUTILUS
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNAUTILUS}
-USE_GNOME+=	nautilus2
-PLIST_SUB+=	NAUTILUS=""
-.else
-PLIST_SUB+=	NAUTILUS="@comment "
-CONFIGURE_ARGS+=--disable-nautilus-actions
-.endif
+NAUTILUS_DESC=	Enable Nautilus extension
+NAUTILUS_USE=	GNOME=nautilus3
+NAUTILUS_CONFIGURE_ENABLE=	nautilus-actions
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/src/fr-command-tar.c \
 		${WRKSRC}/src/fr-command-zip.c
 
+.include <bsd.port.options.mk>
+
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}/${DOCSDIR}
 .endfor
 .endif
 

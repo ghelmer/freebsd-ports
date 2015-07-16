@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	dfvfs
-PORTVERSION=	20140604
+PORTVERSION=	20150129
 CATEGORIES=	security devel python
-MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSZTI3MWV6di1fRDg/ \
+MASTER_SITES=	https://github.com/log2timeline/dfvfs/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -12,10 +12,14 @@ MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Digital Forensics Virtual File System
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	libewf>=0:${PORTSDIR}/devel/libewf \
+RUN_DEPENDS=	libbde>=a:${PORTSDIR}/devel/libbde \
+		libewf>=0:${PORTSDIR}/devel/libewf \
 		libqcow>=a:${PORTSDIR}/devel/libqcow \
+		libsigscan>=e:${PORTSDIR}/devel/libsigscan \
 		libsmdev>=a:${PORTSDIR}/devel/libsmdev \
+		libsmraw>=a:${PORTSDIR}/devel/libsmraw \
 		libvhdi>=e:${PORTSDIR}/devel/libvhdi \
 		libvmdk>=e:${PORTSDIR}/devel/libvmdk \
 		libvshadow>=0:${PORTSDIR}/devel/libvshadow \
@@ -23,9 +27,8 @@ RUN_DEPENDS=	libewf>=0:${PORTSDIR}/devel/libewf \
 		${PYTHON_PKGNAMEPREFIX}protobuf>=0:${PORTSDIR}/devel/py-protobuf \
 		${PYTHON_PKGNAMEPREFIX}pytsk>=0:${PORTSDIR}/sysutils/py-pytsk
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 PORTDOCS=	ACKNOWLEDGEMENTS AUTHORS
 
@@ -34,5 +37,7 @@ OPTIONS_DEFINE=	DOCS
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
+
+# Note: for regression tests set LANG to en_US.UTF-8
 
 .include <bsd.port.mk>

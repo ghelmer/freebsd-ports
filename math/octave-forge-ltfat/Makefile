@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	octave-forge-ltfat
-PORTVERSION=	1.4.4
+PORTVERSION=	2.0.1
+PORTEVISION=	1
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -11,9 +12,11 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
-LIB_DEPENDS=	fftw3:${PORTSDIR}/math/fftw3 \
-		portaudio:${PORTSDIR}/audio/portaudio2 \
-		cblas:${PORTSDIR}/math/cblas
+LIB_DEPENDS=	libfftw3.so:${PORTSDIR}/math/fftw3 \
+		libportaudio.so:${PORTSDIR}/audio/portaudio \
+		libcblas.so:${PORTSDIR}/math/cblas
+
+BROKEN=		Installation has unresolved issues
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

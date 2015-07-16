@@ -2,15 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	ai4r
-PORTVERSION=	1.12
+PORTVERSION=	1.13
 CATEGORIES=	science rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	Various Ruby artificial intelligence algorithm implementations 
+COMMENT=	Various Ruby artificial intelligence algorithm implementations
 
-USE_RUBY=		yes
-USE_RUBYGEMS=		yes
+LICENSE=	MPL
+
+USE_RUBY=	yes
+USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 
 .include <bsd.port.mk>

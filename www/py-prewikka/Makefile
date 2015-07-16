@@ -3,6 +3,7 @@
 
 PORTNAME=	prewikka
 PORTVERSION=	1.0.1p1
+PORTREVISION=	1
 CATEGORIES=	www security python
 MASTER_SITES=	https://www.prelude-ids.org/attachments/download/286/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +15,8 @@ BUILD_DEPENDS=	cheetah-compile:${PORTSDIR}/devel/py-cheetah
 LIB_DEPENDS=	libprelude.so:${PORTSDIR}/security/libprelude \
 		libpreludedb.so:${PORTSDIR}/security/libpreludedb
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
+USES=		python:2
+USE_PYTHON=	distutils
 
 OPTIONS_DEFINE=	NLS
 
@@ -23,9 +24,9 @@ OPTIONS_DEFINE=	NLS
 
 .if ${PORT_OPTIONS:MNLS}
 USES+=		gettext
-PLIST_SUB+=		NLS=""
+PLIST_SUB+=	NLS=""
 .else
-PLIST_SUB+=		NLS="@comment "
+PLIST_SUB+=	NLS="@comment "
 .endif
 
 post-patch:

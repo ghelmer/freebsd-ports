@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	spideroak
-PORTVERSION=	5.1.3
-#PORTREVISION=	0
+PORTVERSION=	5.1.8
+PORTREVISION=	0
 CATEGORIES=	net
-MASTER_SITES=	https://spideroak.com/getbuild?platform=slackware&arch=i386&dummy=/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-i686-1
+MASTER_SITES=	http://nivit.altervista.org/FreeBSD/ports/distfiles/${PORTNAME}/ \
+		https://spideroak.com/getbuild?platform=slackware&arch=i386&dummy=/
+DISTNAME=	SpiderOak-${PORTVERSION}-i686-1
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	SpiderOak Client (Linux version)
@@ -23,7 +24,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	binary distribution
 OPTIONS_DEFINE=	DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
-OPTIONS_SUB=	MANPAGES
+OPTIONS_SUB=	yes
 
 PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,${PREFIX}/,,} \
 		BINMODE=${BINMODE}
@@ -37,8 +38,7 @@ SUB_FILES=	pkg-message
 
 USE_LINUX=	yes
 USE_LINUX_APPS=	xorglibs
-USE_PYTHON=	2
-USES=	desktop-file-utils
+USES=		desktop-file-utils python:2 tar:tgz
 
 .include <bsd.port.options.mk>
 
@@ -51,16 +51,15 @@ do-install:
 	${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/etc/)
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	@(cd ${WRKDIR}/opt/SpiderOak/lib && \
-	${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
+	${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR} "-not -name SpiderOak")
+	${INSTALL_PROGRAM} ${WRKDIR}/opt/SpiderOak/lib/SpiderOak ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/usr/bin/SpiderOak ${STAGEDIR}${PREFIX}/bin/SpiderOak
 	${LN} -sf SpiderOak ${STAGEDIR}${PREFIX}/bin/spideroak
 	${LOCALBASE}/bin/desktop-file-install \
 		--mode=${SHAREMODE} --dir=${STAGEDIR}${DESKTOPDIR} \
 		${WRKDIR}/usr/share/applications/SpiderOak.desktop
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKDIR}/usr/share/doc/SpiderOak/globalsync-linux.pdf ${STAGEDIR}${DOCSDIR}
-.endif
 .if ${PORT_OPTIONS:MMANPAGES}
 	${INSTALL_MAN} ${WRKDIR}/usr/share/man/man1/SpiderOak.1.gz ${STAGEDIR}${MANPREFIX}/man/man1/
 .endif

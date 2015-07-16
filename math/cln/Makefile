@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cln
-PORTVERSION=	1.3.2
+PORTVERSION=	1.3.4
 CATEGORIES=	math devel
 MASTER_SITES=	http://www.ginac.de/CLN/ \
 		http://www.mirrors.wiretapped.net/security/cryptography/libraries/math/cln/ \
@@ -11,34 +11,22 @@ MASTER_SITES=	http://www.ginac.de/CLN/ \
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Class Library for Numbers
 
-LIB_DEPENDS=	gmp.10:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
 
-USE_AUTOTOOLS=	libtool
-USES=		gmake pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-gmp
+CONFIGURE_ARGS=	--with-gmp=${LOCALBASE}
+INSTALL_TARGET=	install-strip
+USES=		gmake libtool pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 
 INFO=		cln
 
-STRIP=		# none
-
-CFLAGS+=	-fPIC
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+BROKEN_sparc64=	Does not compile on sparc64
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} 's|/usr/local|${PREFIX}|' ${WRKSRC}/Makefile.in
-
-pre-build:
-.if exists(${LOCALBASE}/lib/libcln.so.3)
-BROKEN=		Does not compile when older version is installed. Please pkg_delete old cln first
+.if ${ARCH} == armv6
+CPPFLAGS+=	-DNO_ASM
 .endif
 
 .include <bsd.port.post.mk>

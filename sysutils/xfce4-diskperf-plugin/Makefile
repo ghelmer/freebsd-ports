@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-diskperf-plugin
-PORTVERSION=	2.5.4
+PORTVERSION=	2.5.5
 CATEGORIES=	sysutils xfce
-MASTER_SITES=	${MASTER_SITE_XFCE}
-MASTER_SITE_SUBDIR=	src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -13,16 +12,17 @@ COMMENT=	Graphical representation of the disk IO
 
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install-strip
+USES=		gmake libtool pkgconfig gettext-tools xfce tar:bzip2
 USE_GNOME=	gtk20 intltool intlhack
-USE_XFCE=	configenv libmenu panel
-USES=		gmake pkgconfig tar:bzip2
+USE_XFCE=	panel
 
-LDFLAGS+=	-ldevstat
+LIBS+=		-ldevstat
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=	gettext
+NLS_USES=	gettext-runtime
 
 .include <bsd.port.options.mk>
 

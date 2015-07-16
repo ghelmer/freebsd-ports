@@ -3,17 +3,19 @@
 
 PORTNAME=	gdvrecv
 PORTVERSION=	1.2
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DV tools for FreeBSD
 
-USES=		tar:bzip2
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+USES=		python tar:bzip2
 USE_GNOME=	pygtk2
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USE_PYTHON=	distutils
 DESKTOP_ENTRIES="Capture Video" \
 		"Capture from FireWire Camera" \
 		"${PREFIX}/share/pixmaps/gdvrecv/camcorder.png" \
@@ -22,5 +24,8 @@ DESKTOP_ENTRIES="Capture Video" \
 		true
 
 CONFLICTS=	dvts-[0-9]*
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/firewire.so
 
 .include <bsd.port.mk>

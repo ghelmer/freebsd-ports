@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	phpMyAdmin
-DISTVERSION=	4.2.6
+DISTVERSION=	4.4.10
 CATEGORIES=	databases www
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${DISTVERSION}
 DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
@@ -13,7 +13,9 @@ COMMENT=	Set of PHP-scripts to manage MySQL over the web
 NO_ARCH=	yes
 LICENSE=	GPLv2
 
-USES=		shebangfix tar:xz
+USES=		cpe shebangfix tar:xz
+CPE_PRODUCT=	${PORTNAME:tl}
+
 NO_BUILD=	yes
 .if !defined(WITHOUT_PHP_DEPENDS)
 IGNORE_WITH_PHP=52
@@ -71,20 +73,16 @@ USE_PHP+=	${opt:tl}
 
 post-patch:
 	cd ${WRKSRC} ; \
-	for emptydir in $$( ${FIND} . -type d -empty -print ) ; do \
-	    ${TOUCH} $${emptydir}/.keep-me ; \
-	done ; \
 	${CP} ${FILESDIR}/${CFG_FILE}.sample ${WRKSRC}/${CFG_FILE}.sample ; \
 	${FIND} . ! -type d ! -name ${CFG_FILE}.sample ! -name '*.bak' | \
 	    ${SORT} | ${SED} -e "s,^\.,%%WWWDIR%%,"   >${PLIST} ; \
 	${CAT} ${PKGDIR}/pkg-plist-chunk	     >>${PLIST} ; \
-	${FIND} . -type d | ${SORT} -r | ${SED} \
-	    -e "s,^\.$$,@dirrmtry %%WWWDIR%%," \
-	    -e "s,^\.,@dirrm %%WWWDIR%%,"	     >>${PLIST}
+	for emptydir in $$( ${FIND} . -type d -empty -print ) ; do \
+	    ${ECHO} "@dir(,,)$${emptydir}"	     >>${PLIST} ; \
+	done ; \
 
-do-install: install-app install-conf
 
-install-app:
+do-install:
 	cd ${WRKSRC} ; \
 	for src in $$( ${FIND} . ! -name .cvsignore ! -name '*.bak' ) ; do \
 	    dst=${STAGEDIR}${WWWDIR}$${src#.} ; \
@@ -94,9 +92,5 @@ install-app:
 		${INSTALL_DATA} "$$src" "$$dst" ; \
 	    fi \
 	done
-
-install-conf: install-app
-	${CHMOD} 0640 ${STAGEDIR}${WWWDIR}/${CFG_FILE}.sample ; \
-	${CHGRP} ${WWWGRP} ${STAGEDIR}${WWWDIR}/${CFG_FILE}.sample ;
 
 .include <bsd.port.mk>

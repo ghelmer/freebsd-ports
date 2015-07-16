@@ -3,21 +3,20 @@
 
 PORTNAME=	yahtzee
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	games/strategy
+MASTER_SITES=	SUNSITE/games/strategy
 DISTNAME=	${PORTNAME}-src
-EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses version of the dice game for one or more players
 
+USES=		tar:Z
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/yahtzee ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} -m 0755 ${STAGEDIR}${DATADIR}
-	${INSTALL_DATA} -m 0664 /dev/null ${STAGEDIR}${DATADIR}/yahtzee.sco
+	@${MKDIR} -m 0755 ${STAGEDIR}/var/games/yahtzee
+	${TOUCH} ${STAGEDIR}/var/games/yahtzee/yahtzee.sco.sample
 
 .include <bsd.port.mk>

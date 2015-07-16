@@ -22,6 +22,12 @@ NO_WRKSUBDIR=	yes
 USES=		zip:infozip
 MAKEFILE=	${FILESDIR}/Makefile.inform
 
+PLIST_FILES=	bin/${PORTNAME}
+PORTDATA=	*
+PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${STAGEDIR}${DATADIR} && \

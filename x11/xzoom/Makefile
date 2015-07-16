@@ -5,14 +5,12 @@ PORTNAME=	xzoom
 PORTVERSION=	0.3
 PORTREVISION=	2
 CATEGORIES=	x11 accessibility
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	libs/X
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	SUNSITE/libs/X
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Magnify, rotate, mirror the image on the X screen
 
-USES=		imake
+USES=		imake tar:tgz
 USE_XORG=	x11 xext
 PLIST_FILES=	bin/xzoom man/man1/xzoom.1.gz
 

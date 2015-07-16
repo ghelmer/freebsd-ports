@@ -2,7 +2,7 @@
 
 PORTNAME=	prayer
 PORTVERSION=	1.3.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail www
 MASTER_SITES=	ftp://ftp.csx.cam.ac.uk/pub/software/email/prayer/
 
@@ -35,7 +35,8 @@ GROUPS=		prayer
 
 SESSIONCACHE_USE=	BDB=5+
 LDAP_USE=		OPENLDAP=yes
-TIDY_LIB_DEPENDS=	libtidy-0.99.so:${PORTSDIR}/www/tidy-lib
+SSL_USE=		OPENSSL=yes
+TIDY_LIB_DEPENDS=	libtidy.so:${PORTSDIR}/www/tidy-lib
 
 GID!=		id -g
 DESTDIRNAME=	BROOT

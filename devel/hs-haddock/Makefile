@@ -2,28 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	haddock
-PORTVERSION=	2.13.2
-PORTREVISION=	4
+PORTVERSION=	2.14.3
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Documentation-generation tool for Haskell libraries
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USE_CABAL=	ghc-paths xhtml>=3000.2
+USE_CABAL=	ghc-paths
 
 USE_ALEX=	true
 USE_HAPPY=	true
 
 EXECUTABLE=	haddock-${PORTVERSION}
 
-PLIST_SUB+=	GHC_HADDOCK_CMD=${GHC_HADDOCK_CMD} HADDOCK=${PREFIX}/bin/haddock EXECUTABLE=${PREFIX}/bin/${EXECUTABLE}
+PLIST_SUB+=	GHC_HADDOCK_CMD=${GHC_HADDOCK_CMD} HADDOCK=${PREFIX}/bin/haddock EXECUTABLE=${PREFIX}/bin/haddock-${PORTVERSION}
 
 CONFIGURE_ARGS+=	--program-suffix=-${PORTVERSION}
-
-post-install::
-	@${LN} -sf ${PREFIX}/bin/${EXECUTABLE} ${PREFIX}/bin/haddock
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

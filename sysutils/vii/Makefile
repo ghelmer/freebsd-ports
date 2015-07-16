@@ -3,10 +3,10 @@
 
 PORTNAME=	vii
 PORTVERSION=	4.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	http://vii.sourceforge.net/ \
-		CRITICAL
+		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Execute a command repeatedly and scroll the output

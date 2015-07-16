@@ -6,8 +6,7 @@ PORTVERSION=	2.1.4
 PORTREVISION=	24
 CATEGORIES=	sysutils
 #MASTER_SITES=	http://hg.linux-ha.org/lha-2.1/archive/STABLE-2.1.4.tar.bz2
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	kuriyama/heartbeat
+MASTER_SITES=	LOCAL/kuriyama/heartbeat
 DISTNAME=	STABLE-${PORTVERSION}
 DIST_SUBDIR=	heartbeat
 
@@ -17,24 +16,23 @@ COMMENT=	Subsystem for High-Availability Clustering
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
+		libgnutls.so:${PORTSDIR}/security/gnutls \
 		libnet.so:${PORTSDIR}/net/libnet \
 		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid \
 		libxml2.so:${PORTSDIR}/textproc/libxml2
 BUILD_DEPENDS=	bison:${PORTSDIR}/devel/bison
-PATCH_DEPENDS=	libtool:${PORTSDIR}/devel/libtool
 
-USE_AUTOTOOLS=	autoconf autoheader automake aclocal libltdl libtoolize
-AUTOMAKE_ARGS+=	--add-missing --include-deps --copy
-ACLOCAL_ARGS+=	-I ${LOCALBASE}/share/aclocal
-
-USES=		gettext gmake libtool pkgconfig tar:bzip2 shebangfix
+USES=		autoreconf cpe gettext gmake libtool pkgconfig python tar:bzip2 \
+		shebangfix
 SHEBANG_FILES=	ldirectord/ldirectord.in
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
-USE_PYTHON=	yes
+
+CPE_VENDOR=	linux-ha
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 
 USERS=		hacluster
 GROUPS=		haclient
@@ -42,8 +40,7 @@ GROUPS=		haclient
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libnet11
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LOCALBASE}/lib/libnet11
 
-CONFIGURE_ARGS=	--prefix=${PREFIX} \
-		--localstatedir=/var \
+CONFIGURE_ARGS=	--localstatedir=/var \
 		--with-miBsdir=${PREFIX}/snmp/mibs \
 		--with-initdir=${PREFIX}/etc/rc.d \
 		--with-group-id=275 \
@@ -59,7 +56,7 @@ PKGDEINSTALL=	${PKGINSTALL}
 
 PLIST_SUB=	USER=${USERS} GROUP=${GROUPS}
 
-OPTIONS_DEFINE=		MGMT LDIRECTORD APCSNMP DRAC3
+OPTIONS_DEFINE=		MGMT LDIRECTORD APCSNMP DRAC3 DOCS
 MGMT_DESC=		Enable X11 Management Utilities
 LDIRECTORD_DESC=	Enable Linux Director Daemon
 APCSNMP_DESC=		Enable APC SNMP Stonith Device
@@ -128,18 +125,6 @@ post-extract:
 	@${CP} -f ${FILESDIR}/heartbeat.in ${WRKSRC}/heartbeat/init.d/
 
 post-patch:
-	@${LN} -s ${WRKSRC}/include/config.h ${WRKSRC}/config.h
-
-	@${LN} -s $AUTOCONF ${WRKSRC}/autoconf
-	@${LN} -s $AUTOHEADER ${WRKSRC}/autoheader
-	@${LN} -s $AUTOMAKE ${WRKSRC}/automake
-	@${LN} -s $LIBTOOL ${WRKSRC}/libtool
-
-	@cd ${WRKSRC} && \
-	${LIBTOOLIZE} --automake --ltdl --force --copy && \
-	${TAR} -cf libltdl.tar libltdl && \
-	${RM} -rf libltdl
-
 .if ${PORT_OPTIONS:MDOCS}
 	@${REINPLACE_CMD} -e 's|^\(docdir.*doc/\).*|\1${PORTNAME}|' \
 		${WRKSRC}/configure.in \
@@ -149,20 +134,10 @@ post-patch:
 		${WRKSRC}/Makefile.am
 .endif
 
-pre-install:
-	@${SH} ${PKGINSTALL} ${PKGNAME} PRE-INSTALL
-
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.*
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/heartbeat/plugins/*/*.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pils/plugins/InterfaceMgr/generic.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/stonith/plugins/stonith2/*.so
 	${MKDIR} -m 0750 ${STAGEDIR}/var/run/heartbeat/pengine
+	${MKDIR} ${STAGEDIR}/var/lib/heartbeat/mgmt
 	${TOUCH} ${STAGEDIR}/var/run/heartbeat.pid
-
-.if ${PORT_OPTIONS:MMGMT}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/heartbeat-gui/_pymgmt.so.0.0.0
-.endif
 
 .if ${PORT_OPTIONS:MDOCS}
 	# Install sample configuration

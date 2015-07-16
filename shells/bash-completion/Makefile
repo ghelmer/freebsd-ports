@@ -3,13 +3,15 @@
 
 PORTNAME=	bash-completion
 PORTVERSION=	2.1
-PORTREVISION=	3
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	shells
 MASTER_SITES=	http://bash-completion.alioth.debian.org/files/
 
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Programmable completion library for Bash
+
+LICENSE=	GPLv2
 
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
@@ -19,6 +21,8 @@ USES=		gmake tar:bzip2
 
 SUB_FILES=	pkg-message
 SUB_LIST+=	RUNFILE=${DATADIR}/bash_completion.sh
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|FLAC|&\|flv\|FLV|;' ${WRKSRC}/bash_completion

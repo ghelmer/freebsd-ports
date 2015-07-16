@@ -9,30 +9,25 @@ include/sswf/libsswf.h
 include/sswf/libsswf_as.h
 include/sswf/libsswf_asas.h
 include/sswf/libsswf_c.h
-lib/libsswf-%%VERSION%%.so
 lib/libsswf-%%VERSION%%.so.3
+lib/libsswf-%%VERSION%%.so.3.0.0
 lib/libsswf.a
-lib/libsswf.la
 lib/libsswf.so
-lib/libsswf_as-%%VERSION%%.so
 lib/libsswf_as-%%VERSION%%.so.2
+lib/libsswf_as-%%VERSION%%.so.2.0.0
 lib/libsswf_as.a
-lib/libsswf_as.la
 lib/libsswf_as.so
-lib/libsswf_asas-%%VERSION%%.so
 lib/libsswf_asas-%%VERSION%%.so.2
+lib/libsswf_asas-%%VERSION%%.so.2.0.0
 lib/libsswf_asas.a
-lib/libsswf_asas.la
 lib/libsswf_asas.so
-lib/libsswf_asc-%%VERSION%%.so
 lib/libsswf_asc-%%VERSION%%.so.1
+lib/libsswf_asc-%%VERSION%%.so.1.0.0
 lib/libsswf_asc.a
-lib/libsswf_asc.la
 lib/libsswf_asc.so
-lib/libsswf_c-%%VERSION%%.so
 lib/libsswf_c-%%VERSION%%.so.2
+lib/libsswf_c-%%VERSION%%.so.2.0.0
 lib/libsswf_c.a
-lib/libsswf_c.la
 lib/libsswf_c.so
 libdata/pkgconfig/libsswf.pc
 libdata/pkgconfig/libsswf_as.pc
@@ -233,32 +228,3 @@ libdata/pkgconfig/libsswf_c.pc
 %%DATADIR%%/scripts/system/capabilities.asc
 %%DATADIR%%/scripts/system/security.asc
 %%DATADIR%%/scripts/system/system.asc
-@dirrm %%DATADIR%%/scripts/system
-@dirrm %%DATADIR%%/scripts/native
-@dirrm %%DATADIR%%/scripts/global
-@dirrm %%DATADIR%%/scripts/fonts
-@dirrm %%DATADIR%%/scripts/extensions
-@dirrm %%DATADIR%%/scripts
-@dirrm %%DATADIR%%/samples/web-site-anim
-@dirrm %%DATADIR%%/samples/sun-flower
-@dirrm %%DATADIR%%/samples/showfont
-@dirrm %%DATADIR%%/samples/scroller
-@dirrm %%DATADIR%%/samples/news-samples
-@dirrm %%DATADIR%%/samples/new-anim
-@dirrm %%DATADIR%%/samples/morph
-@dirrm %%DATADIR%%/samples/logo
-@dirrm %%DATADIR%%/samples/line-styles
-@dirrm %%DATADIR%%/samples/libya
-@dirrm %%DATADIR%%/samples/lanuit-mp3
-@dirrm %%DATADIR%%/samples/grid-button
-@dirrm %%DATADIR%%/samples/gradients
-@dirrm %%DATADIR%%/samples/functions
-@dirrm %%DATADIR%%/samples/dyn-button
-@dirrm %%DATADIR%%/samples/clock
-@dirrm %%DATADIR%%/samples/check_version
-@dirrm %%DATADIR%%/samples/c-samples
-@dirrm %%DATADIR%%/samples/asc_logo
-@dirrm %%DATADIR%%/samples
-@dirrm %%DATADIR%%/misc
-@dirrm %%DATADIR%%
-@dirrm include/sswf

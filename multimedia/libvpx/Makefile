@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvpx
-PORTVERSION=	1.3.0
+PORTVERSION=	1.4.0
 CATEGORIES=	multimedia
 MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${DISTVERSION}.orig
@@ -13,16 +13,17 @@ COMMENT=	VP8/VP9 Codec SDK
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		yasm:${PORTSDIR}/devel/yasm
+BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm
 
-USES=		gmake perl5 tar:bzip2
+USES=		cpe gmake perl5 shebangfix tar:bzip2
+CPE_VENDOR=	john_koleszar
 HAS_CONFIGURE=	yes
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	DEBUG POSTPROC RUNTIME THREADS SHARED
 OPTIONS_DEFAULT=	POSTPROC RUNTIME THREADS SHARED
+OPTIONS_EXCLUDE_armv6=	RUNTIME
 POSTPROC_DESC=	Enable postprocessing
 RUNTIME_DESC=	Enable runtime CPU detection
 SHARED_DESC=	Enable shared-library support
@@ -45,6 +46,8 @@ POSTPROC_CONFIGURE_ON=	--enable-postproc
 RUNTIME_CONFIGURE_ON=	--enable-runtime-cpu-detect
 THREADS_CONFIGURE_OFF=	--disable-multithread
 SHARED_CONFIGURE_ON=	--enable-shared
+
+SHEBANG_FILES=	build/make/ads2gas.pl
 
 .include <bsd.port.options.mk>
 
@@ -74,6 +77,9 @@ CONFIGURE_ARGS+=	--target=ia64-linux-gcc
 CONFIGURE_ARGS+=	--target=ppc32-linux-gcc
 .elif ${ARCH} == "powerpc64"
 CONFIGURE_ARGS+=	--target=ppc64-linux-gcc
+.elif ${ARCH} == "armv6"
+CONFIGURE_ARGS+=	--target=armv6-linux-gcc --cpu=armv6
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-build_make_Makefile
 .else
 IGNORE=	no support for ${ARCH} the moment. testing/patches are welcome
 .endif
@@ -81,11 +87,5 @@ IGNORE=	no support for ${ARCH} the moment. testing/patches are welcome
 post-patch:
 	@${REINPLACE_CMD} 's|\(link_with_cc\)=gcc|\1=$${CC}|' \
 		${WRKSRC}/build/make/configure.sh
-	@${REINPLACE_CMD} -e 's|%%DESTDIR%%|${STAGEDIR}|g' \
-	       	${WRKSRC}/build/make/Makefile ${WRKSRC}/libs.mk
-	@${GREP} -Rl '^#!/bin/bash' ${WRKSRC} |${XARGS} ${REINPLACE_CMD} \
-		-e 's,#!/bin/bash,#!/usr/bin/env bash,g'
-	@${GREP} -Rl -- '-l\?pthread' ${WRKSRC} |${XARGS} ${REINPLACE_CMD} -E \
-		-e 's/-l?pthread/${PTHREAD_LIBS}/g'
 
 .include <bsd.port.mk>

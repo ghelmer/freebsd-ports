@@ -3,6 +3,7 @@
 
 PORTNAME=	xtr
 PORTVERSION=	1.50e.0.2
+PORTREVISION=	1
 CATEGORIES=	japanese textproc
 MASTER_SITES=	ftp://ftp.abk.nu/pub/redist/xtr/
 DISTNAME=	${PORTNAME}1.50e-0.2
@@ -17,6 +18,8 @@ USE_GCC=	yes
 GNU_CONFIGURE=	yes
 
 NO_CDROM=	Need to obtain permission for commercial redistribution
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

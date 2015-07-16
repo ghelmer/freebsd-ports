@@ -2,38 +2,49 @@
 # $FreeBSD$
 
 PORTNAME=	pen
-PORTVERSION=	0.18.0
+PORTVERSION=	0.29.0
 CATEGORIES=	net
-MASTER_SITES=	ftp://siag.nu/pub/pen/ \
-		http://siag.nu/pub/pen/
+MASTER_SITES=	http://siag.nu/pub/pen/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A load balancer for simple TCP based protocols
+MAINTAINER=	danilo@FreeBSD.org
+COMMENT=	Load balancer for UDP and TCP based protocols
 
-GNU_CONFIGURE=		yes
-USE_OPENSSL=		yes
-USE_RC_SUBR=		pen
-CONFIGURE_ARGS=		--with-daemon --with-docdir=${DOCSDIR} \
-			--with-ssl=${OPENSSLBASE}
+LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
 
-PORTDOCS=		penstats HOWTO AUTHORS README ChangeLog COPYING
-PLIST_FILES=		bin/mergelogs bin/pen bin/penctl bin/penlog \
-			bin/penlogd man/man1/mergelogs.1.gz \
-			man/man1/pen.1.gz man/man1/penctl.1.gz \
-			man/man1/penlog.1.gz man/man1/penlogd.1.gz
+GNU_CONFIGURE=	yes
+USE_OPENSSL=	yes
+USE_RC_SUBR=	pen
+CONFIGURE_ARGS=	--with-daemon --with-docdir=${DOCSDIR} --with-geoip \
+		--with-ssl=${OPENSSLBASE}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
+
+PORTDOCS=	penstats HOWTO AUTHORS README ChangeLog COPYING
+PLIST_FILES=	bin/mergelogs bin/pen bin/penctl bin/penlog \
+		bin/penlogd man/man1/mergelogs.1.gz \
+		man/man1/pen.1.gz man/man1/penctl.1.gz \
+		man/man1/penlog.1.gz man/man1/penlogd.1.gz
+
+OPTIONS_DEFINE=	DEBUG DOCS KQUEUE
+OPTIONS_DEFAULT=KQUEUE
+KQUEUE_DESC=	Use kqueue backend
 
 .if defined(WITH_FDSETSIZE)
 CONFIGURE_ARGS+=	--with-fd_setsize=${WITH_FDSETSIZE}
 .endif
 
-.if defined(WITH_POLL)
-CONFIGURE_ARGS+=	--with-poll
-.else
-CONFIGURE_ARGS+=	--with-kqueue
+KQUEUE_CONFIGURE_ON=	--with-kqueue
+KQUEUE_CONFIGURE_OFF=	--with-poll
+DEBUG_CONFIGURE_ENABLE=	debugging
+
+.include <bsd.port.pre.mk>
+
+# DSR needs a newer version of the netmap's API
+.if ${OSVERSION} < 903000 || (${OSVERSION} >= 1000000 && ${OSVERSION} < 1001000)
+CONFIGURE_ARGS+=	--without-dsr
 .endif
 
-.if defined(NOPORTDOCS)
-MAKE_ARGS+=	-DNOPORTDOCS
-.endif
+post-patch:
+	@${REINPLACE_CMD} 's/-pg//' ${WRKSRC}/configure
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

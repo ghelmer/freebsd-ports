@@ -3,6 +3,7 @@
 
 PORTNAME=	XML-STX
 PORTVERSION=	0.43
+PORTREVISION=	2
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,8 +16,12 @@ BUILD_DEPENDS=	p5-XML-SAX>=0:${PORTSDIR}/textproc/p5-XML-SAX \
 		p5-XML-NamespaceSupport>=0:${PORTSDIR}/textproc/p5-XML-NamespaceSupport
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	examples/tester.pl examples/stx-filter.pl
 USE_PERL5=	configure patch
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-extract:
 	@${MKDIR} ${WRKSRC}/scripts
@@ -29,13 +34,11 @@ post-configure:
 	@${PERL} -pi -e 's/^(POD2MAN_EXE.*)$$/\1 --lax/;' ${WRKSRC}/Makefile
 
 post-install:
-.ifndef(NOPORTDOCS)
 	@${ECHO_MSG} "===>   Installing additional documentation for ${PKGNAME}"
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
 	@${ECHO_MSG} "===>   Installing examples for ${PKGNAME}"
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
-.endif
 
 .include <bsd.port.mk>

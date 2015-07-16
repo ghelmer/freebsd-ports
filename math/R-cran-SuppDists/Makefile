@@ -3,9 +3,9 @@
 
 PORTNAME=	SuppDists
 DISTVERSION=	1.1-9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
-MASTER_SITES=	${MASTER_SITE_CRAN} \
+MASTER_SITES=	CRAN \
 		http://r.research.att.com/benchmarks/:benchmark \
 		LOCAL/bf:benchmark
 DISTFILES=	${PORTNAME}_${DISTVERSION}${EXTRACT_SUFX} \
@@ -19,7 +19,7 @@ LICENSE=		GPLv2
 
 BENCHMARK_SCRIPT=	R-benchmark-25.R
 USES=	cran:auto-plist
-WRKSRC =		${WRKDIR}/${PORTNAME}
+WRKSRC=			${WRKDIR}/${PORTNAME}
 
 .if defined(MAINTAINER_MODE)
 USES+=	dos2unix

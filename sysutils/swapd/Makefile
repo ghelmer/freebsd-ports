@@ -3,11 +3,12 @@
 
 PORTNAME=	swapd
 PORTVERSION=	1.0.5
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.rkeene.org/files/oss/swapd/
 
 MAINTAINER=	leeym@FreeBSD.org
-COMMENT=	A daemon that watches free memory and manages swap files
+COMMENT=	Daemon that watches free memory and manages swap files
 
 LIB_DEPENDS=	libstatgrab.so:${PORTSDIR}/devel/libstatgrab
 

@@ -1,17 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	clang-cheri
-PORTVERSION=	3.4.20140528
+PORTVERSION=	3.7.d20150512
 CATEGORIES=	lang devel
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	brooks
+MASTER_SITES=	LOCAL/brooks
 
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	C, Objective-C, and C++ compiler with CHERI CPU support
 
-USES=		cmake:outsource compiler:c++11-lib ninja perl5 shebangfix
-USE_BZIP2=	yes
-USE_PYTHON=	yes
+USES=		cmake:outsource compiler:c++11-lib ninja perl5 python \
+		shebangfix tar:bzip2
 
 BUILD_DEPENDS=	swig1.3:${PORTSDIR}/devel/swig13
 
@@ -41,21 +39,14 @@ COMMANDS=	\
 		bugpoint \
 		clang \
 		clang++ \
-		clang-3.5 \
+		clang-3.7 \
 		clang-check \
 		clang-cl \
 		clang-cpp \
 		clang-format \
 		git-clang-format \
 		llc \
-		lldb \
-		lldb-3.5 \
-		lldb-gdbserver \
-		lldb-gdbserver-3.5 \
-		lldb-platform \
-		lldb-platform-3.5 \
 		lli \
-		lli-child-target \
 		llvm-ar \
 		llvm-as \
 		llvm-bcanalyzer \
@@ -96,8 +87,8 @@ do-fetch:
 	svn export --force https://github.com/CTSRD-CHERI/llvm/trunk ${WRKSRC}
 	svn export --force https://github.com/CTSRD-CHERI/clang/trunk \
 	    ${WRKSRC}/tools/clang
-	svn export --force https://github.com/CTSRD-CHERI/lldb/trunk \
-	    ${WRKSRC}/tools/lldb
+	#svn export --force https://github.com/CTSRD-CHERI/lldb/trunk \
+	#    ${WRKSRC}/tools/lldb
 	cd ${WRKDIR}; tar cvfy ${DISTDIR}/${DISTNAME}.tar.bz2 ${DISTNAME}
 .if ${USER} == brooks || ${USER} == bed22
 	scp ${DISTDIR}/${DISTNAME}.tar.bz2 \
@@ -127,7 +118,6 @@ post-install:
 build-plist:
 	${RM} -f ${PLIST}
 	${MAKE} makeplist | \
-	    ${GREP} -v /you/have/to/check/what/makeplist/gives/you | \
-	    ${SED} -e 's/%%PERL_ARCH%%/${PERL_ARCH}/' >> ${PLIST}
+	    ${GREP} -v /you/have/to/check/what/makeplist/gives/you >> ${PLIST}
 
 .include <bsd.port.post.mk>

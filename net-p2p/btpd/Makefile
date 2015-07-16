@@ -9,15 +9,17 @@ MASTER_SITES=	GHC
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bittorrent client consisting of a daemon and client commands
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE BSD3CLAUSE
+LICENSE_COMB=	multi
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}
 
+USES=		autoreconf
 USE_OPENSSL=	yes
-USE_AUTOTOOLS=	aclocal autoconf
+GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS
 

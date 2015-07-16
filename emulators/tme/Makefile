@@ -3,7 +3,7 @@
 
 PORTNAME=	tme
 PORTVERSION=	0.8
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	emulators
 MASTER_SITES=	http://people.csail.mit.edu/fredette/tme/
 
@@ -13,18 +13,19 @@ COMMENT=	Emulator for Sun 2/120, 3/150, and SPARCstation 2 machines
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler gmake gettext iconv perl5 pkgconfig
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+
+USES=		autoreconf compiler gettext gmake iconv libtool perl5 pkgconfig
 USE_GNOME=	gdkpixbuf2 gtk20
-USE_AUTOTOOLS=	libtool libltdl
-CONFIGURE_ENV=	ac_cv_have_isinff=no
-CONFIGURE_ARGS=	--disable-warnings
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-static --disable-warnings
 MAKE_ENV=	LANG=C
 MAKE_JOBS_UNSAFE=yes
+INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${WRKSRC}/ic/ieee754/.libs
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	EXAMPLES
 
@@ -35,12 +36,9 @@ CFLAGS+=	-fbracket-depth=1024
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e '/misc_hosts/s|= no|= xno|' \
-		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|\.\./ieee754|$$(top_builddir)/ic/ieee754|g' \
-		${WRKSRC}/ic/m68k/Makefile.in
-	@${REINPLACE_CMD} -e 's|\.\./ieee754|$$(top_builddir)/ic/ieee754|g' \
-		${WRKSRC}/ic/sparc/Makefile.in
+	@${RM} -r ${WRKSRC}/libltdl
+	@${REINPLACE_CMD} 's/LTDL_SHLIBPATH_VAR/LT_MODULE_PATH_VAR/' \
+		${WRKSRC}/libtme/Makefile.am ${WRKSRC}/libtme/module.c
 	@${REINPLACE_CMD} -e '/^#ifdef/s|\*/||' \
 		${WRKSRC}/libtme/misc.c
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' \

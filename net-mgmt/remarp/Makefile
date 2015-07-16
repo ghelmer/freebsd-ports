@@ -3,12 +3,13 @@
 
 PORTNAME=	remarp
 PORTVERSION=	0.05
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://freebsdcluster.org/~mich/software/ \
 		http://www.raccoon.kiev.ua/projects/remarp/
 
 MAINTAINER=	mich@FreeBSD.org
-COMMENT=	An SNMP-based ARP watcher
+COMMENT=	SNMP-based ARP watcher
 
 RUN_DEPENDS=	p5-AppConfig>=0:${PORTSDIR}/devel/p5-AppConfig \
 		p5-Net-SNMP>=0:${PORTSDIR}/net-mgmt/p5-Net-SNMP

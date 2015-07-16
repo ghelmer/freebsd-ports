@@ -3,6 +3,7 @@
 
 PORTNAME=	pyscss
 PORTVERSION=	1.2.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -17,16 +18,13 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:${PORTSDIR}/devel/py-pytest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Kronuz
-GH_COMMIT=	2c10593
 GH_PROJECT=	pyScss
-GH_TAGNAME=	v${PORTVERSION}
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 regression-test: build
 	@cd ${WRKSRC} && py.test

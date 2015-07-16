@@ -10,9 +10,11 @@ MASTER_SITES=	SF
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	TCL extension to connect to Sybase servers
 
+BROKEN=		Unfetchable
+
 LIB_DEPENDS=	libsybdb.so:${PORTSDIR}/databases/freetds
 
-USES=		tcl
+USES=		tcl uidfix
 TCL_DVER=	${TCL_VER:S/.//}
 MAKEFILE=	${FILESDIR}/Makefile.bsd
 MAKE_ARGS+=	TCL_VER=${TCL_VER} \

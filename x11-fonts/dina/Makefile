@@ -2,18 +2,17 @@
 
 PORTNAME=	dina
 PORTVERSION=	2.92
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	LOCAL/rakuco
 
 MAINTAINER=	rakuco@FreeBSD.org
-COMMENT=	A monospace bitmap font, primarily aimed at programmers
+COMMENT=	Monospace bitmap font, primarily aimed at programmers
 
 LICENSE=	MIT
 
+USES=		fonts
 BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
-
-FONTDIR=	lib/X11/fonts/${PORTNAME}
-PLIST_SUB=	FONTDIR=${FONTDIR}
 
 BDFLIST=	Dina_i400-10.bdf Dina_i400-8.bdf Dina_i400-9.bdf \
 		Dina_i700-10.bdf Dina_i700-8.bdf Dina_i700-9.bdf \
@@ -28,7 +27,7 @@ do-build:
 	${GZIP_CMD} ${WRKSRC}/BDF/*.pcf
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/${FONTDIR}
-	${INSTALL_DATA} ${WRKSRC}/BDF/*.pcf.gz ${STAGEDIR}${PREFIX}/${FONTDIR}
+	${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/BDF/*.pcf.gz ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

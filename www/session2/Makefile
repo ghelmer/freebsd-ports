@@ -10,11 +10,14 @@ MASTER_SITES=	http://quixote.idyll.org/session2/ \
 DISTNAME=	session2-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A quixote session manager with persistence support
+COMMENT=	Quixote session manager with persistence support
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
+LICENSE=	MIT
+
+USES=		python:2
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGVERSION=	0.6
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	MYSQL PGSQL DOCS
 OPTIONS_DEFAULT=	MYSQL PGSQL

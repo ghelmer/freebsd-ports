@@ -3,7 +3,7 @@
 
 PORTNAME=	ssltunnel
 PORTVERSION=	1.18
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.hsc.fr/ressources/outils/ssltunnel/download/
 PKGNAMESUFFIX=	-server
@@ -14,13 +14,14 @@ COMMENT=	PPP over SSL virtual private networking (server part)
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	TCPWRAPPERS
+OPTIONS_DEFINE=	TCPWRAPPERS DOCS
 TCPWRAPPERS_DESC=	libwrap support
 
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES+=	pkg-message
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-client
+USE_OPENSSL=	yes
 
 .include <bsd.port.options.mk>
 

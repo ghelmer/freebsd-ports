@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	rednotebook
-PORTVERSION=	1.8.0
+PORTVERSION=	1.9.0
 CATEGORIES=	deskutils python
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	rednotebook
+MASTER_SITES=	SF/rednotebook
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	cheunghonyu@gmail.com
@@ -18,12 +17,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml \
 		${LOCALBASE}/bin/xdg-open:${PORTSDIR}/devel/xdg-utils \
 		${PYTHON_PKGNAMEPREFIX}chardet>0:${PORTSDIR}/textproc/py-chardet
 
-USES=		desktop-file-utils gettext
+USES=		desktop-file-utils gettext python:2
 
 INSTALLS_ICONS=	yes
 USE_GNOME=	pygtk2
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

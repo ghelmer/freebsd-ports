@@ -31,7 +31,7 @@ OPTIONS_MULTI_DATABASE=	MYSQL PGSQL
 CGI_DESC=	Install admin/user CGI scripts
 
 OPTIONS_SUB=	yes
-PGSQL_USE=	PGSQL=yes
+PGSQL_USES=	pgsql
 MYSQL_USE=	MYSQL=yes
 
 .include <bsd.port.options.mk>
@@ -73,8 +73,8 @@ RUN_DEPENDS+=	p5-GD>=0:${PORTSDIR}/graphics/p5-GD \
 		p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
 		p5-Crypt-GeneratePassword>=0:${PORTSDIR}/security/p5-Crypt-GeneratePassword
 
-LIB_DEPENDS+=	libgd.so:${PORTSDIR}/graphics/gd \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS+=	libgd.so:${PORTSDIR}/graphics/gd
+USES+=		jpeg
 
 . if ${PORT_OPTIONS:MPGSQL}
 RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
@@ -103,6 +103,9 @@ pre-patch:
 .endif
 	@${REINPLACE_CMD} -e 's|locate_file "libglib-2\.0\.so".*|v1="" \&\& v2="" \&\& v3=""|' \
 		-e 's|locate_file "openssl/md5\.h".*|v1=""|' ${WRKSRC}/configure.sh
+
+	@${REINPLACE_CMD} -e 's|gcc|${CC}|; s|g++|${CXX}|; /^INCLUDE/s|/usr/local|${LOCALBASE}|' \
+		${WRKSRC}/src/Makefile ${WRKSRC}/lib/Makefile
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/tools/oracle
@@ -134,4 +137,10 @@ do-install:
 .endif
 	${INSTALL_MAN} ${MAN_8:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${PREFIX}/man/man8
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
+BROKEN=		does not build on 10.x+
+.endif
+
+.include <bsd.port.post.mk>

@@ -1,19 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	guake
-PORTVERSION=	0.4.4.0
-PORTREVISION=	2
+PORTVERSION=	0.7.2
+PORTREVISION=	0
 CATEGORIES=	x11
-MASTER_SITES=	http://distfiles.gentoo.org/distfiles/ \
-		http://nivit.altervista.org/FreeBSD/ports/distfiles/
-DISTNAME=	${PORTNAME}-${PORTVERSION:R}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Dropdown terminal made for the GNOME desktop
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	py${PYTHON_SUFFIX}-dbus>=0.84.0:${PORTSDIR}/devel/py-dbus \
+BUILD_DEPENDS=	gnome-common>=3.14.0:${PORTSDIR}/devel/gnome-common \
+		py${PYTHON_SUFFIX}-dbus>=0.84.0:${PORTSDIR}/devel/py-dbus \
 		py${PYTHON_SUFFIX}-notify>=0.1.1_9:${PORTSDIR}/devel/py-notify \
 		py${PYTHON_SUFFIX}-vte>=0.26.2_1:${PORTSDIR}/x11-toolkits/py-vte \
 		py${PYTHON_SUFFIX}-xdg>=0.19:${PORTSDIR}/devel/py-xdg
@@ -22,48 +20,43 @@ RUN_DEPENDS=	py${PYTHON_SUFFIX}-dbus>=0.84.0:${PORTSDIR}/devel/py-dbus \
 		py${PYTHON_SUFFIX}-vte>=0.26.2_1:${PORTSDIR}/x11-toolkits/py-vte \
 		py${PYTHON_SUFFIX}-xdg>=0.19:${PORTSDIR}/devel/py-xdg
 
-#GH_ACCOUNT=	Guake
-#GH_TAGNAME=	${PORTVERSION:R}
-#GH_COMMIT=	88af26c
+CPPFLAGS+=	-I${LOCALBASE}/include
+
 GCONF_SCHEMAS=	guake.schemas
+GH_ACCOUNT=	Guake
 GNU_CONFIGURE=	yes
 
 INSTALLS_ICONS=	yes
 
-NLS_CONFIGURE_ON=	--localedir=${PREFIX}/share/locale
-NLS_CONFIGURE_OFF=	--disable-nls
+LIBS+=		-L${LOCALBASE}/lib
+
+MANPAGES_MAKE_ENV_OFF=	man_MANS=""
+
+NLS_CONFIGURE_ENABLE=	nls
 
 OPTIONS_DEFINE=	MANPAGES NLS
 OPTIONS_DEFAULT=	MANPAGES
-OPTIONS_SUB=	MANPAGES NLS
+OPTIONS_SUB=	NLS
 
 PLIST_SUB+=	DESKTOPDIR="${DESKTOPDIR:S,${PREFIX}/,,}"
 
-REINPLACE_ARGS=	-e 's,/usr/bin/env python,&${PYTHON_VER},' -i.bak
-REINPLACE_FILES=	guake guake-prefs prefs.py
-
-#USE_GITHUB=	yes
+USES=		autoreconf:build desktop-file-utils gettext gmake libtool \
+		pkgconfig python:2
+USE_GITHUB=	yes
 USE_GNOME=	gtk20 pygnome2
-USE_PYTHON=	2
-USES=	desktop-file-utils gmake pkgconfig
-
-WRKSRC=	${WRKDIR}/${DISTNAME}
 
 .include <bsd.port.options.mk>
 
-.if !${PORT_OPTIONS:MMANPAGES}
-MAKE_ENV+=	man_MANS=""
+.if ! ${PORT_OPTIONS:MNLS}
+REINPLACE_ARGS+=	-e 's,\(USE_NLS=\)yes,\1no,'
+REINPLACE_FILES+=	../../configure
 .endif
 
-.if ${PORT_OPTIONS:MNLS}
-USES+=	gettext
-.else
-REINPLACE_ARGS=	-E -e 's,(USE_NLS=)yes,\1no,'
-REINPLACE_FILES=	../configure
-.endif
+pre-configure:
+	@(cd ${CONFIGURE_WRKSRC} ; ${SETENV} ${CONFIGURE_ENV} ./autogen.sh)
 
-post-patch:
-	@cd ${WRKSRC}/src && ${REINPLACE_CMD} ${REINPLACE_FILES}
+post-build:
+	@${STRIP_CMD} ${WRKSRC}/src/guake/globalhotkeys/.libs/globalhotkeys.so
 
 .include <bsd.port.pre.mk>
 

@@ -2,13 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	imapfilter
-PORTVERSION=	2.5.6
-PORTREVISION=	1
+PORTVERSION=	2.6.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
-MASTER_SITES=	http://www.gegenunendlich.de/distfiles/ \
-		GH
 
-MAINTAINER=	stefan@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	IMAP mail filtering utility
 
 LICENSE=	MIT
@@ -22,8 +20,6 @@ LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	lefcha
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	e3c8279
 
 PORTDOCS=	LICENSE NEWS README
 PLIST_FILES=	bin/imapfilter \
@@ -39,7 +35,6 @@ PLIST_FILES=	bin/imapfilter \
 		%%DATADIR%%/set.lua \
 		%%EXAMPLESDIR%%/config.lua \
 		%%EXAMPLESDIR%%/extend.lua
-PLIST_DIRS=	%%DATADIR%% %%EXAMPLESDIR%%
 MAKE_ARGS=	PREFIX=${PREFIX} \
 		MYCFLAGS="${CPPFLAGS}" \
 		MYLDFLAGS="${LDFLAGS}" \
@@ -47,6 +42,9 @@ MAKE_ARGS=	PREFIX=${PREFIX} \
 		SHAREDIR=${DATADIR} \
 		MANDIR=${MANPREFIX}/man \
 		LIBLUA=-llua-${LUA_VER}
+
+post-patch:
+	${REINPLACE_CMD} 's|-ldl ||' ${WRKSRC}/src/Makefile
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}/${PREFIX}/bin/imapfilter

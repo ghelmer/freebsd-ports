@@ -58,7 +58,7 @@ lib/csound/plugins64/libdoppler.so
 lib/csound/plugins64/libfareygen.so
 %%FLUIDSYNTH%%lib/csound/plugins64/libfluidOpcodes.so
 lib/csound/plugins64/libfractalnoise.so
-lib/csound/plugins64/libimage.so
+%%PNG%%lib/csound/plugins64/libimage.so
 lib/csound/plugins64/libipmidi.so
 %%JACK%%lib/csound/plugins64/libjackTransport.so
 %%JACK%%lib/csound/plugins64/libjacko.so
@@ -2904,10 +2904,3 @@ lib/libcsound64.so.5
 %%PORTDOCS%%%%DOCSDIR%%/zkr.html
 %%PORTDOCS%%%%DOCSDIR%%/zkw.html
 %%PORTDOCS%%%%DOCSDIR%%/zkwm.html
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/images/callouts
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/images
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/examples
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm lib/csound/plugins64
-@dirrm lib/csound
-@dirrm include/csound

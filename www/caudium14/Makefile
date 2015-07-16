@@ -4,14 +4,13 @@
 PORTNAME=	caudium14
 PORTVERSION=	${DISTVERSION}.${PIKEVERSION}
 DISTVERSION=	1.4.18
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://caudium.googlecode.com/files/
 DISTNAME=	Caudium-${DISTVERSION}
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Free webserver based on the Roxen Challenger 1.3 code base
-
-BROKEN=		Fails to compile
 
 BUILD_DEPENDS=	pike78:${PORTSDIR}/lang/pike78
 LIB_DEPENDS=	libsablot.so:${PORTSDIR}/textproc/sablotron
@@ -30,6 +29,8 @@ CPPFLAGS+=	-I${WRKSRC}/src/cmods
 INSTALL_TARGET=	install_alt
 
 DOCSDIR=	${PREFIX}/share/doc/caudium
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${SED} -e 's:@CAUDIUM_SERVERDIR@:${PREFIX}/caudium/server:' \

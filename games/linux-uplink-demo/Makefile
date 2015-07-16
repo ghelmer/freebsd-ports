@@ -4,7 +4,7 @@
 PORTNAME=	uplink-demo
 PORTVERSION=	1.55
 CATEGORIES=	games linux
-MASTER_SITES=	http://uplink.co.uk/test/
+MASTER_SITES=	http://www.introversion.co.uk/uplink/downloads/
 PKGNAMEPREFIX=	linux-
 DISTNAME=	${PORTNAME}-${PORTVERSION}DEMO
 EXTRACT_SUFX=	.sh
@@ -25,7 +25,7 @@ SUB_FILES=	uplink
 SUB_LIST=	LINUXBASE=${LINUXBASE}
 DOCFILES=	license.txt mods.txt Readme-UplinkSupport.txt readme.txt
 
-OPTIONS_DEFINE=	NVIDIA
+OPTIONS_DEFINE=	NVIDIA DOCS
 NVIDIA_DESC=	support for nvidia
 
 .include <bsd.port.options.mk>
@@ -56,8 +56,5 @@ do-install:
 .for file in ${DOCFILES}
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}/${file}
 .endfor
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

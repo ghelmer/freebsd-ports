@@ -5,7 +5,7 @@ PORTNAME=	mod_spdy
 PORTVERSION=	0.9.4.1
 CATEGORIES=	www
 MASTER_SITES=	http://www.club.kyutech.ac.jp/~masaki/ports/:mod_spdy \
-		${MASTER_SITE_APACHE_HTTPD}:apache22
+		APACHE_HTTPD:apache22
 DISTFILES=	mod_spdy_source_${PORTVERSION}.tar.xz:mod_spdy \
 		httpd-2.2.22.tar.gz:apache22
 DIST_SUBDIR=	${PORTNAME}
@@ -26,8 +26,7 @@ BUILD_DEPENDS=	python:${PORTSDIR}/lang/python \
 ONLY_FOR_ARCHS=	amd64 i386
 USE_OPENSSL=	yes
 USE_APACHE=	22
-USE_PYTHON=	2
-USES=		gmake tar:xz
+USES=		gmake python:2 tar:xz
 REINPLACE_ARGS=	-i ""
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_source_${PORTVERSION}/mod_spdy/src
@@ -61,7 +60,8 @@ USE_GCC?=	yes
 GYP_DEFINES+=	gcc_version=${CXX:S/g++//}
 .else
 .if ${OSVERSION} < 902000
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang32:${PORTSDIR}/lang/clang32
+BROKEN=		Depends on deleted lang/llvm32
+#BUILD_DEPENDS+=	${LOCALBASE}/bin/clang32:${PORTSDIR}/lang/clang32
 CC=		${LOCALBASE}/bin/clang32
 CXX=		${LOCALBASE}/bin/clang++32
 .else

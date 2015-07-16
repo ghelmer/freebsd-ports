@@ -3,7 +3,7 @@
 
 PORTNAME=	abakus
 PORTVERSION=	0.92
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	math kde
 MASTER_SITES=	http://purinchu.net/abakus/
 
@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex
 LIB_DEPENDS=	libmpfr.so:${PORTSDIR}/math/mpfr
 
-USE_KDE4=	automoc4 kdehier kdelibs kdeprefix
+USE_KDE4=	automoc4 kdelibs kdeprefix
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 USES=		bison cmake tar:bzip2
 CMAKE_ARGS=	-DCMAKE_REQUIRED_INCLUDES:STRING="${LOCALBASE}/include" \

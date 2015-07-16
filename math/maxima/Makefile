@@ -3,6 +3,7 @@
 
 PORTNAME=	maxima
 PORTVERSION=	5.31.3
+PORTREVISION=	2
 CATEGORIES=	math lisp tk
 MASTER_SITES=	SF/maxima/Maxima-source/${PORTVERSION}-source
 
@@ -14,19 +15,16 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	${LOCALBASE}/bin/${LISPPORT}
 PATCH_DEPENDS=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
 RUN_DEPENDS=	${LOCALBASE}/bin/${LISPPORT} \
-		${LOCALBASE}/bin/gnuplot:${PORTSDIR}/math/gnuplot \
-		${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
+		${LOCALBASE}/bin/gnuplot:${PORTSDIR}/math/gnuplot
 
-USES=			gmake makeinfo perl5 tk:84+
+USES=			gmake makeinfo perl5 python:build tk:84+
 USE_PERL5=		build
-USE_PYTHON_BUILD=	yes
 GNU_CONFIGURE=		yes
 CONFIGURE_ARGS+=	--prefix=${PREFIX} \
-			--with-posix-shell=${LOCALBASE}/bin/bash \
+			--with-posix-shell=/bin/sh \
 			--with-wish=${WISH} \
 			${LISPSELECT}
 
-MAN1=	maxima.1
 INFO=	maxima imaxima xmaxima
 
 PLIST_SUB=	BINDIR=${BINDIRECTORY}
@@ -44,7 +42,6 @@ CMUCL_DESC=	Build with CMU Common Lisp
 GCL_DESC=	Build with GNU Common Lisp
 SBCL_DESC=	Build with Steel Bank Common Lisp
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 # Lisp to build with. Define only ONE of these!
@@ -117,11 +114,6 @@ post-patch:
 pre-build:
 	@${FIND} ${WRKSRC} \( -name '*.bak' -o -name '*.fbsd10bak' -o \
 	-name '*.orig' \) -delete
-
-post-install:
-	@${ECHO_MSG} ""
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG} ""
 
 check regression-test test: build
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} \

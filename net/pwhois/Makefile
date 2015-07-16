@@ -3,28 +3,31 @@
 
 PORTNAME=	pwhois
 PORTVERSION=	2.2.0.1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://pwhois.org/get/ \
-    		http://mirrors.rit.edu/zi/
+		http://mirrors.rit.edu/zi/
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Whois-compatible framework for disclosing routing data
 
 RUN_DEPENDS=	p5-DBI>0:${PORTSDIR}/databases/p5-DBI \
-    		p5-Time-Format>0:${PORTSDIR}/devel/p5-Time-Format \
+		p5-Time-Format>0:${PORTSDIR}/devel/p5-Time-Format \
 		p5-Log-Dispatch>0:${PORTSDIR}/devel/p5-Log-Dispatch \
 		p5-Net-DNS>0:${PORTSDIR}/dns/p5-Net-DNS \
 		p5-Net-Telnet>0:${PORTSDIR}/net/p5-Net-Telnet \
 		p5-Net-CIDR>0:${PORTSDIR}/net-mgmt/p5-Net-CIDR \
 		p5-RPSL-Parser>0:${PORTSDIR}/devel/p5-RPSL-Parser \
-    		p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql
+		p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql
 
 FETCH_ARGS=	-p
 
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 
+USES=		shebangfix tar:tgz
+SHEBANG_FILES=	pwhois-updatedb
 USE_MYSQL=	client
 USE_RC_SUBR=	${PORTNAME}d
 SUB_FILES=	pkg-message 512.pwhois-updatedb
@@ -48,14 +51,14 @@ do-install:
 	@${INSTALL_SCRIPT} ${WRKDIR}/512.pwhois-updatedb \
 		${STAGEDIR}${PREFIX}/etc/periodic/daily/
 	@${INSTALL_PROGRAM} ${WRKSRC}/pwhoisd ${STAGEDIR}${PREFIX}/sbin/
+	@${INSTALL_PROGRAM} ${WRKSRC}/pwhois-pwdump ${STAGEDIR}${PREFIX}/bin/
 	@${INSTALL_SCRIPT} ${WRKSRC}/pwhois-updatedb ${STAGEDIR}${PREFIX}/sbin/
 	@${INSTALL_DATA} ${WRKSRC}/pwhoisd.conf \
 	    	${STAGEDIR}${ETCDIR}/pwhoisd.conf.sample
 	@${INSTALL_DATA} ${WRKSRC}/mysql/createdb.sql ${STAGEDIR}${DATADIR}/
 
 post-install:
-	@${MKDIR} ${STAGEDIR}/var/db/pwhois ${STAGEDIR}/var/log/pwhois
-	@${CHOWN} 512:512 ${STAGEDIR}/var/db/pwhois ${STAGEDIR}/var/log/pwhois
-	#@${CHOWN} ${USERS}:${GROUPS} ${STAGEDIR}/var/db/pwhois ${STAGEDIR}/var/log/pwhois
+	@${INSTALL} -d -o 512 -g 512 ${STAGEDIR}/var/db/pwhois
+	@${INSTALL} -d -o 512 -g 512 ${STAGEDIR}/var/log/pwhois
 
 .include <bsd.port.mk>

@@ -70,7 +70,7 @@ include/kopete/ui/kopeteview.h
 include/kopete/ui/kopeteviewplugin.h
 include/kopete/ui/ui_kopeteawaydialogbase.h
 include/kopete/ui/ui_kopetepasswordwidgetbase.h
-%%WEBPLUGIN_DIR%%/skypebuttons.so
+%%WEBPLUGIN_DIR%%skypebuttons.so
 lib/kde4/kcm_kopete_accountconfig.so
 lib/kde4/kcm_kopete_addbookmarks.so
 lib/kde4/kcm_kopete_appearanceconfig.so
@@ -78,6 +78,7 @@ lib/kde4/kcm_kopete_autoreplace.so
 lib/kde4/kcm_kopete_avdeviceconfig.so
 lib/kde4/kcm_kopete_behaviorconfig.so
 lib/kde4/kcm_kopete_chatwindowconfig.so
+lib/kde4/kcm_kopete_cryptography.so
 lib/kde4/kcm_kopete_highlight.so
 lib/kde4/kcm_kopete_history.so
 lib/kde4/kcm_kopete_history2.so
@@ -98,6 +99,7 @@ lib/kde4/kopete_autoreplace.so
 lib/kde4/kopete_bonjour.so
 lib/kde4/kopete_chatwindow.so
 lib/kde4/kopete_contactnotes.so
+lib/kde4/kopete_cryptography.so
 lib/kde4/kopete_emailwindow.so
 lib/kde4/kopete_gadu.so
 lib/kde4/kopete_groupwise.so
@@ -588,6 +590,8 @@ share/apps/kopete/webpresence/webpresence_html_images.xsl
 share/apps/kopete/webpresence/webpresence_xhtml.xsl
 share/apps/kopete/webpresence/webpresence_xhtml_images.xsl
 share/apps/kopete_contactnotes/contactnotesui.rc
+share/apps/kopete_cryptography/cryptographychatui.rc
+share/apps/kopete_cryptography/cryptographyui.rc
 share/apps/kopete_groupwise/gwchatui.rc
 share/apps/kopete_history/historychatui.rc
 share/apps/kopete_history/historyui.rc
@@ -745,6 +749,7 @@ share/kde4/services/chatwindow.desktop
 share/kde4/services/emailwindow.desktop
 share/kde4/services/kconfiguredialog/kopete_addbookmarks_config.desktop
 share/kde4/services/kconfiguredialog/kopete_autoreplace_config.desktop
+share/kde4/services/kconfiguredialog/kopete_cryptography_config.desktop
 share/kde4/services/kconfiguredialog/kopete_highlight_config.desktop
 share/kde4/services/kconfiguredialog/kopete_history2_config.desktop
 share/kde4/services/kconfiguredialog/kopete_history_config.desktop
@@ -767,6 +772,7 @@ share/kde4/services/kopete_behaviorconfig.desktop
 share/kde4/services/kopete_bonjour.desktop
 share/kde4/services/kopete_chatwindowconfig.desktop
 share/kde4/services/kopete_contactnotes.desktop
+share/kde4/services/kopete_cryptography.desktop
 share/kde4/services/kopete_gadu.desktop
 share/kde4/services/kopete_groupwise.desktop
 share/kde4/services/kopete_highlight.desktop
@@ -803,110 +809,3 @@ share/sounds/Kopete_Event.ogg
 share/sounds/Kopete_Received.ogg
 share/sounds/Kopete_Sent.ogg
 share/sounds/Kopete_User_is_Online.ogg
-@dirrm share/kde4/services/kconfiguredialog
-@dirrm share/doc/HTML/en/kopete
-@dirrm share/apps/kopeterichtexteditpart
-@dirrm share/apps/kopete_yahoo
-@dirrm share/apps/kopete_translator
-@dirrm share/apps/kopete_statistics
-@dirrm share/apps/kopete_skype
-@dirrm share/apps/kopete_privacy
-@dirrm share/apps/kopete_otr
-@dirrm share/apps/kopete_latex
-@dirrm share/apps/kopete_jabber
-@dirrm share/apps/kopete_history2
-@dirrm share/apps/kopete_history
-@dirrm share/apps/kopete_groupwise
-@dirrm share/apps/kopete_contactnotes
-@dirrm share/apps/kopete/webpresence
-@dirrm share/apps/kopete/styles/Retropete/Contents/Resources/images
-@dirrm share/apps/kopete/styles/Retropete/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Retropete/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Retropete/Contents/Resources
-@dirrm share/apps/kopete/styles/Retropete/Contents
-@dirrm share/apps/kopete/styles/Retropete
-@dirrm share/apps/kopete/styles/Pidgin/Contents/Resources/images
-@dirrm share/apps/kopete/styles/Pidgin/Contents/Resources/Variants
-@dirrm share/apps/kopete/styles/Pidgin/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Pidgin/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Pidgin/Contents/Resources
-@dirrm share/apps/kopete/styles/Pidgin/Contents
-@dirrm share/apps/kopete/styles/Pidgin
-@dirrm share/apps/kopete/styles/Kopete/Contents/Resources/images
-@dirrm share/apps/kopete/styles/Kopete/Contents/Resources/Variants
-@dirrm share/apps/kopete/styles/Kopete/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Kopete/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Kopete/Contents/Resources
-@dirrm share/apps/kopete/styles/Kopete/Contents
-@dirrm share/apps/kopete/styles/Kopete
-@dirrm share/apps/kopete/styles/Konqi/Contents/Resources/Variants/konqui
-@dirrm share/apps/kopete/styles/Konqi/Contents/Resources/Variants
-@dirrm share/apps/kopete/styles/Konqi/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Konqi/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Konqi/Contents/Resources
-@dirrm share/apps/kopete/styles/Konqi/Contents
-@dirrm share/apps/kopete/styles/Konqi
-@dirrm share/apps/kopete/styles/Hacker/Contents/Resources/images
-@dirrm share/apps/kopete/styles/Hacker/Contents/Resources/Variants
-@dirrm share/apps/kopete/styles/Hacker/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Hacker/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Hacker/Contents/Resources
-@dirrm share/apps/kopete/styles/Hacker/Contents
-@dirrm share/apps/kopete/styles/Hacker
-@dirrm share/apps/kopete/styles/Clear/Contents/Resources/images
-@dirrm share/apps/kopete/styles/Clear/Contents/Resources/Variants
-@dirrm share/apps/kopete/styles/Clear/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Clear/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Clear/Contents/Resources
-@dirrm share/apps/kopete/styles/Clear/Contents
-@dirrm share/apps/kopete/styles/Clear
-@dirrm share/apps/kopete/styles/Clean/Contents/Resources/images
-@dirrm share/apps/kopete/styles/Clean/Contents/Resources/Outgoing
-@dirrm share/apps/kopete/styles/Clean/Contents/Resources/Incoming
-@dirrm share/apps/kopete/styles/Clean/Contents/Resources
-@dirrm share/apps/kopete/styles/Clean/Contents
-@dirrm share/apps/kopete/styles/Clean
-@dirrm share/apps/kopete/styles
-@dirrm share/apps/kopete/icons/oxygen/scalable/apps
-@dirrm share/apps/kopete/icons/oxygen/scalable
-@dirrm share/apps/kopete/icons/oxygen/64x64/apps
-@dirrm share/apps/kopete/icons/oxygen/64x64/actions
-@dirrm share/apps/kopete/icons/oxygen/64x64
-@dirrm share/apps/kopete/icons/oxygen/48x48/apps
-@dirrm share/apps/kopete/icons/oxygen/48x48/actions
-@dirrm share/apps/kopete/icons/oxygen/48x48
-@dirrm share/apps/kopete/icons/oxygen/32x32/apps
-@dirrm share/apps/kopete/icons/oxygen/32x32/actions
-@dirrm share/apps/kopete/icons/oxygen/32x32
-@dirrm share/apps/kopete/icons/oxygen/22x22/apps
-@dirrm share/apps/kopete/icons/oxygen/22x22/actions
-@dirrm share/apps/kopete/icons/oxygen/22x22
-@dirrm share/apps/kopete/icons/oxygen/16x16/apps
-@dirrm share/apps/kopete/icons/oxygen/16x16/actions
-@dirrm share/apps/kopete/icons/oxygen/16x16
-@dirrm share/apps/kopete/icons/oxygen/128x128/apps
-@dirrm share/apps/kopete/icons/oxygen/128x128
-@dirrm share/apps/kopete/icons/oxygen
-@dirrm share/apps/kopete/icons/hicolor/32x32/apps
-@dirrm share/apps/kopete/icons/hicolor/32x32
-@dirrm share/apps/kopete/icons/hicolor/16x16/apps
-@dirrm share/apps/kopete/icons/hicolor/16x16/actions
-@dirrm share/apps/kopete/icons/hicolor/16x16
-@dirrm share/apps/kopete/icons/hicolor
-@dirrm share/apps/kopete/icons/crystalsvg/64x64/actions
-@dirrm share/apps/kopete/icons/crystalsvg/64x64
-@dirrm share/apps/kopete/icons/crystalsvg/48x48/actions
-@dirrm share/apps/kopete/icons/crystalsvg/48x48
-@dirrm share/apps/kopete/icons/crystalsvg/32x32/actions
-@dirrm share/apps/kopete/icons/crystalsvg/32x32
-@dirrm share/apps/kopete/icons/crystalsvg/22x22/actions
-@dirrm share/apps/kopete/icons/crystalsvg/22x22
-@dirrm share/apps/kopete/icons/crystalsvg/16x16/actions
-@dirrm share/apps/kopete/icons/crystalsvg/16x16
-@dirrm share/apps/kopete/icons/crystalsvg
-@dirrm share/apps/kopete/icons
-@dirrm share/apps/kopete
-@dirrmtry lib/kde4/plugins/accessible
-@dirrmtry %%WEBPLUGIN_DIR%%
-@dirrm include/kopete/ui
-@dirrm include/kopete

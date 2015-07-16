@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pdsh
-PORTVERSION=	2.28
+PORTVERSION=	2.29
 CATEGORIES=	sysutils
 MASTER_SITES=	GOOGLE_CODE
 
@@ -11,56 +11,23 @@ COMMENT=	Parallel Distributed Shell
 
 LICENSE=	GPLv2
 
-USES=		perl5
-USE_BZIP2=	yes
 GNU_CONFIGURE=	yes
+# :keepla because port uses lt_dlopen
+USES=		libtool:keepla perl5 shebangfix tar:bzip2
 USE_PERL5=	build
+SHEBANG_FILES=	scripts/dshbak
 
 OPTIONS_DEFINE=		SSH DSHGROUPS NETGROUP READLINE RSH
 OPTIONS_DEFAULT=	SSH DSHGROUPS
+OPTIONS_SUB=		yes
 DSHGROUPS_DESC=		DSH groups supprt
+DSHGROUPS_CONFIGURE_WITH=	dshgroups
 NETGROUP_DESC=		NIS Netgroup support
+NETGROUP_CONFIGURE_WITH=netgroup
+READLINE_CONFIGURE_WITH=readline
+READLINE_LIB_DEPENDS=	libreadline.so.6:${PORTSDIR}/devel/readline
 RSH_DESC=		RSH support
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSSH}
-CONFIGURE_ARGS+=	--with-ssh
-PLIST_SUB+=		SSH=""
-.else
-CONFIGURE_ARGS+=	--without-ssh
-PLIST_SUB+=		SSH="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MDSHGROUPS}
-CONFIGURE_ARGS+=	--with-dshgroups
-PLIST_SUB+=		DSH=""
-.else
-CONFIGURE_ARGS+=	--without-dshgroups
-PLIST_SUB+=		DSH="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MNETGROUP}
-CONFIGURE_ARGS+=	--with-netgroup
-PLIST_SUB+=		NETGROUP=""
-.else
-CONFIGURE_ARGS+=	--without-netgroup
-PLIST_SUB+=		NETGROUP="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MREADLINE}
-CONFIGURE_ARGS+=	--with-readline
-LIB_DEPENDS+=		libreadline.so.6:${PORTSDIR}/devel/readline
-.else
-CONFIGURE_ARGS+=	--without-readline
-.endif
-
-.if ${PORT_OPTIONS:MRSH}
-CONFIGURE_ARGS+=	--with-rsh
-PLIST_SUB+=		RSH=""
-.else
-CONFIGURE_ARGS+=	--without-rsh
-PLIST_SUB+=		RSH="@comment "
-.endif
+RSH_CONFIGURE_WITH=	rsh
+SSH_CONFIGURE_WITH=	ssh
 
 .include <bsd.port.mk>

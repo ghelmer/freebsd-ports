@@ -13,11 +13,11 @@ COMMENT=	Python interface for Zinnia
 LIB_DEPENDS=	libzinnia.so:${PORTSDIR}/japanese/zinnia
 RUN_DEPENDS=	zinnia:${PORTSDIR}/japanese/zinnia
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	${PORTNAME}_python
 PYDISTUTILS_PKGVERSION=	0.0.0
 

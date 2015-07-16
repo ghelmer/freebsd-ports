@@ -2,49 +2,46 @@
 # $FreeBSD$
 
 PORTNAME=	ocrfeeder
-PORTVERSION=	0.7.7
-PORTREVISION=	3
+PORTVERSION=	0.8.1
 CATEGORIES=	graphics
-MASTER_SITES=	${MASTER_SITE_GNOME}
-MASTER_SITE_SUBDIR=sources/ocrfeeder/${PORTVERSION:R}
+MASTER_SITES=	GNOME
 
-MAINTAINER=	buganini@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Document layout analysis and optical character recognition
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}enchant>=0:${PORTSDIR}/textproc/py-enchant \
-		${PYTHON_PKGNAMEPREFIX}imaging>=0:${PORTSDIR}/graphics/py-imaging \
-		${PYTHON_PKGNAMEPREFIX}sane>=0:${PORTSDIR}/graphics/py-sane \
-		${PYTHON_PKGNAMEPREFIX}reportlab2>=0:${PORTSDIR}/print/py-reportlab2 \
-		${PYTHON_PKGNAMEPREFIX}goocanvas>=0:${PORTSDIR}/graphics/py-goocanvas
-RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		unpaper:${PORTSDIR}/graphics/unpaper
+BUILD_DEPENDS=	goocanvas2>0:${PORTSDIR}/graphics/goocanvas2 \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow \
+		${PYTHON_PKGNAMEPREFIX}sane>0:${PORTSDIR}/graphics/py-sane \
+		${PYTHON_PKGNAMEPREFIX}reportlab2>0:${PORTSDIR}/print/py-reportlab2 \
+		${PYTHON_PKGNAMEPREFIX}enchant>0:${PORTSDIR}/textproc/py-enchant
+RUN_DEPENDS:=	${PYTHON_PKGNAMEPREFIX}lxml>0:${PORTSDIR}/devel/py-lxml \
+		unpaper:${PORTSDIR}/graphics/unpaper \
+		iso-codes>0:${PORTSDIR}/misc/iso-codes \
+		gtkspell3>0:${PORTSDIR}/textproc/gtkspell3 \
+		${BUILD_DEPENDS}
 
-MAN1=		ocrfeeder-cli.1 ocrfeeder.1
+NO_ARCH=	yes
 
-USE_XZ=		yes
-GNU_CONFIGURE=	yes
-USE_PYTHON=	yes
-USE_GNOME=	pygtk2 pygnomeextras gnomedocutils
-USES=		gettext gmake pkgconfig
+USES=		desktop-file-utils gettext gmake pkgconfig python tar:xz
+USE_GNOME=	gnomedocutils gtk30 librsvg2 pygobject3
 USE_GHOSTSCRIPT=yes
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-silent-rules
 
-NO_STAGE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	NLS
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-PLIST_SUB+=	NLS="@comment "
-CONFIGURE_ARGS+=	--disable-nls
-.endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+post-patch:
+	@${REINPLACE_CMD} -e \
+		's|"gobject|"gi|' \
+		${WRKSRC}/configure
+	@${REINPLACE_CMD} -e \
+		'/Gdk.threads_init/s|^|#|' \
+		${WRKSRC}/src/ocrfeeder/studio/studioBuilder.py
+	@${REINPLACE_CMD} -e \
+		's|/usr/share|${LOCALBASE}/share|' \
+		${WRKSRC}/src/ocrfeeder/util/constants.py.in
 
 .include <bsd.port.mk>

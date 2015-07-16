@@ -31,7 +31,7 @@ MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
 MAKE_JOBS_UNSAFE=	yes
 
 post-patch:
-	${REINPLACE_CMD} -e 's|/lib/|/libdata/|g' \
+	@${REINPLACE_CMD} -e 's|/lib/|/libdata/|g' \
 		${WRKSRC}/data/pkgconfig.sh
 	@${REINPLACE_CMD} 's/-lssl/& -lcrypto/' \
 		${WRKSRC}/src/Makefile ${WRKSRC}/src/account/Makefile \

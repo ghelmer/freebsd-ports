@@ -6,8 +6,8 @@ PORTVERSION=	2009.07.19
 DISTVERSIONSUFFIX=	-fx
 CATEGORIES=	www
 
-MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	A statusbar button to quickly turn the proxy on and off
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Statusbar button to quickly turn the proxy on and off
 
 XPI_ID=		{d5ea4520-61a1-11da-8cd6-0800200c9a66}
 XPI_NUM=	1557

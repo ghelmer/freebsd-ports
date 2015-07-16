@@ -26,8 +26,6 @@ LIBS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DOCS NLS
 
-OPTIONS_DEFINE=	DOCS NLS
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}

@@ -28,8 +28,10 @@ USE_RC_SUBR=	unrealircd
 
 USERS=		ircd
 GROUPS=		ircd
+CPE_VENDOR=	unrealircd
+CPE_PRODUCT=	unrealircd
 
-USES=		pkgconfig
+USES=		pkgconfig cpe
 
 SUB_LIST+=	RUNDIR=${RUNDIR}
 SUB_LIST+=	USERS=${USERS}
@@ -50,7 +52,7 @@ CONFIGURE_ARGS=	--with-listen=5 \
 		--enable-dynamic-linking
 
 OPTIONS_DEFINE=	HUB NOSPOOF ZIPLINKS SSL IPV6 PREFIXAQ REMOTE DOCS
-OPTIONS_DEFAULT=	HUB
+OPTIONS_DEFAULT=	HUB SSL
 HUB_DESC=	Configure as a hub (otherwise configure as a leaf)
 NOSPOOF_DESC=	Enable anti-spoof protection
 ZIPLINKS_DESC=	Enable ziplinks support
@@ -72,8 +74,7 @@ IPV6_CONFIGURE_ENABLE=	inet6
 SSL_CONFIGURE_ENABLE=	ssl
 SSL_USE=	OPENSSL=yes
 REMOTE_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-REMOTE_CONFIGURE_ON=	--enable-libcurl=${LOCALBASE}
-REMOTE_CONFIGURE_OFF=	--disable-libcurl
+REMOTE_CONFIGURE_ENABLE=	--enable-libcurl=${LOCALBASE}
 PREFIXAQ_CONFIGURE_ENABLE=	prefixaq
 
 SQLMOD=		${PORTNAME}/SQLMod.tar.gz

@@ -7,12 +7,12 @@ PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	SF
 
-MAINTAINER=	anders@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to scan mailboxes for messages matching a regular expression
 
-.if defined(WITH_PCRE)
-LIB_DEPENDS=	pcre.3:${PORTSDIR}/devel/pcre
-.endif
+PCRE_LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+
+OPTIONS_DEFINE=	DOCS PCRE
 
 USES=		uidfix
 GNU_CONFIGURE=	yes
@@ -32,11 +32,9 @@ post-patch:
 		${WRKSRC}/src/Makefile.in ${WRKSRC}/doc/Makefile.in
 
 post-install:
-.if !defined(NOPORTDOCS)
 	${INSTALL} -d -o root -g wheel -m 0755 ${STAGEDIR}${DOCSDIR}
 .for f in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor
-.endif
 
 .include <bsd.port.mk>

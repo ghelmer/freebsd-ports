@@ -10,14 +10,14 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Adds a graphical, configurable timestamp to a grayscale image
 
-LIB_DEPENDS=	jpeg.11:${PORTSDIR}/graphics/jpeg
-
+USES=		jpeg
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-.if !defined(WITHOUT_X11)
-USE_GNOME=	gtk12
-.endif
+
+OPTIONS_DEFINE=	X11
+OPTIONS_SUB=	yes
+X11_USE=	GNOME=gtk12
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#/usr/local/share/stamp#${DATADIR}#' \

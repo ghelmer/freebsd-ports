@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ipython
-PORTVERSION=	2.1.0
-PORTREVISION=	1
+PORTVERSION=	3.2.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,12 +14,11 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>=2:${PORTSDIR}/databases/py-sqlite
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pexpect>=2:${PORTSDIR}/misc/py-pexpect \
 		${PYTHON_PKGNAMEPREFIX}sqlite3>=2:${PORTSDIR}/databases/py-sqlite3
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-USE_GCC=        yes # To be removed - Needed as a work-around for numpy, see PR ports/188114
-PYDISTUTILS_AUTOPLIST=yes
+USES=		python
+USE_PYTHON=	autoplist distutils
+USE_GCC=	yes # To be removed - Needed as a work-around for numpy, see PR ports/188114
 
-OPTIONS_DEFINE=	X11 HTML_NOTEBOOK ZMQ
+OPTIONS_DEFINE=	X11 HTML_NOTEBOOK ZMQ EXAMPLES
 OPTIONS_DEFAULT=X11 ZMQ
 
 .if defined(PACKAGE_BUILDING)
@@ -40,7 +38,9 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}qt4-gui>=0:${PORTSDIR}/x11-toolkits/py-qt4-
 
 .if ${PORT_OPTIONS:MHTML_NOTEBOOK}
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tornado>=2.0:${PORTSDIR}/www/py-tornado \
-		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:${PORTSDIR}/devel/py-Jinja2
+		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:${PORTSDIR}/devel/py-Jinja2 \
+		${PYTHON_PKGNAMEPREFIX}jsonschema>=0:${PORTSDIR}/devel/py-jsonschema \
+		${PYTHON_PKGNAMEPREFIX}mistune>=0:${PORTSDIR}/textproc/py-mistune
 .endif
 
 .if ${PORT_OPTIONS:MZMQ} || ${PORT_OPTIONS:MHTML_NOTEBOOK}

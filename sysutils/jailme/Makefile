@@ -2,19 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	jailme
-PORTVERSION=	0.1
+PORTVERSION=	0.2.0
 CATEGORIES=	sysutils
-MASTER_SITES=	http://people.collaborativefusion.com/~wmoran/code/jailme/
 
-MAINTAINER=	wmoran@collaborativefusion.com
-COMMENT=	A setuid version of jexec to allow normal users access to jails
+MAINTAINER=	freebsd-ports-maintainers@intermedix.com
+COMMENT=	Setuid version of jexec to allow normal users access to jails
 
-PLIST_FILES=	sbin/jailme
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		tar:bzip2
+USE_GITHUB=	yes
+GH_ACCOUNT=	Intermedix
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${STAGEDIR}${PREFIX}|' \
-		${WRKSRC}/${MAKEFILE}
+PLIST_FILES=	"@(,,4751) sbin/jailme"
+
+do-install:
+	${INSTALL_PROGRAM} ${WRKSRC}/jailme ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>

@@ -2,6 +2,7 @@
 
 PORTNAME=	plover
 PORTVERSION=	2.2.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	http://launchpadlibrarian.net/88624187/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,8 +16,8 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xlib>=0:${PORTSDIR}/x11-toolkits/py-xlib \
 		${PYTHON_PKGNAMEPREFIX}serial>=0:${PORTSDIR}/comms/py-serial \
 		${PYTHON_PKGNAMEPREFIX}lockfile>=0:${PORTSDIR}/devel/py-lockfile
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USES=		python
+USE_PYTHON=	distutils
 USE_WX=		2.8
 WX_COMPS=	wx
 WX_UNICODE=	yes

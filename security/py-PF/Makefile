@@ -12,20 +12,12 @@ COMMENT=	Pure-Python module for managing OpenBSD Packet Filter
 LICENSE=	BSD3CLAUSE
 
 USE_GITHUB=	yes
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 GH_ACCOUNT=	dotpy
 GH_PROJECT=	py-${PORTNAME:tl}
-GH_TAGNAME=	${PORTVERSION}
-GH_COMMIT=	4edf8ee
 
 SUB_FILES=	pkg-message
-
-post-install:
-.if !defined(BATCH)
-	@${CAT} ${PKGMESSAGE}
-.endif
 
 .include <bsd.port.mk>

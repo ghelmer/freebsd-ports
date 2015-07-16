@@ -2,18 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	getmail
-PORTVERSION=	4.46.0
+PORTVERSION=	4.47.0
 CATEGORIES=	mail python
-MASTER_SITES=	http://pyropus.ca/software/getmail/old-versions/ \
-		http://mirrors.closedsrc.org/getmail/
+MASTER_SITES=	http://pyropus.ca/software/getmail/old-versions/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jrm@ftfl.ca
 COMMENT=	POP3/IMAP4 mail retriever with Maildir and command delivery
 
 LICENSE=	GPLv2
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
+USES=		python:2
+USE_PYTHON=	distutils
 
 PORTDOCS=	README BUGS CHANGELOG THANKS TODO *.txt *.html *.css
 

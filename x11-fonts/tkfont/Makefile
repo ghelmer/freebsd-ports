@@ -5,11 +5,10 @@ PORTNAME=	tkfont
 PORTVERSION=	1.1
 PORTREVISION=	3
 CATEGORIES=	x11-fonts tcl tk
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	petef
+MASTER_SITES=	LOCAL/petef
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A Tk based replacement for xfontsel
+COMMENT=	Tk based replacement for xfontsel
 
 USES+=		tk:run
 RUN_DEPENDS+=	xlsfonts:${PORTSDIR}/x11-fonts/xlsfonts

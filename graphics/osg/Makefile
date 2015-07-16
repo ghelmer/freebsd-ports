@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	osg
-PORTVERSION=	3.2.0
-PORTREVISION=	1
+PORTVERSION=	3.2.1
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://trac.openscenegraph.org/downloads/developer_releases/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -17,13 +17,12 @@ LICENSE_NAME=	OpenSceneGraph Public License
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 
 CONFLICTS=	osg-devel-[0-9]*
 
-USES=		cmake:outsource pkgconfig zip
+USES=		alias cmake:outsource jpeg pkgconfig zip
 USE_GL=		gl glu
 USE_XORG=	x11
 USE_LDCONFIG=	yes
@@ -31,7 +30,7 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	OSG_VERSION=${PORTVERSION} \
 		OSG_SHLIBVER=100 \
 		OPENTHREADS_VERSION=${PORTVERSION} \
-		OPENTHREADS_SHLIBVER=13
+		OPENTHREADS_SHLIBVER=20
 
 PORTSCOUT=	limitw:1,even
 

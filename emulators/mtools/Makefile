@@ -5,8 +5,7 @@ PORTNAME=	mtools
 PORTVERSION=	4.0.10
 PORTREVISION=	4
 CATEGORIES=	emulators
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	mtools
+MASTER_SITES=	GNU
 
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Collection of tools for manipulating MS-DOS files
@@ -43,7 +42,7 @@ PLIST_SUB=	X11=""
 .else
 CONFIGURE_ARGS+=	--without-x
 PLIST_SUB=	X11="@comment "
-MAKE_ENV+=	WITHOUT_X11=${WITHOUT_X11}
+MAKE_ENV+=	WITHOUT_X11=yes
 .endif
 
 post-patch:
@@ -59,8 +58,5 @@ post-patch:
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/mtools.conf ${STAGEDIR}${PREFIX}/etc/mtools.conf.sample
-	@if [ ! -f ${STAGEDIR}${PREFIX}/etc/mtools.conf ]; then \
-		cd ${STAGEDIR}${PREFIX}/etc && ${CP} -p mtools.conf.sample mtools.conf; \
-	fi
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	tux_aqfh
 PORTVERSION=	1.0.14
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	SF/tuxaqfh/tuxaqfh/${PORTVERSION}-classic \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,10 +11,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tuxedo The Penguin: A Quest for Herring
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib
 
@@ -23,22 +24,15 @@ USE_GL=		glut
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-plib=${LOCALBASE}
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib -lusbhid ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib -lusbhid -pthread
 
 PORTDOCS=	*
 
-DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	AUTHORS CHANGES README
-
-DOCSRCDIR2=	${WRKSRC}/doc
-DOCSDIR2=	${DOCSDIR}/doc
-DOC_FILES2=	*.png *.html
-
-OPTIONS_DEFINE=	DOCS
-
 DESKTOP_ENTRIES="Tuxedo The Penguin: A Quest for Herring" "" ${PORTNAME} \
 		"${PORTNAME}" "Game;SportsGame;" ""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -55,9 +49,8 @@ post-patch:
 post-install:
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
-
-	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} \
+		"AUTHORS CHANGES README doc/*.png doc/*.html" \
+		${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -5,8 +5,7 @@ PORTNAME=	grdesktop
 PORTVERSION=	0.23
 PORTREVISION=	12
 CATEGORIES=	net
-MASTER_SITES=	${MASTER_SITE_SAVANNAH}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	flz@FreeBSD.org
 COMMENT=	GNOME frontend for the remote desktop client (rdesktop)
@@ -14,7 +13,7 @@ COMMENT=	GNOME frontend for the remote desktop client (rdesktop)
 RUN_DEPENDS=	rdesktop:${PORTSDIR}/net/rdesktop
 
 GNU_CONFIGURE=	yes
-USES=		pathfix gmake pkgconfig
+USES=		gettext-tools gmake pathfix pkgconfig
 USE_GNOME=	libgnomeui gnomeprefix
 GCONF_SCHEMAS=	grdesktop.schemas
 INSTALLS_OMF=	yes

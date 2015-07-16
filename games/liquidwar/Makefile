@@ -3,12 +3,11 @@
 
 PORTNAME=	liquidwar
 PORTVERSION=	5.6.4
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://liquidwar.sunsite.dk/archive/ \
-		${MASTER_SITE_SAVANNAH} \
+		SAVANNAH \
 		http://ufoot.hd.free.fr/pub/archive/
-MASTER_SITE_SUBDIR=	liquidwar
 
 MAINTAINER=	edwin@mavetju.org
 COMMENT=	You control an army of liquid and have to try and eat your opponents
@@ -16,10 +15,9 @@ COMMENT=	You control an army of liquid and have to try and eat your opponents
 LIB_DEPENDS=	liballeg.so:${PORTSDIR}/devel/allegro
 
 GNU_CONFIGURE=	yes
-USES=		gmake makeinfo
+USES=		gmake makeinfo python:build
 CONFIGURE_ARGS=	--disable-target-opt --disable-doc-ps --disable-doc-pdf
 CONFIGURE_ENV=	ac_cv_prog_PYTHON=yes
-USE_PYTHON_BUILD=yes
 
 INFO=		liquidwar
 

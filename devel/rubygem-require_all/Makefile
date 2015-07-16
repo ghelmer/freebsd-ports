@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	require_all
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Wonderfully simple way to load your code
+
+LICENSE=	MIT
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	HTML-CTPP2
 PORTVERSION=	2.6.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN \
 		http://ctpp.havoc.ru/download/
@@ -13,7 +13,7 @@ MAINTAINER=	reki@reki.ru
 COMMENT=	Perl interface module to CTPP2 library
 
 BUILD_DEPENDS=	ctpp2>=2.5.1:${PORTSDIR}/textproc/ctpp2
-LIB_DEPENDS=	ctpp2:${PORTSDIR}/textproc/ctpp2
+LIB_DEPENDS=	libctpp2.so:${PORTSDIR}/textproc/ctpp2
 
 USES=		perl5
 USE_PERL5=	configure
@@ -22,7 +22,14 @@ USE_PERL5=	configure
 CC=		${CXX}
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
-	    ${WRKSRC}/Makefile.PL
+	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|; \
+		/^my $$CXX/s|g++|${CXX}|; /^my $$CC/s|gcc|${CC}|' \
+		${WRKSRC}/Makefile.PL
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${PERL_LEVEL} >= 502200
+BROKEN=		Fails to build with Perl >= 5.22
+.endif
+
+.include <bsd.port.post.mk>

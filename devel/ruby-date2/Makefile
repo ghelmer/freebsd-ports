@@ -20,6 +20,7 @@ DOCS_JA=	MANUAL MANUAL.rd MANUAL.html README
 EXAMPLES_EN=	cal.rb daylight.rb goodfriday.rb
 EXAMPLES_JA=	ncal.rb
 
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${MKDIR} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}/ja
@@ -37,4 +38,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/ja/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.2
+BROKEN=		Does not build
+.endif
+
+.include <bsd.port.post.mk>

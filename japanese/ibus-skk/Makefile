@@ -3,19 +3,18 @@
 
 PORTNAME=	ibus-skk
 PORTVERSION=	1.4.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	japanese
 MASTER_SITES=	http://cloud.github.com/downloads/ueno/ibus-skk/
 
-MAINTAINER=	hiroto.kagotani@gmail.com
-COMMENT=	A Japanese SKK input engine for IBus
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Japanese SKK input engine for IBus
 
 RUN_DEPENDS=	${LOCALBASE}/share/skk/SKK-JISYO.L:${PORTSDIR}/japanese/skk-jisyo
-LIB_DEPENDS=	skk:${PORTSDIR}/japanese/libskk \
-		ibus-1.0:${PORTSDIR}/textproc/ibus
+LIB_DEPENDS=	libskk.so:${PORTSDIR}/japanese/libskk \
+		libibus-1.0.so:${PORTSDIR}/textproc/ibus
 
-USE_PYTHON=	yes
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake pkgconfig python
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	DATADIRNAME=share
@@ -24,13 +23,8 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 
 OPTIONS_DEFINE=	NLS
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/skk/SKK-JISYO.L|${LOCALBASE}/share/skk/SKK-JISYO.L|' ${WRKSRC}/src/preferences.c
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO} To display this message again, type ${PKG_INFO} -D ${PKGNAME}
 
 .include <bsd.port.pre.mk>
 

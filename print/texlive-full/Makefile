@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	texlive
-DISTVERSION=	20120701
+DISTVERSION=	20140525
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	#empty
 PKGNAMESUFFIX=	-full
@@ -11,20 +12,16 @@ EXTRACT_ONLY=	#empty
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	TeX Live, Full Version
 
-USE_TEX=	texlive full texhash
+USE_TEX=	full texhash
 NO_BUILD=	yes
+NO_INSTALL=	yes
+NO_MTREE=	yes
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS SOURCE
 OPTIONS_DEFAULT=DOCS
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-USE_TEX+=	docs
-.endif
-
-do-install:
-	@${DO_NADA}
+DOCS_USE=	TEX=docs
+SOURCE_DESC=	Install source files
+SOURCE_USE=	TEX=source
 
 .include <bsd.port.mk>

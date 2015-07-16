@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	anki
-PORTVERSION=	2.0.26
+PORTVERSION=	2.0.31
+PORTREVISION=	1
 CATEGORIES=	games python
 MASTER_SITES=	http://ankisrs.net/download/mirror/
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	python
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	trebbu@googlemail.com
 COMMENT=	Flashcard trainer with spaced repetition
 
 LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	lame:${PORTSDIR}/audio/lame \
 		mplayer:${PORTSDIR}/multimedia/mplayer \
@@ -24,15 +25,14 @@ RUN_DEPENDS=	lame:${PORTSDIR}/audio/lame \
 		${PYTHON_PKGNAMEPREFIX}qt4-webkit>=4.4:${PORTSDIR}/www/py-qt4-webkit \
 		${PYTHON_PKGNAMEPREFIX}send2trash>0:${PORTSDIR}/deskutils/py-send2trash
 
-USES=		desktop-file-utils shared-mime-info shebangfix
+USES=		desktop-file-utils python:2 shared-mime-info shebangfix tar:tgz
 SHEBANG_FILES=	tools/build_ui.sh tools/tests.sh
-USE_PYTHON=	2
 USE_QT4=	network_run webkit_run
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 
-NLS_USES=	gettext:run
+NLS_USES=	gettext-runtime:run
 
 .include <bsd.port.options.mk>
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	rssowl
 PORTVERSION=	1.2.3
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	www java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20classic%20%28dont%20use%29/${PORTVERSION}
 DISTNAME=	rssowl_${PORTVERSION:S|.|_|g}_src
@@ -32,7 +32,7 @@ PORTDOCS=	CHANGELOG.txt epl-v10.html mpl-v11.txt LICENSE.txt \
 		faq.html rssowl_i18n.template README.txt faq.xml
 
 PLIST_FILES=	bin/rssowl %%DATADIR%%/rssowl.jar share/pixmaps/rssowl.png
-PLIST_DIRS=	%%DATADIR%%
+OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="RSSOwl" \
 		"Newsfeeds reader" \
@@ -41,7 +41,8 @@ DESKTOP_ENTRIES="RSSOwl" \
 		"Network;News;Java;" \
 		true
 
-NO_STAGE=	yes
+.include <bsd.port.options.mk>
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|$${java\.io\.tmpdir}/source/|$${basedir}/temp/|; \
@@ -54,18 +55,15 @@ post-build:
 	@${ECHO_CMD} "exec java -jar ${DATADIR}/rssowl.jar" >> ${WRKSRC}/rssowl
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/rssowl ${PREFIX}/bin
-	${MKDIR} ${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/rssowl.jar ${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/img/32x32.png ${PREFIX}/share/pixmaps/rssowl.png
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/rssowl ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/rssowl.jar ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/img/32x32.png ${STAGEDIR}${PREFIX}/share/pixmaps/rssowl.png
+.if ${PORT_OPTIONS:MDOCS}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${DOCS_PREFIX}/${f} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${DOCS_PREFIX}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

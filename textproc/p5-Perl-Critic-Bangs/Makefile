@@ -3,12 +3,13 @@
 
 PORTNAME=	Perl-Critic-Bangs
 PORTVERSION=	1.08
+PORTREVISION=	1
 CATEGORIES=	textproc devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ivan@serezhkin.com
-COMMENT=	A collection of handy Perl::Critic policies
+COMMENT=	Collection of handy Perl::Critic policies
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual

@@ -2,40 +2,40 @@
 # $FreeBSD$
 
 PORTNAME=	hdf
-DISTVERSION=	4.2.8
-PORTREVISION=	2
+PORTVERSION=	4.2.11
 PORTEPOCH=	1
 CATEGORIES=	science archivers graphics
-MASTER_SITES=	http://www.hdfgroup.org/ftp/HDF/releases/%SUBDIR%/
-MASTER_SITE_SUBDIR=	${PORTNAME:tu}${PORTVERSION}/src/
+MASTER_SITES=	http://www.hdfgroup.org/ftp/HDF/releases/HDF${PORTVERSION}/src/ \
+		ftp://ftp.hdfgroup.org/HDF/releases/HDF${PORTVERSION}/src/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Hierarchical Data Format library (from NCSA)
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libsz.so:${PORTSDIR}/science/szip
+LIB_DEPENDS=	libsz.so:${PORTSDIR}/science/szip
 
-CONFLICTS=	netcdf-*
+CONFLICTS_INSTALL=	netcdf-4.[0-9]*
 
-USES=		fortran
-USE_BZIP2=	yes
+OPTIONS_DEFINE=	EXAMPLES
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-jpeg="${LOCALBASE}" \
-		--with-szlib="${LOCALBASE}" \
-		--enable-shared
+CONFIGURE_ARGS=	--enable-shared --with-jpeg=${LOCALBASE} --with-szlib=${LOCALBASE}
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+USES=		fortran jpeg libtool tar:bzip2
+
+PORTDATA=	*
+PORTEXAMPLES=	*
 
 BROKEN_powerpc=	Does not compile on powerpc
 
 post-patch:
-	@${REINPLACE_CMD} -e \
-		'/PROD_/s|=.*|=""|' ${WRKSRC}/config/freebsd
+	@${REINPLACE_CMD} -e '/PROD_/ s|=.*|=""|' ${WRKSRC}/config/freebsd
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/man/hdfunpac.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/man/gr_chunk.3 ${STAGEDIR}${MAN3PREFIX}/man/man3
+	${INSTALL_MAN} ${WRKSRC}/man/hdfunpac.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/man/gr_chunk.3 ${STAGEDIR}${MAN3PREFIX}/man/man3/
 
-check regression-test test: build
-	${MAKE} -C ${WRKSRC}/hdf/test check
+regression-test test: build
+	cd ${WRKSRC}/hdf/test/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
 .include <bsd.port.mk>

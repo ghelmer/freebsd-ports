@@ -3,7 +3,7 @@
 
 PORTNAME=	xd3d
 PORTVERSION=	8.3.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	graphics math
 MASTER_SITES=	http://www.cmap.polytechnique.fr/~jouve/xd3d/
 
@@ -25,6 +25,8 @@ LICENSE=	GPLv2
 # - F77			:	don't use the default fortran compiler;
 # - FFLAGS		:	fortran compiler's flags (-O by default).
 #--------------------------------------------------------------------------
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .if !defined(WITHOUT_IMAGEMAGICK)
 RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
@@ -76,15 +78,11 @@ pre-configure:
 		${WRKSRC}/RULES
 
 post-install:
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 . for FILE in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}
 . endfor
-.endif
-.if !defined(NOPORTEXAMPLES)
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${CP} -Rp ${WRKSRC}/Examples/* ${STAGEDIR}${EXAMPLESDIR}
-.endif
 
 .include <bsd.port.post.mk>

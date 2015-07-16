@@ -3,7 +3,7 @@
 
 PORTNAME=	kaudiocreator
 PORTVERSION=	1.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio kde
 MASTER_SITES=	http://kde-look.org/CONTENT/content-files/
 DISTNAME=	107645-${PORTNAME}-${PORTVERSION}
@@ -23,7 +23,7 @@ RUN_DEPENDS+=	lame:${PORTSDIR}/audio/lame
 
 USES=		cmake tar:bzip2
 USE_QT4=	moc_build qmake_build rcc_build uic_build
-USE_KDE4=	automoc4 kdehier kdeprefix libkcddb libkcompactdisc
+USE_KDE4=	automoc4 kdeprefix libkcddb libkcompactdisc
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

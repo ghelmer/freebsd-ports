@@ -3,7 +3,7 @@
 
 PORTNAME=	softhsm
 PORTVERSION=	1.3.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	http://dist.opendnssec.org/source/
 
@@ -16,11 +16,15 @@ LIB_DEPENDS=	libbotan-1.10.so:${PORTSDIR}/security/botan110 \
 		libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-botan=${LOCALBASE} --with-sqlite3=${LOCALBASE}
-
+# !!!!!!!!!!!!
+# Changing the localstatedir is a huge POLA violation. Please leave it alone.
+# !!!!!!!!!!!!!!
+CONFIGURE_ARGS=	--with-botan=${LOCALBASE} --with-sqlite3=${LOCALBASE} \
+		--localstatedir=/var
+INSTALL_TARGET=	install-strip
+USES=		libtool
 USE_LDCONFIG=	yes
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/softhsm/libsofthsm.so
+CONFLICTS=	softhsm2-2.0.*
 
 .include <bsd.port.mk>

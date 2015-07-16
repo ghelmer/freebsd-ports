@@ -2,16 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	wcslib
-PORTVERSION=	4.13.4
-PORTREVISION=	3
+PORTVERSION=	5.6
 CATEGORIES=	astro
 MASTER_SITES=	ftp://ftp.atnf.csiro.au/pub/software/wcslib/
 
-MAINTAINER=	tonymaher@optusnet.com.au
+MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Library for parsing/generating FITS headers
 
 GNU_CONFIGURE=	yes
-USES=		tar:bzip2 gmake
+USES=		tar:bzip2 gmake fortran
 MAKEFILE=	GNUmakefile
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=yes
@@ -21,7 +20,7 @@ PLIST_SUB=	VERSION="${PORTVERSION}"
 # See makedefs.in which describes why you want to set the extra support.
 # For most users it will not be required.
 
-OPTIONS_DEFINE=	CFITSIO PGPLOT
+OPTIONS_DEFINE=	CFITSIO PGPLOT DOCS
 OPTIONS_SUB=	yes
 CFITSIO_DESC=	Add cfitsio support (for tests only)
 PGPLOT_DESC=	Add pgplot support (for tests only)

@@ -3,14 +3,15 @@
 
 PORTNAME=	highmoon
 PORTVERSION=	1.2.4
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	http://highmoon.gerdsmeier.net/
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Duel in the universe
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/HighMoon
 

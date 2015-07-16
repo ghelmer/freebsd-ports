@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	daq
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.5
 CATEGORIES=	net
 MASTER_SITES=	SF/snort/snort \
+		https://snort.org/downloads/snort/ \
 		http://mirrors.rit.edu/zi/
 
 MAINTAINER=	zi@FreeBSD.org
@@ -18,12 +19,25 @@ LIB_DEPENDS=	libdnet.so:${PORTSDIR}/net/libdnet \
 BUILD_DEPENDS=	flex:${PORTSDIR}/textproc/flex
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		bison gmake libtool
 USE_LDCONFIG=	yes
-USES=		bison gmake
-USE_AUTOTOOLS=	libtool
+PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 MAKE_JOBS_UNSAFE=	yes
 
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.* ${STAGEDIR}${PREFIX}/lib/daq/*.so
+
+.if ${OSVERSION} < 901000
+CONFIGURE_ARGS+=--disable-netmap-module
+PLIST_SUB+=	NETMAP="@comment "
+.else
+PLIST_SUB+=	NETMAP=""
+.endif
+
+.include <bsd.port.post.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Compress-Raw-Lzma
-PORTVERSION=	2.064
+PORTVERSION=	2.068
+PORTREVISION=	1
 CATEGORIES=	archivers perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:PMQS
@@ -16,18 +17,15 @@ LICENSE_COMB=	dual
 
 TEST_DEPENDS=	p5-Test-Pod>=1:${PORTSDIR}/devel/p5-Test-Pod
 
+OPTIONS_DEFINE=	LZMALIB
+LZMALIB_DESC=	Use archivers/lzmalia instead of liblzma in base
+
 USE_PERL5=	configure
 USES=		perl5
 
-LZMA_DEPEND?=	sys
+LZMALIB_LIB_DEPENDS=	liblzma.so.1:${PORTSDIR}/archivers/lzmalib
 
-.if ${LZMA_DEPEND} == "lzmalib"
-LIB_DEPENDS+=	liblzma.so.1:${PORTSDIR}/archivers/lzmalib
-.endif
-
-post-configure:
-.if ${LZMA_DEPEND} == "sys"
-	@${REINPLACE_CMD} -e "/^LDDLFLAGS/ s|${LOCALBASE}/lib|${LIBDIR}|" ${WRKSRC}/Makefile
-.endif
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Compress/Raw/Lzma/Lzma.so
 
 .include <bsd.port.mk>

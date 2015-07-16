@@ -1,4 +1,3 @@
-@stopdaemon mysql-server
 bin/innochecksum
 bin/my_print_defaults
 bin/myisam_ftdump
@@ -31,14 +30,18 @@ lib/mysql/plugin/auth.so
 lib/mysql/plugin/auth_test_plugin.so
 lib/mysql/plugin/daemon_example.ini
 lib/mysql/plugin/handlersocket.so
+%%INNODBMEMCACHED%%lib/mysql/plugin/innodb_engine.so
 lib/mysql/plugin/libdaemon_example.so
 lib/mysql/plugin/libfnv1a_udf.so
 lib/mysql/plugin/libfnv_udf.so
+%%INNODBMEMCACHED%%lib/mysql/plugin/libmemcached.so
 lib/mysql/plugin/libmurmur_udf.so
 lib/mysql/plugin/mypluglib.so
+lib/mysql/plugin/mysql_no_login.so
 lib/mysql/plugin/qa_auth_client.so
 lib/mysql/plugin/qa_auth_interface.so
 lib/mysql/plugin/qa_auth_server.so
+lib/mysql/plugin/query_response_time.so
 lib/mysql/plugin/scalability_metrics.so
 lib/mysql/plugin/semisync_master.so
 lib/mysql/plugin/semisync_slave.so
@@ -134,34 +137,19 @@ man/man8/mysqld.8.gz
 %%DATADIR%%/slovak/errmsg.sys
 %%DATADIR%%/spanish/errmsg.sys
 %%DATADIR%%/swedish/errmsg.sys
+%%DATADIR%%/tests/suite/query_response_time/basic.result
+%%DATADIR%%/tests/suite/query_response_time/basic.test
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-rw-begin.inc
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-rw-end.inc
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-rw.result
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-rw.test
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-stored.inc
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-stored.result
+%%DATADIR%%/tests/suite/query_response_time/query_response_time-stored.test
+%%DATADIR%%/tests/suite/query_response_time/query_response_time.inc
+%%DATADIR%%/tests/suite/query_response_time/query_response_time.result
+%%DATADIR%%/tests/suite/query_response_time/query_response_time.test
+%%DATADIR%%/tests/suite/query_response_time/suite.opt
+%%DATADIR%%/tests/suite/query_response_time/suite.pm
 %%DATADIR%%/ukrainian/errmsg.sys
-@dirrm lib/mysql/plugin
-@dirrmtry lib/mysql
-@dirrm %%DATADIR%%/bulgarian
-@dirrm %%DATADIR%%/charsets
-@dirrm %%DATADIR%%/czech
-@dirrm %%DATADIR%%/danish
-@dirrm %%DATADIR%%/dutch
-@dirrm %%DATADIR%%/english
-@dirrm %%DATADIR%%/estonian
-@dirrm %%DATADIR%%/french
-@dirrm %%DATADIR%%/german
-@dirrm %%DATADIR%%/greek
-@dirrm %%DATADIR%%/hungarian
-@dirrm %%DATADIR%%/italian
-@dirrm %%DATADIR%%/japanese
-@dirrm %%DATADIR%%/korean
-@dirrm %%DATADIR%%/norwegian
-@dirrm %%DATADIR%%/norwegian-ny
-@dirrm %%DATADIR%%/polish
-@dirrm %%DATADIR%%/portuguese
-@dirrm %%DATADIR%%/romanian
-@dirrm %%DATADIR%%/russian
-@dirrm %%DATADIR%%/serbian
-@dirrm %%DATADIR%%/slovak
-@dirrm %%DATADIR%%/spanish
-@dirrm %%DATADIR%%/swedish
-@dirrm %%DATADIR%%/ukrainian
-@dirrm %%DATADIR%%
-@cwd /var
-@dirrmtry db/mysql
+@dir(mysql,mysql,) /var/db/mysql

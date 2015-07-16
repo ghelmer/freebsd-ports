@@ -1,28 +1,28 @@
 bin/cxxtools-config
 lib/libcxxtools-bin.a
-lib/libcxxtools-bin.la
 lib/libcxxtools-bin.so
 lib/libcxxtools-bin.so.9
+lib/libcxxtools-bin.so.9.0.0
 lib/libcxxtools-http.a
-lib/libcxxtools-http.la
 lib/libcxxtools-http.so
 lib/libcxxtools-http.so.9
+lib/libcxxtools-http.so.9.0.0
 lib/libcxxtools-json.a
-lib/libcxxtools-json.la
 lib/libcxxtools-json.so
 lib/libcxxtools-json.so.9
+lib/libcxxtools-json.so.9.0.0
 lib/libcxxtools-unit.a
-lib/libcxxtools-unit.la
 lib/libcxxtools-unit.so
 lib/libcxxtools-unit.so.9
+lib/libcxxtools-unit.so.9.0.0
 lib/libcxxtools-xmlrpc.a
-lib/libcxxtools-xmlrpc.la
 lib/libcxxtools-xmlrpc.so
 lib/libcxxtools-xmlrpc.so.9
+lib/libcxxtools-xmlrpc.so.9.0.0
 lib/libcxxtools.a
-lib/libcxxtools.la
 lib/libcxxtools.so
 lib/libcxxtools.so.9
+lib/libcxxtools.so.9.0.0
 include/cxxtools/allocator.h
 include/cxxtools/api.h
 include/cxxtools/application.h
@@ -31,6 +31,9 @@ include/cxxtools/argin.h
 include/cxxtools/argout.h
 %%X86_64_ONLY%%include/cxxtools/atomicity.gcc.x86_64.h
 %%I386_ONLY%%include/cxxtools/atomicity.gcc.x86.h
+%%ARM_ONLY%%include/cxxtools/atomicity.gcc.arm.h
+%%MIPS_ONLY%%include/cxxtools/atomicity.gcc.mips.h
+%%PPC_ONLY%%include/cxxtools/atomicity.gcc.ppc.h
 include/cxxtools/atomicity.h
 include/cxxtools/base64codec.h
 include/cxxtools/base64stream.h
@@ -122,6 +125,9 @@ include/cxxtools/md5stream.h
 include/cxxtools/membar.gcc.h
 include/cxxtools/membar.gcc.nosmp.h
 %%X86_ONLY%%include/cxxtools/membar.gcc.x86.h
+%%ARM_ONLY%%include/cxxtools/membar.gcc.arm.h
+%%MIPS_ONLY%%include/cxxtools/membar.gcc.mips.h
+%%PPC_ONLY%%include/cxxtools/membar.gcc.ppc.h
 include/cxxtools/membar.h
 include/cxxtools/method.h
 include/cxxtools/method.tpp
@@ -237,13 +243,3 @@ libdata/pkgconfig/cxxtools-json.pc
 libdata/pkgconfig/cxxtools-unit.pc
 libdata/pkgconfig/cxxtools-xmlrpc.pc
 libdata/pkgconfig/cxxtools.pc
-@dirrm include/cxxtools/xmlrpc
-@dirrm include/cxxtools/xml
-@dirrm include/cxxtools/unit
-@dirrm include/cxxtools/posix
-@dirrm include/cxxtools/net
-@dirrm include/cxxtools/log
-@dirrm include/cxxtools/json
-@dirrm include/cxxtools/http
-@dirrm include/cxxtools/bin
-@dirrm include/cxxtools

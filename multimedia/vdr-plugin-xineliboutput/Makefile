@@ -3,12 +3,10 @@
 
 PORTNAME=	vdr-plugin-xineliboutput
 PORTVERSION=	1.0.90s20120511
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	multimedia
-MASTER_SITES=	SF:release \
-		LOCAL:snapshot
-MASTER_SITE_SUBDIR=	xineliboutput/files/xineliboutput/vdr-xineliboutput-${PORTVERSION}/:release \
-		nox/:snapshot
+MASTER_SITES=	SF/xineliboutput/files/xineliboutput/vdr-xineliboutput-${PORTVERSION}/:release \
+		LOCAL/nox:snapshot
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:snapshot
 
 MAINTAINER=	nox@FreeBSD.org
@@ -26,9 +24,9 @@ USE_GL=		gl glu glut
 PORTDOCS=	COPYING README HISTORY
 PORTEXAMPLES=	xine
 WRKSRC=		${WRKDIR}/vdr-${PLUGIN}
-XINE_PLUGINSDIR=	lib/xine/plugins/2.3
+XINE_PLUGINSDIR=	lib/xine/plugins/2.5
 
-OPTIONS_DEFINE=	LIBBLURAY LIBEXTRACTOR
+OPTIONS_DEFINE=	LIBBLURAY LIBEXTRACTOR EXAMPLES DOCS
 
 HAS_CONFIGURE=	yes
 

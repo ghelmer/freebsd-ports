@@ -3,7 +3,7 @@
 
 PORTNAME=	bitten
 PORTVERSION=	0.6
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel www python
 MASTER_SITES=	http://ftp.edgewall.com/pub/bitten/ \
 		LOCAL/glarkin
@@ -30,11 +30,10 @@ OPTIONS_DEFAULT=	BITTEN_MASTER
 BITTEN_MASTER_RUN_DEPENDS=	tracd:${PORTSDIR}/www/trac
 
 NO_BUILD=	yes
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD} TOUCH=${TOUCH} CHOWN=${CHOWN} \
-		RM=${RM} USERS=${USERS}
+		RM=${RM:Q} USERS=${USERS}
 SUB_FILES+=	pkg-message
 PATCH_STRIP=	-p1
 USE_RC_SUBR=	bitten-slave

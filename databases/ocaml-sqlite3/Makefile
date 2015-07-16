@@ -3,12 +3,13 @@
 
 PORTNAME=	sqlite3
 PORTVERSION=	2.0.4
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://cdn.bitbucket.org/mmottl/sqlite3-ocaml/downloads/
 PKGNAMEPREFIX=	ocaml-
 DISTNAME=	${PORTNAME}-ocaml-${PORTVERSION}
 
-MAINTAINER=	jaapb@kerguelen.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OCaml bindings to sqlite3 library
 
 LICENSE=	OCSQLT3

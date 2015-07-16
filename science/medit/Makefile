@@ -3,10 +3,9 @@
 
 PORTNAME=	medit
 PORTVERSION=	2012.02.05
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.ann.jussieu.fr/~frey/ftp/archives/
-EXTRACT_SUFX=	.tgz
 DISTFILES=	${SOURCETARB} ${LIBTARBALL}
 EXTRACT_ONLY=	${SOURCETARB}
 
@@ -22,7 +21,7 @@ BUILD_DEPENDS=	${LOCALBASE}/include/cfortran.h:${PORTSDIR}/lang/cfortran
 
 USE_XORG=	x11 xmu xext
 USE_GL=		glut
-USES=		gmake
+USES=		gmake tar:tgz
 MAKEFILE=	makefile
 ALL_TARGET=	${OPSYS}
 MAKE_ENV=	WRKSRC="${WRKSRC}" ARCHI=${OPSYS} ARCH=${ARCH} OSREL=${OSREL}
@@ -34,12 +33,15 @@ LIBTARBALL=	library.${LIBVERSION}${EXTRACT_SUFX}
 
 PLIST_FILES=	bin/${PORTNAME}
 
-. if !defined(NOPORTEXAMPLES)
+OPTIONS_DEFINE=	EXAMPLES
+
+.include <bsd.port.options.mk>
+
+. if ${PORT_OPTIONS:MEXAMPLES} || make(makesum)
 DISTFILES+=	meshes.tar.gz
 EXTRACT_ONLY+=	meshes.tar.gz
 MESHES=		DEFAULT.medit ozark.gis part.bb part.mesh thepart.mesh
 PLIST_FILES+=	${MESHES:S|^|%%EXAMPLESDIR%%/|}
-PLIST_DIRS=	%%EXAMPLESDIR%%
 . endif
 
 post-extract:
@@ -55,7 +57,7 @@ pre-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-.if !defined(NOPORTEXAMPLES)
+.if ${PORT_OPTIONS:MEXAMPLES}
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${MESHES:S|^|${WRKSRC}/INRIA.dir/|} ${STAGEDIR}${EXAMPLESDIR}
 .endif

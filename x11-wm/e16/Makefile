@@ -2,53 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	e16
-PORTVERSION=	1.0.14
+PORTVERSION=	1.0.16
 CATEGORIES=	x11-wm enlightenment
 MASTER_SITES=	SF/enlightenment/${PORTNAME}/${PORTVERSION}/
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	Enlightenment DR16 window manager
 
-OPTIONS_DEFINE=	DOCS NLS SOUND
-SOUND_DESC=	Sound support via pulseaudio/libsndfile
+LICENSE=	MIT
+
+LIB_DEPENDS=	libImlib2.so:${PORTSDIR}/graphics/imlib2
+
+OPTIONS_DEFINE=		DOCS NLS SOUND
+OPTIONS_SUB=		yes
+SOUND_DESC=		Sound support via pulseaudio/libsndfile
+SOUND_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio \
+    			libsndfile.so:${PORTSDIR}/audio/libsndfile
+SOUND_CONFIGURE_ON=	--enable-sound \
+			--enable-sound-pulse \
+			--with-sndldr=sndfile
+SOUND_CONFIGURE_OFF=	--disable-sound \
+			--with-sndldr=none
+NLS_USES=		gettext
+NLS_CONFIGURE_OFF=	--disable-nls
+DOCS_CONFIGURE_ON=	--enable-docs=yes
+DOCS_CONFIGURE_OFF=	--enable-docs=no
 
 USE_XORG=	compositeproto damageproto xextproto x11 xbitmaps xcomposite xdamage \
 		xext xfixes xft xinerama xrandr xrender xxf86vm
-USES=		gettext gmake iconv pkgconfig shebangfix
+USES=		gettext gmake iconv libtool perl5 pkgconfig shebangfix
 SHEBANG_FILES=	scripts/e_gen_menu
-USE_EFL=	imlib2
 CFLAGS+=	-Wno-unused-parameter
-USE_AUTOTOOLS=	libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--disable-rpath --enable-mans SHELL=/bin/sh
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSOUND}
-LIB_DEPENDS+=	libpulse.so:${PORTSDIR}/audio/pulseaudio \
-		libsndfile.so:${PORTSDIR}/audio/libsndfile
-CONFIGURE_ARGS+=--enable-sound \
-		--enable-sound-pulse \
-		--with-sndldr=sndfile
-.else
-CONFIGURE_ARGS+=--disable-sound \
-		--with-sndldr=none
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MDOCS}
-CONFIGURE_ARGS+=--enable-docs=yes
-.else
-CONFIGURE_ARGS+=--enable-docs=no
-.endif
 
 post-patch:
 .if !${PORT_OPTIONS:MDOCS}

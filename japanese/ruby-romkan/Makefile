@@ -9,7 +9,7 @@ DISTNAME=	ruby-${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A Romaji <-> Kana conversion library for Ruby
+COMMENT=	Romaji <-> Kana conversion library for Ruby
 
 USE_RUBY=	yes
 
@@ -24,6 +24,8 @@ DOCS_EN=	ChangeLog \
 		${RUBY_RD_HTML_FILES:M*.en.html}
 DOCS_JA=	${RUBY_RD_FILES:M*.ja.rd} \
 		${RUBY_RD_HTML_FILES:M*.ja.html}
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

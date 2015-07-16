@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	tcl
-PORTVERSION=	8.5.15
-PORTREVISION=	2
+PORTVERSION=	8.5.18
+PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	${MASTER_SITE_TCLTK} \
+MASTER_SITES=	TCLTK/tcl8_5 \
 		SF/tcl/Tcl/${PORTVERSION}
-MASTER_SITE_SUBDIR=tcl8_5
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
@@ -17,7 +16,7 @@ COMMENT=	Tool Command Language
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	TCLMAN TZDATA MODULES THREADS
 OPTIONS_DEFAULT=MODULES THREADS
@@ -38,7 +37,7 @@ CONFIGURE_ENV=	PORTSDIR=${PORTSDIR}
 
 TCL_VER=	8.5
 SHORT_TCL_VER=	${TCL_VER:S/8./8/}
-MAN_SUFFIX=	${LATEST_LINK}
+MAN_SUFFIX=	${PORTNAME}${PKGNAMESUFFIX}
 
 MAKE_ENV=	SHORT_TCL_VER=${SHORT_TCL_VER} \
 		MAN_SUFFIX=.${MAN_SUFFIX} \
@@ -92,8 +91,8 @@ post-configure:
 		-e 's,^COMPAT_OBJS.*,,' ${WRKSRC}/Makefile
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tclsh${TCL_VER}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtcl${SHORT_TCL_VER}.so.1
+	${LN} -fs libtcl${SHORT_TCL_VER}.so.1.0 \
+	    ${STAGEDIR}${PREFIX}/lib/libtcl${SHORT_TCL_VER}.so.1
 
 regression-test:	build
 	cd ${WRKSRC} && LC_ALL=C ${MAKE} test

@@ -3,7 +3,7 @@
 
 PORTNAME=	scotch
 DISTVERSION=	5.1.12b_esmumps
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	cad science
 MASTER_SITES=	https://gforge.inria.fr/frs/download.php/28978/
 DISTNAME=	${PORTNAME}_${DISTVERSION}
@@ -21,6 +21,8 @@ CONFLICTS=	gbase-0.* gmap-2006.*
 USES=		gmake
 
 MAKE_JOBS_UNSAFE=yes
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .if defined(MAINTAINER_MODE)
 USES+=		fortran

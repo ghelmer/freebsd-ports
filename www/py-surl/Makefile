@@ -13,9 +13,8 @@ COMMENT=	URL shortening command line application
 
 LICENSE=	GPLv3
 
-USE_BZIP2=	yes
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
+USES=		python:2 tar:bzip2
+USE_PYTHON=	distutils
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,share/man/man1,${PREFIX}/man/man1,g' \

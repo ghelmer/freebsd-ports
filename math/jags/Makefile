@@ -3,13 +3,12 @@
 
 PORTNAME=	mcmc-jags
 PORTVERSION=	3.4.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
-MASTER_SITES=	SF:1,2,3,4
-MASTER_SITE_SUBDIR=	mcmc-jags/JAGS/${S}.x/Source/:1 \
-		mcmc-jags/Examples/${S}.x/:2 \
-		mcmc-jags/Manuals/2.x/:3 \
-		mcmc-jags/Manuals/${S}.x/:4
+MASTER_SITES=	SF/mcmc-jags/JAGS/${S}.x/Source/:1 \
+		SF/mcmc-jags/Examples/${S}.x/:2 \
+		SF/mcmc-jags/Manuals/2.x/:3 \
+		SF/mcmc-jags/Manuals/${S}.x/:4
 DISTFILES=	JAGS-${PORTVERSION}${EXTRACT_SUFX}:1
 EXTRACT_ONLY=	${DISTFILES:M*[12]:C|:.*||}
 
@@ -58,7 +57,7 @@ LIB_DEPENDS+=	libblas.so:${PORTSDIR}/math/blas
 LIB_DEPENDS+=	liblapack.so:${PORTSDIR}/math/lapack
 CONFIGURE_ARGS=	--with-lapack="-llapack" --with-blas="-lblas"
 .else
-IGNORE =	: invalid value for WITH_BLAS: ${WITH_BLAS}
+IGNORE=		: invalid value for WITH_BLAS: ${WITH_BLAS}
 .endif
 
 post-patch:

@@ -3,7 +3,7 @@
 
 PORTNAME=	lopster
 PORTVERSION=	1.2.2
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF \
 		http://lopster.sourceforge.net/download/
@@ -25,14 +25,14 @@ OPTIONS_DEFAULT=	FLAC OGG ZLIB
 
 # --with-flac is on by default
 .if ${PORT_OPTIONS:MFLAC}
-LIB_DEPENDS+=		FLAC:${PORTSDIR}/audio/flac
+LIB_DEPENDS+=		libFLAC.so:${PORTSDIR}/audio/flac
 .else
 CONFIGURE_ARGS+=	--without-flac
 .endif
 
 # --with-ogg is on by default
 .if ${PORT_OPTIONS:MOGG}
-LIB_DEPENDS+=		ogg:${PORTSDIR}/audio/libogg
+LIB_DEPENDS+=		libogg.so:${PORTSDIR}/audio/libogg
 .else
 CONFIGURE_ARGS+=	--without-ogg
 .endif
@@ -43,8 +43,6 @@ CONFIGURE_ARGS+=	--without-zlib
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e "s|-lpthread|${PTHREAD_LIBS}|g" \
-		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e "s/www.naplist.com/www.gotnap.com/" \
 		${WRKSRC}/src/lopster.h
 

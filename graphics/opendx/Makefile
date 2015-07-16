@@ -3,7 +3,7 @@
 
 PORTNAME=	opendx
 PORTVERSION=	4.4.4
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	graphics math java
 MASTER_SITES=	http://www.sfr-fresh.com/unix/misc/
 DISTNAME=	dx-${PORTVERSION}
@@ -11,9 +11,9 @@ DISTNAME=	dx-${PORTVERSION}
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	IBM's Open Visualization Data Explorer
 
-LIB_DEPENDS=	libMagickWand-6.Q*.so:${PORTSDIR}/graphics/ImageMagick	\
-		tiff:${PORTSDIR}/graphics/tiff		\
-		cdf:${PORTSDIR}/science/cdf
+LIB_DEPENDS=	libMagickWand-6.so:${PORTSDIR}/graphics/ImageMagick	\
+		libtiff.so:${PORTSDIR}/graphics/tiff		\
+		libcdf.so:${PORTSDIR}/science/cdf
 
 USE_XORG=	xinerama xext xpm xmu sm ice
 USES=		bison motif gmake libtool
@@ -22,7 +22,6 @@ USE_GL=		yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared
 USE_LDCONFIG=	yes
-CFLAGS+=	${PTHREAD_CFLAGS}
 CONFIGURE_ENV=	ARCH=freebsd
 CPPFLAGS+=	${CXXFLAGS} -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -35,7 +34,7 @@ IGNORE=	HDF and NETCDF are conflicting
 .endif
 
 .if defined(WITH_HDF)
-LIB_DEPENDS+=	mfhdf:${PORTSDIR}/science/hdf
+LIB_DEPENDS+=	libmfhdf.so:${PORTSDIR}/science/hdf
 .else
 CONFIGURE_ARGS+=	--without-hdf
 .endif
@@ -75,8 +74,7 @@ post-patch:
 	@${FIND} ${WRKSRC}/${dir} -type f | ${XARGS} \
 		${REINPLACE_CMD} -e "s;/usr/lpp;${PREFIX};g"
 .endfor
-	@${REINPLACE_CMD} -e "s;-lpthread;${PTHREAD_LIBS};g"	\
-		-e "s;/usr/X11R6;${LOCALBASE};g"			\
+	@${REINPLACE_CMD} -e "s;/usr/X11R6;${LOCALBASE};g" \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e "s|startserver.bat||" \
 		${WRKSRC}/src/uipp/java/server/Makefile.in

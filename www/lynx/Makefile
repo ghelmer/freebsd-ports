@@ -2,26 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	lynx
-PORTVERSION=	2.8.7.2
-PORTREVISION=	1
+PORTVERSION=	2.8.8.2
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
-MASTER_SITES=	http://lynx.isc.org/current/
+MASTER_SITES=	http://lynx.isc.org/current/ \
+		http://bitrote.org/distfiles/
 DISTNAME=	${PORTNAME}${PORTVERSION:R}rel.${PORTVERSION:E}
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Non-graphical, text-based World-Wide Web client
 
-CONFLICTS=	lynx-2.8.[8-9]*
+LICENSE=	GPLv2
 
-USES=		tar:bzip2
+CONFLICTS=	lynx-2.8.[8-9]d*
+
+USES=		cpe shebangfix tar:bzip2
+SHEBANG_FILES=	samples/mailto-form.pl
 USE_OPENSSL=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}2-8-7
+WRKSRC=		${WRKDIR}/${PORTNAME}2-8-8
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-zlib --libdir="${L_LIB}" \
 		--enable-nsl-fork --enable-persistent-cookies \
 		--enable-nested-tables --enable-gzip-help \
 		--with-screen=ncursesw
+CPE_VERSION=	${PORTVERSION:R}
+CPE_UPDATE=	rel.${PORTVERSION:E}
 
 MAKE_JOBS_UNSAFE=	yes
 

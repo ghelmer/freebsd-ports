@@ -2,6 +2,7 @@
 
 PORTNAME=	automx
 PORTVERSION=	0.10.2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 
 MAINTAINER=	crees@FreeBSD.org
@@ -17,10 +18,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:${PORTSDIR}/devel/py-dateutil \
 		dig:${PORTSDIR}/dns/bind-tools
 
 GH_ACCOUNT=	sys4
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	2eb1c64
 
-USE_PYTHON=	yes
+USES=		python
 USE_GITHUB=	yes
 NO_BUILD=	yes
 PORTDATA=	*

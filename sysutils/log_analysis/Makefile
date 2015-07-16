@@ -11,37 +11,25 @@ COMMENT=	Utility that extracts a summary of useful data from logs
 
 LICENSE=	GPLv3
 
-OPTIONS_DEFINE=	DOCS EXAMPLES TK
-
 USES=		perl5
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PERL="${PERL}"
 
-MAN1=		log_analysis.1
 PORTDOCS=	*
 PORTEXAMPLES=	*
+PORTDATA=	*
 PLIST_FILES=	bin/log_analysis \
-		%%DATADIR%%/AUTHORS \
-		%%DATADIR%%/Tk/resizebutton.pm
-PLIST_DIRS=	%%DATADIR%%/Tk \
-		%%DATADIR%%
+		man/man1/log_analysis.1.gz
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES TK
 
-.if ${PORT_OPTIONS:MTK}
-RUN_DEPENDS+=	p5-Tk>0:${PORTSDIR}/x11-toolkits/p5-Tk
-.endif
+TK_RUN_DEPENDS=	p5-Tk>0:${PORTSDIR}/x11-toolkits/p5-Tk
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/Tutorial ${DOCSDIR}
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/sample-* ${EXAMPLESDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/Tutorial ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/sample-* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

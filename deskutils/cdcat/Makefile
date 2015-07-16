@@ -3,13 +3,9 @@
 
 PORTNAME=	cdcat
 PORTVERSION=	2.3.1
+PORTREVISION=	2
 CATEGORIES=	deskutils
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
-		GOOGLE_CODE:lib7zip
-PROJECTHOST=	lib7zip
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		${L7Z_DISTFILE}:lib7zip
-EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt based tool for offline CD/DVD/disk catalogs
@@ -17,35 +13,24 @@ COMMENT=	Qt based tool for offline CD/DVD/disk catalogs
 LICENSE=	GPLv2 MPL
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	${NONEXISTENT}:${PORTSDIR}/archivers/p7zip:patch \
-		${NONEXISTENT}:${PORTSDIR}/multimedia/mediainfo:build \
-		cryptopp>0:${PORTSDIR}/security/cryptopp
+BUILD_DEPENDS=	cryptopp>0:${PORTSDIR}/security/cryptopp
 LIB_DEPENDS=	libtar.so:${PORTSDIR}/devel/libtar \
-		libexif.so:${PORTSDIR}/graphics/libexif
-
-OPTIONS_DEFINE=	DOCS
+		libexif.so:${PORTSDIR}/graphics/libexif \
+		libmediainfo.so:${PORTSDIR}/multimedia/libmediainfo \
+		libzen.so:${PORTSDIR}/multimedia/libzen
 
 CONFIGURE_WRKSRC=	${WRKSRC}/src
 BUILD_WRKSRC=	${CONFIGURE_WRKSRC}
 
-USES=		qmake:norecursive tar:bzip2
+USES=		libtool qmake:norecursive tar:bzip2
 USE_QT4=	corelib gui xml linguist_build moc_build uic_build
-QMAKE_ARGS=	INCLUDEPATH+="${L7Z_WRKSRC}/Lib7Zip" \
-		INCLUDEPATH+="${MIF_WRKSRC}/MediaInfoLib/Source" \
-		INCLUDEPATH+="${MIF_WRKSRC}/ZenLib/Source" \
-		LIBS+="${L7Z_WRKSRC}/Lib7Zip/lib7zip.a" \
-		LIBS+="${MIF_WRKSRC}/MediaInfoLib/Project/GNU/Library/.libs/libmediainfo.a" \
-		LIBS+="${MIF_WRKSRC}/ZenLib/Project/GNU/Library/.libs/libzen.a" \
-		LIBS+="${LOCALBASE}/lib/libcryptopp.a" \
-		LIBS+="-lz -lbz2 -ltar -lexif" \
+QMAKE_ARGS=	LIBS+="${LOCALBASE}/lib/libcryptopp.a" \
+		LIBS+="-lz -lbz2 -ltar -lexif -lmediainfo -lzen" \
 		DEFINES+="MEDIAINFO_STATIC" \
 		DEFINES+="MEDIAINFO_UNICODE" \
 		DEFINES+="USE_LIBEXIF"
 QMAKE_SOURCE_PATH=	${BUILD_WRKSRC}/${PORTNAME}.pro
 INSTALLS_ICONS=	yes
-
-# spoof tinderbox: build deps for multimedia/mediainfo
-USE_AUTOTOOLS=	autoconf:env automake:env libtool:env
 
 PORTDOCS=	Authors ChangeLog README TRANSLATORS_README
 PLIST_FILES=	bin/${PORTNAME} %%DATADIR%%/${PORTNAME}.png
@@ -56,47 +41,25 @@ PLIST_FILES+=	%%DATADIR%%/translations/${PORTNAME}_${lang}.qm
 PLIST_FILES+=	share/icons/hicolor/${size}x${size}/apps/${PORTNAME}_logo.png
 .endfor
 PLIST_FILES+=	share/icons/hicolor/scalable/apps/${PORTNAME}_logo.svg
-PLIST_DIRS=	%%DATADIR%%/translations %%DATADIR%%
 
 DESKTOP_ENTRIES="CdCat" "Hyper's CD Catalog" "${DATADIR}/${PORTNAME}.png" \
 		"${PORTNAME}" "AudioVideo;Qt;" ""
 
-L7Z_NAME=	lib7zip
-L7Z_VERSION=	1.6.5
-L7Z_DISTFILE=	${L7Z_NAME}-${L7Z_VERSION}.tar.gz
-L7Z_WRKSRC=	${WRKDIR}/${L7Z_NAME}
-
-.include <bsd.port.pre.mk>
-
-P7Z_WRKSRC=	$$(cd ${PORTSDIR}/archivers/p7zip && ${MAKE} -V WRKSRC)
-MIF_WRKSRC=	$$(cd ${PORTSDIR}/multimedia/mediainfo && ${MAKE} -V WRKSRC)
-
-post-extract:
-	@${GZCAT} ${DISTDIR}/${L7Z_DISTFILE} | (cd ${WRKDIR} && ${TAR} -xf -)
-	@${LN} -sf ${L7Z_NAME}-${L7Z_VERSION} ${L7Z_WRKSRC}
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		'/LIBS/s|^|#|' ${BUILD_WRKSRC}/${PORTNAME}.pro
+		'/USE_LIB7ZIP/s|^|#| ; \
+		 /LIBS/s|^|#|' ${BUILD_WRKSRC}/${PORTNAME}.pro
 	@${REINPLACE_CMD} -e \
 		's|/dev/sr0|/dev/cd0|' ${BUILD_WRKSRC}/config.cpp
 .for i in newdbdialog.cpp wdbfile.h
 	@${REINPLACE_CMD} -e \
 		's|crypto++/|cryptopp/|' ${BUILD_WRKSRC}/${i}
 .endfor
-	@${REINPLACE_CMD} -e \
-		's|-ldl||' ${L7Z_WRKSRC}/Test7Zip/Makefile.in
 
 pre-configure:
-	@cd ${L7Z_WRKSRC} && ./configure --disable-shared \
-		CC="${CC}" CFLAGS="${CFLAGS}" \
-		CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" \
-		P7ZIP_SOURCE_DIR="${P7Z_WRKSRC}"
 	@${LRELEASE} ${BUILD_WRKSRC}/${PORTNAME}.pro
-
-pre-build:
-	@cd ${L7Z_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
-		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET}
 
 do-install:
 	(cd ${BUILD_WRKSRC} && ${INSTALL_PROGRAM} ${PORTNAME} \
@@ -120,4 +83,4 @@ do-install:
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} ${STAGEDIR}${DOCSDIR})
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

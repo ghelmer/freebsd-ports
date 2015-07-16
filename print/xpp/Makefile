@@ -3,7 +3,7 @@
 
 PORTNAME=	xpp
 PORTVERSION=	1.5
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	print
 MASTER_SITES=	SF/cups/${PORTNAME}/${PORTVERSION}
 
@@ -19,7 +19,6 @@ GNU_CONFIGURE=	yes
 CFLAGS+=	-D_IPP_PRIVATE_STRUCTURES
 
 PLIST_FILES=	bin/xpp share/doc/xpp/README
-PLIST_DIRS=	share/doc/xpp
 
 post-configure:
 	@${REINPLACE_CMD} -e 's|$$(all_includes)|-I ${PREFIX}/include|' \

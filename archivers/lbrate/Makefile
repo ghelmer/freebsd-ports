@@ -5,8 +5,7 @@ PORTNAME=	lbrate
 PORTVERSION=	1.1
 PORTREVISION=	2
 CATEGORIES=	archivers
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	utils/compress
+MASTER_SITES=	SUNSITE/utils/compress
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extract/decompress CP/M LBR archives
@@ -18,6 +17,8 @@ MAKE_ARGS=	CC="${CC}" CFLAGS="${CPPFLAGS} ${CFLAGS} ${LDFLAGS}"
 PORTDOCS=	ChangeLog README TODO
 PLIST_FILES=	bin/lbrate \
 		man/man1/lbrate.1.gz
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/lbrate ${STAGEDIR}${PREFIX}/bin

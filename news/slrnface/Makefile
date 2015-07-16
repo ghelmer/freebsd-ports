@@ -5,14 +5,13 @@ PORTNAME=	slrnface
 PORTVERSION=	2.1.1
 PORTREVISION=	6
 CATEGORIES=	news
-MASTER_SITES=	${MASTER_SITE_DEBIAN}
-MASTER_SITE_SUBDIR=	pool/main/s/${PORTNAME}
+MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shows X-Faces from slrn in X11 terminal emulator
 
-LIB_DEPENDS=	compface:${PORTSDIR}/mail/faces
+LIB_DEPENDS=	libcompface.so:${PORTSDIR}/mail/faces
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 ALL_TARGET=	slrnface
@@ -22,7 +21,6 @@ MAKE_ARGS=	CC="${CC}" C_FLAGS="${CFLAGS}" \
 USE_XORG=	xt
 
 PLIST_FILES=	bin/slrnface man/man1/slrnface.1.gz %%DATADIR%%/slrnface.sl
-PLIST_DIRS=		%%DATADIR%%
 
 SUB_FILES=	pkg-message
 

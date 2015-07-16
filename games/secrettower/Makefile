@@ -3,25 +3,25 @@
 
 PORTNAME=	secrettower
 PORTVERSION=	0.2.0
+PORTREVISION=	1
 CATEGORIES=	games python
 DIST_SUBDIR=	python
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Save princess Ericia in this 2D platform game
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYGAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dusty141
 GH_PROJECT=	TheSecretTower
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	ecf13e4
+GH_TAGNAME=	ecf13e4
 
-USES=		shebangfix
-SHEBANG_FILES= 	TheSecretTower.py server.py
-USE_PYTHON=	2
+USES=		python:2 shebangfix
+SHEBANG_FILES=	TheSecretTower.py server.py
 
 PORTDOCS=	README
 OPTIONS_DEFINE=	DOCS

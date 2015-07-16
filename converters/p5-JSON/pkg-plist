@@ -1,4 +1,3 @@
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/JSON/.packlist
 %%SITE_PERL%%/JSON.pm
 %%SITE_PERL%%/JSON/backportPP.pm
 %%SITE_PERL%%/JSON/backportPP/Boolean.pm
@@ -9,6 +8,3 @@
 %%PERL5_MAN3%%/JSON::backportPP::Boolean.3.gz
 %%PERL5_MAN3%%/JSON::backportPP::Compat5005.3.gz
 %%PERL5_MAN3%%/JSON::backportPP::Compat5006.3.gz
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/JSON
-@dirrmtry %%SITE_PERL%%/JSON/backportPP
-@dirrmtry %%SITE_PERL%%/JSON

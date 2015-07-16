@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ImageMagick
-DISTVERSION=	6.8.9-4
+DISTVERSION=	6.9.1-6
 PORTEPOCH=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	http://www.imagemagick.org/download/ \
@@ -31,46 +31,53 @@ MASTER_SITES=	http://www.imagemagick.org/download/ \
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Image processing tools
 
-#LICENSE=	APACHE20
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+
+CONFLICTS_INSTALL=	execline-[0-9]* # bin/import
 
 # This port uses .la files, keep libtool:keepla! (magick/module.c)
-USES=		gmake libtool:keepla pathfix perl5 pkgconfig shebangfix tar:xz
+USES=		cpe gmake libtool:keepla pathfix perl5 pkgconfig:both shebangfix tar:xz
+CPE_PRODUCT=	imagemagick
+CPE_VENDOR=	imagemagick
 SHEBANG_FILES=	www/source/examples.pl
-USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	MAKE=${MAKE_CMD}
-CONFIGURE_ARGS=	--without-dps \
-		--without-lcms
+CONFIGURE_ARGS=	--without-dps
 USE_LDCONFIG=	yes
+USE_GNOME=	libxml2
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+# make sure LOCALBASE is placed at the end of the compiler lookup so the configure
+# script can find openjpeg2 headers before the openjpeg15 headers
+CPPFLAGS+=	-isystem${LOCALBASE}/include
+LDFLAGS+=	-Wl,-Y${LOCALBASE}/lib
 
 SAMPLE_FILES=	coder.xml colors.xml delegates.xml log.xml magic.xml mime.xml \
 		policy.xml quantization-table.xml thresholds.xml type-dejavu.xml \
 		type-ghostscript.xml type-windows.xml type.xml
-
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
 OPTIONS_DEFINE=	BZIP2 DOCS DJVU FFTW FONTCONFIG FPX FREETYPE \
 		GRAPHVIZ GSLIB JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES \
 		OPENEXR OPENMP PANGO PDF PERL PNG SVG TESTS TIFF WEBP WMF \
-		THREADS
+		THREADS X11 16BIT_PIXEL HDRI
 OPTIONS_DEFAULT=	16BIT_PIXEL BZIP2 FFTW FONTCONFIG FPX FREETYPE \
-		JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES PDF PNG SVG TIFF \
-		WEBP WMF THREADS
-OPTIONS_GROUP=	HALFSUPPORTED
-OPTIONS_GROUP_HALFSUPPORTED=	16BIT_PIXEL HDRI
+		JPEG2000 JBIG JPEG LCMS2 LZMA LQR MODULES PDF PERL PNG SVG \
+		TIFF WEBP WMF THREADS X11
 
-HALFSUPPORTED_DESC=	Half supported options (see help dialog)
 16BIT_PIXEL_DESC=	16bit pixel support
 JPEG2000_DESC=		OpenJPEG 2000 support via openjpeg
 DJVU_DESC=		DJVU format support (needs THREADS)
 GSLIB_DESC=		libgs (Postscript SHLIB) support
 HDRI_DESC=		High dynamic range images support
 MODULES_DESC=		Modules support
+SVG_DESC=		SVG vector image format support (via librsvg)
 TESTS_DESC=		Run bundled self-tests after build
+#SIMD_CONFIGURE_WITH=	gcc-arch
+CONFIGURE_ARGS+=	--without-gcc-arch
 
 .include <bsd.port.options.mk>
 
@@ -121,9 +128,8 @@ PLIST_SUB+=		WITH_PERL='@comment '
 
 .if ${_IMAGEMAGICK_THREADS} == "yes"
 CONFIGURE_ARGS+=	--with-threads
-CONFIGURE_ENV+=		PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-			PTHREAD_LIBS="${PTHREAD_LIBS}"
-LDFLAGS+=		${PTHREAD_LIBS}
+CONFIGURE_ENV+=		PTHREAD_LIBS="-lpthread"
+LDFLAGS+=		-lpthread
 .else
 CONFIGURE_ARGS+=	--without-threads
 _IMAGEMAGICK_THREADS=no
@@ -188,7 +194,7 @@ PLIST_SUB+=		DJVU="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MJPEG}
-LIB_DEPENDS+=		libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=			jpeg
 PLIST_SUB+=		JPEG=""
 .else
 CONFIGURE_ARGS+=	--without-jpeg
@@ -196,7 +202,7 @@ PLIST_SUB+=		JPEG="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=		libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=		libpng.so:${PORTSDIR}/graphics/png
 PLIST_SUB+=		PNG=""
 .else
 CONFIGURE_ARGS+=	--without-png
@@ -284,13 +290,12 @@ CONFIGURE_ARGS+=	--without-lzma
 .if ${PORT_OPTIONS:MLCMS2}
 LIB_DEPENDS+=		liblcms2.so:${PORTSDIR}/graphics/lcms2
 .else
-CONFIGURE_ARGS+=	--without-lcms2
+CONFIGURE_ARGS+=	--without-lcms
 .endif
 
 # Freetype (TrueType Font) support
 .if ${PORT_OPTIONS:MFREETYPE}
 LIB_DEPENDS+=		libfreetype.so:${PORTSDIR}/print/freetype2
-USE_GHOSTSCRIPT=	yes
 CONFIGURE_ARGS+=	--with-freetype
 .else
 CONFIGURE_ARGS+=	--without-freetype
@@ -310,22 +315,18 @@ PLIST_SUB+=		WEBP="@comment "
 .if ${PORT_OPTIONS:MFONTCONFIG}
 LIB_DEPENDS+=		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 CONFIGURE_ARGS+=	--with-fontconfig
-CONFIGURE_ENV+=		FONTCONFIG_CFLAGS="-I${LOCALBASE}/include" \
-			FONTCONFIG_LIBS="-L${LOCALBASE}/lib"
-MAKE_ENV+=		FONTCONFIG_CFLAGS="-I${LOCALBASE}/include"
 .else
 CONFIGURE_ARGS+=	--without-fontconfig
 .endif
 
 # WMF (Windows Meta File) images
 .if ${PORT_OPTIONS:MWMF}
-. if !defined(WITHOUT_X11)
+. if ${PORT_OPTIONS:MX11}
 LIB_DEPENDS+=		libwmf.so:${PORTSDIR}/graphics/libwmf
 . else
 LIB_DEPENDS+=		libwmf.so:${PORTSDIR}/graphics/libwmf-nox11
 . endif
 CONFIGURE_ARGS+=	--with-wmf=yes
-CFLAGS+=		-I${LOCALBASE}/include/freetype2
 PLIST_SUB+=		WMF=""
 .else
 CONFIGURE_ARGS+=	--without-wmf
@@ -333,18 +334,15 @@ PLIST_SUB+=		WMF="@comment "
 .endif
 
 # SVG (Scalable Vector Graphics) requires both libxml2 and X11
-.if ${PORT_OPTIONS:MSVG} && !defined(WITHOUT_X11)
-USE_GNOME+=		libxml2
+.if ${PORT_OPTIONS:MSVG} && ${PORT_OPTIONS:MX11}
 LIB_DEPENDS+=		librsvg-2.so:${PORTSDIR}/graphics/librsvg2
-CONFIGURE_ARGS+=	--with-rsvg --with-xml
-CONFIGURE_ENV+=		RSVG_CFLAGS="-I${LOCALBASE}/include/librsvg-2.0" \
-			RSVG_LIBS="-L${LOCALBASE}/lib"
+CONFIGURE_ARGS+=	--with-rsvg
 .else
-CONFIGURE_ARGS+=	--without-rsvg --without-xml
+CONFIGURE_ARGS+=	--without-rsvg
 .endif
 
 # Pango support
-.if ${PORT_OPTIONS:MPANGO} && !defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MPANGO} && ${PORT_OPTIONS:MX11}
 USE_GNOME+=		pango
 PLIST_SUB+=		PANGO=""
 .else
@@ -357,7 +355,7 @@ PLIST_SUB+=		PANGO="@comment "
 USE_GHOSTSCRIPT=	yes
 .endif
 
-.if defined(WITHOUT_X11)
+.if ! ${PORT_OPTIONS:MX11}
 CONFIGURE_ARGS+=	--without-x
 CONFLICTS+=		ImageMagick-6*
 PLIST_SUB+=		X11='@comment '
@@ -380,6 +378,22 @@ INSTALL_TARGET=	install-strip
 USE_GHOSTSCRIPT_BUILD=yes
 .endif
 
+post-patch:
+# strip library name of variable parts that can change due to
+# the HDRI and Q16 option
+	@${REINPLACE_CMD}  -e 's|_@MAGICK_ABI_SUFFIX@||g; \
+		s|\.@MAGICK_ABI_SUFFIX@||g' \
+		${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|@\.@MAGICK_ABI_SUFFIX@|@|g' \
+		${WRKSRC}/PerlMagick/Makefile.PL.in \
+		${WRKSRC}/PerlMagick/quantum/Makefile.PL.in \
+		${WRKSRC}/Magick++/lib/Magick++.pc.in \
+		${WRKSRC}/Magick++/lib/ImageMagick++.pc.in \
+		${WRKSRC}/magick/ImageMagick.pc.in \
+		${WRKSRC}/magick/MagickCore.pc.in \
+		${WRKSRC}/wand/Wand.pc.in \
+		${WRKSRC}/wand/MagickWand.pc.in
+
 pre-configure:
 .if defined(_IMAGEMAGICK_THREADS_PERL_MSG)
 	@${ECHO_CMD} '###################################################################'
@@ -387,19 +401,11 @@ pre-configure:
 	@${ECHO_CMD} '###################################################################'
 .endif
 
-.if ${PORT_OPTIONS:MSVG} && defined(WITHOUT_X11)
+.if ${PORT_OPTIONS:MSVG} && ! ${PORT_OPTIONS:MX11}
 	@${ECHO_CMD} NOTICE: SVG format support disabled, requires X11
 .endif
 
 post-install: test
-.if ${PORT_OPTIONS:MPERL}
-	@${RM} -f ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod*
-	@${RM} -f ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto/Image/Magick/.packlist
-.endif
-.if ${PORT_OPTIONS:MMODULES}
-	@${TOUCH} ${STAGEDIR}${PREFIX}/lib/ImageMagick-${PORTVERSION:R}/modules-${_QBIT}${_HDRI}/coders/.keep
-	@${TOUCH} ${STAGEDIR}${PREFIX}/lib/ImageMagick-${PORTVERSION:R}/modules-${_QBIT}${_HDRI}/filters/.keep
-.endif
 .for i in ${SAMPLE_FILES}
 	@${MV} ${STAGEDIR}${PREFIX}/etc/ImageMagick-6/${i} \
 		${STAGEDIR}${PREFIX}/etc/ImageMagick-6/${i}.sample
@@ -407,7 +413,7 @@ post-install: test
 
 test check:
 .if ${PORT_OPTIONS:MTESTS}
-	-cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} limits -m 20m ${MAKE} check
+	-cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} limits -m 20m ${MAKE} ${_MAKE_JOBS} check
 .endif
 
 .include <bsd.port.mk>

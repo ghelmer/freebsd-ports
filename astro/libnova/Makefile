@@ -7,15 +7,13 @@ PORTREVISION=	1
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/v%20${PORTVERSION}
 
-MAINTAINER=	dhn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Astronomical Calculation Library
 
+USES=		autoreconf libtool
 GNU_CONFIGURE=	yes
-USES=		libtool
-USE_AUTOTOOLS=	aclocal autoheader autoconf automake libtoolize
-AUTOMAKE_ARGS=	-a -c -f
-LIBTOOLIZE_ARGS=-i -c -f
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 

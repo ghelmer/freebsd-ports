@@ -3,8 +3,8 @@
 
 PORTNAME=	devil
 PORTVERSION=	1.7.8
+PORTREVISION=	20
 PORTEPOCH=	1
-PORTREVISION=	17
 CATEGORIES=	graphics
 MASTER_SITES=	SF/openil/DevIL/${PORTVERSION}
 DISTNAME=	DevIL-${PORTVERSION}
@@ -12,13 +12,12 @@ DISTNAME=	DevIL-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Full featured cross-platform image library
 
-USES=		pkgconfig libtool
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf
-ACLOCAL_ARGS=	-I m4 -I ${LOCALBASE}/share/aclocal
-AUTOMAKE_ARGS=	--add-missing --copy --force-missing
+USES=		alias autoreconf libtool pkgconfig
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-ILU \
 		--disable-allegro --disable-directx8 --disable-directx9 \
 		--without-libsquish
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USE_GCC=	any
 
@@ -47,7 +46,7 @@ SQUISH_DESC=	Enable DXT compression via libsquish
 NVTT_DESC=	Enable NVidia texture tools support
 SIMD_DESC=	Enable SIMD autodetection (AltiVec, SSE3,...)
 
-JPEG_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+JPEG_USES=		jpeg
 JPEG_CONFIGURE_ENABLE=	jpeg
 JASPER_LIB_DEPENDS=	libjasper.so:${PORTSDIR}/graphics/jasper
 JASPER_CONFIGURE_ENABLE=jp2
@@ -93,8 +92,6 @@ CONFIGURE_ARGS+=--disable-altivec --disable-sse --disable-sse2 --disable-sse3
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS/s|docs||g' ${WRKSRC}/Makefile.am
-	@${REINPLACE_CMD} -e '/^ilur_LDADD =/s|$$| $$(il_library)|' \
-		${WRKSRC}/bin/Makefile.am
 	@${REINPLACE_CMD} -e '/^pkgdir=/s|$$(libdir)/|$$(prefix)/libdata/|g' \
 		${WRKSRC}/data/Makefile.am
 	@${REINPLACE_CMD} -e 's|<malloc\.h>|<stdlib.h>|g' \
@@ -102,6 +99,7 @@ post-patch:
 
 post-install:
 	@${RMDIR} ${STAGEDIR}${DATADIR}/examples
+	@${RMDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for file in AUTHORS CREDITS ChangeLog Libraries.txt README TODO
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}

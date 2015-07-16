@@ -3,9 +3,9 @@
 
 PORTNAME=	pth
 PORTVERSION=	2.0.7
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	pth
+MASTER_SITES=	GNU
 PKGNAMESUFFIX?=	# empty
 
 MAINTAINER=	vd@FreeBSD.org
@@ -13,12 +13,13 @@ COMMENT=	GNU Portable Threads
 
 MAKE_JOBS_UNSAFE=	yes
 
-USE_LDCONFIG=	${PREFIX}/lib/pth
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-optimize \
 		--enable-batch \
 		--includedir="${PREFIX}/include/pth" \
 		--libdir="${PREFIX}/lib/pth"
+USES=		libtool
+USE_LDCONFIG=	${PREFIX}/lib/pth
 
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS

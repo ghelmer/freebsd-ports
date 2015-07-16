@@ -147,7 +147,6 @@
 %%DATADIR%%/America/Moncton
 %%DATADIR%%/America/Monterrey
 %%DATADIR%%/America/Montevideo
-%%DATADIR%%/America/Montreal
 %%DATADIR%%/America/Montserrat
 %%DATADIR%%/America/Nassau
 %%DATADIR%%/America/New_York
@@ -223,8 +222,8 @@
 %%DATADIR%%/Asia/Beirut
 %%DATADIR%%/Asia/Bishkek
 %%DATADIR%%/Asia/Brunei
+%%DATADIR%%/Asia/Chita
 %%DATADIR%%/Asia/Choibalsan
-%%DATADIR%%/Asia/Chongqing
 %%DATADIR%%/Asia/Colombo
 %%DATADIR%%/Asia/Damascus
 %%DATADIR%%/Asia/Dhaka
@@ -232,7 +231,6 @@
 %%DATADIR%%/Asia/Dubai
 %%DATADIR%%/Asia/Dushanbe
 %%DATADIR%%/Asia/Gaza
-%%DATADIR%%/Asia/Harbin
 %%DATADIR%%/Asia/Hebron
 %%DATADIR%%/Asia/Ho_Chi_Minh
 %%DATADIR%%/Asia/Hong_Kong
@@ -245,7 +243,6 @@
 %%DATADIR%%/Asia/Kabul
 %%DATADIR%%/Asia/Kamchatka
 %%DATADIR%%/Asia/Karachi
-%%DATADIR%%/Asia/Kashgar
 %%DATADIR%%/Asia/Kathmandu
 %%DATADIR%%/Asia/Khandyga
 %%DATADIR%%/Asia/Kolkata
@@ -275,6 +272,7 @@
 %%DATADIR%%/Asia/Seoul
 %%DATADIR%%/Asia/Shanghai
 %%DATADIR%%/Asia/Singapore
+%%DATADIR%%/Asia/Srednekolymsk
 %%DATADIR%%/Asia/Taipei
 %%DATADIR%%/Asia/Tashkent
 %%DATADIR%%/Asia/Tbilisi
@@ -428,6 +426,7 @@
 %%DATADIR%%/PST8PDT
 %%DATADIR%%/Pacific/Apia
 %%DATADIR%%/Pacific/Auckland
+%%DATADIR%%/Pacific/Bougainville
 %%DATADIR%%/Pacific/Chatham
 %%DATADIR%%/Pacific/Chuuk
 %%DATADIR%%/Pacific/Easter

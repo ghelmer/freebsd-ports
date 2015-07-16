@@ -3,25 +3,24 @@
 
 PORTNAME=	scourge
 PORTVERSION=	0.21.1
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/$/.src/}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rogue-like game
 
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 RUN_DEPENDS=	${DATADIR}/config/scourge.cfg:${PORTSDIR}/games/scourge-data
 
-USE_AUTOTOOLS=	autoconf:env automake:env
+USES=		autoreconf gettext gmake
 USE_GL=		gl
 USE_SDL=	sdl image mixer net ttf
-USES=		gmake
 GNU_CONFIGURE=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_LIBS}
-LDFLAGS+=	-L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 CONFIGURE_ARGS=	--with-data-dir=${DATADIR}
 
@@ -30,24 +29,12 @@ PLIST_FILES=	bin/${PORTNAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	DEBUG
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDEBUG}
-CONFIGURE_ARGS+=	--enable-debug
-.endif
+DEBUG_CONFIGURE_ENABLE=	debug
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|GLvoid|void|g' ${WRKSRC}/src/sdlhandler.cpp ${WRKSRC}/src/sdlhandler.h
 
-pre-configure:
-	@cd ${WRKSRC} && ${AUTORECONF} -i
-
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} ${PREFIX}/bin/
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+	@${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

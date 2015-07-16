@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	SquareMap
-PORTVERSION=	1.0.3
+PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +13,8 @@ COMMENT=	Hierarchic visualization control for wxPython
 
 LICENSE=	BSD2CLAUSE
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 USE_WX=		2.8
 WX_COMPS=	python
 

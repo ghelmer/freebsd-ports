@@ -16,23 +16,17 @@ LICENSE=	LGPL21
 
 ONLY_FOR_ARCHS=	i386
 
-USES=		dos2unix
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		dos2unix python
+USE_PYTHON=	distutils autoplist
 
-DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
+DOCSDIR=	${PREFIX}/share/doc/${PYTHON_PKGNAMEPREFIX}${PORTNAME}
 
 PORTDOCS=	usage.txt
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/doc/,} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

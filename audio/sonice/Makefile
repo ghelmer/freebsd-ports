@@ -10,14 +10,14 @@ MASTER_SITES=	http://freebsd.t-hosting.hu/${PORTNAME}/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sonice eases reencoding of .ogg files
 
+BROKEN=		Unfetchable
 RUN_DEPENDS=	oggenc:${PORTSDIR}/audio/vorbis-tools \
 		flac:${PORTSDIR}/audio/flac \
 		vorbisgain:${PORTSDIR}/audio/vorbisgain \
 		${PYTHON_PKGNAMEPREFIX}yaml>0:${PORTSDIR}/devel/py-yaml
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 WRKSRC=		${WRKDIR}/sonice
 
 post-patch:

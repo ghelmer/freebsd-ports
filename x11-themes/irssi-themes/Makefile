@@ -5,8 +5,7 @@ PORTNAME=	irssi-themes
 PORTVERSION=	20101013
 CATEGORIES=	x11-themes irc
 MASTER_SITES=	http://www.irssi.org/themefiles/ \
-		CRITICAL
-MASTER_SITE_SUBDIR=	${PORTNAME}
+		LOCAL/ehaupt/${PORTNAME}
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -24,8 +23,6 @@ THEMESDIR_REL=	share/irssi/themes
 .for f in ${DISTFILES}
 PLIST_FILES+=	${THEMESDIR_REL}/${f}
 .endfor
-
-PLIST_DIRSTRY=	share/irssi/themes share/irssi
 
 do-extract:
 	@${MKDIR} ${WRKSRC}

@@ -3,13 +3,13 @@
 
 PORTNAME=	hugin
 PORTVERSION=	2013.0
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-2013.0
 PKGNAMESUFFIX=	-devel
 DISTNAME=	hugin-2013.0.0_beta1
 
-MAINTAINER=	grog@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI for Panorama Tools, to stitch panoramic images
 
 LIB_DEPENDS=	libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
@@ -17,10 +17,9 @@ LIB_DEPENDS=	libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
 		libImath.so:${PORTSDIR}/graphics/ilmbase \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
 		libexiv2.so:${PORTSDIR}/graphics/exiv2 \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		liblensfun.so:${PORTSDIR}/graphics/lensfun \
 		libpano13.so:${PORTSDIR}/graphics/libpano13 \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 BUILD_DEPENDS=	swig2.0:${PORTSDIR}/devel/swig20 \
 		tclap>=1.2.1:${PORTSDIR}/devel/tclap
@@ -32,12 +31,14 @@ RUN_DEPENDS=	enblend>=3.1.r20080615:${PORTSDIR}/graphics/enblend \
 WRKSRC=		${WRKDIR}/hugin-2013.0.0
 CONFLICTS_INSTALL=	hugin-201[0-2]*
 
+IGNORE=		older than graphics/hugin
+
 OPTIONS_DEFINE=	PANOMATIC AUTOPANOSIFTC
 OPTIONS_DEFAULT=	PANOMATIC AUTOPANOSIFTC
 PANOMATIC_DESC=		Install graphics/panomatic
 AUTOPANOSIFTC_DESC=	Install graphics/autopano-sift-c
 
-USES=		cmake gettext pkgconfig tar:bzip2
+USES=		cmake gettext jpeg pkgconfig tar:bzip2
 
 CMAKE_ARGS=	-DwxWidgets_CONFIG_EXECUTABLE=${WX_CONFIG}
 
@@ -47,39 +48,6 @@ WX_UNICODE=	yes
 
 USE_GL=		glew glut
 
-MANCOMPRESSED=	yes
-
-MAN1=		align_image_stack.1 \
-		autooptimiser.1 \
-		autopano-noop.sh.1 \
-		calibrate_lens_gui.1 \
-		celeste_standalone.1 \
-		checkpto.1 \
-		cpclean.1 \
-		cpfind.1 \
-		deghosting_mask.1 \
-		fulla.1 \
-		hugin.1 \
-		hugin_hdrmerge.1 \
-		hugin_stitch_project.1 \
-		icpfind.1 \
-		nona.1 \
-		linefind.1 \
-		matchpoint.1 \
-		nona_gui.1 \
-		pano_modify.1 \
-		pano_trafo.1 \
-		pto2mk.1 \
-		pto_gen.1 \
-		pto_lensstack.1 \
-		pto_merge.1 \
-		pto_var.1 \
-		tca_correct.1 \
-		PTBatcher.1 \
-		PTBatcherGUI.1 \
-		vig_optimize.1
-
-NO_STAGE=	yes
 post-configure:
 	${REINPLACE_CMD} \
 		's/-pthread;-D_THREAD_SAFE/-pthread -D_THREAD_SAFE/g' \

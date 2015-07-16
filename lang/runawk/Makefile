@@ -2,50 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	runawk
-PORTVERSION=	1.5.0
+PORTVERSION=	1.6.0
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	sahil@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Wrapper for AWK interpreter that implements a modules system
-
-BUILD_DEPENDS=	mk-configure>=0.21.0:${PORTSDIR}/devel/mk-configure
-
-MAKE_ENV+=	SUBPRJ_DFLT="${SUBPRJ_DFLT}"
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -Wl,-rpath -Wl,${LOCALBASE}/lib
-
-MAN1=		${PORTNAME}.1 alt_getopt.1
-MAN3=		${PORTNAME}_modules.3
-
-PLIST_FILES=	bin/${PORTNAME} bin/alt_getopt bin/alt_getopt.sh
-
-SUBPRJ_DFLT=	runawk modules
 
 LICENSE=	MIT
 
-.if !defined(NOPORTDOCS)
-PORTDOCS=	*
-SUBPRJ_DFLT+=	doc
-.endif
+BUILD_DEPENDS=	mk-configure>=0.26.0:${PORTSDIR}/devel/mk-configure
 
-.if !defined(NOPORTEXAMPLES)
-PORTEXAMPLES=	*
-SUBPRJ_DFLT+=	examples
-MAKE_ENV+=	EGDIR="${EXAMPLESDIR}"
-.endif
+MAKE_ENV=	DESTDIR="${STAGEDIR}" EGDIR="${EXAMPLESDIR}"
+INSTALL_TARGET=	install install-doc install-examples
 
-NO_STAGE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 do-build:
 	@${SETENV} ${MAKE_ENV} ${LOCALBASE}/bin/mkcmake -C ${WRKSRC}
 
 do-install:
-	@${SETENV} ${MAKE_ENV} ${LOCALBASE}/bin/mkcmake -C ${WRKSRC} ${INSTALL_TARGET}
-
-post-install:
-	@(cd ${DATADIR}; ${FIND} -s . -type f) \
-		| ${SED} -ne 's,^,${DATADIR:S,^${PREFIX}/,,}/,p' >> ${TMPPLIST}
-	@${ECHO_CMD} '@dirrm ${DATADIR:S|${PREFIX}/||}/gawk' >> ${TMPPLIST}
-	@${ECHO_CMD} '@dirrm ${DATADIR:S|${PREFIX}/||}' >> ${TMPPLIST}
+	@${SETENV} ${MAKE_ENV} ${LOCALBASE}/bin/mkcmake -C ${WRKSRC} \
+		${INSTALL_TARGET}
 
 .include <bsd.port.mk>

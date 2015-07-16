@@ -3,7 +3,7 @@
 
 PORTNAME=	galaxyhack
 PORTVERSION=	1.74
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	games
 MASTER_SITES=	SF \
 		SF/${PORTNAME}/Fleet%20packages/020906:fleets
@@ -31,6 +31,11 @@ USE_SDL=	gfx image mixer sdl
 ALL_TARGET=	${PORTNAME}
 
 SUB_FILES=	${PORTNAME}-sh
+
+PLIST_FILES=	bin/galaxyhack \
+		libexec/galaxyhack \
+		share/pixmaps/galaxyhack.png
+PORTDATA=	*
 
 DESKTOP_ENTRIES="GalaxyHack" "" "${PREFIX}/share/pixmaps/galaxyhack.png" \
 		"${PORTNAME}" "" ""

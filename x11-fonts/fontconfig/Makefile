@@ -3,8 +3,8 @@
 #   $MCom: ports/trunk/x11-fonts/fontconfig/Makefile 18637 2013-07-27 09:15:21Z kwm $
 
 PORTNAME=	fontconfig
-PORTVERSION=	2.11.0
-PORTREVISION?=	3
+PORTVERSION=	2.11.1
+PORTREVISION?=	0
 PORTEPOCH?=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://www.freedesktop.org/software/fontconfig/release/
@@ -19,7 +19,7 @@ USES=		tar:bzip2
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libexpat.so:${PORTSDIR}/textproc/expat2
 
-USES+=		gmake libtool:keepla pathfix pkgconfig
+USES+=		gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-configdir=${PREFIX}/etc/fonts/conf.d \
@@ -34,33 +34,32 @@ CONFIGURE_ARGS=	--with-configdir=${PREFIX}/etc/fonts/conf.d \
 		--disable-docs
 MAKE_ENV=	LC_ALL=C
 PKGINSTALL=	${WRKDIR}/pkg-install
+INSTALL_TARGET=install-strip
 
 MAN1PAGES=	fc-cache.1 fc-cat.1 fc-list.1 fc-match.1 fc-query.1 fc-scan.1
 MAN5PAGES=	fonts-conf.5
 PORTDOCS=	fontconfig-user.html fontconfig-user.pdf fontconfig-user.txt
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
-# work around fc-cache crash on arm platform
-.if ${ARCH} == arm || ${ARCH} == armv6
-USE_GCC=	any
-.endif
+.include <bsd.port.options.mk>
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
 .endif
-	${INSTALL_MAN} ${MAN5PAGES:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${PREFIX}/man/man5
+	${INSTALL_MAN} ${MAN5PAGES:S|^|${WRKSRC}/doc/|} \
+		${STAGEDIR}${PREFIX}/man/man5
 .for manpage in ${MAN1PAGES}
-	${INSTALL_MAN} ${FILESDIR}/${manpage} ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${FILESDIR}/${manpage} \
+		${STAGEDIR}${PREFIX}/man/man1
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/fonts.conf \
-		${STAGEDIR}${PREFIX}/etc/fonts/fonts.conf.default
+		${STAGEDIR}${PREFIX}/etc/fonts/fonts.conf.sample
 	@${SED} -e 's|%%PREFIX%%|${PREFIX}| ; \
 		s|%%LOCALBASE%%|${LOCALBASE}|' < ${FILESDIR}/pkg-install.in \
 		> ${PKGINSTALL}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libfontconfig.so.1
 
 .include <bsd.port.mk>
 

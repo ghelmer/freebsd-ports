@@ -4,7 +4,7 @@
 PORTNAME=	esh
 PORTVERSION=	0.8.5
 CATEGORIES=	shells
-MASTER_SITES=	GENTOO/distfiles
+MASTER_SITES=	GENTOO
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The "easy shell", a small shell with Lisp-like syntax
@@ -14,7 +14,7 @@ LICENSE=	GPLv2
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		readline
-MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
+MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} ${CPPFLAGS}"
 
 INFO=		esh
 

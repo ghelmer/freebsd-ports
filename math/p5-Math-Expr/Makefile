@@ -3,12 +3,13 @@
 
 PORTNAME=	Math-Expr
 PORTVERSION=	0.4
+PORTREVISION=	1
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:HAKANARDO
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for parsing mathematical expressions into a tree structure
 
 LICENSE=	GPLv2

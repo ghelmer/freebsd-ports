@@ -7,7 +7,6 @@ PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//g}-src
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Dungeon explorin', slashin', hackin' game
@@ -19,7 +18,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		gmake
+USES=		gmake tar:tgz
 MAKE_ENV=	GRAPHICS="${GRAPHICS}"
 PLIST_SUB=	HACKNAME="${HACKNAME}"
 
@@ -54,13 +53,13 @@ CFLAGS+=	-DMENU_COLOR_REGEX_POSIX
 .if defined(WITH_STATUSCOLORS)
 PATCHFILES+=	nh343-statuscolors.fixed.patch
 PATCH_SITES+=	http://jdc.koitsu.org/nethack/ \
-		${MASTER_SITE_LOCAL:S|%SUBDIR%|wxs|}
+		LOCAL/wxs
 PATCH_DIST_STRIP=	-p1
 .endif
 .if defined(WITH_HPMON)
 PATCHFILES+=	hpmon.diff
 PATCH_SITES+=	http://www.netsonic.fi/~walker/nh/ \
-		${MASTER_SITE_LOCAL:S|%SUBDIR%|wxs|}
+		LOCAL/wxs
 PATCH_DIST_STRIP=	-p1
 CFLAGS+=	-DHPMON
 .endif
@@ -106,6 +105,7 @@ pre-install:
 
 post-install:
 	@cd ${WRKSRC}/doc; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} manpages
+	@${MKDIR} ${STAGEDIR}${DATADIR}/save
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/Guidebook.txt ${STAGEDIR}${DOCSDIR}

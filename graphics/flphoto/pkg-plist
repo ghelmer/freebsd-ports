@@ -1,4 +1,6 @@
 bin/flphoto
+man/man1/flphoto.1.gz
+man/man5/album.5.gz
 %%PORTDOCS%%%%DOCSDIR%%/README
 %%PORTDOCS%%%%DOCSDIR%%/about.html
 %%PORTDOCS%%%%DOCSDIR%%/albums.html
@@ -40,4 +42,3 @@ share/locale/fr/flphoto_fr
 share/locale/it/flphoto_it
 share/locale/nl/flphoto_nl
 share/locale/pt/flphoto_pt
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

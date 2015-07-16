@@ -1,23 +1,26 @@
 man/man5/ntp.conf.5.gz
 man/man5/ntp.keys.5.gz
 man/man8/ntp-keygen.8.gz
-man/man8/ntp-wait.8.gz
+%%PERL_UTILS%%man/man8/ntp-wait.8.gz
 man/man8/ntpd.8.gz
 man/man8/ntpdc.8.gz
 man/man8/ntpq.8.gz
-man/man8/ntptrace.8.gz
+%%PERL_UTILS%%man/man8/ntptrace.8.gz
 %%NTPSNMPD%%man/man8/ntpsnmpd.8.gz
 man/man8/sntp.8.gz
+man/man8/update-leap.8.gz
 %%SSL%%sbin/ntp-keygen
-sbin/ntp-wait
+%%PERL_UTILS%%sbin/ntp-wait
 sbin/ntpd
 sbin/ntpdate
 sbin/ntpdc
 sbin/ntpq
+%%NTPSNMPD%%sbin/ntpsnmpd
 sbin/ntptime
-sbin/ntptrace
+%%PERL_UTILS%%sbin/ntptrace
 sbin/sntp
-share/ntp/lib/NTP/Util.pm
+sbin/update-leap
+%%PERL_UTILS%%share/ntp/lib/NTP/Util.pm
 %%PORTDOCS%%%%DOCSDIR%%/access.html
 %%PORTDOCS%%%%DOCSDIR%%/accopt.html
 %%PORTDOCS%%%%DOCSDIR%%/assoc.html
@@ -64,6 +67,7 @@ share/ntp/lib/NTP/Util.pm
 %%PORTDOCS%%%%DOCSDIR%%/drivers/driver39.html
 %%PORTDOCS%%%%DOCSDIR%%/drivers/driver4.html
 %%PORTDOCS%%%%DOCSDIR%%/drivers/driver40.html
+%%PORTDOCS%%%%DOCSDIR%%/drivers/driver40-ja.html
 %%PORTDOCS%%%%DOCSDIR%%/drivers/driver42.html
 %%PORTDOCS%%%%DOCSDIR%%/drivers/driver43.html
 %%PORTDOCS%%%%DOCSDIR%%/drivers/driver44.html
@@ -160,6 +164,7 @@ share/ntp/lib/NTP/Util.pm
 %%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver39.html
 %%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver4.html
 %%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver40.html
+%%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver40-ja.html
 %%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver42.html
 %%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver43.html
 %%PORTDOCS%%%%DOCSDIR%%/html/drivers/driver44.html
@@ -483,6 +488,7 @@ share/ntp/lib/NTP/Util.pm
 %%PORTDOCS%%%%DOCSDIR%%/sntp.html
 %%PORTDOCS%%%%DOCSDIR%%/stats.html
 %%PORTDOCS%%%%DOCSDIR%%/tickadj.html
+%%PORTDOCS%%%%DOCSDIR%%/update-leap.html
 %%PORTDOCS%%%%DOCSDIR%%/warp.html
 %%PORTDOCS%%%%DOCSDIR%%/xleave.html
 %%PORTDOCS%%share/doc/sntp/sntp.html
@@ -493,24 +499,4 @@ share/ntp/lib/NTP/Util.pm
 %%EXAMPLESDIR%%/malarky.conf
 %%EXAMPLESDIR%%/pogo.conf
 %%EXAMPLESDIR%%/rackety.conf
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/scripts
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/pic
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/icons
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/scripts
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/pic
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/icons
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/hints
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/drivers/scripts
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/drivers/icons
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html/drivers
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/hints
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/drivers/scripts
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/drivers/icons
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/drivers
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-%%PORTDOCS%%@dirrm share/ntp/lib/NTP
-%%PORTDOCS%%@dirrm share/ntp/lib
-%%PORTDOCS%%@dirrm share/ntp
-%%PORTDOCS%%@dirrm share/doc/sntp
-@dirrm %%EXAMPLESDIR%%
+

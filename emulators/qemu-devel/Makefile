@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.0.0
-PORTREVISION=	10
+PORTVERSION=	2.3.0
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	http://wiki.qemu.org/download/:release \
 		LOCAL/nox:snapshot
@@ -15,9 +15,8 @@ MAINTAINER=	nox@FreeBSD.org
 COMMENT?=	QEMU CPU Emulator - development version
 
 HAS_CONFIGURE=	yes
-USES=		gmake pkgconfig bison perl5 tar:bzip2
+USES=		cpe gmake pkgconfig bison perl5 python:2,build tar:bzip2
 USE_PERL5=	build
-USE_PYTHON_BUILD=	2
 USE_XORG=	pixman
 USE_GNOME+=	glib20
 PATCH_STRIP=	-p1
@@ -25,7 +24,7 @@ MAKE_ENV+=	BSD_MAKE="${MAKE}"
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
 
 OPTIONS_DEFINE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
-		CDROM_DMA PCAP USBREDIR GNS3 X86_TARGETS BSD_USER \
+		CDROM_DMA PCAP USBREDIR GNS3 X86_TARGETS \
 		STATIC_LINK DOCS
 SAMBA_DESC=		samba dependency (for -smb)
 GNUTLS_DESC=		gnutls dependency (vnc encryption)
@@ -42,36 +41,12 @@ STATIC_LINK_DESC=	Statically link the executables
 OPTIONS_DEFAULT=X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CDROM_DMA CURL PCAP
 
 .if !defined(QEMU_USER_STATIC)
-CONFLICTS_INSTALL=	qemu-[0-9]*
+CONFLICTS_INSTALL=	qemu-[0-9]* qemu-sbruno-[0-9]*
 .endif
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MBSD_USER}
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-790d0ef625d22ff3f1a895d266a48e2bacd63776
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-3d175d6ed5b809976662135369c639f53780ca5c
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-a3129eea10f188bfd39ce83b18b25dcefbc5bffc
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-fd7ec8e06cd1876ef478975f052ff64134d19c6c
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-9ac2c49c734a49025fe1647ce84728d3988ea5d2
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-38f8d5aaebdb4b1624bae86b374b5265c9f01b54
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-c13_tls2
-#
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-freebsd-os-proc.c
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-05ee8495804599b52a88eb36b13ea9c06b3207cd
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-mips-target_arch_vmparam.h
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-inherit-interp_prefix
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-d62553b108aa27c0c020dbb771d29f8673807a3b
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-6201cb17ad905dffee1b2eb76f58fb032e99b2a1
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-syscall.c
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sysctl-hw-availpages
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sysctl-0oldlen
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-mmap.c
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-sysctl-hw-pagesizes
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-x86_64-target_arch_vmparam.h
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-target_siginfo
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-bsd-user-arm-signal
-.endif
-
+CONFIGURE_ARGS+=	--localstatedir=/var
 CONFIGURE_ARGS+=	--extra-ldflags=-L${LOCALBASE}/lib
 CONFIGURE_ARGS+=	--disable-smartcard-nss --disable-libssh2
 PORTDOCS=	docs qemu-doc.html qemu-tech.html qmp-commands.txt
@@ -177,13 +152,13 @@ LIB_DEPENDS+=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
 .if empty(PORT_OPTIONS:MJPEG)
 CONFIGURE_ARGS+=	--disable-vnc-jpeg
 .else
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 .endif
 
 .if empty(PORT_OPTIONS:MPNG)
 CONFIGURE_ARGS+=	--disable-vnc-png
 .else
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
 .endif
 
 .if empty(PORT_OPTIONS:MCURL)
@@ -193,7 +168,7 @@ LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
 .endif
 
 .if empty(PORT_OPTIONS:MOPENGL)
-CONFIGURE_ARGS+=	--disable-glx
+CONFIGURE_ARGS+=	--disable-opengl
 .else
 USE_GL=		yes
 .endif
@@ -249,6 +224,7 @@ CONFIGURE_ARGS+= --sparc_cpu=v9
 
 .if ${OSVERSION} < 900033
 BUILD_DEPENDS+=	${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
+CONFIGURE_ENV+=	AS=${LOCALBASE}/bin/as
 CONFIGURE_ENV+=	LD=${LOCALBASE}/bin/ld
 CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
@@ -287,24 +263,23 @@ post-patch:
 		-e "1s|^(#! )/usr/bin/perl|\1${PERL}|" \
 		${WRKSRC}/scripts/texi2pod.pl
 
-.if ${OSVERSION} >= 800091
 # XXX need to disable usb host code on head while it's not ported to the
 # new usb stack yet
 post-configure:
 	@${REINPLACE_CMD} -E \
 		-e "s|^(HOST_USB=)bsd|\1stub|" \
 		${WRKSRC}/config-host.mak
-.endif
 
 .if !target(post-install)
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} docs ${STAGEDIR}${DOCSDIR}/)
 .endif
-	@${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc
-	@${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc
 	@(cd ${STAGEDIR}${PREFIX}/etc/qemu && \
 		${MV} -i target-x86_64.conf target-x86_64.conf.sample)
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qemu-*
 .endif
 
 .include <bsd.port.mk>

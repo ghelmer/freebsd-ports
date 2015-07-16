@@ -4,13 +4,12 @@
 PORTNAME=	libaura
 PORTVERSION=	3.1.20051222
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	philip
+MASTER_SITES=	LOCAL/philip
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Library of Assorted Useful Reusable Abstractions
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 USE_LDCONFIG=	yes
 
 SONAME=		${SOLINK}.3
@@ -23,7 +22,6 @@ PLIST_FILES=	lib/${SONAME} \
 		include/aura3/popen.h \
 		include/aura3/fspred.h \
 		include/aura3/mem.h
-PLIST_DIRS=	include/aura3
 PORTDOCS=	README
 
 MAKE_ENV=	SONAME=${SONAME} SOLINK=${SOLINK}

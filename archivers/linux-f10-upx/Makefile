@@ -4,18 +4,17 @@
 PORTNAME=		upx
 PORTVERSION=		3.03
 CATEGORIES=		archivers linux
-MASTER_SITES=		CRITICAL/rpm/${LINUX_RPM_ARCH}/fedora/${LINUX_DIST_VER}
+MASTER_SITES=		LOCAL/ehaupt/rpm/${LINUX_RPM_ARCH}/fedora/${LINUX_DIST_VER}
 PKGNAMEPREFIX=		linux-f10-
-DISTNAME=		${PORTNAME}-${PORTVERSION}-${RPMVERSION}
 
 MAINTAINER=		emulation@FreeBSD.org
 COMMENT=		UPX, a high-performance executable packer (Linux Fedora 10)
 
 CONFLICTS=		linux-upx-[0-9]* linux-f8-upx-[0-9]*
 
+USE_LINUX=		f10
 USE_LINUX_RPM=		yes
 USE_LINUX_APPS=		ucl
-LINUX_DIST_VER=		10
 RPMVERSION=		1.fc10
 BRANDELF_FILES=		usr/bin/upx
 

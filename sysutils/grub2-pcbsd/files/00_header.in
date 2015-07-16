@@ -32,19 +32,30 @@ export TEXTDOMAINDIR="/usr/local/share/locale"
 # Set indicator that we haven't written device access yet
 haveDevAccess=0
 
+# Work-around for systems with GPTID enabled still
+echo "insmod part_gpt"
+
 # Do this as early as possible, since other commands might depend on it.
 # (e.g. the `loadfont' command might need lvm or raid modules)
 for i in ${GRUB_PRELOAD_MODULES} ; do
   echo "insmod $i"
 done
 
-if [ "x${GRUB_DEFAULT}" = "x" ] ; then GRUB_DEFAULT=0 ; fi
+if [ -e "/root/beadm.install" ] ; then
+  BEADM="/root/beadm.install"
+else
+  BEADM="beadm"
+fi
+
+if [ "x${GRUB_DEFAULT}" = "x" ] ; then 
+  GRUB_DEFAULT=0
+fi
 if [ "x${GRUB_DEFAULT}" = "xsaved" ] ; then GRUB_DEFAULT='${saved_entry}' ; fi
 if [ "x${GRUB_TIMEOUT}" = "x" ] ; then GRUB_TIMEOUT=5 ; fi
 if [ "x${GRUB_GFXMODE}" = "x" ] ; then GRUB_GFXMODE=auto ; fi
 
 # Check if we have more than one BE, and need to show the menu by default
-beNum=`beadm list 2>/dev/null | grep -v 'Mountpoint' | wc -l | awk '{print $1}'`
+beNum=`$BEADM list 2>/dev/null | grep -v 'Mountpoint' | wc -l | awk '{print $1}'`
 if [ $beNum -gt 1 ] ; then GRUB_HIDDEN_TIMEOUT=""; fi
 
 if [ "x${GRUB_DEFAULT_BUTTON}" = "x" ] ; then GRUB_DEFAULT_BUTTON="$GRUB_DEFAULT" ; fi
@@ -78,6 +89,11 @@ else
 fi
 
 export menuentry_id_option
+
+if [ x"\${gelipassphrase}" != x ]; then
+  set pass="\$gelipassphrase"
+  export pass
+fi
 
 if [ "\${prev_saved_entry}" ]; then
   set saved_entry="\${prev_saved_entry}"
@@ -181,9 +197,19 @@ EOF
 	fi
 
     cat << EOF
-  set gfxmode=${GRUB_GFXMODE}
-  load_video
-  insmod gfxterm
+  if [ x"\${grub_platform}" = xpc ] ; then
+    set gfxmode=${GRUB_GFXMODE}
+    load_video
+    insmod gfxterm
+  else
+    # EFI
+    insmod efi_gop
+    insmod gfxterm
+    insmod font
+    insmod videotest
+    insmod videoinfo
+    set gfxmode=${GRUB_GFXMODE}
+  fi
 EOF
 
 # Gettext variables and module

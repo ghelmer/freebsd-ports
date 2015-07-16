@@ -88,16 +88,17 @@ include/verlihub/tmysqlmemorylist.h
 include/verlihub/tmysqlmemoryordlist.h
 include/verlihub/tpluginbase.h
 lib/libplug_pi.a
-lib/libplug_pi.la
 lib/libplug_pi.so
 lib/libplug_pi.so.0
+lib/libplug_pi.so.0.0.0
 lib/libverlihub.a
-lib/libverlihub.la
 lib/libverlihub.so
 lib/libverlihub.so.0
-lib/libvhapi.la
+lib/libverlihub.so.0.0.0
+lib/libvhapi.a
 lib/libvhapi.so
 lib/libvhapi.so.0
+lib/libvhapi.so.0.0.0
 %%DATADIR%%/config/faq
 %%DATADIR%%/config/help_admin
 %%DATADIR%%/config/help_cheef
@@ -112,7 +113,3 @@ lib/libvhapi.so.0
 %%DATADIR%%/sql/default_file_trigger.sql
 %%DATADIR%%/sql/default_pi_plug.sql
 %%DATADIR%%/sql/default_reglist.sql
-@dirrm include/verlihub
-@dirrm %%DATADIR%%/sql
-@dirrm %%DATADIR%%/config
-@dirrm %%DATADIR%%

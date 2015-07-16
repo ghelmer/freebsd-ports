@@ -3,7 +3,7 @@
 
 PORTNAME=	asteroids3d
 PORTVERSION=	0.5.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/a3d/${PORTVERSION}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,13 +11,14 @@ DISTNAME=	${PORTNAME:S/3d/3D/}-${DISTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}:icons
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	First-person shooter blowing up asteroids in 3D space
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 USES=		tar:bzip2
-USE_AUTOTOOLS=	aclocal autoheader 
+USE_AUTOTOOLS=	aclocal autoheader
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	with_gamesdir="${PREFIX}/bin" with_gamedatadir="${DATADIR}"
 USE_GL=		glut

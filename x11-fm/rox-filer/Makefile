@@ -2,7 +2,7 @@
 
 PORTNAME=	rox-filer
 PORTVERSION=	2.11
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	SF/rox/rox/${PORTVERSION}
 DISTNAME=	rox-filer-${PORTVERSION}
@@ -10,23 +10,19 @@ DISTNAME=	rox-filer-${PORTVERSION}
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Simple and easy to use graphical file manager
 
-RUN_DEPENDS=	${LOCALBASE}/share/mime/packages/freedesktop.org.xml:${PORTSDIR}/misc/shared-mime-info
-
 PLIST_SUB+=	LOCALBASE=${LOCALBASE}
 
-USE_AUTOTOOLS=	autoconf213
 USE_XORG=	x11 sm xaw xproto
-USE_GNOME=	atk gconf2 glib20 gnomevfs2 gtk20 libglade2 libidl libxml2 orbit2 pango
-USES=		gmake pkgconfig tar:bzip2
-HAS_CONFIGURE=	yes
+USE_GNOME=	atk glib20 gtk20 libxml2 pango
+USES=		gmake pkgconfig shared-mime-info tar:bzip2
 
-.include <bsd.port.pre.mk>
-
+GNU_CONFIGURE=		yes
 CONFIGURE_ENV=		APP_DIR=${WRKSRC}/ROX-Filer
 CONFIGURE_ARGS=		--enable-rox --with-platform=FreeBSD
 CONFIGURE_WRKSRC=	${WRKSRC}/ROX-Filer/src
 BUILD_WRKSRC=		${CONFIGURE_WRKSRC}
 ALL_TARGET=
+LIBS+=			-lm
 
 post-configure:
 	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},g' \
@@ -48,4 +44,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
 	${INSTALL_DATA} ${WRKSRC}/rox.xml ${STAGEDIR}${PREFIX}/share/mime/packages
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

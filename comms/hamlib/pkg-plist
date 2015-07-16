@@ -136,20 +136,21 @@ lib/hamlibtcl.so
 lib/tcl%%TCL_VER%%/hamlib/pkgIndex.tcl
 lib/libhamlib++.so
 lib/libhamlib++.so.2
+lib/libhamlib++.so.2.0.16
 lib/libhamlib++.a
 lib/libhamlib++.la
 lib/libhamlib.so
 lib/libhamlib.so.2
+lib/libhamlib.so.2.0.16
 lib/libhamlib.a
 lib/libhamlib.la
 libdata/pkgconfig/hamlib.pc
 sbin/rpc.rigd
 sbin/rpc.rotd
 share/aclocal/hamlib.m4
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Hamlib/.packlist
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Hamlib/Hamlib.so
-%%SITE_PERL%%/%%PERL_ARCH%%/Hamlib.pm
-%%SITE_PERL%%/%%PERL_ARCH%%/perltest.pl
+%%SITE_ARCH%%/auto/Hamlib/Hamlib.so
+%%SITE_ARCH%%/Hamlib.pm
+%%SITE_ARCH%%/perltest.pl
 %%PYTHON_SITELIBDIR%%/_Hamlib.so
 %%PYTHON_SITELIBDIR%%/_Hamlib.la
 %%PYTHON_SITELIBDIR%%/_Hamlib.a
@@ -177,8 +178,3 @@ man/man8/rpc.rigd.8.gz
 man/man8/rpc.rotd.8.gz
 man/man8/rigctld.8.gz
 man/man8/rotctld.8.gz
-@dirrm lib/hamlib
-@dirrm lib/tcl%%TCL_VER%%/hamlib
-@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Hamlib
-@dirrm include/hamlib
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

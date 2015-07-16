@@ -3,7 +3,7 @@
 
 PORTNAME=	libexif-gtk
 PORTVERSION=	0.4.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF/libexif/${PORTNAME}/${PORTVERSION}
 
@@ -12,11 +12,12 @@ COMMENT=	GTK+ widgets to display/edit EXIF tags
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	exif:${PORTSDIR}/graphics/libexif
+LIB_DEPENDS=	libexif.so:${PORTSDIR}/graphics/libexif
 
-USES=		pathfix pkgconfig
+USES=		libtool pathfix pkgconfig
 USE_GNOME=	gtk20
-USE_AUTOTOOLS=	autoconf libtool
+USE_AUTOTOOLS=	autoconf
+GUN_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes

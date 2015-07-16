@@ -2,24 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	dhcp
-DISTVERSION=	4.2.6
+DISTVERSION=	4.2.8
 PORTREVISION=	${DHCP_PORTREVISION}
 CATEGORIES=	net
-MASTER_SITES=	${MASTER_SITE_ISC}
-MASTER_SITE_SUBDIR=	${PORTNAME}/${DISTVERSION}
+MASTER_SITES=	ISC/${PORTNAME}/${DISTVERSION}
 PKGNAMEPREFIX=	isc-
 PKGNAMESUFFIX=	42-${SUBSYS}
 #DISTNAME=	${PORTNAME}-${DISTVERSION}-${PATCHLEVEL}
 
 MAINTAINER=	zi@FreeBSD.org
-COMMENT?=	The ISC Dynamic Host Configuration Protocol server
+COMMENT?=	ISC Dynamic Host Configuration Protocol server
 
 LICENSE=	ISCL
 
 USES=		gmake
 
 PATCHLEVEL=	P1
-PORTREVISION_SERVER=	2
+PORTREVISION_SERVER=	0
 PORTREVISION_CLIENT=	0
 PORTREVISION_RELAY=	0
 
@@ -140,9 +139,6 @@ post-patch:
 		${WRKSRC}/doc/examples/dhcpd-dhcpv6.conf
 	@${REINPLACE_CMD} ${REINPLACE_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \
 		${WRKSRC}/client/dhclient.conf.example
-	@${REINPLACE_CMD} -e '/echo.*RANLIB/,+1d' \
-		${WRKSRC}/Makefile.in \
-		${WRKSRC}/*/Makefile.in
 
 do-install:
 	${SETENV} DESTDIR=${STAGEDIR} ${MAKE} -C ${WRKSRC}/${SUBSYS} install

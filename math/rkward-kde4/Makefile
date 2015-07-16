@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rkward
-PORTVERSION=	0.6.1
-PORTREVISION=	5
+PORTVERSION=	0.6.2
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/Current_Stable_Releases
 PKGNAMESUFFIX=	-kde4
@@ -21,7 +20,7 @@ CONFLICTS=	rkward-0.4.*
 
 USE_QT4=	qmake_build moc_build rcc_build uic_build phonon
 
-USE_KDE4=	kdehier kdeprefix automoc4 kdelibs
+USE_KDE4=	kdeprefix automoc4 kdelibs
 USE_PHP=	yes
 WANT_PHP_CLI=	yes
 USES=		cmake gettext fortran
@@ -31,7 +30,7 @@ CFLAGS+=	-I${LOCALBASE}/include
 
 DOCSDIR=	${PREFIX}/share/doc/HTML/en/rkward
 
-OPTIONS_DEFINE=	RECDEP
+OPTIONS_DEFINE=	RECDEP DOCS NLS
 RECDEP_DESC=	Recommended runtime dependencies
 OPTIONS_DEFAULT=RECDEP
 

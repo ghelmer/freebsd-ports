@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	rubinius
-PORTVERSION=	2.2.9
+PORTVERSION=	2.5.2
 CATEGORIES=	lang
-MASTER_SITES=	http://releases.rubini.us/
+MASTER_SITES=	http://releases.rubini.us/:source
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	LLVM based ruby language implementation
@@ -13,7 +15,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/bundle:${PORTSDIR}/sysutils/rubygem-bundler \
-		${LOCALBASE}/bin/llvm-config34:${PORTSDIR}/devel/llvm34 \
+		${LOCALBASE}/bin/llvm-config35:${PORTSDIR}/devel/llvm35 \
 		${LOCALBASE}/bin/bison:${PORTSDIR}/devel/bison
 
 HAS_CONFIGURE=	yes
@@ -26,13 +28,15 @@ CONFIGURE_ARGS=	-P "${PREFIX}" \
 		--cc ${CC} \
 		--cxx ${CXX} \
 		--no-bin-links \
-		--llvm-config ${LOCALBASE}/bin/llvm-config34 \
+		--llvm-config ${LOCALBASE}/bin/llvm-config35 \
+		--with-fibers --without-dtrace --release-build \
 		--sitedir "${PREFIX}/lib/ruby/site_ruby/rubinius" \
 		--vendordir "${PREFIX}/lib/ruby/vendor_ruby/rubinius" \
-		--stagingdir "${STAGEDIR}${PREFIX}" --with-execinfo
+		--stagingdir "${STAGEDIR}${PREFIX}" --with-execinfo \
+		--system-name ${OPSYS}
 
-USE_BZIP2=	yes
-USES=		perl5 gmake
+USES=		perl5 gmake tar:bzip2 readline compiler:c++11-lib
+USE_OPENSSL=	yes
 USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=	yes
 USE_PERL5=	build
@@ -69,6 +73,11 @@ F_ARCH=		x86_64
 F_ARCH=		x86
 .endif
 
+post-extract:
+.for DF in ${DISTFILES:N*\:source}
+	@${LN} -s ${DISTDIR}/${DF:C/:gems//g} ${WRKSRC}/vendor/cache/
+.endfor
+
 post-patch:
 	@${GREP} -Rl '#!.*ruby$$'  ${WRKSRC} |${XARGS} ${REINPLACE_CMD} -e '/^#!.*ruby$$/s/ruby$$/${RUBY_NAME}/g'
 
@@ -83,10 +92,15 @@ do-build:
 	@${TOUCH} ${STAGEDIR}${PREFIX}/lib/ruby/site_ruby/rubinius/.keep_me
 	@${TOUCH} ${STAGEDIR}${PREFIX}/lib/ruby/vendor_ruby/rubinius/.keep_me
 	@${MV} ${STAGEDIR}${PREFIX}/bin/testrb ${STAGEDIR}${PREFIX}/bin/testrbx
+	@${FIND} ${STAGEDIR} -type f -name '*.so' |${XARGS} ${STRIP_CMD}
+	@${FIND} ${STAGEDIR} -type f -name 'gem_make.out' -delete
+	@${FIND} ${STAGEDIR} -type f -name 'mkmf.log' -delete
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rbx
 
 plist:
 	@truncate -s0 pkg-plist
 	@${ECHO_CMD} "bin/rbx" >> pkg-plist
+	@${ECHO_CMD} "bin/testrbx" >> pkg-plist
 #
 # Includes
 #

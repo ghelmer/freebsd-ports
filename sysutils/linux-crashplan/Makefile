@@ -2,25 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	linux-crashplan
-DISTVERSION=	3.6.3
-PORTREVISION=	1
+DISTVERSION=	3.7.0
 CATEGORIES=	sysutils linux
 MASTER_SITES=	http://download.crashplan.com/installs/linux/install/CrashPlan/
-DISTNAME=	CrashPlan_3.6.3_Linux
-EXTRACT_SUFX=	.tgz
+DISTNAME=	CrashPlan_${DISTVERSION}_Linux
 
 MAINTAINER=	wg@FreeBSD.org
 COMMENT=	Backs up data to remote servers or hard drives
 
 RUN_DEPENDS=	linux-sun-jre17>=0:${PORTSDIR}/java/linux-sun-jre17 \
-		bash>=0:${PORTSDIR}/shells/bash
+		bash:${PORTSDIR}/shells/bash
 
 WRKSRC=		${WRKDIR}/CrashPlan-install
 
 USE_LINUX=	yes
 USE_LINUX_APPS=	expat fontconfig xorglibs
 USE_RC_SUBR=	crashplan
-USES=		shebangfix
+USES=		shebangfix tar:tgz
 
 SHEBANG_FILES=	scripts/CrashPlanEngine scripts/CrashPlanDesktop
 
@@ -29,10 +27,6 @@ ONLY_FOR_ARCHS=	i386 amd64
 NO_BUILD=	yes
 
 CRASHDIR=	${PREFIX}/share/crashplan
-
-post-patch:
-	@${REINPLACE_CMD} 's/SRV_JAVA_OPTS="/SRV_JAVA_OPTS="-Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.PollSelectorProvider /' ${WRKSRC}/scripts/run.conf
-	@${REINPLACE_CMD} 's/GUI_JAVA_OPTS="/GUI_JAVA_OPTS="-Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.PollSelectorProvider /' ${WRKSRC}/scripts/run.conf
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${CRASHDIR}

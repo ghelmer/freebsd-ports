@@ -9,8 +9,12 @@ MASTER_SITES=	http://www.bzip.org/${PORTVERSION}/
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Block-sorting file compressor
 
+USES=		cpe
+CPE_VENDOR=	bzip
 USE_LDCONFIG=	yes
 PATCH_STRIP=	-p3
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bzip2 ${STAGEDIR}${PREFIX}/bin

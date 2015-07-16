@@ -2,20 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	iiview
-PORTVERSION=	0.28
-PORTREVISION=	1
+PORTVERSION=	0.31
+DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
-MASTER_SITES=	SF
 
 MAINTAINER=	martin.sugioarto@udo.edu
 COMMENT=	Thumb viewer application
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libpng.a:${PORTSDIR}/graphics/png \
-		${LOCALBASE}/lib/libtiff.a:${PORTSDIR}/graphics/tiff \
-		${LOCALBASE}/lib/libjpeg.a:${PORTSDIR}/graphics/jpeg
+LICENSE=	BSD2CLAUSE
 
+BUILD_DEPENDS=	${LOCALBASE}/lib/libpng.a:${PORTSDIR}/graphics/png \
+		${LOCALBASE}/lib/libtiff.a:${PORTSDIR}/graphics/tiff
+
+USES=		jpeg:build
 USE_XORG=	xpm x11
-USE_BZIP2=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	nakal
+WRKSRC=		${WRKDIR}/iiview-${PORTVERSION}
 
 PLIST_FILES=	bin/iiview man/man1/iiview.1.gz
 

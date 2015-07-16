@@ -9,7 +9,7 @@ MASTER_SITES=	LOCAL/nsayer
 DISTNAME=	calctool-2.4pl13
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A multi-GUI (terminal, X, XView) calculator program
+COMMENT=	Multi-GUI (terminal, X, XView) calculator program
 
 USE_LDCONFIG=	yes
 
@@ -38,7 +38,7 @@ PLIST_SUB+=	TTY="@comment "
 
 .if ${PORT_OPTIONS:MXVIEW}
 BINARIES+=	xv_calctool
-LIB_DEPENDS+=	xview.3:${PORTSDIR}/x11-toolkits/xview
+LIB_DEPENDS+=	libxview.so:${PORTSDIR}/x11-toolkits/xview
 PLIST_SUB+=	XVIEW=""
 .else
 PLIST_SUB+=	XVIEW="@comment "

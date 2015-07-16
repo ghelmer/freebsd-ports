@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	bb
-PORTVERSION=	1.3.r1
+DISTVERSION=	1.3rc1
 PORTREVISION=	2
 CATEGORIES=	misc
-MASTER_SITES=	SF/aa-project/${PORTNAME}/1.3rc1
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/.r/rc/}
+MASTER_SITES=	SF/aa-project/${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High quality audio-visual demonstration for text terminal
@@ -19,7 +18,6 @@ WRKSRC=		${WRKDIR}/bb-1.3.0
 PORTDOCS=	README
 PLIST_FILES=	bin/bb man/man1/bb.1.gz share/bb/bb.s3m share/bb/bb2.s3m \
 		share/bb/bb3.s3m
-PLIST_DIRS=	share/bb
 
 OPTIONS_DEFINE=	DOCS
 

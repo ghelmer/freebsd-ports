@@ -11,7 +11,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	xenophon+fbsdports@irtnog.org
 COMMENT=	Content management system built with the Django framework
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}south>=0.7.3:${PORTSDIR}/databases/py-south \
 		${PYTHON_PKGNAMEPREFIX}django>=1.4:${PORTSDIR}/www/py-django \
@@ -20,9 +20,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}south>=0.7.3:${PORTSDIR}/databases/py-south 
 		${PYTHON_PKGNAMEPREFIX}django-sekizai>=0.6.1:${PORTSDIR}/www/py-django-sekizai \
 		${PYTHON_PKGNAMEPREFIX}html5lib>=0.90:${PORTSDIR}/www/py-html5lib
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	autoplist distutils
 
 OPTIONSFILE=	${PORT_DBDIR}/${PORTNAME}/options
 OPTIONS_MULTI=	DATABASE

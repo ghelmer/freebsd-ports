@@ -2,15 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	map
-PORTVERSION=	6.5.1
+PORTVERSION=	6.5.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Maps are ordered hashes with many features
 
+LICENSE=	BSD2CLAUSE RUBY
+LICENSE_COMB=	dual
+
 USE_RUBY=	yes
-USE_RAKE=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 

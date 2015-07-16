@@ -3,24 +3,24 @@
 
 PORTNAME=	sagasu
 PORTVERSION=	2.0.12
+PORTREVISION=	1
 CATEGORIES=	textproc gnome
 MASTER_SITES=	http://perso.b2b2c.ca/sarrazip/dev/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A GNOME tool to find strings in a set of files
+COMMENT=	GNOME tool to find strings in a set of files
 
 LICENSE=	GPLv2 # (or later)
 
 USES=		pathfix pkgconfig gettext gmake
-USE_GNOME=	gnomehier libgnomeui
+USE_GNOME=	libgnomeui
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-MAN1=		sagasu.1
+OPTIONS_DEFINE= DOCS
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|: install-docDATA|:|g' ${WRKSRC}/Makefile.in
@@ -29,11 +29,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' ${WRKSRC}/src/util.h
 
 post-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in AUTHORS INSTALL NEWS README THANKS TODO
-	${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

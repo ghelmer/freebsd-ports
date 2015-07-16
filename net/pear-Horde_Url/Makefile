@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Url
-PORTVERSION=	2.2.2
+PORTVERSION=	2.2.4
 CATEGORIES=	net www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde URL class
 
+USES=	horde
 USE_HORDE_RUN=	Horde_Exception
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

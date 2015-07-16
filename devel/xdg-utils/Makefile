@@ -8,7 +8,6 @@ PORTREVISION=	1
 CATEGORIES=	devel
 #MASTER_SITES=	http://portland.freedesktop.org/download/
 MASTER_SITES=	LOCAL/kwm
-DISTNAME=	${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Tools to allow all applications to integrate with the free desktop
@@ -18,7 +17,7 @@ RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:${PORTSDIR}/misc/hicol
 		xset:${PORTSDIR}/x11/xset
 
 SNAPDATE=	20130919
-USE_XZ=		yes
+USES=		tar:xz
 GNU_CONFIGURE=	yes
 
 post-patch:

@@ -3,13 +3,13 @@
 
 PORTNAME=	apel
 PORTVERSION=	${APEL_VER}
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	editors elisp
 MASTER_SITES=	http://git.chise.org/elisp/dist/apel/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 
 MAINTAINER?=	nobutaka@FreeBSD.org
-COMMENT?=	A Portable Emacs Library for emacs
+COMMENT?=	Portable Emacs Library
 
 LICENSE=	GPLv2
 
@@ -32,9 +32,8 @@ MAKE_ARGS+=	PREFIX="${STAGEDIR}${LOCALBASE}" \
 		VERSION_SPECIFIC_LISPDIR="${STAGEDIR}${APEL_VERSION_SPECIFIC_LISPDIR}"
 
 OPTIONS_DEFINE=	DOCS
-OPTINOS_DEFAULT=	DOCS
+OPTIONS_DEFAULT=DOCS
 
-.include <bsd.port.options.mk>
 .include <bsd.port.pre.mk>
 
 .if ${EMACS_VER:C/\..*//} >= 23

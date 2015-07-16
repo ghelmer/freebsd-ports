@@ -15,9 +15,7 @@ COMMENT=	High performance Python adapter for PostgreSQL
 RUN_DEPENDS=	${DATETIME_DEP}:${PORTSDIR}/lang/py-mx-base
 BUILD_DEPENDS=	${DATETIME_DEP}:${PORTSDIR}/lang/py-mx-base
 
-USE_PGSQL=	yes
-USES=		gmake
-USE_PYTHON=	yes
+USES=		gmake pgsql python
 GNU_CONFIGURE=	yes
 
 ALL_TARGET=	sharedmods
@@ -28,12 +26,10 @@ CONFIGURE_ARGS=	--with-python=${PYTHON_CMD} \
 		--with-postgres-includes=${LOCALBASE}/include \
 		--with-mxdatetime-includes=${DATETIME_INC}
 
-.if defined(WITH_ZOPE)
-USES+=		zope
-PLIST_SUB+=	ZOPE=""
-.else
-PLIST_SUB+=	ZOPE="@comment "
-.endif
+OPTIONS_DEFINE=	ZOPE DOCS EXAMPLES
+OPTIONS_SUB=	yes
+
+ZOPE_USES=	zope
 
 DATETIME_DEP=	${PYTHON_SITELIBDIR}/mx/DateTime/__init__.py
 DATETIME_INC=	${PYTHON_SITELIBDIR}/mx/DateTime/mxDateTime/
@@ -49,14 +45,10 @@ EXAMPLES=	binary.py bool.py bounded.py commit.py copy_from.py \
 DOCS=		AUTHORS COPYING CREDITS ChangeLog FAQ INSTALL NEWS \
 		README RELEASE-1.0 SUCCESS TODO
 
-pre-everything::
-.if !defined(WITH_ZOPE)
-	@${ECHO} ""
-	@${ECHO} "* To build with Zope support please specify WITH_ZOPE=YES"
-	@${ECHO} ""
-.endif
 
-.if defined(WITH_ZOPE)
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MZOPE}
 post-build:
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py ${WRKSRC}/ZPsycopgDA
 .endif
@@ -65,13 +57,12 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}
 	${INSTALL_PROGRAM} ${WRKSRC}/psycopgmodule.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}
-.if defined(WITH_ZOPE)
+.if ${PORT_OPTIONS:MZOPE}
 	${MKDIR} ${STAGEDIR}${ZOPEBASEDIR}/${ZOPEPRODUCTDIR}/ZPsycopgDA
 	${CP} -R ${WRKSRC}/ZPsycopgDA ${STAGEDIR}${ZOPEBASEDIR}/${ZOPEPRODUCTDIR}/
 .endif
 
 post-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for f in ${EXAMPLES}
 	@${INSTALL_DATA} ${WRKSRC}/doc/examples/${f} ${STAGEDIR}${EXAMPLESDIR}
@@ -80,8 +71,7 @@ post-install:
 .for f in ${DOCS}
 	@${INSTALL_MAN} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
-.if !defined(BATCH) && defined(WITH_ZOPE)
+.if !defined(BATCH) && ${PORT_OPTIONS:MZOPE}
 	@${ECHO} ""
 	@${ECHO} "To complete the installation of ZPsycopgDA:"
 	@${ECHO} ""

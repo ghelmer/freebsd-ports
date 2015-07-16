@@ -3,7 +3,7 @@
 
 PORTNAME=	PGPLOT
 PORTVERSION=	2.21
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:KGB
@@ -13,17 +13,17 @@ MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl5 extension which makes available the pgplot library
 
 BUILD_DEPENDS=	p5-ExtUtils-F77>=1.13:${PORTSDIR}/lang/p5-ExtUtils-F77
-LIB_DEPENDS=	pgplot.5:${PORTSDIR}/graphics/pgplot
+LIB_DEPENDS=	libpgplot.so:${PORTSDIR}/graphics/pgplot
 
 INSTALL_TARGET=	pure_install
 SCRIPTS_ENV=	PERL=${PERL}
 USES=		fortran perl5
 
-.if !defined(NOPORTEXAMPLES)
+OPTIONS_DEFINE=	EXAMPLES
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} LICENSE test* ${STAGEDIR}${EXAMPLESDIR})
-.endif
 
 .if defined(MAINTAINER_MODE) && !defined(BATCH)
 check regression-test test: build

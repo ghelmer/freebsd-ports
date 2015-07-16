@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	db6
-PORTVERSION=	6.0.30
+PORTVERSION=	6.1.19
 CATEGORIES=	databases java
 MASTER_SITES=	http://download.oracle.com/berkeley-db/
 PKGNAMEPREFIX?=
@@ -27,19 +27,23 @@ CONFIGURE_SCRIPT=	../dist/configure
 GNU_CONFIGURE=	yes
 USES=		gmake libtool
 INSTALL_TARGET=	install_include install_lib install_utilities
-LIBTOOLFILES=	${CONFIGURE_SCRIPT}
 WRKSRC=		${WRKDIR}/${DISTNAME}/build_unix
 USE_LDCONFIG=	yes
 PLIST_SUB=	BDBMAJ=${BDBMAJ} BDBVER=${BDBVER}
 MAKE_ARGS+=	docdir=${DOCSDIR}
 
-OPTIONS_DEFINE=	CRYPTO L10N SQL JAVA
+OPTIONS_DEFINE=	CRYPTO L10N SQL JAVA DOCS
 OPTIONS_DEFAULT=CRYPTO
 CRYPTO_DESC=	Cryptography support
 L10N_DESC=	Localization support (EXPERIMENTAL)
 SQL_DESC=	Enable SQL API (EXPERIMENTAL)
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == "armv6"
+# db6 uses a deprecated instruction for mutexes on ARM, fbsd bug#197227
+CONFIGURE_ARGS+=	--enable-posixmutexes
+.endif
 
 .if ${PORT_OPTIONS:MDOCS}
 INSTALL_TARGET+=install_docs

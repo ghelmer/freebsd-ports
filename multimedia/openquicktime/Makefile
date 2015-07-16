@@ -3,20 +3,20 @@
 
 PORTNAME=	openquicktime
 PORTVERSION=	1.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/OpenQuicktime%20v1/${PORTVERSION}b
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable library for handling Apple's QuickTime(TM) files
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk12
-USES=		gmake
+USES=		gmake jpeg tar:tgz
 USE_LDCONFIG=	yes
 PKGDEINSTALL=	${PKGINSTALL}
 
@@ -36,5 +36,8 @@ post-patch:
 		${WRKSRC}/videoplugin/PHOTO_JPEG/Makefile.in
 	@${REINPLACE_CMD} -e 's|"m"|"g"|' \
 		${WRKSRC}/audioplugin/MP3/audioencoder/lame3.70/quantize-pvt.c
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 .include <bsd.port.mk>

@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_LoginTasks
-PORTVERSION=	2.0.3
+PORTVERSION=	2.0.4
 CATEGORIES=	devel www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Login Tasks System
 
+USES=	horde
 USE_HORDE_RUN=	Horde_Translation
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

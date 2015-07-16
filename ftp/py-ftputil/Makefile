@@ -11,11 +11,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	High-level FTP client library
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 PORTDOC_FILES=	README.html README.txt ftputil.html ftputil.txt ftputil_ru_utf8.txt
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

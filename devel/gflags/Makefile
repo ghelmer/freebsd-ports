@@ -2,34 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	gflags
-PORTVERSION=	2.0
+PORTVERSION=	2.1.2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Commandline flags module for C++
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=	DOCS
-
-GNU_CONFIGURE=	yes
-MAKE_ENV=	INSTALL_STRIP_FLAG=${STRIP}
-USE_AUTOTOOLS=	libtool
+CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON \
+		-DBUILD_STATIC_LIBS=ON \
+		-DBUILD_TESTING=ON \
+		-DGFLAGS_NAMESPACE=gflags
 USE_LDCONFIG=	yes
-USES=		pathfix shebangfix
+USES=		cmake shebangfix
 
-PORTDOCS=	AUTHORS COPYING ChangeLog INSTALL NEWS README README_windows.txt \
-		designstyle.css gflags.html
+USE_GITHUB=	yes
 
 SHEBANG_FILES=	src/gflags_completions.sh
 
-.include <bsd.port.options.mk>
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|^\(docdir = \).*|\1${DOCSDIR}|' ${WRKSRC}/Makefile.in
-.if !${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e '/^install-data-am: / s| install-dist_docDATA||' ${WRKSRC}/Makefile.in
-.endif
+regression-test test: build
+	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} test
 
 .include <bsd.port.mk>

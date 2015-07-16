@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	OpenGLRaw
-PORTVERSION=	1.3.0.0
-PORTREVISION=	5
+PORTVERSION=	1.5.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Raw binding for the OpenGL graphics system
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USE_GL=		gl glut
 

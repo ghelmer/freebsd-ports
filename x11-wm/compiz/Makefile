@@ -2,13 +2,14 @@
 
 PORTNAME=	compiz
 PORTVERSION=	0.8.8
+PORTREVISION=	3
 CATEGORIES=	x11-wm
 MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/
 
 MAINTAINER=	freebsd-ports@dan.me.uk
 COMMENT=	Compiz Composite/Window Manager
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libgtop-2.0.so:${PORTSDIR}/devel/libgtop \
 		libstartup-notification-1.so:${PORTSDIR}/x11/startup-notification
 RUN_DEPENDS=	glxinfo:${PORTSDIR}/graphics/mesa-demos \
@@ -23,8 +24,6 @@ USE_GNOME=	gconf2 libxslt
 USE_XORG=	glproto ice sm x11 xcomposite xdamage xext xfixes xinerama \
 		xrandr xrender
 USE_LDCONFIG=	yes
-# Workaround buggy pkg_install
-PLIST_SUB=	RESETPREFIX=${PREFIX}
 
 GCONF_SCHEMAS=	gwd.schemas \
 		compiz-annotate.schemas \
@@ -60,11 +59,13 @@ GCONF_SCHEMAS=	gwd.schemas \
 		compiz-wobbly.schemas \
 		compiz-zoom.schemas
 
-CONFIGURE_ARGS=	--disable-kde4 --disable-kde
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CONFIGURE_ARGS=	--disable-kde4 --disable-kde \
+		--disable-gnome --disable-gnome-keybindings
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	SVG GTK2 METACITY GNOME DBUS FUSE
-OPTIONS_DEFAULT=	SVG GTK2 METACITY GNOME DBUS
+OPTIONS_DEFINE=	SVG GTK2 METACITY DBUS FUSE
+OPTIONS_DEFAULT=	SVG GTK2 METACITY DBUS
 
 METACITY_DESC=	Enable Metacity support
 
@@ -95,23 +96,6 @@ USE_GNOME+=	metacity
 CONFIGURE_ARGS+=	--disable-metacity
 .endif
 
-.if ${PORT_OPTIONS:MGNOME} && ${PORT_OPTIONS:MGTK2}
-CONFIGURE_ARGS+=	--enable-gnome \
-			--enable-gnome-keybindings
-USE_GNOME+=	 gnomecontrolcenter2
-WINDOWSETTINGSDATADIR=	\
-		`pkg-config --variable=prefix gnome-window-settings-2.0`
-WINDOWSETTINGSLIBDIR=	\
-		`pkg-config --variable=libdir gnome-window-settings-2.0`
-PLIST_SUB+=	GNOME="" \
-		WINDOWSETTINGSDATADIR="${WINDOWSETTINGSDATADIR}" \
-		WINDOWSETTINGSLIBDIR="${WINDOWSETTINGSLIBDIR}"
-.else
-CONFIGURE_ARGS+=	--disable-gnome \
-			--disable-gnome-keybindings
-PLIST_SUB+=	GNOME="@comment "
-.endif
-
 .if ${PORT_OPTIONS:MDBUS}
 CONFIGURE_ARGS+=	--enable-dbus
 BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/dbus-1.pc:${PORTSDIR}/devel/dbus
@@ -125,14 +109,7 @@ RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/dbus-glib-1.pc:${PORTSDIR}/devel/db
 CONFIGURE_ARGS+=	--disable-dbus --disable-dbus-glib
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|libpng|libpng15|' -e 's|gnome-desktop-2.0|gnome-desktop-2.0 gconf-2.0|g' \
-		${WRKSRC}/configure
-
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/compiz-manager ${STAGEDIR}${PREFIX}/bin/compiz-manager
-.if ${PORT_OPTIONS:MGNOME}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/window-manager-settings/libcompiz.so
-.endif
 
 .include <bsd.port.mk>

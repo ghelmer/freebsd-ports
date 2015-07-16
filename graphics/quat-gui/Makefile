@@ -3,7 +3,7 @@
 
 PORTNAME=	quat
 PORTVERSION=	1.20
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	graphics
 #MASTER_SITES=	http://www.physcip.uni-stuttgart.de/phy11733/download/
 MASTER_SITES=	http://www.sourcefiles.org/Graphics/Fractals/
@@ -14,7 +14,7 @@ COMMENT=	Three-dimensional fractal creator (X11 GUI)
 
 LICENSE=	GPLv2 # (or later)
 
-LIB_DEPENDS=	fltk:${PORTSDIR}/x11-toolkits/fltk
+LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
 
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS DOCS
 

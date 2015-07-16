@@ -3,7 +3,7 @@
 
 PORTNAME=	dcross
 PORTVERSION=	2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games python
 MASTER_SITES=	GOOGLE_CODE \
 		SF/nemysisfreebsdp/games/:icons
@@ -12,7 +12,7 @@ DISTFILES=	${PORTNAME}_${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}_icons${EXTRACT_SUFX}:icons
 DIST_SUBDIR=	python
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unconventional falling block game
 
 LICENSE=	GPLv2
@@ -21,10 +21,9 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}/
 
-USES=		dos2unix zip
+USES=		dos2unix python zip
 DOS2UNIX_REGEX=	.*.[^p][^n][^g]$
 DOS2UNIX_FILES=	*.pyw
-USE_PYTHON=	yes
 
 INSTALLS_ICONS=	yes
 ICON_SIZES=	32x32 48x48 64x64 72x72 96x96

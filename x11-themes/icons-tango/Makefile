@@ -5,8 +5,7 @@ PORTNAME=	icons-tango
 PORTVERSION=	0.8.90
 PORTREVISION=	2
 CATEGORIES=	x11-themes
-MASTER_SITES=	${MASTER_SITE_GENTOO}
-MASTER_SITE_SUBDIR=	distfiles
+MASTER_SITES=	GENTOO
 DISTNAME=	tango-icon-theme-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -17,7 +16,7 @@ BUILD_DEPENDS=	${LOCALBASE}/libexec/icon-name-mapping:${PORTSDIR}/x11-themes/ico
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	intlhack
-USES+=		pathfix gmake pkgconfig
+USES+=		gettext-tools gmake pathfix pkgconfig
 INSTALLS_ICONS=	yes
 
 .include <bsd.port.mk>

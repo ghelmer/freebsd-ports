@@ -1,0 +1,11 @@
+@dir(orthanc,orthanc,700) %%DATADIR%%/plugins
+@dir(orthanc,orthanc,700) /var/db/orthanc/db/db-v5
+@dir(orthanc,orthanc,700) /var/db/orthanc/db
+@dir(orthanc,orthanc,700) /var/db/orthanc
+@sample(orthanc,orthanc,600) %%ETCDIR%%/orthanc.json.sample
+include/orthanc/OrthancCDatabasePlugin.h
+include/orthanc/OrthancCPlugin.h
+include/orthanc/OrthancCppDatabasePlugin.h
+%%DATADIR%%/plugins/%%LUA_LIBDIR%%ServeFolders.so
+%%DATADIR%%/plugins/%%LUA_LIBDIR%%ServeFolders.so.0.9.0
+sbin/Orthanc

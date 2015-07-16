@@ -2,21 +2,20 @@
 # $FreeBSD$
 
 PORTNAME?=	opencv
-PORTVERSION=	2.4.7
-PORTREVISION?=	1
+PORTVERSION=	2.4.9
+PORTREVISION?=	6
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}library/${PORTNAME}-unix/${PORTVERSION}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Open Source Computer Vision library
 
-LICENSE=	BSD
-LICENSE_FILE=	${WRKSRC}/doc/license.txt
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake pkgconfig
+USES=		cmake pkgconfig zip
 USE_LDCONFIG=	yes
 WANT_GSTREAMER=	yes
-MAKE_JOBS_UNSAFE=	yes
 
 NOT_FOR_ARCHS=	sparc64
 NOT_FOR_ARCHS_REASON_sparc64=	does not compile on sparc64
@@ -42,21 +41,18 @@ OCV_NONFREE_MODS=	nonfree
 OCV_JAVA_MODS=		java
 OCV_PYTHON_MODS=	python
 
-OPTIONS_DEFINE=		DC1394 EXAMPLES NONFREE OPENGL
+OPTIONS_DEFINE=		DC1394 EXAMPLES NONFREE OPENGL SIMD
 OPTIONS_GROUP=		IMAGE PERFORMANCE VIDEO
 OPTIONS_GROUP_IMAGE=	JASPER JPEG OPENEXR PNG TIFF
 OPTIONS_GROUP_PERFORMANCE=	EIGEN3 TBB
 OPTIONS_GROUP_VIDEO=	FFMPEG GSTREAMER V4L XINE
 OPTIONS_RADIO=		GUI
 OPTIONS_RADIO_GUI=	GTK2 QT4
-OPTIONS_DEFAULT=	EIGEN3 JASPER JPEG PNG TIFF V4L
+OPTIONS_DEFAULT=	EIGEN3 JASPER JPEG PNG SIMD TIFF V4L
 OPTIONS_SUB=		yes
 .if defined(OCV_CORE)
 OPTIONS_EXCLUDE=	DC1394 EXAMPLES GTK2 QT4 JASPER JPEG NONFREE OPENEXR \
 			OPENGL PNG TIFF FFMPEG GSTREAMER V4L XINE
-.elif defined(OCV_PYTHON)
-OPTIONS_EXCLUDE=	DC1394 GTK2 QT4 JASPER JPEG NONFREE OPENEXR \
-			OPENGL PNG TIFF TBB EIGEN3 FFMPEG GSTREAMER V4L XINE
 .endif
 
 DC1394_DESC=		IEEE 1394 camera support
@@ -79,7 +75,7 @@ CMAKE_ARGS+=	-DWITH_1394:BOOL=Off
 BUILD_DEPENDS+=	${LOCALBASE}/include/eigen3/Eigen/Eigen:${PORTSDIR}/math/eigen3
 CMAKE_ARGS+=	-DWITH_EIGEN:BOOL=On
 .else
-CMAKE_ARGS=	-DWITH_EIGEN:BOOL=Off
+CMAKE_ARGS+=	-DWITH_EIGEN:BOOL=Off
 .endif
 
 .if ${PORT_OPTIONS:MEXAMPLES}
@@ -122,7 +118,7 @@ CMAKE_ARGS+=	-DWITH_JASPER:BOOL=Off
 .endif
 
 .if ${PORT_OPTIONS:MJPEG}
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 CMAKE_ARGS+=	-DWITH_JPEG:BOOL=On
 .else
 CMAKE_ARGS+=	-DWITH_JPEG:BOOL=Off
@@ -148,7 +144,7 @@ CMAKE_ARGS+=	-DWITH_OPENGL:BOOL=Off
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
 CMAKE_ARGS+=	-DWITH_PNG:BOOL=On
 .else
 CMAKE_ARGS+=	-DWITH_PNG:BOOL=Off
@@ -162,6 +158,35 @@ USE_QT4+=	opengl
 . endif
 .else
 CMAKE_ARGS+=	-DWITH_QT:BOOL=Off
+.endif
+
+.if ${PORT_OPTIONS:MSIMD}
+. if ${MACHINE_CPU:Msse}
+CMAKE_ARGS+=	-DENABLE_SSE:BOOL=On
+. else
+CMAKE_ARGS+=	-DENABLE_SSE:BOOL=Off
+. endif
+. if ${MACHINE_CPU:Msse2}
+CMAKE_ARGS+=	-DENABLE_SSE2:BOOL=On
+. else
+CMAKE_ARGS+=	-DENABLE_SSE2:BOOL=Off
+. endif
+. if ${MACHINE_CPU:Msse3}
+CMAKE_ARGS+=	-DENABLE_SSE3:BOOL=On
+. else
+CMAKE_ARGS+=	-DENABLE_SSE3:BOOL=Off
+. endif
+# TODO: Add support for instructions above SSE3 (upstream has them off by default)
+CMAKE_ARGS+=	-DENABLE_SSSE3:BOOL=Off \
+		-DENABLE_SSE41:BOOL=Off \
+		-DENABLE_SSE42:BOOL=Off
+.else
+CMAKE_ARGS+=	-DENABLE_SSE:BOOL=Off \
+		-DENABLE_SSE2:BOOL=Off \
+		-DENABLE_SSE3:BOOL=Off \
+		-DENABLE_SSSE3:BOOL=Off \
+		-DENABLE_SSE41:BOOL=Off \
+		-DENABLE_SSE42:BOOL=Off
 .endif
 
 .if ${PORT_OPTIONS:MTBB}
@@ -203,19 +228,17 @@ CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=Off
 LIB_DEPENDS+=	libopencv_legacy.so:${PORTSDIR}/graphics/opencv
 BUILD_DEPENDS+=	${PYNUMPY}
 RUN_DEPENDS+=	${PYNUMPY}
-USE_PYTHON=	yes
-CFLAGS+=	-I${LOCALBASE}/include
+USES+=		python
 CMAKE_ARGS+=	-DBUILD_opencv_python:BOOL=On
-. for module in ${OCV_MODS} ${OCV_CORE_MODS} ${OCV_JAVA_MODS}
+. for module in apps java stitching superres videostab
 CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=Off
 . endfor
-CMAKE_ENV+=	LDFLAGS="${LDFLAGS} -L${LOCALBASE}/lib"
 INSTALL_WRKSRC=	${WRKSRC}/modules/python
 .elif defined(OCV_JAVA)
 BUILD_DEPENDS+=	ant:${PORTSDIR}/devel/apache-ant
 LIB_DEPENDS+=	libopencv_legacy.so:${PORTSDIR}/graphics/opencv
+USES+=		python:build
 USE_JAVA=	yes
-USE_PYTHON_BUILD=	yes
 CMAKE_ARGS+=	-DBUILD_opencv_java:BOOL=On
 . for module in apps python stitching superres videostab
 CMAKE_ARGS+=	-DBUILD_opencv_${module}:BOOL=Off
@@ -233,40 +256,47 @@ post-patch:
 	@${MKDIR} ${CONFIGURE_WRKSRC}
 	@${REINPLACE_CMD} -e '/pkgconfig/s|$${OPENCV_LIB_INSTALL_PATH}|libdata|' \
 		 ${WRKSRC}/cmake/OpenCVGenPkgconfig.cmake
-	@${REINPLACE_CMD} -e 's|share/OpenCV/doc|share/doc/${PORTNAME}|g' \
+	@${REINPLACE_CMD} -e 's|share/OpenCV/doc|${DOCSDIR_REL}|g' \
+		-e 's|share/OpenCV/samples|${EXAMPLESDIR_REL}|g' \
 		${WRKSRC}/CMakeLists.txt
-	@${REINPLACE_CMD} -e 's|[Oo]pen[Cc][Vv]/samples|examples/${PORTNAME}|g' \
-		${WRKSRC}/samples/*/CMakeLists.txt \
-		${WRKSRC}/samples/*/*/CMakeLists.txt
 	@${FIND} ${WRKSRC} -name '*.orig' -exec ${RM} {} \;
 .if defined(OCV_CORE)
 	@${REINPLACE_CMD} -e 's|opencv.pc|opencv-core.pc|g' \
 		${WRKSRC}/cmake/OpenCVGenPkgconfig.cmake
 	@${REINPLACE_CMD} -e 's|Name:.*|Name: OpenCV-core|' \
-		${WRKSRC}/cmake/templates/opencv-XXX.pc.cmake.in
+		${WRKSRC}/cmake/templates/opencv-XXX.pc.in
 .endif
-.if defined(OCV_PYTHON)
-. for module in ${OCV_CORE_MODS} ${OCV_MODS} ${OCV_NONFREE_MODS}
-	@${REINPLACE_CMD} -e 's|opencv_${module} | |' \
-		-e 's|opencv_${module}$$||' \
-		-e 's|opencv_${module})|)|' \
-		${WRKSRC}/modules/*/CMakeLists.txt
-. endfor
-	${REINPLACE_CMD} -e '/[Ee][Xx][Pp][Oo][Rr][Tt]/d' \
-		${WRKSRC}/cmake/OpenCVGenConfig.cmake
+.if defined(OCV_SLAVE)
+	@${REINPLACE_CMD} -e 's|add_subdirectory(data)||g' \
+		${WRKSRC}/CMakeLists.txt
 .endif
 
 post-install:
+.if !defined(OCV_SLAVE)
+	(cd ${STAGEDIR}${PREFIX} && \
+		${RM} -r include/opencv2/core include/opencv2/imgproc \
+			lib/libopencv_core* lib/libopencv_imgproc*)
+.endif
 .if defined(OCV_CORE)
+	${RM} -r ${STAGEDIR}${PREFIX}/include/opencv
+	${RM} -r ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/cmake/Modules
 	${INSTALL_DATA} ${WRKDIR}/FindOpenCVCore.cmake ${STAGEDIR}${PREFIX}/share/cmake/Modules
 .endif
 .if defined(OCV_PYTHON)
+	(cd ${STAGEDIR}${PREFIX} && \
+	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S|${PREFIX}/||} && \
+	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
+		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S|${PREFIX}/||})
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+.   if defined(PYTHON_REL) && ${PYTHON_REL} >= 3000
 	cd ${WRKSRC}/samples/python && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/python
+.   else
 	cd ${WRKSRC}/samples/python2 && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/python2
+.   endif
 .endif
 .if defined(OCV_JAVA)
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

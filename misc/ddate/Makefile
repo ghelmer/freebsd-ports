@@ -6,7 +6,7 @@ PORTVERSION=	2.22.2
 PORTEPOCH=	1
 CATEGORIES=	misc
 MASTER_SITES=	http://www.kernel.org/pub/linux/utils/util-linux/v${PORTVERSION:C/^([0-9]*\.[0-9]*).*/\1/}/ \
-		CRITICAL
+		LOCAL/ehaupt
 DISTNAME=	util-linux-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -17,7 +17,7 @@ LICENSE=	GPLv2
 PLIST_FILES=	bin/ddate man/man1/ddate.1.gz
 
 GNU_CONFIGURE=	yes
-USE_XZ=		yes
+USES=		tar:xz
 
 CONFIGURE_ARGS=	--disable-libuuid --disable-libblkid --disable-libmount \
 		--disable-mount --disable-losetup --disable-fsck \

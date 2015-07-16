@@ -3,14 +3,15 @@
 
 PORTNAME=	rsstail
 PORTVERSION=	1.8
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	http://www.vanheusden.com/rsstail/ CENKES
+MASTER_SITES=	http://www.vanheusden.com/rsstail/
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple RSS monitor
 
-LIB_DEPENDS=	mrss.19:${PORTSDIR}/textproc/libmrss
+LIB_DEPENDS=	libmrss.so:${PORTSDIR}/textproc/libmrss
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

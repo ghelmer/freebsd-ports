@@ -15,7 +15,7 @@ MASTERDIR=	${.CURDIR}/../../devel/subversion
 .endif
 PKGDIR=		${.CURDIR}
 
-USE_PYTHON=	yes
+USES+=		python
 
 SVN_BUILD_BINDINGS=	yes
 SVN_BUILD_ADDONS=	yes
@@ -23,6 +23,10 @@ SVN_BUILD_ADDONS=	yes
 .include "${MASTERDIR}/Makefile.common"
 
 CATEGORIES+=	python
+
+CONFIGURE_ARGS+=	--without-gnome-keyring \
+			--without-kwallet \
+			--with-apxs=no
 
 ALL_TARGET=	swig-py-lib swig-py
 INSTALL_TARGET=	install-swig-py

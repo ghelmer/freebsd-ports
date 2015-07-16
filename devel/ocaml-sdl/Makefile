@@ -3,6 +3,7 @@
 
 PORTNAME=	sdl
 PORTVERSION=	0.9.1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/ocaml${PORTNAME}/OCamlSDL/ocaml${PORTNAME}-${PORTVERSION}
 PKGNAMEPREFIX=	ocaml-
@@ -39,7 +40,6 @@ DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 INFO=		ocamlsdl
 PORTDOCS=	*
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSDL_GFX}
@@ -66,15 +66,14 @@ USE_SDL+=	ttf
 CONFIGURE_ARGS+=--disable-sdl-ttf
 .endif
 
-.if ${PORT_OPTIONS:MDOCS}
-PLIST_DIRSTRY+=	${OCAML_DOCSDIR:S,^${PREFIX}/,,}
-.endif
-
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/doc/ocamlsdl.info ${PREFIX}/${INFO_PATH}
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	(cd ${WRKSRC}/doc/html && ${INSTALL_DATA} * ${DOCSDIR})
-.endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocaml/site-lib/sdl/dllsdlloaderstub.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocaml/site-lib/sdl/dllsdlttfstub.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocaml/site-lib/sdl/dllsdlgfxstub.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocaml/site-lib/sdl/dllsdlmixerstub.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ocaml/site-lib/sdl/dllsdlstub.so
+	${INSTALL_DATA} ${WRKSRC}/doc/ocamlsdl.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/doc/html && ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

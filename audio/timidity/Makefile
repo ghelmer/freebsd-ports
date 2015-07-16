@@ -11,8 +11,12 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	MIDI to PCM software synthesizer
 
-CONFLICTS=	timidity++-2.13.*
+CONFLICTS=	timidity++-2.*
 
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		alias
 TIINS=		goemon.tgz
 INSTALL_TARGET=	install.all
 

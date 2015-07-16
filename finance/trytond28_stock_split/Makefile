@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	trytond28_stock_split
-PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTVERSION=	2.8.2
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_stock_split/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
 DISTNAME=	trytond_stock_split-${PORTVERSION}
 
@@ -18,8 +17,7 @@ RUN_DEPENDS=	trytond28_stock>=2.8.2:${PORTSDIR}/finance/trytond28_stock
 
 CONFLICTS=	trytond_stock_split-2.[46].*
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

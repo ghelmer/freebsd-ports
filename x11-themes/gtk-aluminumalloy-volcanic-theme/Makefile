@@ -3,7 +3,7 @@
 
 PORTNAME=	aluminumalloy
 PORTVERSION?=	2004.01.04
-PORTREVISION?=	7
+PORTREVISION?=	8
 CATEGORIES=	x11-themes gnome
 MASTER_SITES=	http://www.users.monornet.hu/linux/gtk2/oldies/
 PKGNAMEPREFIX?=	${TYPE}-
@@ -19,7 +19,7 @@ FLAVOR?=	volcanic
 THEME_NAME=	AluminumAlloy-${FLAVOR:tu:C/^(.).*$/\1/g}${FLAVOR:C/^(.)//}
 WRKSRC=		${WRKDIR}/${THEME_NAME}
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 NO_BUILD=	yes
 
 .if ${TYPE} == gtk
@@ -29,7 +29,6 @@ USE_GNOME=	gtk20
 .else	# metacity
 THEME_DIR=	${PREFIX}/share/themes/${THEME_NAME}
 PLIST_SUB+=	GTK20="@comment " METACITY=""
-USE_GNOME=	gnomehier
 .endif
 
 do-install:

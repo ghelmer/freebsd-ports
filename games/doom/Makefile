@@ -5,13 +5,16 @@ PORTNAME=	doom
 PORTVERSION=	1.10
 PORTREVISION=	5
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_IDSOFTWARE:S|$|source/|}
+MASTER_SITES=	IDSOFTWARE/source
 DISTNAME=	doomsrc
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DOOM: the game and the sound server
 
-LICENSE=	GPLv1
+LICENSE=	IDSOFTWARE
+LICENSE_NAME=	ID SOFTWARE LICENSE
+LICENSE_FILE=	${WRKSRC}/linuxdoom-${PORTVERSION}/DOOMLIC.TXT
+LICENSE_PERMS=	dist-mirror pkg-mirror
 
 NO_CDROM=	Redistribution is limited, see license; Requested by id Software
 

@@ -2,35 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	glog
-PORTVERSION=	0.3.3
-PORTREVISION=	1
+PORTVERSION=	0.3.4
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	clsung@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library of C++ classes for flexible logging
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libgflags.so:${PORTSDIR}/devel/gflags
+LICENSE=	BSD3CLAUSE
 
-GNU_CONFIGURE=	yes
-USES=		pathfix libtool:keepla
-USE_LDCONFIG=	yes
-PROJECTHOST=	google-glog
+LIB_DEPENDS=	libgflags.so:${PORTSDIR}/devel/gflags
+
+OPTIONS_DEFINE=	DOCS
 
 CPPFLAGS+=	-I${LOCALBASE}/include
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib -lexecinfo
+USE_LDCONFIG=	yes
+USES=		execinfo libtool pathfix
 
-.include <bsd.port.pre.mk>
+PORTDOCS=	*
+
+GH_ACCOUNT=	google
+USE_GITHUB=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|^docdir.*|docdir = ${DOCSDIR}|' ${WRKSRC}/Makefile.in
-.if ! ${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -E -e '/^install-data-am/,/^$$/ s,install-(dist_doc|dist_html|html)DATA,,g' \
-	    ${WRKSRC}/Makefile.in
-.endif
+	@${REINPLACE_CMD} -e '/^docdir = / s| = .*| = ${DOCSDIR}|' ${WRKSRC}/Makefile.in
 
-regression-test:
-	cd ${WRKSRC}; ${MAKE} check
+regression-test test: build
+	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

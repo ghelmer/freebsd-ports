@@ -3,7 +3,7 @@
 
 PORTNAME=	ocempgui
 PORTVERSION=	0.2.9
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	devel python
 MASTER_SITES=	SF/ocemp/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,6 +17,7 @@ LICENSE=	BSD2CLAUSE
 BUILD_DEPENDS=	${LOCALBASE}/include/${PYTHON_VERSION}/pygame/pygame.h:${PORTSDIR}/devel/py-game
 RUN_DEPENDS=	${LOCALBASE}/include/${PYTHON_VERSION}/pygame/pygame.h:${PORTSDIR}/devel/py-game
 
+USES=		python:2
 USE_GNOME=	atk
 USE_PYTHON=	autoplist distutils
 

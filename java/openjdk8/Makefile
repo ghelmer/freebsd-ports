@@ -2,7 +2,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER:S/^0//}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}/promoted/b${DIST_BUILD_NUMBER}/:jdk \
 		https://adopt-openjdk.ci.cloudbees.com/job/jtreg/${JTREG_JENKINS_BUILD}/artifact/:jtreg \
@@ -274,13 +274,13 @@ do-install:
 	    ${FIND} bin jre/bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	    ${CHMOD} ${BINMODE} jre/lib/${ARCH}/jexec \
 	    jre/lib/${ARCH}/jspawnhelper lib/${ARCH}/jexec
-	@${ECHO} "@dirrm ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
+	@${ECHO} "@dir ${INSTALLDIR}/jre/lib/applet" >> ${TMPPLIST}
 .else
 	@cd ${JRE_IMAGEDIR} && ${COPYTREE_SHARE} . ${STAGEDIR}${INSTALLDIR}
 	@cd ${STAGEDIR}${INSTALLDIR} && \
 	    ${FIND} bin -type f -exec ${CHMOD} ${BINMODE} {} \; && \
 	    ${CHMOD} ${BINMODE} lib/${ARCH}/jexec lib/${ARCH}/jspawnhelper
-	@${ECHO} "@dirrm ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
+	@${ECHO} "@dir ${INSTALLDIR}/lib/applet" >> ${TMPPLIST}
 .endif
 	@${ECHO} "@unexec ${LOCALBASE}/bin/unregistervm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
 	@${FIND} -s ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \

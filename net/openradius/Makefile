@@ -9,7 +9,7 @@ MASTER_SITES=	http://evbergen.home.xs4all.nl/openradius/download/ \
 		http://www.mirrors.wiretapped.net/security/authentication/radius/openradius/
 
 MAINTAINER=	crees@FreeBSD.org
-COMMENT=	A RADIUS server with some actual documentation
+COMMENT=	RADIUS server with some actual documentation
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -27,7 +27,7 @@ USES=		gmake
 USE_RC_SUBR=	openradius
 SUB_LIST=	LOGFILE="${LOGFILE}"
 
-OPTIONS_DEFINE=	LDAP
+OPTIONS_DEFINE=	LDAP DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	mutt
 PORTVERSION=	1.5.23
-PORTREVISION?=	5
+PORTREVISION?=	9
 CATEGORIES+=	mail ipv6
 MASTER_SITES=	ftp://ftp.mutt.org/mutt/ \
 		ftp://ftp.mutt.org/mutt/devel/ \
@@ -45,7 +45,7 @@ CONFIGURE_ARGS=	--disable-fcntl --with-ssl=${OPENSSLBASE} \
 		--enable-external-dotlock --enable-pop --enable-imap \
 		--disable-warnings
 
-USES+=		shebangfix
+USES+=		cpe shebangfix
 SHEBANG_FILES=	doc/gen-map-doc smime_keys.pl contrib/smime_keys_test.pl
 
 .if defined(MUTT_CONFIGURE_ARGS)
@@ -62,7 +62,7 @@ LITE=	YES
 .if defined (LITE)
 OPTIONS_UNSET=	NLS DOCS EXAMPLES
 .else
-OPTIONS_DEFINE=	COMPRESSED_FOLDERS SASL DEBUG FLOCK \
+OPTIONS_DEFINE=	COMPRESSED_FOLDERS SASL DEBUG DOCS EXAMPLES FLOCK \
 		GPGME GREETING_PATCH GSSAPI HTML ICONV IDN IFDEF_PATCH \
 		IMAP_HEADER_CACHE LOCALES_FIX MAILBOX_MANPAGES \
 		MAILDIR_HEADER_CACHE MAILDIR_MTIME_PATCH \
@@ -110,8 +110,8 @@ OPTIONS_DEFAULT=	COMPRESSED_FOLDERS HTML ICONV IDN IFDEF_PATCH \
 		IMAP_HEADER_CACHE LOCALES_FIX MAILBOX_MANPAGES \
 		MAILDIR_HEADER_CACHE MAILDIR_MTIME_PATCH NLS \
 		NCURSES PARENT_CHILD_MATCH_PATCH QUOTE_PATCH \
-		REVERSE_REPLY_PATCH SIDEBAR_PATCH SMART_DATE \
-		SMIME_OUTLOOK_COMPAT SASL SMTP TRASH_PATCH XML
+		REVERSE_REPLY_PATCH SMART_DATE SMIME_OUTLOOK_COMPAT \
+		SASL SMTP TRASH_PATCH XML
 .endif
 
 .include <bsd.port.options.mk>
@@ -240,7 +240,7 @@ CONFIGURE_ARGS+=	--enable-locales-fix
 .endif
 
 .if ${PORT_OPTIONS:MICONV}
-USES+=			iconv
+USES+=			iconv:translit
 CONFIGURE_ARGS+=	${ICONV_CONFIGURE_ARG}
 .else
 CONFIGURE_ARGS+=	--disable-iconv
@@ -345,9 +345,11 @@ XML_NEEDED=	yes
 .if ${PORT_OPTIONS:MNNTP}
 post-patch::
 	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar-nntp
+	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar-refresh
 .else
 post-patch::
 	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar
+	@${PATCH} ${PATCH_ARGS} -p1 < ${PATCHDIR}/extra-patch-sidebar-refresh
 .endif
 .endif
 

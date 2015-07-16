@@ -3,12 +3,12 @@
 
 PORTNAME=	ucspi-proxy
 PORTVERSION=	0.98
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://untroubled.org/ucspi-proxy/
 
 MAINTAINER=	dale.woolridge@gmail.com
-COMMENT=	A proxy program for UCSPI servers and clients
+COMMENT=	Proxy program for UCSPI servers and clients
 
 LIB_DEPENDS=	libbg.so:${PORTSDIR}/devel/bglibs
 

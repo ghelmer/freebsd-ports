@@ -3,7 +3,7 @@
 
 PORTNAME=	vamos
 PORTVERSION=	0.7.1
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -13,32 +13,26 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Automotive simulation framework
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
-		libpng15.so:${PORTSDIR}/graphics/png
+		libpng.so:${PORTSDIR}/graphics/png
 
-USES=		openal:al,alut pkgconfig
+USES=		libtool openal:al,alut pkgconfig
 USE_XORG=	sm ice x11 xi xext xmu
 USE_GL=		glut
 USE_SDL=	sdl
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	ac_cv_lib_freeglut_glutGetModifiers=no \
 		--disable-unit-tests
 USE_LDCONFIG=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
 INFO=		vamos
 PORTDOCS=	*
-
-DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	AUTHORS ChangeLog README TODO
-
-DOCSRCDIR2=	${WRKSRC}/doc
-DOCSDIR2=	${DOCSDIR}/doc
-DOC_FILES2=	matrixfaq.htm
 
 OPTIONS_DEFINE=	DOCS
 
@@ -71,10 +65,7 @@ post-install:
 .endfor
 	${LN} -sf ${PREFIX}/share/icons/hicolor/48x48/apps/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
-
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
-	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} "AUTHORS ChangeLog README TODO doc/matrixfaq.htm" \
+		${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

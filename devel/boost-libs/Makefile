@@ -4,7 +4,7 @@
 PORTNAME=	boost-libs
 COMMENT=	Free portable C++ libraries (without Boost.Python)
 
-PORTREVISION=	3
+PORTREVISION=	5
 
 BUILD_DEPENDS+=	bjam:${PORTSDIR}/devel/boost-jam
 
@@ -35,10 +35,6 @@ USES+=		iconv
 BJAM_ARGS+=	-sICONV_PATH=${LOCALBASE}
 .endif
 
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64: invokes i386 assembler
-.endif
-
 do-build:
 	@cd ${WRKSRC} && \
 		${SETENV} ${MAKE_ENV} ${BJAM} ${BJAM_ARGS} stage
@@ -48,7 +44,7 @@ do-build:
 
 do-install:
 	@cd ${WRKSRC} && \
-		${SETENT} ${MAKE_ENV} ${BJAM} --prefix=${STAGEDIR}${PREFIX} ${BJAM_ARGS} install
+		${SETENV} ${MAKE_ENV} ${BJAM} --prefix=${STAGEDIR}${PREFIX} ${BJAM_ARGS} install
 # For some reasons BJAM forget about the links
 	@cd ${WRKSRC}/stage/ && ${FIND} lib -type l | ${PAX} -rw -p p ${STAGEDIR}${PREFIX}
 

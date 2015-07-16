@@ -3,7 +3,7 @@
 
 PORTNAME=	ttt
 PORTVERSION=	2011.04
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/ttt/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,14 +11,15 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=   ${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple one or two player Tic Tac Toe game
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		autoreconf
 USE_SDL=	mixer sdl
-USE_AUTOTOOLS=	aclocal automake autoheader autoconf libtoolize
-AUTOMAKE_ARGS=	--add-missing --force
+GNU_CONFIGURE=	yes
 ALL_TARGET=	${PORTNAME}
 
 CPPFLAGS+=	-I${LOCALBASE}/include

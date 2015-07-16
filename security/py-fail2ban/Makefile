@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	fail2ban
-PORTVERSION=	0.9.0
-PORTREVISION=	2
+PORTVERSION=	0.9.2
 CATEGORIES=	security python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,13 +13,9 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME}
-GH_PROJECT=	${PORTNAME}
-GH_COMMIT=	c7f4c48
-GH_TAGNAME=	${PORTVERSION}
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils py3kplist
 
 USE_RC_SUBR=	fail2ban
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
@@ -39,7 +34,6 @@ FILES=		${WRKSRC}/bin/fail2ban-client \
 FAIL2BAN_DBDIR=	/var/db/${PORTNAME}
 
 post-patch:
-#	@${ECHO_CMD} ${FILES} | ${XARGS} ${REINPLACE_CMD} -e 's,/etc/fail2ban,${ETCDIR},g'
 	@${REINPLACE_CMD} -e 's,/etc/fail2ban,${ETCDIR},g' ${FILES}
 	@${REINPLACE_CMD} -e 's,paths-debian.conf,paths-freebsd.conf,g' \
 		${WRKSRC}/config/jail.conf
@@ -51,10 +45,8 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 .for file in fail2ban-client fail2ban-regex fail2ban-server fail2ban
-	@${INSTALL_MAN} ${WRKSRC}/man/${file}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/${file}.1 ${STAGEDIR}${MANPREFIX}/man/man1
 .endfor
-	@${INSTALL_MAN} ${WRKSRC}/man/jail.conf.5 ${STAGEDIR}${MANPREFIX}/man/man5/fail2ban-jail.conf.5
-	@${TOUCH} ${STAGEDIR}${FAIL2BAN_DBDIR}/.keep_me
-	@${TOUCH} ${STAGEDIR}/var/run/fail2ban/.keep_me
+	${INSTALL_MAN} ${WRKSRC}/man/jail.conf.5 ${STAGEDIR}${MANPREFIX}/man/man5/fail2ban-jail.conf.5
 
 .include <bsd.port.mk>

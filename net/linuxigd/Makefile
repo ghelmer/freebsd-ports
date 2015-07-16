@@ -3,7 +3,7 @@
 
 PORTNAME=	linuxigd
 PORTVERSION=	1.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net
 MASTER_SITES=	SF/linux-igd/linux-igd/${PORTNAME}-${PORTVERSION}
 
@@ -14,7 +14,6 @@ LIB_DEPENDS=	libupnp.so:${PORTSDIR}/devel/upnp
 
 USE_RC_SUBR=	linuxigd
 USES=		gmake
-MAKE_ENV=	PTHREAD_LIBS=${PTHREAD_LIBS}
 
 post-extract:
 	@${RM} ${WRKSRC}/iptc.?

@@ -13,9 +13,9 @@
 #
 # User defined variables:
 # CMAKE_VERBOSE		- Enable verbose build output
-#			Default: not set, until BATCH or PACKAGE_BUILDING is defined
+#			Default: not set, unless BATCH or PACKAGE_BUILDING is defined
 # CMAKE_NOCOLOR		- Disable colour build output
-#			Default: not set, until BATCH or PACKAGE_BUILDING is defined
+#			Default: not set, unless BATCH or PACKAGE_BUILDING is defined
 # CMAKE_NINJA		- Use ninja instead of make(1)
 #
 # Variables for ports:
@@ -41,21 +41,18 @@
 _INCLUDE_USES_CMAKE_MK=	yes
 
 _valid_ARGS=		outsource run
-_cmake_ARGS=		${cmake_ARGS:C/\:/ /g}
 
 # Sanity check
-.if defined(cmake_ARGS)
-.  for arg in ${_cmake_ARGS}
+.for arg in ${cmake_ARGS}
 .    if empty(_valid_ARGS:M${arg})
 IGNORE=	Incorrect 'USES+= cmake:${cmake_ARGS}' usage: argument [${arg}] is not recognized
 .    endif
-.  endfor
-.endif
+.endfor
 
 CMAKE_BIN=		${LOCALBASE}/bin/cmake
 BUILD_DEPENDS+=		${CMAKE_BIN}:${PORTSDIR}/devel/cmake
 
-.if ${_cmake_ARGS:Mrun}
+.if ${cmake_ARGS:Mrun}
 RUN_DEPENDS+=		${CMAKE_BIN}:${PORTSDIR}/devel/cmake
 .endif
 
@@ -67,7 +64,7 @@ CMAKE_BUILD_TYPE?=	Release
 
 PLIST_SUB+=		CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE:tl}"
 
-.if defined(STRIP) && ${STRIP} != ""
+.if defined(STRIP) && ${STRIP} != "" && !defined(WITH_DEBUG)
 INSTALL_TARGET?=	install/strip
 .endif
 
@@ -109,7 +106,7 @@ CMAKE_ARGS+=		-DCMAKE_COLOR_MAKEFILE:BOOL=OFF
 _CMAKE_MSG=		"===>  Performing in-source build"
 CMAKE_SOURCE_PATH?=	${WRKSRC}
 
-.if ${_cmake_ARGS:Moutsource}
+.if ${cmake_ARGS:Moutsource}
 _CMAKE_MSG=		"===>  Performing out-of-source build"
 CONFIGURE_WRKSRC=	${WRKDIR}/.build
 BUILD_WRKSRC=		${CONFIGURE_WRKSRC}

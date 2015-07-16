@@ -3,17 +3,17 @@
 
 PORTNAME=	tdfsb
 PORTVERSION=	0.0.10
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	x11-fm
 MASTER_SITES=	http://www.determinate.net/webdata/data/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A 3D filesystem browser
+COMMENT=	3D filesystem browser
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	smpeg.1:${PORTSDIR}/multimedia/smpeg
+LIB_DEPENDS=	libsmpeg.so:${PORTSDIR}/multimedia/smpeg
 
 USE_GL=		glut
 USE_SDL=	image sdl
@@ -29,7 +29,7 @@ LDFLAGS+=	`${LOCALBASE}/bin/pkgconf --libs SDL_image gl` \
 		`${LOCALBASE}/bin/smpeg-config --libs` \
 		-L ${LOCALBASE}/lib -lGLU -lglut -lm
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
 do-build:
 	(cd ${BUILD_WRKSRC} && ${CC} ${CPPFLAGS} ${CFLAGS} ${PORTNAME}.c \
@@ -37,9 +37,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

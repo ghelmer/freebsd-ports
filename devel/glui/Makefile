@@ -3,15 +3,14 @@
 
 PORTNAME=	glui
 PORTVERSION=	2.36
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel graphics
 MASTER_SITES=	SF/${PORTNAME}/Source/${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GLUT-based C++ user interface library
 
-USES=		gmake
+USES=		gmake tar:tgz
 USE_GL=		glut
 USE_XORG=	xmu xext x11 xi
 USE_LDCONFIG=	yes
@@ -27,7 +26,7 @@ OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/include/GL/glui.h ${STAGEDIR}${PREFIX}/include
-	${INSTALL_LIB} ${WRKSRC}/lib/libglui.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/lib/libglui.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/lib/libglui.so \
 		${STAGEDIR}${PREFIX}/lib/libglui.so.0
 	${LN} -s libglui.so.0 ${STAGEDIR}${PREFIX}/lib/libglui.so

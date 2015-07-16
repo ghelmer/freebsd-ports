@@ -5,7 +5,7 @@ PORTNAME=	DB_QueryTool
 PORTVERSION=	1.1.2
 CATEGORIES=	databases www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR OO-interface for easily retrieving and modifying data in a DB
 
 BUILD_DEPENDS=	${PEARDIR}/DB.php:${PORTSDIR}/databases/pear-DB \
@@ -13,8 +13,6 @@ BUILD_DEPENDS=	${PEARDIR}/DB.php:${PORTSDIR}/databases/pear-DB \
 RUN_DEPENDS=	${PEARDIR}/DB.php:${PORTSDIR}/databases/pear-DB \
 		${PEARDIR}/Log/null.php:${PORTSDIR}/sysutils/pear-Log
 
-PEAR_AUTOINSTALL=	yes
+USES=	pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

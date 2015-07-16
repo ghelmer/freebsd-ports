@@ -2,6 +2,7 @@
 
 PORTNAME=	proggy_fonts-ttf
 PORTVERSION=	1.0
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://www.proggyfonts.com/download/
 DISTFILES=	ProggyClean.ttf.zip ProggySquare.ttf.zip \
@@ -15,20 +16,12 @@ COMMENT=	The perfect monospaced bitmap programming fonts, TTF version
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
-
-USES=		zip
+USES=		fonts zip
 NO_WRKSUBDIR=	yes
-INSTALLDIR=	${PREFIX}/lib/X11/fonts/${PORTNAME}
-
-NO_STAGE=	yes
-do-build:
-	@cd ${WRKSRC} && ${LOCALBASE}/bin/mkfontscale
-	@cd ${WRKSRC} && ${LOCALBASE}/bin/mkfontdir
+NO_BUILD=	yes
 
 do-install:
-	@${MKDIR} ${INSTALLDIR}
-	@cd ${WRKSRC} && ${INSTALL_DATA} fonts.dir fonts.scale *.ttf ${INSTALLDIR}
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

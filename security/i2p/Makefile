@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	i2p
-PORTVERSION=	0.9.14
+PORTVERSION=	0.9.16
 CATEGORIES=	security java net-p2p
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION} \
 		http://download.i2p2.no/releases/${PORTVERSION}/ \
@@ -13,8 +13,8 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTVERSION} \
 		https://googledrive.com/host/0B4jHEq5G7_EPWV9UeERwdGplZXc/${PORTVERSION}/
 DISTFILES=	i2psource_${PORTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	An anonymizing network
+MAINTAINER=	cs@FreeBSD.org
+COMMENT=	Anonymizing network
 
 LICENSE=	EULA
 LICENSE_NAME=	End User License Agreement

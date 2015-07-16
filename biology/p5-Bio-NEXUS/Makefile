@@ -3,6 +3,7 @@
 
 PORTNAME=	Bio-NEXUS
 PORTVERSION=	0.78
+PORTREVISION=	1
 CATEGORIES=	biology perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -19,5 +20,6 @@ TEST_DEPENDS=	p5-Test-Deep>=0.106:${PORTSDIR}/devel/p5-Test-Deep \
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

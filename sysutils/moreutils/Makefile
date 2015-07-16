@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	moreutils
-PORTVERSION=	0.51
-PORTREVISION=	2
+PORTVERSION=	0.56
 CATEGORIES=	sysutils
 MASTER_SITES=	DEBIAN_POOL
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Additional Unix utilities
@@ -21,7 +20,7 @@ OPTIONS_SUB=	yes
 
 ALL_TARGET=	errnos.h ${CANNED_MANPAGES:R}
 USES=		perl5 shebangfix
-WRKSRC=		${WRKDIR}/${PORTNAME}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 CANNED_MANPAGES=errno.1 \
 		ifdata.1 \
@@ -29,18 +28,25 @@ CANNED_MANPAGES=errno.1 \
 		isutf8.1 \
 		lckdo.1 \
 		mispipe.1 \
+		moreutils-parallel.1 \
 		pee.1 \
 		sponge.1
 PERL_MANPAGES=	chronic.1 \
 		combine.1 \
-		ts.1 \
+		moreutils-ts.1 \
 		vidir.1 \
 		vipe.1 \
 		zrun.1
 
 SHEBANG_FILES=	${PERL_MANPAGES:R}
 
+post-extract:
+.for file in parallel.c parallel.docbook ts
+	@${MV} ${WRKSRC}/${file} ${WRKSRC}/moreutils-${file}
+.endfor
+
 post-patch:
+	@${REINPLACE_CMD} -e 's|parallel|moreutils-&|g' ${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e 's|__APPLE__|__${OPSYS}__|' ${WRKSRC}/ifdata.c
 	@cd ${FILESDIR}/ && ${CP} ${CANNED_MANPAGES} ${WRKSRC}/
 
@@ -62,5 +68,6 @@ updateman: do-clean extract
 	${LOCALBASE}/bin/xmllint --noout --valid ${WRKSRC}/${man}.docbook && \
 	${LOCALBASE}/bin/xsltproc --output ${FILESDIR}/${man}.1 --param man.authors.section.enabled 0 ${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl ${WRKSRC}/${man}.docbook
 .endfor
+	${MV} ${FILESDIR}/parallel.1 ${FILESDIR}/moreutils-parallel.1
 
 .include <bsd.port.mk>

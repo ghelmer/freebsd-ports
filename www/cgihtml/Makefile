@@ -3,7 +3,7 @@
 
 PORTNAME=	cgihtml
 PORTVERSION=	1.69
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www devel
 MASTER_SITES=	http://www.eekim.com/software/cgihtml/ \
 		ftp://www.eekim.com/pub/users/eekim/cgihtml/ \
@@ -14,17 +14,18 @@ COMMENT=	Library that simplifies the task of writing CGI programs in C
 
 USE_LDCONFIG=	yes
 
+OPTIONS_DEFINE=	DOCS
+
 post-extract:
-	@${MV} ${WRKSRC}/Makefile ${WRKSRC}/Makefile.dist
-	@${CP} ${FILESDIR}/Makefile ${WRKSRC}
+	${MV} ${WRKSRC}/Makefile ${WRKSRC}/Makefile.dist
+	${CP} ${FILESDIR}/Makefile ${WRKSRC}
 
 post-install:
-.if !defined(NOPORTDOCS)
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcgihtml.so
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
 .for file in CHANGES CREDITS
 	${INSTALL_DATA} ${WRKSRC}/${file} ${STAGEDIR}${DOCSDIR}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/docs/*.html ${STAGEDIR}${DOCSDIR}/html
-.endif
 
 .include <bsd.port.mk>

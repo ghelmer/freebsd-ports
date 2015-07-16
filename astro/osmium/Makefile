@@ -3,7 +3,7 @@
 
 PORTNAME=	osmium
 PORTVERSION=	git20130522
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	astro geography devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -23,25 +23,22 @@ RUN_DEPENDS=	google-sparsehash>=2.0.2:${PORTSDIR}/devel/google-sparsehash
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	joto
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	1a5bb26
+GH_TAGNAME=	1a5bb26
 
 CXXFLAGS+=	-I${LOCALBASE}/include \
 		-L${LOCALBASE}/lib
 
+NO_ARCH=	yes
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	JAVASCRIPT DOXYGEN DOCS
 OPTIONS_DEFAULT=JAVASCRIPT
 JAVASCRIPT_DESC=Enable javascript support
 
+JAVASCRIPT_LIB_DEPENDS=	libv8.so:${PORTSDIR}/lang/v8 \
+			libshp.so:${PORTSDIR}/devel/shapelib \
+			libicuuc.so:${PORTSDIR}/devel/icu
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MJAVASCRIPT}
-LIB_DEPENDS+=	libv8.so:${PORTSDIR}/lang/v8 \
-		libshp.so:${PORTSDIR}/devel/shapelib \
-		libicuuc.so:${PORTSDIR}/devel/icu
-.endif
 
 .if ${PORT_OPTIONS:MDOXYGEN} && ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	doxygen:${PORTSDIR}/devel/doxygen
@@ -52,7 +49,7 @@ do-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
 		${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKR_ARGS} doc
 .else
-	${DO_NADA}
+	${TRUE}
 .endif
 
 regression-test:

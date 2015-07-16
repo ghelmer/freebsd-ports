@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	jabberd
-DISTVERSION=	2.3.1
-PORTREVISION=	6
+PORTVERSION=	2.3.1
+PORTREVISION=	8
 CATEGORIES=	net-im
 MASTER_SITES=	https://github.com/jabberd2/jabberd2/releases/download/${PORTNAME}-${DISTVERSION}/ \
 		LOCAL/matthew/${PORTNAME}
@@ -25,14 +25,15 @@ OPTIONS_DEFAULT=MYSQL DEBUG GSASL
 OPTIONS_SUB=	yes
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		compiler:c11 iconv libtool perl5 tar:xz
 USE_PERL5=	run
 USE_OPENSSL=	yes
-USES=		iconv perl5 compiler:c11 tar:xz
 USE_RC_SUBR=	jabberd
 USE_LDCONFIG=	${PREFIX}/lib/jabberd
-CONFIGURE_ARGS+=	--localstatedir=/var \
+CONFIGURE_ARGS=	--localstatedir=/var \
 		--sysconfdir=${PREFIX}/etc/jabberd \
-		--enable-ssl --enable-mio=poll \
+		--enable-ssl --enable-mio=kqueue \
 		--disable-tests \
 		--with-extra-include-path="${LOCALBASE}/include ${EIP}" \
 		--with-extra-library-path="${LOCALBASE}/lib ${ELP}"
@@ -46,13 +47,14 @@ GROUPS=		${JABBER_GROUP}
 JABBER_ETCDIR=	"${PREFIX}/etc/jabberd"
 JABBER_RUNDIR=	"/var/jabberd"
 
-SUB_LIST+=	JABBER_USER=${JABBER_USER} \
+PLIST_SUB+=	JABBER_USER=${JABBER_USER} \
 		JABBER_GROUP=${JABBER_GROUP} \
 		JABBER_ETCDIR="${JABBER_ETCDIR}" \
+		JABBER_RUNDIR="${JABBER_RUNDIR}"
+
+SUB_LIST+=	JABBER_USER=${JABBER_USER} \
 		JABBER_RUNDIR="${JABBER_RUNDIR}" \
 		PERL="${PERL}"
-
-SUB_FILES+=	pkg-install pkg-deinstall
 
 PORTDOCS=	*
 
@@ -66,12 +68,11 @@ EIP+=	${OPENSSLINC}
 
 DEBUG_CONFIGURE_ENABLE=	debug
 
-PGSQL_USE=		PGSQL=yes
+PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ENABLE=	pgsql
 
 SQLITE_CONFIGURE_ENABLE=sqlite
 SQLITE_LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
-SQLITE_CFLAGS=		${PTHREAD_CFLAGS}
 
 MYSQL_USE=		MYSQL=yes
 MYSQL_CONFIGURE_ENABLE=	mysql
@@ -141,8 +142,10 @@ SUB_LIST+=	REQUIRE="LOGIN"
 REQUIRES_DESC=	Add backend requires to startup script
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|"-lsqlite3|"-lsqlite3 ${PTHREAD_LIBS}|g' \
-		${WRKSRC}/configure
+.for FILE in c2s.xml jabberd.cfg router-filter.xml router-users.xml \
+	router.xml s2s.xml sm.xml templates/roster.xml
+	@${MV} ${WRKSRC}/etc/${FILE}.dist.in ${WRKSRC}/etc/${FILE}.sample.in
+.endfor
 	@${REINPLACE_CMD} -e 's|%%PERL%%|${PERL}|g' \
 		${WRKSRC}/tools/jabberd.in
 .if ${PORT_OPTIONS:MCYRUS}
@@ -151,6 +154,10 @@ post-patch:
 .endif
 
 post-install:
+.for DIR in db logs pid
+	@${MKDIR} ${STAGEDIR}${JABBER_RUNDIR}/${DIR}
+.endfor
+	@${CHMOD} -R go= ${STAGEDIR}${JABBER_RUNDIR}
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in ${DOCFILES}

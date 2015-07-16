@@ -12,17 +12,12 @@ COMMENT=	Library for making charts with Python
 
 LICENSE=	LGPL3
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=		CAIRO
 OPTIONS_DEFAULT=	CAIRO
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MCAIRO}
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/cairo:${PORTSDIR}/graphics/py-cairo
-.endif
+CAIRO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>0:${PORTSDIR}/graphics/py-cairo
 
 .include <bsd.port.mk>

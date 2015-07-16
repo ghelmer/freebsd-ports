@@ -2,36 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	mikutter
-PORTVERSION=	0.2.2.1537
+PORTVERSION=	3.2.4
 CATEGORIES=	net-im ruby
 MASTER_SITES=	http://mikutter.hachune.net/bin/ \
-		LOCAL
-MASTER_SITE_SUBDIR=	tota/${PORTNAME}
+		LOCAL/tota/${PORTNAME}
 DISTNAME=	${PORTNAME}.${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Simple, powerful, and moeful Twitter client
 
-LICENSE=	GPLv3
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-gtk2>=1.5.0:${PORTSDIR}/x11-toolkits/rubygem-gtk2 \
-		graphics/rubygem-cairo>=1.10.0:${PORTSDIR}/graphics/rubygem-cairo \
-		rubygem-addressable>=2.2.7:${PORTSDIR}/www/rubygem-addressable \
-		rubygem-hmac>=0.4.0:${PORTSDIR}/security/rubygem-hmac \
-		rubygem-json>=1.8.0:${PORTSDIR}/devel/rubygem-json \
-		${RUBY_SITELIBDIR}/memoize.rb:${PORTSDIR}/devel/ruby-memoize \
+RUN_DEPENDS=	rubygem-gtk2>=2.2.5:${PORTSDIR}/x11-toolkits/rubygem-gtk2 \
+		rubygem-cairo>=1.12.9:${PORTSDIR}/graphics/rubygem-cairo \
+		rubygem-addressable>=2.3.6:${PORTSDIR}/www/rubygem-addressable \
+		rubygem-ruby-hmac>=0.4.0:${PORTSDIR}/security/rubygem-ruby-hmac \
+		rubygem-json_pure>=1.8.1:${PORTSDIR}/devel/rubygem-json_pure \
+		rubygem-memoize>=1.3.1:${PORTSDIR}/devel/rubygem-memoize \
 		rubygem-oauth>=0.4.7:${PORTSDIR}/net/rubygem-oauth \
-		${RUBY_SITELIBDIR}/bsearch.rb:${PORTSDIR}/devel/ruby-bsearch \
-		rubygem-typed-array>=0.1.2:${PORTSDIR}/devel/rubygem-typed-array
+		rubygem-typed-array>=0.1.2:${PORTSDIR}/devel/rubygem-typed-array \
+		rubygem-delayer>=0.0.2:${PORTSDIR}/devel/rubygem-delayer \
+		rubygem-gettext>=2.3.1:${PORTSDIR}/devel/rubygem-gettext \
+		rubygem-moneta>=0.7:${PORTSDIR}/devel/rubygem-moneta \
+		rubygem-nokogiri>=1.6.3.1:${PORTSDIR}/textproc/rubygem-nokogiri \
+		rubygem-httpclient>=0:${PORTSDIR}/www/rubygem-httpclient
 
 WRKSRC=	${WRKDIR}/${PORTNAME}
 
 USE_RUBY=	yes
+USES=	shebangfix
 NO_BUILD=	yes
 
-RUBY_SHEBANG_FILES=	mikutter.rb \
-			core/miku/miku.rb \
-			devel/makechi.rb
+SHEBANG_FILES=	mikutter.rb \
+		core/miku/miku.rb \
+		core/lib/piapro.rb \
+		devel/makechi.rb
 
 PORTDOCS=	README
 SUB_FILES=	mikutter.desktop
@@ -39,21 +45,14 @@ SUB_LIST=	RUBY_SITELIBDIR=${RUBY_SITELIBDIR}
 
 REINPLACE_ARGS=	-i ''
 
-OPTIONS_DEFINE=		DOCS HTTPCLIENT NOTIFY
-HTTPCLIENT_DESC=	httpclient support
+OPTIONS_DEFINE=		DOCS NOTIFY
 NOTIFY_DESC=		notify-send support
 
 OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MHTTPCLIENT}
-RUN_DEPENDS+=	rubygem-httpclient>=0:${PORTSDIR}/www/rubygem-httpclient
-.endif
-
-.if ${PORT_OPTIONS:MNOTIFY}
-RUN_DEPENDS+=	notify-send:${PORTSDIR}/devel/libnotify
-.endif
+NOTIFY_RUN_DEPENDS=	notify-send:${PORTSDIR}/devel/libnotify
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|%%RUBY_SITELIBDIR%%|${RUBY_SITELIBDIR}|" \
@@ -73,7 +72,5 @@ x-generate-plist: stage
 	${ECHO} bin/mikutter > pkg-plist.new
 	${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/mikutter -type f | ${SORT} | ${SED} -e 's,${STAGEDIR}${RUBY_SITELIBDIR},%%RUBY_SITELIBDIR%%,' >> pkg-plist.new
 	${ECHO} share/applications/mikutter.desktop >> pkg-plist.new
-	${FIND} ${STAGEDIR}${RUBY_SITELIBDIR}/mikutter -type d -depth | ${SORT} -r | ${SED} -e 's,${STAGEDIR}${RUBY_SITELIBDIR},@dirrm %%RUBY_SITELIBDIR%%,' >> pkg-plist.new
-	${REINPLACE_CMD} -E 's|@dirrm (%%RUBY_SITELIBDIR%%/mikutter/plugin)|@dirrmtry \1|' pkg-plist.new
 
 .include <bsd.port.mk>

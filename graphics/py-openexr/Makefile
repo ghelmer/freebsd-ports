@@ -3,7 +3,7 @@
 
 PORTNAME=	openexr
 PORTVERSION=	1.2.0
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	graphics python
 MASTER_SITES=	http://excamera.com/files/ \
 		CHEESESHOP
@@ -13,14 +13,12 @@ DISTNAME=	OpenEXR-${PORTVERSION}
 MAINTAINER=	jamesb-bsd@excamera.com
 COMMENT=	Python module for ILM's OpenEXR image format and library
 
-LIB_DEPENDS=	IlmImf:${PORTSDIR}/graphics/OpenEXR
+LIB_DEPENDS=	libIlmImf.so:${PORTSDIR}/graphics/OpenEXR
+
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 post-extract:
 	${REINPLACE_CMD} -e 's#/usr/local#${LOCALBASE}#g' ${WRKSRC}/setup.py
-
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-MASTER_SITE_SUBDIR=source/O/OpenEXR
 
 .include <bsd.port.mk>

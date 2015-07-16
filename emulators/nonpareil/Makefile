@@ -3,7 +3,7 @@
 
 PORTNAME=	nonpareil
 PORTVERSION=	0.79
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	emulators
 MASTER_SITES=	http://nonpareil.brouhaha.com/download/
 
@@ -13,7 +13,7 @@ COMMENT=	Simulator for many HP calculators
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
 USES=		bison pkgconfig scons
 USE_GNOME=	gtk20 libxml2
@@ -45,11 +45,7 @@ PLIST_DATA=	lib/nonpareil/21.kml lib/nonpareil/21.obj \
 		lib/nonpareil/82143a.mod lib/nonpareil/82182a.mod
 
 PLIST_FILES=	${PLIST_EXECS} ${PLIST_DATA}
-PLIST_DIRS=	lib/nonpareil
 PORTDOCS=	CREDITS DEBUGGING README TODO
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -61,13 +57,8 @@ post-patch:
 		's|<stdint.h>|<inttypes.h>|g' ${WRKSRC}/src/*.[cly]
 
 post-install:
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${DOCSDIR}
-.endif
-	-${CHOWN} ${BINOWN}:${BINGRP} ${PLIST_FILES:S|^|${PREFIX}/|}
-	-${TOUCH} ${PLIST_FILES:S|^|${PREFIX}/|}
-	-${CHMOD} ${SHAREMODE} ${PLIST_DATA:S|^|${PREFIX}/|}
-	-${CHMOD} ${BINMODE} ${PLIST_EXECS:S|^|${PREFIX}/|}
+	${STRIP_CMD} ${PLIST_EXECS:S|^|${STAGEDIR}${PREFIX}/|}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

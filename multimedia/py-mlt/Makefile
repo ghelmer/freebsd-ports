@@ -11,10 +11,10 @@ COMMENT=	Python bindings for the MLT multimedia framework
 LICENSE=	GPLv2
 LICENSE_COMB=	single
 
-LIB_DEPENDS=	mlt:${PORTSDIR}/${MASTER_PORT}
+LIB_DEPENDS=	libmlt.so:${PORTSDIR}/${MASTER_PORT}
 BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
 
-USE_PYTHON=	yes
+USES=		python:2
 MASTERDIR=	${.CURDIR:H:H}/multimedia/mlt
 
 EXAMPLESDIR=	${PREFIX}/share/examples/${PORTNAME}/python
@@ -24,8 +24,6 @@ PLIST=		${.CURDIR}/pkg-plist
 
 BUILD_WRKSRC=	${WRKSRC}/src/swig/python
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
-
-NO_STAGE=	yes
 
 OPTIONS_DEFINE=	EXAMPLES
 
@@ -40,17 +38,14 @@ do-build:
 	@cd ${BUILD_WRKSRC} && ${SH} build
 
 do-install:
-	${INSTALL_LIB} ${INSTALL_WRKSRC}/_mlt.so ${PYTHONPREFIX_SITELIBDIR}
-	${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/mlt.py ${PYTHONPREFIX_SITELIBDIR}
-	${PYTHON_CMD} -c 'import mlt'
-	${PYTHON_CMD} -Oc 'import mlt'
-
-post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${EXAMPLESDIR}
-. for f in codecs getimage play waveforms
-	${INSTALL_DATA} ${INSTALL_WRKSRC}/${f}.py ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	${INSTALL_LIB} ${INSTALL_WRKSRC}/_mlt.so ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	${INSTALL_SCRIPT} ${INSTALL_WRKSRC}/mlt.py ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	@cd ${STAGEDIR}${PYTHON_SITELIBDIR} && ${PYTHON_CMD} -c 'import mlt'
+	@cd ${STAGEDIR}${PYTHON_SITELIBDIR} && ${PYTHON_CMD} -Oc 'import mlt'
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+. for f in codecs getimage play switcher waveforms webvfx_generator
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/${f}.py ${STAGEDIR}${EXAMPLESDIR}
 . endfor
-.endif
 
 .include "${MASTERDIR}/Makefile"

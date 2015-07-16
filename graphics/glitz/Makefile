@@ -4,7 +4,7 @@
 
 PORTNAME=	glitz
 PORTVERSION=	0.5.6
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	http://cairographics.org/snapshots/
 
@@ -18,7 +18,6 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
-CPPFLAGS+=	${PTHREAD_CFLAGS}
-LDFLAGS+=	${PTHREAD_LIBS}
+LDFLAGS+=	-lpthread
 
 .include <bsd.port.mk>

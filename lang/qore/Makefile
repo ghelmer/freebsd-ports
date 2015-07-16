@@ -2,6 +2,7 @@
 
 PORTNAME=	qore
 PORTVERSION=	0.8.8
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	SF/qore/qore/${PORTVERSION}/
 
@@ -15,15 +16,12 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex \
 		${LOCALBASE}/bin/bison:${PORTSDIR}/devel/bison
 
-USE_BZIP2=	yes
-USES=		gmake iconv pathfix
+USES=		gmake iconv libtool pathfix tar:bzip2
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
-CONFIGURE_ENV=	LEX="${LOCALBASE}/bin/flex" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}" \
-		PTHREAD_CFLAGS="${PTRHEAD_CFLAGS}"
+CONFIGURE_ENV=	LEX="${LOCALBASE}/bin/flex" PTHREAD_LIBS="-lpthread"
 CONFIGURE_ARGS=	--disable-debug --disable-static --with-doxygen=no
 LDFLAGS+=	-L${LOCALBASE}/lib
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	netype
 PORTVERSION=	0.1.1
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	japanese
 MASTER_SITES=	http://www.i.his.fukui-u.ac.jp/~funakami/software/netype/src/
 DISTNAME=	${PORTNAME}-0.1.0
@@ -16,8 +16,11 @@ PATCH_DIST_STRIP=	-p1
 MAINTAINER=	mutoh@openedu.org
 COMMENT=	Network Type Trainer client program
 
+BROKEN=		depends on imlib
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2015-07-21
+
 USE_GNOME=	imlib
 GNU_CONFIGURE=	yes
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

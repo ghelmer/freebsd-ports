@@ -1,10 +1,8 @@
 # Created by: Alexander Nedotsukov <bland@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/trunk/databases/libgdamm5/Makefile 18610 2013-06-30 16:33:05Z marcus $
 
 PORTNAME=	libgdamm
-PORTVERSION=	4.99.6
-PORTREVISION=	2
+PORTVERSION=	4.99.8
 CATEGORIES=	databases gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -23,7 +21,6 @@ CONFIGURE_ARGS=	--disable-documentation
 
 OPTIONS_DEFINE=	BDB
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MBDB} || exists(${LOCALBASE}/libdata/pkgconfig/libgda-bdb-5.0.pc)

@@ -3,7 +3,7 @@
 
 PORTNAME=	ecasound
 PORTVERSION=	2.9.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://ecasound.seul.org/download/ \
 		http://nosignal.fi/download/ \
@@ -21,11 +21,11 @@ OPTIONS_DEFINE=	ALSA AUDIOFILE JACK LIBLO LIBOIL PYTHON SAMPLERATE SNDFILE
 OPTIONS_DEFAULT=PYTHON
 OPTIONS_SUB=	yes
 
-USES=		gmake libtool readline
+USES=		gmake libtool pkgconfig readline:port
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-liblilv \
 		--disable-rubyecasound \
-		--enable-sys-readline \
+		--enable-sys-readline=no \
 		--disable-arts
 USE_LDCONFIG=	yes
 
@@ -44,7 +44,7 @@ LIBOIL_CONFIGURE_ENABLE=liboil
 LIBOIL_LIB_DEPENDS=	liboil-0.3.so:${PORTSDIR}/devel/liboil
 PYTHON_CONFIGURE_ENABLE=pyecasound
 PYTHON_CONFIGURE_ENV=	PYTHONPATH="${PYTHON_CMD}"
-PYTHON_USE=		PYTHON=yes
+PYTHON_USES=		python
 SAMPLERATE_CONFIGURE_ENABLE=	libsamplerate
 SAMPLERATE_LIB_DEPENDS=	libsamplerate.so:${PORTSDIR}/audio/libsamplerate
 SNDFILE_CONFIGURE_ENABLE=	sndfile

@@ -3,7 +3,7 @@
 
 PORTNAME=	pinball
 PORTVERSION=	0.3.1
-PORTREVISION=	17
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -12,12 +12,14 @@ COMMENT=	Emilia Pinball is a free pinball game
 
 LICENSE=	GPLv2
 
-USES=		gmake libtool:keepla
+USES=		gmake libtool:keepla # .la needed for plugin loading
 USE_GL=		gl
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CONFIGURE_ARGS=	--prefix=${PREFIX} --without-debug
+
+OPTIONS_DEFINE=	DOCS
 
 .if defined(WITH_ALLEGRO)
 BROKEN=		support with Allegro is (temporarily?) broken as of version 0.3.1
@@ -34,17 +36,15 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 DOCS=		README
 
-# For gmake>=3.82 + ranlib runs twice
+# For gmake>=3.82
 pre-configure:
 	${FIND} ${WRKSRC} -name Makefile.in -print | ${XARGS} \
-		${REINPLACE_CMD} -e 's,^dnl,# dnl,;/echo.*RANLIB/,+1d'
+		${REINPLACE_CMD} -e 's,^dnl,# dnl,'
 
 post-install:
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

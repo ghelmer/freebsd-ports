@@ -11,6 +11,7 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby module to manipulate ID3v1.1 tags in MP3 files
 
+BROKEN=		Unfetchable
 USE_RUBY=	yes
 USE_RUBY_RDOC=	yes
 
@@ -20,6 +21,8 @@ NO_BUILD=	yes
 
 DOCS=		README \
 		${RUBY_RD_HTML_FILES}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -E \

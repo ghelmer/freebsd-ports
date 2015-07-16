@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Mime_Viewer
-PORTVERSION=	2.0.7
+PORTVERSION=	2.1.0
 CATEGORIES=	mail www pear
 
 MAINTAINER=	horde@FreeBSD.org
@@ -12,6 +12,7 @@ CONFLICTS=	horde-3*
 
 USE_HORDE_BUILD=	Horde_Role
 
+USES=	horde
 USE_HORDE_RUN=	Horde_Role \
 		Horde_Browser \
 		Horde_Compress \
@@ -24,6 +25,4 @@ USE_HORDE_RUN=	Horde_Role \
 
 USE_PHP=	xml
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

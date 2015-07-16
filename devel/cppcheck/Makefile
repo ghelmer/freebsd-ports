@@ -3,6 +3,7 @@
 
 PORTNAME=	cppcheck
 PORTVERSION=	1.63
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
 
@@ -29,10 +30,8 @@ PLIST_FILES=	bin/cppcheck bin/cppcheck-htmlreport
 
 .include <bsd.port.options.mk>
 
-.ifndef(NOPORTDATA)
 MAKE_ENV+=	CFGDIR="${DATADIR}/cfg"
 PORTDATA=	*
-.endif
 
 .if ${PORT_OPTIONS:MMANPAGES}
 ALL_TARGET+=	man
@@ -47,8 +46,8 @@ post-install:
 .endif
 
 .if ${PORT_OPTIONS:MMATCHCOMPILER}
-MAKE_ENV+=		SRCDIR=build
-USE_PYTHON_BUILD=	2
+MAKE_ENV+=	SRCDIR=build
+USES+=		python:2,build
 .endif
 
 .if ${PORT_OPTIONS:MRULES}
@@ -80,10 +79,8 @@ post-patch:
 do-install:
 	@${INSTALL_PROGRAM} ${WRKSRC}/cppcheck ${STAGEDIR}${PREFIX}/bin
 	@${INSTALL_SCRIPT} ${WRKSRC}/htmlreport/cppcheck-htmlreport ${STAGEDIR}${PREFIX}/bin
-.ifndef(NOPORTDATA)
 	@${MKDIR} ${STAGEDIR}${DATADIR}/cfg
 	@cd ${WRKSRC}/cfg; ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/cfg/
-.endif
 
 check regression-test test: build
 	@cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} test

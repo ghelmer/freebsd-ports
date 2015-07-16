@@ -4,13 +4,12 @@
 PORTNAME=	javolution
 PORTVERSION=	5.5.1
 CATEGORIES=	devel java
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	ale
+MASTER_SITES=	LOCAL/ale
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Java solution for real time and embedded systems
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 USE_JAVA=	yes
@@ -21,6 +20,8 @@ ALL_TARGET=	1.6
 PORTDOCS=	*
 
 PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

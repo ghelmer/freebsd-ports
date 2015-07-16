@@ -12,7 +12,7 @@ COMMENT=	Scientific calculator for KDE
 LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 		libmpfr.so:${PORTSDIR}/math/mpfr
 
-USE_KDE4=	kdeprefix kdehier automoc4 kdelibs
+USE_KDE4=	kdeprefix automoc4 kdelibs
 USES=		cmake:outsource tar:xz
 USE_QT4=	xml qmake_build moc_build rcc_build uic_build
 

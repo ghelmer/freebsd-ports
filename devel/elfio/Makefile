@@ -3,7 +3,7 @@
 
 PORTNAME=	elfio
 PORTVERSION=	1.0.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/ELFIO-sources/ELFIO-${PORTVERSION}
 DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
@@ -13,15 +13,12 @@ COMMENT=	C++ library for reading and generating files in the ELF binary format
 
 LICENSE=	LGPL21
 
-BUILD_DEPENDS=	libtool:${PORTSDIR}/devel/libtool
-
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		autoreconf libtool
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	aclocal automake autoconf libtool
-AUTOMAKE_ARGS=	-c -a
-ACLOCAL_ARGS=	--automake-acdir=${ACLOCAL_DIR} -I ${LOCALBASE}/share/aclocal
 
-OPTIONE_DEFINE=	EXAMPLES DOCS
+OPTIONS_DEFINE=	EXAMPLES DOCS
 
 PORTDOCS=	*
 
@@ -35,11 +32,7 @@ PLIST_SUB+=	EXAMPLES="@comment "
 
 post-patch:
 	@(${FIND} ${WRKSRC}/ -name Makefile.am | \
-		${XARGS} ${REINPLACE_CMD} -E -e 's,(libELFIO)\.a,.libs/\1.so,g')
-
-pre-configure:
-	@(cd ${WRKSRC}/ && \
-		${LIBTOOLIZE} --force --copy --automake)
+		${XARGS} ${REINPLACE_CMD} -E -e 's,(libELFIO)\.a,\1.la,g')
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}

@@ -1,4 +1,3 @@
-@unexec %D/etc/rc.d/zhm stop > /dev/null 2>&1 || true
 bin/zaway
 bin/zctl
 bin/zleave
@@ -12,8 +11,9 @@ include/zephyr/mit-copyright.h
 include/zephyr/zephyr.h
 include/zephyr/zephyr_err.h
 lib/libzephyr.a
-lib/libzephyr.so.4.0
-lib/libzephyr.la
+lib/libzephyr.so
+lib/libzephyr.so.4
+lib/libzephyr.so.4.0.0
 sbin/zshutdown_notify
 sbin/zephyrd
 sbin/zhm
@@ -31,8 +31,4 @@ man/man8/zephyrd.8.gz
 man/man8/zhm.8.gz
 man/man8/zshutdown_notify.8.gz
 man/man8/zstat.8.gz
-@exec mkdir -p %D/etc/zephyr/acl
-@dirrm etc/zephyr/acl
-@dirrm etc/zephyr
-@dirrm include/zephyr
-@dirrm %%DATADIR%%
+@dir etc/zephyr/acl

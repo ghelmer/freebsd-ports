@@ -1,33 +1,32 @@
-# Created by: Max Khon
 # $FreeBSD$
 
-PORTNAME=	htick
-PORTVERSION=	1.0.4
-PORTREVISION=	3
+PORTNAME=	husky-htick
 CATEGORIES=	news mail
-MASTER_SITES=	SF/husky/${PORTNAME}/1.0-release
-DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	fjoe@FreeBSD.org
-COMMENT=	FTN file ticker
+MAINTAINER=     osharoiko@gmail.com
+COMMENT=	Husky FTN file ticker
 
-LIB_DEPENDS=	fidoconfig.0:${PORTSDIR}/news/husky-fidoconf
+LIB_DEPENDS=	libfidoconfig.so:${PORTSDIR}/news/husky-fidoconf \
+		libareafix.so:${PORTSDIR}/news/husky-areafix
 
-CONFLICTS=	husky-htick-devel-[0-9]*
+ALL_TARGET=	all
+INSTALL_TARGET=	install
+USE_LDCONFIG=   yes
+PLIST_FILES=	bin/htick man/man1/htick.1.gz
 
-MAN1=		htick.1
-INFO=		htick
+MASTERDIR=      ${.CURDIR}/../husky
+COMPONENT_SUBDIR=       htick
 
-NO_STAGE=	yes
+# Settings below are required to handle texi output (html, INFO page)
+USES+=			makeinfo
+ALL_TARGET+=		doc
+INSTALL_TARGET+=	install-doc
+PORTDOCS=		htick.html
+DOCSDIR=		${PREFIX}/share/doc/husky
+INFO=			htick
+
 post-patch:
-	@${REINPLACE_CMD} -e 's^/fido/etc/config^${PREFIX}/etc/fido/config^' \
+	${REINPLACE_CMD} -e 's^/fido/etc/config^${PREFIX}/etc/fido/config^' \
 		${WRKSRC}/man/htick.1
 
-post-build:
-	@cd ${WRKSRC}/doc && ${MAKE_CMD} ${MAKE_ARGS} all
-
-post-install:
-	@cd ${WRKSRC}/doc && ${MAKE_CMD} ${MAKE_ARGS} install
-
-.include "${.CURDIR}/../husky-base/Makefile.inc"
 .include <bsd.port.mk>

@@ -3,24 +3,26 @@
 
 PORTNAME=	PHPUnit
 PORTVERSION=	3.7.6
+PORTREVISION=	1
 CATEGORIES=	devel www pear
 MASTER_SITES=	http://pear.phpunit.de/get/
+PKGNAMEPREFIX=	pear-
+PKGNAMESUFFIX=	3
 
 MAINTAINER=	gasol.wu@gmail.com
 COMMENT=	PEAR regression testing framework for unit tests
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	pear>=1.9.4:${PORTSDIR}/devel/pear \
-		pear-File_Iterator>=1.3.1:${PORTSDIR}/devel/pear-File_Iterator \
+BUILD_DEPENDS=	pear-File_Iterator>=1.3.1:${PORTSDIR}/devel/pear-File_Iterator \
 		pear-Text_Template>=1.1.1:${PORTSDIR}/textproc/pear-Text_Template \
 		pear-PHP_CodeCoverage>=1.2.1:${PORTSDIR}/devel/pear-PHP_CodeCoverage \
 		pear-PHP_Timer>=1.0.2:${PORTSDIR}/devel/pear-PHP_Timer \
 		pear-PHPUnit_MockObject>=1.2.0:${PORTSDIR}/devel/pear-PHPUnit_MockObject \
 		pear-Symfony_Component_Yaml>=2.1.0:${PORTSDIR}/textproc/pear-Symfony_Component_Yaml \
 		${PEARDIR}/.channels/pear.phpunit.de.reg:${PORTSDIR}/devel/pear-channel-phpunit
-RUN_DEPENDS=	pear>=1.9.4:${PORTSDIR}/devel/pear \
-		pear-File_Iterator>=1.3.1:${PORTSDIR}/devel/pear-File_Iterator \
+RUN_DEPENDS=	pear-File_Iterator>=1.3.1:${PORTSDIR}/devel/pear-File_Iterator \
 		pear-Text_Template>=1.1.1:${PORTSDIR}/textproc/pear-Text_Template \
 		pear-PHP_CodeCoverage>=1.2.1:${PORTSDIR}/devel/pear-PHP_CodeCoverage \
 		pear-PHP_Timer>=1.0.2:${PORTSDIR}/devel/pear-PHP_Timer \
@@ -30,10 +32,8 @@ RUN_DEPENDS=	pear>=1.9.4:${PORTSDIR}/devel/pear \
 
 CONFLICTS=	pear-PHPUnit-[12]*
 
+USES=		pear
 PEAR_CHANNEL=	phpunit
-PEAR_AUTOINSTALL=	yes
-
-LATEST_LINK=	pear-PHPUnit3
 
 OPTIONS_DEFINE=	JSON SIMPLEXML TOKENIZER
 JSON_DESC=	Enable JSON support
@@ -42,19 +42,8 @@ TOKENIZER_DESC=	Enable Tokenizer support
 
 USE_PHP=	dom spl pcre
 
-.include <bsd.port.pre.mk>
+JSON_USE=	PHP=json
+SIMPLEXML_USE=	PHP=simplexml
+TOKENIZER_USE=	PHP=tokenizer
 
-.if ${PORT_OPTIONS:MJSON}
-USE_PHP+=	json
-.endif
-
-.if ${PORT_OPTIONS:MSIMPLEXML}
-USE_PHP+=	simplexml
-.endif
-
-.if ${PORT_OPTIONS:MTOKENIZER}
-USE_PHP+=	tokenizer
-.endif
-
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

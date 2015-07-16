@@ -3,15 +3,18 @@
 
 PORTNAME=	libdnd
 PORTVERSION=	1.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11
 MASTER_SITES=	http://leb.net/offix/
 DISTNAME=	dnd.${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Drag and drop library
 
+LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/../COPYING.LIB
+
+USES=		tar:tgz
 USE_XORG=	x11 xmu ice xaw
 USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/DND/DNDlib
@@ -22,12 +25,9 @@ MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/libdnd
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${WRKDIR}/DND/DNDdoc/* ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

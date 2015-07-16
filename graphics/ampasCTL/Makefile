@@ -3,15 +3,16 @@
 
 PORTNAME=	ampasCTL
 PORTVERSION=	1.5
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics devel
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Color Transformation Language interpreter
 
-LICENSE=	BSD
-
-CONFLICTS=	openexr_ctl-1.[0-4].*
+LICENSE=	AMPAS
+LICENSE_NAME=	AMPAS
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 LIB_DEPENDS=	libImath.so:${PORTSDIR}/graphics/ilmbase \
 		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR \
@@ -21,8 +22,7 @@ LIB_DEPENDS=	libImath.so:${PORTSDIR}/graphics/ilmbase \
 USE_GITHUB=	yes
 GH_ACCOUNT=	ampas
 GH_PROJECT=	CTL
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	afcff97
+GH_TAGNAME=	57b48a2
 
 USES=		cmake pkgconfig
 USE_LDCONFIG=	yes

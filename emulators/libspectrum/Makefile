@@ -3,7 +3,7 @@
 
 PORTNAME=	libspectrum
 PORTVERSION=	1.1.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	emulators devel
 MASTER_SITES=	SF/fuse-emulator/${PORTNAME}/${PORTVERSION}
 
@@ -19,7 +19,7 @@ USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USES=		gmake pkgconfig libtool
 
-OPTIONS_DEFINE=	AUDIOFILE
+OPTIONS_DEFINE=	AUDIOFILE DOCS
 AUDIOFILE_DESC=	Support loading from .wav files
 
 AUDIOFILE_LIB_DEPENDS=	libaudiofile.so:${PORTSDIR}/audio/libaudiofile

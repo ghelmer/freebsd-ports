@@ -3,7 +3,7 @@
 
 PORTNAME=	pyglet
 PORTVERSION=	1.1.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics multimedia x11-toolkits python
 MASTER_SITES=	GOOGLE_CODE
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -17,21 +17,16 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 RUN_DEPENDS=	${LOCALBASE}/lib/libavbin.so:${PORTSDIR}/multimedia/avbin
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+ONLY_FOR_ARCHS=	i386
+
+USES=		openal:al python
+USE_PYTHON=	distutils
 USE_GL=		gl glu
-USES=		openal:al
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH} != "i386"
-IGNORE=		crashes or doesn't work on !i386
-.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

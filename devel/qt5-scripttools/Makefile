@@ -13,6 +13,7 @@ QT_DIST=	script
 USES=		qmake
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
-WRKSRC_SUBDIR=	src/${PORTNAME}
+BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
+INSTALL_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 
 .include <bsd.port.mk>

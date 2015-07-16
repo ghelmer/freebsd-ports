@@ -3,10 +3,9 @@
 
 PORTNAME=	xfce4-genmon-plugin
 PORTVERSION=	3.4.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils xfce
-MASTER_SITES=	${MASTER_SITE_XFCE}
-MASTER_SITE_SUBDIR=	src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -15,10 +14,10 @@ COMMENT=	Generic Monitor Xfce4 panel plugin
 LICENSE=	LGPL21
 
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
-USES=		gettext pkgconfig gmake
+INSTALL_TARGET=	install-strip
+USES=		gettext gmake libtool pkgconfig xfce tar:bzip2
 USE_GNOME=	gtk20 intltool intlhack
-USE_XFCE=	configenv libmenu panel
+USE_XFCE=	panel
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 

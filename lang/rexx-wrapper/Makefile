@@ -9,7 +9,10 @@ PKGNAMEPREFIX=	rexx-
 DISTNAME=	RexxWrapper-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A tool that wraps Rexx source or tokenised code into an executable
+COMMENT=	Tool that wraps Rexx source or tokenised code into an executable
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	rexx:${PORTSDIR}/lang/rexx-regina
 RUN_DEPENDS=	rexx:${PORTSDIR}/lang/rexx-regina
@@ -25,5 +28,8 @@ post-patch:	.SILENT
 		-e "s,cflags\. = '(.*)',cflags. = '\1 ${CFLAGS}'," \
 		${WRKSRC}/rexxwrap.cmd
 	@${REINPLACE_CMD} 's/-compiler=$$(CC/&:T/' ${WRKSRC}/Makefile.in
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/rexxwrapper
 
 .include <bsd.port.mk>

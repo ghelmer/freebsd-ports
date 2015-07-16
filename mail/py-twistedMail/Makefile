@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	twistedMail
-PORTVERSION=	13.2.0
+PORTVERSION=	15.2.1
 CATEGORIES=	mail devel python
 MASTER_SITES=	http://twistedmatrix.com/Releases/Mail/${PORTVERSION:R}/ \
 		LOCAL/sunpoet
@@ -14,13 +14,8 @@ COMMENT=	SMTP, IMAP, and POP protocol implementation with clients and servers
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twistedCore>=${PORTVERSION}:${PORTSDIR}/devel/py-twistedCore \
-		${PYTHON_PKGNAMEPREFIX}twistedNames>=${PORTVERSION}:${PORTSDIR}/dns/py-twistedNames
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-
-USE_BZIP2=	yes
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
-PYDISTUTILS_PKGNAME=	${PORTNAME:S/twisted/Twisted_/}
+NO_ARCH=	yes
+USE_PYTHON=	autoplist distutils
+USES=		python:2 tar:bzip2 twisted:names
 
 .include <bsd.port.mk>

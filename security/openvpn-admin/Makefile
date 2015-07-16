@@ -10,18 +10,18 @@ MASTER_SITES=	SF/${PORTNAME}/OldFiles
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI frontend to openvpn
 
+LICENSE=	LGPL21 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 RUN_DEPENDS=	openvpn:${PORTSDIR}/security/openvpn
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/b//}
 
-USES=		gmake pkgconfig
+USES=		gettext gmake pkgconfig
 USE_GNOME=	gtksharp20
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+LIBS+=		-L${LOCALBASE}/lib
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr/bin/iconv,${LOCALBASE}/bin/iconv,g' \
@@ -30,10 +30,12 @@ post-patch:
 		${WRKSRC}/src/Configuration.cs
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKSRC}/openvpn-admin ${PREFIX}/sbin
-	${INSTALL_DATA} ${WRKSRC}/openvpn-admin.desktop ${PREFIX}/share/applications/
-	${MKDIR} ${PREFIX}/lib/${PORTNAME}
-	${INSTALL_DATA} ${WRKSRC}/src/openvpn-admin.exe ${PREFIX}/lib/${PORTNAME}
-	${MKDIR} ${PREFIX}/etc/openvpn
+	${INSTALL_SCRIPT} ${WRKSRC}/openvpn-admin ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_DATA} ${WRKSRC}/openvpn-admin.desktop \
+		${STAGEDIR}${PREFIX}/share/applications
+	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
+	${INSTALL_DATA} ${WRKSRC}/src/openvpn-admin.exe \
+		${STAGEDIR}${PREFIX}/lib/${PORTNAME}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/openvpn
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

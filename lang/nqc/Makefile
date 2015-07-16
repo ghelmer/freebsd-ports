@@ -6,12 +6,11 @@ PORTVERSION=	3.1.r6
 CATEGORIES=	lang
 MASTER_SITES=	http://bricxcc.sourceforge.net/nqc/release/ \
 		ftp://ftp2.za.freebsd.org/pub/nqc/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	jhay@FreeBSD.org
 COMMENT=	Compiler for writing programs for the Lego RCX
 
-USES=		gmake dos2unix
+USES=		gmake dos2unix tar:tgz
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/nqc man/man1/nqc.1.gz
@@ -23,7 +22,7 @@ do-install:
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 800064
+.if ${OPSYS} == FreeBSD
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-rcxlib-RCX_USBTowerPipe_fbsd.cpp
 .endif
 

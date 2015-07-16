@@ -4,12 +4,10 @@
 PORTNAME=	esmska
 PORTVERSION=	0.21
 CATEGORIES=	comms java
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	gamato@users.sf.net
 COMMENT=	Program for sending SMS over the Internet
-
-RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+

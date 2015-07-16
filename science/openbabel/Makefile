@@ -3,7 +3,7 @@
 
 PORTNAME=	openbabel
 PORTVERSION=	2.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	SF
 
@@ -32,7 +32,7 @@ CAIRO_USES=	pkgconfig
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USES+=		python
 CMAKE_ARGS+=	-DPYTHON_BINDINGS=on
 .endif
 

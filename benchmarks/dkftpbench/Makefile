@@ -10,10 +10,15 @@ MASTER_SITES=	http://www.kegel.com/dkftpbench/
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	FTP benchmark program
 
-PLIST_FILES=	bin/dkftpbench
+LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
+PLIST_FILES=	bin/dkftpbench
 
-USE_AUTOTOOLS=	automake14 autoconf
+post-patch:
+	@${REINPLACE_CMD} \
+		-e '/^noinst_PROGRAMS =/s/=.*/=/' \
+		-e '/^lib_LIBRARIES =/s/=.*/=/' \
+		${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

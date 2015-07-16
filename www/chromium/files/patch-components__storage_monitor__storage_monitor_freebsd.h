@@ -1,5 +1,5 @@
---- ./components/storage_monitor/storage_monitor_freebsd.h.orig	2014-05-04 14:38:47.000000000 +0200
-+++ ./components/storage_monitor/storage_monitor_freebsd.h	2014-05-04 15:15:00.000000000 +0200
+--- components/storage_monitor/storage_monitor_freebsd.h.orig	2015-01-24 17:14:44 UTC
++++ components/storage_monitor/storage_monitor_freebsd.h
 @@ -0,0 +1,47 @@
 +// Copyright 2014 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
@@ -36,11 +36,11 @@
 +  virtual ~StorageMonitorFreeBSD();
 +
 +  // Must be called for StorageMonitorFreeBSD to work.
-+  virtual void Init() OVERRIDE;
++  virtual void Init() override;
 + private:
 +  // StorageMonitor implementation.
 +  virtual bool GetStorageInfoForPath(const base::FilePath& path,
-+                                     StorageInfo* device_info) const OVERRIDE;
++                                     StorageInfo* device_info) const override;
 +
 +  DISALLOW_COPY_AND_ASSIGN(StorageMonitorFreeBSD);
 +};

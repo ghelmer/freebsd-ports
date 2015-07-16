@@ -4,7 +4,7 @@
 
 PORTNAME=	gstreamer
 PORTVERSION=	0.10.36
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	multimedia
 MASTER_SITES=	http://gstreamer.freedesktop.org/src/gstreamer/
 
@@ -15,7 +15,7 @@ LICENSE=	LGPL20
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 CFLAGS:=	${CFLAGS} -O2 -Wno-format
-USES=		bison gettext gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		bison gmake libtool:keepla pathfix pkgconfig tar:bzip2
 USE_GNOME=	glib20 introspection libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-tests \
@@ -30,18 +30,17 @@ USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 GST_VERSION=	0.10
 
-OPTIONS_DEFINE=	LIBCHECK
+OPTIONS_DEFINE=	LIBCHECK NLS
+OPTIONS_SUB=	yes
 LIBCHECK_DESC=	Unit tests support
 
-.include <bsd.port.pre.mk>
+LIBCHECK_LIB_DEPENDS=	libcheck.so:${PORTSDIR}/devel/libcheck
+LIBCHECK_CONFIGURE_OFF=	--disable-check
 
-.if ${PORT_OPTIONS:MLIBCHECK}
-LIB_DEPENDS+=	libcheck.so:${PORTSDIR}/devel/libcheck
-PLIST_SUB+=	CHECK=""
-.else
-CONFIGURE_ARGS+=--disable-check
-PLIST_SUB+=	CHECK="@comment "
-.endif
+NLS_USES=	gettext
+NLS_CONFIGURE_OFF=	--disable-nls
+
+.include <bsd.port.pre.mk>
 
 # workaround a crash in clang 3.3 crash llvm bug # 15840
 .if ((${OSVERSION} >= 901504 && ${OSVERSION} < 902502) || \

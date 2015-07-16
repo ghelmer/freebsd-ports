@@ -3,15 +3,18 @@
 
 PORTNAME=	fxite
 PORTVERSION=	0.92
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	editors
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced cross-platform text editor
+
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	#
 
-OPTIONS_SINGLE=		FOX
+OPTIONS_SINGLE=		#FOX
 OPTIONS_SINGLE_FOX=	FOX16 FOX17
 FOX16_DESC=		Use FOX 1.6
 FOX17_DESC=		Use FOX 1.7
@@ -20,13 +23,10 @@ OPTIONS_DEFAULT=	FOX16
 USE_GITHUB=	yes
 GH_ACCOUNT=	yetanothergeek
 GH_TAGNAME=	FXITE-0_91
-GH_COMMIT=	c2ecac3
 
-USES=		gmake pkgconfig lua:51 desktop-file-utils
-USE_AUTOTOOLS=	aclocal autoconf automake
-ACLOCAL_ARGS=	--force -I m4
-AUTOMAKE_ARGS=	--gnu --add-missing --copy
-CXXFLAGS+=	-fPIC -Wno-invalid-source-encoding -Wno-format
+USES=		autoreconf gmake pkgconfig lua:51 desktop-file-utils
+GNU_CONFIGURE=	yes
+CXXFLAGS+=	-fPIC
 LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 CONFIGURE_ARGS+=--with-system-lua \
 		--with-lua-pkg=lua-${LUA_VER}

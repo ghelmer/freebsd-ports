@@ -1,4 +1,5 @@
 bin/downtimes
+man/man1/downtimes.1.gz
+man/man8/downtimed.8.gz
 sbin/downtimed
-@exec mkdir -p /var/db/downtimed
-@unexec rmdir /var/db/downtimed 2>/dev/null || true
+@dir /var/db/downtimed

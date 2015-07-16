@@ -3,6 +3,8 @@ bin/lged
 bin/lgeneral
 bin/ltrextract
 bin/shptool
+man/man1/lgc-pg.1.gz
+man/man6/lgeneral.6.gz
 share/applications/lgeneral.desktop
 %%PORTDOCS%%%%DOCSDIR%%/README.lgc-pg
 %%PORTDOCS%%%%DOCSDIR%%/README.lgeneral
@@ -19,10 +21,8 @@ share/applications/lgeneral.desktop
 %%DATADIR%%/convdata/grid.bmp
 %%DATADIR%%/convdata/guard.bmp
 %%DATADIR%%/convdata/leg.wav
-%%DATADIR%%/convdata/mapnames
 %%DATADIR%%/convdata/move.bmp
 %%DATADIR%%/convdata/reinf
-%%DATADIR%%/convdata/road2.bmp
 %%DATADIR%%/convdata/sea.wav
 %%DATADIR%%/convdata/select.wav
 %%DATADIR%%/convdata/select_frame.bmp
@@ -35,6 +35,9 @@ share/applications/lgeneral.desktop
 %%DATADIR%%/gfx/terrain/pg/airfield.bmp
 %%DATADIR%%/gfx/terrain/pg/airfield_rain.bmp
 %%DATADIR%%/gfx/terrain/pg/airfield_snow.bmp
+%%DATADIR%%/gfx/terrain/pg/bridge.bmp
+%%DATADIR%%/gfx/terrain/pg/bridge_rain.bmp
+%%DATADIR%%/gfx/terrain/pg/bridge_snow.bmp
 %%DATADIR%%/gfx/terrain/pg/clear.bmp
 %%DATADIR%%/gfx/terrain/pg/clear_rain.bmp
 %%DATADIR%%/gfx/terrain/pg/clear_snow.bmp
@@ -213,30 +216,7 @@ share/applications/lgeneral.desktop
 %%NLS%%share/locale/de/LC_MESSAGES/pg.mo
 %%NLS%%share/locale/en/LC_MESSAGES/lgeneral.mo
 %%NLS%%share/locale/en/LC_MESSAGES/pg.mo
-share/pixmaps/lgeneral48.png
-@dirrm %%DATADIR%%/units
-@dirrm %%DATADIR%%/themes/default
-@dirrm %%DATADIR%%/themes
-@dirrm %%DATADIR%%/terrain
-@dirrm %%DATADIR%%/sounds/pg
-@dirrm %%DATADIR%%/sounds
-@dirrm %%DATADIR%%/scenarios/pg
-@dirrm %%DATADIR%%/scenarios
-@dirrm %%DATADIR%%/nations
-@dirrm %%DATADIR%%/music
-@dirrm %%DATADIR%%/maps/pg
-@dirrm %%DATADIR%%/maps
-@dirrm %%DATADIR%%/gfx/units
-@dirrm %%DATADIR%%/gfx/terrain/pg
-@dirrm %%DATADIR%%/gfx/terrain
-@dirrm %%DATADIR%%/gfx/flags
-@dirrm %%DATADIR%%/gfx
-@dirrm %%DATADIR%%/convdata
-@dirrm %%DATADIR%%/campaigns
-@dirrm %%DATADIR%%/ai_modules
-@dirrm %%DATADIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@exec mkdir -p %D/share/lgeneral/gfx/terrain/pg
-@exec mkdir -p %D/share/lgeneral/maps/pg
-@exec mkdir -p %D/share/lgeneral/scenarios/pg
-@exec mkdir -p %D/share/lgeneral/sounds/pg
+share/pixmaps/lgeneral.png
+@dir %%DATADIR%%/terrain
+@dir %%DATADIR%%/music
+@dir %%DATADIR%%/ai_modules

@@ -8,7 +8,7 @@ MASTER_SITES=	SF/sitracker/stable/${PORTVERSION}/
 DISTNAME=	sit_${PORTVERSION}p1
 
 MAINTAINER=	carsten@sitracker.org
-COMMENT=	A PHP incident tracking system / Helpdesk
+COMMENT=	PHP incident tracking system / Helpdesk
 
 LICENSE=	GPLv2
 
@@ -45,6 +45,5 @@ do-install:
 		| ${CPIO} -pdm -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
 	${CHMOD} -R ${BINMODE} ${STAGEDIR}${WWWDIR}
 	${FIND} ${STAGEDIR}${WWWDIR} ! -type d | ${XARGS} ${CHMOD} ${NOBINMODE}
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

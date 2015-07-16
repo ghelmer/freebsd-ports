@@ -3,9 +3,9 @@ include/oniggnu.h
 include/onigposix.h
 include/oniguruma.h
 lib/libonig.a
-lib/libonig.la
 lib/libonig.so
 lib/libonig.so.2
+lib/libonig.so.2.0.0
 libdata/pkgconfig/oniguruma.pc
 %%PORTDOCS%%%%DOCSDIR%%/API
 %%PORTDOCS%%%%DOCSDIR%%/API.ja
@@ -23,5 +23,3 @@ libdata/pkgconfig/oniguruma.pc
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/simple.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/sql.c
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/syntax.c
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

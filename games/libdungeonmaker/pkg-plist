@@ -2,7 +2,6 @@ include/DungeonMaker.h
 lib/libdungeonmaker.a
 lib/libdungeonmaker.so
 lib/libdungeonmaker.so.2
-lib/libdungeonmaker_p.a
 %%PORTDOCS%%%%DOCSDIR%%/Contents.gif
 %%PORTDOCS%%%%DOCSDIR%%/Next.gif
 %%PORTDOCS%%%%DOCSDIR%%/Prev.gif
@@ -36,5 +35,3 @@ lib/libdungeonmaker_p.a
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/designEmpty2
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/designOld1
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/main.cpp
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

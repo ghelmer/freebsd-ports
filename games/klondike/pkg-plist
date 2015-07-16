@@ -1,4 +1,5 @@
 bin/klondike
+man/man6/klondike.6.gz
 share/games/klondike/klondikeMenus.tcl
 share/games/klondike/klondikeRules.tcl
 share/games/klondike/klondikeScore.tcl
@@ -63,9 +64,4 @@ share/games/klondike/CARDS/c_td.xbm
 share/games/klondike/CARDS/c_th.xbm
 share/games/klondike/CARDS/c_ts.xbm
 share/games/klondike/CARDS/c_warnspace.xbm
-@exec mkdir -p %D/share/games/klondike/SCORES
-@exec chmod 333 %D/share/games/klondike/SCORES
-@dirrm share/games/klondike/CARDS/
-@dirrm share/games/klondike/SCORES/
-@dirrm share/games/klondike/
-@dirrmtry share/games
+@dir(,,333) share/games/klondike/SCORES

@@ -13,12 +13,10 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Python bindings for the Qt4 toolkit, Qt demo and examples
 
 DISTINFO_FILE=	${PYQT4_DISTINFO_FILE}
-USE_PYTHON=	yes
+
+USES=		python
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-qt4
-
-OPTIONS_DEFINE=	PYQT4
-PYQT4_DESC=	Install all PyQt4 components
 
 .include "${.CURDIR}/../../devel/py-qt4/bsd.pyqt.mk"
 

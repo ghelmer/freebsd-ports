@@ -3,11 +3,11 @@
 
 PORTNAME=	lilypond
 PORTVERSION=	2.18.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The GNU music typesetter
 
 LICENSE=	GPLv3
@@ -24,10 +24,11 @@ BUILD_DEPENDS=	pdftexi2dvi:${PORTSDIR}/print/texinfo \
 		pngtopnm:${PORTSDIR}/graphics/netpbm \
 		rsync:${PORTSDIR}/net/rsync \
 		zip:${PORTSDIR}/archivers/zip \
+		texi2html:${PORTSDIR}/textproc/texi2html \
 		${LOCALBASE}/share/ghostscript/fonts/c059033l.pfb:${PORTSDIR}/print/gsfonts
 
 RUN_DEPENDS=	mftrace:${PORTSDIR}/print/mftrace \
-		${LOCALBASE}/lib/X11/fonts/dejavu/DejaVuSans-Bold.ttf:${PORTSDIR}/x11-fonts/dejavu
+		${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:${PORTSDIR}/x11-fonts/dejavu
 
 LIB_DEPENDS=	libguile.so:${PORTSDIR}/lang/guile \
 		libgmp.so:${PORTSDIR}/math/gmp \
@@ -46,10 +47,9 @@ INFO=		internals \
 		lilypond-web \
 		music-glossary
 
-USES=		bison:build gettext gmake pkgconfig perl5
+USES=		bison:build gettext gmake pkgconfig perl5 python:-3
 USE_GHOSTSCRIPT=9
 USE_TEX=	latex
-USE_PYTHON=	-3
 USE_PERL5=	build
 USE_GNOME=	pango
 
@@ -69,8 +69,6 @@ NO_CCACHE=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
-OPTIONS_DEFINE=	NLS
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNLS}
@@ -87,6 +85,8 @@ post-patch:
 .endif
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lilypond
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lilypond/${PORTVERSION}/python/midi.so
 	@${LN} -fs ${DATADIR}/${PORTVERSION} ${STAGEDIR}${DATADIR}/current
 
 regression-test: build

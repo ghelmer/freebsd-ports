@@ -1,24 +1,24 @@
-# Created by: Sergei Vyshenski <svysh@pn.sinp.msu.ru>
+# Created by: Sergei Vyshenski <svysh.fbsd@gmail.com>
 # $FreeBSD$
 
-PORTNAME=	openxpki-i18n
-PORTVERSION=	0.9.1395
-PORTREVISION=	1
+PORTNAME=	openxpki
+PORTVERSION=	0.28.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	security perl5
-MASTER_SITES=	SF/openxpki/openxpki/0.9.1300
 PKGNAMEPREFIX=	p5-
-DIST_SUBDIR=	openxpki
+PKGNAMESUFFIX=	-i18n
 
 MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Perl based trustcenter software for PKI: i18n tools
 
-BUILD_DEPENDS=	\
-	p5-openxpki>=0:${PORTSDIR}/security/p5-openxpki
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/../../LICENSE
 
-USES=		gettext gmake perl5
-### We can not go WITHOUT_NLS. Internationalization is needed
-### even to use English language.
-ALL_TARGET=	default
+USE_GITHUB=	yes
+
+### We can not go without_NLS. Internationalization is needed even for English
+USES=		gettext-runtime gettext-tools gmake perl5
+ALL_TARGET=	scan default
+WRKSRC_SUBDIR=	core/i18n
 
 .include <bsd.port.mk>

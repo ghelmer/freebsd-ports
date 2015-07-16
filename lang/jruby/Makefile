@@ -2,16 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	jruby
-PORTVERSION=	1.7.11
+PORTVERSION=	1.7.15
 CATEGORIES=	lang ruby java
 MASTER_SITES=	http://jruby.org.s3.amazonaws.com/downloads/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-bin-${PORTVERSION}
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	An implementation of Ruby Interpreter in Pure Java
+COMMENT=	Implementation of Ruby Interpreter in Pure Java
+
+LICENSE=	EPL GPLv2 LGPL21
+LICENSE_COMB=	dual
 
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
+USES=		cpe
 NO_BUILD=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -25,6 +29,8 @@ REPLACE_LIST_TEMP=	${REPLACE_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/}
 SHEBANG_FILES=	rake spec spec_translator Rakefile '*.rb'
 
 PLIST_SUB+=	PORTNAME=${PORTNAME} PORTVERSION=${PORTVERSION} JRUBY_HOME=${JRUBY_HOME:S,${PREFIX}/,,}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
 

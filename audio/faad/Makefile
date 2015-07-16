@@ -3,7 +3,7 @@
 
 PORTNAME=	faad2
 PORTVERSION=	2.7
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/faac/${PORTNAME}-src/${PORTNAME}-${PORTVERSION}
@@ -11,13 +11,10 @@ MASTER_SITES=	SF/faac/${PORTNAME}-src/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	MPEG-2 and MPEG-4 AAC audio decoder
 
-USES=		dos2unix gmake
-USE_BZIP2=	yes
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtool
-ACLOCAL_ARGS=	-I . -I ${LOCALBASE}/share/aclocal
-AUTOMAKE_ARGS=	--add-missing
-CPPFLAGS+=	-I${LOCALBASE}/include ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+USES=		autoreconf dos2unix gmake libtool tar:bzip2
+GNU_CONFIGURE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 
 post-extract:
@@ -34,9 +31,6 @@ post-patch:
 		${WRKSRC}/common/mp4ff/Makefile.am
 	@${ECHO_CMD} "SUBDIRS = libfaad common frontend" > \
 		${WRKSRC}/Makefile.am
-
-pre-configure:
-	@cd ${WRKSRC}; ${SETENV} ${AUTOTOOLS_ENV} ${LIBTOOLIZE} --automake
 
 post-configure:
 	@${REINPLACE_CMD} "s/444/644/g" ${WRKSRC}/common/mp4ff/Makefile

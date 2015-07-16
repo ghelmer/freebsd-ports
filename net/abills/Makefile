@@ -3,15 +3,16 @@
 
 PORTNAME=	abills
 PORTVERSION=	0.55
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Billing system for dialup, VPN, and VoIP management
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	radiusd:${PORTSDIR}/net/freeradius2 \
 		p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql \
@@ -22,9 +23,10 @@ RUN_DEPENDS=	radiusd:${PORTSDIR}/net/freeradius2 \
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 
-USES=		perl5
+USES=		perl5 tar:tgz
 USE_PERL5=	run
 
+PLIST_SUB=	WWWOWN="${WWWOWN}"
 SUB_FILES=	pkg-message
 
 post-patch:
@@ -38,10 +40,7 @@ do-install:
 	@(${TAR} -C ${WRKSRC} --exclude "*.DS*" --exclude "*.bak" \
 		--exclude "*.orig" -cf - . | ${TAR} -C ${STAGEDIR}${PREFIX}/abills \
 		--unlink -xf -)
-	@${FIND} ${STAGEDIR}${PREFIX}/abills | ${XARGS} ${CHOWN} ${SHAREOWN}:${SHAREGRP}
-	@${FIND} ${STAGEDIR}${PREFIX}/abills/cgi-bin | ${XARGS} ${CHOWN} ${WWWOWN}
 	@${FIND} ${STAGEDIR}${PREFIX}/abills -type d | ${XARGS} ${CHMOD} a+rx
 	@${FIND} ${STAGEDIR}${PREFIX}/abills -type f | ${XARGS} ${CHMOD} ${SHAREMODE}
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Devel-NYTProf
-PORTVERSION=	4.23
+PORTVERSION=	5.06
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -15,8 +16,13 @@ LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	p5-JSON-Any>=0:${PORTSDIR}/converters/p5-JSON-Any
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+TEST_DEPENDS=	p5-Test-Differences>=0.60:${PORTSDIR}/devel/p5-Test-Differences
 
 USES=		perl5
 USE_PERL5=	configure
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Devel/NYTProf/NYTProf.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/Devel/auto/Devel/NYTProf/NYTProf.so
 
 .include <bsd.port.mk>

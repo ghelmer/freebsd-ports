@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xpaint
-PORTVERSION=	2.9.10.2
-PORTREVISION=	2
+PORTVERSION=	2.9.10.3
 CATEGORIES=	graphics
 MASTER_SITES=	SF/sf-${PORTNAME}/sf-${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
@@ -12,8 +11,7 @@ COMMENT=	Simple paint program
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libopenjpeg.so:${PORTSDIR}/graphics/openjpeg15 \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
@@ -23,25 +21,22 @@ RUN_DEPENDS=	psselect:${PORTSDIR}/print/psutils \
 		bash:${PORTSDIR}/shells/bash
 
 USE_XORG=	xft xmu xpm
-USE_AUTOTOOLS=	libtool
 USE_GHOSTSCRIPT_RUN=yes
 GNU_CONFIGURE=	yes
-USES=		shebangfix tar:bzip2
+USES=		jpeg libtool:build shebangfix tar:bzip2
 SHEBANG_FILES=	share/bin/imgmerge share/bin/xpaint_ocr
 
 CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/freetype2 \
 		-I${LOCALBASE}/include/freetype2/freetype
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 MAKE_ENV+=	RM="${RM} -f"
 
-post-extract:
-	@${RM} -f ${WRKSRC}/XPaint.ad
-
 post-patch:
+	@${RM} -f ${WRKSRC}/XPaint.ad
 	@${REINPLACE_CMD} -e 's/-ldl //' \
 		-e 's|freetype/||g' \
 		${WRKSRC}/configure ${WRKSRC}/rw/configure
-	@${REINPLACE_CMD} -e '/^LIBTOOL/d' \
+	@${REINPLACE_CMD} -e '/^LIBTOOL =/s|=.*|= ${LOCALBASE}/bin/libtool|' \
 		-e '/^install-exec-am:/s/install-libLTLIBRARIES//' \
 		${WRKSRC}/rw/Makefile.in
 	@${REINPLACE_CMD} -e '/if (!image)/s/return;/return -1;/' \

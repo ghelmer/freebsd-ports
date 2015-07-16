@@ -3,7 +3,7 @@
 
 PORTNAME=	avant-window-navigator
 PORTVERSION=	0.3.2.1
-PORTREVISION?=	9
+PORTREVISION?=	11
 CATEGORIES=	x11
 MASTER_SITES=	http://launchpadlibrarian.net/26374006/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -11,30 +11,29 @@ MASTER_SITES=	http://launchpadlibrarian.net/26374006/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dock-like navigation bar
 
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+BROKEN=		Fails to build
+
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/__init__.py:${PORTSDIR}/devel/py-xdg
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xdg/__init__.py:${PORTSDIR}/devel/py-xdg
-LIB_DEPENDS=	wnck-1:${PORTSDIR}/x11-toolkits/libwnck \
-		dbus-glib-1:${PORTSDIR}/devel/dbus-glib
+LIB_DEPENDS=	libwnck-1.so:${PORTSDIR}/x11-toolkits/libwnck \
+		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
 
 GNU_CONFIGURE=	yes
-USES=		pathfix pkgconfig gettext gmake
+USES=		gettext gmake libtool pathfix pkgconfig python
 USE_GNOME=	glib20 gtk20 pygtk2
-USE_PYTHON=	yes
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 USE_XORG=	x11 xproto xcomposite xrender
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
+LIBS+=		-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 AWN_DESKTOP?=	agnostic
 
-.if ${AWN_DESKTOP} == "gnome"
-USE_GNOME+=	gnomedesktop libgnomeui
-CONFIGURE_ARGS+=	--with-desktop=gnome
-CONFLICTS=	${PORTNAME}-xfce4-[0-9]* ${PORTNAME}-[0-9]*
-WITH_GCONF=	yes
-PKGNAMESUFFIX=	-gnome
-.elif ${AWN_DESKTOP} == "xfce4"
+.if ${AWN_DESKTOP} == "xfce4"
 OPTIONS_DEFINE=	GCONF
 USE_XFCE+=	thunar
 CONFIGURE_ARGS+=	--with-desktop=xfce4
@@ -58,6 +57,8 @@ CONFIGURE_ARGS+=	--without-gconf
 .endif
 
 post-patch:
+	@${REINPLACE_CMD} '/^awn_applet_activation_LDADD =/s/=/= -lgmodule-2.0/' \
+		${WRKSRC}/awn-applet-activation/Makefile.in
 	@${REINPLACE_CMD} -e 's|#!/usr/bin/python|#!/usr/bin/env python|' \
 		${WRKSRC}/awn-manager/awnManager.py.in \
 		${WRKSRC}/awn-manager/awnManager.py
@@ -69,5 +70,7 @@ post-patch:
 		${WRKSRC}/libawn/awn-config-client-gconf.c
 	@${REINPLACE_CMD} -e 's|glib/gutils.h>|glib.h>|g' \
 		${WRKSRC}/libawn/awn-config-client-gkeyfile.c
+	@${REINPLACE_CMD} '/^avant_window_navigator_LDADD =/s/=/= -ldbus-glib-1/' \
+		${WRKSRC}/src/Makefile.in
 
 .include <bsd.port.mk>

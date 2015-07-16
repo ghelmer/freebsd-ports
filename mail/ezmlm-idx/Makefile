@@ -3,12 +3,12 @@
 
 PORTNAME=	ezmlm-idx
 PORTVERSION=	7.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://www.ezmlm.org/archive/${PORTVERSION}/ \
 		http://ezmlm.sericyb.com.au/archive/${PORTVERSION}/
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved version of the ezmlm mailing list manager
 
 MAKE_JOBS_UNSAFE=	yes
@@ -44,7 +44,7 @@ PLIST_SUB+=	MYSQL="" PGSQL="@comment " SQLITE="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 EXTRACT_INCLUDE+=	-I${LOCALBASE}/include
 EXTRACT_LIB+=	-L${LOCALBASE}/lib -lpq -lcrypt
 ALL_TARGET+=	pgsql

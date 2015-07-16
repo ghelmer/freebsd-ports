@@ -3,33 +3,33 @@
 
 PORTNAME=	splatd
 PORTVERSION=	1.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	snb@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Splat is the Scalable Periodic LDAP Attribute Transmogrifier
 
+LICENSE=	BSD3CLAUSE
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/zconfig:${PORTSDIR}/devel/py-zconfig \
-		${PYTHON_PKGNAMEPREFIX}ldap2>=2.3.1:${PORTSDIR}/net/py-ldap2 \
-		${PYTHON_SITELIBDIR}/twisted:${PORTSDIR}/devel/py-twistedCore
+		${PYTHON_PKGNAMEPREFIX}ldap>=2.3.1:${PORTSDIR}/net/py-ldap
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+OPTIONS_DEFINE=	DOCS
+
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	splat
 USE_RC_SUBR=	splatd
-SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD}
+SUB_LIST=	PYTHON_CMD=${PYTHON_CMD}
+USES=		python twisted
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/splat.conf ${STAGEDIR}${PREFIX}/etc/splat.conf.sample
 	${MV} -f ${STAGEDIR}${PREFIX}/bin/splatd ${STAGEDIR}${PREFIX}/sbin/splatd
 	${INSTALL_MAN} ${WRKSRC}/docs/man/splat.conf.5 ${STAGEDIR}${MANPREFIX}/man/man5
 	${INSTALL_MAN} ${WRKSRC}/docs/man/splatd.8 ${STAGEDIR}${MANPREFIX}/man/man8
-
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/xhtml
 	${INSTALL_MAN} ${WRKSRC}/docs/xhtml/* ${STAGEDIR}${DOCSDIR}/xhtml
-.endif
 
 .include <bsd.port.mk>

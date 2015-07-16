@@ -13,7 +13,7 @@ COMMENT=	Webmail system xGate implemented by Servlet over IMAP4/POP3
 
 RUN_DEPENDS=	${APP_HOME}/bin/bootstrap.jar:${PORTSDIR}/www/tomcat6
 
-USES=		uidfix dos2unix tar:tgz
+USES=		dos2unix tar:tgz
 NO_BUILD=	yes
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -78,14 +78,13 @@ post-patch:
 	${FIND} ${WRKSRC} -name \*.orig -delete
 
 do-install:
+	${MKDIR} ${STAGEDIR}/var/log/xgate
 	${MKDIR} ${STAGEDIR}${APP_HOME}/webapps/${PORTNAME}
 	@cd ${WRKSRC}/${PORTNAME} && \
 		${COPYTREE_SHARE} \* ${STAGEDIR}${APP_HOME}/webapps/${PORTNAME}
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.  for docf in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/docs/${docf} ${STAGEDIR}${DOCSDIR}
-.  endfor
-.endif
+.for docf in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/docs/${docf} ${STAGEDIR}${DOCSDIR}
+.endfor
 
 .include <bsd.port.mk>

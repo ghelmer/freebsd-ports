@@ -183,9 +183,9 @@ lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin/include/version.h
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/cc1
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/cc1plus
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/collect2
-libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/liblto_plugin.la
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/liblto_plugin.so
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/liblto_plugin.so.0
+libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/liblto_plugin.so.0.0.0
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/lto-wrapper
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/lto1
 libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/install-tools/mkheaders
@@ -196,26 +196,5 @@ man/man1/%%GCC_TARG%%-cpp.1.gz
 man/man1/%%GCC_TARG%%-g++.1.gz
 man/man1/%%GCC_TARG%%-gcc.1.gz
 man/man1/%%GCC_TARG%%-gcov.1.gz
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/include
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/include-fixed
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/install-tools/include
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/install-tools
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/mcpu-430x/mmpy-16
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/mcpu-430x
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/mmpy-16
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin/include/c-family
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin/include/config/%%GCC_TARG%%
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin/include/config
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin/include/cp
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin/include
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%/plugin
-@dirrm lib/gcc/%%GCC_TARG%%/%%GCC_REV%%
-@dirrmtry lib/gcc/%%GCC_TARG%%
-@dirrmtry lib/gcc
-@dirrm libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%/install-tools
-@dirrm libexec/gcc/%%GCC_TARG%%/%%GCC_REV%%
-@dirrmtry libexec/gcc/%%GCC_TARG%%
-@dirrmtry libexec/gcc
-@dirrmtry %%GCC_TARG%%/lib/mcpu-430x/mmpy-16
-@dirrmtry %%GCC_TARG%%/lib/mcpu-430x
-@dirrmtry %%GCC_TARG%%/lib/mmpy-16
+@dir %%GCC_TARG%%/lib/mcpu-430x/mmpy-16
+@dir %%GCC_TARG%%/lib/mmpy-16

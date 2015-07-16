@@ -232,12 +232,10 @@ include/fox-%%MAJORVER%%/fxkeys.h
 include/fox-%%MAJORVER%%/fxver.h
 include/fox-%%MAJORVER%%/xincs.h
 lib/libCHART-%%MAJORVER%%.a
-lib/libCHART-%%MAJORVER%%.la
 lib/libCHART-%%MAJORVER%%.so
 lib/libCHART-%%MAJORVER%%.so.0
 lib/libCHART-%%MAJORVER%%.so.0.0.%%SHVER%%
 lib/libFOX-%%MAJORVER%%.a
-lib/libFOX-%%MAJORVER%%.la
 lib/libFOX-%%MAJORVER%%.so
 lib/libFOX-%%MAJORVER%%.so.0
 lib/libFOX-%%MAJORVER%%.so.0.0.%%SHVER%%
@@ -246,6 +244,3 @@ man/man1/reswrap-14.1.gz
 %%APPS%%man/man1/PathFinder-14.1.gz
 %%APPS%%man/man1/adie-14.1.gz
 %%APPS%%man/man1/calculator-14.1.gz
-@dirrm include/fox-%%MAJORVER%%/chart
-@dirrm include/fox-%%MAJORVER%%
-@dirrm bin/fox-%%MAJORVER%%

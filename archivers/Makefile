@@ -9,6 +9,7 @@
     SUBDIR += arc
     SUBDIR += arj
     SUBDIR += ark
+    SUBDIR += atool
     SUBDIR += bicom
     SUBDIR += bzip
     SUBDIR += bzip2
@@ -20,6 +21,7 @@
     SUBDIR += dpkg
     SUBDIR += dzip
     SUBDIR += ecm
+    SUBDIR += engrampa
     SUBDIR += epkg
     SUBDIR += fastjar
     SUBDIR += file-roller
@@ -28,6 +30,7 @@
     SUBDIR += fpc-unzip
     SUBDIR += freetar
     SUBDIR += freeze
+    SUBDIR += gcab
     SUBDIR += gcpio
     SUBDIR += grzip
     SUBDIR += gtar
@@ -41,7 +44,6 @@
     SUBDIR += hs-zip-archive
     SUBDIR += hs-zlib
     SUBDIR += hs-zlib-bindings
-    SUBDIR += hs-zlib-conduit
     SUBDIR += hs-zlib-enum
     SUBDIR += javatar
     SUBDIR += jzip.org
@@ -58,6 +60,7 @@
     SUBDIR += libcabinet
     SUBDIR += libcomprex
     SUBDIR += libdynamite
+    SUBDIR += liblz4
     SUBDIR += liblzxcomp
     SUBDIR += libmspack
     SUBDIR += liborange
@@ -69,7 +72,6 @@
     SUBDIR += linux-f10-ucl
     SUBDIR += linux-f10-upx
     SUBDIR += lrzip
-    SUBDIR += lz4
     SUBDIR += lzip
     SUBDIR += lzlib
     SUBDIR += lzma
@@ -79,7 +81,6 @@
     SUBDIR += macutils
     SUBDIR += makeself
     SUBDIR += mar
-    SUBDIR += mate-file-archiver
     SUBDIR += minizip
     SUBDIR += mscompress
     SUBDIR += mtf
@@ -99,6 +100,7 @@
     SUBDIR += p5-Archive-Tar
     SUBDIR += p5-Archive-Zip
     SUBDIR += p5-Compress-Bzip2
+    SUBDIR += p5-Compress-LZ4
     SUBDIR += p5-Compress-LZF
     SUBDIR += p5-Compress-LZO
     SUBDIR += p5-Compress-LZW
@@ -131,6 +133,7 @@
     SUBDIR += pear-File_Archive
     SUBDIR += pear-Horde_Compress
     SUBDIR += pear-Horde_Compress_Fast
+    SUBDIR += pear-Horde_Pack
     SUBDIR += pear-PHP_Archiv
     SUBDIR += pecl-lzf
     SUBDIR += pecl-phk
@@ -141,14 +144,14 @@
     SUBDIR += php5-snappy
     SUBDIR += php5-zip
     SUBDIR += php5-zlib
-    SUBDIR += php53-bz2
-    SUBDIR += php53-phar
-    SUBDIR += php53-zip
-    SUBDIR += php53-zlib
     SUBDIR += php55-bz2
     SUBDIR += php55-phar
     SUBDIR += php55-zip
     SUBDIR += php55-zlib
+    SUBDIR += php56-bz2
+    SUBDIR += php56-phar
+    SUBDIR += php56-zip
+    SUBDIR += php56-zlib
     SUBDIR += pigz
     SUBDIR += pixz
     SUBDIR += plzip
@@ -158,20 +161,20 @@
     SUBDIR += pxz
     SUBDIR += py-liblzma
     SUBDIR += py-librtfcomp
+    SUBDIR += py-lz4
     SUBDIR += py-lzma
+    SUBDIR += py-python-snappy
     SUBDIR += qpress
     SUBDIR += quazip
     SUBDIR += rar
     SUBDIR += rox-archive
-    SUBDIR += rpm
     SUBDIR += rpm2cpio
     SUBDIR += rpm4
-    SUBDIR += rpm5
     SUBDIR += ruby-lha
     SUBDIR += ruby-zip
     SUBDIR += rubygem-archive-tar-minitar
     SUBDIR += rubygem-archive-zip
-    SUBDIR += rubygem-bzip2
+    SUBDIR += rubygem-bzip2-ruby
     SUBDIR += rubygem-libarchive
     SUBDIR += rubygem-minitar
     SUBDIR += rubygem-rubyzip
@@ -205,7 +208,6 @@
     SUBDIR += unshield
     SUBDIR += untar
     SUBDIR += unzip
-    SUBDIR += unzip-iconv
     SUBDIR += unzoo
     SUBDIR += upx
     SUBDIR += wzip

@@ -15,13 +15,11 @@ RUN_DEPENDS=	${LOCALBASE}/bin/urxvt:${PORTSDIR}/x11/rxvt-unicode
 NO_BUILD=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	muennich
-GH_COMMIT=	dd6e9d7
 PORTDOCS=	README
 
 INSTDIR_REL=	lib/urxvt/perl
 SCRIPTS=	clipboard keyboard-select url-select
 PLIST_FILES+=	${SCRIPTS:C/^/${INSTDIR_REL}\//}
-PLIST_DIRSTRY+=	${INSTDIR_REL} lib/urxvt
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/${INSTDIR_REL}

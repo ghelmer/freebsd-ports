@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	firebirdsql
-PORTVERSION=	0.9.2
+PORTVERSION=	0.9.6
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -10,11 +10,10 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	jjachuf@gmail.com
 COMMENT=	Python DBAPI module for FirebirdSQL
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 # Python3 ready
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

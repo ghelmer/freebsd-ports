@@ -3,7 +3,7 @@
 
 PORTNAME=	a2png
 PORTVERSION=	0.1.5
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
@@ -12,13 +12,13 @@ COMMENT=	Converts plain ASCII text into PNG bitmap images
 
 LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gd
 CFLAGS+=	-DDEFAULT_FONTPATH='\"${FONTROOTDIR}/TTF:${FONTROOTDIR}/Type1:${FONTROOTDIR}\"'
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 
-FONTROOTDIR?=	${LOCALBASE}/lib/X11/fonts
+FONTROOTDIR?=	${LOCALBASE}/share/fonts
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

@@ -11,9 +11,11 @@ DISTNAME=	NZMATH-${PORTVERSION}
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Number theory oriented calculation system
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	NZMATH
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

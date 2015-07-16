@@ -1,26 +1,24 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/x11-toolkits/gdl/Makefile,v 1.40 2010/09/29 08:07:46 kwm Exp $
 
 PORTNAME=	gdl
-PORTVERSION=	2.30.1
-PORTREVISION=	3
+PORTVERSION=	3.14.0
 CATEGORIES=	x11-toolkits gnome
 MASTER_SITES=	GNOME
+DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Components intended to be shared between GNOME development tools
 
-USES=		gettext gmake libtool:keepla pathfix pkgconfig tar:bzip2
-USE_GNOME=	gnomeprefix gtk20
+LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USE_GNOME=	gnomeprefix gtk30 intlhack
+USES=		gettext gmake libtool pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
-
-post-patch:
-	@${REINPLACE_CMD} '/^test_dock_LDADD =/s/$$/ $$(GDL_DEPENDENCIES_LIBS)/' \
-		${WRKSRC}/gdl/Makefile.in
 
 .include <bsd.port.mk>

@@ -1,12 +1,11 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 # $FreeBSD$
 
-PORTNAME=	gcc49
-PORTVERSION=	4.9.1.s20140625
+PORTNAME=	gcc
+PORTVERSION=	4.9.3.s20150624
 CATEGORIES=	lang java
-MASTER_SITES=	${MASTER_SITE_GCC}
-MASTER_SITE_SUBDIR=	snapshots/${DISTVERSION}
-DISTNAME=	gcc-${DISTVERSION}
+MASTER_SITES=	GCC/snapshots/${DISTVERSION}
+PKGNAMESUFFIX=	${SUFFIX}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.9
@@ -24,6 +23,10 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
 BUILD_DEPENDS+=	runtest:${PORTSDIR}/misc/dejagnu
 .endif
 
+CPE_VENDOR=	gnu
+CPE_VERSION=	${GCC_VERSION}
+UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
+
 # DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.  A PORTVERSION of
 # 4.Y.2.s20130808 results in values of 4.Y-20130808, 4.Y.2, and 4Y
@@ -31,8 +34,8 @@ BUILD_DEPENDS+=	runtest:${PORTSDIR}/misc/dejagnu
 DISTVERSION=	${PORTVERSION:C/([0-9]+\.[0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 sparc64
-USES=		gmake iconv makeinfo perl5 tar:bzip2
+ONLY_FOR_ARCHS=	amd64 armv6 armv6hf i386 powerpc powerpc64 sparc64
+USES=		compiler cpe gmake iconv libtool makeinfo perl5 tar:bzip2
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -46,6 +49,7 @@ OPTIONS_DEFINE_amd64=	JAVA
 OPTIONS_DEFAULT=	BOOTSTRAP
 OPTIONS_DEFAULT_i386=	JAVA
 OPTIONS_DEFAULT_amd64=	JAVA
+OPTIONS_EXCLUDE_DragonFly=	JAVA
 BOOTSTRAP_DESC=		Build using a full bootstrap
 
 .include <bsd.port.pre.mk>
@@ -60,6 +64,18 @@ CONFIGURE_TARGET=	${ARCH}-portbld-${OPSYS:tl}${OSREL}
 CONFIGURE_ENV+=	UNAME_m="powerpc64"
 .endif
 
+.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
+# We have to override the sys.mk -O CFLAGS since it breaks libgomp building.
+CFLAGS:=	${CFLAGS:S/-O/-O2/g}
+. if ${COMPILER_TYPE} == clang
+.  if empty(PORT_OPTIONS:MBOOTSTRAP)
+MAKE_ARGS+=CXXFLAGS=-fbracket-depth=512
+.  else
+MAKE_ARGS+=STAGE1_CXXFLAGS=-fbracket-depth=512
+.  endif
+. endif
+.endif
+
 LANGUAGES:=	c,c++,objc,fortran
 SRCDIR=		${WRKDIR}/gcc-${DISTVERSION}
 WRKSRC=		${WRKDIR}/build
@@ -69,6 +85,7 @@ GNU_CONFIGURE=	yes
 .if empty(PORT_OPTIONS:MBOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
 .else
+CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
 .endif
 CONFIGURE_ARGS+=--disable-nls \
@@ -96,9 +113,12 @@ INFO=		gcc${SUFFIX}/cpp \
 		gcc${SUFFIX}/gfortran \
 		gcc${SUFFIX}/libgomp
 .if ${ARCH} == "i386" || ${ARCH} == "amd64"
-INFO+=		gcc${SUFFIX}/libquadmath \
-		gcc${SUFFIX}/libitm
+INFO+=		gcc${SUFFIX}/libquadmath
 .endif
+.if ${ARCH} == "i386" || ${ARCH} == "amd64" || ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
+INFO+=		gcc${SUFFIX}/libitm
+.endif
+
 SUB_FILES=	pkg-message
 SUB_LIST+=	TARGLIB=${TARGLIB}
 
@@ -133,8 +153,7 @@ full-regression-test: build
 	; ${SRCDIR}/contrib/test_summary
 .endif
 
-post-install:
-	${RM} -f ${STAGEDIR}${TARGLIB}/*.la
+post-stage:
 	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
 	${RM} -f ${STAGEDIR}${PREFIX}/bin/rebuild-gcj-db${SUFFIX} \
 	         ${STAGEDIR}${PREFIX}/man/man1/rebuild-gcj-db${SUFFIX}.1
@@ -143,8 +162,6 @@ post-install:
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
 	cd ${STAGEDIR}${PREFIX} ; if [ -d $d ]; then \
 	    ${FIND} $d -type f -o -type l >>${WRKDIR}/PLIST.lib ;\
-	    ${FIND} $d -type d | ${SORT} -r \
-	        | ${SED} -e 's/^/@dirrm /g' >>${WRKDIR}/PLIST.lib ;\
 	fi
 .endfor
 	cd ${WRKDIR} ; ${SED} -i -e "/PLIST.lib/ r PLIST.lib" ${TMPPLIST}

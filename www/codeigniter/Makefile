@@ -3,6 +3,7 @@
 
 PORTNAME=	codeigniter
 PORTVERSION=	2.1.4
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://downloads.codeigniter.com/reactor/ \
 		http://www.codeigniter.org.tw/download_files/
@@ -13,20 +14,18 @@ COMMENT=	Framework for developing PHP web applications
 
 USES=		zip
 
-NEED_ROOT=yes
-
 CONFLICTS=	codeigniter-1.[0-9]*
 
 NO_BUILD=	yes
 USE_PHP=	session pcre
 WANT_PHP_WEB=	yes
+PHP_DEFAULT=	5.4
+PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
 CI_SYS_DIR=	system
 CI_CONF_DIR=	application/config
 WRKSRC=		${WRKDIR}/CodeIgniter-${PORTVERSION}
 PORTDOCS=	*
-
-LATEST_LINK=	codeigniter-devel
 
 # These are all user-configurable files that we'll install
 CI_CONF_FILES=	index.php ${CI_CONF_DIR}/autoload.php \
@@ -63,7 +62,7 @@ STD_BITS=	${CI_CONF_DIR}/index.html \
 		${CI_SYS_DIR}/language \
 		${CI_SYS_DIR}/libraries
 
-OPTIONS_DEFINE=	APACHE MSSQL MYSQL MYSQLI ODBC PGSQL SQLITE
+OPTIONS_DEFINE=	APACHE MSSQL MYSQL MYSQLI ODBC PGSQL SQLITE DOCS
 
 APACHE_DESC=	Configure for Apache-2.x
 MSSQL_DESC=	Install MSSQL support for PHP
@@ -85,8 +84,6 @@ CONFDIR_REL=	${APACHEETCDIR}/Includes
 PLIST_SUB+=	NOAPACHE="@comment "
 .endif
 PLIST_SUB+=	ECHO_MSG=${ECHO_MSG} CI_CONF_DIR=${CI_CONF_DIR}
-
-DEFAULT_PHP_VER=5
 
 .if ${PORT_OPTIONS:MMSSQL}
 USE_PHP+=	mssql
@@ -126,15 +123,6 @@ do-install:
 	@for i in ${CI_CONF_FILES}; do \
 		${INSTALL_DATA} ${WRKSRC}/$$i ${STAGEDIR}${WWWDIR}/$$i.sample; \
 	done
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
-	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} \
-		${STAGEDIR}${WWWDIR:S|^${PREFIX}/|%D/|}' >> ${TMPPLIST}
-	@${FIND} ${STAGEDIR}${WWWDIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 644
-	@${ECHO_CMD} '@exec ${FIND} ${STAGEDIR}${WWWDIR} -type f -print0 | \
-		${XARGS} -0 ${CHMOD} 644' >> ${TMPPLIST}
-	@${FIND} ${STAGEDIR}${WWWDIR} -type d -print0 | ${XARGS} -0 ${CHMOD} 755
-	@${ECHO_CMD} '@exec ${FIND} ${STAGEDIR}${WWWDIR} -type d -print0 | \
-		${XARGS} -0 ${CHMOD} 755' >> ${TMPPLIST}
 
 post-install:
 .if ${PORT_OPTIONS:MAPACHE}

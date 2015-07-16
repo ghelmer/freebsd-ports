@@ -3,7 +3,7 @@
 
 PORTNAME=	zephulor
 PORTVERSION=	1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/apz/apz/stable/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,27 +11,21 @@ DISTFILES=	${PORTNAME}-source${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-source${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Side scrolling arcade game
 
-LICENSE=	LGPL20
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 RUN_DEPENDS=	${PYGAME} \
 		${PYTHON_PKGNAMEPREFIX}tkinter>=0:${PORTSDIR}/x11-toolkits/py-tkinter
 
 WRKSRC=		${WRKDIR}/zephulor-source
 
-USE_PYTHON=	2
+USES=		python:2
 NO_BUILD=	yes
 
 PORTDOCS=	*
-
-DOCSRCDIR1=	${WRKSRC}
-DOC_FILES1=	README.txt manual.txt readme-*.txt
-
-DOCSRCDIR2=	${WRKSRC}/maptool
-DOCSDIR2=	${DOCSDIR}/maptool
-DOC_FILES2=	manual.txt
 
 OPTIONS_DEFINE=	DOCS
 
@@ -53,13 +47,10 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/*.py ${STAGEDIR}${DATADIR}
 	@(cd ${WRKSRC} && ${COPYTREE_SHARE} data ${STAGEDIR}${DATADIR})
 	${INSTALL_SCRIPT} ${WRKSRC}/maptool/*.py ${STAGEDIR}${DATADIR}/maptool/
-
-post-install:
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
-
-	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
-	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} \
+		"README.txt manual.txt readme-*.txt maptool/manual.txt" \
+		${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

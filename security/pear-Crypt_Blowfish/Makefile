@@ -2,21 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	Crypt_Blowfish
-PORTVERSION=	1.1.0.r2
+DISTVERSION=	1.1.0RC2
 CATEGORIES=	security www pear
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/.r/RC/}
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR class for blowfish encryption
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+USES=	pear
 
-PEAR_AUTOINSTALL=	yes
+OPTIONS_DEFINE=	MCRYPT
+MCRYPT_DESC=	Additional MCrypt PHP support
 
-.if defined(WITH_PHP_MCRYPT)
-USE_PHP=mcrypt
-.endif
+MCRYPT_USE=	PHP=mcrypt
 
 pre-fetch:
 	@${ECHO_CMD} ""
@@ -29,6 +26,4 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|@package_version@|${PORTVERSION}|" ${WRKSRC}/${file}
 .endfor
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

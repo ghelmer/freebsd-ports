@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wicked
-DISTVERSION=	2.0.1
+DISTVERSION=	2.0.3
 CATEGORIES=	www pear
 PKGNAMEPREFIX=	horde-
 
@@ -11,10 +11,9 @@ COMMENT=	Horde Wiki Application
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LATEST_LINK=	horde-${PORTNAME}
-
 RUN_DEPENDS+=	${PEARDIR}/Text/Wiki.php:${PORTSDIR}/www/pear-Text_Wiki
 
+USES=	horde cpe
 USE_PHP=	gettext
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
@@ -38,6 +37,4 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Util \
 		Horde_Vfs
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,10 +2,11 @@
 
 PORTNAME=	lordsawar
 PORTVERSION=	0.2.0
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Warlords II clone
 
 LICENSE=	GPLv3
@@ -18,7 +19,7 @@ LIB_DEPENDS=	libtar.so:${PORTSDIR}/devel/libtar \
 		libgnet-2.0.so:${PORTSDIR}/net/gnet2
 
 USES=		gettext gmake pkgconfig
-USE_GNOME=	gnomehier gtkmm24
+USE_GNOME=	gtkmm24
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-boost-includedir=${LOCALBASE}/include
@@ -28,10 +29,4 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDATA=	*
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1000000
-BROKEN=		does not build
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

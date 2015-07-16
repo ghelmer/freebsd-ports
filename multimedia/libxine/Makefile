@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	xine
-PORTVERSION=	1.2.4
-PORTREVISION=	11
+PORTVERSION=	1.2.6
+PORTREVISION=	3
 CATEGORIES=	multimedia ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-lib/${PORTVERSION}
 PKGNAMEPREFIX=	lib
@@ -18,11 +18,11 @@ LIB_DEPENDS=	libFLAC.so:${PORTSDIR}/audio/flac \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libspeex.so:${PORTSDIR}/audio/speex \
 		libmng.so:${PORTSDIR}/graphics/libmng \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libdvdread.so:${PORTSDIR}/multimedia/libdvdread \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libfame.so:${PORTSDIR}/multimedia/libfame \
-		libcdio.so:${PORTSDIR}/sysutils/libcdio \
+		libcdio_paranoia.so:${PORTSDIR}/sysutils/libcdio-paranoia \
 		libmodplug.so:${PORTSDIR}/audio/libmodplug \
 		libvcdinfo.so:${PORTSDIR}/multimedia/vcdimager \
 		libtheora.so:${PORTSDIR}/multimedia/libtheora \
@@ -37,9 +37,12 @@ LIB_DEPENDS=	libFLAC.so:${PORTSDIR}/audio/flac \
 LIB_DEPENDS+=	libdvdcss.so.2:${PORTSDIR}/multimedia/libdvdcss
 .endif
 
-USES=		compiler gmake iconv libtool:keepla pathfix perl5 pkgconfig tar:xz
+USES=		compiler cpe gmake iconv libtool:keepla pathfix perl5 \
+			pkgconfig execinfo tar:xz
+CPE_PRODUCT =	xine-lib
+CPE_VENDOR=	xine
 GNU_CONFIGURE=	yes
-USE_XORG=	x11 xv xinerama
+USE_XORG=	x11 xv xinerama xext sm ice
 USE_GL=		gl glu
 USE_PERL5=	build
 USE_SDL=	sdl
@@ -65,7 +68,7 @@ OPTIONS_DEFINE=	CACA ESOUND JACK GNOMEVFS2 PULSEAUDIO XVMC SMB AALIB \
 DOCSDIR=	${PREFIX}/share/doc/xine-lib
 # Please sync with XINE_PLUGINSDIR in multimedia/xine
 # and multimedia/vdr-plugin-xineliboutput
-PLUGINSDIR=	lib/xine/plugins/2.3
+PLUGINSDIR=	lib/xine/plugins/2.5
 PLIST_SUB=	PLUGINSDIR="${PLUGINSDIR}"
 
 .include <bsd.port.options.mk>
@@ -156,7 +159,7 @@ CONFIGURE_ARGS+=	--disable-aalib --disable-aalibtest
 .endif
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
-LIB_DEPENDS+=	libMagickWand-6.Q*.so:${PORTSDIR}/graphics/ImageMagick
+LIB_DEPENDS+=	libMagickWand-6.so:${PORTSDIR}/graphics/ImageMagick
 PLIST_SUB+=	WITH_IMAGEMAGICK=""
 .else
 PLIST_SUB+=	WITH_IMAGEMAGICK="@comment "
@@ -230,9 +233,9 @@ post-patch:
 # XXX older nvidia-driver versions don't support opengl 2.0 so this
 # plugin might not get built:
 post-install:
-.if !exists(${STAGEDIR}${PREFIX}/${PLUGINSDIR}/xineplug_vo_out_opengl2.so)
-	${REINPLACE_CMD} -e '/xineplug_vo_out_opengl2.so/d' \
-		${TMPPLIST}
-.endif
+	@if ! [ -e "${STAGEDIR}${PREFIX}/${PLUGINSDIR}/xineplug_vo_out_opengl2.so" ]; then \
+		${REINPLACE_CMD} -e '/xineplug_vo_out_opengl2.so/d' \
+			${TMPPLIST}; \
+	fi
 
 .include <bsd.port.post.mk>

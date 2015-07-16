@@ -3,7 +3,7 @@
 
 PORTNAME=	pypanda
 PORTVERSION=	0.6
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	misc
 MASTER_SITES=	# none
 
@@ -12,7 +12,9 @@ COMMENT=	Viewer for San Diego Zoo Pandacam written in Python
 
 RUN_DEPENDS=	${PYGAME}
 
-USE_PYTHON=	yes
+USES=		python
+
+OPTIONS_DEFINE=	DOCS
 
 do-build:
 	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py ${WRKSRC}

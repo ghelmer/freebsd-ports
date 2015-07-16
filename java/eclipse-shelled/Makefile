@@ -3,7 +3,7 @@
 
 PORTNAME=	ShellEd
 PORTVERSION=	1.0.2a
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	java devel
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}/1.0.2
 PKGNAMEPREFIX=	eclipse-
@@ -30,9 +30,9 @@ do-install:
 	@${CP} -r ${WRKSRC}/eclipse/plugins ${STAGEDIR}${PREFIX}/lib/eclipse
 	@${CP} -r ${WRKSRC}/eclipse/features ${STAGEDIR}${PREFIX}/lib/eclipse
 	@(cd ${WRKSRC}; ${FIND} -s eclipse/features eclipse/plugins -not -type d) | ${SED} -e 's,^eclipse,lib/eclipse,' >> ${TMPPLIST}
-	@(cd ${WRKSRC}; ${FIND} -s -d eclipse/features eclipse/plugins -type d) \
+	@(cd ${WRKSRC}; ${FIND} -s -d eclipse/features eclipse/plugins -type d -empty) \
 		| ${GREP} -vE 'eclipse/plugins$$|eclipse/features$$' \
-		| ${SED} -ne 's,^,@dirrm lib/,p' >> ${TMPPLIST}
+		| ${SED} -ne 's,^,@dir lib/,p' >> ${TMPPLIST}
 	@${MV} ${WRKSRC}/eclipse/plugins ${WRKSRC}/plugins
 	@${MV} ${WRKSRC}/eclipse/features ${WRKSRC}/features
 	@${RM} -rf ${WRKSRC}/eclipse

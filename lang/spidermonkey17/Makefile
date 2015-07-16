@@ -5,23 +5,22 @@ PORTNAME=	spidermonkey17
 DISTVERSION=	1.7.0
 PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	${MASTER_SITE_MOZILLA_EXTENDED}
-MASTER_SITE_SUBDIR=	js
+MASTER_SITES=	MOZILLA/js
 DISTNAME=	js-${DISTVERSION}
 
 MAINTAINER=	citric@cubicone.tmetic.com
-COMMENT=	A standalone JavaScript interpreter from the Mozilla project
+COMMENT=	Standalone JavaScript interpreter from the Mozilla project
 
 LIB_DEPENDS=	libnspr4.so:${PORTSDIR}/devel/nspr
 
 CONFLICTS=	njs-[0-9]*
 
 MAKE_ARGS+=	JS_THREADSAFE=YES \
-		PROG_LIBS="-lreadline -ltermcap -lm ${PTHREAD_LIBS}" \
+		PROG_LIBS="-lreadline -ltermcap -lm -lpthread" \
 		LDFLAGS="-L${LOCALBASE}/lib"
 CFLAGS+=	-I${LOCALBASE}/include/nspr
 
-USES=		gmake
+USES=		gmake readline
 MAKEFILE=	Makefile.ref
 ALL_TARGET=	${OPSYS}`${UNAME} -r`_DBG.OBJ/js
 MAKE_ENV+=	CCC="${CXX}"

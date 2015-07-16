@@ -2,20 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	fcitx-m17n
-PORTVERSION=	0.1.4
+PORTVERSION=	0.2.3
 CATEGORIES=	textproc
-MASTER_SITES=	GOOGLE_CODE
-PROJECTHOST=	fcitx
+MASTER_SITES=	http://download.fcitx-im.org/${PORTNAME}/
 DIST_SUBDIR=	fcitx
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Multilingualization support for Fcitx
 
-LIB_DEPENDS=	fcitx-config:${PORTSDIR}/chinese/fcitx \
-		m17n:${PORTSDIR}/devel/m17n-lib
+LICENSE=	LGPL21
 
-USE_XZ=		yes
-USES=		cmake gettext pkgconfig
-USE_GNOME=	intltool
+LIB_DEPENDS=	libfcitx-config.so:${PORTSDIR}/chinese/fcitx \
+		libm17n.so:${PORTSDIR}/devel/m17n-lib
+
+USES=		cmake gettext pkgconfig tar:xz
 
 .include <bsd.port.mk>

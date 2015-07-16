@@ -4,7 +4,7 @@
 
 PORTNAME=	gtkglarea
 PORTVERSION=	2.0.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	GNOME
 DISTNAME=	gtkglarea-${PORTVERSION}
@@ -20,5 +20,6 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-lib-GL
 INSTALL_TARGET=	install-strip
+LIBS+=		-lm
 
 .include <bsd.port.mk>

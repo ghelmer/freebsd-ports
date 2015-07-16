@@ -12,13 +12,11 @@ COMMENT=	Easy python interface to generate dot files
 
 LICENSE=	GPLv2
 
+USES=		python
+USE_PYTHON=	distutils autoplist
 USE_GITHUB=	yes
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
 GH_ACCOUNT=	stricaud
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	777ab06
+GH_TAGNAME=	777ab06
 
 OPTIONS_DEFINE=	DOCS
 

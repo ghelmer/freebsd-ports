@@ -3,10 +3,10 @@
 
 PORTNAME=	geda
 PORTVERSION=	1.8.2
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	cad
-MASTER_SITES=	http://ftp.geda-project.org/geda-gaf/stable/%SUBDIR%/
-MASTER_SITE_SUBDIR=	v${PORTVERSION:R}/${PORTVERSION}
+MASTER_SITES=	http://ftp.geda-project.org/geda-gaf/stable/v${PORTVERSION:R}/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-gaf-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -16,12 +16,11 @@ LICENSE=	GPLv2 # (or later)
 
 LIB_DEPENDS=	libstroke.so:${PORTSDIR}/devel/libstroke \
 		libguile.so:${PORTSDIR}/lang/guile
-RUN_DEPENDS=	gawk:${PORTSDIR}/lang/gawk
+RUN_DEPENDS=	gawk:${PORTSDIR}/lang/gawk\
+		m4>=1.4.11:${PORTSDIR}/devel/m4
 
-OPTIONS_DEFINE=	DOCS
-
-USES=		desktop-file-utils gettext gmake pathfix perl5 pkgconfig \
-		shared-mime-info shebangfix
+USES=		desktop-file-utils gettext gmake libtool pathfix perl5 \
+		pkgconfig python:run shared-mime-info shebangfix
 SHEBANG_FILES=	examples/lightning_detector/bom libgeda/docs/*.dox \
 		utils/gxyrs/*.pl utils/scripts/* \
 		utils/docs/*.dox gattrib/docs/*.dox \
@@ -29,9 +28,10 @@ SHEBANG_FILES=	examples/lightning_detector/bom libgeda/docs/*.dox \
 		gnetlist/docs/*.dox
 USE_GNOME=	gtk20
 USE_PERL5=	run
-USE_PYTHON=	run
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	M4=${LOCALBASE}/bin/gm4
 CONFIGURE_ARGS=	--with-libstroke=${LOCALBASE}
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
 
@@ -49,7 +49,7 @@ CONFLICTS=	geda-docs-[0-9]* geda-examples-[0-9]* geda-gattrib-[0-9]* \
 
 PORTSCOUT=	limitw:1,even
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 .for dir in gattrib gschem libgeda

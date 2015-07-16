@@ -3,22 +3,21 @@
 
 PORTNAME=	libmodplug
 PORTVERSION=	0.8.8.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
-MASTER_SITES=	SF/modplug-xmms/${PORTNAME}/${PORTVERSION} CRITICAL
+MASTER_SITES=	SF/modplug-xmms/${PORTNAME}/${PORTVERSION} LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	ModPlug mod-like music shared libraries
 
-USES=		gmake pathfix pkgconfig libtool:keepla
+USES=		cpe gmake pathfix pkgconfig libtool
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+CPE_VENDOR=	konstanty_bialkowski
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^CXXFLAGS=/d' \
 		${WRKSRC}/configure
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmodplug.so.1
 
 .include <bsd.port.mk>

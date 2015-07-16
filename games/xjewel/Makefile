@@ -3,7 +3,7 @@
 
 PORTNAME=	xjewel
 PORTVERSION=	1.6
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	XCONTRIB/../R5contrib
 EXTRACT_SUFX=	.tar.z
@@ -12,24 +12,16 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 dropping jewels game
 
 BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf \
-		mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
+		mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir
 
-USES=		imake
+USES=		fonts imake
 USE_XORG=	x11 xext
 
-MAN6=		xjewel.6
-
-FONTSDIR=	lib/X11/fonts/local
-PLIST_SUB=	FONTSDIR=${FONTSDIR}
-
-NO_STAGE=	yes
-pre-install:
-	@${SETENV} PKG_PREFIX=${PREFIX} \
-		${SH} ${PKGREQ} ${PKGNAME} INSTALL
+DESKTOP_ENTRIES="XJewel" "" "" "${PORTNAME}" "" ""
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/bitmaps/seven_seg.pcf.gz ${PREFIX}/${FONTSDIR}
-	@(cd ${PREFIX}/${FONTSDIR} ; mkfontdir)
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	(cd ${WRKSRC}/bitmaps && ${INSTALL_DATA} seven_seg.pcf.gz \
+		${STAGEDIR}${FONTSDIR})
 
 .include <bsd.port.mk>

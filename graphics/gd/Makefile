@@ -3,22 +3,22 @@
 
 PORTNAME=	libgd
 PORTVERSION=	2.1.0
-PORTREVISION?=	4
+PORTREVISION?=	6
 PORTEPOCH=	1
 CATEGORIES+=	graphics
-MASTER_SITES=	http://cdn.bitbucket.org/libgd/gd-libgd/downloads/
+MASTER_SITES=	https://bitbucket.org/libgd/gd-libgd/downloads/ \
+		http://cdn.bitbucket.org/libgd/gd-libgd/downloads/
 
 MAINTAINER?=	dinoex@FreeBSD.org
 COMMENT?=	Graphics library for fast creation of images
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libtiff.so:${PORTSDIR}/graphics/tiff \
-		libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
 CONFLICTS=	bazaar-1.*
 
-USES=		libtool:keepla pathfix pkgconfig shebangfix tar:xz
+USES=		jpeg libtool:keepla pathfix pkgconfig shebangfix tar:xz
 SHEBANG_FILES=	${WRKSRC}/src/bdftogd
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes

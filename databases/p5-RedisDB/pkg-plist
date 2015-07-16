@@ -1,7 +1,8 @@
 %%PERL5_MAN3%%/RedisDB.3.gz
+%%PERL5_MAN3%%/RedisDB::Cluster.3.gz
 %%PERL5_MAN3%%/RedisDB::Error.3.gz
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/RedisDB/.packlist
+%%PERL5_MAN3%%/RedisDB::Sentinel.3.gz
 %%SITE_PERL%%/RedisDB.pm
+%%SITE_PERL%%/RedisDB/Cluster.pm
 %%SITE_PERL%%/RedisDB/Error.pm
-@dirrmtry %%SITE_PERL%%/RedisDB
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/RedisDB
+%%SITE_PERL%%/RedisDB/Sentinel.pm

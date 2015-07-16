@@ -2,17 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	xf86-video-scfb
-PORTVERSION=	0.0.3
+PORTVERSION=	0.0.4
 PORTREVISION=	2
 CATEGORIES=	x11-drivers
-MASTER_SITES=	ftp://rene-ladan.nl/pub/distfiles/ \
-		LOCAL/rene 
 
 MAINTAINER=	ray@FreeBSD.org
 COMMENT=	X.Org syscons display driver
 
-ONLY_FOR_ARCHS=	arm armv6 powerpc powerpc64 sparc64
+USE_GITHUB=     yes
+GH_ACCOUNT=     rayddteam
+GH_TAGNAME=     bdeb3bf
 
-XORG_CAT=	driver
+USES=		libtool pkgconfig
+GNU_CONFIGURE= 	yes
+DIST_SUBDIR=	xorg/driver
+USE_XORG=	xorg-server xproto randrproto xi renderproto xextproto \
+		inputproto kbproto fontsproto videoproto dri2proto \
+		xf86driproto glproto xineramaproto resourceproto \
+		scrnsaverproto
+CONFIGURE_ENV=	DRIVER_MAN_SUFFIX=4x DRIVER_MAN_DIR='$$(mandir)/man4'
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

@@ -28,6 +28,7 @@
 %%WWWDIR%%/etc/default_data
 %%WWWDIR%%/etc/netdot.cron
 %%WWWDIR%%/etc/netdot.meta
+%%WWWDIR%%/etc/netdot_apache24_local.conf
 %%WWWDIR%%/etc/netdot_apache2_ldap.conf
 %%WWWDIR%%/etc/netdot_apache2_local.conf
 %%WWWDIR%%/etc/netdot_apache2_radius.conf
@@ -173,8 +174,8 @@
 %%WWWDIR%%/htdocs/management/vlan_tasks.html
 %%WWWDIR%%/htdocs/management/zone.html
 %%WWWDIR%%/htdocs/management/zone_tasks.html
-%%WWWDIR%%/htdocs/masondata/obj/.__obj_create_marker
 %%WWWDIR%%/htdocs/masondata/cache/.keep-me
+%%WWWDIR%%/htdocs/masondata/obj/.__obj_create_marker
 %%WWWDIR%%/htdocs/menu_admin.mhtml
 %%WWWDIR%%/htdocs/menu_user.mhtml
 %%WWWDIR%%/htdocs/reports/addr_poll_stats.html 
@@ -202,6 +203,7 @@
 %%WWWDIR%%/htdocs/rest/host
 %%WWWDIR%%/htdocs/rest/host_contacts
 %%WWWDIR%%/htdocs/rest/index.html
+%%WWWDIR%%/htdocs/rest/updatedev
 %%WWWDIR%%/htdocs/user_help/autohandler
 %%WWWDIR%%/htdocs/user_help/dhandler
 %%WWWDIR%%/htdocs/user_help/hosts.html
@@ -232,8 +234,10 @@
 %%WWWDIR%%/lib/Netdot/Exporter/Rancid.pm
 %%WWWDIR%%/lib/Netdot/Exporter/Smokeping.pm
 %%WWWDIR%%/lib/Netdot/Exporter/Sysmon.pm
+%%WWWDIR%%/lib/Netdot/FakeSNMPSession.pm
 %%WWWDIR%%/lib/Netdot/LDAP.pm
 %%WWWDIR%%/lib/Netdot/IPVisual.pm
+%%WWWDIR%%/lib/Netdot/Krb5.pm
 %%WWWDIR%%/lib/Netdot/Manual/.keep-me
 %%WWWDIR%%/lib/Netdot/Mason.pm
 %%WWWDIR%%/lib/Netdot/Meta.pm
@@ -243,6 +247,7 @@
 %%WWWDIR%%/lib/Netdot/Model.pm
 %%WWWDIR%%/lib/Netdot/Model/AccessRight.pm
 %%WWWDIR%%/lib/Netdot/Model/ArpCacheEntry.pm
+%%WWWDIR%%/lib/Netdot/Model/ASN.pm
 %%WWWDIR%%/lib/Netdot/Model/Asset.pm
 %%WWWDIR%%/lib/Netdot/Model/BackboneCable.pm
 %%WWWDIR%%/lib/Netdot/Model/CableStrand.pm
@@ -316,57 +321,58 @@
 %%WWWDIR%%/upgrade/updatedb
 %%WWWDIR%%/upgrade/upgrade-tasks
 %%WWWDIR%%/var/pollstats.rrd
-@dirrm %%WWWDIR%%/bin
-@dirrm %%WWWDIR%%/doc/manual
-@dirrm %%WWWDIR%%/doc
-@dirrm %%WWWDIR%%/htdocs/cable_plant
-@dirrm %%WWWDIR%%/htdocs/css
-@dirrm %%WWWDIR%%/htdocs/generic
-@dirrm %%WWWDIR%%/htdocs/help
-@dirrm %%WWWDIR%%/htdocs/img/graphs
-@dirrm %%WWWDIR%%/htdocs/img
-@dirrm %%WWWDIR%%/htdocs/java_script
-@dirrm %%WWWDIR%%/htdocs/management
-@dirrm %%WWWDIR%%/htdocs/contacts
-@dirrm %%WWWDIR%%/htdocs/operations
-@dirrm %%WWWDIR%%/htdocs/reports
-@dirrm %%WWWDIR%%/htdocs/export
-@dirrm %%WWWDIR%%/htdocs/user_management
-@dirrm %%WWWDIR%%/htdocs/user_help
-@dirrm %%WWWDIR%%/htdocs/rest
-@dirrm %%WWWDIR%%/lib/Netdot/Manual
-@dirrm %%WWWDIR%%/lib/Netdot/Meta/Table
-@dirrm %%WWWDIR%%/lib/Netdot/Meta
-@dirrm %%WWWDIR%%/lib/Netdot/Model/Plugins
-@dirrm %%WWWDIR%%/lib/Netdot/Model/Device/CLI
-@dirrm %%WWWDIR%%/lib/Netdot/Model/Device
-@dirrm %%WWWDIR%%/lib/Netdot/Model
-@dirrm %%WWWDIR%%/lib/Netdot/UI
-@dirrm %%WWWDIR%%/lib/Netdot/Util
-@dirrm %%WWWDIR%%/lib/Netdot/Exporter
-@dirrm %%WWWDIR%%/lib/Netdot
-@dirrm %%WWWDIR%%/lib
-@dirrmtry %%WWWDIR%%/etc
-@dirrm %%WWWDIR%%/import
-@dirrm %%WWWDIR%%/export/docs
-@dirrm %%WWWDIR%%/export/nagios
-@dirrm %%WWWDIR%%/export/sysmon
-@dirrm %%WWWDIR%%/export/rancid
-@dirrm %%WWWDIR%%/export/cacti
-@dirrm %%WWWDIR%%/export/ethers
-@dirrm %%WWWDIR%%/export/bind
-@dirrm %%WWWDIR%%/export/dhcpd
-@dirrm %%WWWDIR%%/export/smokeping
-@dirrm %%WWWDIR%%/export
-@dirrmtry %%WWWDIR%%
-@unexec rm -rf %D/%%WWWDIR%%/tmp/sessions 2> /dev/null || true
-@dirrmtry %%WWWDIR%%/tmp
+@dir %%WWWDIR%%/bin
+@dir %%WWWDIR%%/doc/manual
+@dir %%WWWDIR%%/doc
+@dir %%WWWDIR%%/htdocs/cable_plant
+@dir %%WWWDIR%%/htdocs/css
+@dir %%WWWDIR%%/htdocs/generic
+@dir %%WWWDIR%%/htdocs/help
+@dir %%WWWDIR%%/htdocs/img/graphs
+@dir %%WWWDIR%%/htdocs/img
+@dir %%WWWDIR%%/htdocs/java_script
+@dir %%WWWDIR%%/htdocs/management
+@dir %%WWWDIR%%/htdocs/contacts
+@dir %%WWWDIR%%/htdocs/operations
+@dir %%WWWDIR%%/htdocs/reports
+@dir %%WWWDIR%%/htdocs/export
+@dir %%WWWDIR%%/htdocs/user_management
+@dir %%WWWDIR%%/htdocs/user_help
+@dir %%WWWDIR%%/htdocs/rest
+@dir %%WWWDIR%%/lib/Netdot/Manual
+@dir %%WWWDIR%%/lib/Netdot/Meta/Table
+@dir %%WWWDIR%%/lib/Netdot/Meta
+@dir %%WWWDIR%%/lib/Netdot/Model/Plugins
+@dir %%WWWDIR%%/lib/Netdot/Model/Device/CLI
+@dir %%WWWDIR%%/lib/Netdot/Model/Device
+@dir %%WWWDIR%%/lib/Netdot/Model
+@dir %%WWWDIR%%/lib/Netdot/UI
+@dir %%WWWDIR%%/lib/Netdot/Util
+@dir %%WWWDIR%%/lib/Netdot/Exporter
+@dir %%WWWDIR%%/lib/Netdot
+@dir %%WWWDIR%%/lib
+@dir %%WWWDIR%%/etc
+@dir %%WWWDIR%%/import
+@dir %%WWWDIR%%/export/docs
+@dir %%WWWDIR%%/export/nagios
+@dir %%WWWDIR%%/export/sysmon
+@dir %%WWWDIR%%/export/rancid
+@dir %%WWWDIR%%/export/cacti
+@dir %%WWWDIR%%/export/ethers
+@dir %%WWWDIR%%/export/bind
+@dir %%WWWDIR%%/export/dhcpd
+@dir %%WWWDIR%%/export/smokeping
+@dir %%WWWDIR%%/export
+@dir %%WWWDIR%%/htdocs/masondata/obj
 @unexec rm -rf %D/%%WWWDIR%%/htdocs/masondata/obj 2> /dev/null || true
-@dirrm %%WWWDIR%%/htdocs/masondata/cache
-@dirrm %%WWWDIR%%/htdocs/masondata
-@dirrm %%WWWDIR%%/htdocs
-@dirrm %%WWWDIR%%/upgrade
-@dirrm %%WWWDIR%%/var
-@dirrmtry %%WWWDIR%%/tmp
-@dirrmtry %%WWWDIR%%
+@dir %%WWWDIR%%/htdocs/masondata/cache
+@dir %%WWWDIR%%/htdocs/masondata
+@dir %%WWWDIR%%/htdocs
+@dir %%WWWDIR%%/tmp/sessions/locks
+@dir %%WWWDIR%%/tmp/sessions
+@unexec rm -rf %D/%%WWWDIR%%/tmp/sessions 2> /dev/null || true
+@dir %%WWWDIR%%/tmp
+@dir %%WWWDIR%%/upgrade
+@dir %%WWWDIR%%/var
+@dir %%WWWDIR%%
 @unexec if [ -d %%WWWDIR%% ]; then echo "===>  There are files/directories remaining under %D/%%WWWDIR%%. If you wish to deinstall netdot completely, inspect this directory for any files you may want to keep and then remove it."; fi

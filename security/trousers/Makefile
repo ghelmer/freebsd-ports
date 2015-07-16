@@ -3,7 +3,7 @@
 
 PORTNAME=	trousers
 PORTVERSION=	0.3.10
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
 
@@ -15,16 +15,19 @@ LICENSE_NAME=	Common Public License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=	gmake iconv pkgconfig
+USES=		alias autoreconf gmake iconv libtool pkgconfig
 USE_OPENSSL=	YES
 USE_LDCONFIG=	YES
-USE_AUTOTOOLS=	autoconf automake libtool
 USE_RC_SUBR=	tcsd
+INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	YES
 CONFIGURE_ARGS=	--with-gui=none --enable-static \
 		--localstatedir=${PREFIX}/var \
-		--with-tssuser=${USERS} --with-tssgroup=${GROUPS}
-MAKE_ENV=	PTHREAD_LIBS=${PTHREAD_LIBS} ICONV_LIB=${ICONV_LIB} \
+		--with-tssuser=${USERS} \
+		--with-tssgroup=${GROUPS} \
+		--with-openssl=${OPENSSLBASE} \
+		RANLIB=:
+MAKE_ENV=	ICONV_LIB=${ICONV_LIB} \
 		ICONV_PREFIX=${ICONV_PREFIX}
 SUB_FILES=	pkg-message
 SUB_LIST=	USERS=${USERS} GROUPS=${GROUPS}
@@ -51,11 +54,6 @@ PKGNAMESUFFIX+=	-tddl
 CONFLICTS+=	tpm-emulator-[0-9]*
 PLIST_SUB+=	TDDL=""
 .endif
-
-run-autotools:	run-autotools-autoreconf
-
-run-autotools-autoreconf:
-	@cd ${CONFIGURE_WRKSRC} && ${SETENV} ${AUTOTOOLS_ENV} ${AUTORECONF} -i
 
 post-install:
 	${INSTALL_DATA} \

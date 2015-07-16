@@ -8,7 +8,7 @@ CATEGORIES=	textproc
 MASTER_SITES=	http://download.ofb.net/gale/ \
 		http://www.it.ca/~paul/src/
 
-MAINTAINER=	paul+ports@it.ca
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert between XML and a line-oriented format similar to XPath
 
 LICENSE=	GPLv2
@@ -24,5 +24,7 @@ PLIST_FILES=	bin/xml2 \
 		bin/html2 \
 		bin/2html
 
-NO_STAGE=	yes
+post-patch:
+	@${REINPLACE_CMD} '/ln -sf/ s|$$(DESTDIR)||' ${WRKSRC}/Makefile.in
+
 .include <bsd.port.mk>

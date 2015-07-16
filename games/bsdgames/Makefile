@@ -2,56 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	bsdgames
-PORTVERSION=	2.4
-PORTREVISION=	2
+PORTVERSION=	4.0.6
 PORTEPOCH=	1
 CATEGORIES=	games
-# Fetched from http://gitweb.dragonflybsd.org/dragonfly.git/tree/v2.4.0:/games
-# Content is stable, but file timestamps differ. Bad gitweb, no cookie!
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	uqs
+MASTER_SITES=	LOCAL/adamw
 
-MAINTAINER=	uqs@FreeBSD.org
+MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Traditional BSD games taken from DragonFly BSD
 
-CONFLICTS=	hangman-*
+LICENSE=	BSD3CLAUSE
 
-WRKSRC=		${WRKDIR}/dragonfly
-USE_BZIP2=	yes
+CONFLICTS=	hangman-[0-9]*
+
+USES=		uidfix tar:xz
 MAKE_ENV+=	NO_WERROR=1
-MAN6=	adventure.6 \
-	arithmetic.6 \
-	atc.6 \
-	backgammon.6 \
-	battlestar.6 \
-	bs.6 \
-	canfield.6 \
-	cfscores.6 \
-	cribbage.6 \
-	fish.6 \
-	hack.6 \
-	hangman.6 \
-	hunt.6 \
-	huntd.6 \
-	larn.6 \
-	mille.6 \
-	phantasia.6 \
-	piano.6 \
-	pig.6 \
-	quiz.6 \
-	rain.6 \
-	robots.6 \
-	rogue.6 \
-	sail.6 \
-	snake.6 \
-	snscore.6 \
-	trek.6 \
-	wargames.6 \
-	worm.6 \
-	worms.6 \
-	wump.6
-
-MANCOMPRESSED=	maybe
+MAKE_ARGS=	BINGRP=${BINGRP}
 
 # contain /usr/share/games
 SHAREPATH_FILES=atc/atc.6 \
@@ -79,7 +44,6 @@ GAMESPATH_FILES=backgammon/backgammon/backgammon.6 \
 SGID_BINARIES=	atc battlestar canfield/canfield cribbage hack phantasia \
 		robots sail snake/snake
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e "s/NOMAN/NO_MAN/" \
 		${WRKSRC}/backgammon/teachgammon/Makefile \
@@ -100,12 +64,29 @@ post-patch:
 			${WRKSRC}/$${f}/Makefile; \
 	done
 
-# Only useful for DESTDIR
-VARDIR?=	/var
+pre-install:
+.for d in atc larn quiz.db
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/games/$d
+.endfor
+.for d in atc battlestar hackdir/save larn phantasia
+	@${MKDIR} ${STAGEDIR}/var/games/$d
+.endfor
 
-pre-su-install:
-	${MKDIR} ${VARDIR}
-	mtree -deU -f ${FILESDIR}/var.mtree -p ${VARDIR}
-	mtree -deU -f ${FILESDIR}/share.mtree -p ${PREFIX}/share
+post-install:
+# avoid conflict with games/bs and shells/fish
+.for prog in bs fish
+	${MV} ${STAGEDIR}${PREFIX}/bin/${prog} ${STAGEDIR}${PREFIX}/bin/${prog}-game
+	${MV} ${STAGEDIR}${MAN6PREFIX}/man/man6/${prog}.6.gz ${STAGEDIR}${MAN6PREFIX}/man/man6/${prog}-game.6.gz
+.endfor
+
+	@${TOUCH} ${STAGEDIR}/var/games/atc_score
+	@${FIND} ${STAGEDIR}/var/games -type f -exec ${MV} {} {}.sample \;
+
+dist:
+	fetch -o- https://github.com/DragonFlyBSD/DragonFlyBSD/archive/v${PORTVERSION}.zip | \
+		unzip - DragonFlyBSD-${PORTVERSION}/games/\*
+	mv DragonFlyBSD-${PORTVERSION}/games bsdgames-${PORTVERSION}
+	tar -cvf bsdgames-${PORTVERSION}.tar bsdgames-${PORTVERSION}
+	xz -v bsdgames-${PORTVERSION}.tar
 
 .include <bsd.port.mk>

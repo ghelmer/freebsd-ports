@@ -9,6 +9,7 @@ include/zathura/version.h
 libdata/pkgconfig/zathura.pc
 man/man1/zathura.1.gz
 man/man5/zathurarc.5.gz
+share/appdata/zathura.appdata.xml
 share/applications/zathura.desktop
 share/dbus-1/interfaces/org.pwmt.zathura.xml
 %%NLS%%share/locale/ca/LC_MESSAGES/zathura.mo
@@ -24,6 +25,7 @@ share/dbus-1/interfaces/org.pwmt.zathura.xml
 %%NLS%%share/locale/hr/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/id_ID/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/it/LC_MESSAGES/zathura.mo
+%%NLS%%share/locale/lt/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/no/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/zathura.mo
@@ -31,14 +33,3 @@ share/dbus-1/interfaces/org.pwmt.zathura.xml
 %%NLS%%share/locale/ta_IN/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/tr/LC_MESSAGES/zathura.mo
 %%NLS%%share/locale/uk_UA/LC_MESSAGES/zathura.mo
-@dirrm include/zathura
-%%NLS%%@dirrmtry share/locale/es_CL/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/es_CL
-%%NLS%%@dirrmtry share/locale/id_ID/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/id_ID
-%%NLS%%@dirrmtry share/locale/ta_IN/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/ta_IN
-%%NLS%%@dirrmtry share/locale/uk_UA/LC_MESSAGES
-%%NLS%%@dirrmtry share/locale/uk_UA
-@dirrmtry share/dbus-1/interfaces
-@dirrmtry share/dbus-1

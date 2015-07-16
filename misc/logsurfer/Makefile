@@ -10,12 +10,16 @@ MASTER_SITES=	http://www.crypt.gen.nz/logsurfer/ \
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Process logfiles and conditionally perform certain actions
 
-LICENSE=	BSD
+LICENSE=	GPLv2 ISCL
+LICENSE_COMB=	multi
+LICENSE_FILE=	${WRKSRC}/DISCLAIMER
 
 GNU_CONFIGURE=	YES
 CONFIGURE_ARGS+=--with-etcdir=${ETCDIR}
 USES=		desthack
 USE_RC_SUBR=	logsurfer
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

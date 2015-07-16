@@ -3,31 +3,31 @@
 
 PORTNAME=	cheech
 PORTVERSION=	0.8
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiplayer Chinese Checkers game
 
 LICENSE=	GPLv2 # (or later)
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgnet-2.0.so:${PORTSDIR}/net/gnet2
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig tar:tgz
 USE_GNOME=	gtkmm24
 USE_AUTOTOOLS=	automake:env
 GNU_CONFIGURE=	yes
 
-DESKTOP_ENTRIES=	"cheech" \
-			"${COMMENT}" \
-			"${PREFIX}/share/pixmaps/${PORTNAME}.png" \
-			"cheech" \
-			"Game;BoardGame;" \
-			"false"
+DESKTOP_ENTRIES="cheech" \
+		"${COMMENT}" \
+		"${PREFIX}/share/pixmaps/${PORTNAME}.png" \
+		"cheech" \
+		"Game;BoardGame;" \
+		"false"
 
 post-patch:
 	@${REINPLACE_CMD} -e \

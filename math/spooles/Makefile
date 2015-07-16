@@ -3,19 +3,13 @@
 
 PORTNAME=	spooles
 PORTVERSION=	2.2
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	math
 MASTER_SITES=	http://www.netlib.org/linalg/spooles/
 .ifdef WITH_MPI
 PKGNAMESUFFIX=	-mpich
 .endif
 DISTNAME=	${PORTNAME}.${PORTVERSION}
-EXTRACT_SUFX=	.tgz
-.ifndef NOPORTDOCS
-DISTFILES+=	${DISTNAME}${EXTRACT_SUFX} AllInOne.ps.gz Eigen.ps.gz \
-	 	Install.ps.gz LinSol.ps.gz Ordering.ps.gz \
-		PP99.ps.gz ReferenceManual.ps.gz
-.endif
 DIST_SUBDIR=	spooles
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -26,7 +20,7 @@ COMMENT=	SParse Object Oriented Linear Equations Solver
 BUILD_DEPENDS=	${LOCALBASE}/lib/libmpich.a:${PORTSDIR}/net/mpich2
 .endif
 
-USES=		gmake
+USES=		gmake tar:tgz
 
 .if defined(WITH_MPI)
 PLIST_SUB+=	MPI=""
@@ -40,6 +34,12 @@ CONFLICTS=	spooles-mpich-2*
 
 .include <bsd.port.pre.mk>
 
+.if ${PORT_OPTIONS:MDOCS}
+DISTFILES+=	${DISTNAME}${EXTRACT_SUFX} AllInOne.ps.gz Eigen.ps.gz \
+	 	Install.ps.gz LinSol.ps.gz Ordering.ps.gz \
+		PP99.ps.gz ReferenceManual.ps.gz
+.endif
+
 .if ${ARCH} == "sparc64"
 PICFLAG?=	-fPIC
 .else
@@ -47,6 +47,8 @@ PICFLAG?=	-fpic
 .endif
 
 .SILENT:
+
+OPTIONS_DEFINE=	DOCS
 
 pre-everything::
 .if !defined(WITH_MPI)
@@ -58,8 +60,12 @@ do-extract:
 
 post-patch:
 	${MKDIR} ${WRKSRC}_SHARED ; ${CP} -r ${WRKSRC}/* ${WRKSRC}_SHARED
-	@${REINPLACE_CMD} -e 's+%%LOCALBASE%%+${LOCALBASE}+g;' -e 's+%%CFLAGS%%+${PTHREAD_CFLAGS} ${CFLAGS}+g;' -e 's+%%PTHREAD_LIBS%%+${PTHREAD_LIBS}+g;' -e 's+%%CC%%+${CC}+g;' ${WRKSRC}/Make.inc
-	@${REINPLACE_CMD} -e 's+%%LOCALBASE%%+${LOCALBASE}+g;' -e 's+%%CFLAGS%%+${CFLAGS} ${PTHREAD_CFLAGS} ${PICFLAG}+g;' -e 's+%%PTHREAD_LIBS%%+${PTHREAD_LIBS}+g;' -e 's+%%CC%%+${CC}+g;' ${WRKSRC}_SHARED/Make.inc
+	@${REINPLACE_CMD} -e 's+%%LOCALBASE%%+${LOCALBASE}+g;' \
+		-e 's+%%CFLAGS%%+${CFLAGS}+g;' \
+		-e 's+%%CC%%+${CC}+g;' ${WRKSRC}/Make.inc
+	@${REINPLACE_CMD} -e 's+%%LOCALBASE%%+${LOCALBASE}+g;' \
+		-e 's+%%CFLAGS%%+${CFLAGS} ${PICFLAG}+g;' \
+		-e 's+%%CC%%+${CC}+g;' ${WRKSRC}_SHARED/Make.inc
 
 do-build:
 .if defined(WITH_MPI)
@@ -96,6 +102,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/spooles/${i}
 	${INSTALL_DATA} ${WRKSRC}/${i}/*.h ${STAGEDIR}${PREFIX}/include/spooles/${i}
 .endfor
+.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/AllInOne.ps.gz	${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/Eigen.ps.gz		${STAGEDIR}${DOCSDIR}
@@ -104,5 +111,6 @@ do-install:
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/Ordering.ps.gz	${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/PP99.ps.gz		${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/ReferenceManual.ps.gz	${STAGEDIR}${DOCSDIR}
+.endif
 
 .include <bsd.port.post.mk>

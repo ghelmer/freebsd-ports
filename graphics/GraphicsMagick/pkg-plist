@@ -89,21 +89,18 @@ lib/GraphicsMagick/config/type-ghostscript.mgk
 lib/GraphicsMagick/config/type-solaris.mgk
 lib/GraphicsMagick/config/type-windows.mgk
 lib/GraphicsMagick/config/type.mgk
-@exec mkdir -p %D/lib/GraphicsMagick/modules-Q%%Q%%
-@exec mkdir -p %D/lib/GraphicsMagick/modules-Q%%Q%%/coders
-@exec mkdir -p %D/lib/GraphicsMagick/modules-Q%%Q%%/filters
 lib/libGraphicsMagick++.a
-lib/libGraphicsMagick++.la
 lib/libGraphicsMagick++.so
-lib/libGraphicsMagick++.so.9
+lib/libGraphicsMagick++.so.3
+lib/libGraphicsMagick++.so.3.7.0
 lib/libGraphicsMagick.a
-lib/libGraphicsMagick.la
 lib/libGraphicsMagick.so
-lib/libGraphicsMagick.so.14
+lib/libGraphicsMagick.so.3
+lib/libGraphicsMagick.so.3.12.0
 lib/libGraphicsMagickWand.a
-lib/libGraphicsMagickWand.la
 lib/libGraphicsMagickWand.so
-lib/libGraphicsMagickWand.so.8
+lib/libGraphicsMagickWand.so.2
+lib/libGraphicsMagickWand.so.2.7.0
 libdata/pkgconfig/GraphicsMagick++.pc
 libdata/pkgconfig/GraphicsMagick.pc
 libdata/pkgconfig/GraphicsMagickWand.pc
@@ -129,6 +126,7 @@ man/man5/quantize.5.gz
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2010
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2011
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2012
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2013
 %%PORTDOCS%%%%DOCSDIR%%/Copyright.txt
 %%PORTDOCS%%%%DOCSDIR%%/NEWS.txt
 %%PORTDOCS%%%%DOCSDIR%%/www/ChangeLog-2001.html
@@ -143,6 +141,7 @@ man/man5/quantize.5.gz
 %%PORTDOCS%%%%DOCSDIR%%/www/ChangeLog-2010.html
 %%PORTDOCS%%%%DOCSDIR%%/www/ChangeLog-2011.html
 %%PORTDOCS%%%%DOCSDIR%%/www/ChangeLog-2012.html
+%%PORTDOCS%%%%DOCSDIR%%/www/ChangeLog-2013.html
 %%PORTDOCS%%%%DOCSDIR%%/www/Changelog.html
 %%PORTDOCS%%%%DOCSDIR%%/www/Changes.html
 %%PORTDOCS%%%%DOCSDIR%%/www/Copyright.html
@@ -242,6 +241,7 @@ man/man5/quantize.5.gz
 %%PORTDOCS%%%%DOCSDIR%%/www/color.html
 %%PORTDOCS%%%%DOCSDIR%%/www/compare.html
 %%PORTDOCS%%%%DOCSDIR%%/www/composite.html
+%%PORTDOCS%%%%DOCSDIR%%/www/configure-target-setup.png
 %%PORTDOCS%%%%DOCSDIR%%/www/conjure.html
 %%PORTDOCS%%%%DOCSDIR%%/www/contribute.html
 %%PORTDOCS%%%%DOCSDIR%%/www/convert.html
@@ -284,20 +284,5 @@ man/man5/quantize.5.gz
 %%PORTDOCS%%%%DOCSDIR%%/www/wand/magick_wand.html
 %%PORTDOCS%%%%DOCSDIR%%/www/wand/pixel_wand.html
 %%PORTDOCS%%%%DOCSDIR%%/www/wand/wand.html
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/www/wand
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/www/images
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/www/api
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/www/Magick++
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/www
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm %%DATADIR%%/config
-@dirrm %%DATADIR%%
-@dirrm lib/GraphicsMagick/modules-Q%%Q%%/filters
-@dirrm lib/GraphicsMagick/modules-Q%%Q%%/coders
-@dirrm lib/GraphicsMagick/modules-Q%%Q%%
-@dirrm lib/GraphicsMagick/config
-@dirrm lib/GraphicsMagick
-@dirrm include/GraphicsMagick/wand
-@dirrm include/GraphicsMagick/magick
-@dirrm include/GraphicsMagick/Magick++
-@dirrm include/GraphicsMagick
+@dir lib/GraphicsMagick/modules-Q%%Q%%/filters
+@dir lib/GraphicsMagick/modules-Q%%Q%%/coders

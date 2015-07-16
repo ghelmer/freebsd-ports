@@ -2,25 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	sipcalc
-PORTVERSION=	1.1.5
+PORTVERSION=	1.1.6
 CATEGORIES=	net-mgmt ipv6
 MASTER_SITES=	http://www.routemeister.net/projects/sipcalc/files/
 
-MAINTAINER=	jmohacsi@bsd.hu
-COMMENT=	Sipcalc is an IP subnet calculator with IPv6 support
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	IP subnet calculator with IPv6 support
+
+LICENSE=	BSD3CLAUSE
 
 GNU_CONFIGURE=	yes
-MAN1=		sipcalc.1
 
-DOC_FILES=	doc/sipcalc.txt ChangeLog README
+PORTDOCS=	*
+PLIST_FILES=	bin/sipcalc man/man1/sipcalc.1.gz
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-.ifndef(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-.for file in ${DOC_FILES}
-	@${INSTALL_DATA} ${WRKSRC}/${file} ${DOCSDIR}
-.endfor
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ChangeLog README \
+		${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC}/doc && ${INSTALL_DATA} sipcalc.txt \
+		${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

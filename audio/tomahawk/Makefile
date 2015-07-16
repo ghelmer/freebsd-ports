@@ -3,10 +3,10 @@
 
 PORTNAME=	tomahawk
 PORTVERSION=	0.7.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 
-MAINTAINER=	nivit@FreeBSD.org
+MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Multi-source, social, and smart music player
 
 LICENSE=	GPLv3
@@ -21,14 +21,12 @@ LIB_DEPENDS=	libattica.so:${PORTSDIR}/x11-toolkits/attica \
 		libqjson.so:${PORTSDIR}/devel/qjson \
 		libquazip.so:${PORTSDIR}/archivers/quazip \
 		libtag.so:${PORTSDIR}/audio/taglib
-RUN_DEPENDS=	qca-ossl>=2.0.0.b3_4:${PORTSDIR}/security/qca-ossl
 
 CMAKE_ARGS+=	-DWITH_BREAKPAD:BOOL="OFF" \
 		-DCLUCENE_CONFIG_PATH:PATH="${LOCALBASE}/share/clucene"
+CXXFLAGS+=	-Wno-cast-align
 
 GH_ACCOUNT=	tomahawk-player
-GH_PROJECT=	${PORTNAME}
-GH_COMMIT=	7a869ef
 
 INSTALLS_ICONS=	yes
 
@@ -36,14 +34,14 @@ OPTIONS_DEFINE=	QTWEETLIB
 OPTIONS_DEFAULT=	GSTREAMER QTWEETLIB
 OPTIONS_RADIO=	 PHONON
 OPTIONS_RADIO_PHONON=	GSTREAMER VLC XINE
+OPTIONS_SUB=	yes
 QTWEETLIB_DESC=	Enable Twitter SIP plugin
 VLC_DESC=	Multimedia support for VLC
 
 PLIST_SUB+=	DESKTOPDIR=${DESKTOPDIR:S,^${PREFIX}/,,} \
 		PORTVERSION=${PORTVERSION}
 
-USES=		cmake pkgconfig
-NO_STAGE=	yes
+USES=		cmake pkgconfig desktop-file-utils
 USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 

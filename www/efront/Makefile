@@ -2,23 +2,38 @@
 # $FreeBSD$
 
 PORTNAME=	efront
-DISTVERSION=	3.6.6
+DISTVERSION=	3.6.14
 PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME}learning/${PORTNAME}learning/eFront%20v3.6.6/
-DISTNAME=	${PORTNAME}_${PORTVERSION}_build8242
+MASTER_SITES=	SF/${PORTNAME}learning/${PORTNAME}learning/eFront%20v3.6.14/
+DISTNAME=	${PORTNAME}_${PORTVERSION}_build18016_community
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Elearning and Human Capital Development platform
 
-USES=		zip
+USES=		cpe shebangfix zip
+SHEBANG_FILES=	www/phplivedocx/samples/mail-merge/supported-file-formats/generate-documents.php \
+		www/phplivedocx/samples/mail-merge/supported-file-formats/show-supported-file-formats.php \
+		www/phplivedocx/samples/mail-merge/template-info/list-template-info.php \
+		www/phplivedocx/samples/mail-merge/convert-batch/run-job.php \
+		www/phplivedocx/samples/mail-merge/templates/download.php \
+		www/phplivedocx/samples/mail-merge/templates/upload.php \
+		www/phplivedocx/samples/mail-merge/templates/template-exists.php \
+		www/phplivedocx/samples/mail-merge/templates/list.php \
+		www/phplivedocx/samples/mail-merge/templates/delete-all.php \
+		www/phplivedocx/samples/mail-merge/license-agreement/generate-document.php \
+		www/phplivedocx/samples/mail-merge/telephone-bill/generate-document.php
+
+CPE_VENDOR=	efrontlearning
 USE_PHP=	mbstring zip iconv zlib spl ldap
 EFRONT_FILES=	CHANGELOG.txt index.php INSTALL.txt \
 		LICENSE.txt  README.txt
 EFRONT_DIRS=	libraries PEAR \
 		upload www backups
 
+NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 SUB_FILES=	pkg-message
 
 do-install:
@@ -29,14 +44,6 @@ do-install:
 .for i in ${EFRONT_DIRS}
 	@cd ${WRKDIR} && ${COPYTREE_SHARE} ${i} ${STAGEDIR}${WWWDIR}
 .endfor
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
 	@${CHMOD} -R 755 ${STAGEDIR}${WWWDIR}
-
-post-install:
-	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}' \
-		>> ${TMPPLIST}
-	@${ECHO_CMD} '@exec ${CHMOD} -R 755 ${STAGEDIR}${WWWDIR}' \
-		>> ${TMPPLIST}
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

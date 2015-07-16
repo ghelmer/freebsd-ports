@@ -3,32 +3,35 @@
 
 PORTNAME=	elm
 PORTVERSION=	2.5.8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	http://instinct.org/elm/files/tarballs/
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
-MAINTAINER=	toasty@dragondata.com
-COMMENT=	A once-popular mail user agent, version 2.5.x
+MAINTAINER=	mi@aldan.algebra.com
+COMMENT=	Once-popular mail user agent, version 2.5.x
+
+LICENSE=	ELM
+LICENSE_NAME=	Elm(tm) Mail System General Public License
+LICENSE_FILE=	${WRKSRC}/NOTICE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	ispell:${PORTSDIR}/textproc/aspell-ispell
-
-MAKE_JOBS_UNSAFE=	yes
 
 CFLAGS+=	-D_SIZE_T
 
 WRKSRC=			${WRKDIR}/elm${PORTVERSION}
-NO_LATEST_LINK=		yes
 USES=		gettext
 HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ENV=		PREFIX="${PREFIX}"
 CONFIGURE_ARGS=		-d
-MAKE_FLAGS=		CATMAN=catman-none
-MAN1=			answer.1 checkalias.1 elm.1 elmalias.1 fastmail.1 \
-			frm.1 listalias.1 messages.1 newalias.1 newmail.1 \
-			printmail.1 readmsg.1 mmencode.1
-MLINKS=			frm.1 nfrm.1 newmail.1 wnewmail.1
+MAKE_ARGS+=		CATMAN=catman-none
+MAKE_ARGS+=		DESTBIN="${STAGEDIR}${PREFIX}/bin"
+MAKE_ARGS+=		DESTLIB="${STAGEDIR}${PREFIX}/lib"
+MAKE_ARGS+=		LIB="${STAGEDIR}${PREFIX}/lib"
+MAKE_ARGS+=		MAN="${STAGEDIR}${PREFIX}/man/man1"
+MAKE_ARGS+=	-B
+EXTRACT_AFTER_ARGS=	--exclude gencat
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

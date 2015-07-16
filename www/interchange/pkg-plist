@@ -12,6 +12,9 @@ bin/makecat
 bin/offline
 bin/restart
 bin/update
+@owner interch
+@group interch
+interchange/_allow_threads
 interchange/_session_storable
 interchange/_uid
 interchange/catalog_after.cfg
@@ -349,7 +352,7 @@ interchange/code/Widget/uploadhelper.widget
 interchange/code/Widget/value.widget
 interchange/code/Widget/yesno.widget
 interchange/code/Widget/ynzero.widget
-@unexec if [ `cat %D/interchange/error.log | wc -l` -le 1 ]; then rm -f %D/interchange/error.log; fi
+interchange/error.log
 interchange/etc/.empty
 interchange/etc/jobs/db/export
 interchange/etc/jobs/maintenance/logrotate
@@ -1636,6 +1639,8 @@ interchange/standard/variables/LINE_MENU
 interchange/standard/variables/PAGE_INIT
 interchange/standard/variables/THEME_CSS
 interchange/subdomains.cfg
+@owner root
+@group wheel
 %%SITE_PERL%%/Vend/Accounting.pm
 %%SITE_PERL%%/Vend/Accounting/SQL_Ledger.pm
 %%SITE_PERL%%/Vend/Cart.pm
@@ -1724,113 +1729,57 @@ interchange/subdomains.cfg
 %%SITE_PERL%%/auto/Vend/Tags/autosplit.ix
 %%SITE_PERL%%/hints.pl
 %%SITE_PERL%%/install_lsb.pl
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Interchange/.packlist
 %%SITE_PERL%%/relocate.pl
-@dirrm %%SITE_PERL%%/Vend/Table
-@dirrm %%SITE_PERL%%/Vend/Ship
-@dirrm %%SITE_PERL%%/Vend/SOAP
-@dirrm %%SITE_PERL%%/Vend/Options
-@dirrm %%SITE_PERL%%/Vend/Payment
-@dirrm %%SITE_PERL%%/Vend/Accounting
-@dirrm %%SITE_PERL%%/Vend
-@dirrm %%SITE_PERL%%/auto/Vend/Tags
-@dirrm %%SITE_PERL%%/auto/Vend/SOAP
-@dirrm %%SITE_PERL%%/auto/Vend
-@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Interchange
-@dirrm interchange/standard/variables
-@dirrm interchange/standard/upload
-@dirrm interchange/standard/templates/regions
-@dirrm interchange/standard/templates/components
-@dirrm interchange/standard/templates
-@dirrm interchange/standard/special_pages
-@dirrm interchange/standard/products/ship
-@dirrm interchange/standard/products
-@dirrm interchange/standard/pages/survey
-@dirrm interchange/standard/pages/special
-@dirrm interchange/standard/pages/query
-@dirrm interchange/standard/pages/pay_cert
-@dirrm interchange/standard/pages/ord
-@dirrm interchange/standard/pages/member
-@dirrm interchange/standard/pages/function
-@dirrm interchange/standard/pages/forum
-@dirrm interchange/standard/pages/affiliate
-@dirrm interchange/standard/pages/admin
-@dirrm interchange/standard/pages
-@dirrm interchange/standard/include/menus/catalog
-@dirrm interchange/standard/include/menus
-@dirrm interchange/standard/include/layout
-@dirrm interchange/standard/include/forum
-@dirrm interchange/standard/include/checkout
-@dirrm interchange/standard/include
-@dirrm interchange/standard/images/thumb
-@dirrm interchange/standard/images/items
-@dirrm interchange/standard/images/affiliate
-@dirrm interchange/standard/images
-@dirrm interchange/standard/html
-@dirrm interchange/standard/dbconf/pgsql
-@dirrm interchange/standard/dbconf/mysql
-@dirrm interchange/standard/dbconf/locales
-@dirrm interchange/standard/dbconf
-@dirrm interchange/standard/config
-@dirrm interchange/standard/etc
-@dirrm interchange/standard
-@dirrm interchange/src/mod_perl2/Interchange
-@dirrm interchange/src/mod_perl2
-@dirrm interchange/src/mod_interchange
-@dirrm interchange/share/interchange-5/u
-@dirrm interchange/share/interchange-5/sv_SE
-@dirrm interchange/share/interchange-5/pt_BR
-@dirrm interchange/share/interchange-5/nl_NL
-@dirrm interchange/share/interchange-5/ja_JP
-@dirrm interchange/share/interchange-5/it_IT
-@dirrm interchange/share/interchange-5/he_IL
-@dirrm interchange/share/interchange-5/gr_GR
-@dirrm interchange/share/interchange-5/es_ES
-@dirrm interchange/share/interchange-5/en_US
-@dirrm interchange/share/interchange-5/en_GB
-@dirrm interchange/share/interchange-5/de_DE
-@dirrm interchange/share/interchange-5/da_DK
-@dirrm interchange/share/interchange-5
-@dirrm interchange/share
-@dirrm interchange/lib/UI/vars
-@dirrm interchange/lib/UI/profiles
-@dirrm interchange/lib/UI/pages/include/templates
-@dirrm interchange/lib/UI/pages/include/meta
-@dirrm interchange/lib/UI/pages/include/menus
-@dirrm interchange/lib/UI/pages/include/Options/old
-@dirrm interchange/lib/UI/pages/include/Options
-@dirrm interchange/lib/UI/pages/include
-@dirrm interchange/lib/UI/pages/admin/survey
-@dirrm interchange/lib/UI/pages/admin/special
-@dirrm interchange/lib/UI/pages/admin/reports/traffic
-@dirrm interchange/lib/UI/pages/admin/reports/order
-@dirrm interchange/lib/UI/pages/admin/reports
-@dirrm interchange/lib/UI/pages/admin/accounting
-@dirrm interchange/lib/UI/pages/admin
-@dirrm interchange/lib/UI/pages
-@dirrm interchange/lib/UI/locales
-@dirrm interchange/lib/UI
-@dirrm interchange/lib
-@dirrm interchange/features/quickpoll/templates/components
-@dirrm interchange/features/quickpoll/templates
-@dirrm interchange/features/quickpoll/doc/quickpoll
-@dirrm interchange/features/quickpoll/doc
-@dirrm interchange/features/quickpoll
-@dirrm interchange/features
-@dirrm interchange/etc/jobs/merchandising
-@dirrm interchange/etc/jobs/maintenance
-@dirrm interchange/etc/jobs/db
-@dirrm interchange/etc/jobs
-@dirrm interchange/code/Widget
-@dirrm interchange/code/UserTag
-@dirrm interchange/code/UI_Tag
-@dirrm interchange/code/SystemTag
-@dirrm interchange/code/OrderCheck
-@dirrm interchange/code/JavaScriptCheck
-@dirrm interchange/code/Filter
-@dirrm interchange/code
-@dirrmtry interchange/src
-@dirrmtry interchange/etc
-@dirrmtry interchange
-@cwd /
-@dirrmtry /var/run/interchange
+man/man1/compile_link.1.gz
+man/man1/config_prog.1.gz
+man/man1/configdump.1.gz
+man/man1/crontab.1.gz
+man/man1/expire.1.gz
+man/man1/expireall.1.gz
+man/man1/findtags.1.gz
+man/man1/ic_mod_perl.1.gz
+man/man1/interchange.1.gz
+man/man1/localize.1.gz
+man/man1/makecat.1.gz
+man/man1/offline.1.gz
+man/man1/restart.1.gz
+man/man1/update.1.gz
+%%PERL5_MAN3%%/Vend::Accounting::SQL_Ledger.3.gz
+%%PERL5_MAN3%%/Vend::Cart.3.gz
+%%PERL5_MAN3%%/Vend::CounterFile.3.gz
+%%PERL5_MAN3%%/Vend::Form.3.gz
+%%PERL5_MAN3%%/Vend::Interpolate.3.gz
+%%PERL5_MAN3%%/Vend::Options::Matrix.3.gz
+%%PERL5_MAN3%%/Vend::Options::Old48.3.gz
+%%PERL5_MAN3%%/Vend::Options::Simple.3.gz
+%%PERL5_MAN3%%/Vend::Parser.3.gz
+%%PERL5_MAN3%%/Vend::Payment::AuthorizeNet.3.gz
+%%PERL5_MAN3%%/Vend::Payment::BoA.3.gz
+%%PERL5_MAN3%%/Vend::Payment::BusinessOnlinePayment.3.gz
+%%PERL5_MAN3%%/Vend::Payment::CyberCash.3.gz
+%%PERL5_MAN3%%/Vend::Payment::ECHO.3.gz
+%%PERL5_MAN3%%/Vend::Payment::EFSNet.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Ezic.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Getitcard.3.gz
+%%PERL5_MAN3%%/Vend::Payment::ICS.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Linkpoint.3.gz
+%%PERL5_MAN3%%/Vend::Payment::MCVE.3.gz
+%%PERL5_MAN3%%/Vend::Payment::NetBilling.3.gz
+%%PERL5_MAN3%%/Vend::Payment::PRI.3.gz
+%%PERL5_MAN3%%/Vend::Payment::PSiGate.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Protx2.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Sage.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Signio.3.gz
+%%PERL5_MAN3%%/Vend::Payment::Skipjack.3.gz
+%%PERL5_MAN3%%/Vend::Payment::TCLink.3.gz
+%%PERL5_MAN3%%/Vend::Payment::TestPayment.3.gz
+%%PERL5_MAN3%%/Vend::Payment::iTransact.3.gz
+%%PERL5_MAN3%%/Vend::SOAP::Transport.3.gz
+%%PERL5_MAN3%%/Vend::SQL_Parser.3.gz
+%%PERL5_MAN3%%/Vend::Ship.3.gz
+%%PERL5_MAN3%%/Vend::Ship::Postal.3.gz
+%%PERL5_MAN3%%/Vend::Ship::QueryUPS.3.gz
+%%PERL5_MAN3%%/Vend::Table::Editor.3.gz
+%%PERL5_MAN3%%/Vend::UserControl.3.gz
+%%PERL5_MAN3%%/Vend::UserDB.3.gz
+@dir(interch,interch,770) /var/run/interchange

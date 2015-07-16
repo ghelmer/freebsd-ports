@@ -24,18 +24,11 @@ NO_BUILD=	yes
 
 TTF=		TW-Kai-98_1.ttf TW-Sung-98_1.ttf
 
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
 .for f in ${TTF}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${f} ${FONTSDIR}
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${f} ${STAGEDIR}${FONTSDIR}
 .endfor
 
-post-install:
-	@${ECHO_CMD} "*******************************************************************************"
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_CMD} "*******************************************************************************"
-
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/chinese/ttfm/Makefile.ttf"
-.include <bsd.port.post.mk>
+.include "${.CURDIR}/../ttfm/Makefile.ttf"
+.include <bsd.port.mk>

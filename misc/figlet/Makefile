@@ -5,17 +5,18 @@ PORTNAME=	figlet
 PORTVERSION=	2.2.5
 CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.figlet.org/pub/figlet/program/unix/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	obrien
+		LOCAL/obrien
 
-MAINTAINER=	obrien@FreeBSD.org
+MAINTAINER=	swills@FreeBSD.org
 COMMENT=	SysV banner-like program prints strings in large fancy ASCII art
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 MAKE_ENV=	datadir=${DATADIR} prefix=${PREFIX}
 MAKE_ARGS=	LD=${CC}
+
+OPTIONS_DEFINE=	DOCS
 
 regression-test:
 	@ cd ${WRKSRC} && ${MAKE} check

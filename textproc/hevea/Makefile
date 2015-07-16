@@ -2,29 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	hevea
-PORTVERSION=	2.16
+PORTVERSION=	2.23
 CATEGORIES=	textproc
 MASTER_SITES=	http://para.inria.fr/~maranget/hevea/distri/ \
 		ftp://ftp.inria.fr/INRIA/moscova/hevea/
-DISTFILES=	${PORTNAME}-${PORTVERSION}.tar.gz
-EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION}.tar.gz
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Convert LaTeX to HTML
-
-OPTIONS_DEFINE=	DOCS
 
 BUILD_DEPENDS=	ocamlc:${PORTSDIR}/lang/ocaml
 
+OPTIONS_DEFINE=	DOCS
+
 PLIST_SUB=	HEVEAVERSION=${PORTVERSION}
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
 PORTDOCS=	*
-DISTFILES+=	${PORTNAME}-${PORTVERSION}-manual.pdf \
-		${PORTNAME}-${PORTVERSION}-manual.tar.gz
-.endif
+DOCS_DISTFILES+=	${PORTNAME}-${PORTVERSION}-manual.pdf \
+			${PORTNAME}-${PORTVERSION}-manual.tar.gz
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^PREFIX=/s|/usr/local|${PREFIX}|' \
@@ -35,12 +33,10 @@ post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/bibhva
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/hevea
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/hacha
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/hevea
 .if ${PORT_OPTIONS:MDOCS}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/hevea
 	${INSTALL_DATA} ${DISTDIR}/${PORTNAME}-${PORTVERSION}-manual.pdf ${STAGEDIR}${PREFIX}/share/doc/hevea
 	(cd ${STAGEDIR}${PREFIX}/share/doc/hevea; ${TAR} xvfz ${DISTDIR}/${PORTNAME}-${PORTVERSION}-manual.tar.gz)
-	#@${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${PREFIX}/share/doc/hevea
 .endif
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

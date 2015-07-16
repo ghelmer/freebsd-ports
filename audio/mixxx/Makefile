@@ -4,34 +4,36 @@
 PORTNAME=	mixxx
 PORTVERSION=	1.11.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	6
+PORTREVISION=	12
 CATEGORIES=	audio
-MASTER_SITES=	http://downloads.mixxx.org/%SUBDIR%/
-MASTER_SITE_SUBDIR=	${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	http://downloads.mixxx.org/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DJ mixing application
 
 LICENSE=	GPLv2 # (or later)
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	portaudio2>=0:${PORTSDIR}/audio/portaudio2
 LIB_DEPENDS=	libFLAC.so:${PORTSDIR}/audio/flac \
 		libid3tag.so:${PORTSDIR}/audio/libid3tag \
 		libmad.so:${PORTSDIR}/audio/libmad \
+		libportaudio.so:${PORTSDIR}/audio/portaudio \
 		libsndfile.so:${PORTSDIR}/audio/libsndfile \
 		libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
 		libtag.so:${PORTSDIR}/audio/taglib \
 		libprotobuf.so:${PORTSDIR}/devel/protobuf
-RUN_DEPENDS=	portaudio2>=0:${PORTSDIR}/audio/portaudio2
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		scons iconv
 USE_QT4=	corelib gui network opengl script sql svg xml \
-		linguist_build moc_build qmake_build rcc_build uic_build
+		linguisttools_build moc_build qmake_build rcc_build uic_build
 USE_GL=		glu
 MAKE_ARGS=	qtdir="${QT_PREFIX}" optimize=0
 LATE_INSTALL_ARGS=	--install-sandbox=${STAGEDIR}
+
+PORTDATA=	*
+PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS FAAD GPERFTOOLS LAME SHOUTCAST WAVPACK
 OPTIONS_DEFAULT=	FAAD SHOUTCAST WAVPACK
@@ -69,6 +71,7 @@ post-patch:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/mixxx
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/mixxx/plugins/*/*.so
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/mixxx/plugins/soundsource
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in Mixxx-Manual.pdf README README.macro

@@ -3,7 +3,7 @@
 
 PORTNAME=	gsculpt
 PORTVERSION=	0.99.47
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME:S,-src,,}
 DISTNAME=	gSculpt-${PORTVERSION}-alpha-src
@@ -19,11 +19,10 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}opengl>0:${PORTSDIR}/graphics/py-opengl \
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S,-src,,}
 
-USES=		pkgconfig scons
+USES=		pkgconfig python:2 scons
 USE_GNOME=	pygtk2
 USE_GL=		glu
 USE_XORG=	x11
-USE_PYTHON=	2
 USE_LDCONFIG=	${PREFIX}/lib/gSculpt
 
 DATADIR=	${PREFIX}/share/gSculpt

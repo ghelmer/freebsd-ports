@@ -3,7 +3,7 @@
 
 PORTNAME=	proggy_fonts
 PORTVERSION=	1.0
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://www.proggyfonts.com/download/
 DISTFILES=	ProggyClean.pcf.zip ProggySquare.pcf.zip \
@@ -25,23 +25,17 @@ EXTRACT_ONLY=	ProggyClean.pcf.zip ProggySquare.pcf.zip \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The perfect monospaced bitmap programming fonts
 
-RUN_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
-
 ALREADY_UNZIP=	${DISTDIR}/Opti.pcf.gz ${DISTDIR}/OptiSmall.pcf.gz \
 	        ${DISTDIR}/PixelCarnageMono.pcf.gz
 
 USE_XORG=	x11
-USES=		zip
+USES=		fonts zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
-XFONTDIR=	${PREFIX}/lib/X11/fonts/local
 
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${XFONTDIR}
-	@${CP} ${ALREADY_UNZIP} ${WRKDIR}
-	@${INSTALL_DATA} ${WRKDIR}/*.pcf* ${XFONTDIR}
-	@(cd ${XFONTDIR}; mkfontdir)
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${CP} ${ALREADY_UNZIP} ${WRKDIR}
+	${INSTALL_DATA} ${WRKDIR}/*.pcf* ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

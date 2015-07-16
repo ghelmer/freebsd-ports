@@ -3,7 +3,7 @@
 
 PORTNAME=	spread
 PORTVERSION=	3.17.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net perl5
 MASTER_SITES=	http://bsdforge.com/projects/source/net/spread/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
@@ -15,7 +15,7 @@ MAKE_JOBS_UNSAFE=	yes
 
 GNU_CONFIGURE=	yes
 USES=		perl5 tar:xz
-USE_PERL5=	build fixpacklist run
+USE_PERL5=	build run
 USE_RC_SUBR=	spread
 USE_LDCONFIG=	yes
 
@@ -25,7 +25,7 @@ RUNDIR=		/var/run/spread
 
 PLIST_SUB+=	USERS=${USERS} GROUPS=${GROUPS} RUNDIR=${RUNDIR}
 
-MAKE_ARGS+=	PTHREAD_CFLAGS=${PTHREAD_CFLAGS} PTHREAD_LIBS=${PTHREAD_LIBS}
+MAKE_ARGS+=	PTHREAD_LIBS="-lpthread"
 WRKSRC=		${WRKDIR}/${PORTNAME}-src-${PORTVERSION}
 
 PKGMESSAGE=	${WRKSRC}/license.txt
@@ -37,8 +37,6 @@ HEADERFILES=	sp_func.h sp_func.h sp_events.h
 # bsd.port.mk doesn't allow us to use GNU_CONFIGURE and PERL_CONFIGURE together.
 PERL_CONFIGURE_ARGS=	CC="${CC}" CCFLAGS="${CFLAGS}" PREFIX="${PREFIX}" \
 			INSTALLPRIVLIB="${PREFIX}/lib" INSTALLARCHLIB="${PREFIX}/lib"
-
-_MANPAGES+=	${PREFIX}/lib/perl5/${PERL_VER}/man/man3/Spread.3
 
 post-configure:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' \
@@ -76,6 +74,6 @@ post-install:
 	${INSTALL} -m 750 -d ${STAGEDIR}${RUNDIR}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libspread.so.1
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtspread.so.1
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/mach/auto/Spread/Spread.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Spread/Spread.so
 
 .include <bsd.port.post.mk>

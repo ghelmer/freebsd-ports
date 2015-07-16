@@ -3,6 +3,7 @@
 
 PORTNAME=	idnkit
 PORTVERSION=	2.3
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://jprs.co.jp/idn/
 PKGNAMESUFFIX=	2
@@ -10,15 +11,14 @@ PKGNAMESUFFIX=	2
 MAINTAINER=	fbsd@grid.einherjar.de
 COMMENT=	Internationalized Domain Name toolkit 2
 
-LICENSE_PERMS=	# permissive
-LICENSE_NAME=	OSCL
-LICENSE_FILE=	LICENSE.txt
+LICENSE=	OSCL
+LICENSE_NAME=	Open Source Code License
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 CONFLICTS_INSTALL=	idnkit-1.*
 
-USE_AUTOTOOLS=	libtool
-USES=		iconv
-USE_BZIP2=	yes
+USES=		iconv libtool tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_BASE}
 

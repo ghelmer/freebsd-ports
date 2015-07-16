@@ -1,14 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	bcrypt-ruby
-PORTVERSION=	3.1.1
+PORTVERSION=	3.1.5
+PORTREVISION=	1
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Sophisticated and secure hash algorithm for passwords
 
-RUN_DEPENDS+=	bcrypt:${PORTSDIR}/security/bcrypt
+LICENSE=	MIT
+
+RUN_DEPENDS=	rubygem-bcrypt>=3.1.3:${PORTSDIR}/security/rubygem-bcrypt
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

@@ -1,9 +1,9 @@
 # Created by: Maxim Sobolev <sobomax@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/trunk/accessibility/at-spi2-core/Makefile 18634 2013-07-26 10:42:35Z kwm $
+#   $MCom: ports/trunk/accessibility/at-spi2-core/Makefile 20077 2014-11-13 09:00:15Z gusi $
 
 PORTNAME=	at-spi2-core
-PORTVERSION=	2.8.0
+PORTVERSION=	2.14.1
 CATEGORIES=	accessibility x11-toolkits
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -17,14 +17,14 @@ LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake pathfix pkgconfig tar:xz
-USE_GNOME=	gnomehier glib20 intlhack introspection:build
+USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USE_GNOME=	glib20 intlhack introspection:build
 USE_XORG=	x11 xi xtst xext
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-static \
-		--disable-xevie
+CONFIGURE_ARGS=	--disable-xevie
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

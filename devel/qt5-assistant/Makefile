@@ -18,10 +18,8 @@ DESKTOP_ENTRIES="Qt 5 Assistant" "" \
 		"${PREFIX}/${QT_BINDIR_REL}/assistant" \
 		"Development;Qt;" true
 
-# Run qmake also in help/ subdirectory to generate qt_lib_help.pri.
-WRKSRC_SUBDIR=	src/${PORTNAME}
-BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
-INSTALL_WRKSRC=	${BUILD_WRKSRC}
+BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}/${PORTNAME}
+INSTALL_WRKSRC=	${WRKSRC}/src/${PORTNAME}/${PORTNAME}
 
 post-install:
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/images/assistant-128.png \

@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	fvm
-PORTVERSION=	0.15.3
-PORTREVISION=	6
+PORTVERSION=	0.15.5
+PORTREVISION=	1
 CATEGORIES=	science parallel
-MASTER_SITES=	http://research.edf.com/fichiers/fckeditor/Commun/Innovation/logiciels/code_saturne/Releases/
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/.//g}
+MASTER_SITES=	http://code-saturne.org/releases/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Code_Saturne Finite Volume Mesh
@@ -20,14 +19,14 @@ LIB_DEPENDS=	libmed.so:${PORTSDIR}/french/med	\
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=		zip
+USES=		libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-bft=${LOCALBASE}	\
 		--with-hdf5=${LOCALBASE}	\
 		--with-cgns=${LOCALBASE}	\
 		--with-med=${LOCALBASE}
-CONFIGURE_ENV=	PTHREAD_LIBS=${PTHREAD_LIBS}
+INSTALL_TARGET=	install-strip
 
 .if defined(WITH_LAM)
 BUILD_DEPENDS+=	${LOCALBASE}/lib/liblam.a:${PORTSDIR}/net/lam
@@ -41,6 +40,8 @@ CONFIGURE_ARGS+=	--with-mpi=${LOCALBASE}/mpi/openmpi
 BUILD_DEPENDS+=	${LOCALBASE}/bin/mpicc:${PORTSDIR}/net/mpich2
 RUN_DEPENDS+=	${LOCALBASE}/bin/mpirun:${PORTSDIR}/net/mpich2
 CONFIGURE_ARGS+=	--with-mpi=${LOCALBASE}
+# Do not directly depend on Fortran, but FFLAGS needed to link with mpich2
+USES+=		fortran
 .endif
 
 .if defined(WITH_DEBUG)

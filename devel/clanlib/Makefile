@@ -3,34 +3,31 @@
 
 PORTNAME=	clanlib
 PORTVERSION=	2.3.7
-PORTREVISION=	3
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.clanlib.org/download/releases-2.0/
 DISTNAME=	ClanLib-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform game SDK
 
 LICENSE=	ZLIB
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libmikmod.so:${PORTSDIR}/audio/libmikmod \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+		libpcre.so:${PORTSDIR}/devel/pcre
 
+USES=		execinfo gmake jpeg libtool pathfix pkgconfig tar:tgz
 USE_GCC=	yes
 USE_XORG=	x11
-USES=		gmake pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_GL=		yes
 USE_SQLITE=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include -I${LOCALBASE}/include/libpng15
+CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-docs \
@@ -49,6 +46,7 @@ CONFIGURE_ARGS=	--disable-docs \
 		--enable-clanVorbis \
 		--enable-getaddr
 
+INSTALL_TARGET=	install-strip
 PLIST_SUB+=	VER=${PORTVERSION:R} \
 		SHORT_VER=${PORTVERSION:R:R}${PORTVERSION:R:E}
 

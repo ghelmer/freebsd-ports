@@ -3,47 +3,39 @@
 
 PORTNAME=	geos
 PORTVERSION=	3.4.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics geography
-MASTER_SITES=	http://download.osgeo.org/geos/
+MASTER_SITES=	http://download.osgeo.org/geos/ \
+		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	GEOS implements all the OpenGIS "Simple Features for SQL"
 
 LICENSE=	LGPL21
-
-USE_AUTOTOOLS=	libtool
-USES=		gmake tar:bzip2
-GNU_CONFIGURE=	yes
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	PHP PYTHON RUBY
 OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USE_LDCONFIG=	yes
+USES=		gmake libtool tar:bzip2
 
-.if ${PORT_OPTIONS:MPHP} || ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MRUBY}
-BUILD_DEPENDS+=	swig1.3:${PORTSDIR}/devel/swig13
-.endif
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
-.if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=		yes
-CONFIGURE_ARGS+=	--enable-python
-.endif
+PHP_BUILD_DEPENDS=	${LOCALBASE}/bin/swig1.3:${PORTSDIR}/devel/swig13
+PHP_CONFIGURE_ENABLE=	php
+PHP_USE=		PHP=yes PHP_BUILD=yes
+PYTHON_BUILD_DEPENDS=	${LOCALBASE}/bin/swig1.3:${PORTSDIR}/devel/swig13
+PYTHON_CONFIGURE_ENABLE=python
+PYTHON_USES=		python:2
+RUBY_BUILD_DEPENDS=	${LOCALBASE}/bin/swig1.3:${PORTSDIR}/devel/swig13
+RUBY_CONFIGURE_ENABLE=	ruby
+RUBY_CONFIGURE_ENV=	RUBY="${RUBY}"
+RUBY_USE=		RUBY=yes
 
-.if ${PORT_OPTIONS:MPHP}
-USE_PHP=		yes
-USE_PHP_BUILD=		yes
-CONFIGURE_ARGS+=	--enable-php
-.endif
-
-.if ${PORT_OPTIONS:MRUBY}
-USE_RUBY=		yes
-CONFIGURE_ARGS+=	--enable-ruby
-CONFIGURE_ENV+=		RUBY="${RUBY}"
-.endif
-
-post-install:
-	@${LN} -s ${PREFIX}/lib/libgeos-${PORTVERSION}.so \
-		${STAGEDIR}${PREFIX}/lib/libgeos.so.0
+post-patch:
+	@${REINPLACE_CMD} -e 's|-lstdc++||' ${WRKSRC}/configure ${WRKSRC}/tests/geostest/Makefile.in ${WRKSRC}/tests/thread/Makefile.in
 
 .include <bsd.port.mk>

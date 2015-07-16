@@ -6,15 +6,18 @@ PORTVERSION=	0.8.2
 CATEGORIES=	finance
 MASTER_SITES=	SF
 
-MAINTAINER=	dtynan@kalopa.com
-COMMENT=	Beanie is a fully-fledged accounting and payroll system
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Open Source accounting system
 
-LIB_DEPENDS=	expat:${PORTSDIR}/textproc/expat2
+LICENSE=	GPLv2 # (or later)
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=	dbow:${PORTSDIR}/databases/dbow
+LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
+LATE_INSTALL_ARGS=	BEANIEROOT="${STAGEDIR}${PREFIX}/beanie"
 MAKE_JOBS_UNSAFE=	yes
 
-NO_STAGE=	yes
 post-patch:
 	@${CP} ${WRKSRC}/beanie.mk.sample $(WRKSRC)/beanie.mk
 	@${CP} ${WRKSRC}/tmac/lhead.sample.r ${WRKSRC}/tmac/lhead.r

@@ -9,7 +9,7 @@ EXTRACT_SUFX=	.c
 EXTRACT_ONLY=	# empty
 
 MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	A vbs-attachment filter for Sendmail Milter
+COMMENT=	Vbs-attachment filter for Sendmail Milter
 
 LICENSE=	GPLv2
 
@@ -17,9 +17,8 @@ USE_RC_SUBR=	vbsfilter
 PLIST_FILES=	libexec/vbsfilter
 
 CTARGETS+=	vbsfilter-${PORTVERSION}
-LIBS+=		${PTHREAD_LIBS}
-LIBS+=		-lmilter
-CFLAGS+=	-Wall ${PTHREAD_CFLAGS:S=""==}
+LIBS+=		-lpthread -lmilter
+CFLAGS+=	-Wall
 
 .include <bsd.port.pre.mk>
 

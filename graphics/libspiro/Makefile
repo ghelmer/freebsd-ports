@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	libspiro
-DISTVERSION=	20071029
-PORTREVISION=	1
+DISTVERSION=	0.3.20150131
+PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	SF
-DISTNAME=	${PORTNAME}_src-${PORTVERSION}
 
 MAINTAINER=	cyberbotx@cyberbotx.com
 COMMENT=	Library to convert clothoid splines into Bezier splines
 
-USES=		gmake libtool:keepla tar:bzip2
+USE_GITHUB=	yes
+GH_ACCOUNT=	fontforge
+
+USES=		gmake libtool autoreconf
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

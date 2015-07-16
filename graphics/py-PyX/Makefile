@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	PyX
-PORTVERSION=	0.13
+PORTVERSION=	0.14
 CATEGORIES=	graphics python
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,7 @@ COMMENT=	Python package for creating encapsulated PostScript figures
 
 LICENSE=	GPLv2
 
-USE_PYTHON=		3
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:3
 USE_TEX=	latex:build
 USE_PYTHON=	autoplist distutils
 

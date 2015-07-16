@@ -3,7 +3,7 @@
 
 PORTNAME=	pengpong
 PORTVERSION=	0.3
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}-linux
 
@@ -17,6 +17,8 @@ USE_PERL5=	build
 
 DATAFILES=	24P_Copperplate_Blue.png ball.tga logo.jpg \
 		paddle.tga red.png
+
+OPTIONS_DEFINE=	DOCS
 
 pre-patch:
 	@${REINPLACE_CMD} -i '' -e 's|/usr/local/share/games/pengpong|${DATADIR}|' \

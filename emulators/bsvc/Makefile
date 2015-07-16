@@ -5,8 +5,7 @@ PORTNAME=	bsvc
 PORTVERSION=	2.1
 PORTREVISION=	3
 CATEGORIES=	emulators tk
-MASTER_SITES=	${MASTER_SITE_SUNSITE}
-MASTER_SITE_SUBDIR=	system/emulators
+MASTER_SITES=	SUNSITE/system/emulators
 DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,7 +14,7 @@ COMMENT=	Extensible hardware simulation framework with MC68K support
 WRKSRC=		${WRKDIR}/${DISTNAME}/src
 MAKE_ENV=	PROJECT_BASE=${STAGEDIR}${PREFIX} WRKSRC=${WRKSRC} WISH=${WISH}
 
-USES+=		tk
+USES=		tk
 MAKE_JOBS_UNSAFE=	yes
 
 pre-patch:

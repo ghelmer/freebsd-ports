@@ -4,16 +4,13 @@
 PORTNAME=	amrstat
 PORTVERSION=	20070216
 CATEGORIES=	sysutils
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	jkim
+MASTER_SITES=	LOCAL/jkim
 
 MAINTAINER=	jkim@FreeBSD.org
 COMMENT=	Utility for LSI Logic's MegaRAID RAID controllers
 
 LICENSE=	BSD2CLAUSE
 
-PLIST_DIRSTRY=	etc/periodic/daily \
-		etc/periodic
 PLIST_FILES=	etc/periodic/daily/407.status-amr-raid \
 		sbin/amrstat
 

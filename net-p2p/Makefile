@@ -5,16 +5,15 @@
 
     SUBDIR += amule
     SUBDIR += amule-devel
-    SUBDIR += azureus2
     SUBDIR += bitcoin
     SUBDIR += bitcoin-daemon
+    SUBDIR += bitcoin-utils
     SUBDIR += bitflu
     SUBDIR += bitmessage
     SUBDIR += bnbt
     SUBDIR += btpd
     SUBDIR += btqueue
     SUBDIR += btsync
-    SUBDIR += cdonkey
     SUBDIR += cpuminer
     SUBDIR += createtorrent
     SUBDIR += ctcs
@@ -37,7 +36,6 @@
     SUBDIR += gnunet
     SUBDIR += gnunet-gtk
     SUBDIR += gtk-gnutella
-    SUBDIR += gtkhx
     SUBDIR += gtorrentviewer
     SUBDIR += jigdo
     SUBDIR += ktorrent
@@ -46,10 +44,8 @@
     SUBDIR += libktorrent
     SUBDIR += libpdtp
     SUBDIR += libtorrent
-    SUBDIR += libtorrent-devel
     SUBDIR += libtorrent-rasterbar
     SUBDIR += libtorrent-rasterbar-python
-    SUBDIR += linux-jigdo
     SUBDIR += linuxdcpp
     SUBDIR += litecoin
     SUBDIR += litecoin-daemon
@@ -60,19 +56,15 @@
     SUBDIR += mldonkey
     SUBDIR += mldonkey-core
     SUBDIR += mldonkey-gui
-    SUBDIR += mldonkey-perlreactor
-    SUBDIR += mldonkey-urlslave
-    SUBDIR += museekplus
     SUBDIR += namecoin
+    SUBDIR += namecoin-daemon
     SUBDIR += napshare
     SUBDIR += ncdc
     SUBDIR += opendchub
-    SUBDIR += opennap
     SUBDIR += p5-Net-BitTorrent
     SUBDIR += p5-Net-BitTorrent-File
     SUBDIR += p5-Net-BitTorrent-PeerPacket
     SUBDIR += p5-Net-DirectConnect
-    SUBDIR += p5-Net-DirectConnect-TigerHash
     SUBDIR += p5-WWW-BitTorrent
     SUBDIR += phex
     SUBDIR += py-kenosis
@@ -84,11 +76,8 @@
     SUBDIR += retroshare
     SUBDIR += rtgui
     SUBDIR += rtorrent
-    SUBDIR += rtorrent-devel
     SUBDIR += shx
-    SUBDIR += solidcoin
     SUBDIR += squall
-    SUBDIR += teknap
     SUBDIR += torrentsniff
     SUBDIR += transmission
     SUBDIR += transmission-cli
@@ -111,9 +100,9 @@
     SUBDIR += verlihub-plugins-luascript
     SUBDIR += verlihub-plugins-messanger
     SUBDIR += verlihub-plugins-stats
-    SUBDIR += vhcp
     SUBDIR += vuze
     SUBDIR += xnap
     SUBDIR += zetacoin
+    SUBDIR += zetacoin-nox11
 
 .include <bsd.port.subdir.mk>

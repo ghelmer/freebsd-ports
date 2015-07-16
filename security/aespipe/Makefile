@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aespipe
-DISTVERSION=	v2.3e
-PORTREVISION=	1
+DISTVERSION=	v2.4c
 CATEGORIES=	security
 MASTER_SITES=	http://loop-aes.sourceforge.net/${PORTNAME}/ \
 		http://koti.tnnet.fi/jari.ruusu/linux/
@@ -15,7 +14,7 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	gpg:${PORTSDIR}/security/gnupg
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/aespipe man/man1/aespipe.1.gz

@@ -2,22 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	mdocml
-PORTVERSION=	1.12.3
+PORTVERSION=	1.13.3
 CATEGORIES=	textproc
 MASTER_SITES=	http://mdocml.bsd.lv/snapshots/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	uqs
+		LOCAL/uqs
 
 MAINTAINER=	uqs@FreeBSD.org
 COMMENT=	mdoc macro compiler
 
-EXAMPLESDIR_REL=share/examples/mandoc
+LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
-# Skip installing preconv(1) to avoid conflicting with textproc/groff
+EXAMPLESDIR=	${PREFIX}/share/examples/mandoc
+
+HAS_CONFIGURE=	yes
+CFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+
 post-patch:
 	@${REINPLACE_CMD} -e '/^CFLAGS/s/-g//' -e '/^PREFIX/s/=/?=/' \
-		-e '/INSTALL_LIB/d' -e '/LIBDIR/d' -e '/INCLUDEDIR/d' \
-		-e '/INSTALL_/s/preconv\(\.1\)*//' \
 		${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

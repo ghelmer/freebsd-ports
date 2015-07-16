@@ -9,8 +9,10 @@ bin/protoc-gen-go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/equal.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/equal_test.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/extensions.go
+%%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/extensions_test.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/lib.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/message_set.go
+%%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/message_set_test.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/pointer_reflect.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/pointer_unsafe.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/properties.go
@@ -24,15 +26,3 @@ bin/protoc-gen-go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/text_parser.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/text_parser_test.go
 %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/text_test.go
-@dirrmtry %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto/testdata
-@dirrmtry %%GO_SRCDIR%%/%%GO_PKGNAME%%/proto
-@dirrmtry %%GO_SRCDIR%%/%%GO_PKGNAME%%
-@dirrmtry %%GO_SRCDIR%%/code.google.com/p
-@dirrmtry %%GO_SRCDIR%%/code.google.com
-@dirrmtry %%GO_SRCDIR%%
-@dirrmtry %%GO_LIBDIR%%/%%GO_PKGNAME%%
-@dirrmtry %%GO_LIBDIR%%/code.google.com/p
-@dirrmtry %%GO_LIBDIR%%/code.google.com
-@dirrmtry %%GO_LIBDIR%%
-@dirrmtry share/go/pkg
-@dirrmtry share/go

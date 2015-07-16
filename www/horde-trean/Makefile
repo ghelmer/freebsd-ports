@@ -1,18 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	trean
-PORTVERSION=	1.0.3
+PORTVERSION=	1.1.1
 CATEGORIES=	www pear
 PKGNAMEPREFIX=	horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Bookmark Manager
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LATEST_LINK=	horde-${PORTNAME}
-
+USES=	horde cpe
 USE_PHP=	gettext json
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
@@ -33,6 +32,4 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Vfs \
 		Horde_View
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

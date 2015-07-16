@@ -3,12 +3,11 @@
 
 PORTNAME=	pwcbsd
 PORTVERSION=	1.4.1
-PORTREVISION=	10
+PORTREVISION=	12
 CATEGORIES=	multimedia sysutils kld
 MASTER_SITES=	http://raaf.atspace.org/ \
 		http://www.bsd-geek.de/FreeBSD/distfiles/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	miwi
+		LOCAL/miwi
 
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	The Linux pwc webcam driver ported to FreeBSD
@@ -19,9 +18,9 @@ CONFLICTS=	pwcview-[0-9]*
 
 SSP_UNSAFE=	kernel module does not support ssp
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
+USES=		kmod
 
-PLIST_SUB=	KMODDIR=${KMODDIR}
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 OPTIONS_DEFINE=	PROGRAMS MMAP
 OPTIONS_DEFAULT=	PROGRAMS
@@ -48,7 +47,7 @@ ALL_TARGET=	all
 .if ${PORT_OPTIONS:MPROGRAMS}
 ALL_TARGET+=	pwcview
 PROGRAMS=	pwcview
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 USE_SDL=	sdl
 PLIST_SUB+=	PROGRAMS=""
 .else

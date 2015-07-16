@@ -7,11 +7,10 @@ COMMENT=	Mozc engine for Fcitx
 DATADIR=	${PREFIX}/share/fcitx/${PORTNAME}
 
 MASTERDIR=	${.CURDIR}/../../japanese/mozc-server
-PKGMESSAGE=	${.CURDIR}/pkg-message
+FILESDIR=	${.CURDIR}/files
+SUB_FILES=	pkg-message
+PKGMESSAGE=	${WRKDIR}/pkg-message
 
 BUILD_MOZC_LIST=	fcitx_mozc
 
-IGNORE=	not compatible with mozc 1.11.1502.102
-
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

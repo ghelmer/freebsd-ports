@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	kickassembler
-PORTVERSION=	3.30
+PORTVERSION=	3.36
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.theweb.dk/KickAssembler/
 DISTNAME=	KickAssembler${PORTVERSION}
@@ -18,6 +18,8 @@ NO_BUILD=	yes
 SUB_LIST=	PORTNAME=${PORTNAME}
 SUB_FILES=	kickassembler.sh
 WRKSRC=		${WRKDIR}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-extract-script:
 	@${MV} "${WRKSRC}/Examples/MusicIrq/ode to 64.bin" ${WRKSRC}/Examples/MusicIrq/odeto64.bin

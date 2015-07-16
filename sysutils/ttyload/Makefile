@@ -7,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.daveltd.com/src/util/ttyload/
 
-MAINTAINER=	dhn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Give a color-coded graph of load averages over time
 
 LICENSE=	ISCL
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ALL_TARGET=	default
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 PLIST_FILES=	bin/ttyload man/man1/ttyload.1.gz
 PORTDOCS=	README
 

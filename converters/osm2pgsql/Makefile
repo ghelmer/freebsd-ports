@@ -2,29 +2,30 @@
 # $FreeBSD$
 
 PORTNAME=	osm2pgsql
-PORTVERSION=	0.84.0
-PORTREVISION=	3
+PORTVERSION=	0.87.2
+PORTREVISION=	1
 CATEGORIES=	converters geography
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Convert OSM XML data to PostgreSQL database
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj \
 		libgeos.so:${PORTSDIR}/graphics/geos \
-		libprotobuf-c.so:${PORTSDIR}/devel/protobuf-c
+		libprotobuf-c.so:${PORTSDIR}/devel/protobuf-c \
+		libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openstreetmap
-GH_COMMIT=	237b125
 
-USES=		gmake libtool lua pgsql tar:bzip2
-USE_AUTOTOOLS=	autoconf automake aclocal autoheader libtoolize
-AUTOMAKE_ARGS=	-a -c -f
+USES=		autoreconf gmake libtool lua pgsql tar:bzip2
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	LUA="${LUA_CMD}" \
 		LUA_INCLUDE="-I${LUA_INCDIR}" \
-		LUA_LIB="-L${LUA_LIBDIR} -llua-${LUA_VER}"
+		LUA_LIB="-L${LUA_LIBDIR} -llua-${LUA_VER}" \
+		--without-lockfree # workaround for build error
 USE_GNOME=	libxml2
 
 PLIST_FILES=	bin/nodecachefilereader \
@@ -35,8 +36,12 @@ PLIST_FILES=	bin/nodecachefilereader \
 PORTDOCS=	ChangeLog README AUTHORS TODO
 PORTDATA=	*
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/m4/*.m4
+	@${REINPLACE_CMD} -e 's|AC_MSG_WARN|AC_MSG_ERROR|' ${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e 's|-lstdc++||' ${WRKSRC}/Makefile.am
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

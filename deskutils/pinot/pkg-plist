@@ -79,26 +79,17 @@ include/pinot/xdgmime/xdgmimemagic.h
 include/pinot/xdgmime/xdgmimeparent.h
 lib/pinot/backends/libxapianbackend.so
 lib/pinot/backends/libxapianbackend.so.1
+lib/pinot/backends/libxapianbackend.so.1.0.0
 lib/pinot/libBasicUtils.a
-lib/pinot/libBasicUtils.la
 lib/pinot/libCollect.a
-lib/pinot/libCollect.la
 lib/pinot/libCore.a
-lib/pinot/libCore.la
 lib/pinot/libFilter.a
-lib/pinot/libFilter.la
 lib/pinot/libIndex.a
-lib/pinot/libIndex.la
 lib/pinot/libIndexSearch.a
-lib/pinot/libIndexSearch.la
 lib/pinot/libMonitor.a
-lib/pinot/libMonitor.la
 lib/pinot/libSQL.a
-lib/pinot/libSQL.la
 lib/pinot/libTokenize.a
-lib/pinot/libTokenize.la
 lib/pinot/libUtils.a
-lib/pinot/libUtils.la
 lib/pinot/filters/libarchivefilter.so
 %%CHMLIB%%lib/pinot/filters/libchmfilter.so
 lib/pinot/filters/libexiv2imagefilter.so
@@ -157,19 +148,3 @@ share/locale/zh_TW/LC_MESSAGES/pinot.mo
 %%DATADIR%%/pinot-enum-index.sh
 %%DATADIR%%/stopwords/.empty_file
 %%DATADIR%%/xapian-powered.png
-@dirrm %%DATADIR%%/stopwords
-@dirrm %%DATADIR%%/engines
-@dirrm %%DATADIR%%
-@dirrmtry share/icons/hicolor/48x48/apps
-@dirrmtry share/icons/hicolor/48x48
-@dirrmtry share/icons/hicolor
-@dirrmtry share/icons
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm lib/pinot/filters
-@dirrm lib/pinot/backends
-@dirrm lib/pinot
-@dirrm include/pinot/xdgmime
-@dirrm include/pinot/filters
-@dirrm include/pinot/cjkv
-@dirrm include/pinot
-@dirrm etc/pinot

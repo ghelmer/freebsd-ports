@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Net-Todoist
-PORTVERSION=	0.05
+PORTVERSION=	0.06
+PORTREVISION=	1
 CATEGORIES=	net www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,10 +14,11 @@ COMMENT=	Todoist API
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	p5-JSON-XS>=0:${PORTSDIR}/converters/p5-JSON-XS \
+BUILD_DEPENDS=	p5-JSON-XS>=0:${PORTSDIR}/converters/p5-JSON-XS \
 		p5-libwww>=0:${PORTSDIR}/www/p5-libwww
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
 USE_PERL5=	configure
+USES=		perl5
 
 .include <bsd.port.mk>

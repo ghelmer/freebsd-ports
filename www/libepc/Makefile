@@ -1,26 +1,27 @@
 # Created by: Koop Mast <kwm@FreeBSD.org>
 # $FreeBSD$
+#   $MCom: ports/trunk/www/libepc/Makefile 19822 2014-08-20 08:57:46Z gusi $
 
 PORTNAME=	libepc
-PORTVERSION=	0.3.11
-PORTREVISION=	2
+PORTVERSION=	0.4.4
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	GNOME
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	The Easy Publish and Consume library
 
-LIB_DEPENDS=	uuid.1:${PORTSDIR}/misc/e2fsprogs-libuuid \
-		soup-2.4.1:${PORTSDIR}/devel/libsoup \
-		avahi-ui.0:${PORTSDIR}/net/avahi-gtk
+LIB_DEPENDS=	libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid \
+		libsoup-2.4.so:${PORTSDIR}/devel/libsoup \
+		libgnutls.so:${PORTSDIR}/security/gnutls \
+		libavahi-ui-gtk3.so:${PORTSDIR}/net/avahi-gtk3
 
-USE_BZIP2=	yes
-USES=		gettext gmake pkgconfig
-USE_GNOME=	gnomeprefix gnomehack gtk20
+USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USE_GNOME=	gnomeprefix gtk30
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFIGURE_ARGS=	--enable-static
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

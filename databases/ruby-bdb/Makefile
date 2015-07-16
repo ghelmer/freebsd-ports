@@ -3,7 +3,7 @@
 
 PORTNAME=	bdb
 PORTVERSION=	0.6.6
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	databases ruby
 MASTER_SITES=	ftp://ftp.idaemons.org/pub/distfiles/ruby/ \
 		http://idaemons.org/distfiles/ruby/ \
@@ -15,8 +15,9 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	knu@FreeBSD.org
 COMMENT=	Ruby interface to Oracle Berkeley DB revision 2 or later
 
+LICENSE=	RUBY
+
 USE_BDB=	yes
-USE_BZIP2=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONSFILE=	${PORT_DBDIR}/ruby-${PORTNAME}/options
@@ -35,7 +36,7 @@ EXAMPLESDIR=	${RUBY_MODEXAMPLESDIR}
 PLIST_FILES=	%%RUBY_SITEARCHLIBDIR%%/bdb.so
 PORTDOCS=	*
 PORTEXAMPLES=	*
-USES=		shebangfix
+USES=		shebangfix tar:bzip2
 SHEBANG_FILES=	examples/record.rb \
 		examples/recno.rb \
 		examples/zeroc.rb \
@@ -55,33 +56,37 @@ SHEBANG_FILES=	examples/record.rb \
 		examples/basic.rb \
 		examples/lock.rb
 
-
-NEED_ROOT=	yes
-
 .include <bsd.port.pre.mk>
 
-post-patch:
-.if ${RUBY_VER} == 2.0
-	@${REINPLACE_CMD} -e '/remove_const/d' ${WRKSRC}/src/features.rb
+.if ${RUBY_VER} >= 2.0
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-src-features.rb
+.endif
+
+.if ${RUBY_VER} >= 2.1
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-bdbxml2-bdbxml.h
+.endif
+
+.if ${RUBY_VER} == 2.1
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-src-common.c-21
+.endif
+
+.if ${RUBY_VER} == 2.2
+EXTRA_PATCHES+=		${FILESDIR}/extra-patch-src-common.c-22 \
+			${FILESDIR}/extra-patch-src-recnum.c-22 \
+			${FILESDIR}/extra-patch-src-cursor.c-22
 .endif
 
 post-build:
-.if ${PORT_OPTIONS:MDOCS}
 	(cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} \
 	${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} rdoc)
-.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${RUBY_SITEARCHLIBDIR}/bdb.so
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/doc
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 	(cd ${WRKSRC}/docs/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/doc)
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	(cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} "! -empty")
-.endif
 
 regression-test: build
 	@${MKDIR} ${BUILD_WRKSRC}/tmp

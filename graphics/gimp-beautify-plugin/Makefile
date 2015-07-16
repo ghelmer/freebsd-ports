@@ -3,6 +3,7 @@
 
 PORTNAME=	beautify
 PORTVERSION=	2012.08.12.00
+PORTREVISION=	2
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	gimp-
 PKGNAMESUFFIX=	-plugin
@@ -21,15 +22,14 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:${PORTSDIR}/x11-fonts/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hejiann
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	e209c8d
+GH_TAGNAME=	e209c8d
 
-USES=		gettext gmake
+USES=		gettext gmake pkgconfig
 USE_GCC=	yes
 USE_GNOME=	atk cairo gdkpixbuf2 gtk20
 USE_XORG=	x11 xcomposite xcursor xdamage xext xfixes xi xinerama xrandr xrender
 
-PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins/
+PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins
 PLUGINS=	beautify \
 		border \
 		simple-border \
@@ -39,11 +39,6 @@ PLUGINS=	beautify \
 .for plugin in ${PLUGINS}
 PLIST_FILES+=	${PLUGIN_DIR}/${plugin}
 .endfor
-
-# installed dirs
-PLIST_DIRSTRY=	libexec/gimp/2.2/plug-ins \
-		libexec/gimp/2.2 \
-		libexec/gimp
 
 post-patch:
 	@${REINPLACE_CMD} \

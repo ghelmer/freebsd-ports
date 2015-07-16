@@ -1,20 +1,24 @@
---- src/xshmfence_alloc.c	2013-11-20 17:13:08.000000000 -0500
-+++ src/xshmfence_alloc.c	2013-12-09 16:06:17.000000000 -0500
-@@ -41,11 +41,15 @@
+--- src/xshmfence_alloc.c.orig	2015-03-04 15:28:23 UTC
++++ src/xshmfence_alloc.c
+@@ -67,15 +67,19 @@ int
+ xshmfence_alloc_shm(void)
+ {
  	char	template[] = SHMDIR "/shmfd-XXXXXX";
- 	int	fd;
+-	int	fd;
++	int	fd = -1;
  
+ #if HAVE_MEMFD_CREATE
+ 	fd = memfd_create("xshmfence", MFD_CLOEXEC|MFD_ALLOW_SEALING);
+ 	if (fd < 0)
+ #endif
+ 	{
 -#ifdef O_TMPFILE
 +#if defined(O_CLOEXEC)
 +#if defined(HAVE_MKOSTEMP)
-+	fd = mkostemp(template, O_CLOEXEC);
++		fd = mkostemp(template, O_CLOEXEC);
 +#elif defined(O_TMPFILE)
- 	fd = open(SHMDIR, O_TMPFILE|O_RDWR|O_CLOEXEC|O_EXCL, 0666);
--	if (fd < 0)
- #endif
-+	if (fd < 0)
-         {
+ 		fd = open(SHMDIR, O_TMPFILE|O_RDWR|O_CLOEXEC|O_EXCL, 0666);
 +#endif
-             fd = mkstemp(template);
-             if (fd < 0)
- 		return fd;
+ 		if (fd < 0)
+ #endif
+ 		{

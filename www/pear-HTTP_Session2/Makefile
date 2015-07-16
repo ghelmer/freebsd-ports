@@ -8,14 +8,8 @@ CATEGORIES=	www devel pear
 MAINTAINER=	joehorn@gmail.com
 COMMENT=	PHP5 Session Handler
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+USES=		dos2unix pear
 
-USES=		dos2unix
-PEAR_AUTOINSTALL=	yes
-
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

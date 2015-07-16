@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	hiawatha
-PORTVERSION=	9.5
+PORTVERSION=	9.13
 CATEGORIES=	www
-MASTER_SITES=	http://www.hiawatha-webserver.org/files/ \
-		SF/fbsdports/hiawatha/
+MASTER_SITES=	https://www.hiawatha-webserver.org/files/
 
-MAINTAINER=	chris@bsdjunk.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced and secure webserver for Unix
 
 LICENSE=	GPLv2
@@ -21,15 +20,9 @@ USES=		cmake compiler:c11
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	hiawatha
 
-CMAKE_ARGS+=	-DCMAKE_INSTALL_BINDIR=${PREFIX}/bin \
-		-DCMAKE_INSTALL_SBINDIR=${PREFIX}/sbin \
-		-DCMAKE_INSTALL_SYSCONFDIR=${ETCDIR} \
-		-DCMAKE_INSTALL_LIBDIR=${PREFIX}/lib \
-		-DCONFIG_DIR=${ETCDIR} \
-		-DWEBROOT_DIR=${WWWDIR} \
+CMAKE_ARGS=	-DCMAKE_INSTALL_LOCALSTATEDIR=/var \
 		-DCMAKE_INSTALL_MANDIR=${PREFIX}/man \
-		-DLOG_DIR=/var/log/hiawatha \
-		-DPID_DIR=/var/run
+		-DWEBROOT_DIR=${WWWDIR}
 
 OPTIONS_DEFINE=	CACHE DOCS IPV6 MONITOR RPROXY SSL TOMAHAWK TOOLKIT XSLT
 
@@ -67,8 +60,6 @@ XSLT_USE=		GNOME=libxslt
 XSLT_CMAKE_ON=		-DENABLE_XSLT=on
 XSLT_CMAKE_OFF=		-DENABLE_XSLT=off
 
-PLIST_SUB+=	ECHO_MSG=${ECHO_MSG}
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr|${PREFIX}|g' \
 	${WRKSRC}/man/hiawatha.1.in ${WRKSRC}/man/cgi-wrapper.1.in \
@@ -82,7 +73,7 @@ post-install:
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 
 .for FILE in ${CONFIG_FILES}
-	@${INSTALL_DATA} ${WRKSRC}/config/${FILE} ${STAGEDIR}${PREFIX}/etc/hiawatha/${FILE}.sample
+	${INSTALL_DATA} ${WRKSRC}/config/${FILE} ${STAGEDIR}${PREFIX}/etc/hiawatha/${FILE}.sample
 .endfor
 
 	@${MKDIR} ${STAGEDIR}${WWWDIR} ; \

@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	gmime
-PORTVERSION=	2.6.18
-PORTREVISION?=	1
+PORTVERSION=	2.6.20
 CATEGORIES?=	mail
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	26
 
-MAINTAINER?=	ahicks@p-o.co.uk
+MAINTAINER?=	bofh@FreeBSD.org
 COMMENT?=	Library (written in C) for parsing and creating messages using MIME
 
 LICENSE=	LGPL21

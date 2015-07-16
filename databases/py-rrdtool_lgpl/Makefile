@@ -3,7 +3,7 @@
 
 PORTNAME=	rrdtool_lgpl
 PORTVERSION=	1.0b1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases python
 MASTER_SITES=	SF/py-rrdtool/py-rrdtool/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,13 +12,17 @@ DISTNAME=	py-rrdtool-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python interface to RRDTool, the graphing and logging utility
 
+LICENSE=	LGPL21 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 LIB_DEPENDS=	librrd.so:${PORTSDIR}/databases/rrdtool
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGNAME=	py-rrdtool
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 LIBDIR?=	${LOCALBASE}/lib # directory where librrd.so lives
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_rrdtool.so
 
 .include <bsd.port.mk>

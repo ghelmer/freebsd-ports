@@ -3,15 +3,15 @@
 
 PORTNAME=	superiotool
 DISTVERSION=	20121019
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
+MASTER_SITES=	LOCAL/avg \
 		http://www.icyb.net.ua/~avg/distfiles/
-MASTER_SITE_SUBDIR=avg
 
 MAINTAINER=	avg@icyb.net.ua
 COMMENT=	Helper tool for Super I/O chip detection and analysis
 
-LIB_DEPENDS=	pci:${PORTSDIR}/devel/libpci
+LIB_DEPENDS=	libpci.so:${PORTSDIR}/devel/libpci
 
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=The tool is for x86-specific hardware

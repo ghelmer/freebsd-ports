@@ -3,11 +3,12 @@
 
 PORTNAME=	IMAP-Admin
 PORTVERSION=	1.6.7
+PORTREVISION=	1
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	chifeng@gmail.com
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for basic IMAP server administration
 
 USES=		perl5

@@ -3,44 +3,35 @@
 
 PORTNAME=	ats
 PORTVERSION=	${ATS_VER}
+PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	${PORTNAME}-lang/${PORTNAME}-lang/${ATS_IMPL}-${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}-lang/${PORTNAME}-lang/${ATS_IMPL}-${PORTVERSION}
 DISTNAME=	${PORTNAME}-lang-${ATS_IMPL}-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Language with a type system rooted in the Applied Type System
 
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		gmake
+USES=		gmake tar:tgz
 GNU_CONFIGURE=	yes
 CFLAGS+=	-I${LOCALBASE}/include \
 		-L${LOCALBASE}/lib
 
 MAKE_JOBS_UNSAFE=yes
-
 PORTDOCS=	FAQ.txt
 PORTEXAMPLES=	AUP INTRO KernighanRitchie MISC MULTICORE TEST
 
-OPTIONS_DEFINE=		GMP PCRE
+OPTIONS_DEFINE=	GMP PCRE DOCS EXAMPLES
 OPTIONS_DEFAULT=	GMP PCRE
+GMP_LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+PCRE_LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
-NO_STAGE=	yes
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
 PLIST_SUB+=	LIBDIR="lib64"
 .else
 PLIST_SUB+=	LIBDIR="lib"
-.endif
-
-.if ${PORT_OPTIONS:MGMP}
-LIB_DEPENDS+=	gmp:${PORTSDIR}/math/gmp
-.endif
-
-.if ${PORT_OPTIONS:MPCRE}
-LIB_DEPENDS+=	pcre:${PORTSDIR}/devel/pcre
 .endif
 
 post-patch:
@@ -63,18 +54,15 @@ post-configure:
 .endif
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${ATS_LIBDIR_REL}/bin/*
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && \
-	${COPYTREE_SHARE} "${PORTDOCS}" ${DOCSDIR}
-.endif
-.if !defined(NOPORTEXAMPLES)
-	${MKDIR} ${EXAMPLESDIR}
+	${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/doc/EXAMPLE && \
-	${COPYTREE_SHARE} "${PORTEXAMPLES}" ${EXAMPLESDIR}
-	${FIND} ${EXAMPLESDIR} -name Makefile \
+	${COPYTREE_SHARE} "${PORTEXAMPLES}" ${STAGEDIR}${EXAMPLESDIR}
+	${FIND} ${STAGEDIR}${EXAMPLESDIR} -name Makefile \
 	    -exec ${SED} -i '' -e 's|^ATSUSRQ=.*|ATSUSRQ="${PREFIX}"|' {} \;
-.endif
 
 .include "bsd.ats.mk"
 .include <bsd.port.post.mk>

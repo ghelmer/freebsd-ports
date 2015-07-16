@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net-OpenSSH
-PORTVERSION=	0.60
+PORTVERSION=	0.64
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:SALVA
@@ -18,5 +18,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

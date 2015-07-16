@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	opencvs
-PORTVERSION=	20130930
+PORTVERSION=	20150501
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	johans
+MASTER_SITES=	ftp://ftp.stack.nl/pub/users/johans/opencvs/ \
+		LOCAL/johans
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	BSD-licensed CVS implementation
@@ -14,6 +14,7 @@ LICENSE=	BSD2CLAUSE
 
 WRKSRC=		${WRKDIR}/cvs
 
+USES=		uidfix
 MAKE_ENV+=	BINDIR="${PREFIX}/bin" \
 		MANDIR="${MANPREFIX}/man/man" \
 		CATDIR="${MANPREFIX}/man/man"

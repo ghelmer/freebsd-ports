@@ -3,6 +3,7 @@
 
 PORTNAME=	fmit
 PORTVERSION=	0.99.5
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	http://download.gna.org/fmit/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-Source
@@ -18,7 +19,7 @@ USE_XORG=	xmu
 USE_QT4=	corelib gui opengl \
 		linguist_build moc_build qmake_build rcc_build uic_build
 USE_GL=		glut
-USES=		cmake tar:bzip2
+USES=		cmake pkgconfig tar:bzip2
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	ALSA JACK OSS PORTAUDIO
@@ -37,8 +38,7 @@ JACK_LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
 JACK_CMAKE_ON=		-DSOUNDSYSTEM_USE_JACK:BOOL=true
 JACK_CMAKE_OFF=		-DSOUNDSYSTEM_USE_JACK:BOOL=false
 
-PORTAUDIO_BUILD_DEPENDS=	portaudio2>=0:${PORTSDIR}/audio/portaudio2
-PORTAUDIO_RUN_DEPENDS=	portaudio2>=0:${PORTSDIR}/audio/portaudio2
+PORTAUDIO_LIB_DEPENDS=	libportaudio.so:${PORTSDIR}/audio/portaudio
 PORTAUDIO_CMAKE_ON=	-DSOUNDSYSTEM_USE_PORTAUDIO:BOOL=true
 PORTAUDIO_CMAKE_OFF=	-DSOUNDSYSTEM_USE_PORTAUDIO:BOOL=false
 

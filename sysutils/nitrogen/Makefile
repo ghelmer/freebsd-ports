@@ -3,11 +3,11 @@
 
 PORTNAME=	nitrogen
 PORTVERSION=	1.5.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	http://projects.l3ib.org/nitrogen/files/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	corentin@ralite.com
 COMMENT=	Background browser and setter for X windows
 
 LICENSE=	GPLv2 # (or later)

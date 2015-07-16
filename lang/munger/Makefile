@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	munger
-PORTVERSION=	5.6
+PORTVERSION=	5.7
 CATEGORIES=	lang
 MASTER_SITES=	http://www.mammothcheese.ca/
 
@@ -11,7 +11,10 @@ COMMENT=	Static lisp interpreter with text processing abilities
 
 LIB_DEPENDS=	libtre.so:${PORTSDIR}/textproc/libtre
 
-DESTDIRNAME=	STAGEDIR
+MAKE_ENV=	INSTALL_PROGRAM="${INSTALL_PROGRAM}" INSTALL_SCRIPT="${INSTALL_SCRIPT}" \
+		INSTALL_DATA="${INSTALL_DATA}" INSTALL_MAN="${INSTALL_MAN}" \
+		MKDIR="${MKDIR}"
+
 DATADIR=	${PREFIX}/share/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_DEFINE=	SQLITE

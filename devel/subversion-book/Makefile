@@ -3,8 +3,7 @@
 PORTNAME=	subversion-book
 DISTVERSION=	4515
 CATEGORIES=	devel misc
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=lev
+MASTER_SITES=	LOCAL/lev
 DISTFILES=	svn-book-html-r${DISTVERSION}.tar.bz2 \
 		svn-book-r${DISTVERSION}.pdf
 DIST_SUBDIR=	subversion18
@@ -17,7 +16,7 @@ COMMENT=	Subversion Documentation HTML/PDF
 # http://svnbook.red-bean.com/en/1.7/svn.copyright.html
 LICENSE=	CDDL
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 NO_BUILD=	yes
 
 OPTIONS_SUB=		yes

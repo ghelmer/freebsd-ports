@@ -5,12 +5,14 @@ PORTVERSION=	1.1
 PORTREVISION=	2
 CATEGORIES=	x11
 MASTER_SITES=	ftp://ftp.tu-darmstadt.de/pub/X11/other/
-EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	Simple logout button
 
-USES=		imake
+DEPRECATED=	Useless cruft from 1989
+EXPIRATION_DATE=2015-09-26
+
+USES=		imake tar:Z
 WRKSRC=		${WRKDIR}/xlogout
 USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 

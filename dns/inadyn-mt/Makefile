@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	inadyn-mt
-PORTVERSION=	02.24.40
+PORTVERSION=	02.24.43
 CATEGORIES=	dns
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}.v.${PORTVERSION}/
 DISTNAME=	${PORTNAME}.v.${PORTVERSION}
@@ -12,7 +12,7 @@ COMMENT=	Simple dynamic dns client
 
 LICENSE=	GPLv3
 
-USE_AUTOTOOLS=	autoconf automake:env
+USES=		autoreconf
 USE_RC_SUBR=	inadyn-mt
 GNU_CONFIGURE=	yes
 
@@ -22,8 +22,6 @@ MAKE_ARGS+=	INSTALL_PREFIX="${STAGEDIR}${PREFIX}/etc"
 PORTDOCS=	readme.html AUTHORS README
 PORTEXAMPLES=	*
 
-PLIST_DIRS=	etc/inadyn-mt/lang
-PLIST_DIRSTRY=	etc/inadyn-mt
 PLIST_FILES=	bin/inadyn-mt etc/inadyn-mt/lang/en.lng \
 		man/man5/inadyn-mt.conf.5.gz \
 		man/man8/inadyn-mt.8.gz

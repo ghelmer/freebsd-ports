@@ -11,10 +11,12 @@ PKGNAMESUFFIX=	23
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Connection pool server for PostgreSQL
 
-USES=		gmake libtool
+LICENSE=	MIT
+
+USES=		gmake pgsql libtool
 GNU_CONFIGURE=	yes
-USE_PGSQL=	yes
 USE_LDCONFIG=	yes
+INSTALL_TARGET=	install-strip
 
 CONFLICTS=	pgpool-3.* pgpool-II-3.* pgpool-II-22-* pgpool-II-30-* 
 USE_RC_SUBR=	pgpool
@@ -24,9 +26,9 @@ PORTDOCS+=	TODO
 PORTDOCShtml=	pgpool-en.html pgpool-ja.html pgpool.css
 PORTDOCShtml+=	tutorial-en.html tutorial-ja.html
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
-	@${REINPLACE_CMD} -e 's|echo aout|echo elf|g' \
-	${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's| pg_config| ${LOCALBASE}/bin/pg_config|g' \
 	${WRKSRC}/sql/pgpool-recovery/Makefile
 
@@ -43,7 +45,6 @@ post-install:
 .for f in pgpool_recovery pgpool_recovery_pitr pgpool_remote_start
 	${INSTALL_SCRIPT} ${WRKSRC}/sample/${f} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_MAN} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
@@ -52,6 +53,5 @@ post-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/$f ${STAGEDIR}${DOCSDIR}
 .endfor
 PORTDOCS+=	${PORTDOCShtml}
-.endif
 
 .include <bsd.port.mk>

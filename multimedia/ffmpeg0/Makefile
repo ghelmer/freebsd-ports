@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	0.7.16
-PORTREVISION=	2
+PORTREVISION=	8
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -25,7 +25,7 @@ PORTSCOUT=	limit:^0\.7.*
 
 HAS_CONFIGURE=	yes
 CONFIGURE_LOG=	config.err
-USES=		gmake perl5 pkgconfig tar:bzip2
+USES=		cpe gmake perl5 pkgconfig tar:bzip2
 WANT_SDL=	yes
 USE_LDCONFIG=	${PREFIX}/lib/ffmpeg${FFMPEG_SUFFIX}
 USE_PERL5=	build
@@ -43,10 +43,10 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 OPTIONS_DEFINE=	AACPLUS ALSA AMR_NB AMR_WB CELT DEBUG DIRAC FAAC \
 		FFSERVER FREETYPE FREI0R GSM LAME OPENCV OPENJPEG \
 		OPTIMIZED_CFLAGS RTMP SCHROEDINGER SDL SPEEX THEORA VAAPI \
-		VDPAU VO_AACENC VO_AMRWBENC VORBIS VPX X11GRAB X264 XVID
+		VDPAU VO_AACENC VO_AMRWBENC VORBIS VPX X11GRAB X264 XVID DOCS
 
-OPTIONS_DEFAULT=	FFSERVER FREETYPE FREI0R OPENCV SCHROEDINGER THEORA \
-			VORBIS VPX X264 XVID
+OPTIONS_DEFAULT=	FFSERVER FREETYPE FREI0R OPENCV SCHROEDINGER \
+			THEORA VORBIS VPX X264 XVID
 
 FFSERVER_DESC=	Build and install ffserver
 X11GRAB_DESC=	Enable x11 grabbing
@@ -93,6 +93,15 @@ CONFIGURE_ARGS+=	--enable-x11grab
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1000000
+CONFIGURE_ARGS+=	--enable-memalign-hack
+.endif
+
+.if ${ARCH} == armv6
+CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as
+CFLAGS=	-no-integrated-as
+.endif
+
 CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 MAKE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
 
@@ -108,12 +117,11 @@ CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--enable-postproc \
 		--enable-avfilter \
 		--enable-pthreads \
-		--enable-memalign-hack \
 		--enable-runtime-cpudetect \
 		--cc="${CC}" \
 		--extra-cflags="${FFMPEG_CFLAGS} -I${LOCALBASE}/include" \
 		--extra-ldflags="-L${LOCALBASE}/lib ${FFMPEG_LDFLAGS}" \
-		--extra-libs="${PTHREAD_LIBS}"
+		--extra-libs="-lpthread"
 SHLIB_VER=	1
 PLIST_SUB+=	SHLIB_VER=${SHLIB_VER}
 
@@ -370,7 +378,7 @@ CONFIGURE_ARGS+=	--disable-libvpx
 
 # x264
 .if ${PORT_OPTIONS:MX264}
-LIB_DEPENDS+=	libx264.so:${PORTSDIR}/multimedia/x264
+LIB_DEPENDS+=	libx264.so:${PORTSDIR}/multimedia/libx264
 CONFIGURE_ARGS+=	--enable-libx264
 .else
 CONFIGURE_ARGS+=	--disable-libx264
@@ -406,7 +414,6 @@ post-patch:
 	@${REINPLACE_CMD} -E \
 		-e "s|(EXTRALIBS[[:space:]]*=)|\1-L${LOCALBASE}/lib |g; \
 		s|%%LOCALBASE%%|${LOCALBASE}|g; \
-		s|-pthread|${PTHREAD_LIBS}|g; \
 		s|gsm/gsm.h|gsm.h|g" \
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
 	@${REINPLACE_CMD} -e 's|-ldl||; s|$$(LIBMAJOR)|${SHLIB_VER}|g;' \

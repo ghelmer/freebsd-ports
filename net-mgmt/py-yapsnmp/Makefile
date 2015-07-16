@@ -16,8 +16,7 @@ LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake libtool
-USE_PYTHON=	yes
+USES=		gmake libtool python
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -I${PYTHON_INCLUDEDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -25,7 +24,7 @@ CONFIGURE_ARGS+=--enable-site-packages-prefix=${PREFIX}
 
 .include <bsd.port.pre.mk>
 
-.if (${OSVERSION} >= 800000) && (${ARCH} == "i386")
+.if (${ARCH} == "i386")
 CPPFLAGS+=	-fstack-protector -I${LOCALBASE}/include
 .endif
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	imaging
 PORTVERSION=	1.1.7
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	graphics python
 MASTER_SITES=	http://effbot.org/media/downloads/ \
 		http://www.pythonware.net/storage/
@@ -13,23 +13,20 @@ DISTNAME=	Imaging-${PORTVERSION}
 MAINTAINER=	mainland@apeiron.net
 COMMENT=	The Python Imaging Library
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		liblcms.so:${PORTSDIR}/graphics/lcms \
+LIB_DEPENDS=	liblcms.so:${PORTSDIR}/graphics/lcms \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
 UNIQUENAME=	py-${PORTNAME}
 
+USES=		jpeg python
 DIST_SUBDIR=	python
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USE_PYTHON=	distutils autoplist concurrent
 
 PLIST_FILES=	%%PYTHON_INCLUDEDIR%%/ImPlatform.h %%PYTHON_INCLUDEDIR%%/Imaging.h
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
-EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}pillow-*
 
 OPTIONS_DEFINE=	DOCS TKINTER
 TKINTER_DESC=	tkinter for X support

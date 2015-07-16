@@ -9,7 +9,7 @@ MASTER_SITES=	https://forge.indepnet.net/attachments/download/136/ \
 PKGNAMEPREFIX=	glpi-plugins-
 DISTNAME=	glpi-reports-1.3.0
 
-MAINTAINER=	d.durieux@siprossii.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	This plugin enables additional reports
 
 RUN_DEPENDS=	glpi>=0.72:${PORTSDIR}/www/glpi
@@ -17,16 +17,13 @@ RUN_DEPENDS=	glpi>=0.72:${PORTSDIR}/www/glpi
 WRKSRC=		${WRKDIR}/reports
 NO_BUILD=	yes
 PKGMESSAGE=	${WRKDIR}/pkg-message
-CPIOARGS=	--quiet -pdum -R
+CPIOARGS=	--quiet -pdum
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
 GLPIPLUGINDIR?=	www/glpi/plugins/reports
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
 do-install:
-	@${MKDIR} -m 0755 ${PREFIX}/${GLPIPLUGINDIR}
-	@cd ${WRKSRC} && ${FIND} * -print | ${CPIO} ${CPIOARGS} ${WWWOWN}:${WWWGRP} ${PREFIX}/${GLPIPLUGINDIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${PREFIX}/${GLPIPLUGINDIR}
+	@${MKDIR} -m 0755 ${STAGEDIR}${PREFIX}/${GLPIPLUGINDIR}
+	@cd ${WRKSRC} && ${FIND} * -print | ${CPIO} ${CPIOARGS} ${STAGEDIR}${PREFIX}/${GLPIPLUGINDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

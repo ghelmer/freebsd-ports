@@ -1,7 +1,7 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -16,8 +16,7 @@ PLIST=		${.CURDIR}/pkg-plist
 
 GAMIN_SLAVE=	yes
 
-USES=		fam:gamin
-USE_PYTHON=	yes
+USES=		fam:gamin python
 CONFIGURE_ARGS=	--with-python=${PYTHON_CMD} \
 		--disable-gtk-doc --with-html-dir=${PREFIX}/share/doc
 

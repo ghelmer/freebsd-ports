@@ -6,8 +6,7 @@ PORTVERSION=	1.96.2
 PORTREVISION=	3
 CATEGORIES=	dns
 MASTER_SITES=	http://www.inatech.eu/inadyn/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	dhn
+		LOCAL/dhn
 DISTNAME=	${PORTNAME}.v${PORTVERSION}
 
 MAINTAINER=	samm@os2.kiev.ua
@@ -24,6 +23,7 @@ OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	@${MV} ${WRKDIR}/${PORTNAME} ${WRKSRC}
+	@${RM} ${WRKSRC}/bin/linux/inadyn
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|gcc|$$\(CC\)|g' ${WRKSRC}/makefile

@@ -2,14 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	snd
-PORTVERSION=	13.0
-PORTREVISION=	1
+PORTVERSION=	15.7
 CATEGORIES=	audio
 MASTER_SITES=	ftp://ccrma-ftp.stanford.edu/pub/Lisp/ \
-		http://mirror.mcx2.org/
+		SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	dhn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multitracking sound editor and utilities
+
+LICENSE=	snd
+LICENSE_NAME=	snd license
+LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	FFTW3 GSL S7 LADSPA MOTIF GTK2 X11 DOCS EXAMPLES
 OPTIONS_DEFAULT=	FFTW3 GSL LADSPA GTK2 X11
@@ -100,7 +104,6 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/*.html ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/pix
 	${INSTALL_DATA} ${WRKSRC}/pix/*.png ${STAGEDIR}${DOCSDIR}/pix
-	cd ${WRKSRC} && ${PAX} -r -w tutorial ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

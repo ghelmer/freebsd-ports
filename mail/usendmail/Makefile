@@ -7,8 +7,8 @@ PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://www.ohse.de/uwe/usendmail/
 
-MAINTAINER=	tmseck@FreeBSD.org
-COMMENT=	A replacement for qmail's sendmail drop-in
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Replacement for qmail's sendmail drop-in
 
 USES=		qmail
 

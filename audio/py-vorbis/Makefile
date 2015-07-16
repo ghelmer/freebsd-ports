@@ -12,14 +12,15 @@ DISTNAME=	pyvorbis-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Object-oriented Python bindings for the vorbis library
 
+LICENSE=	LGPL20
+LICENSE_FILE=	${WRKSRC}/COPYING
+
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/ogg/_ogg.so:${PORTSDIR}/audio/py-ogg
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/ogg/_ogg.so:${PORTSDIR}/audio/py-ogg
 LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGNAME=	pyvorbis
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|' \
@@ -27,5 +28,8 @@ post-patch:
 
 do-configure:
 	@cd ${WRKSRC} && ${PYTHON_CMD} config_unix.py
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ogg/vorbis.so
 
 .include <bsd.port.mk>

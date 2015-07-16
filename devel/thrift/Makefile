@@ -5,19 +5,14 @@ PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION}	# get these from bsd.thrift.mk. any upgrade needs to check ALL dependencies
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	APACHE
-MASTER_SITE_SUBDIR=	/thrift/${PORTVERSION}
+MASTER_SITES=	APACHE/thrift/${PORTVERSION}
 
 MAINTAINER=	komarov@valerka.net
 COMMENT=	Framework for scalable cross-language services development
 
 LICENSE=	APACHE20
 
-USE_AUTOTOOLS=	autoconf autoheader:env aclocal automake libtool
-ACLOCAL_ARGS=	-I${WRKSRC}/aclocal
-AUTOMAKE_ARGS=	--foreign --add-missing --copy
-
-USES=			pkgconfig gmake
+USES=			autoreconf gmake libtool pkgconfig
 GNU_CONFIGURE=		yes
 USE_LDCONFIG=		yes
 MAKE_JOBS_UNSAFE=	yes

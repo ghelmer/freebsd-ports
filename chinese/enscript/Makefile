@@ -3,7 +3,7 @@
 
 CATEGORIES=	chinese
 
-MAINTAINER=	rafan@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 
 RUN_DEPENDS=	ttfm.sh:${PORTSDIR}/chinese/ttfm
 
@@ -22,6 +22,5 @@ post-patch:
 
 post-install:
 	@${INSTALL_DATA} ${.CURDIR}/files/README.BIG5 ${STAGEDIR}${PREFIX}/share/enscript
-	@${CAT} ${PKGMESSAGE}
 
 .include "${MASTERDIR}/Makefile"

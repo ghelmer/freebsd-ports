@@ -9,17 +9,17 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20-%20Source%20Code%20%2
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A tool for automated testing of web applications
+COMMENT=	Tool for automated testing of web applications
 
 RUN_DEPENDS=	p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
 		p5-Error>=0:${PORTSDIR}/lang/p5-Error \
 	        p5-XML-Simple>=0:${PORTSDIR}/textproc/p5-XML-Simple \
 		p5-Crypt-SSLeay>=0:${PORTSDIR}/security/p5-Crypt-SSLeay
 
-.if !defined(WITHOUT_X11)
+#.if !defined(WITHOUT_X11)
 # some work to do here
 #RUN_DEPENDS+=	p5-Tk>=0:${PORTSDIR}/x11-toolkits/p5-Tk
-.endif
+#.endif
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	webinject.pl
@@ -29,7 +29,6 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 PLIST_FILES=	bin/webinject.pl \
 		${DATADIR:S,^${PREFIX}/,,}/config.xml \
 		${DATADIR:S,^${PREFIX}/,,}/testcases.xml
-PLIST_DIRS=	${DATADIR:S,^${PREFIX}/,,}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

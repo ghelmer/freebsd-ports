@@ -13,10 +13,11 @@ DB=		psql
 USE_QT4=	moc_build sql
 QT_DIST=	yes
 
-USE_PGSQL=	yes
+USES+=		pgsql
 DRIVER=		src/sql/drivers/${DB}
 PLUGIN=		src/plugins/sqldrivers/${DB}
 EXTRACT_AFTER_ARGS?=	${DISTNAME}/${DRIVER} \
+			${DISTNAME}/src/corelib \
 			${DISTNAME}/${PLUGIN}
 MAKEFILE=	${FILESDIR}/Makefile.bsd
 MAKE_ENV+=	DB="${DB}" DRIVER="${DRIVER}" MOC="${MOC}" \

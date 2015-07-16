@@ -5,7 +5,7 @@ PORTNAME=	HTTP_Request
 PORTVERSION=	1.4.4
 CATEGORIES=	www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR classes providing an easy way to perform HTTP requests
 
 BUILD_DEPENDS=	${PEARDIR}/Net/URL.php:${PORTSDIR}/net/pear-Net_URL		\
@@ -13,8 +13,6 @@ BUILD_DEPENDS=	${PEARDIR}/Net/URL.php:${PORTSDIR}/net/pear-Net_URL		\
 RUN_DEPENDS=	${PEARDIR}/Net/URL.php:${PORTSDIR}/net/pear-Net_URL		\
 		${PEARDIR}/Net/Socket.php:${PORTSDIR}/net/pear-Net_Socket
 
-PEAR_AUTOINSTALL=	yes
+USES=	pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

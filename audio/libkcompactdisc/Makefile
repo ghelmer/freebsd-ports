@@ -11,13 +11,13 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE library for interfacing with audio CDs
 
 USES=		cmake:outsource tar:xz
-USE_KDE4=	automoc4 kdehier kdelibs kdeprefix
+USE_KDE4=	automoc4 kdelibs kdeprefix
 USE_QT4=	phonon moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	ALSA
 
 ALSA_LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib
-ALSA_EXTRA_PATCHES=	${FILESDIR}/extrapatch-no_alsa
+ALSA_EXTRA_PATCHES_OFF=	${FILESDIR}/extrapatch-no_alsa
 
 .include <bsd.port.mk>

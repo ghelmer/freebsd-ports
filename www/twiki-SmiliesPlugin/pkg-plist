@@ -1,8 +1,8 @@
 %%TWDIR%%/data/TWiki/SmiliesPlugin.txt
+%%TWDIR%%/lib/TWiki/Plugins/SmiliesPlugin.pm
 %%TWDIR%%/lib/TWiki/Plugins/SmiliesPlugin/DEPENDENCIES
 %%TWDIR%%/lib/TWiki/Plugins/SmiliesPlugin/MANIFEST
 %%TWDIR%%/lib/TWiki/Plugins/SmiliesPlugin/build.pl
-%%TWDIR%%/lib/TWiki/Plugins/SmiliesPlugin.pm
 %%TWDIR%%/pub/TWiki/SmiliesPlugin/biggrin.gif
 %%TWDIR%%/pub/TWiki/SmiliesPlugin/biggrin.gif,v
 %%TWDIR%%/pub/TWiki/SmiliesPlugin/confused.gif
@@ -43,14 +43,3 @@
 %%TWDIR%%/pub/TWiki/SmiliesPlugin/wink.gif,v
 %%TWDIR%%/pub/TWiki/SmiliesPlugin/yes.gif
 %%TWDIR%%/pub/TWiki/SmiliesPlugin/yes.gif,v
-@dirrm %%TWDIR%%/data/TWiki
-@dirrm %%TWDIR%%/data
-@dirrm %%TWDIR%%/lib/TWiki/Plugins/SmiliesPlugin
-@dirrm %%TWDIR%%/lib/TWiki/Plugins
-@dirrm %%TWDIR%%/lib/TWiki
-@dirrm %%TWDIR%%/lib
-@dirrm %%TWDIR%%/pub/TWiki/SmiliesPlugin
-@dirrm %%TWDIR%%/pub/TWiki
-@dirrm %%TWDIR%%/pub
-@dirrm %%TWDIR%%
-@dirrmtry share/twiki

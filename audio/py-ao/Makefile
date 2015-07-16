@@ -3,7 +3,7 @@
 
 PORTNAME=	ao
 PORTVERSION=	0.82
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio python
 MASTER_SITES=	http://ekyo.nerim.net/software/pyogg/ \
 		http://www.sourcefiles.org/Programming/Development/Modules/Python/
@@ -14,16 +14,18 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python wrapper for audio device abstraction library (libao)
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libao.so:${PORTSDIR}/audio/libao
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGNAME=	pyao
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 do-configure:
 	@cd ${WRKSRC} && ${MAKE_ENV} ${PYTHON_CMD} config_unix.py \
 		--prefix "${LOCALBASE}"
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/aomodule.so
 
 .include <bsd.port.mk>

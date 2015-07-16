@@ -3,7 +3,7 @@
 
 PORTNAME=	pcre++
 PORTVERSION=	0.9.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.daemon.de/idisk/Apps/pcre++/
 
@@ -14,8 +14,8 @@ LICENSE=	LGPL21
 
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
-USES=		gmake
-USE_AUTOTOOLS=	libtool
+USES=		gmake libtool
+GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 CPPFLAGS+=	$$(${PCRE_CONFIG} --cflags)
@@ -24,6 +24,8 @@ LDFLAGS+=	$$(${PCRE_CONFIG} --libs)
 DOCSDIR=	${PREFIX}/share/doc/lib${PORTNAME}-${PORTVERSION}
 
 PCRE_CONFIG?=	${LOCALBASE}/bin/pcre-config
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \

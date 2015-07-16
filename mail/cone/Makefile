@@ -3,7 +3,7 @@
 
 PORTNAME=	cone
 PORTVERSION=	0.90
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 # This is for beta versions, leave it in please:
 #MASTER_SITES=	http://www.courier-mta.org/beta/${PORTNAME}/ \
@@ -22,6 +22,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		fam gettext gmake iconv ncurses perl5 shebangfix tar:bzip2
 USE_GNOME=	libxml2
+USE_GCC=	yes
 
 SHEBANG_FILES=	sysconftool
 
@@ -34,6 +35,8 @@ CONFIGURE_ARGS+=	-C --without-db --with-certdb=${PREFIX}/share/cone/rootcerts --
 CONFIGURE_ENV=	REHASH="${PERL} ${SCRIPTDIR}/c_rehash"
 
 INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 		@${MKDIR} ${WRKDIR}/ncursesw

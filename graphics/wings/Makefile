@@ -3,7 +3,7 @@
 
 PORTNAME=	wings
 PORTVERSION=	1.4.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 DIST_SUBDIR=	erlang
@@ -11,10 +11,14 @@ DIST_SUBDIR=	erlang
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Polygon mesh modeler written in Erlang
 
-BUILD_DEPENDS=	erlc:${PORTSDIR}/lang/erlang \
-		esdl>0:${PORTSDIR}/devel/esdl
-RUN_DEPENDS=	erl:${PORTSDIR}/lang/erlang \
-		esdl>0:${PORTSDIR}/devel/esdl
+LICENSE=	Wings3D
+LICENSE_NAME=	Wings 3D License # similar to TclTk license
+LICENSE_FILE=	${WRKSRC}/license.terms
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BUILD_DEPENDS=	erl:${PORTSDIR}/lang/erlang \
+		erlang-esdl>0:${PORTSDIR}/devel/erlang-esdl
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 MAKE_ENV=	ESDL_PATH=${LOCALBASE}/lib/erlang/lib/esdl
 PLIST_SUB=	VERSION="${PORTVERSION}"
@@ -44,5 +48,8 @@ do-install:
 	${LN} -sf ${DISTNAME} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_DATA} ${WRKSRC}/src/${PORTNAME}.icon ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.ico
+	${CHMOD} u+w ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}/plugins/accel/*.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}/plugins/accel/*.so
+	${CHMOD} u-w ${STAGEDIR}${PREFIX}/lib/erlang/lib/${DISTNAME}/plugins/accel/*.so
 
 .include <bsd.port.mk>

@@ -1,20 +1,11 @@
---- configure.ac	2013-11-24 20:24:26.000000000 +0100
-+++ configure.ac	2014-02-27 14:02:58.916469490 +0100
-@@ -107,7 +107,7 @@
- ])])
+--- configure.ac.orig	2014-07-26 15:42:10 UTC
++++ configure.ac
+@@ -93,6 +93,8 @@ AC_CHECK_LIB(socket, socket,
+ AC_CHECK_LIB(nsl, inet_ntoa,
+ 	[IRCDLIBS="$IRCDLIBS-lnsl "
+ 		INETLIB="-lnsl"])
++AC_CHECK_LIB(crypto, RAND_egd, 
++		AC_DEFINE(HAVE_RAND_EGD, 1, [Define if the libcrypto has RAND_egd]))
  
- hold_cflags=$CFLAGS
--CFLAGS="$CFLAGS -export-dynamic"
-+CFLAGS="$CFLAGS -Wl,-export-dynamic"
- AC_CACHE_CHECK(if we need the -export-dynamic flag, ac_cv_export_dynamic, [
- AC_TRY_LINK(, [int i];, ac_cv_export_dynamic=yes, ac_cv_export_dynamic=no)])
- if test "$ac_cv_export_dynamic" = "no"; then
-@@ -116,7 +116,7 @@
- 
- AC_CACHE_CHECK(for compiler option to produce PIC,ac_cv_pic,[
- if test "$ac_cv_prog_gcc" = "yes"; then
--	ac_cv_pic="-fPIC -DPIC -shared"
-+	ac_cv_pic="-std=gnu89 -fPIC -DPIC -shared"
- 	case `uname -s` in
- 		Darwin*[)]
- 		ac_cv_pic="-bundle -flat_namespace -undefined suppress"
+ AC_SUBST(IRCDLIBS)
+ AC_SUBST(MKPASSWDLIBS)

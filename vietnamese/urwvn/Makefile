@@ -11,7 +11,7 @@ DISTNAME=	urwvn-${PORTVERSION}-ttf
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vietnamese version of the standard PostScript fonts from URW++
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 NO_BUILD=	yes
 
 TTF=	CMConcrete8v.ttf CMConcreteItalic8v.ttf CMConcreteSlanted8v.ttf \
@@ -28,12 +28,9 @@ TTF=	CMConcrete8v.ttf CMConcreteItalic8v.ttf CMConcreteSlanted8v.ttf \
 	uplb8v.ttf uplbi8v.ttf uplr8v.ttf uplri8v.ttf utmb8v.ttf \
 	utmbi8v.ttf utmr8v.ttf utmri8v.ttf uzcmi8v.ttf
 
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${FONTSDIR}
-.for i in ${TTF}
-	${INSTALL_DATA} ${WRKSRC}/${i} ${FONTSDIR}
-.endfor
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${TTF} ${STAGEDIR}${FONTSDIR})
 
 # This target is only meant to be used by the port maintainer.
 ttf-gen:	extract

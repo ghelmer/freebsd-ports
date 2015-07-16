@@ -3,7 +3,7 @@
 
 PORTNAME?=	ioquake3
 DISTVERSION?=	1.36
-PORTREVISION?=	13
+PORTREVISION?=	15
 CATEGORIES=	games
 MASTER_SITES?=	http://ioquake3.org/files/${DISTVERSION}/
 # Using zip this way enables slaves to override it.
@@ -48,8 +48,8 @@ GAMELIBS_DESC=	Build game libraries
 .if ${IOQ3:MOPUS}
 OPTIONS_DEFINE+=	OPUS
 OPTIONS_DEFAULT+=	OPUS
-OPUS_DESC=	Opus audio codec support
 .endif
+OPTIONS_DEFINE+=DOCS
 
 MAKE_ARGS+=	DEFAULT_BASEDIR="${Q3DIR}" \
 		DEFAULT_LIBDIR="${PREFIX}/${LIBDIR}" \

@@ -7,12 +7,11 @@ PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://launchpadlibrarian.net/20391352/
 DISTNAME=	${PORTNAME}-${PORTVERSION}_src
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A utility for patching LDAP directories using LDIF files
+COMMENT=	Utility for patching LDAP directories using LDIF files
 
-USES=		iconv
+USES=		iconv tar:tgz
 USE_OPENLDAP=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${LOCALBASE} \
@@ -23,6 +22,8 @@ SAMPLES=	addentry.sh webtomware_without_jpeg.user.ldif \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PORTDOCS=	CHANGES ChangeLog README TODO
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -38,11 +39,9 @@ do-install:
 .for sample in ${SAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/samples/${sample} ${STAGEDIR}${DATADIR}/samples
 .endfor
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docs in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${docs} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.post.mk>

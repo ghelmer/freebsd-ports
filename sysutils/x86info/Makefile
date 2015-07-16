@@ -3,11 +3,11 @@
 
 PORTNAME=	x86info
 PORTVERSION=	1.30
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://codemonkey.org.uk/projects/x86info/
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	x86 CPU identification utility
 
 LICENSE=	GPLv2
@@ -16,9 +16,8 @@ LIB_DEPENDS=	libpci.so:${PORTSDIR}/devel/libpci
 
 ONLY_FOR_ARCHS=	i386 amd64
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig python:build tar:tgz
 ALL_TARGET=	x86info lsmsr
-USE_PYTHON_BUILD=yes
 
 PLIST_FILES=	bin/lsmsr bin/x86info man/man8/lsmsr.8.gz man/man1/x86info.1.gz
 

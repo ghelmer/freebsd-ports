@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pygments
-PORTVERSION=	1.6
-PORTREVISION=	2
+PORTVERSION=	2.0.2
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +13,7 @@ COMMENT=	Syntax highlighter written in Python
 
 LICENSE=	BSD2CLAUSE
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

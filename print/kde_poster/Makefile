@@ -5,8 +5,7 @@ PORTNAME=	kde_poster
 PORTVERSION=	1.0
 PORTREVISION=	1
 CATEGORIES=	print kde
-MASTER_SITES=	${MASTER_SITE_KDE}
-MASTER_SITE_SUBDIR=	printing
+MASTER_SITES=	KDE/printing
 DISTNAME=	poster
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,7 +13,7 @@ COMMENT=	KDE version of the poster utility
 
 LICENSE=	GPLv2
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 ALL_TARGET=	poster
 WRKSRC=		${WRKDIR}/${DISTNAME}-20060221
 

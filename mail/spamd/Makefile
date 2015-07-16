@@ -5,8 +5,7 @@ PORTNAME=	spamd
 PORTVERSION=	4.9.1
 PORTREVISION=	2
 CATEGORIES=	mail
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=freebsdspamd/spamd
+MASTER_SITES=	SF/freebsdspamd/spamd
 
 MAINTAINER=	ohauer@FreeBSD.org
 COMMENT=	Traps spammers with a very slow smtp-login and return 4xx error
@@ -20,7 +19,6 @@ GROUPS=		_spamd
 
 PORTDOCS=	ipfw-spamd.txt spamdb.txt
 
-PLIST_DIRSTRY=	%%ETCDIR%%
 PLIST_FILES=	%%ETCDIR%%/spamd.conf.sample \
 		libexec/spamlogd \
 		sbin/spamd-setup \
@@ -72,7 +70,7 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/spamdb/spamdb.8 ${STAGEDIR}${PREFIX}/man/man8
 	${INSTALL_MAN} ${WRKSRC}/spamlogd/spamlogd.8 ${STAGEDIR}${PREFIX}/man/man8
 	${INSTALL} -d ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} -m 644 ${WRKSRC}/etc/spamd.conf ${STAGEDIR}${ETCDIR}/spamd.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/etc/spamd.conf ${STAGEDIR}${ETCDIR}/spamd.conf.sample
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}/

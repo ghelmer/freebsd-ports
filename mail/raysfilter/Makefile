@@ -3,20 +3,23 @@
 PORTNAME=	raysfilter
 PORTVERSION=	1.14
 CATEGORIES=	mail
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=dinoex
+MASTER_SITES=	LOCAL/dinoex
 DISTNAME=	rays-filter-${PORTVERSION}
 
 MAINTAINER=	dinoex@FreeBSD.org
-COMMENT=	A configurable filter for Sendmail Milter
+COMMENT=	Configurable filter for Sendmail Milter
 
+USES=		shebangfix 
 CTARGETS+=	rays-filter
-CFLAGS+=	-Wall ${PTHREAD_CFLAGS:S=""==}
-LIBS+=		${PTHREAD_LIBS}
+CFLAGS+=	-Wall
+LIBS+=		-lpthread
+SHEBANG_FILES=	mf-analyze
 ETCFILES=	header-list.conf mail-filter.conf string-list.conf
 BINFILES=	mf-reset mf-start mf-stop mf-archive mf-analyze mf-memory
 DOCSFILES=	rays-filter.html install.html configure.html operate.html \
 		utilities.html GNU-public-licence.txt copyright.txt README
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

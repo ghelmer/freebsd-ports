@@ -3,6 +3,7 @@
 
 PORTNAME=	libzvbi
 PORTVERSION=	0.2.35
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	SF/zapping/zvbi/${PORTVERSION}
 DISTNAME=	${PORTNAME:S/lib//}-${PORTVERSION}
@@ -10,10 +11,10 @@ DISTNAME=	${PORTNAME:S/lib//}-${PORTVERSION}
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	Routines to access raw VBI capture devices
 
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png \
 		libunicode.so:${PORTSDIR}/devel/libunicode
 
-USES=		gettext pathfix pkgconfig tar:bzip2
+USES=		gettext libtool pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 

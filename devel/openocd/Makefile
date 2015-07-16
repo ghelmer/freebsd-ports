@@ -3,6 +3,7 @@
 
 PORTNAME=	openocd
 PORTVERSION=	0.7.0
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -48,9 +49,9 @@ SYSFSGPIO=	Support Programming via sysfs GPIOs
 RMTBITBANG_DESC=Support Remote-Bitbang Driver
 MINIDRIVER_DESC=Dummy minidriver only (will exclude others!)
 
-USES=		gmake
-USE_BZIP2=	yes
+USES=		gmake libtool tar:bzip2
 CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
+INFO=		openocd
 
 # IMPORTANT INFORMATION FOR DEVELOPERS:
 # Some Interfaces and Options are not on the list because they break a build.
@@ -271,7 +272,7 @@ CONFIGURE_ARGS+=	--disable-minidriver-dummy
 .endif
 
 .if defined(WITH_LIBFTDI)
-LIB_DEPENDS+=		ftdi:${PORTSDIR}/devel/libftdi
+LIB_DEPENDS+=		libftdi.so:${PORTSDIR}/devel/libftdi
 .endif
 
 .if ${PORT_OPTIONS:MDOXYGEN}

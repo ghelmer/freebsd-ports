@@ -3,7 +3,7 @@
 
 PORTNAME=	valyriatear
 PORTVERSION=	0.6.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -21,9 +21,8 @@ LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
 USE_GITHUB=	yes
 GH_ACCOUNT=	Bertram25
 GH_PROJECT=	ValyriaTear
-GH_COMMIT=	a324297
 
-USES=		cmake iconv openal lua:51
+USES=		alias cmake iconv lua:51 openal
 CMAKE_ARGS=	-DUSE_PCH_COMPILATION=OFF
 USE_SDL=	sdl image ttf
 USE_GL=		gl

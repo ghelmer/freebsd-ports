@@ -2,21 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=		mapserver
-PORTVERSION=		6.4.0
-PORTREVISION=		4
+PORTVERSION=		6.4.1
+PORTREVISION=		5
 CATEGORIES=		graphics www geography
 MASTER_SITES=		http://download.osgeo.org/mapserver/
 
 MAINTAINER=		wen@FreeBSD.org
 COMMENT=		System for developing web-based GIS applications
 
+LICENSE=		MIT
+
 LIB_DEPENDS=		libgd.so:${PORTSDIR}/graphics/gd \
 			libproj.so:${PORTSDIR}/graphics/proj \
-			libpng15.so:${PORTSDIR}/graphics/png \
-			libjpeg.so:${PORTSDIR}/graphics/jpeg \
+			libpng.so:${PORTSDIR}/graphics/png \
 			libgif.so:${PORTSDIR}/graphics/giflib
 
-USES=			cmake
+USES=			cpe cmake:outsource jpeg
+CPE_VENDOR=		umn
 USE_GNOME=		libxml2
 LDFLAGS+=		-L${LOCALBASE} -pthread
 CMAKE_ARGS+=		-DCMAKE_PREFIX_PATH=${LOCALBASE} \
@@ -39,7 +41,7 @@ WCS_DESC=               WCS Server support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=		2
+USES+=			python:2
 BUILD_DEPENDS+=		swig2.0:${PORTSDIR}/devel/swig20
 CMAKE_ARGS+=		-DWITH_PYTHON=yes
 PLIST_SUB+=		PYTHON=""
@@ -115,7 +117,7 @@ CMAKE_ARGS+=		-DWITH_GEOS=0
 .endif
 
 .if ${PORT_OPTIONS:MPOSTGIS}
-USE_PGSQL=		yes
+USES+=			pgsql
 CMAKE_ARGS+=		-DWITH_POSTGIS=1
 .else
 CMAKE_ARGS+=		-DWITH_POSTGIS=0
@@ -169,33 +171,35 @@ PROG_FILES=		legend scalebar shp2img shptree shptreetst shptreevis \
 .if ${PORT_OPTIONS:MCLIENT_WMS}
 LIB_DEPENDS+=		libcurl.so:${PORTSDIR}/ftp/curl
 LIB_DEPENDS+=		libgdal.so:${PORTSDIR}/graphics/gdal
-CMAKE_ARGS+=		-DWITH_CURL=1 -DGDAL=1 -DCLIENT_WMS=1
+CMAKE_ARGS+=		-DWITH_CURL=1 -DWITH_GDAL=1 -DWITH_CLIENT_WMS=1
 .endif
 
 .if ${PORT_OPTIONS:MCLIENT_WFS}
 LIB_DEPENDS+=		libcurl.so:${PORTSDIR}/ftp/curl
 LIB_DEPENDS+=		libgdal.so:${PORTSDIR}/graphics/gdal
-CMAKE_ARGS+=		-DWITH_CURL=1 -DGDAL=1 -DCLIENT_WFS=1
+CMAKE_ARGS+=		-DWITH_CURL=1 -DWITH_GDAL=1 -DWITH_CLIENT_WFS=1
 .endif
 
 do-install:
 .for f in ${PROG_FILES}
-	${INSTALL_SCRIPT} ${WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
+	${STRIP_CMD} ${BUILD_WRKSRC}/${f}
+	${INSTALL_SCRIPT} ${BUILD_WRKSRC}/${f} ${STAGEDIR}${PREFIX}/bin
 .endfor
-	${INSTALL_PROGRAM} ${WRKSRC}/libmapserver.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/libmapserver.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
 
 .if ${PORT_OPTIONS:MPHP}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${PHP_EXTENSION_DIR}
-	${INSTALL_PROGRAM} ${WRKSRC}/mapscript/php/php_mapscript.so \
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/mapscript/php/php_mapscript.so \
 		${STAGEDIR}${PREFIX}/${PHP_EXTENSION_DIR}/
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-	(cd ${WRKSRC}/mapscript/python && ${CP} mapscript.py _mapscript.so ${STAGEDIR}${PYTHON_SITELIBDIR}/)
+	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/
+	(cd ${BUILD_WRKSRC}/mapscript/python && ${CP} mapscript.py _mapscript.so ${STAGEDIR}${PYTHON_SITELIBDIR}/)
 .endif
 
 post-install:
-	@${LN} -s ${PREFIX}/lib/libmapserver.so.6.4.0 ${STAGEDIR}${PREFIX}/lib/libmapserver.so.1
+	@${LN} -s ${PREFIX}/lib/libmapserver.so.6.4.1 ${STAGEDIR}${PREFIX}/lib/libmapserver.so.1
 	@${LN} -s ${PREFIX}/lib/libmapserver.so.1 ${STAGEDIR}${PREFIX}/lib/libmapserver.so
 
 .if ${PORT_OPTIONS:MPHP}

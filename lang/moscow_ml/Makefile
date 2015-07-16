@@ -16,7 +16,7 @@ LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
 
 RESTRICTED=	Restrictions on for-profit distribution
 
-USES=		perl5
+USES=		compiler:features perl5
 ALL_TARGET=	world
 MAKE_ARGS=	MOSMLHOME="${MOSMLHOME}" DOCSDIR="${DOCSDIR}" \
 		LD_RUN_PATH="${PREFIX}/lib/mosml"
@@ -26,7 +26,15 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 SUB_FILES=	pkg-message
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.pre.mk>
+
 post-patch: .SILENT
+.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 36
+	${FIND} ${WRKSRC} -name Makefile | ${XARGS} \
+		${REINPLACE_CMD} -e "s,-fno-defer-pop,,"
+.endif
 	${FIND} ${WRKSRC} -name Makefile | ${XARGS} \
 		${REINPLACE_CMD} -e "s,-O2,${CFLAGS} -I${LOCALBASE}/include,"
 	${FIND} ${WRKDIR}/mosml/examples -name Makefile -o \
@@ -67,4 +75,4 @@ post-install:
 		${STAGEDIR}${PREFIX}/lib/mosml/header
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/mosml/lib*.so
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

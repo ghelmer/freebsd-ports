@@ -2,9 +2,9 @@
 
 PORTNAME=	sks
 PORTVERSION=	1.1.5
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://cdn.bitbucket.org/skskeyserver/sks-keyserver/downloads/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Synchronizing Key Server, a fast OpenPGP keyserver
@@ -12,8 +12,9 @@ COMMENT=	Synchronizing Key Server, a fast OpenPGP keyserver
 PROJECTHOST=	sks-keyserver
 
 USE_OCAML=	yes
+USE_OCAML_CAMLP4=yes
 USE_BDB=	5
-USES=		perl5 gmake shebangfix
+USES=		perl5 gmake shebangfix tar:tgz
 USE_PERL5=	build
 MAKE_JOBS_UNSAFE=yes
 SHEBANG_FILES=	sks_build.sh
@@ -25,14 +26,18 @@ MAKE_ENV=	BDBINCLUDE="-I${BDB_INCLUDE_DIR}" \
 
 SUB_FILES=	pkg-message
 
+OPTIONS_DEFINE=	DOCS
+
 post-extract:
 	@: > ${WRKSRC}/Makefile.local
 	@${REINPLACE_CMD} 's/-ccopt -pg //' ${WRKSRC}/Makefile
 	@cd ${WRKSRC} && ${RM} -f .depend
 
 post-patch:
-	@${REINPLACE_CMD} '/^CC=/d; /^CFLAGS=/s/=/+=/' \
-		${WRKSRC}/Makefile ${WRKSRC}/bdb/Makefile
+	@${REINPLACE_CMD} -Ee '/^CC=/d; /^CFLAGS=/s/=/+=/' \
+		-e '/^install/,$$s/\$$\((PREFIX|MANDIR)\)/$$(DESTDIR)&/' \
+		-e '/patch/s/-p 0/-p0/' ${WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e '/^CC=/d; /^CFLAGS=/s/=/+=/' ${WRKSRC}/bdb/Makefile
 
 pre-build:
 	@cd ${WRKSRC} && test -f .depend || ${MAKE_CMD} dep

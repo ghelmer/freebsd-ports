@@ -3,6 +3,7 @@
 
 PORTNAME=	Geo-Parse-OSM
 PORTVERSION=	0.42
+PORTREVISION=	1
 CATEGORIES=	textproc geography perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:LIOSHA
@@ -20,5 +21,6 @@ PORTSCOUT=	skipv:0.221
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

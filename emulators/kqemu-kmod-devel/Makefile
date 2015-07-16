@@ -2,15 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	kqemu
-PORTVERSION=	1.4.0.p1
+DISTVERSION=	1.4.0pre1
 PORTREVISION=	5
 CATEGORIES=	emulators
 MASTER_SITES=	http://bellard.org/qemu/ \
 		http://qemu.org/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	nox
+		LOCAL/nox
 PKGNAMESUFFIX=	-kmod-devel
-DISTNAME=	${PORTNAME}-${PORTVERSION:C/.p/pre/}
 DIST_SUBDIR=	kqemu
 
 MAINTAINER=	nox@FreeBSD.org
@@ -29,14 +27,13 @@ USE_RC_SUBR=	kqemu
 
 USES=		kmod gmake uidfix
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 PORTDOCS=	kqemu-doc.html kqemu-tech.html
 PLIST_FILES=	"include/kqemu/kqemu.h"
-PLIST_FILES+=	"@dirrm include/kqemu"
-PLIST_FILES+=	"@cwd /"
-PLIST_FILES+=	${KMODDIR:C,^/,,}/kqemu.ko
-PLIST_FILES+=	"@cwd ${PREFIX}"
+PLIST_FILES+=	${KMODDIR}/kqemu.ko
 
 MAKEFILE=	Makefile.freebsd
 
@@ -47,11 +44,6 @@ MAKE_CMD_ARGS+=	ARCH=x86_64
 .endif
 
 CFLAGS+=	${DEBUG_FLAGS}
-
-# Not sure about the exact OSVERSION:
-.if ${OSVERSION} > 1000015
-BROKEN=		KPI changes in 10 and up, use bhyve or vbox
-.endif
 
 post-patch:
 # Apply extra patches from the qemu-devel list; in the unlikely case that
@@ -66,7 +58,7 @@ post-patch:
 	@${REINPLACE_CMD} -e '/CC=/s,gcc,${CC},' ${WRKSRC}/common/Makefile
 
 do-build:
-	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} beforedepend && ${LN} -sfh @/sys sys)
+	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} beforedepend && ${LN} -sfh machine/../../sys sys)
 	@(cd ${BUILD_WRKSRC}/common; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} Makefile ${MAKE_CMD_ARGS} ${ALL_TARGET})
 	@(cd ${BUILD_WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${ALL_TARGET})
 

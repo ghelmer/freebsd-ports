@@ -4,12 +4,11 @@
 PORTNAME=	xwpe
 PORTVERSION=	1.5.30a
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_SUNSITE} \
+MASTER_SITES=	SUNSITE/apps/editors/X \
 		http://www.identicalsoftware.com/xwpe/ \
 		ftp://ftp.identicalsoftware.com/pub/linux/xwpe/
-MASTER_SITE_SUBDIR=	apps/editors/X
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Borland-like IDE programming environment
 
 USES=		desthack gmake

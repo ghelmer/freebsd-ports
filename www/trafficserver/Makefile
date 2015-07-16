@@ -2,53 +2,53 @@
 # $FreeBSD$
 
 PORTNAME=	trafficserver
-PORTVERSION=	4.1.2
+PORTVERSION=	5.0.1
 PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	APACHE/${PORTNAME}
 
-MAINTAINER=	jnlin@csie.nctu.edu.tw
+MAINTAINER=	gaod@hychen.org
 COMMENT=	Fast, scalable and extensible HTTP proxy server
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libxml2.so:${PORTSDIR}/textproc/libxml2 \
-		libboost_system.so:${PORTSDIR}/devel/boost-libs \
+LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
 		libcurl.so:${PORTSDIR}/ftp/curl \
+		libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 		libhwloc.so:${PORTSDIR}/devel/hwloc \
-		libluajit-${LUA_VER}.so:${PORTSDIR}/lang/luajit
+		libpcre.so:${PORTSDIR}/devel/pcre \
+		libxml2.so:${PORTSDIR}/textproc/libxml2
 
-USE_AUTOTOOLS=	autoconf automake libtool aclocal
 GNU_CONFIGURE=	yes
-USES=		pkgconfig tcl gmake perl5 tar:bzip2 lua:51
-USE_OPENSSL=	yes
-USE_SQLITE=	yes
-USE_RC_SUBR=	${PORTNAME}
+INSTALL_TARGET=	install-strip
+USES=		cpe gmake libtool perl5 pkgconfig tar:bzip2 tcl
+CPE_VENDOR=	apache
+CPE_PRODUCT=	traffic_server
+USE_PERL5=	build run
 USE_LDCONFIG=	yes
+USE_OPENSSL=	yes
+USE_RC_SUBR=	${PORTNAME}
+USE_SQLITE=	yes
+
 ONLY_FOR_ARCHS=	i386 amd64
+
 USERS=		www
-GROUPS=		nogroup
+GROUPS=		www
 
-LOGDIR=		/var/log/${PORTNAME}
-
-PLIST_SUB=	LOGDIR="${LOGDIR}"
-
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--with-libxml2=${LOCALBASE} \
 		--with-pcre=${LOCALBASE} \
 		--with-openssl=${OPENSSLBASE} \
 		--with-xml=libxml2 \
-		--with-lua=${LOCALBASE} --enable-luajit \
 		--with-tcl=${TCL_LIBDIR} \
-		--verbose \
+		--disable-silent-rules \
 		--enable-cppapi \
+		--enable-luajit \
+		--localstatedir=/var \
 		--with-user=${USERS} \
 		--with-group=${GROUPS}
 
-ACLOCAL_ARGS=	-I build
-OPTIONS_DEFINE=	WCCP INTERIM
+OPTIONS_DEFINE=	DOCS INTERIM WCCP
 OPTIONS_RADIO=	MEMMAN
 OPTIONS_RADIO_MEMMAN=	ALLOCATORS FREELISTS RECLAIM
 OPTIONS_DEFAULT=	FREELISTS
@@ -71,11 +71,30 @@ CONFIGURE_ARGS+=	--enable-freelist
 .elif ${PORT_OPTIONS:MALLOCATORS}
 CONFIGURE_ARGS+=	--disable-freelist
 .else
-FORBIDDEN=	No allocation strategy selected
+IGNORE=	no allocation strategy selected
 .endif
 
+.if ${OSVERSION} >= 900033 && exists(/usr/bin/clang)
+CC=		clang
+CXX=		clang++
+.endif
+
+.if ! exists(/var/cache)
+# FreeBSD 8.x
+PLIST_DIRSTRY+=	/var/cache
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} \
+		-e '/cachedir:/s,$${localstatedir}+,$${localstatedir}/cache+,' \
+		-e '/runtimedir:/s,$${localstatedir}+,$${localstatedir}/run+,' \
+		${WRKSRC}/config.layout
+	@${REINPLACE_CMD} '/^LUA_LDFLAGS =/s/$$/ @LDFLAGS@/' \
+		${WRKSRC}/lib/Makefile.in
+
 post-install:
+	@${RMDIR} ${STAGEDIR}${DATADIR}
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/snapshots
-	@cd ${STAGEDIR}${ETCDIR} && for f in *.config *.config.xml; do ${MV} $$f $$f.default; done
+	(cd ${STAGEDIR}${ETCDIR} && for f in *.config *.config.xml; do ${MV} $$f $$f.sample; done)
 
 .include <bsd.port.mk>

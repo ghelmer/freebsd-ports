@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hte
-PORTVERSION=	2.0.22
+PORTVERSION=	2.1.0
 CATEGORIES=	editors
 MASTER_SITES=	SF/${PORTNAME}/ht-source
 DISTNAME=	ht-${PORTVERSION}
@@ -12,10 +12,10 @@ COMMENT=	File editor/viewer/analyzer for executables
 
 LICENSE=	GPLv2
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 GNU_CONFIGURE=	yes
 
-PLIST_FILES=	bin/ht
+PLIST_FILES=	bin/hte
 
 OPTIONS_DEFINE=		DOCS LZO2 X11
 OPTIONS_DEFAULT=	X11
@@ -34,7 +34,7 @@ X11_LDFLAGS=		-L${LOCALBASE}/lib
 X11_CONFIGURE_ENABLE=	x11-textmode
 
 PORTDOCS=	README
-INFO=		ht
+INFO=		hte
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^CXXFLAGS=.*$$|CXXFLAGS="$$CXXFLAGS"|g ; \
@@ -43,10 +43,10 @@ post-patch:
 			${WRKSRC}/configure
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/ht ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/ht ${STAGEDIR}${PREFIX}/bin/hte
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/hthelp.info \
-		${STAGEDIR}${PREFIX}/${INFO_PATH}/ht.info
+		${STAGEDIR}${PREFIX}/${INFO_PATH}/hte.info
 
 .include <bsd.port.mk>

@@ -2,23 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	eaglemode
-PORTVERSION=	0.84.0
-PORTREVISION=	2
+PORTVERSION=	0.89.0
 CATEGORIES=	x11
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Futuristic zoomable user environment
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng.so:${PORTSDIR}/graphics/png \
+LICENSE=	GPLv3
+
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
-USES=		tar:bzip2 perl5 pkgconfig
+USES=		compiler:features jpeg perl5 pkgconfig shebangfix tar:bzip2
 USE_PERL5=	build
 USE_XORG=	x11 xext xxf86vm
 SUB_FILES=	eaglemode.sh
+WANT_GNOME=	yes
 
 BUILD_ARGS=	continue=no
 
@@ -32,18 +33,21 @@ PLIST_FILES=	bin/${PORTNAME}
 PORTDATA=	*
 
 OPTIONS_DEFINE=	XINE RSVG PDF
-OPTIONS_DEFAULT=RSVG PDF
+OPTIONS_DEFAULT=XINE RSVG PDF
 RSVG_DESC=	SVG support through librsvg
 PDF_DESC=	PDF support through poppler-glib
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
+
+.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} <= 42
+USE_GCC=	yes
+.endif
 
 .if ${PORT_OPTIONS:MXINE}
 LIB_DEPENDS+=	libxine.so:${PORTSDIR}/multimedia/libxine
 BUILD_ARGS+=	xine-inc-dir="${LOCALBASE}/include" \
 		xine-lib-dir="${LOCALBASE}/lib"
 PLIST_SUB+=	EMAV=""
-BROKEN=		does not build with libxine 1.2.x
 .else
 PLIST_SUB+=	EMAV="@comment "
 .endif
@@ -75,13 +79,29 @@ post-patch:
 .if ! ${PORT_OPTIONS:MPDF}
 	@${RM} -f ${WRKSRC}/makers/emPdf.maker.pm
 .endif
+	@${FIND} ${WRKSRC} -name "*.pl" | ${XARGS} \
+		${REINPLACE_CMD} -e '1s|${perl_OLD_CMD}|${perl_CMD}|'
 
 do-build:
-	cd ${WRKSRC} && ${PERL} make.pl build ${BUILD_ARGS}
+	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
+		${PERL} make.pl build ${BUILD_ARGS})
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${PERL} make.pl install dir=${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/eaglemode.sh ${STAGEDIR}${PREFIX}/bin/eaglemode
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/eaglemode/bin/* \
+		${STAGEDIR}${PREFIX}/lib/eaglemode/lib/*.so \
+		${STAGEDIR}${PREFIX}/lib/eaglemode/lib/emClock/emTimeZonesProc \
+		${STAGEDIR}${PREFIX}/lib/eaglemode/lib/emTmpConv/emTmpConvProc
+.if ${PORT_OPTIONS:MXINE}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/eaglemode/lib/emAv/emAvServerProc_xine
+.endif
+.if ${PORT_OPTIONS:MRSVG}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/eaglemode/lib/emSvg/emSvgServerProc
+.endif
+.if ${PORT_OPTIONS:MPDF}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/eaglemode/lib/emPdf/emPdfServerProc
+.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

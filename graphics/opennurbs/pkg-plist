@@ -104,6 +104,7 @@ include/openNURBS/opennurbs_xform.h
 include/openNURBS/opennurbs_zlib.h
 include/openNURBS/zlib/crc32.h
 include/openNURBS/zlib/deflate.h
+include/openNURBS/zlib/gzguts.h
 include/openNURBS/zlib/inffast.h
 include/openNURBS/zlib/inffixed.h
 include/openNURBS/zlib/inflate.h
@@ -118,6 +119,19 @@ libexec/openNURBS/example_read
 libexec/openNURBS/example_roundtrip
 libexec/openNURBS/example_userdata
 libexec/openNURBS/example_write
-@dirrm libexec/openNURBS
-@dirrm include/openNURBS/zlib
-@dirrm include/openNURBS
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/Makefile
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/bsd.openNURBS.mk
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_brep/Makefile
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_brep/example_brep.cc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_read/Makefile
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_read/example_read.cc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_roundtrip/Makefile
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_roundtrip/example_roundtrip.cc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_userdata/Makefile
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_userdata/example_ud.cc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_userdata/example_ud.h
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_userdata/example_userdata.cc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_write/Makefile
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/example_write/example_write.cc
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/examples_linking_pragmas.h
+%%PORTEXAMPLES%%%%EXAMPLESDIR%%/opennurbs.h

@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	xtexsh
-PORTVERSION=	1.4.2
+DISTVERSION=	1.4-2
 PORTREVISION=	6
 CATEGORIES=	print
 MASTER_SITES=	http://www.mat.univie.ac.at/~gerald/ftp/xtexsh/
-DISTNAME=	${PORTNAME}-${PORTVERSION:R}-${PORTVERSION:E}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tcl/Tk-based simple TeX interface
@@ -22,8 +21,6 @@ USE_TEX=	latex
 USES+=		tk desktop-file-utils
 INSTALLS_ICONS=	yes
 PORTDOCS=	*
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \

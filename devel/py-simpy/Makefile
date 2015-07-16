@@ -16,11 +16,11 @@ COMMENT=	Simulation in Python
 LICENSE=	LGPL21
 
 NO_ARCH=	yes
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	SimPy
 
-OPTIONS_DEFINE=	TKINTER
+OPTIONS_DEFINE=	TKINTER DOCS
 TKINTER_DESC=	py-tkinter for plot
 
 .include <bsd.port.options.mk>

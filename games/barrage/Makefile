@@ -3,14 +3,15 @@
 
 PORTNAME=	barrage
 PORTVERSION=	1.0.4
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/lgames/${PORTNAME}/
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Destroy as many targets as possible
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
 USE_SDL=	sdl mixer

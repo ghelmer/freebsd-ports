@@ -2,6 +2,7 @@
 
 PORTNAME=	kde-workspace
 PORTVERSION=	${KDE4_WORKSPACE_VERSION}
+PORTREVISION=	2
 CATEGORIES=	x11 kde
 MASTER_SITES=	KDE/${KDE4_BRANCH}/${KDE4_VERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
@@ -19,8 +20,7 @@ LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
 		libdbusmenu-qt.so:${PORTSDIR}/devel/libdbusmenu-qt \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libxcb-render-util.so:${PORTSDIR}/x11/xcb-util-renderutil \
 		libxcb-image.so:${PORTSDIR}/x11/xcb-util-image \
 		libxcb-keysyms.so:${PORTSDIR}/x11/xcb-util-keysyms
@@ -42,9 +42,9 @@ RUN_DEPENDS=	${KDE4_PREFIX}/env/xdg-env.sh:${PORTSDIR}/misc/kde4-xdg-env \
 
 USE_GL=		glu
 USE_GNOME=	glib20
-USE_KDE4=	kactivities kdehier kdelibs kdeprefix oxygen pimlibs \
-		akonadi automoc4 ontologies qimageblitz soprano strigi
-USES=		cmake:outsource compiler:c++11-lib gettext gmake iconv \
+USE_KDE4=	kactivities kdelibs kdeprefix nepomuk-core oxygen \
+		pimlibs akonadi automoc4 ontologies qimageblitz soprano strigi
+USES=		cmake:outsource compiler:c++11-lib gettext gmake iconv jpeg \
 		pkgconfig tar:xz
 USE_QT4=	corelib dbus declarative designer_build gui network \
 		opengl phonon qtestlib script sql webkit xml \
@@ -53,7 +53,6 @@ USE_XORG=	kbproto x11 xau xcomposite xcursor xdamage xdmcp xfixes \
 		xft xi xinerama xkbfile xrandr xrender xres xscrnsaver xtst
 USE_LDCONFIG=	yes
 
-# Xmms and Googlegadgets could be enabled.
 CMAKE_ARGS=	-DCMAKE_REQUIRED_FLAGS:STRING="-L${LOCALBASE}/lib" \
 		-DBUILD_python:BOOL=OFF \
 		-DBUILD_ruby:BOOL=OFF \
@@ -70,7 +69,7 @@ OPTIONS_DEFINE=	GLES GPS KACTIVITY UPOWER WALLPAPERS
 OPTIONS_GROUP=	PHONON PLASMA
 OPTIONS_GROUP_PHONON=	GSTREAMER VLC
 OPTIONS_GROUP_PLASMA=	PYTHON RUBY
-OPTIONS_DEFAULT=	GLES GPS GSTREAMER KACTIVITY UPOWER WALLPAPERS
+OPTIONS_DEFAULT=	GLES GPS KACTIVITY UPOWER VLC WALLPAPERS
 OPTIONS_SUB=	yes # GPS GLES
 
 GLES_DESC=	OpenGL ES 2.0 support in kwin and kinfocenter
@@ -83,7 +82,6 @@ GPS_CMAKE_ON=	-DWITH_libgps:BOOL=ON
 GPS_CMAKE_OFF=	-DWITH_libgps:BOOL=OFF
 
 GSTREAMER_DESC=	Multimedia via Phonon-GStreamer
-GSTREAMER_USE=	GSTREAMER=core
 GSTREAMER_USE=	QT4=phonon-gst_run
 
 KACTIVITY_DESC=		Activity Manager daemon
@@ -106,10 +104,6 @@ WALLPAPERS_RUN_DEPENDS=	${KDE4_PREFIX}/share/wallpapers/Horos/metadata.desktop:$
 			${KDE4_PREFIX}/share/wallpapers/stripes-freebsd-blue/metadata.desktop:${PORTSDIR}/x11-themes/kde4-wallpapers-freebsd
 
 .include <bsd.port.options.mk>
-
-.ifndef(WITH_NEW_XORG)
-IGNORE=		requires modern libGL. Please, set WITH_NEW_XORG and update your ports
-.endif
 
 .if !exists(/usr/lib/libutempter.so)
 LIB_DEPENDS+=	libutempter.so:${PORTSDIR}/sysutils/libutempter
@@ -138,6 +132,5 @@ post-install:
 	@${CAT} ${FILESDIR}/pkg-message.gstreamer >> ${PKGMESSAGE}
 .endif
 	@${HEAD} -1 ${PKGMESSAGE} >> ${PKGMESSAGE}
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

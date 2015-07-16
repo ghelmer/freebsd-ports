@@ -5,8 +5,7 @@ PORTNAME=		estic
 PORTVERSION=		1.61
 PORTREVISION=		1
 CATEGORIES=		misc comms
-MASTER_SITES=		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	dinoex
+MASTER_SITES=		LOCAL/dinoex
 PKGNAMESUFFIX?=		${NOX11_SUFFIX}${PKGNAMESUFFIX2}
 DISTFILES=		estic-1.60-sources.zip estic-1.61-patch-from-1.60.zip
 
@@ -15,7 +14,8 @@ COMMENT=		Controller for ISDN TK-Anlage (PBX) made by Istec
 
 USES=		zip
 USE_CSTD=	gnu89
-
+USE_CXXSTD=	gnu++98
+USE_GCC=	any
 NO_WRKSUBDIR=	yes
 
 # Personal Preferences, Where to install.
@@ -29,7 +29,7 @@ AREACODE_DATAFILE=${PREFIX}/etc/pbx/areacodes
 MAKEFILE=make/freebsd${X_OR_NOT}.mak
 AUTHOR=		"Ullrich von Bassewitz" <uz@ibb.schwaben.com>
 
-OPTIONS_DEFINE=	X11 DTR_OFF
+OPTIONS_DEFINE=	X11 DTR_OFF DOCS
 OPTIONS_DEFAULT=X11
 NO_OPTIONS_SORT=yes
 DTR_OFF_DESC=	use dtr-off patch
@@ -38,12 +38,6 @@ X11_USE=	xorg=x11
 FIXME=	areacode estic spunk
 
 .include <bsd.port.options.mk>
-
-.if ${OSVERSION} > 1000000
-.if ${CC} != gcc42
-BROKEN=	needs gcc4.2 to compile
-.endif
-.endif
 
 .if ${PORT_OPTIONS:MX11}
 X_OR_NOT=-x

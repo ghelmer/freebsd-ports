@@ -108,7 +108,6 @@
 %%QT_INCDIR%%/QtNetwork/qtcpsocket.h
 %%QT_INCDIR%%/QtNetwork/qudpsocket.h
 %%QT_INCDIR%%/QtNetwork/qurlinfo.h
-%%QT_LIBDIR%%/libQtNetwork.la
 %%QT_LIBDIR%%/libQtNetwork.prl
 %%QT_LIBDIR%%/libQtNetwork.so
 %%QT_LIBDIR%%/libQtNetwork.so.4
@@ -116,7 +115,3 @@
 %%QT_LIBDIR%%/libQtNetwork.so.%%FULLVER%%
 %%DEBUG%%%%QT_LIBDIR%%/libQtNetwork.so.%%FULLVER%%.debug
 libdata/pkgconfig/QtNetwork.pc
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtNetwork
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

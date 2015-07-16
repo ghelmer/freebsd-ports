@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	sparqlwrapper
-PORTVERSION=	1.6.0
+PORTVERSION=	1.6.2
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +11,7 @@ DISTNAME=	SPARQLWrapper-${PORTVERSION}
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	SPARQL endpoint interface to Python
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

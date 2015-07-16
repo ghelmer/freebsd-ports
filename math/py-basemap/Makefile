@@ -2,54 +2,41 @@
 # $FreeBSD$
 
 PORTNAME=	basemap
-PORTVERSION=	0.9.2
-PORTREVISION=	7
+PORTVERSION=	1.0.7
 CATEGORIES=	math python
 MASTER_SITES=	SF/matplotlib/matplotlib-toolkits/${PORTNAME}-${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	mainland@apeiron.net
-COMMENT=	Plots data on map projections (with continental and political boundaries)
+MAINTAINER=	bofh@FreeBSD.org
+COMMENT=	Plots data on map projections with boundaries
 
+LICENSE=	GPLv2 LGPL21 MIT
+LICENSE_COMB=	multi
+
+BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:${PORTSDIR}/math/py-matplotlib
+LIB_DEPENDS=	libgeos.so:${PORTSDIR}/graphics/geos
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 DATADIR=	${PREFIX}/share/py-${PORTNAME}-data
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 
 MAKE_ENV=	BASEMAP_DATA_PATH=${DATADIR}
 
-PLISTDIR=	${PYTHON_SITELIBDIR}/matplotlib/toolkits/basemap \
-		${PYTHON_SITELIBDIR}/shapelib \
-		${PYTHON_SITELIBDIR}/dbflib \
-		${PYTHON_SITELIBDIR}/dbflibc.so \
-		${PYTHON_SITELIBDIR}/shptree.so \
-		${PYTHON_SITELIBDIR}/shapelibc.so \
-		${PYTHON_SITELIBDIR}/pyproj.so \
-		${DATADIR}
-.if !defined(NOPORTDOCS)
-PLISTDIR+=	${EXAMPLESDIR}
-.endif
+OPTIONS_DEFINE=	EXAMPLES
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+PORTEXAMPLES=	*
+
 post-patch:
 	@${GREP} -lR "share/basemap" ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
 		-e "s,share/basemap,share/py-basemap-data,g"
 
 post-install:
-.if !defined(NOPORTDOCS)
-	@${MKDIR} ${EXAMPLESDIR}
-	${CP} -R ${WRKSRC}/examples/ ${EXAMPLESDIR}
-.endif
-.for dir in ${PLISTDIR}
-	@${FIND} ${dir} ! -type d | \
-		${SED} 's,^${PREFIX}/,,' >> ${TMPPLIST}
-	@${FIND} ${dir} -type d | ${SORT} -r | \
-		${SED} 's,^${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
-.endfor
-	@${ECHO} "@unexec rmdir %D/${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}/matplotlib/toolkits 2> /dev/null || true" >> ${TMPPLIST}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_geoslib.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mpl_toolkits/basemap/_proj.so
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

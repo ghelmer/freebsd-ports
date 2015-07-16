@@ -3,7 +3,7 @@
 
 PORTNAME=	urjtag
 PORTVERSION=	0.10
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -14,8 +14,7 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
-USE_BZIP2=	yes
-USES=		gmake readline shebangfix
+USES=		gmake readline shebangfix tar:bzip2
 SHEBANG_FILES=	src/bsdl2jtag
 USE_CSTD=	c99
 GNU_CONFIGURE=	yes
@@ -23,38 +22,26 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	USB FTDI JEDEC NLS
-OPTIONS_DEFAULT=	USB FTDI
-OPTIONS_SUB=	yes
-USB_DESC=	Build support for USB JTAG adapters
-FTDI_DESC=	Build support for FTDI-based USB JTAG adapters
-JEDEC_DESC=	Enable experimental JEDEC flash detection
+OPTIONS_DEFINE=		FTDI JEDEC NLS USB
+OPTIONS_DEFAULT=	FTDI USB
+OPTIONS_SUB=		yes
 
-.include <bsd.port.options.mk>
+FTDI_DESC=		FTDI-based USB JTAG adapters support
+FTDI_LIB_DEPENDS=	libftdi.so:${PORTSDIR}/devel/libftdi
+FTDI_CONFIGURE_WITH=	libftdi
 
-.if ${PORT_OPTIONS:MJEDEC}
-CONFIGURE_ARGS+=	--enable-jedec
-.endif
+JEDEC_DESC=		Experimental JEDEC flash detection
+JEDEC_CONFIGURE_ENABLE=	jedec
 
-.if ${PORT_OPTIONS:MUSB}
-CONFIGURE_ARGS+=	--with-libusb=/usr
-.endif
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 
-.if ! ${PORT_OPTIONS:MFTDI}
-CONFIGURE_ARGS+=	--without-libftdi
-.else
-LIB_DEPENDS+=	libftdi.so:${PORTSDIR}/devel/libftdi
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-.else
-CONFIGURE_ARGS+=--disable-nls
-.endif
+USB_DESC=		USB JTAG adapters support
+USB_CONFIGURE_ON=	--with-libusb=/usr
 
 .include <bsd.port.pre.mk>
 
-.if ${OSVERSION} < 1000033
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000033
 BUILD_DEPENDS+=	flex>0:${PORTSDIR}/textproc/flex
 CONFIGURE_ENV+=	LEX=${LOCALBASE}/bin/flex
 .endif
@@ -63,7 +50,7 @@ post-patch:
 # Suppress svn(1) binary detection
 	@${REINPLACE_CMD} -e \
 		's|^SVN=.*|SVN=''| ; \
-      		 s|-Lwith_libusb |-L$$with_libusb/lib | ; \
+		 s|-Lwith_libusb |-L$$with_libusb/lib | ; \
 		 s|-I$$with_libusb"|-I$$with_libusb/include"|' \
 		${WRKSRC}/configure
 

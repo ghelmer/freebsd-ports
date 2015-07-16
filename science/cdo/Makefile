@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	cdo
-PORTVERSION=	1.6.3
+PORTVERSION=	1.6.9
+PORTREVISION=	1
 CATEGORIES=	science
-MASTER_SITES=	https://code.zmaw.de/attachments/download/7220/ \
+MASTER_SITES=	https://code.zmaw.de/attachments/download/10198/ \
 		LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -16,7 +17,8 @@ OPTIONS_DEFINE=	CGRIBEX HDF5 JASPER NETCDF PROJ SZIP UDUNITS
 OPTIONS_DEFAULT=CGRIBEX HDF5 JASPER NETCDF PROJ SZIP UDUNITS
 OPTIONS_SUB=	yes
 
-CPPFLAGS+=	-I${LOCALBASE}/include
+PORTSCOUT=	site:https://code.zmaw.de/projects/cdo/files
+
 CONFIGURE_ARGS=	--disable-cgribex \
 		--disable-data \
 		--disable-extra \
@@ -27,7 +29,7 @@ CONFIGURE_ARGS=	--disable-cgribex \
 		--program-transform-name="" \
 		--with-zlib=/usr
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib -pthread
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 USES=		gmake libtool pathfix
 
@@ -71,9 +73,7 @@ CFLAGS+=	-DPTHREAD_MUTEXATTR_CONDATTR
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|$$(libdir)/\($$$$pkgconfigfile\)|${PREFIX}/libdata/\1|' ${WRKSRC}/libcdi/src/Makefile.in
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcdi.so.0
+	@${REINPLACE_CMD} -e 's|unsigned32 |uint32_t |' ${WRKSRC}/libcdi/src/cdilib.c ${WRKSRC}/libcdi/src/util.c
 
 regression-test test: build
 .if ${PORT_OPTIONS:MNETCDF}

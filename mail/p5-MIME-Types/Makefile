@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	MIME-Types
-PORTVERSION=	2.04
+PORTVERSION=	2.11
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MARKOV
@@ -13,6 +13,7 @@ COMMENT=	Perl extension for determining MIME types
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

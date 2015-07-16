@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	llvm
-PORTVERSION=	3.4
+PORTVERSION=	3.4.2
 PORTREVISION=	1
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
@@ -11,17 +11,15 @@ PKGNAMESUFFIX=	${LLVM_SUFFIX}
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	Low Level Virtual Machine
 
-LIB_DEPENDS=	execinfo:${PORTSDIR}/devel/libexecinfo
-
-LLVM_SUFFIX=	${PORTVERSION:S/.//g:C/r.//}
+LLVM_SUFFIX=	${PORTVERSION:C/([0-9]\.[0-9]).*/\1/:S/.//g:C/r.//}
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 UNIQUENAME=	${PORTNAME}${LLVM_SUFFIX}
 
-WRKSRC=		${WRKDIR}/llvm-${PORTVERSION}
+WRKSRC=		${WRKDIR}/llvm-${PORTVERSION}.src
 
-USES=		gmake perl5
+USES=		execinfo gmake perl5
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
 USE_LDCONFIG=	${LLVM_PREFIX}/lib
@@ -32,7 +30,7 @@ SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 # Suggested tweaks from http://llvm.org/docs/Packaging.html
 CONFIGURE_ARGS+=	--enable-shared
 MAKE_ARGS+=		REQUIRES_RTTI=1
-LIBNAME=		libLLVM-${DISTVERSION:C/rc[0-9]//}.so
+LIBNAME=		libLLVM-${DISTVERSION:C/([0-9]\.[0-9]).*/\1/:C/rc[0-9]//}.so
 
 CONFIGURE_ARGS+=	--enable-bindings=none
 CONFIGURE_ARGS+=	--enable-optimized
@@ -88,6 +86,9 @@ CONFIGURE_ARGS+=--enable-experimental-targets=R600
 
 .include <bsd.port.options.mk>
 
+# keep in sync with /usr/src/lib/clang/clang.build.mk
+CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}
+
 .if ${PORT_OPTIONS:MASSERTS}
 CONFIGURE_ARGS+=	--enable-assertions
 RELEASE_TYPE=		Release+Asserts
@@ -113,10 +114,10 @@ CONFIGURE_ARGS+=	--disable-docs
 
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=		lit.1
-USE_PYTHON=		yes
+USES+=			python
 LIT_COMMANDS=		lit llvm-lit FileCheck
 .else
-USE_PYTHON_BUILD=	yes
+USES+=			python:build
 .endif
 
 .if ${PORT_OPTIONS:MLTOPLUGIN}

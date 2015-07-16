@@ -3,11 +3,12 @@
 
 PORTNAME=	MIME-Lite-HTML
 PORTVERSION=	1.24
+PORTREVISION=	1
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	chifeng@gmail.com
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Provide routine to transform a HTML page into a MIME mail
 
 BUILD_DEPENDS=	p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser \

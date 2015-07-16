@@ -4,31 +4,27 @@
 PORTNAME=	boxbackup
 PORTVERSION=	0.11.r${SVNVERSION:C/^[0-9\.]+_[a-z]+_([0-9]+)/\1/}
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.boxbackup.org/snapshots/%SUBDIR%/
+MASTER_SITES=	http://www.boxbackup.org/snapshots/201108/
 PKGNAMESUFFIX=	${CLIENT_OR_SERVER}-devel
 DISTNAME=	${PORTNAME}-${SVNVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	james@netinertia.co.uk
-COMMENT=	Open source, completely automatic on-line backup system for Unix
+MAINTAINER=	portmaster@BSDforge.com
+COMMENT=	Open source, completely automatic on-line backup system for UNIX
 
-LICENSE=	BSD GPLv2
+LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE-DUAL.txt
 
-MASTER_SITE_SUBDIR=201108
 SVNVERSION=	0.11_trunk_2979
 
 NO_LATEST_LINK=	yes
 
-USES=		perl5
+USES=		perl5 tar:tgz
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 USE_AUTOTOOLS=	autoconf aclocal autoheader
 ACLOCAL_ARGS+=	-I ${WRKSRC}/infrastructure/m4
 
-# Box now defaults to /etc for configuration. Linux devs make me sad.
-# Override this.
 CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -41,21 +37,24 @@ CLIENT_DESC=		Install the bbackupd client
 SERVER_DESC=		Install the bbstored server
 GNUREADLINE_DESC=	Enable the use of GNU readline
 
-NO_STAGE=	yes
+MAKE_JOBS_UNSAFE=	yes
+
 .include <bsd.port.options.mk>
+
+CLIENTDIR=	CLIENT
+SERVERDIR=	SERVER
+CLIENT_FILES=	bbackupd bbackupquery bbackupctl
+SERVER_FILES=	bbstored bbstoreaccounts
 
 .if ${PORT_OPTIONS:MGNUREADLINE}
 CONFIGURE_ARGS+=--enable-gnu-readline
 .endif
 
-MANCOMPRESSED=	yes
 .if ${PORT_OPTIONS:MCLIENT}
 USE_RC_SUBR+=	bbackupd
 PLIST_SUB+=	CLIENT=""
 ALL_TARGET+=	build-backup-client
-INSTALL_TARGET+=install-backup-client
-MAN5+=		bbackupd.conf.5
-MAN8+=		bbackupd.8 bbackupctl.8 bbackupd-config.8 bbackupquery.8
+CLIENT_SCRIPTS=	bbackupd-config
 SUB_FILES+=	999.boxbackup
 .else
 PLIST_SUB+=	CLIENT="@comment "
@@ -67,24 +66,18 @@ USERS+=		_bbstored
 GROUPS+=	_bbstored
 PLIST_SUB+=	SERVER=""
 ALL_TARGET+=	build-backup-server
-INSTALL_TARGET+=install-backup-server
-MAN5+=		bbstored.conf.5 raidfile.conf.5
-MAN8+=		bbstored.8 bbstoreaccounts.8 bbstored-certs.8 bbstored-config.8 raidfile-config.8
+SERVER_SCRIPTS=	bbstored-certs bbstored-config raidfile-config
 .else
 PLIST_SUB+=	SERVER="@comment "
 .endif
 
 .if ! ${PORT_OPTIONS:MCLIENT}
-# if this is a server-only install, CONFLICT with an install of the CLIENT or both
 CONFLICTS=	boxbackup-client-[0-9]* boxbackup-[0-9]*
 CLIENT_OR_SERVER=-server
 .elif ! ${PORT_OPTIONS:MSERVER}
-# if this is a client-only install, CONFLICT with an install of the SERVER or both
 CONFLICTS=	boxbackup-server-[0-9]* boxbackup-[0-9]*
 CLIENT_OR_SERVER=-client
 .else
-# if we install boxbackup-[0-9]*, we should CONFLICT with a CLIENT or SERVER only install
-# PKGNAMESUFFIX is empty at this point
 CONFLICTS=	boxbackup-server-[0-9]* boxbackup-client-[0-9]*
 .endif
 
@@ -99,17 +92,55 @@ post-patch:
 
 post-configure:
 	@${REINPLACE_CMD} -e '/share.doc.boxbackup/d' ${WRKSRC}/parcels/scripts/install-backup-*
+pre-install:
+	(cd ${WRKSRC}/parcels \
+	&& ${MV} ./boxbackup-0.11_trunk_2979-backup-client ../CLIENT)
 
-post-install:
+	(cd ${WRKSRC}/parcels \
+	&& ${MV} ./boxbackup-0.11_trunk_2979-backup-server ../SERVER)
+do-install:
 .if ${PORT_OPTIONS:MCLIENT}
-	@${MKDIR} -m 0700 ${PREFIX}/etc/box/bbackupd
-	@${MKDIR} ${PREFIX}/etc/periodic/monthly
-	${INSTALL_SCRIPT} ${WRKDIR}/999.boxbackup ${PREFIX}/etc/periodic/monthly
+	(cd ${WRKSRC}/${CLIENTDIR}/ \
+	&& ${INSTALL_PROGRAM} ${CLIENT_FILES} ${STAGEDIR}${PREFIX}/sbin/)
+
+	(cd ${WRKSRC}/${CLIENTDIR}/ \
+	&& ${INSTALL_SCRIPT} ${CLIENT_SCRIPTS} ${STAGEDIR}${PREFIX}/sbin/)
+
+	${INSTALL_MAN} ${WRKSRC}/${CLIENTDIR}/bbackupd.conf.5.gz \
+	${STAGEDIR}${PREFIX}/man/man5/
+
+	${INSTALL_MAN} ${WRKSRC}/${CLIENTDIR}/bbackupctl.8.gz \
+	${WRKSRC}/${CLIENTDIR}/bbackupd-config.8.gz \
+	${WRKSRC}/${CLIENTDIR}/bbackupd.8.gz ${WRKSRC}/${CLIENTDIR}/bbackupquery.8.gz \
+	${STAGEDIR}${PREFIX}/man/man8/
 .endif
 .if ${PORT_OPTIONS:MSERVER}
-	@${MKDIR} -m 0700 ${PREFIX}/etc/box/bbstored
+	(cd ${WRKSRC}/${SERVERDIR}/ \
+	&& ${INSTALL_PROGRAM} ${SERVER_FILES} ${STAGEDIR}${PREFIX}/sbin/)
+
+	(cd ${WRKSRC}/${SERVERDIR}/ \
+	&& ${INSTALL_SCRIPT} ${SERVER_SCRIPTS} ${STAGEDIR}${PREFIX}/sbin/)
+
+	${INSTALL_MAN} ${WRKSRC}/${SERVERDIR}/raidfile.conf.5.gz \
+	${WRKSRC}/${SERVERDIR}/bbstored.conf.5.gz \
+	${STAGEDIR}${PREFIX}/man/man5/
+
+	${INSTALL_MAN} ${WRKSRC}/${SERVERDIR}/bbstoreaccounts.8.gz \
+	${WRKSRC}/${SERVERDIR}/bbstored-certs.8.gz \
+	${WRKSRC}/${SERVERDIR}/bbstored-config.8.gz \
+	${WRKSRC}/${SERVERDIR}/bbstored.8.gz \
+	${WRKSRC}/${SERVERDIR}/raidfile-config.8.gz \
+	${STAGEDIR}${PREFIX}/man/man8/
 .endif
-	@${CAT} ${PKGMESSAGE}
+post-install:
+.if ${PORT_OPTIONS:MCLIENT}
+	@${MKDIR} -m 0700 ${STAGEDIR}${PREFIX}/etc/box/bbackupd
+	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/periodic/monthly
+	${INSTALL_SCRIPT} ${WRKDIR}/999.boxbackup ${STAGEDIR}${PREFIX}/etc/periodic/monthly
+.endif
+.if ${PORT_OPTIONS:MSERVER}
+	@${MKDIR} -m 0700 ${STAGEDIR}${PREFIX}/etc/box/bbstored
+.endif
 
 test:
 	 @${ECHO_CMD} "===> Running tests"

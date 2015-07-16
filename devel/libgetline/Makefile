@@ -10,7 +10,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}-src
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Small, portable, and easy to use command line library
 
-LICENSE=	BSD
+LICENSE=	MIT
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/-src//}
 
@@ -24,8 +24,5 @@ MAKE_ENV+=	RANLIB="${RANLIB}"
 MAKE_ENV+=	INST_INCDIR="${STAGEDIR}${PREFIX}/include"
 MAKE_ENV+=	INST_LIBDIR="${STAGEDIR}${PREFIX}/lib"
 MAKE_ENV+=	INST_MANDIR="${STAGEDIR}${PREFIX}/man"
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgetline.so
 
 .include <bsd.port.mk>

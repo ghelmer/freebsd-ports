@@ -3,6 +3,7 @@
 
 PORTNAME=	poptop
 PORTVERSION=	1.4.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/pptpd/pptpd-${PORTVERSION} \
 		SAMBA/ppp:pppd
@@ -42,5 +43,6 @@ post-patch:
 post-install:
 	(cd ${WRKSRC}/samples && ${INSTALL_DATA} pptpd.conf \
 		${STAGEDIR}${PREFIX}/etc/pptpd.conf.sample)
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pptpd/pptpd-logwtmp.so
 
 .include <bsd.port.mk>

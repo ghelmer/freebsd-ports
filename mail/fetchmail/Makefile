@@ -3,7 +3,7 @@
 
 PORTNAME=	fetchmail
 PORTVERSION=	6.3.26
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF/${PORTNAME}/branch_6.3/ \
 		http://mandree.home.pages.de/${PORTNAME}/
@@ -20,7 +20,7 @@ RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_ro
 USERS=		${PORTNAME}
 GROUPS=		${USERS}
 
-USES=		gmake shebangfix tar:xz
+USES=		cpe gmake shebangfix tar:xz
 SHEBANG_FILES=	fetchmailconf.py
 python_OLD_CMD=	/usr/bin/env python
 
@@ -36,7 +36,7 @@ CONFIGURE_ARGS=	--enable-opie --enable-RPA --enable-SDPS \
 
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	X11 NLS NTLM GSSAPI POP2
+OPTIONS_DEFINE=	X11 NLS NTLM GSSAPI POP2 DOCS
 OPTIONS_DEFAULT=	GSSAPI
 OPTIONS_SUB=	yes
 X11_DESC=	Python/Tkinter dependencies for ``fetchmailconf''
@@ -59,7 +59,7 @@ CONFIGURE_ARGS+=	--enable-POP2
 .endif
 
 .if ${PORT_OPTIONS:MX11}
-USE_PYTHON_RUN=	yes
+USES+=		python
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}tkinter>=0:${PORTSDIR}/x11-toolkits/py-tkinter
 PLIST_SUB+=	NOX11="@comment "
 .else
@@ -89,6 +89,11 @@ CONFIGURE_ARGS+=	--with-gssapi=${KRB5_HOME}
 .if ${PORT_OPTIONS:MNTLM}
 CONFIGURE_ARGS+=	--enable-NTLM
 PORTDOCS+=	README.NTLM
+.endif
+
+post-patch:
+.if !exists(/usr/lib/libcom_err.so)
+	@${REINPLACE_CMD} -e "s,-lcom_err,,g" ${WRKSRC}/configure
 .endif
 
 post-build:

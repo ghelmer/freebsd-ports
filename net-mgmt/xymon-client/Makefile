@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	xymon
-PORTVERSION=	4.3.17
+PORTVERSION=	4.3.21
+PORTREVISION=	0
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	SF/xymon/Xymon/${PORTVERSION}
 PKGNAMESUFFIX=	-client${PKGNAMESUFFIX2}
@@ -19,8 +20,10 @@ GROUPS=	xymon
 XYMONUSER?=	xymon
 XYMONHOSTIP?=	127.0.0.1
 
+SUB_LIST+=	XYMONUSER="${XYMONUSER}"
+
 MAKE_JOBS_UNSAFE=	yes
-USES=		gmake
+USES=		cpe gmake
 CONFIGURE_ENV=	MAKE=${MAKE_CMD}
 MAKE_ENV+=	XYMONUSER="${XYMONUSER}"
 MAKE_ENV+=	XYMONHOSTIP="${XYMONHOSTIP}"
@@ -34,11 +37,5 @@ CONFIG_FILES=	clientlaunch.cfg xymonclient.cfg localclient.cfg
 # Configure script is interactive
 do-configure:
 	${CP} ${FILESDIR}/Makefile ${WRKSRC}/
-
-post-install:
-.for i in ${CONFIG_FILES}
-	${CP} -np ${STAGEDIR}${WWWDIR}/etc/${i}.DIST \
-		${STAGEDIR}${WWWDIR}/etc/${i} || ${TRUE}
-.endfor
 
 .include <bsd.port.mk>

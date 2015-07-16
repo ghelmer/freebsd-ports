@@ -6,8 +6,7 @@ PORTVERSION=	201108.r1
 PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.kismetwireless.net/code/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	brix
+		LOCAL/brix
 DISTNAME=	spectools-2011-08-R1
 
 MAINTAINER=	brix@FreeBSD.org
@@ -22,7 +21,7 @@ USES=		gmake pkgconfig
 
 PORTDOCS=	README
 
-OPTIONS_DEFINE=	GTK2 NCURSES
+OPTIONS_DEFINE=	GTK2 NCURSES DOCS
 OPTIONS_DEFAULT=	GTK2 NCURSES
 
 ALL_TARGET=	spectool_net spectool_raw
@@ -65,6 +64,5 @@ post-install:
 	${MKDIR} ${STAGEDIR}/${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S@^@${WRKSRC}/@} ${STAGEDIR}/${DOCSDIR}
 .endif
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

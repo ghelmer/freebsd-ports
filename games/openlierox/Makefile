@@ -3,7 +3,7 @@
 
 PORTNAME=	openlierox
 DISTVERSION=	0.58_rc3
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/OpenLieroX%20${DISTVERSION:C/_/%20/}
@@ -33,7 +33,8 @@ CMAKE_ARGS=	-DHAWKNL_BUILTIN=YES \
 
 WRKSRC=		${WRKDIR}/OpenLieroX
 
-PORTSCOUT=	skipv:0.59_beta10 # unstable
+# 0.59 versions are unstable
+PORTSCOUT=	skipv:0.59_beta1,0.59_beta2,0.59_beta3,0.59_beta4,0.59_beta5,0.59_beta6,0.59_beta7,0.59_beta8,0.59_beta9,0.59_beta10
 
 PORTDOCS=	*
 PORTDATA=	*

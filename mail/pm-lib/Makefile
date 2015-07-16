@@ -5,12 +5,11 @@ PORTNAME=	pm-lib
 PORTVERSION=	20091202
 PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	SAVANNAH
-MASTER_SITE_SUBDIR=	procmail-lib
+MASTER_SITES=	SAVANNAH/procmail-lib
 DISTNAME=	procmail-lib-2009.1202
 
-MAINTAINER=	pclin@FreeBSD.org
-COMMENT=	A collection of procmail plug-in modules
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Collection of procmail plug-in modules
 
 LICENSE=	GPLv2
 

@@ -3,17 +3,19 @@
 
 PORTNAME=	smpeg2
 PORTVERSION=	2.0.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.libsdl.org/projects/smpeg/release/ \
 		http://rsync.macports.org/smpeg2/
 
-MAINTAINER=	wulf@cicgroup.ru
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free MPEG1 video player library with sound support
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		libtool
 USE_SDL=	sdl2
 USE_LDCONFIG=	yes
 

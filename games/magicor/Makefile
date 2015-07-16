@@ -3,7 +3,7 @@
 
 PORTNAME=	magicor
 PORTVERSION=	1.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTFILES=	${PORTNAME}-source-${PORTVERSION}${EXTRACT_SUFX} \
@@ -19,7 +19,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:${PORTSDIR}/devel/py-game
 
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 
 PORTDOCS=	*
@@ -53,7 +53,7 @@ post-patch:
 
 do-install:
 	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/
-	cd ${WRKSRC}/magicor && ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHON_SITELIBDIR}/magicor/
+	cd ${WRKSRC}/magicor && ${COPYTREE_SHARE} . ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/magicor/
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/magicor
 	${INSTALL_SCRIPT} ${WRKSRC}/Magicor.py ${STAGEDIR}${PREFIX}/bin/magicor
 	${INSTALL_DATA} ${WRKSRC}/etc/magicor.conf \

@@ -1,14 +1,13 @@
 # Created by: Gerald Pfeifer <gerald@FreeBSD.org>
 # $FreeBSD$
 
-PORTNAME=	gcc46
+PORTNAME=	gcc
 PORTVERSION=	4.6.4
-PORTREVISION=	1
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	lang java
-MASTER_SITES=	${MASTER_SITE_GCC}
-MASTER_SITE_SUBDIR=	releases/gcc-${DISTVERSION}
-DISTNAME=	gcc-${DISTVERSION}
+MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
+PKGNAMESUFFIX=	${SUFFIX}
 
 MAINTAINER=	gerald@FreeBSD.org
 COMMENT=	GNU Compiler Collection 4.6
@@ -26,13 +25,16 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
 BUILD_DEPENDS+=	runtest:${PORTSDIR}/misc/dejagnu
 .endif
 
+CPE_VENDOR=	gnu
+UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
+
 # DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.
 DISTVERSION=	${PORTVERSION}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
 ONLY_FOR_ARCHS=	amd64 i386 ia64 powerpc sparc64
-USES=		gmake iconv makeinfo perl5 tar:bzip2
+USES=		cpe gmake iconv libtool makeinfo perl5 tar:bzip2
 USE_BINUTILS=	yes
 USE_PERL5=	build
 SSP_UNSAFE=	yes
@@ -45,6 +47,7 @@ OPTIONS_DEFINE_i386=	JAVA
 OPTIONS_DEFINE_amd64=	JAVA
 OPTIONS_DEFAULT_i386=	JAVA
 OPTIONS_DEFAULT_amd64=	JAVA
+OPTIONS_EXCLUDE_DragonFly=	JAVA
 BOOTSTRAP_DESC=		Build using a full bootstrap
 
 .include <bsd.port.pre.mk>
@@ -64,6 +67,7 @@ GNU_CONFIGURE=	yes
 .if empty(PORT_OPTIONS:MBOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
 .else
+CONFIGURE_ARGS+=--with-build-config=bootstrap-debug
 ALL_TARGET=	bootstrap-lean
 .endif
 CONFIGURE_ARGS+=--disable-nls \
@@ -125,8 +129,7 @@ full-regression-test: build
 	; ${SRCDIR}/contrib/test_summary
 .endif
 
-post-install:
-	${RM} -f ${STAGEDIR}${TARGLIB}/*.la
+post-stage:
 	${RM} -f ${STAGEDIR}${PREFIX}/man/man7/*
 	${RM} -f ${STAGEDIR}${PREFIX}/bin/rebuild-gcj-db${SUFFIX} \
 	         ${STAGEDIR}${PREFIX}/man/man1/rebuild-gcj-db${SUFFIX}.1
@@ -135,8 +138,6 @@ post-install:
 .for d in ${TARGLIB:S/^${PREFIX}\///} ${LIBEXEC:S/^${PREFIX}\///} include/gcj include/gnu include/java include/javax
 	cd ${STAGEDIR}${PREFIX} ; if [ -d $d ]; then \
 	    ${FIND} $d -type f -o -type l >>${WRKDIR}/PLIST.lib ;\
-	    ${FIND} $d -type d | ${SORT} -r \
-	        | ${SED} -e 's/^/@dirrm /g' >>${WRKDIR}/PLIST.lib ;\
 	fi
 .endfor
 	cd ${WRKDIR} ; ${SED} -i -e "/PLIST.lib/ r PLIST.lib" ${TMPPLIST}

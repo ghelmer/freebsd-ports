@@ -2,25 +2,23 @@
 
 PORTNAME=	fcgiwrap
 PORTVERSION=	1.1.0
+PORTREVISION=	3
 CATEGORIES=	www
+MASTER_SITES=	http://www.skysmurf.nl/comp/FreeBSD/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	freebsd@skysmurf.nl
 COMMENT=	Simple FastCGI wrapper for CGI scripts
 
 LICENSE=	MIT
 
 LIB_DEPENDS=	libfcgi.so:${PORTSDIR}/www/fcgi
 
-USES=		gmake pkgconfig
+USES=		autoreconf gmake pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	gnosek
-GH_COMMIT=	333ff99
-GH_TAGNAME=	${PORTVERSION}
 
 USE_RC_SUBR=	fcgiwrap
-
-USE_AUTOTOOLS=	aclocal autoconf autoheader
 
 CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
@@ -28,6 +26,7 @@ GNU_CONFIGURE=	yes
 PLIST_FILES=	sbin/fcgiwrap man/man8/fcgiwrap.8.gz
 
 post-patch:
-	@${REINPLACE_CMD} 's/@prefix@@mandir@/@mandir@/' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's/@prefix@@mandir@/@mandir@/'\
+	-e 's|-m 755 fcgiwrap|-s -m 755 fcgiwrap|' ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

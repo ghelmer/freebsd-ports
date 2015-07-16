@@ -1,6 +1,6 @@
---- ./plugins-scripts/check_ircd.pl.orig	2014-04-27 19:59:06.000000000 +0200
-+++ ./plugins-scripts/check_ircd.pl	2014-05-09 18:45:31.000000000 +0200
-@@ -65,6 +65,7 @@
+--- plugins-scripts/check_ircd.pl.orig	2014-11-30 10:36:26 UTC
++++ plugins-scripts/check_ircd.pl
+@@ -66,6 +66,7 @@ sub bindRemote ($$);
  $ENV{'PATH'}='@TRUSTED_PATH@';
  $ENV{'BASH_ENV'}=''; 
  $ENV{'ENV'}='';
@@ -8,7 +8,7 @@
  
  # -----------------------------------------------------------------[ Global ]--
  
-@@ -152,7 +153,7 @@
+@@ -153,7 +154,7 @@ sub bindRemote ($$)
  	    print "IRCD UNKNOWN: Could not start socket ($!)\n";
  	    exit $ERRORS{"UNKNOWN"};
  	}

@@ -3,23 +3,22 @@
 
 PORTNAME=	live-f1
 PORTVERSION=	0.2.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/${PORTVERSION:R}/${PORTVERSION}/+download/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Native client for the official Formula 1 Live Timing service
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libneon.so:${PORTSDIR}/www/neon29
+LIB_DEPENDS=	libneon.so:${PORTSDIR}/www/neon
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}
 
 OPTIONS_DEFINE=	NLS
 
-USES=		pkgconfig gettext:build iconv gmake
+USES=		pkgconfig gettext-tools iconv gmake tar:tgz
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib

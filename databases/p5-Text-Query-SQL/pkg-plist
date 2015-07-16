@@ -1,4 +1,3 @@
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/Text/Query/SQL/.packlist
 %%SITE_PERL%%/Text/Query/BuildSQLMifluz.pm
 %%SITE_PERL%%/Text/Query/BuildSQLMySQL.pm
 %%SITE_PERL%%/Text/Query/BuildSQLFulcrum.pm
@@ -13,8 +12,3 @@
 %%PERL5_MAN3%%/Text::Query::BuildSQLMySQL.3.gz
 %%PERL5_MAN3%%/Text::Query::BuildSQLPg.3.gz
 %%PERL5_MAN3%%/Text::Query::SolveSQL.3.gz
-@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Text/Query/SQL
-@dirrmtry %%SITE_PERL%%/Bundle/Text/Query
-@dirrmtry %%SITE_PERL%%/Bundle/Text
-@dirrmtry %%SITE_PERL%%/Bundle
-@dirrmtry %%SITE_PERL%%/Text/Query

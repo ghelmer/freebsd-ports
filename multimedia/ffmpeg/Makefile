@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ffmpeg
-PORTVERSION=	2.2.4
-PORTREVISION=	3
+PORTVERSION=	2.3.6
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://ffmpeg.org/releases/
@@ -11,36 +11,40 @@ MASTER_SITES=	http://ffmpeg.org/releases/
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Realtime audio/video encoder/converter and streaming server
 
-LICENSE=		GPLv2 LGPL21
-LICENSE_COMB=		multi
+LICENSE=	GPLv2 LGPL21
+LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm \
-		${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils \
-		texi2html:${PORTSDIR}/textproc/texi2html
+		${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
 
 HAS_CONFIGURE=	yes
 CONFIGURE_LOG=	config.err
-USES=		gmake pkgconfig perl5 tar:bzip2
+USES=		cpe gmake pkgconfig perl5 tar:bzip2
+USE_LDCONFIG=	yes
 USE_PERL5=	build
 WANT_SDL=	yes
 
-OPTIONS_DEFINE=	AACPLUS ALSA AMR_NB AMR_WB ASS CDIO CELT DEBUG FAAC \
-		FDK_AAC FFSERVER FONTCONFIG FREETYPE FREI0R GNUTLS GSM ICONV \
-		JACK LAME LIBBLURAY LIBV4L MODPLUG OPENAL OPENCV OPENJPEG OPENSSL \
+OPTIONS_DEFINE=	AACPLUS ALSA AMR_NB AMR_WB ASS CDIO CELT DEBUG DOCS FAAC \
+		FDK_AAC FFSERVER FONTCONFIG FREETYPE FREI0R GSM ICONV \
+		JACK LAME LIBBLURAY LIBV4L MODPLUG OPENAL OPENCV OPENJPEG \
 		OPTIMIZED_CFLAGS OPUS PULSEAUDIO RTMP SCHROEDINGER SDL SPEEX \
 		THEORA VAAPI VDPAU VO_AACENC VO_AMRWBENC VORBIS VPX \
-		X11GRAB X264 XVID
+		X11GRAB X264 X265 XVID
 
 OPTIONS_DEFAULT=	FFSERVER FONTCONFIG FREETYPE FREI0R GNUTLS ICONV \
 			OPENCV SCHROEDINGER THEORA VORBIS VPX X264 XVID
+
+OPTIONS_SINGLE=	SSL
+OPTIONS_SINGLE_SSL=	GNUTLS OPENSSL
 
 ASS_DESC=	Subtitles rendering via libass
 CDIO_DESC=	Audio CD grabbing with libcdio
 FDK_AAC_DESC=	AAC audio encoding via Fraunhofer FDK
 FFSERVER_DESC=	Build and install ffserver
 LIBV4L_DESC=	Video for Linux support
-OPUS_DESC=	Opus decoding with libopus
 X11GRAB_DESC=	Enable x11 grabbing
+
+OPTIONS_SUB=	yes
 
 # aacplus
 AACPLUS_LIB_DEPENDS=	libaacplus.so:${PORTSDIR}/audio/libaacplus
@@ -64,7 +68,7 @@ ASS_LIB_DEPENDS=	libass.so:${PORTSDIR}/multimedia/libass
 ASS_CONFIGURE_ENABLE=	libass
 
 # cdio
-CDIO_LIB_DEPENDS=	libcdio.so:${PORTSDIR}/sysutils/libcdio
+CDIO_LIB_DEPENDS=	libcdio_paranoia.so:${PORTSDIR}/sysutils/libcdio-paranoia
 CDIO_CONFIGURE_ENABLE=	libcdio
 
 # celt
@@ -118,6 +122,7 @@ LIBBLURAY_LIB_DEPENDS=	libbluray.so:${PORTSDIR}/multimedia/libbluray
 LIBBLURAY_CONFIGURE_ENABLE=	libbluray
 
 # libv4l
+LIBV4L_BUILD_DEPENDS=	v4l_compat>0:${PORTSDIR}/multimedia/v4l_compat
 LIBV4L_LIB_DEPENDS=	libv4l2.so:${PORTSDIR}/multimedia/libv4l
 LIBV4L_CONFIGURE_ENABLE=	libv4l2
 LIBV4L_CONFIGURE_OFF=		--disable-indev=v4l2 \
@@ -139,6 +144,10 @@ OPENCV_CONFIGURE_ENABLE=	libopencv
 # openjpeg
 OPENJPEG_LIB_DEPENDS=	libopenjpeg.so:${PORTSDIR}/graphics/openjpeg15
 OPENJPEG_CONFIGURE_ENABLE=	libopenjpeg
+
+# openssl
+OPENSSL_USE=		OPENSSL=yes
+OPENSSL_CONFIGURE_ENABLE=	openssl
 
 # opus
 OPUS_LIB_DEPENDS=	libopus.so:${PORTSDIR}/audio/opus
@@ -191,8 +200,12 @@ VPX_LIB_DEPENDS=	libvpx.so:${PORTSDIR}/multimedia/libvpx
 VPX_CONFIGURE_ENABLE=	libvpx
 
 # x264
-X264_LIB_DEPENDS=	libx264.so:${PORTSDIR}/multimedia/x264
+X264_LIB_DEPENDS=	libx264.so:${PORTSDIR}/multimedia/libx264
 X264_CONFIGURE_ENABLE=	libx264
+
+# x265
+X265_LIB_DEPENDS=	libx265.so:${PORTSDIR}/multimedia/x265
+X265_CONFIGURE_ENABLE=	libx265
 
 # xvid
 XVID_LIB_DEPENDS=	libxvidcore.so:${PORTSDIR}/multimedia/xvid
@@ -200,17 +213,13 @@ XVID_CONFIGURE_ENABLE=	libxvid
 
 FFPROGS=	ffmpeg ffprobe
 INSTALL_TARGET=	install-progs install-data install-libs install-headers
-#FFMPEG_SUFFIX=	2
-#PLIST_SUB+=	SUFF="${FFMPEG_SUFFIX}"
 
-#USE_LDCONFIG=	${PREFIX}/lib/ffmpeg${FFMPEG_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 
 .include <bsd.port.options.mk>
 
 # ssl
 .if ${PORT_OPTIONS:MOPENSSL} && empty(PORT_OPTIONS:MGNUTLS)
-USE_OPENSSL=	yes
 FFMPEG_NONFREE=	yes
 .endif
 
@@ -231,6 +240,14 @@ CONFIGURE_ARGS+=	--enable-x11grab
 
 .include <bsd.port.pre.mk>
 
+.if ${OPSYS} == "FreeBSD" && ${OSVERSION} < 1000000
+CONFIGURE_ARGS+=	--enable-memalign-hack
+.endif
+
+.if ${ARCH} == "armv6"
+CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as
+.endif
+
 DATADIR=	${PREFIX}/share/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 CONFIGURE_ENV+=	COMPILER_PATH=${LOCALBASE}/bin
@@ -245,19 +262,24 @@ CONFIGURE_ARGS+=--prefix="${PREFIX}" \
 		--enable-avfilter \
 		--enable-avresample \
 		--enable-pthreads \
-		--enable-memalign-hack \
 		--disable-libstagefright-h264 \
 		--disable-libutvideo \
 		--disable-libsoxr \
 		--cc="${CC}" \
 		--extra-cflags="${FFMPEG_CFLAGS} -I${LOCALBASE}/include" \
 		--extra-ldflags="-L${LOCALBASE}/lib ${FFMPEG_LDFLAGS}" \
-		--extra-libs="${PTHREAD_LIBS}"
+		--extra-libs="-lpthread"
 
-DOC_FILES=	Changelog CREDITS INSTALL LICENSE MAINTAINERS README
+DOC_FILES=	Changelog CREDITS INSTALL.md LICENSE.md MAINTAINERS \
+		README.md RELEASE_NOTES
 # under doc subdirectory
-DOC_DOCFILES=	APIchanges RELEASE_NOTES *.txt *.html
+DOC_DOCFILES=	APIchanges *.txt
 PORTDOCS=	*
+
+.if ${PORT_OPTIONS:MDOCS}
+DOC_DOCFILES+=	*.html
+BUILD_DEPENDS+=	texi2html:${PORTSDIR}/textproc/texi2html
+.endif
 
 .if ${PORT_OPTIONS:MDEBUG}
 CONFIGURE_ARGS+=	--disable-stripping
@@ -294,20 +316,15 @@ CFLAGS+=	-O3 -ffast-math -fno-finite-math-only -fomit-frame-pointer
 
 # ffserver
 .if ${PORT_OPTIONS:MFFSERVER}
-PLIST_SUB+=	FFSERVER=""
-PLIST_FILES+=	man/man1/ffserver.1.gz
 FFPROGS+=	ffserver
-. if ${PORT_OPTIONS:MDOCS}
+.if ${PORT_OPTIONS:MDOCS}
 DOC_DOCFILES+=	ffserver.html
-. endif
-.else
-PLIST_SUB+=	FFSERVER="@comment "
+.endif
 .endif
 
 # sdl
 .if ${PORT_OPTIONS:MSDL}
 USE_SDL+=	sdl
-PLIST_FILES+=	bin/ffplay man/man1/ffplay.1.gz
 FFPROGS+=	ffplay
 .if ${PORT_OPTIONS:MDOCS}
 DOC_DOCFILES+=	ffplay.html
@@ -343,7 +360,6 @@ post-patch:
 	@${REINPLACE_CMD} -E \
 		-e "s|(EXTRALIBS[[:space:]]*=)|\1-L${LOCALBASE}/lib |g; \
 		s|%%LOCALBASE%%|${LOCALBASE}|g; \
-		s|-pthread|${PTHREAD_LIBS}|g; \
 		s|gsm/gsm.h|gsm.h|g" \
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
 	@${REINPLACE_CMD} -e 's|-ldl||' \

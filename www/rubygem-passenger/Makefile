@@ -2,13 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	passenger
-PORTVERSION=	4.0.45
+PORTVERSION=	5.0.11
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-
 
 MAINTAINER=	osa@FreeBSD.org
 COMMENT=	Modules for running Ruby on Rails and Rack applications
+
+USES+=		cpe
+
+CPE_VENDOR=	phusion
+CPE_PRODUCT=	passenger
 
 OPTIONS_DEFINE=	DEBUG SYMLINK
 OPTIONS_SINGLE=	SERVER
@@ -29,17 +34,7 @@ RUBYGEM_AUTOPLIST=	yes
 USE_APACHE=	22+
 .endif
 
-.if ${PORT_OPTIONS:MNGINX}
-NGINXVERSION!=	${PKG_INFO} -qO www/nginx-devel 2>/dev/null; ${ECHO_CMD}
-.if empty(NGINXVERSION)
-BUILD_DEPENDS+=	nginx:${PORTSDIR}/www/nginx
-.else
-BUILD_DEPENDS+=	nginx:${PORTSDIR}/www/nginx-devel
-.endif
-.endif
-
-LIB_DEPENDS+=	libeio.so:${PORTSDIR}/devel/libeio \
-		libev.so:${PORTSDIR}/devel/libev \
+LIB_DEPENDS+=	libuv.so:${PORTSDIR}/devel/libuv \
 		libcurl.so:${PORTSDIR}/ftp/curl
 BUILD_DEPENDS+=	rubygem-fastthread>=1.0.1:${PORTSDIR}/devel/rubygem-fastthread \
 		rubygem-rack>=0:${PORTSDIR}/www/rubygem-rack \
@@ -78,27 +73,13 @@ pre-patch:
 		s!#{PlatformInfo.debugging_cflags}!${CFLAGS}!g; \
 		s!-O2!!g; \
 		s! -feliminate-unused-debug-symbols -feliminate-unused-debug-types!!g; \
-		204,206s!true!false!' \
+		215s!true!false!' \
 		${WRKSRC}/build/basics.rb
 .if ${PORT_OPTIONS:NDEBUG}
 	@${REINPLACE_CMD} \
 		's!-DPASSENGER_DEBUG!-DNDEBUG!g' \
 		${WRKSRC}/build/basics.rb
 .endif
-	@${REINPLACE_CMD} \
-		's!#{LIBEV_LIBS}!-L${LOCALBASE}/lib -lev!g' \
-		${WRKSRC}/build/agents.rb
-	@${REINPLACE_CMD} \
-		's!-Iext/libev!!; \
-		s!/usr/include/libev!${LOCALBASE}/include!; \
-		s!-lev!-L${LOCALBASE}/lib -lev!; \
-		s!-Iext/libeio!!; \
-		s!/usr/include/libeio!${LOCALBASE}/include!; \
-		s!-leio!-L${LOCALBASE}/lib -leio!' \
-		${WRKSRC}/build/common_library.rb
-	@${REINPLACE_CMD} \
-		's!-lpthread!${PTHREAD_LIBS}!g' \
-		${WRKSRC}/lib/phusion_passenger/platform_info/cxx_portability.rb
 
 post-build:
 .if ${PORT_OPTIONS:MAPACHE22}
@@ -108,9 +89,6 @@ post-build:
 .if ${PORT_OPTIONS:MNGINX}
 	(cd ${WRKSRC} && CC=${CC} CXX=${CXX} ${RAKE_BIN} nginx)
 .endif
-.if ${PORT_OPTIONS:MSYMLINK}
-	${LN} -s ${GEM_LIB_DIR} ${STAGE}${PREFIX}/${GEMS_DIR}/${PORTNAME}
-.endif
 
 	${FIND} ${WRKSRC} -name '*.o' -delete
 	${FIND} ${WRKSRC} -name '*.bak' -delete
@@ -118,6 +96,9 @@ post-build:
 post-install:
 	( cd ${WRKSRC} && \
 	${COPYTREE_SHARE} buildout ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}-${PORTVERSION} )
-	${CHMOD} +x ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}-${PORTVERSION}/buildout/agents/*
+	${CHMOD} +x ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}-${PORTVERSION}/buildout/support-binaries/*
+.if ${PORT_OPTIONS:MSYMLINK}
+	${LN} -s ${PREFIX}/${GEM_LIB_DIR} ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}
+.endif
 
 .include <bsd.port.mk>

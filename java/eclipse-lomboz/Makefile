@@ -3,7 +3,7 @@
 
 PORTNAME=	lomboz
 PORTVERSION=	3.1.r2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.forge.objectweb.org/lomboz/ \
 		http://download.fr2.forge.objectweb.org/lomboz/ \
@@ -13,7 +13,7 @@ DISTNAME=	lomboz-emf-gef-jem-${PORTVERSION:S/.r/RC/}
 DIST_SUBDIR=	eclipse
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A J2EE developer tool build as a plugin for the eclipse platform
+COMMENT=	J2EE developer tool build as a plugin for the eclipse platform
 
 RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:${PORTSDIR}/java/eclipse
 
@@ -31,8 +31,8 @@ do-install:
 	@${CP} -r ${WRKSRC}/eclipse/plugins ${STAGEDIR}${PREFIX}/lib/eclipse
 	@${CP} -r ${WRKSRC}/eclipse/features ${STAGEDIR}${PREFIX}/lib/eclipse
 	@(cd ${WRKSRC}; ${FIND} -s eclipse/features eclipse/plugins -not -type d) | ${SED} -e 's,^eclipse,lib/eclipse,' >> ${TMPPLIST}
-	@(cd ${WRKSRC}; ${FIND} -s -d eclipse/features eclipse/plugins -type d) \
+	@(cd ${WRKSRC}; ${FIND} -s -d eclipse/features eclipse/plugins -type d -empty) \
 		| ${GREP} -vE 'eclipse/plugins$$|eclipse/features$$' \
-		| ${SED} -ne 's,^,@dirrm lib/,p' >> ${TMPPLIST}
+		| ${SED} -ne 's,^,@dir lib/,p' >> ${TMPPLIST}
 
 .include <bsd.port.mk>

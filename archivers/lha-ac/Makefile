@@ -4,9 +4,8 @@ PORTNAME=	lha
 PORTVERSION=	1.14i
 PORTREVISION=	10
 CATEGORIES=	archivers
-MASTER_SITES=	${MASTER_SITE_SOURCEFORGE_JP} \
-		http://osdn.dl.sourceforge.jp/%SUBDIR%/
-MASTER_SITE_SUBDIR=	lha/22231
+MASTER_SITES=	SFJP/lha/22231 \
+		http://osdn.dl.sourceforge.jp/lha/22231/
 PKGNAMESUFFIX=	-ac${PKGNAMESUFFIX2}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-ac20050924p1
 
@@ -17,19 +16,11 @@ RESTRICTED=	No redistribution allowed
 
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/lha-ac
-MANLANG=	ja
-MAN1_JA=	lha-ac.1
-PLIST_FILES+=	${__MANPAGES}
+PLIST_FILES+=	man/ja/man1/lha-ac.1.gz
 
 OPTIONS_DEFINE=	NLS
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-CONFIGURE_ARGS+=	--disable-multibyte-filename
-.else
-CONFIGURE_ARGS+=	--enable-multibyte-filename=auto
-.endif
+NLS_CONFIGURE_ON=	--enable-multibyte-filename=auto
+NLS_CONFIGURE_OFF=	--disable-multibyte-filename
 
 do-install:
 	-${MKDIR} ${STAGEDIR}${PREFIX}/man/ja/man1

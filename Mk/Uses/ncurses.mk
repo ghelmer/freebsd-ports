@@ -26,11 +26,12 @@
 .if !defined(_INCLUDE_USES_NCURSES_MK)
 _INCLUDE_USES_NCURSES_MK=	yes
 
-.if !defined(ncurses_ARGS)
+.if empty(ncurses_ARGS)
 .  if !exists(${DESTDIR}/${LOCALBASE}/lib/libncurses.so) && exists(${DESTDIR}/usr/include/ncurses.h)
 ncurses_ARGS=	base
+.  else
+ncurses_ARGS=	port
 .  endif
-ncurses_ARGS?=	port
 .endif
 
 .if ${ncurses_ARGS} == base
@@ -54,31 +55,17 @@ NCURSESINC=	${LOCALBASE}/include/ncurses
 
 .  if !defined(NCURSES_PORT) && exists(${DESTDIR}/${LOCALBASE}/lib/libncurses.so)
 PKG_DBDIR?=	${DESTDIR}/var/db/pkg
-.    if defined(WITH_PKGNG)
-.      if defined(DESTDIR)
+.    if defined(DESTDIR)
 PKGARGS=	-c ${DESTDIR}
-.      endif
+.    endif
 PKGARGS?=
 NCURSES_INSTALLED!=	${PKG_BIN} ${PKGARGS} which -qo ${LOCALBASE}/lib/libncurses.so || :
-.    else
-NCURSES_INSTALLED!=	find "${PKG_DBDIR}/" -type f -name "+CONTENTS" -print0 | \
-			xargs -0 grep -l "^lib/libncurses.so." | \
-			while read contents; do \
-				ncursesprefix=`grep "^@cwd " "$${contents}" | ${HEAD} -n 1`; \
-				if test "$${ncursesprefix}" = "@cwd ${LOCALBASE}" ; then \
-					echo "$${contents}"; break; fi; done
-.    endif
 .  endif
 NCURSES_INSTALLED?=
 
 .if ${NCURSES_INSTALLED} != ""
-.  if defined(WITH_PKGNG)
 NCURSES_PORT=	${NCURSES_INSTALLED}
 NCURSES_SHLIBFILE!=	${PKG_INFO} -ql ${NCURSES_INSTALLED} | grep -m 1 "^`pkg query "%p" ${NCURSES_INSTALLED}`/lib/libncurses.so."
-.  else
-NCURSES_PORT!=		grep "^@comment ORIGIN:" "${NCURSES_INSTALLED}" | ${CUT} -d : -f 2
-NCURSES_SHLIBFILE!=	grep -m 1 "^lib/libncurses.so." "${NCURSES_INSTALLED}"
-.  endif
 NCURSES_SHLIBVER?=	${NCURSES_SHLIBFILE:E}
 .endif
 

@@ -29,7 +29,6 @@ lib/oss/conf/oss_ymf7xx.conf.sample
 lib/oss/conf/osscore.conf.sample
 lib/oss/etc/devices.list
 lib/oss/include/sys/soundcard.h
-@exec mkdir -p %D/lib/oss/logs
 lib/oss/modules/oss_ali5455.ko
 lib/oss/modules/oss_atiaudio.ko
 lib/oss/modules/oss_audigyls.ko
@@ -115,10 +114,3 @@ sbin/savemixer
 sbin/soundoff
 sbin/soundon
 sbin/vmixctl
-@dirrm lib/oss/modules
-@dirrmtry lib/oss/logs
-@dirrm lib/oss/include/sys
-@dirrm lib/oss/include
-@dirrmtry lib/oss/etc
-@dirrmtry lib/oss/conf
-@dirrmtry lib/oss

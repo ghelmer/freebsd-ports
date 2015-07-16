@@ -3,7 +3,7 @@
 
 PORTNAME=	darkice
 PORTVERSION=	1.2
-PORTREVISION?=	1
+PORTREVISION?=	2
 CATEGORIES=	audio net
 MASTER_SITES=	GOOGLE_CODE
 
@@ -17,12 +17,10 @@ OPTIONS_MULTI=	CODEC
 OPTIONS_MULTI_CODEC=	VORBIS OPUS LAME TWOLAME FAAC AACPLUS
 OPTIONS_DEFAULT=	VORBIS
 
-OPUS_DESC=	Ogg Opus audio codec support
 AACPLUS_DESC=	AAC HEv2 and libsamplerate support
 
-USE_AUTOTOOLS=	aclocal automake autoconf
-ACLOCAL_ARGS=	# none
-AUTOMAKE_ARGS=	--add-missing --copy --foreign
+USES=		autoreconf
+GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_prog_acx_pthread_config=no
 CONFIGURE_ARGS=	--without-alsa
 
@@ -82,7 +80,7 @@ CONFIGURE_ARGS+=	--without-faac
 
 .if ${PORT_OPTIONS:MAACPLUS}
 LIB_DEPENDS+=	libaacplus.so:${PORTSDIR}/audio/libaacplus \
-		samplerate:${PORTSDIR}/audio/libsamplerate
+		libsamplerate.so:${PORTSDIR}/audio/libsamplerate
 CONFIGURE_ARGS+=	--with-aacplus-prefix=${LOCALBASE} \
 			--with-samplerate-prefix=${LOCALBASE}
 .else

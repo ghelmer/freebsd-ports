@@ -3,14 +3,17 @@
 
 PORTNAME=	limesurvey
 PORTVERSION=	1.91
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/1._LimeSurvey_stable/${PORTVERSION}+/
 DISTNAME=	${PORTNAME}${PORTVERSION:S^.^^}plus-build10232-20110608
 
 MAINTAINER=	jmohacsi@bsd.hu
-COMMENT=	A PHP-based survey building and runing system
+COMMENT=	PHP-based survey building and runing system
 
 LICENSE=	GPLv2
+
+USES=		cpe
 
 # http://docs.limesurvey.org/Installation&structure=English+Instructions+for+LimeSurvey
 OPTIONS_DEFINE=		PGSQL GD LDAP ZIP
@@ -25,7 +28,7 @@ ZIP_DESC=		Install PHP zip extension
 
 # http://docs.limesurvey.org/Installation&structure=English+Instructions+for+LimeSurvey#Make_sure_you_can_use_LimeSurvey_on_your_website
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 USE_PHP=	pgsql
 .else
 # server is not necessary on this host.
@@ -70,20 +73,23 @@ do-install:
 .endif
 	@cd "${WRKSRC}" && ${COPYTREE_SHARE} . "${STAGEDIR}${WWWDIR}"
 	${MKDIR} "${STAGEDIR}${WWWDIR}"/tmp
-	${CHOWN} -R "${WWWOWN}:${WWWGRP}" "${STAGEDIR}${WWWDIR}"
 	${CHMOD} 755 "${STAGEDIR}${WWWDIR}"/tmp
 	${CHMOD} 755 "${STAGEDIR}${WWWDIR}"/templates
 	${CHMOD} 755 "${STAGEDIR}${WWWDIR}"/upload
-	${CHOWN} -R 0 "${STAGEDIR}${WWWDIR}"/admin
 	${CHMOD} -R go-w "${STAGEDIR}${WWWDIR}"/admin
 
 post-install:
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_CMD} "@owner www" >> ${TMPPLIST}
-	@${ECHO_CMD} "@group www" >> ${TMPPLIST}
-	@${FIND} -s -d ${STAGEDIR}${WWWDIR} -type f -print | \
+	@${ECHO_CMD} "@group ${WWWGRP}" >> ${TMPPLIST}
+	@${FIND} -s -d ${STAGEDIR}${WWWDIR}/admin -type f -print | \
 		${SED} -e "s#${STAGEDIR}${PREFIX}/##g" >> ${TMPPLIST}
-	@${FIND} -s -d ${STAGEDIR}${WWWDIR} -type d  -print | \
-		${SED} -E -e "s#${STAGEDIR}${PREFIX}/#@dirrm #g" >> ${TMPPLIST}
+	@${FIND} -s -d ${STAGEDIR}${WWWDIR}/admin -type d -print | \
+		${SED} -E -e "s#${STAGEDIR}${PREFIX}/#@dir #g" >> ${TMPPLIST}
+	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${TMPPLIST}
+	@${FIND} -s -d ${STAGEDIR}${WWWDIR} ! -path "${STAGEDIR}${WWWDIR}/admin/*" -type f -print | \
+		${SED} -e "s#${STAGEDIR}${PREFIX}/##g" >> ${TMPPLIST}
+	@${FIND} -s -d ${STAGEDIR}${WWWDIR} -type d ! -path "${STAGEDIR}${WWWDIR}/admin*" -print | \
+		${SED} -E -e "s#${STAGEDIR}${PREFIX}/#@dir #g" >> ${TMPPLIST}
+	@${ECHO_CMD} "@owner" >> ${TMPPLIST}
+	@${ECHO_CMD} "@group" >> ${TMPPLIST}
 
 .include <bsd.port.mk>

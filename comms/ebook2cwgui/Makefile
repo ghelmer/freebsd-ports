@@ -2,13 +2,13 @@
 
 PORTNAME=	ebook2cwgui
 PORTVERSION=	0.1.2
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://fkurz.net/ham/ebook2cw/ \
 		http://distfiles.bsdjunk.com/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	db
+		LOCAL/db
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	gui front end for ebooks2cw
 
 RUN_DEPENDS=	ebook2cw:${PORTSDIR}/comms/ebook2cw

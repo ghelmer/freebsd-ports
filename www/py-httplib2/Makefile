@@ -2,25 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	httplib2
-PORTVERSION=	0.8
-PORTREVISION=	2
+PORTVERSION=	0.9.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
-COMMENT=	A comprehensive HTTP client library
+COMMENT=	Comprehensive HTTP client library
 
 LICENSE=	MIT
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+NO_ARCH=	yes
+USE_PYTHON=	autoplist distutils
+USES=		python
 
-.include <bsd.port.pre.mk>
+USE_GITHUB=	yes
+GH_ACCOUNT=	jcgregorio
 
-post-patch:
-	${FIND} ${WRKSRC} -type f -exec ${CHMOD} 644 {} \;
-	${FIND} ${WRKSRC} -type d -exec ${CHMOD} 755 {} \;
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

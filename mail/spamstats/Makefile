@@ -6,11 +6,10 @@ PORTVERSION=	0.6c
 PORTREVISION=	2
 CATEGORIES=	mail
 #MASTER_SITES=	http://www.inl.fr/download/
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	leeym
+MASTER_SITES=	LOCAL/leeym
 
 MAINTAINER=	leeym@FreeBSD.org
-COMMENT=	A tool to generate statistics for spamd of Mail::SpamAssassin
+COMMENT=	Tool to generate statistics for spamd of Mail::SpamAssassin
 
 RUN_DEPENDS=	p5-Date-Manip>=0:${PORTSDIR}/devel/p5-Date-Manip \
 		p5-Compress-Bzip2>=2.08:${PORTSDIR}/archivers/p5-Compress-Bzip2

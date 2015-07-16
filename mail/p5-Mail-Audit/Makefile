@@ -3,6 +3,7 @@
 
 PORTNAME=	Mail-Audit
 PORTVERSION=	2.2.27
+PORTREVISION=	2
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -17,30 +18,30 @@ RUN_DEPENDS=	p5-File-HomeDir>=0.61:${PORTSDIR}/devel/p5-File-HomeDir \
 		p5-Mail-Tools>=0:${PORTSDIR}/mail/p5-Mail-Tools
 BUILD_DEPENDS:=	${RUN_DEPENDS}
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	bin/*
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
 PORTDOCS=	Changes FAQ README
 PORTEXAMPLES=	popread proc2ma
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 post-patch:
 	@${REINPLACE_CMD} -i '' -e 's|/var/spool/mail|/var/mail|g' \
 		${WRKSRC}/lib/Mail/Audit.pm
 
 post-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}/${i}
 .endfor
-.endif
-.if !defined(NOPORTEXAMPLES)
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for i in ${PORTEXAMPLES}
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/${i}  ${STAGEDIR}${EXAMPLESDIR}/${i}
 .endfor
-.endif
 
 .include <bsd.port.mk>

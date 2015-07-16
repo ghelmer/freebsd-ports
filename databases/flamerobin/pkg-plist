@@ -1,4 +1,5 @@
 bin/flamerobin
+man/man1/flamerobin.1.gz
 %%DATADIR%%/conf-defs/db_settings.confdef
 %%DATADIR%%/conf-defs/fr_settings.confdef
 %%DATADIR%%/docs/fr_license.html
@@ -37,7 +38,3 @@ bin/flamerobin
 %%DATADIR%%/html-templates/view.png
 share/applications/flamerobin.desktop
 share/pixmaps/flamerobin.png
-@dirrm %%DATADIR%%/html-templates
-@dirrm %%DATADIR%%/docs
-@dirrm %%DATADIR%%/conf-defs
-@dirrm %%DATADIR%%

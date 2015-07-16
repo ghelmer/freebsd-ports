@@ -10,9 +10,9 @@ MASTER_SITES=	http://rodrigo.osorio.free.fr/freebsd/distfiles/ \
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Library to build an IP-netmask based mtrie
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 uidfix
 USE_LDCONFIG=	yes
 
 .if defined(NO_PROFILE)

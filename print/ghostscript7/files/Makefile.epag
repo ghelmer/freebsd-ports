@@ -21,16 +21,16 @@ pre-build-epag:
 	${LN} -s -f ${WRKSRC}/epag-3.09/gdevepag.c ${WRKSRC}/src
 
 post-install-epag:
-	${INSTALL_PROGRAM} ${WRKSRC}/epag-3.09/ert ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/epag-3.09/ert ${STAGEDIR}${PREFIX}/bin
 
 post-install-docs-epag:
-	${MKDIR} ${DOCSDIR}/epag
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/epag
 	cd ${WRKSRC}/epag-3.09 \
 		&& ${INSTALL_DATA} ert.txt gdevepag.txt ChangeLog \
-			${DOCSDIR}/epag
+			${STAGEDIR}${DOCSDIR}/epag
 	cd ${WRKSRC}/epag-3.09 \
 		&& ${INSTALL_SCRIPT} psprint gsepagif.sh \
-			${DOCSDIR}/epag
+			${STAGEDIR}${DOCSDIR}/epag
 
 post-extract: post-extract-epag
 pre-build: pre-build-epag

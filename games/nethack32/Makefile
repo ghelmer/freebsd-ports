@@ -7,9 +7,8 @@ PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/${TRUEPORTNAME}/${TRUEPORTNAME}/3.2.2
 DISTNAME=	nethack-322
-EXTRACT_SUFX=	.tgz
 
-PATCH_SITES=	${MASTER_SITE_SOURCEFORGE:C/%SUBDIR%/${TRUEPORTNAME}\/${TRUEPORTNAME}\/${PORTVERSION}/}
+PATCH_SITES=	SOURCEFORGE/${TRUEPORTNAME}/${TRUEPORTNAME}/${PORTVERSION}
 PATCHFILES=	nh-3.2.2-3.2.3.diff
 
 MAINTAINER=	glewis@FreeBSD.org
@@ -17,7 +16,7 @@ COMMENT=	Dungeon explorin', slashin', hackin' game
 
 WRKSRC=		${WRKDIR}/${TRUEPORTNAME}-3.2.2
 
-USES=		gmake
+USES=		tar:tgz
 USE_XORG=	xaw xpm
 PLIST_SUB=	HACKNAME="${HACKNAME}" \
 		HACKEXT="${HACKEXT}"
@@ -32,6 +31,8 @@ HACKLINK=	${TRUEPORTNAME}
 DATADIR=	${PREFIX}/${HACKDIR}
 DOCSDIR=	${PREFIX}/share/doc/${HACKNAME}
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -56,20 +57,20 @@ post-patch:
 .endfor
 
 do-configure:
-	@cd ${WRKSRC}/sys/unix && ${SH} setup.sh
+	@(cd ${WRKSRC}/sys/unix && ${SH} setup.sh)
 
 pre-install:
 	@${CAT} ${FILESDIR}/pkg-deinstall.in | ${SED} \
 		-e 's|%%HACKDIR%%|${HACKDIR}|g' > ${PKGDEINSTALL}
 
 post-install:
+	@${MKDIR} ${STAGEDIR}${DATADIR}/save
 .if !exists(${PREFIX}/bin/${HACKLINK}) && ${HACKNAME} != ${HACKLINK}
-	@${LN} -s -f ${PREFIX}/bin/${HACKNAME} ${STAGEDIR}${PREFIX}/bin/${HACKLINK}
+	@${LN} -s -f ${HACKNAME} ${STAGEDIR}${PREFIX}/bin/${HACKLINK}
 .endif
-	@cd ${WRKSRC}/doc && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} manpages
-.if ${PORT_OPTIONS:MDOCS}
+	${DO_MAKE_BUILD} -C ${WRKSRC}/doc ${MAKE_ARGS} manpages
+
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/doc/Guidebook.txt ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKSRC}/doc/Guidebook.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

@@ -4,20 +4,17 @@
 PORTNAME=	kde-l10n
 PORTVERSION=	${KDE4_VERSION}
 CATEGORIES=	misc kde
-DISTFILES=	# none
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Localized messages and documentation for KDE SC 4
 
-NO_BUILD=	yes
-NO_INSTALL=	yes
-NO_MTREE=	yes
 USE_KDE4=	kdeprefix
+USES=		metaport
 
-KDE4_LANG_ALL=	ar bg bs ca ca@valencia cs da de el en_GB es et eu \
-		fi fr ga gl he hi hr hu ia is it ja kk km ko lt lv mr nb \
+KDE4_LANG_ALL=	ar bg bs ca ca@valencia cs da de el en_GB es et eu fa \
+		fi fr ga gl he hi hr hu ia id is it ja kk km ko lt lv mr nb \
 		nds nl nn pa pl pt pt_BR ro ru sk sl sr sv tr ug \
-		uk vi wa zh_CN zh_TW
+		uk wa zh_CN zh_TW
 
 ar_PORT=	arabic/kde4-l10n
 ca@valencia_PORT=	misc/kde4-l10n-ca_valencia

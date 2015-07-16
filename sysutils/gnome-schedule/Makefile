@@ -4,7 +4,7 @@
 
 PORTNAME=	gnome-schedule
 PORTVERSION=	2.1.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-2/${PORTNAME}-${PORTVERSION}
 
@@ -20,11 +20,12 @@ OPTIONS_SUB=	yes
 BUILD_DEPENDS=	yelp:${PORTSDIR}/x11/yelp
 RUN_DEPENDS=	yelp:${PORTSDIR}/x11/yelp
 
-USES=		gmake pathfix
-USE_PYTHON=	yes
-USE_GNOME=	gnomeprefix pygnome2
+USES=		gmake pathfix python
+USE_GNOME=	gnomeprefix pygnome2 gnomedocutils
 INSTALLS_OMF=	yes
 GNU_CONFIGURE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 
 APPLET_CONFIGURE_ENABLE=	applet

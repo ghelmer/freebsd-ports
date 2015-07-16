@@ -3,7 +3,7 @@
 
 PORTNAME=	qsf
 PORTVERSION=	1.2.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ COMMENT=	Small fast spam filter intended to be used with procmail
 OPTIONS_DEFINE=	GDBM MYSQL SQLITE2
 SQLITE2_DESC=	SQLite2 support
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/qsf \
@@ -25,7 +25,7 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGDBM}
-LIB_DEPENDS+=	gdbm:${PORTSDIR}/databases/gdbm
+LIB_DEPENDS+=	libgdbm.so:${PORTSDIR}/databases/gdbm
 .else
 CONFIGURE_ARGS+=	--without-gdbm
 .endif

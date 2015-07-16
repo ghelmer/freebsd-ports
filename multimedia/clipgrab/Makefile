@@ -3,6 +3,7 @@
 
 PORTNAME=	clipgrab
 PORTVERSION=	3.2.0.10
+PORTREVISION=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	http://clipgrab.de/download/ \
 		http://vanbittern.org/
@@ -22,7 +23,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 		%%DATADIR%%/paypal-logo.png \
 		%%DATADIR%%/paypal.png \
 		%%DATADIR%%/splash.png
-PLIST_DIRS=	%%DATADIR%%
 
 DESKTOP_ENTRIES="Clipgrab" "Download and convert videos from YouTube and etc" \
 		"${DATADIR}/icon.png" "${PORTNAME}" \

@@ -1,120 +1,100 @@
 #!/bin/sh
 #
+# $FreeBSD$
 # PROVIDE: minecraft
 # REQUIRE: LOGIN
 # KEYWORD: shutdown
-
+#
+# rc.conf variables:
+# minecraft_enable (Default: NO)
+# minecraft_mem (Default: 1024M)
+# minecraft_args (Default: "")
 . /etc/rc.subr
 
-name="minecraft"
+name=minecraft
 rcvar=minecraft_enable
+desc="Dedicated server for the game Minecraft"
 
 load_rc_config $name
 
-extra_commands="clean killworld clearlog"
+minecraft_mem=${minecraft_mem:-"1024M"}
+minecraft_args=${minecraft_args:-""}
+
+extra_commands="console status kill"
 start_cmd="${name}_start"
 stop_cmd="${name}_stop"
-clean_cmd="${name}_clean"
-killworld_cmd="${name}_killworld"
-clearlog_cmd="${name}_clearlog"
+console_cmd="${name}_console"
+status_cmd="${name}_status"
+kill_cmd="${name}_kill"
 
-eval "${rcvar}=\${${rcvar}:-'NO'}"
+is_running()
+{
+	pgrep -qu mcserver java
+	return $?
+}
 
 minecraft_start()
 {
-if [ -e %%DATADIR%%/server.log.lck ]; then
-	echo "Server already running."
-else
-	echo "Starting Minecraft-Server..."
-	cd %%DATADIR%%
-	/usr/bin/su %%USERS%% -c "%%LOCALBASE%%/bin/tmux new-session -d -s minecraft \"%%LOCALBASE%%/bin/java -Xmx1024M -Xms1024M -jar %%DATADIR%%/minecraft_server.jar nogui\""
-
-	i=0
-	while [ $i -lt 15 ]; do
-		i=$(($i + 1))
-		if [ -e %%DATADIR%%/server.log.lck ]; then
-			echo "Minecraft-Server running."
-			break
-		else
-			sleep 1
-		fi
-	done
-
-	if [ $i -ge 10 ]; then
-		echo "ERROR: Server could not be started."
-		/usr/bin/su %%USERS%% -c "%%LOCALBASE%%/bin/tmux kill-session -t minecraft"
-	fi
-fi
-}
-
-minecraft_stop(){
-if [ -e %%DATADIR%%/server.log.lck ]; then
-	echo "Halting Minecraft-Server."
-	/usr/bin/su %%USERS%% -c "%%LOCALBASE%%/bin/tmux send -t minecraft:0.0 stop \"Enter\""
-
-
-	i=0
-	while [ $i -lt 15 ]; do
-    	i=$(($i + 1))
-	    if [ -e %%DATADIR%%/server.log.lck ]; then
-			sleep 1
-	    else
-            echo "Minecraft-Server halted."
-            break
-	    fi
-	done
-
-	if [ $i -ge 10 ];then
-		echo "ERROR: Server could not be halted."
-	fi
-else
-	echo "Minecraft-Server not running."
-fi
-}
-
-minecraft_clean(){
-	echo "Giving a stop to the server..."
-	minecraft_stop
-	echo "Cleaning..."
-	if [ -e %%DATADIR%%/server.log.lck ]; then
-		rm %%DATADIR%%/server.log.lck
-		echo "Cleaning done."
+	if is_running; then
+		echo "${name} is already running."
 	else
-		echo "Nothing to do. No unclean sessions."
+		echo "Starting ${name}."
+		cd %%PREFIX%%/minecraft-server
+		su mcserver -c "%%LOCALBASE%%/bin/tmux new-session -s minecraft -d '%%LOCALBASE%%/bin/java -Xmx${minecraft_mem} -Xms${minecraft_mem} ${minecraft_args} -jar %%PREFIX%%/minecraft-server/minecraft_server.%%VERSION%%.jar nogui'"
 	fi
 }
 
-minecraft_killworld(){
-	echo "Trying to delete World"
-	if [ -e %%DATADIR%%/server.log.lck ]; then
-		echo "Server seems to be running. Stop server before deletion."
-	else
-		rm -rf %%DATADIR%%/world
-		if [ -d %%DATADIR%%/world ]; then
-			echo "ERROR: World could not be deleted" 
-		else
-			echo "World deleted. Next serverstart will generate a new one"
-		fi
-	fi
-}
+minecraft_stop()
+{
+	if is_running; then
+		echo "Stopping ${name}."
+		su mcserver -c "%%LOCALBASE%%/bin/tmux send-keys -t ${name} \"stop\" ENTER"
 
-minecraft_clearlog(){
-	echo "Trying to delete server.log"
-	if [ -e %%DATADIR%%/server.log.lck ]; then
-		echo "Server seems to be running. Stop server before deletion."
-	else
-		if [ -e %%DATADIR%%/server.log ]; then
-			rm %%DATADIR%%/server.log
-			if [ -e %%DATADIR%%/server.log ]; then
-				echo "ERROR: server.log could not be deleted" 
+		i=0
+		while [ $i -lt 10 ]; do
+			i=$(($i + 1))
+			if is_running; then
+				sleep 1
 			else
-				echo "server.log deleted."
+				echo "${name} has been stopped."
+				return
 			fi
-		else
-			echo "No server.log found"
-		fi
+		done
+		echo "WARN: ${name} could not be stopped or is taking longer than expected."
+		echo "WARN: To view the console, type 'service ${name} console'"
+		echo "WARN: To kill $[name}, type 'service ${name} kill'"
+	else
+		echo "${name} is not running."
+	fi
+}
+
+minecraft_console()
+{
+	if ! is_running; then
+		echo "${name} is not running."
+	else
+		export TERM=xterm
+		su mcserver -c "%%LOCALBASE%%/bin/tmux attach-session -t ${name}"
+	fi
+}
+
+minecraft_status()
+{
+	if is_running; then
+		echo "${name} is running."
+	else
+		echo "${name} is not running."
+	fi
+}
+
+minecraft_kill()
+{
+	if ! is_running; then
+		echo "${name} is not running."
+	else
+		pkill -KILL -u mcserver java
+		echo "${name} has been killed."
 	fi
 }
 
 run_rc_command "$1"
-

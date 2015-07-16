@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xmlrpc-c
-PORTVERSION=	1.25.28
+PORTVERSION=	1.25.30
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/Xmlrpc-c%20Super%20Stable/${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	XML-RPC library for C and C++
@@ -19,7 +18,7 @@ LIBWWW_DESC=	Compile with libwww support
 
 CONFLICTS=	xmlrpc-epi-0.* xmlrpc-c-devel-[0-9]*
 
-USES=		gmake perl5
+USES=		gmake perl5 tar:tgz
 GNU_CONFIGURE=	yes
 MAKEFILE=	GNUmakefile
 MAKE_ARGS=	CFLAGS_COMMON="${CFLAGS}"
@@ -42,8 +41,6 @@ post-extract:
 	@${FIND} ${WRKSRC} -type l -name srcdir -delete
 
 post-patch:
-	@${GREP} -lR '\-lpthread' ${WRKSRC} 2>/dev/null | \
-		${XARGS} ${REINPLACE_CMD} -e 's|-lpthread|${PTHREAD_LIBS}|g'
 	@${REINPLACE_CMD} -e '/#include.*features.h/d' \
 		${WRKSRC}/tools/xmlrpc_pstream/xmlrpc_pstream.cpp
 	@${REINPLACE_CMD} -e '/<curl\/types.h>/d' \
@@ -52,6 +49,6 @@ post-patch:
 		${WRKSRC}/lib/curl_transport/curlmulti.c
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libxmlrpc*.so.[37].25
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libxmlrpc*.so.[37].25
 
 .include <bsd.port.post.mk>

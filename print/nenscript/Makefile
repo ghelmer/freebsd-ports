@@ -7,11 +7,11 @@ CATEGORIES=	print
 MASTER_SITES=	http://www.ai.mit.edu/projects/im/magnus/nenscript/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A clone of the proprietary enscript program from Adobe Systems
+COMMENT=	Clone of the proprietary enscript program from Adobe Systems
 
 OPTIONS_DEFINE=	DOCS
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 
 MAKEFILE=	makefile
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"

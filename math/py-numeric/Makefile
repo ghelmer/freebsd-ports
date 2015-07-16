@@ -3,7 +3,7 @@
 
 PORTNAME=	numeric
 PORTVERSION=	24.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math python
 MASTER_SITES=	http://numpy.scipy.org/:doc \
 		SF/numpy/Old%20Numeric/${PORTVERSION}:source
@@ -15,9 +15,8 @@ EXTRACT_ONLY=	Numeric-${PORTVERSION}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Numeric Extension to Python
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 WRKSRC=		${WRKDIR}/Numeric-${PORTVERSION}
 
@@ -44,6 +43,8 @@ post-extract:
 		${WRKSRC}/setup.py
 
 post-install:
+	${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Numeric -name "*.so" -exec \
+		${STRIP_CMD} {} \;
 	@${INSTALL} -d ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/Demo/*.py ${STAGEDIR}${EXAMPLESDIR}
 	@${INSTALL} -d ${STAGEDIR}${EXAMPLESDIR}/NumTut

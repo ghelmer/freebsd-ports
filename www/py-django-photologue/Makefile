@@ -3,7 +3,7 @@
 
 PORTNAME=	django-photologue
 PORTVERSION=	2.6.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,15 +11,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	ports@caomhin.org
 COMMENT=	Reusable gallery application for Django
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:${PORTSDIR}/www/py-django \
-	${LOCALBASE}/bin/pildriver.py:${PORTSDIR}/graphics/py-imaging
+		${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow
 
-USES=		zip
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python zip
+USE_PYTHON=	autoplist distutils
 
 OPTIONSFILE=		${PORT_DBDIR}/py-${PORTNAME}/options
 OPTIONS_DEFINE=		TAGGING

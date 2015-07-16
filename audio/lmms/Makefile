@@ -3,6 +3,7 @@
 
 PORTNAME=	lmms
 PORTVERSION=	0.4.15
+PORTREVISION=	4
 PORTEPOCH=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF
@@ -12,6 +13,7 @@ COMMENT=	All-in-one sequencer, drum machine, sampler, and more
 
 LICENSE=	GPLv2
 
+BROKEN=		Unfetchable
 BUILD_DEPENDS=	${LOCALBASE}/include/ladspa.h:${PORTSDIR}/audio/ladspa
 LIB_DEPENDS=	libFLAC.so:${PORTSDIR}/audio/flac \
 		libfluidsynth.so:${PORTSDIR}/audio/fluidsynth \
@@ -43,25 +45,14 @@ CMAKE_ARGS=	-DWANT_ALSA:BOOL=OFF \
 		-DHAVE_STRTOLL=ON
 DOS2UNIX_FILES=	plugins/midi_import/portsmf/allegrowr.cpp plugins/midi_import/portsmf/mfmidi.cpp CMakeLists.txt
 
-.include <bsd.port.options.mk>
+JACK_LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
+JACK_CMAKE_OFF=		-DWANT_JACK:BOOL=OFF
 
-.if ${PORT_OPTIONS:MJACK}
-LIB_DEPENDS+=	libjack.so:${PORTSDIR}/audio/jack
-.else
-CMAKE_ARGS+=	-DWANT_JACK:BOOL=OFF
-.endif
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
+PULSEAUDIO_CMAKE_OFF=	-DWANT_PULSEAUDIO:BOOL=OFF
 
-.if ${PORT_OPTIONS:MPULSEAUDIO}
-LIB_DEPENDS+=	libpulse.so:${PORTSDIR}/audio/pulseaudio
-.else
-CMAKE_ARGS+=	-DWANT_PULSEAUDIO:BOOL=OFF
-.endif
-
-.if ${PORT_OPTIONS:MSDL}
-USE_SDL=	sdl
-.else
-CMAKE_ARGS+=	-DWANT_SDL:BOOL=OFF
-.endif
+SDL_USE=		SDL=sdl
+SDL_CMAKE_OFF=		-DWANT_SDL:BOOL=OFF
 
 post-patch:
 .for file in data/lmms.desktop
@@ -80,6 +71,8 @@ post-patch:
 		'/\/usr\/lib/d ; \
 		 s|/usr/local|${PREFIX}|g' ${WRKSRC}/${filename}
 .endfor
+	@${REINPLACE_CMD} -e 's/lib64/lib/' \
+		${WRKSRC}/cmake/modules/DetectMachine.cmake
 
 post-install:
 	@${LN} -sf ${DATADIR}/themes/default/icon.png \

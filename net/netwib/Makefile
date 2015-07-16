@@ -3,19 +3,20 @@
 
 PORTNAME=	netwib
 PORTVERSION=	5.38.0
+PORTREVISION=	1
 CATEGORIES=	net devel ipv6
 MASTER_SITES=	http://www.laurentconstantin.com/common/netw/netwib/download/v5/ \
 		http://membres.lycos.fr/lauconstantin/common/netw/netwib/download/v5/ \
 		http://laurentconstantin.free.fr/common/netw/netwib/download/v5/
-DISTFILES=	${PORTNAME}-${PORTVERSION}-src.tgz ${PORTNAME}-${PORTVERSION}-doc_html.tgz
+DISTNAME=	${PORTNAME}-${PORTVERSION}-src
+DISTFILES=	${DISTNAME}.tgz ${DISTNAME:S/src/doc_html/}.tgz
 
 MAINTAINER=	jmohacsi@bsd.hu
 COMMENT=	Netwib network programming library
 
-BUILD_DEPENDS=	${LIBNET_CONFIG}:${PORTSDIR}/net/libnet
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+LIB_DEPENDS=	libnet.so:${PORTSDIR}/net/libnet
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src/src
+WRKSRC_SUBDIR=	src
 SHORTPORTVERSION=${PORTVERSION:C/([0-9]*)\.([0-9]*)\.[0-9]*/\1\2/}
 
 PLIST_SUB+=	SHORTPORTVERSION=${SHORTPORTVERSION}

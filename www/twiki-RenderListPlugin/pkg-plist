@@ -1,10 +1,10 @@
 %%TWDIR%%/data/TWiki/RenderListPlugin.txt
 %%TWDIR%%/data/TWiki/RenderListPlugin.txt,v
 %%TWDIR%%/data/TWiki/VarRENDERLIST.txt
+%%TWDIR%%/lib/TWiki/Plugins/RenderListPlugin.pm
 %%TWDIR%%/lib/TWiki/Plugins/RenderListPlugin/DEPENDENCIES
 %%TWDIR%%/lib/TWiki/Plugins/RenderListPlugin/MANIFEST
 %%TWDIR%%/lib/TWiki/Plugins/RenderListPlugin/build.pl
-%%TWDIR%%/lib/TWiki/Plugins/RenderListPlugin.pm
 %%TWDIR%%/pub/TWiki/RenderListPlugin/doc.gif
 %%TWDIR%%/pub/TWiki/RenderListPlugin/dot_ud.gif
 %%TWDIR%%/pub/TWiki/RenderListPlugin/dot_udr.gif
@@ -31,14 +31,3 @@
 %%TWDIR%%/pub/TWiki/RenderListPlugin/virtualpersons.gif
 %%TWDIR%%/pub/TWiki/RenderListPlugin/xls.gif
 %%TWDIR%%/pub/TWiki/RenderListPlugin/zip.gif
-@dirrm %%TWDIR%%/data/TWiki
-@dirrm %%TWDIR%%/data
-@dirrm %%TWDIR%%/lib/TWiki/Plugins/RenderListPlugin
-@dirrm %%TWDIR%%/lib/TWiki/Plugins
-@dirrm %%TWDIR%%/lib/TWiki
-@dirrm %%TWDIR%%/lib
-@dirrm %%TWDIR%%/pub/TWiki/RenderListPlugin
-@dirrm %%TWDIR%%/pub/TWiki
-@dirrm %%TWDIR%%/pub
-@dirrm %%TWDIR%%
-@dirrmtry share/twiki

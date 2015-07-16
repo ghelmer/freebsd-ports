@@ -10,25 +10,26 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-xmltv-${PORTVERSION}
 
 MAINTAINER=	jun-g@daemonfreaks.com
-COMMENT=	A Python module that provides access to XMLTV TV listings
+COMMENT=	Python module that provides access to XMLTV TV listings
 
 LICENSE=	LGPL21
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	python-xmltv
-
 PROJECTHOST=	python-xmltv
+OPTIONS_DEFINE= DOCS
 
-.ifndef(NOPORTDOCS)
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MDOCS}
 PORTDOCS=	README.txt
 .endif
 
-NO_STAGE=	yes
 post-install:
-.ifndef(NOPORTDOCS)
-	@${MKDIR} ${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/README.txt ${DOCSDIR}
+.if ${PORT_OPTIONS:MDOCS}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}
 .endif
 
 .include <bsd.port.mk>

@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	metaclass
-PORTVERSION=	0.0.1
+PORTVERSION=	0.0.4
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Adds a metaclass method to all Ruby objects
+
+LICENSE=	MIT
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

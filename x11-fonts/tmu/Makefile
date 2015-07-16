@@ -4,36 +4,28 @@
 PORTNAME=	tmu
 DISTVERSION=	1.901b
 CATEGORIES=	x11-fonts
-MASTER_SITES=	CENKES
-# http://www.thdl.org/tools/fonts/index.html
+MASTER_SITES=	SF/thdltools/TibetanMachineFont/TMU_${DISTVERSION}
+DISTFILES=	TibMachUni-${DISTVERSION}.ttf
+DIST_SUBDIR=	tmu
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free Tibetan Machine Uni font
 
-BUILD_DEPENDS=	mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale	\
-		mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir	\
-		fc-cache:${PORTSDIR}/x11-fonts/fontconfig
+LICENSE=	GPLv3	# gpl.txt located at SF site
 
-USE_BZIP2=	yes
-PLIST_SUB=	FONTSDIR="${FONTSDIR:S|${PREFIX}/||}"
-FONTNAME=	${PORTNAME}
-FONTSDIR?=	${PREFIX}/lib/X11/fonts/${FONTNAME}
+USES=		fonts
+NO_BUILD=	yes
+NO_ARCH=	yes
+NO_WRKSUBDIR=	yes
+PLIST_FILES=	${FONTSDIR}/tmu.ttf
 
-MKFONTSCL_CMD=	${LOCALBASE}/bin/mkfontscale
-MKFONTDIR_CMD=	${LOCALBASE}/bin/mkfontdir
-FCCACHE_CMD=	${LOCALBASE}/bin/fc-cache -f -v
-
-NO_STAGE=	yes
-post-extract:
-	@cd ${WRKSRC}/&&${MV} TibMachUni-${DISTVERSION}.ttf tmu.ttf
-
-do-build:
-	@cd ${WRKSRC}/ && ${MKFONTSCL_CMD} && ${MKFONTDIR_CMD}
+EXTRACT_CMD=		${CP}
+EXTRACT_BEFORE_ARGS=	#
+EXTRACT_AFTER_ARGS=	${WRKDIR}
 
 do-install:
-	@${INSTALL} -d ${FONTSDIR}/
-	@${INSTALL_DATA} ${WRKSRC}/[ft]* ${FONTSDIR}/
-	@${ECHO_MSG} "===> Running fc-cache"
-	-${FCCACHE_CMD} ${FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/TibMachUni-${DISTVERSION}.ttf \
+		${STAGEDIR}${FONTSDIR}/tmu.ttf
 
 .include <bsd.port.mk>

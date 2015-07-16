@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	libwraster
-PORTVERSION=	0.95.5
-PORTREVISION=	2
+PORTVERSION=	0.95.6
+PORTREVISION=	4
 CATEGORIES=	x11-wm windowmaker
-MASTER_SITES=	http://windowmaker.org/pub/%SUBDIR%/
-MASTER_SITE_SUBDIR=	source/release
+MASTER_SITES=	http://windowmaker.org/pub/source/release/
 DISTNAME=	WindowMaker-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -14,9 +13,11 @@ COMMENT=	Window Maker raster graphics library
 LICENSE=	LGPL21
 
 LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libjbig.so:${PORTSDIR}/graphics/jbigkit \
-		libtiff.so:${PORTSDIR}/graphics/tiff
+		libtiff.so:${PORTSDIR}/graphics/tiff \
+		libwebp.so:${PORTSDIR}/graphics/webp \
+		libMagickWand-6.so:${PORTSDIR}/graphics/ImageMagick
 
 USES=		libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
@@ -34,6 +35,7 @@ CONFIGURE_ARGS=	--with-pixmapdir=${PREFIX}/include/X11/pixmaps \
 		--with-x
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 pre-build:
 	cd ${WRKSRC} && ${MAKE_CMD} config-paths.h

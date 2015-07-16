@@ -8,7 +8,7 @@ MASTER_SITES=	http://s3.amazonaws.com/cmsms/downloads/6491/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-full
 
 MAINTAINER=	wen@FreeBSD.org
-COMMENT=	A Simple Open Source CMS
+COMMENT=	Simple Open Source CMS
 
 USE_PHP=	mysql tokenizer gd
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -57,7 +57,5 @@ post-install:
 	@${CHMOD} 666 ${STAGEDIR}${WWWDIR}/config.php
 	@${ECHO_CMD} '@exec ${CHMOD} 666 ${WWWDIR}/config.php' \
 		>> ${TMPPLIST}
-
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

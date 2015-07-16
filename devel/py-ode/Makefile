@@ -3,7 +3,7 @@
 
 PORTNAME=	ode
 PORTVERSION=	1.2.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel python
 MASTER_SITES=	SF/py${PORTNAME}/py${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,12 +15,8 @@ COMMENT=	Python bindings for The Open Dynamics Engine
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libode.a:${PORTSDIR}/devel/ode
 
-USES=		tar:bzip2
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_PKGNAME=	PyODE
-
-OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
+USES=		python:2 tar:bzip2
+USE_PYTHON=	autoplist distutils
 
 OPTIONS_DEFINE=	TRIMESH
 OPTIONS_DEFAULT=TRIMESH
@@ -33,5 +29,8 @@ post-patch:
 .if ! ${PORT_OPTIONS:MTRIMESH}
 	@${REINPLACE_CMD} -e '/TRIMESH_ENABLE/ s|True|False|' ${WRKSRC}/setup.py
 .endif
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/ode.so
 
 .include <bsd.port.mk>

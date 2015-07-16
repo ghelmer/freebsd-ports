@@ -1,5 +1,5 @@
---- src/unix-dll.mak.orig	Wed Oct 17 19:11:23 2001
-+++ src/unix-dll.mak	Sat Feb  9 04:53:18 2002
+--- src/unix-dll.mak.orig	2003-01-17 09:49:05.000000000 +0900
++++ src/unix-dll.mak	2014-11-23 14:43:44.000000000 +0900
 @@ -48,11 +48,9 @@
  
  # shared library
@@ -43,17 +43,34 @@
   STDIO_IMPLEMENTATION=c\
   DISPLAY_DEV=$(DD)$(SOOBJRELDIR)/display.dev\
   BINDIR=$(BINDIR)/$(SOBINRELDIR)\
-@@ -106,11 +100,9 @@
- 	-mkdir $(libdir)
- 	$(INSTALL_PROGRAM) $(GSSOC) $(bindir)/$(GSSOC_XENAME)
- 	$(INSTALL_PROGRAM) $(GSSOX) $(bindir)/$(GSSOX_XENAME)
+@@ -98,19 +92,17 @@
+ 	$(MAKE) $(SODEFS) GENOPT='-DDEBUG' CFLAGS='$(CFLAGS_DEBUG) $(CFLAGS_SO) $(GCFLAGS) $(XCFLAGS)' $(GSSOC) $(GSSOX)
+ 
+ install-so: so
+-	-mkdir -p $(prefix)
+-	-mkdir -p $(datadir)
+-	-mkdir -p $(gsdir)
+-	-mkdir -p $(gsdatadir)
+-	-mkdir -p $(bindir)
+-	-mkdir -p $(libdir)
+-	$(INSTALL_PROGRAM) $(GSSOC) $(bindir)/$(GSSOC_XENAME)
+-	$(INSTALL_PROGRAM) $(GSSOX) $(bindir)/$(GSSOX_XENAME)
 -	$(INSTALL_PROGRAM) $(BINDIR)/$(SOBINRELDIR)/$(GS_SONAME_MAJOR_MINOR) $(libdir)/$(GS_SONAME_MAJOR_MINOR)
-+	$(INSTALL_PROGRAM) $(BINDIR)/$(SOBINRELDIR)/$(GS_SONAME_MAJOR) $(libdir)/$(GS_SONAME_MAJOR)
- 	$(RM_) $(libdir)/$(GS_SONAME)
+-	$(RM_) $(libdir)/$(GS_SONAME)
 -	ln -s $(GS_SONAME_MAJOR_MINOR) $(libdir)/$(GS_SONAME)
 -	$(RM_) $(libdir)/$(GS_SONAME_MAJOR)
 -	ln -s $(GS_SONAME_MAJOR_MINOR) $(libdir)/$(GS_SONAME_MAJOR)
-+	ln -s $(GS_SONAME_MAJOR) $(libdir)/$(GS_SONAME)
++	-mkdir -p $(DESTDIR)$(prefix)
++	-mkdir -p $(DESTDIR)$(datadir)
++	-mkdir -p $(DESTDIR)$(gsdir)
++	-mkdir -p $(DESTDIR)$(gsdatadir)
++	-mkdir -p $(DESTDIR)$(bindir)
++	-mkdir -p $(DESTDIR)$(libdir)
++	$(INSTALL_PROGRAM) $(GSSOC) $(DESTDIR)$(bindir)/$(GSSOC_XENAME)
++	$(INSTALL_PROGRAM) $(GSSOX) $(DESTDIR)$(bindir)/$(GSSOX_XENAME)
++	$(INSTALL_PROGRAM) $(BINDIR)/$(SOBINRELDIR)/$(GS_SONAME_MAJOR) $(DESTDIR)$(libdir)/$(GS_SONAME_MAJOR)
++	$(RM_) $(DESTDIR)$(libdir)/$(GS_SONAME)
++	ln -s $(GS_SONAME_MAJOR) $(DESTDIR)$(libdir)/$(GS_SONAME)
  
  soinstall: install-so install-scripts install-data
  

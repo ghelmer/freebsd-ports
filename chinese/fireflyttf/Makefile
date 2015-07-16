@@ -5,8 +5,7 @@ PORTNAME=	fireflyttf
 PORTVERSION=	1.3.0
 PORTREVISION=	5
 CATEGORIES=	chinese x11-fonts
-MASTER_SITES?=	http://firefly.idv.tw/apt/firefly-font/ \
-		http://www.study-area.org/apt/firefly-font/
+MASTER_SITES?=	LOCAL/chinsan/fonts
 DISTNAME?=	fireflysung-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -16,25 +15,21 @@ CONFLICTS=	zh-opendesktop-fonts-*
 
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/${DISTNAME}
-OPTIONS_DEFINE=	LGJ_FONT X11
-OPTIONS_DEFAULT=	LGJ_FONT X11
-LGJ_FONT_DESC=	Patch for Taiwan horn
 
 TTF=		fireflysung.ttf
+PLIST_FILES=	${FONTSDIR_REL}/local.conf-sung
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_DEFAULT+=LGJ_FONT
+
+.include "${.CURDIR}/../ttfm/Makefile.ttf"
+
+OPTIONS_DEFINE+=LGJ_FONT
+LGJ_FONT_DESC=	Patch for Taiwan horn
 
 .if ${PORT_OPTIONS:MLGJ_FONT}
 PKGNAMESUFFIX+=	-LGJ
-MASTER_SITES=	http://edt1023.sayya.org/fonts/
+MASTER_SITES=	LOCAL/chinsan/fonts
 DISTNAME=	fireflysung-1.3.0p1
-.endif
-
-.if ${PORT_OPTIONS:MX11}
-PLIST_SUB+=	X11=""
-.else
-PLIST_SUB+=	X11="@comment "
 .endif
 
 post-extract:
@@ -44,16 +39,12 @@ post-extract:
 	@${MV} ${WRKSRC}/fireflysung-1.3.0p1/fireflysung.ttf  ${WRKSRC}
 	@${RM} -rf ${WRKSRC}/fireflysung-1.3.0p1
 .else
-	${DO_NADA}
+	${TRUE}
 .endif
 
 do-install:
-	${MKDIR} ${FONTSDIR}
-	${INSTALL_DATA} ${WRKSRC}/${TTF} ${FONTSDIR}
-	${INSTALL_DATA} ${FILESDIR}/local.conf-sung ${FONTSDIR}
-.if ${PORT_OPTIONS:MX11}
-	${INSTALL_DATA} ${FILESDIR}/local.conf-sung ${LOCALBASE}/etc/fonts/local.conf
-.endif
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${TTF} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${FILESDIR}/local.conf-sung ${STAGEDIR}${FONTSDIR}
 
-.include "${PORTSDIR}/chinese/ttfm/Makefile.ttf"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

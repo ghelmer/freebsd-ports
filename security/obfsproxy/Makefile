@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	obfsproxy
-PORTVERSION=	0.2.9
+PORTVERSION=	0.2.10
 PORTEPOCH=	1
 CATEGORIES=	security net python
 MASTER_SITES=	http://www.c-s.li/ports/
@@ -17,13 +17,9 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyptlib>=0.0.5:${PORTSDIR}/security/py-pyptl
 		${PYTHON_PKGNAMEPREFIX}pycrypto>=2.1:${PORTSDIR}/security/py-pycrypto \
 		${PYTHON_PKGNAMEPREFIX}yaml>=0:${PORTSDIR}/devel/py-yaml
 
-USE_PYTHON=	yes
-USES=		twisted
-USE_PYDISTUTILS=yes
+USE_PYTHON=	distutils
+USES=		python twisted
 SUB_FILES=	pkg-message
 PYDISTUTILS_PKGNAME=obfsproxy
-
-post-install:
-	${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

@@ -1,8 +1,7 @@
-# Created by: Hiroki Sato <hrs@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	klayout
-PORTVERSION=	0.23.3
+PORTVERSION=	0.23.8
 CATEGORIES=	cad
 MASTER_SITES=	http://178.77.72.242/downloads/
 
@@ -27,6 +26,8 @@ PLIST_FILES=	bin/klayout \
 		lib/libklayout.so
 PLATFORMKEYWORD=freebsd-32-gcc-release
 
+BROKEN_sparc64=	Does not compile on sparc64: gcc bug
+
 do-build:
 	cd ${WRKSRC} && \
 	    ${SETENV} CC=${CC} CXX=${CXX} \
@@ -43,10 +44,4 @@ do-install:
 	    ${INSTALL_LIB} ${PLIST_FILES:Mlib/*:S,^lib/,,} \
 	    ${STAGEDIR}${PREFIX}/lib
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64: gcc bug
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

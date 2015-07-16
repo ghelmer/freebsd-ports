@@ -5,14 +5,18 @@ PORTNAME=	slush
 PORTVERSION=	0.1.1
 PORTREVISION=	1
 CATEGORIES=	security
-MASTER_SITES=	${MASTER_SITE_PACKETSTORM}
-MASTER_SITE_SUBDIR=	crypt/SSL/slush
+MASTER_SITES=	PACKETSTORM/crypt/SSL/slush
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A telnet-like application which uses a secure SSL channel
+COMMENT=	Telnet-like application which uses a secure SSL channel
+
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT.GPL
 
 GNU_CONFIGURE=	yes
 USE_OPENSSL=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

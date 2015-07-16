@@ -2,17 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	PHP_CodeSniffer
-PORTVERSION=	1.5.3
+PORTVERSION=	2.2.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP Script Tokenises and Sniffs PHP and JavaScript code
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICENSE=	BSD3CLAUSE
 
-PEAR_AUTOINSTALL=	yes
+USES=	pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

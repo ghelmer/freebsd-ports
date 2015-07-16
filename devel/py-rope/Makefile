@@ -2,17 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	rope
-PORTVERSION=	0.9.4
-PORTREVISION=	1
+PORTVERSION=	0.10.2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	jjachuf@gmail.com
-COMMENT=	Rope is a python refactoring library
+COMMENT=	Python refactoring library
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+LICENSE=	GPLv2
+
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

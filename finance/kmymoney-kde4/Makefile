@@ -1,15 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	kmymoney
-PORTVERSION=	4.6.4
-PORTREVISION=	4
+PORTVERSION=	4.7.1
 CATEGORIES=	finance kde
-MASTER_SITES=	SF/${PORTNAME}2/KMyMoney-KDE4/${PORTVERSION}
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	KDE4 personal finance manager
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_graph.so:${PORTSDIR}/devel/boost-libs \
 		libalkimia.so:${PORTSDIR}/finance/libalkimia
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libboost_graph.so:${PORTSDIR}/devel/boost-libs \
 USES=		cmake pkgconfig shared-mime-info shebangfix tar:xz
 USE_QT4=	gui dbus network phonon sql svg xml \
 		qmake_build moc_build rcc_build uic_build
-USE_KDE4=	kdehier kdeprefix automoc4 kdelibs pimlibs
+USE_KDE4=	kdeprefix automoc4 kdelibs pimlibs
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	kmymoney/misc/financequote.pl
@@ -28,8 +28,8 @@ OPTIONS_SUB=		yes
 NO_OPTIONS_SORT=	yes
 
 NLS_USES=		gettext
-NLS_CMAKE_ON=		-DENABLE_NLS:BOOL=ON
-NLS_CMAKE_OFF=		-DENABLE_NLS:BOOL=OFF
+NLS_CMAKE_ON=		-DBUILD_po:BOOL=ON
+NLS_CMAKE_OFF=		-DBUILD_po:BOOL=OFF
 
 CALENDAR_DESC=		Enable Calendar plugin
 CALENDAR_LIB_DEPENDS=	libical.so:${PORTSDIR}/devel/libical

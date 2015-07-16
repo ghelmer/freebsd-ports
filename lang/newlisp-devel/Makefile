@@ -2,29 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	newlisp
-PORTVERSION=	10.5.4
+PORTVERSION=	10.6.1
 CATEGORIES=	lang
-MASTER_SITES=	http://www.newlisp.org/downloads/
+MASTER_SITES=	http://www.newlisp.org/downloads/development/
 PKGNAMESUFFIX=	-devel
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	LISP like scripting language
 
-LIB_DEPENDS=	ffi:${PORTSDIR}/devel/libffi
+LICENSE=	GPLv3
+
+LIB_DEPENDS=	libffi.so:${PORTSDIR}/devel/libffi
 
 CONFLICTS=	newlisp-[0-9]*
 
-IGNORE=		no development version currently available
+USES=		readline tar:tgz
 
 HAS_CONFIGURE=	yes
 ALL_TARGET=	default
 
-MAN1=		newlisp.1 newlispdoc.1
-
 REINPLACE_ARGS=	-i ""
 
-MODULES=	canvas cgi crypto ftp getopts infix macro odbc pop3 \
+MODULES=	canvas cgi crypto ftp getopts infix odbc pop3 \
 		postscript smtp smtpx stat unix xmlrpc-client zlib
 
 DOCS=		CHANGES CodePatterns.html ExpressionEvaluation.html \
@@ -32,7 +31,7 @@ DOCS=		CHANGES CodePatterns.html ExpressionEvaluation.html \
 		manual_frame.html newLISPdoc.html \
 		newlisp_index.html newlisp_manual.html \
 
-OPTIONS_DEFINE=	GMP GSL MYSQL PGSQL SQLITE GUISERV
+OPTIONS_DEFINE=	GMP GSL MYSQL PGSQL SQLITE GUISERV DOCS EXAMPLES
 GSL_DESC=	GSL (GNU Scientific Library)
 GUISERV_DESC=	Install GUI server (in Java)
 
@@ -46,7 +45,7 @@ CFLAGS+=	-DNEWLISP64
 .endif
 
 .if ${PORT_OPTIONS:MGMP}
-LIB_DEPENDS+=	gmp:${PORTSDIR}/math/gmp
+LIB_DEPENDS+=	libgmp.so:${PORTSDIR}/math/gmp
 MODULES+=	gmp
 PLIST_SUB+=	GMP=""
 .else
@@ -54,7 +53,7 @@ PLIST_SUB+=	GMP="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MGSL}
-LIB_DEPENDS+=	gsl:${PORTSDIR}/math/gsl
+LIB_DEPENDS+=	libgsl.so:${PORTSDIR}/math/gsl
 MODULES+=	gsl
 PLIST_SUB+=	GSL=""
 .else
@@ -70,7 +69,7 @@ PLIST_SUB+=	MYSQL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 MODULES+=	postgres
 PLIST_SUB+=	PGSQL=""
 .else

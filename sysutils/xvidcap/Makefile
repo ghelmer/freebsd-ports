@@ -3,6 +3,7 @@
 
 PORTNAME=		xvidcap
 PORTVERSION=		1.1.7
+PORTREVISION=	2
 PORTEPOCH=		1
 CATEGORIES=		sysutils multimedia
 MASTER_SITES=		SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
@@ -52,7 +53,7 @@ post-patch:
 		${WRKSRC}/src/Makefile.in
 
 post-install:
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	${RM} -f ${NULLDOCS:S|^|${STAGEDIR}${DOCSDIR}/|}
 .endif
 

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	File-Find-Closures
-PORTVERSION=	1.10
+PORTVERSION=	1.11
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	File
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -14,7 +13,7 @@ COMMENT=	Functions you can use with File::Find
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-USES=		perl5
 USE_PERL5=	configure
+USES=		perl5
 
 .include <bsd.port.mk>

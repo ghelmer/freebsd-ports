@@ -10,7 +10,7 @@ DISTNAME=	ruby-${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	ruby
 
 MAINTAINER=	don@na.rim.or.jp
-COMMENT=	A Ruby interface to Amazon Web Services
+COMMENT=	Ruby interface to Amazon Web Services
 
 CONFLICTS=	ruby-amazon-[0-9]*
 
@@ -19,6 +19,8 @@ USE_RUBY_SETUP=	yes
 
 DOCS=		COPYING INSTALL NEWS README
 EXAMPLES=	example/*
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${MKDIR} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}/
@@ -30,4 +32,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.2
+BROKEN=		Does not build
+.endif
+
+.include <bsd.port.post.mk>

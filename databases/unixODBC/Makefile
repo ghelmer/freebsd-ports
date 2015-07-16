@@ -3,6 +3,7 @@
 
 PORTNAME=	unixODBC
 PORTVERSION=	2.3.2
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.unixodbc.org/
 
@@ -14,26 +15,24 @@ LICENSE_COMB=	multi
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		iconv
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_header_msql_h=no
 CONFIGURE_ARGS=	--enable-static --enable-shared \
 		${ICONV_CONFIGURE_ARG}
+INSTALL_TARGET=	install-strip
+# :keepla because port uses lt_dlopen
+USES=		iconv libtool:keepla
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/\.ini/s|^|#|' ${WRKSRC}/Makefile.in
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 	@${FIND} ${STAGEDIR}${DOCSDIR} -type f -name "*Makefile*" -delete
-.endif
 
 .include <bsd.port.mk>

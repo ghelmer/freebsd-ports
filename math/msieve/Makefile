@@ -3,10 +3,9 @@
 
 PORTNAME=	msieve
 PORTVERSION=	1.51
+PORTREVISION=	1
 CATEGORIES=	math
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	\
-	${PORTNAME}/${PORTNAME}/${PORTNAME:C/^m/M/}%20v${PORTVERSION}
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME:C/^m/M/}%20v${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	bf@FreeBSD.org
@@ -20,10 +19,9 @@ MAKE_ENV=	ECM=1
 
 HEADERS=	mp.h msieve.h util.h
 PLIST_FILES=	bin/msieve lib/libmsieve.a ${HEADERS:S|^|include/msieve/|}
-PLIST_DIRS=	include/msieve
 PORTDOCS=	Changes Readme Readme.nfs Readme.qs
 
-OPTIONS_DEFINE=		OPTIMIZED_CFLAGS
+OPTIONS_DEFINE=		OPTIMIZED_CFLAGS DOCS
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
 
 .include <bsd.port.options.mk>
@@ -47,7 +45,7 @@ CFLAGS+=	-DHAS_SSE
 CFLAGS+=	-DHAS_SSE2
 .endif
 
-.if ${OSVERSION} >= 700042 && ${ARCH} == "sparc64"
+.if ${ARCH} == "sparc64"
 BROKEN=		Does not compile on sparc64
 .endif
 
@@ -65,7 +63,7 @@ do-install:
 	@${INSTALL_PROGRAM} ${WRKSRC}/msieve ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/msieve
 	@cd ${WRKSRC}/include; ${INSTALL_DATA} ${HEADERS} ${STAGEDIR}${PREFIX}/include/msieve
-	@${INSTALL_LIB} ${WRKSRC}/libmsieve.a ${STAGEDIR}${PREFIX}/lib
+	@${INSTALL_DATA} ${WRKSRC}/libmsieve.a ${STAGEDIR}${PREFIX}/lib
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@cd ${WRKSRC}; ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}

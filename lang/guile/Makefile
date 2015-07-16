@@ -4,28 +4,29 @@
 
 PORTNAME=	guile
 PORTVERSION=	1.8.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang scheme
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	guile
+MASTER_SITES=	GNU
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	GNU Ubiquitous Intelligent Language for Extension
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING.LESSER
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
+		libgmp.so:${PORTSDIR}/math/gmp
 
 CONFLICTS_INSTALL=	guile2-[0-9]*
 
-USE_AUTOTOOLS=	autoconf libltdl
-USES=		gmake makeinfo ncurses
-GNU_CONFIGURE=	yes
+USES=		autoreconf gmake libtool makeinfo ncurses pathfix
 USE_LDCONFIG=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
-CPPFLAGS+=	-I${LOCALBASE}/include
+GNU_CONFIGURE=	yes
 CFLAGS+=	-fwrapv
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
+PORTSCOUT=	limit:^1\.
 
 PLIST_SUB=	GUILE_VER=${PORTVERSION:R}
 
@@ -40,6 +41,7 @@ OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext
+NLS_USES_OFF=		gettext-tools
 
 post-extract:
 	cd ${WRKSRC}; ${CHMOD} u+w ${REINPLACE_FILES}
@@ -48,6 +50,8 @@ post-extract:
 post-patch:
 	@cd ${WRKSRC} ; \
 	  ${REINPLACE_CMD} -e 's|<malloc\.h>|<stdlib.h>|g' ${REINPLACE_FILES}
-	@${REINPLACE_CMD} -e 's|2.63|%%AUTOCONF_VERSION%%|g' ${WRKSRC}/aclocal.m4
+	@${REINPLACE_CMD} -e 's|2.68|${AUTOCONF_VERSION}|g' ${WRKSRC}/aclocal.m4
+	@${REINPLACE_CMD} -e 's|$$(libdir)|$$(libdir)data|g' ${WRKSRC}/Makefile.am
+	@${TOUCH} ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

@@ -3,11 +3,10 @@
 
 PORTNAME=	gplot
 PORTVERSION=	4.3
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.psc.edu/pub/gplot/
 DISTNAME=	${PORTNAME}
-EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphic utilities for the processing of CGM metafiles
@@ -18,7 +17,7 @@ CFLAGS+=	-Wno-return-type
 NO_WRKSUBDIR=	yes
 ALL_TARGET=	drawcgm gtex gplot
 PORTDOCS=	gplot.hlp gplot.txt gtex.doc
-USES=		fortran
+USES=		fortran tar:Z
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gplot ${STAGEDIR}${PREFIX}/bin

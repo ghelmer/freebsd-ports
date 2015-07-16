@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	asunder
-PORTVERSION=	2.5
-PORTREVISION=	1
+PORTVERSION=	2.6
 CATEGORIES=	audio
 MASTER_SITES=	http://littlesvr.ca/asunder/releases/
 
@@ -17,7 +16,6 @@ LIB_DEPENDS=	libcddb.so:${PORTSDIR}/audio/libcddb
 RUN_DEPENDS=	${LOCALBASE}/bin/cdparanoia:${PORTSDIR}/audio/cdparanoia
 
 OPTIONS_DEFINE=	LAME OGG FLAC OPUS WAVPACK APE WINDOWS_CHARS NLS DOCS
-OPUS_DESC=	OPUS support
 OPTIONS_DEFAULT=	LAME OGG FLAC
 OPTIONS_SUB=	yes
 

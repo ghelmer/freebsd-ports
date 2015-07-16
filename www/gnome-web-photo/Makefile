@@ -4,6 +4,7 @@
 
 PORTNAME=	gnome-web-photo
 PORTVERSION=	0.10.6
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	GNOME
 
@@ -13,11 +14,10 @@ COMMENT=	Tool to generate full-size image files and thumbnails
 LICENSE=	LGPL21 LGPL3
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	webkitgtk-1.0.0:${PORTSDIR}/www/webkit-gtk2
+LIB_DEPENDS=	libwebkitgtk-1.0.so:${PORTSDIR}/www/webkit-gtk2
 
-USE_XZ=		yes
 USE_GNOME=	gconf2 gnomeprefix
-USES=		gettext gmake pathfix pkgconfig
+USES=		gettext gmake pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules \
 		--with-gtk=2.0

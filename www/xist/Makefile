@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xist
-PORTVERSION=	3.25
-PORTREVISION=	3
+PORTVERSION=	5.13.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP \
 		http://ftp.livinglogic.de/xist/
@@ -15,20 +14,17 @@ COMMENT=	XML-based extensible HTML generator
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYXML} \
-		${PYTHON_PKGNAMEPREFIX}ll-core>=1.11.1:${PORTSDIR}/devel/py-ll-core \
-		${PYTHON_PKGNAMEPREFIX}imaging>0:${PORTSDIR}/graphics/py-imaging \
-		${PYTHON_PKGNAMEPREFIX}cssutils>=0.9.7:${PORTSDIR}/www/py-cssutils
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cssutils>=1.0:${PORTSDIR}/www/py-cssutils \
+		${PYTHON_PKGNAMEPREFIX}lxml>=3.4:${PORTSDIR}/devel/py-lxml \
+		${PYTHON_PKGNAMEPREFIX}pillow>=2.6:${PORTSDIR}/graphics/py-pillow
 
-USE_BZIP2=		yes
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:3 tar:bzip2
+USE_PYTHON=	autoplist distutils
 
-post-patch:
-.for conflictswithllcore in __init__ scripts/__init__ ansistyle astyle color \
-			    daemon make misc scripts/ucp sisyphus url xml_codec
-	${RM} ${WRKSRC}/src/ll/${conflictswithllcore}.py
-.endfor
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if defined(PACKAGE_BUILDING) && ${PYTHON_VER} != ${PYTHON_DEFAULT}
+IGNORE=		you have python ${PYTHON_DEFAULT} set as the default, and this needs ${PYTHON_VER}
+.endif
+
+.include <bsd.port.post.mk>

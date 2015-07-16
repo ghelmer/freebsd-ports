@@ -2,33 +2,50 @@
 # $FreeBSD$
 
 PORTNAME=	hostapd
-PORTVERSION=	2.2
+PORTVERSION=	2.4
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://hostap.epitest.fi/releases/
+MASTER_SITES=	http://w1.fi/releases/
 
 MAINTAINER=	leres@ee.lbl.gov
 COMMENT=	IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator
 
 LICENSE=	BSD3CLAUSE
 
-USES=		gmake
-BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
+USES=		cpe gmake
+CPE_VENDOR=	w1.f1
+USE_OPENSSL=	yes
+BUILD_WRKSRC=	${WRKSRC}/hostapd
 
 PLIST_FILES=	sbin/hostapd sbin/hostapd_cli man/man1/hostapd_cli.1.gz \
 		man/man8/hostapd.8.gz
 
-.include <bsd.port.pre.mk>
+BROKEN_ia64=	does not compile
+BROKEN_powerpc=	does not compile
+BROKEN_sparc64=	does not compile
 
-.if ${ARCH} == "ia64" || ${ARCH} == "powerpc" || ${ARCH} == "sparc64"
-BROKEN=		Does not compile on ia64, powerpc, or sparc64
+OPTIONS_DEFINE=	PORTS_SSL
+
+PORTS_SSL_DESC= Build with OpenSSL from ports (instead of base system)
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MPORTS_SSL}
+.if !defined(WITH_OPENSSL_PORT)
+IGNORE=		the PORTS_SSL option not allowed when WITH_OPENSSL_PORT is not set
+.endif
+CONFIGURE_ARGS+= --with-ssl-dir=${PREFIX}
+.else
+.if defined(WITH_OPENSSL_PORT)
+IGNORE=		the PORTS_SSL option is required when WITH_OPENSSL_PORT is set
+.endif
 .endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|@$$(E) "  CC " $$<|@$$(E) "  $$(CC) " $$<|' \
 		${BUILD_WRKSRC}/Makefile
-
-do-configure:
-	${CP} ${FILESDIR}/config ${WRKSRC}/hostapd/.config
+	@${SED} -e 's|@PREFIX@|${PREFIX}|g' ${FILESDIR}/config \
+		>> ${WRKSRC}/hostapd/.config
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/hostapd/hostapd ${STAGEDIR}${PREFIX}/sbin
@@ -39,4 +56,4 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/hostapd/hostapd.8 \
 		${STAGEDIR}${MANPREFIX}/man/man8
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

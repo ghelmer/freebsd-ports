@@ -3,6 +3,7 @@
 
 PORTNAME=	wzdftpd
 PORTVERSION=	0.8.3
+PORTREVISION=	4
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-sources/${PORTNAME}-${PORTVERSION:R}
 
@@ -11,7 +12,7 @@ COMMENT=	Modular FTP server configurable online using SITE commands
 
 LICENSE=	GPLv2 # (or later)
 
-OPTIONS_DEFINE=	ICONV IPV6 MYSQL PERL PGSQL SQLITE TCL
+OPTIONS_DEFINE=	ICONV IPV6 MYSQL PERL PGSQL SQLITE TCL DOCS
 OPTIONS_RADIO=	TLS ZEROCONF
 OPTIONS_RADIO_TLS=	GNUTLS OPENSSL
 OPTIONS_RADIO_ZEROCONF=	AVAHI HOWL
@@ -20,18 +21,16 @@ HOWL_DESC=	Zeroconf support via Howl
 
 OPTIONS_SUB=	yes
 
-USES=		pkgconfig
-USE_AUTOTOOLS=	libtoolize aclocal autoheader automake autoconf
-LIBTOOLIZE_ARGS=--copy --force
-ACLOCAL_ARGS=	-I m4 -I ac-helpers
-AUTOMAKE_ARGS=	--add-missing --copy
+USES=		autoreconf gettext-tools libtool pkgconfig
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${ETCDIR} --without-pam --disable-bonjour
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 USE_RC_SUBR=	wzdftpd
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
 ICONV_CONFIGURE_OFF=	--disable-utf8
@@ -57,7 +56,7 @@ MYSQL_USE=		MYSQL=yes
 
 PGSQL_CONFIGURE_ON=	--with-pgsql=${LOCALBASE}
 PGSQL_CONFIGURE_OFF=	--disable-pgsql
-PGSQL_USE=		PGSQL=yes
+PGSQL_USES=		pgsql
 
 SQLITE_CONFIGURE_ENABLE=	sqlite3
 SQLITE_USE=			SQLITE=3
@@ -78,15 +77,9 @@ PLIST_SUB+=	ZEROCONF=""
 PLIST_SUB+=	ZEROCONF="@comment "
 .endif
 
-post-extract:
-	@${RM} -f ${WRKSRC}/m4/libtool.m4
-	@${RM} -f ${WRKSRC}/m4/lib-*.m4
-	@${ECHO_CMD} -n > ${WRKSRC}/config.rpath
-
 post-patch:
-	@${REINPLACE_CMD} -e \
-		'/Libs:/s|@PTHREAD_CFLAGS@|@LTLIBICONV@|' \
-		${WRKSRC}/wzdftpd.pc.in
+	@${TOUCH} ${WRKSRC}/config.rpath
+	@${ECHO_CMD} "ACLOCAL_AMFLAGS= -I ac-helpers" >> ${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} -e \
 		'/LDFLAGS/s|@PTHREAD_CFLAGS@|@LTLIBICONV@|' \
 		${WRKSRC}/libwzd-core/Makefile.am
@@ -104,10 +97,6 @@ post-patch:
 		 /gcry_control/d' \
 
 post-install:
-.if ${PORT_OPTIONS:MPERL}
-	@${REINPLACE_CMD} -i '' -e 's|${STAGEDIR}||' \
-		${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto/wzdftpd/.packlist
-.endif
 	(cd ${WRKSRC} && ${INSTALL_DATA} *.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig )
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in AUTHORS ChangeLog NEWS Permissions.ReadMeFirst README \

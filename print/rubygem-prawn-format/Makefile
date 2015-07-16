@@ -7,7 +7,10 @@ CATEGORIES=	print rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	An extension of Prawn that allows inline formatting
+COMMENT=	Extension of Prawn that allows inline formatting
+
+LICENSE=	GPLv2 RUBY
+LICENSE_COMB=	dual
 
 RUN_DEPENDS=	rubygem-prawn-core>=0:${PORTSDIR}/print/rubygem-prawn-core
 

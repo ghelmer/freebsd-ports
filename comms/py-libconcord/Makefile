@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libconcord
-PORTVERSION=	1.1
+PORTVERSION=	1.2
 CATEGORIES=	comms
 MASTER_SITES=	SF/concordance/concordance/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,9 +16,8 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libconcord.so:${PORTSDIR}/comms/libconcord
 
 USE_LDCONFIG=	yes
-USES=		tar:bzip2
+USES=		python:2.7+ tar:bzip2
 WRKSRC_SUBDIR=	libconcord/bindings/python
-USE_PYTHON=	2.7+
-USE_PYDISTUTILS=yes
+USE_PYTHON=	distutils
 
 .include <bsd.port.mk>

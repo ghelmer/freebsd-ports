@@ -5,15 +5,17 @@ PORTNAME=	unarj
 PORTVERSION=	2.65
 PORTREVISION=	2
 CATEGORIES=	archivers
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
-PROJECTHOST=	ak-various-projects
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	https://googledrive.com/host/0BwCT-sp3iBCaeDRPYm1jTjl1Qmc/
 
 MAINTAINER=	ak@FreeBSD.org
 COMMENT=	Allows files to be extracted from ARJ archives
 
+USES=	tar:tgz
+
 PLIST_FILES=	bin/unarj
 PORTDOCS=	unarj.txt technote.txt
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	${CP} ${FILESDIR}/sanitize.c ${WRKSRC}

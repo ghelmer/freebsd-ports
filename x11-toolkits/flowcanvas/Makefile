@@ -3,7 +3,7 @@
 
 PORTNAME=	flowcanvas
 PORTVERSION=	0.7.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://download.drobilla.net/
 
@@ -18,8 +18,7 @@ LIB_DEPENDS=	libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
 		libgnomecanvasmm-2.6.so:${PORTSDIR}/graphics/libgnomecanvasmm26 \
 		libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24
 
-USES=		tar:bzip2 pkgconfig
-USE_PYTHON_BUILD=yes
+USES=		tar:bzip2 pkgconfig python:build
 USE_LDCONFIG=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include
@@ -46,5 +45,6 @@ do-build:
 
 do-install:
 	@(cd ${WRKSRC} && ./waf ${WAF_VERBOSE} --destdir=${STAGEDIR} install)
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so
 
 .include <bsd.port.post.mk>

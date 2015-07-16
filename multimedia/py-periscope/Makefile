@@ -12,7 +12,7 @@ DISTFILES=	python-${PORTNAME}_${PORTVERSION}.orig${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	python-${PORTNAME}_${PORTVERSION}.orig${EXTRACT_SUFX}
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Subtitles searching module
 
 LICENSE=	LGPL3
@@ -20,11 +20,9 @@ LICENSE=	LGPL3
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/BeautifulSoup.py:${PORTSDIR}/www/py-beautifulsoup32
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USE_PYTHON=	distutils autoplist
 NO_WRKSUBDIR=	yes
-USES=		desktop-file-utils
+USES=		desktop-file-utils python
 
 OPTIONS_DEFINE=	UNRAR
 UNRAR_DESC=	rar support (.rar) for compressed subtitles

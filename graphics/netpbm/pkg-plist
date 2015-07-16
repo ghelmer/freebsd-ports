@@ -278,6 +278,7 @@ bin/ppmtoppm
 bin/ppmtopuzz
 bin/ppmtorgb3
 bin/ppmtosixel
+bin/ppmtotga
 bin/ppmtoterm
 bin/ppmtouil
 bin/ppmtowinicon
@@ -656,5 +657,3 @@ man/man1/netpbm.1.gz
 %%DATADIR%%/pcxstd.ppm
 %%DATADIR%%/rgb.txt
 %%PORTDOCS%%%%DOCSDIR%%/USERDOC
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm %%DATADIR%%

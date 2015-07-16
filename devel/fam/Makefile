@@ -3,7 +3,7 @@
 
 PORTNAME=	fam
 PORTVERSION=	2.6.10
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	ftp://oss.sgi.com/projects/fam/download/
 DIST_SUBDIR=	${PORTNAME}
@@ -11,13 +11,18 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File alteration monitor
 
+LICENSE=	GPLv2 LGPL21
+LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2=	${WRKSRC}/fam/COPYING
+LICENSE_FILE_LGPL21=	${WRKSRC}/libfam/COPYING
+
 CFLAGS+=	-Wno-deprecated
 
-USES=		gmake
-USE_AUTOTOOLS=	aclocal automake autoconf libtool
-AUTOMAKE_ARGS=	-c -a
+USES=		autoreconf cpe gmake libtool
+CPE_VENDOR=	sgi
 USE_LDCONFIG=	yes
-ACLOCAL_ARGS=	-I "${ACLOCAL_DIR}" -I ${LOCALBASE}/share/aclocal
+INSTALL_TARGET=	install-strip
+GNU_CONFIGURE=	yes
 SUB_FILES=	pkg-message
 
 #CONFLICTS_INSTALL=	gamin-[0-9]*
@@ -31,8 +36,5 @@ pre-configure:
 	${SED} -e s/util// -e /SUBDIRS/q \
 		<${WRKSRC}/Makefile.am.orig >${WRKSRC}/Makefile.am
 	${CP} ${FILESDIR}/mntent* ${WRKSRC}/fam
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libfam.so.0
 
 .include <bsd.port.mk>

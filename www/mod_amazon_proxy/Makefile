@@ -3,17 +3,18 @@
 
 PORTNAME=	mod_amazon_proxy
 PORTVERSION=	20100913
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	LOCAL
-MASTER_SITE_SUBDIR=	tota/${PORTNAME}
+MASTER_SITES=	LOCAL/tota/${PORTNAME}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Amazon Auth Proxy for Product Advertising API
 
 LIB_DEPENDS=	libapreq2.so:${PORTSDIR}/www/libapreq2
 
-USE_APACHE=	22
+USE_APACHE=	22+
 AP_FAST_BUILD=	yes
+AP_LIB=	${LOCALBASE}/lib -lcrypto
 
 CONFFILE=	httpd-amazon-proxy.conf
 CONFDIR=	${PREFIX}/${APACHEETCDIR}/Includes

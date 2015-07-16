@@ -1,11 +1,11 @@
 # Created by: Matthias Andree <matthias.andree@gmx.de>
 # $FreeBSD$
 
-PORTREVISION=	1
+PORTREVISION=	0
 CATEGORIES=	misc devel
 PKGNAMESUFFIX=	-libblkid
 
-COMMENT=	A blkid library from e2fsprogs package
+COMMENT=	Blkid library from e2fsprogs package
 
 LIB_DEPENDS=	libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
 

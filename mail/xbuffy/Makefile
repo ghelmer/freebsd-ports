@@ -9,10 +9,11 @@ MASTER_SITES=	http://www.fiction.net/blong/programs/xbuffy/
 DISTNAME=	${PORTNAME}-3.3.bl.3
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A replacement for xbiff that handles multiple mail files
+COMMENT=	Replacement for xbiff that handles multiple mail files
 
 USE_XORG=	xext xt xaw
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	xbuffy_project
 GNU_CONFIGURE=	yes
 PLIST_FILES=	bin/xbuffy lib/X11/app-defaults/XBuffy man/man1/xbuffy.1.gz
 

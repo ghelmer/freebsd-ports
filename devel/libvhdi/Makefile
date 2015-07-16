@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libvhdi
-# If/When moving from experimental to alpha, override DISTNAME to prevent PORTEPOCH
-DISTVERSION=	experimental-20140330
+PORTVERSION=	20150110
+DISTVERSIONPREFIX=	alpha-
 CATEGORIES=	devel
-MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSY250RjRzRXQ0bDg/ \
+MASTER_SITES=	https://github.com/libyal/libvhdi/releases/download/${PORTVERSION}/ \
 		LOCAL/antoine
 
 MAINTAINER=	antoine@FreeBSD.org
@@ -15,11 +15,10 @@ LICENSE=	LGPL3
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} ${ICONV_CONFIGURE_ARG}
-USES=		fuse gettext iconv libtool pathfix pkgconfig
-USE_PYTHON=	2
+USES=		fuse gettext iconv libtool pathfix pkgconfig python
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:E}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PORTDOCS=	AUTHORS ChangeLog
 

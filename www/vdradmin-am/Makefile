@@ -57,13 +57,15 @@ PLIST_SUB=	VDR_USER=${VDR_USER}
 PLIST_SUB+=	VDR_GROUP=${VDR_GROUP}
 PLIST_SUB+=	PREFIX=${PREFIX}
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} 1s-^#!/bin/bash-#!${LOCALBASE}/bin/bash- \
 		${WRKSRC}/install.sh ${WRKSRC}/make.sh
 
 do-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} -m 644 ${FILESDIR}/vdradmind.conf ${STAGEDIR}${ETCDIR}/vdradmind.conf.sample
+	${INSTALL_DATA} ${FILESDIR}/vdradmind.conf ${STAGEDIR}${ETCDIR}/vdradmind.conf.sample
 	${MKDIR}  ${STAGEDIR}/var/cache/${PORTNAME} \
 		${STAGEDIR}/var/log/${PORTNAME} ${STAGEDIR}/var/run/${PORTNAME}
 	@(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} DESTDIR=${STAGEDIR} \

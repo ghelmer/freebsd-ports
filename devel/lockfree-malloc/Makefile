@@ -3,7 +3,7 @@
 
 PORTNAME=	lockfree-malloc
 PORTVERSION=	0.0.${DATE}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/vg
 
@@ -31,7 +31,6 @@ MAKE_ARGS+=	CXX=${CXX}
 
 .if ${PORT_OPTIONS:MDOCS}
 PLIST_FILES+=	share/doc/${PORTNAME}/README
-PLIST_DIRS+=	share/doc/${PORTNAME}
 .endif
 
 do-install:

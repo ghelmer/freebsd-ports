@@ -12,14 +12,12 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Robot programming game for UNIX
 
 LICENSE=	GPLv2 # (or later)
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gsed:${PORTSDIR}/textproc/gsed
 
-OPTIONS_DEFINE=	DOCS
-
-USES=		gettext gmake perl5 pkgconfig tar:bzip2
+USES=		gettext gmake perl5 pkgconfig python tar:bzip2
 USE_GNOME=	gtk20
-USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-rtb-dir=${PREFIX}/lib/${PORTNAME}
 
@@ -27,6 +25,8 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 DESKTOP_ENTRIES="${PORTNAME}" "" "" "${PORTNAME:tl}" "" ""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 .for i in configure

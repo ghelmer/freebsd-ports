@@ -3,36 +3,31 @@
 
 PORTNAME=	clementine
 PORTVERSION=	1.2.3
+PORTREVISION=	7
 CATEGORIES=	audio
 PKGNAMESUFFIX=	-player
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME}${PKGNAMESUFFIX}
 GH_PROJECT=	Clementine
-GH_TAGNAME=	${PORTVERSION}
-GH_COMMIT=	c189ee5
 
 MAINTAINER=	sbruno@FreeBSD.org
 COMMENT=	Cross-platform music player based on Amarok 1.4
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libtag.so:${PORTSDIR}/audio/taglib \
+LIB_DEPENDS=	libtag.so:${PORTSDIR}/audio/taglib \
 		libchromaprint.so:${PORTSDIR}/audio/chromaprint \
 		libprotobuf.so:${PORTSDIR}/devel/protobuf \
- 	 	libqca.so:${PORTSDIR}/devel/qca \
+		libqca.so:${PORTSDIR}/devel/qca \
 		libqjson.so:${PORTSDIR}/devel/qjson \
 		libfftw3.so:${PORTSDIR}/math/fftw3 \
 		libechonest.so:${PORTSDIR}/audio/libechonest
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost-libs
 
-# avoid clash with x11-wm/clementine
-LATEST_LINK=	${PORTNAME}${PKGNAMESUFFIX}
-PROJECTHOST=	${PORTNAME}${PKGNAMESUFFIX}
-
-USES=		compiler:c++11-lib cmake pkgconfig desktop-file-utils
+USES=		compiler:c++11-lib cmake desktop-file-utils execinfo \
+		gettext-tools pkgconfig
 USE_GL=		glew
 USE_QT4=	dbus gui xml qmake_build uic_build moc_build rcc_build \
 		linguist_build network sql opengl qtestlib corelib webkit \

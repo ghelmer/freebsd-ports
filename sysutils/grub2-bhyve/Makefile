@@ -2,7 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	grub2-bhyve
-DISTVERSION=	0.23
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.30
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -17,15 +19,13 @@ ONLY_FOR_ARCHS=	amd64
 SSP_UNSAFE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	grehan-freebsd
-GH_COMMIT=	8f5ad7a
-GH_TAGNAME=	v0.23
 USES=		bison gmake
 USE_GCC=	yes
 PLIST_FILES=	sbin/grub-bhyve
 MAKE_JOBS_UNSAFE=	yes
 CONFIGURE_ARGS=	--with-platform=emu CC=${CC} LEX=${LOCALBASE}/bin/flex \
 		--enable-grub-mount=no --enable-grub-mkfont=no \
-		--enable-grub-emu-sdl=no --disable-nls
+		--enable-grub-emu-sdl=no --disable-nls --disable-werror
 
 .include <bsd.port.pre.mk>
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	xshttpd
 DISTVERSION=	3.6g01
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	www ipv6
 MASTER_SITES=	ftp://ftp.stack.nl/pub/xs-httpd/release/ \
 		ftp://mud.stack.nl/pub/xs-httpd/release/
@@ -17,7 +17,7 @@ RUN_DEPENDS=	run-mailcap:${PORTSDIR}/misc/mime-support \
 
 CONFLICTS_INSTALL=	xshttpd-devel-[0-9]* publicfile-[0-9]*
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 USE_RC_SUBR=	xshttpd
 GNU_CONFIGURE=	yes
 
@@ -26,8 +26,9 @@ CONFIGURE_ARGS+=--with-rootdir=${WWWDIR}
 
 OPTIONS_DEFINE=	SSL PCRE LDAP CURL M4_CONFIG PERSISTENT_PERL
 OPTIONS_DEFAULT=SSL PCRE
+SSL_USE=		OPENSSL=yes
 SSL_CONFIGURE_WITH=	ssl
-LDAP_USE=		openldap
+LDAP_USE=		OPENLDAP=yes
 LDAP_CONFIGURE_WITH=	ldap
 M4_CONFIG_DESC=	Enable m4 configuration preprocessor
 M4_CONFIG_CONFIGURE_WITH=preprocessor

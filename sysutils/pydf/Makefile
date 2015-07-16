@@ -8,7 +8,7 @@ MASTER_SITES=	http://kassiopeia.juls.savba.sk/~garabik/software/pydf/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	baptiste@bapt.name
-COMMENT=	A python implementation of df
+COMMENT=	Python implementation of df
 
 LICENSE=	unknown
 LICENSE_NAME=	Public Domain
@@ -17,8 +17,7 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 SUB_FILES=	pkg-message
 
-USES=		shebangfix
-USE_PYTHON=	yes
+USES=		python shebangfix
 NO_BUILD=	yes
 
 SHEBANG_FILES=	pydf

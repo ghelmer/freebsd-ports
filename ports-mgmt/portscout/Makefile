@@ -3,23 +3,23 @@
 
 PORTNAME=	portscout
 PORTVERSION=	0.8.1
+PORTREVISION=	3
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	http://mirror.inerd.com/FreeBSD/distfiles/${PORTNAME}/	\
 		http://www.atarininja.org/~wxs/distfiles/		\
 		http://www.inerd.com/software/${PORTNAME}/
 
 MAINTAINER=	shaun@FreeBSD.org
-COMMENT=	A tool to scan for new versions of FreeBSD ports
+COMMENT=	Tool to scan for new versions of FreeBSD ports
 
 OPTIONS_DEFINE=	SQLITE3 DOCS
 SQLITE3_DESC=	Use SQLite backend instead of PostgreSQL
 
-USES=		perl5
+USES=		perl5 shebangfix
 NO_BUILD=	yes
+SHEBANG_FILES=	${WRKSRC}/portscout.pl
 
 PORTDOCS=	UPDATING portscout-portconfig.txt xml-datasrc-example.xml
-
-MAN1=		portscout.1
 
 RUN_DEPENDS=	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI	\
 		p5-Proc-Queue>=0:${PORTSDIR}/devel/p5-Proc-Queue	\
@@ -29,15 +29,14 @@ RUN_DEPENDS=	p5-DBI>=0:${PORTSDIR}/databases/p5-DBI	\
 		p5-MIME-Lite>=0:${PORTSDIR}/mail/p5-MIME-Lite		\
 		p5-libwww>=0:${PORTSDIR}/www/p5-libwww
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSQLITE3}
-USE_SQLITE=	3
-RUN_DEPENDS+=	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite
+#USE_SQLITE=	3
+#RUN_DEPENDS+=	p5-DBD-SQLite>=0:${PORTSDIR}/databases/p5-DBD-SQLite
 .elif !defined(WITHOUT_PGSQL)
-USE_PGSQL=	yes
-RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
+#USES+=		pgsql
+#RUN_DEPENDS+=	p5-DBD-Pg>=0:${PORTSDIR}/databases/p5-DBD-Pg
 .endif
 
 pre-everything::
@@ -62,39 +61,35 @@ post-patch:
 	@${MV} ${WRKSRC}/docs/*.* ${WRKSRC}
 
 do-install:
-	@${MKDIR} ${SITE_PERL}/Portscout
-	@${MKDIR} ${SITE_PERL}/Portscout/DataSrc
-	@${MKDIR} ${SITE_PERL}/Portscout/SiteHandler
-	@${MKDIR} ${SITE_PERL}/Portscout/SQL
-	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/*.pm ${SITE_PERL}/Portscout/
-	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/DataSrc/*.pm ${SITE_PERL}/Portscout/DataSrc/
-	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/SiteHandler/*.pm ${SITE_PERL}/Portscout/SiteHandler/
-	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/SQL/*.pm ${SITE_PERL}/Portscout/SQL/
-	${INSTALL_SCRIPT} ${WRKSRC}/Portscout.pm ${SITE_PERL}/Portscout.pm
-	${INSTALL_SCRIPT} ${WRKSRC}/portscout.pl ${PREFIX}/bin/portscout
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/DataSrc
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/SiteHandler
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/SQL
+	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/*.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/
+	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/DataSrc/*.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/DataSrc/
+	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/SiteHandler/*.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/SiteHandler/
+	${INSTALL_SCRIPT} ${WRKSRC}/Portscout/SQL/*.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout/SQL/
+	${INSTALL_SCRIPT} ${WRKSRC}/Portscout.pm ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/Portscout.pm
+	${INSTALL_SCRIPT} ${WRKSRC}/portscout.pl ${STAGEDIR}${PREFIX}/bin/portscout
 
-	${INSTALL_DATA} ${WRKSRC}/portscout.pod ${SITE_PERL}
+	${INSTALL_DATA} ${WRKSRC}/portscout.pod ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
 
 	pod2man ${WRKSRC}/portscout.pod ${WRKSRC}/portscout.1
-	${INSTALL_MAN} ${WRKSRC}/portscout.1 ${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/portscout.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/
 
-	@${MKDIR} ${DATADIR}/templates
+	@${MKDIR} ${STAGEDIR}${DATADIR}/templates
 	cd ${WRKSRC}/templates \
-	  && ${INSTALL_DATA} * ${DATADIR}/templates
+	  && ${INSTALL_DATA} * ${STAGEDIR}${DATADIR}/templates
 
-	@${MKDIR} ${DATADIR}/sql
-	cd ${WRKSRC}/sql && ${INSTALL_DATA} *.sql ${DATADIR}/sql
+	@${MKDIR} ${STAGEDIR}${DATADIR}/sql
+	cd ${WRKSRC}/sql && ${INSTALL_DATA} *.sql ${STAGEDIR}${DATADIR}/sql
 
-	${INSTALL_DATA} ${WRKSRC}/portscout.conf ${PREFIX}/etc/portscout.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/portscout.conf ${STAGEDIR}${PREFIX}/etc/portscout.conf.sample
 
-post-install:
-	@if [ ! -f ${PREFIX}/etc/portscout.conf ]; then \
-		${CP} -p ${PREFIX}/etc/portscout.conf.sample ${PREFIX}/etc/portscout.conf; \
-	fi
 .if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .	for f in ${PORTDOCS}
-		${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
+		${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .	endfor
 .endif
 

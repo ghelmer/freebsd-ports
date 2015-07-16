@@ -7,11 +7,16 @@ CATEGORIES=	www
 MASTER_SITES=	SF/flatfrog/flatfrog/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A templating engine working in php
+COMMENT=	Templating engine working in php
+
+LICENSE=	LGPL21 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_BUILD=	yes
 USE_PHP=	yes
 USES=		zip
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${DATADIR}/plugins

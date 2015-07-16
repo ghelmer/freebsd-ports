@@ -2,7 +2,7 @@
 
 PORTNAME=	gui
 DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	4
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits graphics
 PKGNAMEPREFIX=	qt5-
 
@@ -12,8 +12,8 @@ COMMENT=	Qt graphical user interface module
 LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libharfbuzz.so:${PORTSDIR}/print/harfbuzz \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libxcb.so:${PORTSDIR}/x11/libxcb \
 		libxcb-image.so:${PORTSDIR}/x11/xcb-util-image \
 		libxcb-keysyms.so:${PORTSDIR}/x11/xcb-util-keysyms \
@@ -22,6 +22,7 @@ LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
 		libxkbcommon.so:${PORTSDIR}/x11/libxkbcommon
 RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
 
+USES=		jpeg
 USE_GL=		gl
 USE_GNOME=	glib20
 USE_QT5=	core dbus qmake_build buildtools_build
@@ -29,7 +30,8 @@ QT_DIST=	base
 USE_XORG=	x11 xi xrender
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	-no-eglfs \
-		-no-evdev
+		-no-evdev \
+		-system-harfbuzz
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
 
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
@@ -57,26 +59,11 @@ QT_CONFIG=	accessibility accessibility-atspi-bridge dbus \
 
 # Inherited from Qt 4.
 .if defined(PACKAGE_BUILDING)
-RUN_DEPENDS+=	${LOCALBASE}/lib/X11/fonts/encodings/encodings.dir:${PORTSDIR}/x11-fonts/encodings \
+RUN_DEPENDS+=	${LOCALBASE}/share/fonts/encodings/encodings.dir:${PORTSDIR}/x11-fonts/encodings \
 		xorg-fonts-truetype>0:${PORTSDIR}/x11-fonts/xorg-fonts-truetype
 .endif
 
-.include <bsd.port.pre.mk>
-
-# Inherited from Qt 4.
-.if ${ARCH} == powerpc64
-CFLAGS+=	-mminimal-toc
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} -e 's/-ldl/$$$$QMAKE_LIBS_DYNLOAD/' \
-		${WRKSRC}/src/plugins/platforms/xcb/xcb-plugin.pro
-
-post-configure:
-.for d in ${MORE_WRKSRCS}
-	@cd ${WRKSRC}/${d} && \
-		${SETENV} ${QMAKE_ENV} ${WRKSRC}/bin/qmake ${QMAKE_ARGS}
-.endfor
+CFLAGS_powerpc64=	-mminimal-toc
 
 post-build:
 .for d in ${MORE_WRKSRCS}
@@ -92,4 +79,4 @@ post-install:
 		${MAKE_ARGS} ${INSTALL_TARGET}
 .endfor
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

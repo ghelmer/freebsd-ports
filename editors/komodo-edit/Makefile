@@ -2,17 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	komodo-edit
-PORTVERSION=	6.1.2
-PORTREVISION=	4
+PORTVERSION=	6.1.3
 CATEGORIES=	editors
-MASTER_SITES=	http://downloads.activestate.com/Komodo/releases/${PORTVERSION}/
-DISTNAME=	Komodo-Edit-${PORTVERSION}-8334-linux-libcpp6-x86
+MASTER_SITES=	http://downloads.activestate.com/Komodo/releases/archive/6.x/${PORTVERSION}/
+DISTNAME=	Komodo-Edit-${PORTVERSION}-8844-linux-libcpp6-x86
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-language editor from ActiveState
 
-BROKEN=		Unfetchable
-CONFLICTS=	komodo-ide-*
+CONFLICTS=	komodo-ide-6*
 
 RESTRICTED=	Distribution not permitted
 NO_CDROM=	Distribution not permitted
@@ -20,29 +18,26 @@ NO_PACKAGE=	Distribution not permitted
 
 ONLY_FOR_ARCHS=	i386 amd64
 NO_BUILD=	yes
-USE_LINUX=	f10
+USE_LINUX=	yes
 USE_LINUX_APPS=	alsalib gtk2 jpeg dbusglib
+
+PLIST_FILES=	bin/komodo
+PORTDATA=	*
+
 DESKTOP_ENTRIES="Komodo Edit" \
 		"Free multi-platform editor that makes it easy to write quality code." \
 		${DATADIR}/share/icons/komodo48.png \
 		"komodo" \
 		"Development;Utility;TextEditor;" \
-		${FALSE}
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 800000
-BROKEN=		does not build
-.endif
+		false
 
 do-install:
-	${MKDIR} ${DESKTOPDIR}
-	cd ${WRKSRC}/INSTALLDIR && ${COPYTREE_SHARE} \* ${DATADIR}
-	${CHMOD} ${BINMODE} ${DATADIR}/bin/komodo
-	${CHMOD} ${BINMODE} ${DATADIR}/lib/mozilla/komodo
-	${CHMOD} ${BINMODE} ${DATADIR}/lib/mozilla/komodo-bin
-	${CHMOD} ${BINMODE} ${DATADIR}/lib/mozilla/run-mozilla.sh
-	${LN} -sf ${DATADIR}/bin/komodo ${PREFIX}/bin/
+	${MKDIR} ${STAGEDIR}${DESKTOPDIR}
+	cd ${WRKSRC}/INSTALLDIR && ${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR}
+	${CHMOD} ${BINMODE} ${STAGEDIR}${DATADIR}/bin/komodo
+	${CHMOD} ${BINMODE} ${STAGEDIR}${DATADIR}/lib/mozilla/komodo
+	${CHMOD} ${BINMODE} ${STAGEDIR}${DATADIR}/lib/mozilla/komodo-bin
+	${CHMOD} ${BINMODE} ${STAGEDIR}${DATADIR}/lib/mozilla/run-mozilla.sh
+	${LN} -sf ${DATADIR}/bin/komodo ${STAGEDIR}${PREFIX}/bin/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

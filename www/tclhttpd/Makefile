@@ -5,12 +5,11 @@ PORTNAME=	tclhttpd
 PORTVERSION=	3.5.1
 PORTREVISION=	3
 CATEGORIES=	www tcl
-MASTER_SITES=	${MASTER_SITE_TCLTK}
-MASTER_SITE_SUBDIR=	httpd
+MASTER_SITES=	TCLTK/httpd
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	mi@aldan.algebra.com
-COMMENT=	An http-server implemented in TCL
+COMMENT=	Http-server implemented in TCL
 
 RUN_DEPENDS=	dtplite:${PORTSDIR}/devel/tcllib
 

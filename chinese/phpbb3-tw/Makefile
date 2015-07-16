@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	phpbb
-PORTVERSION=	3.0.11
+PORTVERSION=	3.0.12
+PORTREVISION=	0
 CATEGORIES=	chinese www
 MASTER_SITES=	http://www.phpbb-tw.net/phpbb/download/ \
 		http://freebsd.ee.ccu.edu.tw/phpBB/
 PKGNAMESUFFIX=	3-tw
 DISTNAME=	phpBB-${PORTVERSION}
 
-MAINTAINER=	appleboy.tw@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Traditional Chinese version of phpBB3
 
 CONFLICTS=	phpbb-tw-[0-2]* phpbb-devel-[0-3]* phpbb-[0-3]*
@@ -35,7 +36,6 @@ SUB_LIST=	PHPBBURL="${PHPBBURL}" \
 PORTDOCS=	*
 PLIST_SUB+=	PHPBBDIR=${PHPBBDIR} WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
-NO_STAGE=	yes
 # Set custom variables:
 #
 PHPBBDIR=	${WWWDOCROOT}/${PHPBBURL}
@@ -58,22 +58,12 @@ pre-everything::
 .endif
 
 do-install:
-	@ cd ${WRKSRC} && ${COPYTREE_SHARE} . ${PREFIX}/${PHPBBDIR} "! -name config.php"
-	@ [ -f ${PREFIX}/${PHPBBDIR}/config.php ] || ${TOUCH} ${PREFIX}/${PHPBBDIR}/config.php
-	@ ${CHOWN} -R ${WWWOWN}:${WWWGRP} ${PREFIX}/${PHPBBDIR}
-	@ ${CHMOD} -R 0755 ${PREFIX}/${PHPBBDIR}
-	@ ${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} \
-		${PHPBBDIR:S|^${PREFIX}/|%D/|}' >> ${TMPPLIST}
-	@ ${ECHO_CMD} '@exec ${CHMOD} -R 0755 ${PREFIX}/${PHPBBDIR}' >> ${TMPPLIST}
+	@ cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${PHPBBDIR} "! -name config.php"
+	@ ${TOUCH} ${STAGEDIR}${PREFIX}/${PHPBBDIR}/config.php.sample
+	@ ${CHMOD} -R 0755 ${STAGEDIR}${PREFIX}/${PHPBBDIR}
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@ ${MKDIR} ${DOCSDIR}
-	@ cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${DOCSDIR}
-
-.if !defined(BATCH)
-	@ ${CAT} ${PKGMESSAGE}
-.endif
-.endif
+	@ ${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@ cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

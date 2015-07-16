@@ -2,48 +2,43 @@
 # $FreeBSD$
 
 PORTNAME=	libevent2
-PORTVERSION=	2.0.21
+PORTVERSION=	2.0.22
+DISTVERSIONPREFIX=	release-
+DISTVERSIONSUFFIX=	-stable
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://cloud.github.com/downloads/libevent/libevent/
-DISTNAME=	${PORTNAME:S/2//}-${DISTVERSION}-stable
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	API for executing callback functions on events or timeouts
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	${GH_PROJECT}
+GH_PROJECT=	${PORTNAME:S/2$//}
+
 GNU_CONFIGURE=	yes
-USES=		libtool:oldver pathfix
-USE_LDCONFIG=	${PREFIX}/lib/event2
+USES=		autoreconf libtool pathfix
+PATHFIX_MAKEFILEIN=Makefile.am
+USE_LDCONFIG=	yes
 
 OPTIONS_DEFINE=	OPENSSL THREADS
 OPTIONS_DEFAULT=	OPENSSL THREADS
+OPTIONS_SUB=	yes
+INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS+=	--libdir=${PREFIX}/lib/event2
+OPENSSL_USE=	openssl=yes
+OPENSSL_CPPFLAGS=	-I${OPENSSLINC}
+OPENSSL_LDFLAGS=	-L${OPENSSLLIB}
+OPENSSL_CONFIGURE_ENABLE=	openssl
 
-.include <bsd.port.options.mk>
+THREADS_CONFIGURE_ENABLE=	thread-support
 
-.if ${PORT_OPTIONS:MOPENSSL}
-USE_OPENSSL=	yes
-CPPFLAGS+=	-I${OPENSSLINC}
-LDFLAGS+=	-L${OPENSSLLIB}
-PLIST_SUB+=		OPENSSL=""
-.else
-CONFIGURE_ARGS+=	--disable-openssl
-PLIST_SUB+=		OPENSSL="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MTHREADS}
-PLIST_SUB+=		THREADS=""
-.else
-CONFIGURE_ARGS+=	--disable-thread-support
-PLIST_SUB+=		THREADS="@comment "
-.endif
-
-post-install:
-	@${INSTALL_SCRIPT} ${WRKSRC}/event_rpcgen.py ${STAGEDIR}${PREFIX}/bin/event2_rpcgen.py
+post-patch:
+	${ECHO_CMD} 'AC_CONFIG_MACRO_DIR([m4])' >>${WRKSRC}/configure.in
+# error: using '$(top_srcdir)' in TESTS is currently broken
+	${REINPLACE_CMD} 's/^TESTS.*top_srcdir/#&/' ${WRKSRC}/test/Makefile.am
 
 regression-test: build
 	@(${SH} ${WRKSRC}/test/regress)

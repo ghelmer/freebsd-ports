@@ -1,11 +1,1 @@
-%%FONTSDIR%%/fonts.dir.cyberbit
 %%FONTSDIR%%/Cyberbit.ttf
-@dirrmtry %%FONTSDIR%%
-%%PORTDOCS%%%%DOCSDIR%%/97CyberBase.Doc
-%%PORTDOCS%%%%DOCSDIR%%/97CyberBit.Doc
-%%PORTDOCS%%%%DOCSDIR%%/97CyberCJK.Doc
-%%PORTDOCS%%%%DOCSDIR%%/CYBERBIT.DOC
-%%PORTDOCS%%%%DOCSDIR%%/CYBERCJK.DOC
-%%PORTDOCS%%%%DOCSDIR%%/READMEfirst.txt
-%%PORTDOCS%%%%DOCSDIR%%/ReadMe.htm
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

@@ -2,8 +2,7 @@
 #   $MCom: ports/finance/gnucash/Makefile,v 1.26 2008/12/31 03:25:18 mezz Exp $
 
 PORTNAME=	gnucash
-PORTVERSION=	2.6.3
-PORTREVISION=	1
+PORTVERSION=	2.6.7
 CATEGORIES=	finance gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -13,24 +12,25 @@ COMMENT=	Quicken-like money and finance manager
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	guile>=1.8.6:${PORTSDIR}/lang/guile \
-    		${LOCALBASE}/share/guile/1.8/slibcat:${PORTSDIR}/lang/slib-guile
 LIB_DEPENDS=	libgnome-keyring.so:${PORTSDIR}/security/libgnome-keyring \
 		libwebkitgtk-1.0.so:${PORTSDIR}/www/webkit-gtk2 \
 		libgoffice-0.8.so:${PORTSDIR}/devel/goffice
-RUN_DEPENDS=	guile>=1.8.6:${PORTSDIR}/lang/guile \
-		${LOCALBASE}/share/guile/1.8/slibcat:${PORTSDIR}/lang/slib-guile \
-		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
+RUN_DEPENDS=	p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
 		p5-Date-Manip>=0:${PORTSDIR}/devel/p5-Date-Manip \
 		p5-Finance-Quote>=0:${PORTSDIR}/finance/p5-Finance-Quote
 
-OPTIONS_DEFINE=	AQBANKING OFX DATABASE LOCALE_TAX PYTHON GTKMM
+OPTIONS_DEFINE=	AQBANKING OFX DATABASE LOCALE_TAX PYTHON GTKMM DOCS
+OPTIONS_SINGLE=	GV
+OPTIONS_SINGLE_GV=	GUILE1 GUILE2
+OPTIONS_DEFAULT=	GUILE1
 
 AQBANKING_DESC=	AqBanking support (HBCI/OpenHBCI)
 OFX_DESC=	OFX support
 DATABASE_DESC=	Enable SQL database backends
 LOCALE_TAX_DESC=	Enable localized tax categories
 GTKMM_DESC=	Enable GTKMM based UI
+GUILE1_DESC=	Use lang/guile
+GUILE2_DESC=	Use lang/guile2
 
 OPTIONS_SUB=		yes
 AQBANKING_CONFIGURE_ENABLE=aqbanking
@@ -46,7 +46,7 @@ DATABASE_RUN_DEPENDS=	libdbi-drivers>=0:${PORTSDIR}/databases/libdbi-drivers
 DATABASE_CONFIGURE_ON=	--with-dbi-dbd-dir=${LOCALBASE}/lib/dbd
 LOCALE_TAX_CONFIGURE_ON=--enable-locale-specific-tax
 PYTHON_CONFIGURE_ON=	--enable-python
-PYTHON_USE=		PYTHON=yes
+PYTHON_USES=		python
 GTKMM_USE=		GNOME=gtkmm24
 GTKMM_CONFIGURE_ON=	--enable-gtkmm
 GTKMM_CONFIGURE_OFF=	--disable-gtkmm
@@ -58,7 +58,8 @@ GUILE2_BUILD_DEPENDS=	slib-guile2>0:${PORTSDIR}/lang/slib-guile2
 GUILE2_RUN_DEPENDS=	slib-guile2>0:${PORTSDIR}/lang/slib-guile2
 
 USE_XORG=	x11
-USES=		desktop-file-utils gettext gmake libtool perl5 pkgconfig shebangfix tar:bzip2
+USES=		compiler:c++11-lib desktop-file-utils gettext gmake libtool perl5 \
+		pkgconfig shebangfix tar:bzip2
 INSTALLS_ICONS=	yes
 USE_GNOME+=	gtk20 libgnomecanvas libxml2 libxslt:build
 GNU_CONFIGURE=	yes
@@ -67,7 +68,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--disable-error-on-warning \
 		--disable-doxygen
-SHEBANG_FILES=	src/quotes/gnc-fq-dump
+SHEBANG_FILES=	src/gnc-test-env.pl src/quotes/gnc-fq-dump
 
 GLIB_SCHEMAS=	org.gnucash.dialogs.business.gschema.xml \
 		org.gnucash.dialogs.checkprinting.gschema.xml \
@@ -96,15 +97,23 @@ GLIB_SCHEMAS+=	org.gnucash.dialogs.import.hbci.gschema.xml
 GLIB_SCHEMAS+=	org.gnucash.dialogs.import.ofx.gschema.xml
 .endif
 
+.include <bsd.port.pre.mk>
+
+.if ${CHOSEN_COMPILER_TYPE} == gcc
+LDFLAGS+=	-lstdc++
+.endif
+
 post-install:
 .if ${PORT_OPTIONS:MPYTHON}
-	@${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		${STAGEDIR}${PYTHON_SITELIBDIR:S|${LOCALBASE}|${PREFIX}|}/${PORTNAME}
-	@${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		${STAGEDIR}${PYTHON_SITELIBDIR:S|${LOCALBASE}|${PREFIX}|}/${PORTNAME}
+	@(cd ${STAGEDIR}${PREFIX} \
+		&& ${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}/${PORTNAME})
+	@(cd ${STAGEDIR}${PREFIX} \
+		&& ${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
+		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}/${PORTNAME})
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/gnucash/_gnucash_core_c.so
 .endif
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*so*
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/gnucash/lib*.so
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

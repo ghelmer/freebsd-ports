@@ -3,7 +3,7 @@
 
 PORTNAME=	himenobench
 PORTVERSION=	2004.08.16
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://accc.riken.jp/secure/4502/:C http://accc.riken.jp/secure/4503/:C \
 		http://accc.riken.jp/secure/4504/:F90 http://accc.riken.jp/secure/4505/:F77
@@ -12,7 +12,7 @@ DISTFILES=	himenoBMTxp_xl.lzh:F77 himenoBMTxp_l.lzh:F77 himenoBMTxp_m.lzh:F77 \
 		cc_himenoBMTxp_m.lzh:C cc_himenoBMTxp_s.lzh:C f90_xp.lzh:F90 himenobmtxpa.lzh:C
 DIST_SUBDIR=	himeno
 
-MAINTAINER=	maho@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Himeno bench benchmark, solves Poisson eq. with Jacobi's method
 
 USES=		lha
@@ -27,9 +27,6 @@ USES+=		fortran:ifort
 .else
 USES+=		fortran
 .endif
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
 
 .if defined(WITH_OPTIMIZED_FLAGS)
 FFLAGS+=	-O2 -ffast-math -finline-functions -fomit-frame-pointer -funroll-loops -fexpensive-optimizations
@@ -78,6 +75,7 @@ do-build:
 	cd ${WRKSRC} ; ${IFC} ${FFLAGS_IFC} -o himenobmtxp_s.ifc  himenobmtxp_s.f
 	cd ${WRKSRC} ; ${IFC} ${FFLAGS_IFC} -o himenobmtxp.ifc    himenobmtxp.f90
 .endif
+
 .if defined(WITH_ICC)
 #	cd ${WRKSRC} ; ${ICC} ${CFLAGS_ICC} -DELARGE  -o himenobmtxps_xl.icc himenobmtxps.c #Too large
 	cd ${WRKSRC} ; ${ICC} ${CFLAGS_ICC} -DLARGE   -o himenobmtxps_l.icc  himenobmtxps.c
@@ -86,32 +84,34 @@ do-build:
 	cd ${WRKSRC} ; ${ICC} ${CFLAGS_ICC} -DSSMALL  -o himenobmtxps_ss.icc himenobmtxps.c
 	cd ${WRKSRC} ; ${ICC} ${CFLAGS_ICC}           -o himenobmtxpa.icc    himenobmtxpa.c
 .endif
+
 do-install:
-#	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_xl          ${PREFIX}/bin #Too large
+#	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_xl          ${STAGEDIR}${PREFIX}/bin #Too large
 .if ! defined(WITH_IFC)
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp            ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp            ${STAGEDIR}${PREFIX}/bin
 .endif
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_l           ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_m           ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_s           ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxpa            ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_l          ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_m          ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_s          ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_ss         ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_l          ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_m          ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_s          ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxpa           ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_l         ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_m         ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_s         ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_ss        ${STAGEDIR}${PREFIX}/bin
 .if defined(WITH_IFC)
-#	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_xl.ifc      ${PREFIX}/bin #Too large
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_l.ifc       ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_m.ifc       ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_s.ifc       ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp.ifc         ${PREFIX}/bin
+#	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_xl.ifc     ${STAGEDIR}${PREFIX}/bin #Too large
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_l.ifc      ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_m.ifc      ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp_s.ifc      ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxp.ifc        ${STAGEDIR}${PREFIX}/bin
 .endif
 .if defined(WITH_ICC)
-#	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_xl.icc     ${PREFIX}/bin #Too large
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_l.icc      ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_m.icc      ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_s.icc      ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_ss.icc     ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxpa.icc        ${PREFIX}/bin
+#	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_xl.icc    ${STAGEDIR}${PREFIX}/bin #Too large
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_l.icc     ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_m.icc     ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_s.icc     ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxps_ss.icc    ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/himenobmtxpa.icc       ${STAGEDIR}${PREFIX}/bin
 .endif
-.include <bsd.port.post.mk>
+
+.include <bsd.port.mk>

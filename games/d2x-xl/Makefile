@@ -3,7 +3,7 @@
 
 PORTNAME=	d2x-xl
 PORTVERSION=	1.14.121
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	SF/d2x-xl/Linux/Archive:source \
 		SF/d2x-xl/Linux:source \
@@ -35,7 +35,6 @@ SUB_FILES=	pkg-message
 OPTIONS_DEFINE=	OPENGL
 OPTIONS_DEFAULT=	OPENGL
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "sparc64"
@@ -65,10 +64,9 @@ post-patch:
 		${XARGS} ${REINPLACE_CMD} -e 's|malloc.h|stdlib.h|'
 
 do-install:
-	@${MKDIR} ${DATADIR}
-	@cd ${DATADIR} && \
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	@cd ${STAGEDIR}${DATADIR} && \
 		unrar x -o+ ${DISTDIR}/${PORTNAME}-data-${DATAVERSION}.rar >/dev/null
-	${INSTALL_PROGRAM} ${WRKSRC}/d2x-xl ${PREFIX}/bin/d2x-xl
-	@${CAT} ${PKGMESSAGE}
+	${INSTALL_PROGRAM} ${WRKSRC}/d2x-xl ${STAGEDIR}${PREFIX}/bin/d2x-xl
 
 .include <bsd.port.mk>

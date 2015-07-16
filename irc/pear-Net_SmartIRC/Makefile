@@ -2,17 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	Net_SmartIRC
-PORTVERSION=	1.0.2
+PORTVERSION=	1.1.7
 CATEGORIES=	irc www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR class for communication with IRC networks
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PEAR_AUTOINSTALL=	yes
+USES=		pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

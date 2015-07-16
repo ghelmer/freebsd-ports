@@ -2,14 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	orangehrm
-PORTVERSION=	3.1.2
+PORTVERSION=	3.3
 CATEGORIES=	www misc
 MASTER_SITES=	SF/${PORTNAME}/stable/${PORTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open Source Human Resource Management
 
-USES=		zip
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/license/LICENSE.TXT
+
+USES=		cpe zip
 USE_PHP=	mysql
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
@@ -17,19 +20,15 @@ SUB_FILES=	pkg-message
 HRMDIR=		www/orangehrm
 
 pre-install:
-	@${FIND} -s -d ${WRKSRC} -type l | ${SED} "s#${WRKSRC}#${HRMDIR}#g" >${PLIST}
+	@${ECHO_CMD} -e '@owner ${WWWOWN}\n@group ${WWWGRP}' > ${PLIST}
+	@${ECHO_CMD} "@mode 755" >> ${PLIST}
+	@${FIND} -s -d ${WRKSRC} -type l | ${SED} "s#${WRKSRC}#${HRMDIR}#g" >>${PLIST}
 	@${FIND} -s -d ${WRKSRC} -type f | ${SED} "s#${WRKSRC}#${HRMDIR}#g" >>${PLIST}
-	@${FIND} -s -d ${WRKSRC} -type d  | ${SED} "s#${WRKSRC}#@dirrm ${HRMDIR}#g" >> ${PLIST}
+	@${FIND} -s -d ${WRKSRC} -type d  | ${SED} "s#${WRKSRC}#@dir ${HRMDIR}#g" >> ${PLIST}
+	@${ECHO_CMD} "@mode" >> ${PLIST}
+	@${ECHO_CMD} -e '@owner root\n@group wheel' >> ${PLIST}
 
 do-install:
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${HRMDIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${PREFIX}/${HRMDIR}
-	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${PREFIX}/${HRMDIR}' \
-		>> ${TMPPLIST}
-	${CHMOD} -R 755 ${STAGEDIR}${PREFIX}/${HRMDIR}
-	@${ECHO_CMD} '@exec ${CHMOD} -R 755 ${STAGEDIR}${PREFIX}/${HRMDIR}' >> ${TMPPLIST}
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	hunspell
-PORTVERSION=	1.7.1
+PORTVERSION=	1.8.0
 CATEGORIES=	ukrainian textproc
 MASTER_SITES=	SF/ispell-uk/spell-uk/${PORTVERSION}
 DISTNAME=	spell-uk-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	office@FreeBSD.org
@@ -16,12 +15,14 @@ LICENSE_COMB=	dual
 
 ALL_TARGET=	myspell
 USE_PERL5=	build
-USES=		gmake iconv:build shebangfix perl5
+USES=		gmake iconv:build shebangfix perl5 tar:tgz
 SHEBANG_FILES=	bin/*.pl
 
 PLIST_FILES=	%%DATADIR%%/uk_UA.aff \
 		%%DATADIR%%/uk_UA.dic
-PLIST_DIRSTRY=	%%DATADIR%%
+
+post-patch:
+	@${REINPLACE_CMD} -e "s,/bin/true,/usr/bin/true,g" ${WRKSRC}/src/Dictionary/Makefile
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

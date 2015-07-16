@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	HTML-FillInForm-ForceUTF8
-PORTVERSION=	0.02
+PORTVERSION=	0.03
 PORTREVISION=	1
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
@@ -15,6 +15,6 @@ RUN_DEPENDS=	p5-HTML-FillInForm>0:${PORTSDIR}/www/p5-HTML-FillInForm
 BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 USES=		perl5
-USE_PERL5=	configure
+USE_PERL5=	modbuild
 
 .include <bsd.port.mk>

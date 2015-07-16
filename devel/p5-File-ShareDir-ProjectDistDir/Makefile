@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	File-ShareDir-ProjectDistDir
-PORTVERSION=	0.5.2
-PORTREVISION=	1
+PORTVERSION=	1.000007
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -22,12 +21,7 @@ RUN_DEPENDS=	p5-File-ShareDir>0:${PORTSDIR}/devel/p5-File-ShareDir \
 BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 USES=	perl5
-USE_PERL5=	modbuild
+USE_PERL5=	configure
+NO_ARCH=	YES
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501400
-TEST_DEPENDS+=	p5-Test-Simple>=0.98:${PORTSDIR}/devel/p5-Test-Simple
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

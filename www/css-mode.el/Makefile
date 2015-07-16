@@ -9,7 +9,7 @@ MASTER_SITES=	http://www.garshol.priv.no/download/software/css-mode/
 DISTNAME=	css-mode.el
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A CSS(Cascade Style Sheet) editing mode for Emacsen
+COMMENT=	CSS(Cascade Style Sheet) editing mode for Emacsen
 
 EXTRACT_SUFX=	# empty
 DISTFILES=	${DISTNAME} doco.html
@@ -27,6 +27,8 @@ XELISP_SUBDIR=	lib/xemacs/site-lisp
 DOCSDIR=	${PREFIX}/share/doc/css-mode
 
 PLIST_SUB=	ELISP_SUBDIR=${ELISP_SUBDIR} XELISP_SUBDIR=${XELISP_SUBDIR}
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${ELISP_SUBDIR}

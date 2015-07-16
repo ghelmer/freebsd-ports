@@ -575,8 +575,10 @@
 %%WWWDIR%%/lib/Cake/Test/test_app/Console/Templates/test/views/admin_edit.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/Controller/AppController.php
 %%WWWDIR%%/lib/Cake/Test/test_app/Controller/PagesController.php
+%%WWWDIR%%/lib/Cake/Test/test_app/Controller/TestAppsErrorController.php
 %%WWWDIR%%/lib/Cake/Test/test_app/Controller/TestsAppsController.php
 %%WWWDIR%%/lib/Cake/Test/test_app/Controller/TestsAppsPostsController.php
+%%WWWDIR%%/lib/Cake/Test/test_app/Error/TestAppsExceptionRenderer.php
 %%WWWDIR%%/lib/Cake/Test/test_app/Lib/Cache/Engine/TestAppCacheEngine.php
 %%WWWDIR%%/lib/Cake/Test/test_app/Lib/Library.php
 %%WWWDIR%%/lib/Cake/Test/test_app/Lib/Log/Engine/TestAppLog.php
@@ -748,6 +750,7 @@
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Elements/type_check.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Emails/html/custom.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Emails/html/default.ctp
+%%WWWDIR%%/lib/Cake/Test/test_app/View/Emails/html/image.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Emails/html/japanese.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Emails/html/nested_element.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Emails/text/custom.ctp
@@ -765,6 +768,7 @@
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/Emails/text/japanese.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/ajax.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/ajax2.ctp
+%%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/banana.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/cache_empty_sections.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/cache_layout.ctp
 %%WWWDIR%%/lib/Cake/Test/test_app/View/Layouts/default.ctp
@@ -1111,6 +1115,7 @@
 @dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Lib/Cache/Engine
 @dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Lib/Cache
 @dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Lib
+@dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Error
 @dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Controller/Component
 @dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Controller
 @dirrm %%WWWDIR%%/lib/Cake/Test/test_app/Console/Templates/test/views
@@ -1304,58 +1309,3 @@
 @dirrmtry %%WWWDIR%%/app/Config
 @dirrmtry %%WWWDIR%%/app
 @dirrmtry %%WWWDIR%%
-@exec mkdir -p %D/%%WWWDIR%%/app/Console/Command/Task
-@exec mkdir -p %D/%%WWWDIR%%/app/Console/Templates
-@exec mkdir -p %D/%%WWWDIR%%/app/Controller/Component
-@exec mkdir -p %D/%%WWWDIR%%/app/Lib
-@exec mkdir -p %D/%%WWWDIR%%/app/Locale/eng/LC_MESSAGES
-@exec mkdir -p %D/%%WWWDIR%%/app/Model/Behavior
-@exec mkdir -p %D/%%WWWDIR%%/app/Model/Datasource
-@exec mkdir -p %D/%%WWWDIR%%/app/Plugin
-@exec mkdir -p %D/%%WWWDIR%%/app/Test/Case/Controller/Component
-@exec mkdir -p %D/%%WWWDIR%%/app/Test/Case/Model/Behavior
-@exec mkdir -p %D/%%WWWDIR%%/app/Test/Case/View/Helper
-@exec mkdir -p %D/%%WWWDIR%%/app/Test/Fixture
-@exec mkdir -p %D/%%WWWDIR%%/app/Vendor
-@exec mkdir -p %D/%%WWWDIR%%/app/View
-@exec mkdir -p %D/%%WWWDIR%%/app/View/Elements
-@exec mkdir -p %D/%%WWWDIR%%/app/View/Scaffolds
-@exec mkdir -p %D/%%WWWDIR%%/app/tmp/cache/models
-@exec mkdir -p %D/%%WWWDIR%%/app/tmp/cache/persistent
-@exec mkdir -p %D/%%WWWDIR%%/app/tmp/cache/views
-@exec mkdir -p %D/%%WWWDIR%%/app/tmp/logs
-@exec mkdir -p %D/%%WWWDIR%%/app/tmp/sessions
-@exec mkdir -p %D/%%WWWDIR%%/app/tmp/tests
-@exec mkdir -p %D/%%WWWDIR%%/app/webroot/files
-@exec mkdir -p %D/%%WWWDIR%%/app/webroot/js
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Console/Command/Task
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Console/Templates
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Controller/Component
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Lib
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Locale/eng/LC_MESSAGES
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Model/Behavior
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Model/Datasource
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Plugin
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Test/Case/Controller/Component
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Test/Case/Model/Behavior
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Test/Case/View/Helper
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Test/Fixture
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/Vendor
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/View/Elements
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/View/Scaffolds
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/tmp/cache/models
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/tmp/cache/persistent
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/tmp/cache/views
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/tmp/logs
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/tmp/sessions
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/tmp/tests
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/webroot/files
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Console/Templates/skel/webroot/js
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Test/test_app/Console/Command/Task
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Test/test_app/Controller/Component
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Test/test_app/Plugin/TestPlugin/Console/Templates
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Test/test_app/Plugin/TestPluginTwo/Console/Command/Task
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Test/test_app/Plugin/TestPluginTwo/Console/Templates
-@exec mkdir -p %D/%%WWWDIR%%/lib/Cake/Test/test_app/View/Scaffolds
-@exec mkdir -p %D/%%WWWDIR%%/plugins
-@exec mkdir -p %D/%%WWWDIR%%/vendors

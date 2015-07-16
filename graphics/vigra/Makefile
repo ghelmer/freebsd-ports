@@ -3,8 +3,8 @@
 
 PORTNAME=	vigra
 DISTVERSION=	1.10.0
+PORTREVISION=	6
 CATEGORIES=	graphics
-DISTNAME=	${PORTNAME}-${PORTVERSION}-src-with-docu
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	VIGRA stands for "Vision with Generic Algorithms"
@@ -13,11 +13,7 @@ LICENSE=	MIT
 
 USE_GITHUB=
 GH_ACCOUNT=     ukoethe
-GH_COMMIT=      e6c21f3
-GH_TAGNAME=     ${GH_COMMIT}
-FETCH_ARGS?=    -Fpr
-
-WRKSRC=		${WRKDIR}/ukoethe-${PORTNAME}-${GH_COMMIT}
+GH_TAGNAME=     e6c21f3
 
 USES=		cmake
 CMAKE_ARGS=	-DDEPENDENCY_SEARCH_PREFIX:PATH=${LOCALBASE} \
@@ -25,7 +21,7 @@ CMAKE_ARGS=	-DDEPENDENCY_SEARCH_PREFIX:PATH=${LOCALBASE} \
 
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=		HDF5 OPENEXR NUMPY
+OPTIONS_DEFINE=		HDF5 OPENEXR NUMPY DOCS
 OPTIONS_DEFAULT=	HDF5 OPENEXR
 NUMPY_DESC=		NumPy mathematical computing (USE Fortran/GCC47+)
 
@@ -49,8 +45,7 @@ CMAKE_ARGS+=	-DWITH_OPENEXR=0
 # Should ignore Python3 since commit f51b0b5
 #CONFLICTS_BUILD=	python3*
 CMAKE_ARGS+=	-DWITH_VIGRANUMPY=1
-USES+=		compiler:gcc-c++11-lib
-USE_PYTHON=	2
+USES+=		compiler:gcc-c++11-lib python:2
 BUILD_DEPENDS+=	nosetests:${PORTSDIR}/devel/py-nose
 BUILD_DEPENDS+=	${PYTHON_SITELIBDIR}/numpy/core/numeric.py:${PORTSDIR}/math/py-numpy
 #BUILD_DEPENDS+=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
@@ -61,8 +56,6 @@ PLIST_SUB+=	PYTHON=""
 CMAKE_ARGS+=	-DWITH_VIGRANUMPY=0
 PLIST_SUB+=	PYTHON="@comment "
 .endif
-
-.include <bsd.port.pre.mk>
 
 # Vigra's CMakeLists.txt does not support disabling those so we hook them
 # as dependencies here unconditionally (without OPTIONS=) even though if
@@ -80,11 +73,11 @@ LIB_DEPENDS+=	libtiff.so:${PORTSDIR}/graphics/tiff
 .endif
 
 .if !defined(WITHOUT_VIGRA_JPEG)
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=		jpeg
 .endif
 
 .if !defined(WITHOUT_VIGRA_PNG)
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
 .endif
 
 .if !defined(WITHOUT_VIGRA_FFTW)
@@ -105,4 +98,4 @@ post-patch:
 # FIXME: This is ugly
 	@${RM} ${WRKSRC}/include/vigra/*.orig
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

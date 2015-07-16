@@ -3,6 +3,7 @@
 
 PORTNAME=	libkdcraw
 PORTVERSION=	${KDE4_VERSION}
+PORTREVISION=	1
 CATEGORIES=	graphics kde
 MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
@@ -11,16 +12,15 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	LibRaw interface for KDE
 
 LIB_DEPENDS=	libjasper.so:${PORTSDIR}/graphics/jasper \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		liblcms.so:${PORTSDIR}/graphics/lcms \
 		libxml2.so:${PORTSDIR}/textproc/libxml2 \
 		libraw.so:${PORTSDIR}/graphics/libraw
 
-CMAKE_ARGS+=    -DWITH_OpenMP:BOOL=False \
+CMAKE_ARGS+=	-DWITH_OpenMP:BOOL=False \
 		-DENABLE_RAWSPEED=True
 
-USE_KDE4=	automoc4 kdehier kdeprefix kdelibs
-USES=		cmake:outsource pkgconfig tar:xz
+USE_KDE4=	automoc4 kdeprefix kdelibs
+USES=		cmake:outsource jpeg pkgconfig tar:xz
 USE_QT4=	corelib gui moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes
 

@@ -85,9 +85,9 @@ bin/cassandra-shuffle
 %%CQL%%%%DATADIR%%/pylib/cqlshlib/util.py
 %%CQL%%%%DATADIR%%/pylib/cqlshlib/util.pyc
 %%DATADIR%%/lib/antlr-3.2.jar
-%%DATADIR%%/lib/apache-cassandra-1.2.16.jar
-%%DATADIR%%/lib/apache-cassandra-clientutil-1.2.16.jar
-%%DATADIR%%/lib/apache-cassandra-thrift-1.2.16.jar
+%%DATADIR%%/lib/apache-cassandra-1.2.18.jar
+%%DATADIR%%/lib/apache-cassandra-clientutil-1.2.18.jar
+%%DATADIR%%/lib/apache-cassandra-thrift-1.2.18.jar
 %%DATADIR%%/lib/avro-1.4.0-fixes.jar
 %%DATADIR%%/lib/avro-1.4.0-sources-fixes.jar
 %%DATADIR%%/lib/commons-cli-1.1.jar
@@ -153,15 +153,3 @@ bin/cassandra-shuffle
 %%DATADIR%%/tools/bin/cassandra-stress
 %%DATADIR%%/tools/bin/sstablemetadata
 %%DATADIR%%/tools/bin/token-generator
-@dirrm %%DATADIR%%/tools/lib
-@dirrm %%DATADIR%%/tools/bin
-@dirrm %%DATADIR%%/tools
-@dirrm %%DATADIR%%/lib/licenses
-@dirrm %%DATADIR%%/lib
-@dirrm %%DATADIR%%/interface
-%%CQL%%@dirrmtry %%DATADIR%%/pylib/cqlshlib/test
-%%CQL%%@dirrmtry %%DATADIR%%/pylib/cqlshlib
-%%CQL%%@dirrmtry %%DATADIR%%/pylib
-@dirrmtry %%DATADIR%%/conf
-@dirrm %%DATADIR%%/bin
-@dirrmtry %%DATADIR%%

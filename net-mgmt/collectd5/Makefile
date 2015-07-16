@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	collectd
-PORTVERSION=	5.4.1
+PORTVERSION=	5.4.2
 PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://collectd.org/files/
@@ -14,19 +14,20 @@ COMMENT=	Systems & network statistics collection daemon
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake pkgconfig tar:bzip2 libtool
-GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	aclocal autoconf autoheader automake libltdl libtoolize
+# Only autoreconf stage and sigrok plugin need GLIB:
+BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/glib-2.0.m4:${PORTSDIR}/devel/glib20
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
 
-# Only autoconf stage and sigrok plugin need GLIB:
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/glib-2.0.pc:${PORTSDIR}/devel/glib20
+USES=		autoreconf gmake libtool pkgconfig shebangfix tar:bzip2
+GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=		CGI DEBUG GCRYPT VIRT
 OPTIONS_GROUP=		INPUT OUTPUT
 OPTIONS_GROUP_OUTPUT=	RRDTOOL NOTIFYEMAIL NOTIFYDESKTOP RIEMANN
 OPTIONS_GROUP_INPUT=	CURL DBI JSON MEMCACHEC MODBUS MONGODB MYSQL \
 			NUTUPS PERL PGSQL PING PYTHON RABBITMQ REDIS \
-			ROUTEROS SIGROK SNMP STATGRAB TOKYOTYRANT XML XMMS
+			ROUTEROS SIGROK SNMP STATGRAB TOKYOTYRANT VARNISH \
+			XML XMMS
 
 CGI_DESC=		Install collection.cgi (requires rrdtool)
 CURL_DESC=		Enable curl-based plugins (apache, nginx, etc)
@@ -54,6 +55,7 @@ SIGROK_DESC=		Enable sigrok plugin
 SNMP_DESC=		Enable SNMP plugin
 STATGRAB_DESC=		Enable statgrab-based plugins (disk, interface, etc)
 TOKYOTYRANT_DESC=	Enable tokyotyrant plugin
+VARNISH_DESC=		Enable varnish 3.x cache statistics
 VIRT_DESC=		Enable libvirt plugin (requires XML)
 XML_DESC=		Enable XML plugins
 XMMS_DESC=		Enable xmms plugin
@@ -66,8 +68,6 @@ CONFLICTS=	collectd-4.[0-9]*
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
-
-PLIST_SUB+=	RESETPREFIX=${PREFIX}
 
 .include <bsd.port.options.mk>
 
@@ -89,7 +89,6 @@ CONFIGURE_ARGS=	--localstatedir=/var \
 		--without-libowcapi \
 		--without-libperfstat \
 		--without-libsensors \
-		--without-libvarnish \
 		--without-lvm \
 		--without-mic \
 		--without-oracle
@@ -144,7 +143,7 @@ CONFIGURE_ARGS+=	\
 
 .if ${PORT_OPTIONS:MCGI}
 RUN_DEPENDS+=	p5-URI>=0:${PORTSDIR}/net/p5-URI \
-		p5-CGI.pm>=0:${PORTSDIR}/www/p5-CGI.pm \
+		p5-CGI>=0:${PORTSDIR}/www/p5-CGI \
 		p5-Data-Dumper>=0:${PORTSDIR}/devel/p5-Data-Dumper \
 		p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser
 PLIST_SUB+=	CGI=""
@@ -204,6 +203,7 @@ CONFIGURE_ARGS+=--disable-debug
 LIB_DEPENDS+=	libdbi.so:${PORTSDIR}/databases/libdbi
 CONFIGURE_ARGS+=--with-libdbi=${LOCALBASE} --enable-dbi
 PLIST_SUB+=	DBI=""
+CFLAGS+=	-Wno-deprecated-declarations
 .else
 CONFIGURE_ARGS+=--without-libdbi --disable-dbi
 PLIST_SUB+=	DBI="@comment "
@@ -300,7 +300,7 @@ PLIST_SUB+=	PERL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 CONFIGURE_ARGS+=--with-postgresql=${LOCALBASE} --enable-postgresql --with-libpq
 PLIST_SUB+=	PGSQL=""
 .else
@@ -318,7 +318,7 @@ PLIST_SUB+=	PING="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USES+=		python:2
 CONFIGURE_ARGS+=--with-python=${PYTHON_CMD} --enable-python
 PLIST_SUB+=	PYTHON=""
 .else
@@ -432,6 +432,15 @@ CONFIGURE_ARGS+=--without-libtokyotyrant --disable-tokyotyrant
 PLIST_SUB+=	TOKYOTYRANT="@comment "
 .endif
 
+.if ${PORT_OPTIONS:MVARNISH}
+LIB_DEPENDS+=	libvarnishapi.so:${PORTSDIR}/www/varnish
+CONFIGURE_ARGS+=--with-libvarnish=${LOCALBASE} --enable-varnish
+PLIST_SUB+=	VARNISH=""
+.else
+CONFIGURE_ARGS+=--without-libvarnish
+PLIST_SUB+=	VARNISH="@comment "
+.endif
+
 .if ${PORT_OPTIONS:MVIRT}
 .if empty(PORT_OPTIONS:MXML)
 IGNORE=		VIRT requires XML. Either select XML or deselect VIRT.
@@ -459,18 +468,18 @@ CONFIGURE_ARGS+=--without-libxmms --disable-xmms
 PLIST_SUB+=	XMMS="@comment "
 .endif
 
-AUTOTOOLSFILES=	aclocal.m4
+INSTALL_TARGET=install-strip
+SHEBANG_FILES=	contrib/collection.cgi
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|1.11.1|%%AUTOMAKE_APIVER%%|g' \
-			  -e 's|2.67|%%AUTOCONF_VERSION%%|g' \
-			  ${WRKSRC}/aclocal.m4
+	@${REINPLACE_CMD} 's/-Werror//' \
+		${WRKSRC}/configure.ac ${WRKSRC}/src/Makefile.am \
+		${WRKSRC}/src/libcollectdclient/Makefile.am
 	@${REINPLACE_CMD} \
 		-e 's;@prefix@/var/;/var/;' \
 		-e 's;/var/lib/;/var/db/;' \
 		-e 's;@localstatedir@/lib/;/var/db/;' \
 		${WRKSRC}/src/collectd.conf.in
-	@${REINPLACE_CMD} -e '/$$[(]mkinstalldirs)/d' ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} \
 		-e 's;/etc/collection\.conf;${WWWDIR}/collection.conf;' \
 		${WRKSRC}/contrib/collection.cgi
@@ -486,11 +495,6 @@ post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/collection.cgi ${STAGEDIR}${WWWDIR}/
 	${INSTALL_DATA} ${WRKSRC}/contrib/collection.conf \
 		${STAGEDIR}${WWWDIR}/collection.conf.sample
-.endif
-
-post-stage:
-.if ${PORT_OPTIONS:MPERL}
-	@${SED} -i '' -e 's,${STAGEDIR},,g' ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto/Collectd/.packlist
 .endif
 
 .include <bsd.port.mk>

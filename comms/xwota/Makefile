@@ -6,10 +6,9 @@ PORTVERSION=	0.4
 PORTREVISION=	7
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://people.fabaris.it/iz0ete/xwota/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	db
+		LOCAL/db
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	X version of who is on the air
 
 LICENSE=	GPLv2
@@ -17,6 +16,8 @@ LICENSE=	GPLv2
 USES=		gmake pkgconfig libtool
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

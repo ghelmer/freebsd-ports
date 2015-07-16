@@ -3,7 +3,7 @@
 
 PORTNAME=	ming
 PORTVERSION=	0.4.5
-PORTREVISION?=	1
+PORTREVISION?=	6
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/Releases/
 
@@ -15,7 +15,7 @@ LICENSE_COMB=	multi
 
 LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libgif.so:${PORTSDIR}/graphics/giflib \
-		libpng15.so:${PORTSDIR}/graphics/png
+		libpng.so:${PORTSDIR}/graphics/png
 
 CONFLICTS_INSTALL=	ja-ming-[0-9]*
 
@@ -25,14 +25,14 @@ LIB_DEPENDS+=	libming.so:${PORTSDIR}/graphics/ming
 OPTIONS_DEFINE=	DOCS
 .endif
 
-CFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS+=--includedir=${PREFIX}/include/ming
 CPPFLAGS+=	-I. -I.. -I${LOCALBASE}/include
 LDFLAGS+=	-L. -L.. -L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
-USES+=		bison gmake pathfix shebangfix
+USES+=		bison gmake libtool pathfix shebangfix
 
 DOCS=		HISTORY NEWS README TODO
 DOCS_UTIL=	README TIPS TODO swftoperl.html
@@ -67,12 +67,11 @@ post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/ ${STAGEDIR}${DOCSDIR}/util/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/util/ && ${INSTALL_DATA} ${DOCS_UTIL} ${STAGEDIR}${DOCSDIR}/util/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libming.so.5
 .endif
 .if defined(SLAVEPORT) && ${SLAVEPORT} == "p5"
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	cd ${INSTALL_WRKSRC}/examples/ && ${INSTALL_DATA} *.cgi ${STAGEDIR}${EXAMPLESDIR}/
-	${STRIP_CMD} ${STAGEDIR}${SITE_PERL}/${PERL_ARCH}/auto/SWF/SWF.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/SWF/SWF.so
 .endif
 .if defined(SLAVEPORT) && ${SLAVEPORT} == "py"
 	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_mingc.so

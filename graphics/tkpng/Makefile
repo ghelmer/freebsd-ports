@@ -7,15 +7,16 @@ PORTREVISION=	1
 CATEGORIES=	graphics tk
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PNG support for Tcl/Tk
 
-LICENSE=	BSD
+LICENSE=	TclTk
+LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/license.terms
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES+=		tk
+USES+=		tk tar:tgz
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--with-tcl=${TCL_LIBDIR} \
@@ -30,6 +31,5 @@ PLIST_SUB=	VER=${PORTVERSION} TKPKG=${TKPKG} TKLIBVER=${TKLIBVER}
 
 PLIST_FILES=	lib/${TKPKG}/lib${TKPKG}.so \
 		lib/${TKPKG}/pkgIndex.tcl
-PLIST_DIRS=	lib/${TKPKG}
 
 .include <bsd.port.mk>

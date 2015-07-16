@@ -21,8 +21,9 @@ RUN_DEPENDS=	p5-perl-ldap>=0:${PORTSDIR}/net/p5-perl-ldap \
 PORTSCOUT=	ignore:1
 
 NO_BUILD=	yes
-USES=		perl5
+USES=		perl5 shebangfix
 USE_PERL5=	run
+SHEBANG_FILES=	check_*.pl
 
 PLIST_FILES=	libexec/nagios/check_berkeleydb_locks.pl \
 		libexec/nagios/check_ldap_dn.pl \
@@ -32,7 +33,6 @@ PLIST_FILES=	libexec/nagios/check_berkeleydb_locks.pl \
 		libexec/nagios/check_ldap_syncrepl_status.pl \
 		libexec/nagios/check_ldap_time.pl \
 		libexec/nagios/restart_slapd.sh
-PLIST_DIRSTRY=	libexec/nagios
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
@@ -44,7 +44,7 @@ post-patch:
 		${WRKSRC}/*.pl
 
 do-install:
-	@${MKDIR} ${PREFIX}/libexec/nagios
+	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/nagios
 	@(cd ${WRKSRC} && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/libexec/nagios/)
 
 .include <bsd.port.mk>

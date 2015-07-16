@@ -3,6 +3,7 @@
 
 PORTNAME=	refocus
 PORTVERSION=	0.9.0
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	gimp-
@@ -21,13 +22,11 @@ OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
 
 ATLAS_DESC=	Build with optimized math/atlas instead of builtin
 
-USES=		gettext gmake pathfix pkgconfig
+USES=		autoreconf gettext gmake pathfix pkgconfig
 
 # GCC required due to fortran dependency, e.g., math/atlas
 USE_GCC=	yes
 
-USE_AUTOTOOLS=	aclocal autoconf automake
-AUTOMAKE_ARGS=	--add-missing
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	GIMPTOOL=${LOCALBASE}/bin/gimptool-2.0
 
@@ -35,11 +34,6 @@ GIMP_PLUGIN_DIR=	libexec/gimp/2.2/plug-ins
 
 # installed files
 PLIST_FILES=	${GIMP_PLUGIN_DIR}/${PORTNAME}
-
-# installed dirs
-PLIST_DIRSTRY=	libexec/gimp/2.2/plug-ins \
-		libexec/gimp/2.2 \
-		libexec/gimp
 
 post-patch:
 	@${FIND} ${WRKSRC} -name Makefile.am \

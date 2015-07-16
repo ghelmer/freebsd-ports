@@ -13,8 +13,6 @@
 %%PERL5_MAN3%%/SQL::Maker::Plugin::InsertOnDuplicate.3.gz
 %%PERL5_MAN3%%/SQL::Maker::SQLType.3.gz
 %%PERL5_MAN3%%/SQL::Maker::Select.3.gz
+%%PERL5_MAN3%%/SQL::Maker::Select::Oracle.3.gz
 %%PERL5_MAN3%%/SQL::Maker::SelectSet.3.gz
-@dirrm %%SITE_PERL%%/SQL/Maker/Select
-@dirrm %%SITE_PERL%%/SQL/Maker/Plugin
-@dirrm %%SITE_PERL%%/SQL/Maker
-@dirrmtry %%SITE_PERL%%/SQL
+%%PERL5_MAN3%%/SQL::Maker::Util.3.gz

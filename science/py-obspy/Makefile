@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	obspy
-PORTVERSION=	0.9.2
+PORTVERSION=	0.10.1
 PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
@@ -21,11 +21,13 @@ BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}sqlalchemy>=0:${PORTSDIR}/databases/py-sqlalchemy
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=			fortran zip
+USES=			fortran python shebangfix zip
+SHEBANG_FILES=		obspy/taup/tests/data/TauP_test_data/gendata.sh
 USE_LDCONFIG=		yes
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+LDFLAGS+=		-shared
+USE_PYTHON=		distutils autoplist
+
+LDFLAGS+=	-shared
 
 post-patch:
 	${REINPLACE_CMD} -e "s#FC#${FC}#g" ${WRKSRC}/setup.py

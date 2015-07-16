@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	tcl
-PORTVERSION=	8.6.1
+PORTVERSION=	8.6.4
 CATEGORIES=	lang
 MASTER_SITES=	SF/tcl/Tcl/${PORTVERSION} \
-		${MASTER_SITE_TCLTK}
-MASTER_SITE_SUBDIR=tcl8_6
+		TCLTK/tcl8_6
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
@@ -16,7 +15,7 @@ COMMENT=	Tool Command Language
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	TCLMAN TZDATA MODULES THREADS
 OPTIONS_DEFAULT=MODULES THREADS
@@ -27,7 +26,7 @@ MODULES_DESC=	Install Tcl common modules
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}/unix
 
 ALL_TARGET=	all
-INSTALL_TARGET=	install install-libraries
+INSTALL_TARGET=	install-strip install-libraries
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -49,7 +48,7 @@ PLIST_SUB=	TCL_VER=${TCL_VER} \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MTCLMAN} && !defined(NO_INSTALL_MANPAGES)
+.if ${PORT_OPTIONS:MTCLMAN}
 INSTALL_TARGET+=install-doc
 PLIST_SUB+=	MAN=""
 .else
@@ -76,10 +75,6 @@ CONFIGURE_ARGS+=--enable-threads
 CONFIGURE_ARGS+=--disable-threads
 .endif
 
-.if ${ARCH} == "arm"
-BROKEN=		Does not build on arm
-.endif
-
 post-patch:
 	${REINPLACE_CMD} -e \
 	    's|@TCL_BUILD_LIB_SPEC@|@TCL_LIB_SPEC@|; \
@@ -96,10 +91,6 @@ post-configure:
 	${REINPLACE_CMD} \
 		-e 's,-DNO_MEMMOVE=1,,' -e 's,-DNO_STRING_H=1,,' \
 		-e 's,^COMPAT_OBJS.*,,' ${WRKSRC}/Makefile
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tclsh${TCL_VER}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtcl${SHORT_TCL_VER}.so.1
 
 regression-test:	build
 	cd ${WRKSRC} && LC_ALL=C ${MAKE} test

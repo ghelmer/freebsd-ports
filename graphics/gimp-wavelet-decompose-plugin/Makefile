@@ -3,6 +3,7 @@
 
 PORTNAME=	wavelet-decompose
 DISTVERSION=	0.1.2
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://registry.gimp.org/files/
 PKGNAMEPREFIX=	gimp-
@@ -18,21 +19,15 @@ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gimp-2.0.pc:${PORTSDIR}/graphics/gim
 
 OPTIONS_DEFINE=	NLS
 
-USES=		gettext gmake
+USES=		gettext gmake pkgconfig
 
-PLIST_SUB=	PLUGIN_DIR=${PLUGIN_DIR}
-PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins/
+PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins
 
 # l10n languages
 LANGUAGES=	de ru it pl
 
 # installed files
-PLIST_FILES=	%%PLUGIN_DIR%%/wavelet-decompose
-
-# installed dirs
-PLIST_DIRSTRY=	libexec/gimp/2.2/plug-ins \
-		libexec/gimp/2.2 \
-		libexec/gimp
+PLIST_FILES=	${PLUGIN_DIR}/wavelet-decompose
 
 .include <bsd.port.options.mk>
 
@@ -54,10 +49,6 @@ post-patch:
 .if ${PORT_OPTIONS:MNLS}
 .for language in ${LANGUAGES}
 PLIST_FILES+=	share/locale/${language}/LC_MESSAGES/gimp20-${PORTNAME}-plug-in.mo
-
-PLIST_DIRSTRY+=	share/locale/${language}/LC_MESSAGES \
-		share/locale/${language} \
-		share/locale
 .endfor
 .endif
 

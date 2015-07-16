@@ -5,12 +5,12 @@ PORTNAME=	libgcal
 PORTVERSION=	0.9.6
 PORTREVISION=	2
 CATEGORIES=	deskutils
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library allowing communication with Google calendar and contacts
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \

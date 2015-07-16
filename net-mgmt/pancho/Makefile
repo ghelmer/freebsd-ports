@@ -2,6 +2,7 @@
 
 PORTNAME=	pancho
 PORTVERSION=	9.3.9
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.pancho.org/archives/pancho/ \
 		http://200ok.org/distfiles/pancho/
@@ -19,6 +20,8 @@ USES=		perl5
 USE_PERL5=	configure
 
 DOCS=		README README.plugins Plugin.sample
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${MV} ${WRKSRC}/lib/Pancho/Plugins/README ${WRKSRC}/README.plugins

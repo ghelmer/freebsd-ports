@@ -14,13 +14,14 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby module for reading and writing ZIP files
 
 USE_RUBY=	yes
-USE_RUBY_FEATURES=	zlib
 
 WRKSRC=		${WRKDIR}/rubyzip-${PORTVERSION}
 NO_BUILD=	yes
 
 DOCS=		ChangeLog NEWS README TODO
 EXAMPLES=	samples/*
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
 	${MKDIR} ${STAGEDIR}${RUBY_SITELIBDIR}/zip
@@ -34,4 +35,10 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} == 2.1
+BROKEN=		Does not build with Ruby 2.1
+.endif
+
+.include <bsd.port.post.mk>

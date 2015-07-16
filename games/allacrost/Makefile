@@ -3,7 +3,7 @@
 
 PORTNAME=	allacrost
 PORTVERSION=	1.0.2
-PORTREVISION=	7
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-demo/${PORTVERSION}
 DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
@@ -11,8 +11,7 @@ DISTNAME=	${PORTNAME}_demo_source_${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Single player 2D role-playing game
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libogg.so:${PORTSDIR}/audio/libogg \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs
@@ -20,13 +19,13 @@ LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake openal:al lua:51
+USES=		gettext gmake iconv jpeg openal:al lua:51
 USE_SDL=	sdl ttf net
 USE_GL=		yes
 USE_GCC=	any # problems in luabind
 
 CONFIGURE_ARGS=	--datadir=${DATADIR}
-CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR} -I${LOCALBASE}/include/libpng15
+CPPFLAGS+=	-I${LOCALBASE}/include -I${LUA_INCDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${LUA_LIBDIR}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

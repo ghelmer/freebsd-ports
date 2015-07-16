@@ -5,19 +5,18 @@ PORTNAME=	classpath
 PORTVERSION=	0.99
 PORTREVISION=	1
 CATEGORIES=	java devel
-MASTER_SITES=	${MASTER_SITE_GNU} \
-		${MASTER_SITE_SAVANNAH}
-MASTER_SITE_SUBDIR=	${PORTNAME:S|$|:src|}
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:src
+MASTER_SITES=	GNU \
+		SAVANNAH
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	java@FreeBSD.org
-COMMENT=	A GNU project to create a free Java class library
+COMMENT=	GNU project to create a free Java class library
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig iconv perl5
+USES=		gmake iconv libtool perl5 pkgconfig
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 USE_XORG=	x11 ice xtst xaw xproto xext
@@ -36,7 +35,7 @@ INFO=		cp-hacking cp-tools cp-vmintegration
 
 CONFLICTS=	sablevm-classpath-1.13 sablevm-classpath-1.13_[1-9]
 
-OPTIONS_DEFINE=	CAIRO ECJ GCONF GJDOC GMP GTK2 QT4
+OPTIONS_DEFINE=	CAIRO ECJ GCONF GJDOC GMP GTK2 QT4 EXAMPLES
 OPTIONS_DEFAULT=GMP GJDOC GTK2
 CAIRO_DESC=	Use Gtk+ Cairo based Graphics2D
 ECJ_DESC=	Embed ECJ as com.sun.tools.javac
@@ -48,8 +47,7 @@ QT4_DESC=	Enable Qt AWT peer
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MECJ}
-MASTER_SITES+=		${MASTER_SITE_ECLIPSE:S|$|:ecj|}
-MASTER_SITE_SUBDIR+=	R-${ECJ_VERSION}-${ECJ_DROPDATE}/:ecj
+MASTER_SITES+=		ECLIPSE/R-${ECJ_VERSION}-${ECJ_DROPDATE}:ecj
 DISTFILES+=		${ECJ_JAR}:ecj
 ECJ_VERSION=		3.8.1
 ECJ_DROPDATE=		201209141540
@@ -135,7 +133,7 @@ JAVACFLAGS?=		-C
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -i.bak -e 's|@JAVA@|$${JAVACMD:-java}|g' \
+	@${REINPLACE_CMD} -e 's|@JAVA@|$${JAVACMD:-java}|g' \
 	    ${WRKSRC}/tools/g*.in
 
 .include <bsd.port.mk>

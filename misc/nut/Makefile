@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nut
-PORTVERSION=	19.2
+PORTVERSION=	20.1
 CATEGORIES=	misc
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	health-
@@ -11,6 +11,7 @@ MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Nutrition software to record what you eat
 
 LICENSE=	GPLv2 # (or later)
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		gmake
 
@@ -26,7 +27,7 @@ FLTK_LIB_DEPENDS=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
 			libexpat.so:${PORTSDIR}/textproc/expat2 \
 			libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
 			libfltk_images.so:${PORTSDIR}/x11-toolkits/fltk
-FLTK_USE=		XORG=x11 xau xcb xdmcp xext xft xinerama xpm xrender
+FLTK_USE=		XORG=x11,xau,xcb,xdmcp,xext,xft,xinerama,xpm,xrender
 FLTK_MAKE_ENV=		HAVE_FLTK=1 FLTK_NUT="fltk/Nut"
 FLTK_MAKE_ENV_OFF=	HAVE_FLTK=0 FLTK_NUT=""
 

@@ -21,12 +21,11 @@ DATAFILES=	LICENSE README build.gradle build.properties gradle.properties \
 		gradlew conf dist gradle lib media plugins scripts src
 SCRIPTFILES=	grails grails-debug startGrails
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 PORTDOCS=	api guide index.html css img ref
-.endif
 PLIST_FILES=	${SCRIPTFILES:S,^,bin/,} \
 		${SCRIPTFILES:S,^,${DATADIR:S,${PREFIX}/,,}/bin/,}
-PLIST_DIRS=	${DATADIR:S,${PREFIX}/,,}/bin
 SUB_FILES=	edit-startGrails.sed pkg-message
 
 do-install:
@@ -44,13 +43,11 @@ do-install:
 	@${LN} -fs ${DATADIR}/bin/${file} ${STAGEDIR}${PREFIX}/bin/${file}
 .endfor
 	@${ECHO_MSG} " [ DONE ]"
-.if !defined(NOPORTDOCS)
 	@${ECHO_MSG} -n ">> Installing documentation in ${DOCSDIR}..."
 	@cd ${WRKSRC}/doc \
 	  && ${FIND} . -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/{} \; \
 	  && ${FIND} . -type f -exec ${INSTALL_DATA} {} ${STAGEDIR}${DOCSDIR}/{} \;
 	@${ECHO_MSG} " [ DONE ]"
-.endif
 
 post-install:
 	@${FIND} -s ${DATAFILES:S,^,${WRKSRC}/,} -not -type d 2>/dev/null | \
@@ -58,6 +55,5 @@ post-install:
 	@${FIND} -s -d ${DATAFILES:S,^,${WRKSRC}/,} -type d 2>/dev/null | \
 	  ${SED} -ne 's,^${WRKSRC},@dirrm ${DATADIR:S,^${PREFIX}/,,},p' >> ${TMPPLIST}
 	@${ECHO_CMD} '@dirrm ${DATADIR:S,^${PREFIX}/,,}' >> ${TMPPLIST}
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

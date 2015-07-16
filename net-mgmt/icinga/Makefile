@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	icinga
-PORTVERSION=	1.11.5
+PORTVERSION=	1.13.1
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://github.com/Icinga/${PORTNAME}-core/releases/download/v${PORTVERSION}/
 
@@ -11,11 +12,11 @@ COMMENT=	Enterprise grade open source monitoring system based on Nagios
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
-RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/nagios-plugins
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
+		libgd.so:${PORTSDIR}/graphics/gd
 
-USES=		iconv gmake
-USE_AUTOTOOLS=	autoconf libltdl
+USES=		cpe gmake
+USE_AUTOTOOLS=	autoconf
 USE_RC_SUBR=	icinga
 
 GNU_CONFIGURE=	yes
@@ -51,7 +52,8 @@ CONFIGURE_ARGS=	--with-command-user=${ICINGAUSER} \
 		--with-log-dir=${ICINGALOGDIR} \
 		--with-httpd-conf=${EXAMPLESDIR}/apache22 \
 		--enable-event-broker \
-		--enable-nanosleep
+		--enable-nanosleep \
+		ac_cv_lib_iconv_main=no
 
 CONFIGURE_ENV=	PERL=${PERL} \
 		HOME=${WRKDIR} # prevent creation of .rnd file
@@ -74,19 +76,25 @@ SUB_LIST=	PREFIX=${PREFIX} \
 		${PLIST_SUB}
 
 OPTIONS_DEFINE=		IDOUTILS
-OPTIONS_DEFAULT=	IDOUTILS
+OPTIONS_RADIO=		PLUGINS
+OPTIONS_RADIO_PLUGINS=	MONPLUGINS NAGPLUGINS
+OPTIONS_DEFAULT=	IDOUTILS MONPLUGINS
 
 IDOUTILS_DESC=		Enable Icinga Data Objects support
+
+MONPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/monitoring-plugins
+NAGPLUGINS_RUN_DEPENDS=	${LOCALBASE}/libexec/nagios/check_nagios:${PORTSDIR}/net-mgmt/nagios-plugins
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MIDOUTILS}
-LIB_DEPENDS+=		libdbi.so:${PORTSDIR}/databases/libdbi-drivers
+LIB_DEPENDS+=		libdbi.so:${PORTSDIR}/databases/libdbi
 CONFIGURE_ARGS+=	--enable-idoutils \
 			--enable-ssl \
 			--with-dbi-lib=${LOCALBASE}/lib \
 			--with-dbi-inc=${LOCALBASE}/include
 INSTALL_TARGET+=	install-idoutils
+USE_OPENSSL=		yes
 USE_RC_SUBR+=		ido2db
 PLIST_SUB+=		IDOUTILS=""
 .else

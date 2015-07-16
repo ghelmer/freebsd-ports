@@ -3,19 +3,20 @@
 
 PORTNAME=	jigzo
 PORTVERSION=	0.6.1
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://www.iua.upf.es/~mdeboer/resorama/jigzo/ \
 		http://mirror.amdmi3.ru/distfiles/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	OpenGL jigsaw puzzle game
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/GPL.txt
 
-USES=		gmake
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+
+USES=		gmake jpeg tar:tgz
 USE_SDL=	sdl mixer
 USE_GL=		gl
 MAKE_ARGS=	CXX=${CXX}
@@ -32,8 +33,6 @@ DESKTOP_ENTRIES="Jigzo" \
 		false
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|int_p_NULL|NULL|g" \

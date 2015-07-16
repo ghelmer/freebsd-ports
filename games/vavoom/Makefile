@@ -3,7 +3,7 @@
 
 PORTNAME=	vavoom
 PORTVERSION=	1.33
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Vavoom-source/${PORTVERSION}
 
@@ -12,10 +12,9 @@ COMMENT=	Doom, Doom II, Heretic, Hexen, and Strife source port
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
-USES=		cmake dos2unix tar:bzip2
+USES=		cmake dos2unix jpeg tar:bzip2
 DOS2UNIX_REGEX=	((.*\.(c|cpp|h|s|asm|inc|vc|ls|acs|cfg|txt|vs|mak|mgw"))$$|\/(makefile\..*|makefile|Makefile)$$)
 
 MAKE_JOBS_UNSAFE=	yes

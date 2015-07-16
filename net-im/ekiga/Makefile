@@ -1,13 +1,12 @@
 # Created by: Charlie & <root@ws.ipfw.ru>
 # $FreeBSD$
+#    $MCom: ports/trunk/net-im/ekiga/Makefile 19954 2014-10-15 10:03:57Z kwm $
 
 PORTNAME=	ekiga
 PORTVERSION=	4.0.1
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	net-im
 MASTER_SITES=	GNOME
-#MASTER_SITES=	http://www.ekiga.org/admin/downloads/latest/sources/ekiga_${PORTVERSION}/
-#DISTNAME=	ekiga-${PORTVERSION}
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
@@ -20,16 +19,15 @@ LIB_DEPENDS=	libboost_signals.so:${PORTSDIR}/devel/boost-libs \
 		libv4l2.so:${PORTSDIR}/multimedia/libv4l
 RUN_DEPENDS=	gnome-icon-theme>=3.0.0:${PORTSDIR}/misc/gnome-icon-theme
 
-USE_XZ=		yes
 GNU_CONFIGURE=	yes
-USES=		gettext gmake pathfix perl5 pkgconfig
+USES=		cpe gettext gmake libtool pathfix perl5 pkgconfig \
+		tar:xz
 USE_XORG=	xv
-USE_GNOME=	gtk20 intltool libxml2
-INSTALLS_OMF=	yes
+USE_GNOME=	gtk20 intlhack libxml2
 INSTALLS_ICONS=	yes
-
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-I${LOCALBASE}/lib
+LIBS+=		-I${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	LDAP NOTIFY EVOLUTION GCONF DBUS AVAHI GNOMEHELP
 OPTIONS_DEFAULT=NOTIFY DBUS GCONF AVAHI
@@ -53,7 +51,7 @@ LOUDMOUTH_DESC=	XMPP (jabber) support
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
 .if ${PORT_OPTIONS:MKDE} || ${PORT_OPTIONS:MKAB}
-USE_KDE4=	kdehier kdelibs
+USE_KDE4=	kdelibs
 USE_QT4=	corelib
 CONFIGURE_ARGS+=--enable-kde
 #CONFIGURE_ENV+=KDE_CFLAGS="-I${KDE4_PREFIX}/include -I${QT_INCDIR} \
@@ -139,7 +137,8 @@ PLIST_SUB+=	GCONF=""
 .endif
 
 .if ${PORT_OPTIONS:MEVOLUTION}
-USE_GNOME+=	evolutiondataserver
+USE_GNOME+=	evolutiondataserver3
+LIB_DEPENDS+=	libgcr-3.so:${PORTSDIR}/security/gcr
 CONFIGURE_ARGS+=--enable-eds
 PLIST_SUB+=	EVOLUTION=""
 WITH_PLUGINS=	1
@@ -159,15 +158,12 @@ PLIST_SUB+=	AVAHI="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MGNOMEHELP}
+INSTALLS_OMF=	yes
 PLIST_SUB+=	GNOMEHELP=""
 USE_GNOME+=	gnomedocutils
 .else
 CONFIGURE_ARGS+=--disable-gdu
 PLIST_SUB+=	GNOMEHELP="@comment "
 .endif
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ekiga/${PORTVERSION}/libekiga.so
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ekiga/${PORTVERSION}/plugins/*.so
 
 .include <bsd.port.mk>

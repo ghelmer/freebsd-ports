@@ -1,4 +1,3 @@
-# Created by: Maxim Ignatenko
 # $FreeBSD$
 
 PORTNAME=	ng_mikrotik_eoip
@@ -10,11 +9,11 @@ MASTER_SITES=	http://projects.ukrweb.net/files/ \
 MAINTAINER=	gelraen.ua@gmail.com
 COMMENT=	Netgraph node for Mikrotik EoIP tunneling
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 SSP_UNSAFE=	kernel module does not support ssp
 
-OPTIONS_DEFINE=	PTABLE	
+OPTIONS_DEFINE=	PTABLE
 PTABLE_DESC=	Use O(1) lookup for tunnel hooks
 # This option enables usage of static pointer table to find needed decimal-named hook,
 # which increases memory usage for each node by 65536*sizeof(hook_p). You probably want
@@ -24,18 +23,16 @@ KMODDIR?=	/boot/modules
 PLIST_SUB+=	KMODDIR=${KMODDIR} \
 		PORTNAME=${PORTNAME}
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if !exists(${SRC_BASE}/sys/sys/module.h)
 IGNORE=		requires kernel source files
 .endif
 
-.if ${PORT_OPTIONS:MPTABLE}
-MAKE_ARGS+=	NO_LINEAR_HOOK_LOOKUP=1
-.endif
+PTABLE_MAKE_ARGS=	NO_LINEAR_HOOK_LOOKUP=1
 
 do-install:
-	@${INSTALL_KLD} ${WRKSRC}/${PORTNAME}.ko ${KMODDIR}
+	${MKDIR} "${STAGEDIR}${KMODDIR}"
+	${INSTALL_KLD} ${WRKSRC}/${PORTNAME}.ko "${STAGEDIR}${KMODDIR}"
 
 .include <bsd.port.mk>

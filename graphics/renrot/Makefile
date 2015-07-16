@@ -3,6 +3,7 @@
 
 PORTNAME=	renrot
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	ftp://download.gnu.org.ua/pub/release/${PORTNAME}/
 
@@ -12,9 +13,9 @@ COMMENT=	Program to rename and rotate image files according to EXIF tags
 LICENSE=	ART20
 
 BUILD_DEPENDS=	p5-Image-ExifTool>=0:${PORTSDIR}/graphics/p5-Image-ExifTool
-RUN_DEPENDS:=	${BUILD_DEPENDS} jpegtran:${PORTSDIR}/graphics/jpeg
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		perl5 jpeg:run
 USE_PERL5=	configure
 
 PORTDOCS=	AUTHORS README README.russian ChangeLog NEWS TODO

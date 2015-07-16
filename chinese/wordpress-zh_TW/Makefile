@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	wordpress
-PORTVERSION=	3.9.1
+PORTVERSION=	4.2.2
+DISTVERSIONSUFFIX=	-zh_TW
 CATEGORIES=	chinese www
 MASTER_SITES=	http://tw.wordpress.org/ \
 		http://mirror.joehorn.idv.tw/wordpress/
 PKGNAMESUFFIX=	-zh_TW
-DISTNAME=	${PORTNAME}-${PORTVERSION}${PKGNAMESUFFIX}
 
 MAINTAINER=	joehorn@gmail.com
 COMMENT=	State-of-the-art semantic personal publishing platform
@@ -38,7 +38,6 @@ pre-install:
 	${ECHO_CMD} '@owner www' > ${PLIST}
 	${ECHO_CMD} '@group www' >> ${PLIST}
 	cd ${WRKSRC}/ && ${FIND} -s * -type f | ${SED} -e 's|^|%%WWWDIR%%/|' >> ${PLIST}
-	cd ${WRKSRC}/ && ${FIND} -d . -type d | ${SED} -e 's|^\.|@dirrm %%WWWDIR%%|' >> ${PLIST}
 	${ECHO_CMD} '@owner' >> ${PLIST}
 	${ECHO_CMD} '@group' >> ${PLIST}
 	if [ ! -f ${WRKSRC}/wp-config-sample.php ]; then ${CP} \

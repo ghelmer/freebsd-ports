@@ -3,7 +3,7 @@
 
 PORTNAME=	chroma
 PORTVERSION=	1.08
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	http://www.level7.org.uk/chroma/download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -39,5 +39,6 @@ SDL_PLIST_FILES=	bin/${PORTNAME}
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}*
 
 .include <bsd.port.mk>

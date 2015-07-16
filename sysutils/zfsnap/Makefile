@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	zfsnap
-PORTVERSION=	1.11.0
+PORTVERSION=	1.11.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
-MAINTAINER=	graudeejs@gmail.com
+MAINTAINER=	yamagi@yamagi.org
 COMMENT=	Simple sh script to make zfs rolling snaphosts with cron
 
 NO_BUILD=	yes
 USE_GITHUB=	yes
-GH_PROJECT=	zfSnap
-GH_ACCOUNT=	graudeejs
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	2228749
 
 PERIODICDIR?=	${PREFIX}/etc/periodic
 PLIST_SUB+=	PERIODICDIR="${PERIODICDIR:S,^${PREFIX}/,,}"

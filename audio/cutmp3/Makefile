@@ -7,19 +7,16 @@ CATEGORIES=	audio
 MASTER_SITES=	http://www.puchalla-online.de/ \
 		http://mirror.mcx2.org/
 
-MAINTAINER=	dhn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small and fast command line MP3 editor
 
-USES=		tar:bzip2
+USES=		tar:bzip2 readline
 
 PLIST_FILES=	bin/cutmp3 man/man1/cutmp3.1.gz
 
 PORTDOCS=	README README.timetable USAGE
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/Makefile
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

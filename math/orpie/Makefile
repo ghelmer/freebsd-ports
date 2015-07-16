@@ -2,24 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	orpie
-PORTVERSION=	1.5.1
-PORTREVISION=	6
+PORTVERSION=	1.5.2
+PORTREVISION=	1
 CATEGORIES+=	math
 MASTER_SITES=	http://pessimization.com/software/orpie/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A fullscreen RPN calculator for the console
+COMMENT=	Fullscreen RPN calculator for the console
 
-BUILD_DEPENDS=	ocamlc:${PORTSDIR}/lang/ocaml
-LIB_DEPENDS=	gsl:${PORTSDIR}/math/gsl
+LICENSE=	GPLv2
 
-GNU_CONFIGURE=	yes
+LIB_DEPENDS=	libgsl.so:${PORTSDIR}/math/gsl
+
 USES=		gmake
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+USE_OCAML=	yes
+USE_OCAML_CAMLP4=yes
+GNU_CONFIGURE=	yes
+MAKE_JOBS_UNSAFE=	yes
 
 PLIST_FILES=	bin/orpie bin/orpie-curses-keys etc/orpierc \
 		man/man1/orpie.1.gz man/man1/orpie-curses-keys.1.gz \
 		man/man5/orpierc.5.gz
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
 
 .include <bsd.port.mk>

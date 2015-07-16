@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	linux-
 DISTFILES=	# empty
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A high-color icon theme shell from the FreeDesktop project
+COMMENT=	High-color icon theme shell from the FreeDesktop project
 
 RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:${PORTSDIR}/misc/hicolor-icon-theme
 
@@ -21,9 +21,8 @@ USE_LINUX=	yes
 USE_LINUX_PREFIX=	yes
 PLIST_FILES=	usr/share/icons/hicolor
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL} -d ${PREFIX}/usr/share/icons
-	${LN} -fs ${LOCALBASE}/share/icons/hicolor ${PREFIX}/usr/share/icons
+	${INSTALL} -d ${STAGEDIR}${PREFIX}/usr/share/icons
+	${LN} -fs ${LOCALBASE}/share/icons/hicolor ${STAGEDIR}${PREFIX}/usr/share/icons
 
 .include <bsd.port.mk>

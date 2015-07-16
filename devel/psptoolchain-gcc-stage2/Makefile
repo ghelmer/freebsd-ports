@@ -1,6 +1,8 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
 # $FreeBSD$
 
+PORTREVISION=		3
+
 PKGNAMESUFFIX=		-stage2
 
 MAINTAINER=		tphilipp@potion-studios.com
@@ -22,10 +24,7 @@ CONFIGURE_ARGS=		--prefix=${PREFIX} \
 			--with-as=${LOCALBASE}/bin/psp-as \
 			--mandir=${PREFIX}/man
 
-MAN1=			psp-g++.1
-
 PLIST=			${.CURDIR}/pkg-plist
 MASTERDIR=		${.CURDIR}/../psptoolchain-gcc-stage1
 
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

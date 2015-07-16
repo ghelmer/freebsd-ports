@@ -8,15 +8,11 @@ CATEGORIES=	devel python
 MASTER_SITES=	ftp://ftp.druid.net/pub/distrib/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	generate-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	darcy@druid.net
 COMMENT=	Python module to implement generate
 
-USES=		gmake
-
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		gmake python tar:tgz
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

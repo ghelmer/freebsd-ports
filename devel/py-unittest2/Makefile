@@ -1,20 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	unittest2
-PORTVERSION=	0.5.1
-PORTREVISION=	1
+PORTVERSION=	0.8.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	rm@FreeBSD.org
-COMMENT=	Unittest features for Python 2.7 backported to Python 2.3+
+COMMENT=	New features in unittest backported to Python 2.4+
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six
 
 LICENSE=	BSD3CLAUSE
 
-USES=		zip
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	autoplist distutils
+
+post-patch:
+	@${REINPLACE_CMD} -e "s|'argparse', 'six'|'six'|" \
+		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

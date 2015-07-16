@@ -3,7 +3,7 @@
 
 PORTNAME=	mrxvt
 PORTVERSION=	0.4.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11
 MASTER_SITES=	SF/materm/${PORTNAME}%20source/${PORTVERSION}
 EXTRACT_SUFX=	.tgz
@@ -11,12 +11,12 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tabbed version of rxvt
 
-LIB_DEPENDS=	libjpeg.so.11:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
 CONFLICTS=	mrxvt-0.5.*
 
 GNU_CONFIGURE=	yes
+USES=		jpeg
 USE_XORG=	x11
 
 OPTIONS_DEFINE=	DOCS JAPANESE XFT
@@ -31,36 +31,20 @@ XFT_CONFIGURE_ENABLE=	xft
 CONFIGURE_ARGS+=	--disable-lastlog --disable-wtmp
 .endif
 
-.if defined(WITH_JAPANESE)
-CONFIGURE_ARGS+=	--enable-xim --enable-cjk --with-encoding=eucj
-.endif # WITH_JAPANESE
-
-.if defined(WITH_XFT)
-LIB_DEPENDS+=	Xft.2:${PORTSDIR}/x11-fonts/libXft
-CONFIGURE_ARGS+=	--enable-xft
-.endif
-
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 
-.if !defined(NOPORTDOCS)
 PORTDOCS=	TIPS \
-			README.greek \
-			README.menu \
-			README.xvt \
-			xdefaults-sample.txt \
-			xterm.seq \
-			mrxvt.vbs \
-			mrxvtset.pl
-.endif
+		README.greek \
+		README.menu \
+		README.xvt \
+		xdefaults-sample.txt \
+		xterm.seq \
+		mrxvt.vbs \
+		mrxvtset.pl
 
-pre-everything::
-	@${ECHO_MSG} "=========================================>"
-	@${ECHO_MSG} "For Japanese support use make -DWITH_JAPANESE install"
-	@${ECHO_MSG} "For XFT support use make -DWITH_XFT install"
-	@${ECHO_MSG} "=========================================>"
 
-.if defined(NOPORTDOCS)
+.if empty(PORT_OPTIONS:MDOCS)
 post-patch:
 	@${REINPLACE_CMD} -e '/^\(install-data-am:\).*/ \
 		s/install-docDATA //' ${WRKSRC}/doc/Makefile.in

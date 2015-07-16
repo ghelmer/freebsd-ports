@@ -5,26 +5,32 @@ PORTNAME=	thebridge
 PORTVERSION=	1.09
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/cqinet/${PORTNAME}/${PORTNAME}-${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	db@FreeBSD.org
+MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio Echolink conference bridge
 
 LICENSE=	GPLv2
 
-USES=		gmake
+USES=		gmake shebangfix tar:tgz
 GNU_CONFIGURE=	yes
 PORTDOCS=	README
 USE_RC_SUBR=	tbd
 MAKE_ARGS=	AUTOMAKE="${TRUE}"
 
+SHEBANG_FILES=	addons/usermgmt.cgi
+SHEBANG_LANG=	bash
+
 INSTALL_TARGET=	install-strip
 
+post-patch:
+	@${REINPLACE_CMD} 's!tbdcmd=\/usr\/local!tbdcmd=${PREFIX}!'\
+		${WRKSRC}/addons/usermgmt.cgi
+
 post-install:
-	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}/${DOCSDIR}
-	${MKDIR} ${STAGEDIR}/${DATADIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/addons/usermgmt.cgi ${STAGEDIR}/${DATADIR}
-	${INSTALL_DATA} ${WRKSRC}/addons/README ${STAGEDIR}/${DATADIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/addons/usermgmt.cgi ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/addons/README ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

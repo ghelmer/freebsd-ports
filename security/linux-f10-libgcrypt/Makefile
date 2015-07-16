@@ -3,20 +3,20 @@
 
 PORTNAME=	libgcrypt
 PORTVERSION=	1.4.4
+PORTREVISION=	2
 CATEGORIES=	security linux
-PKGNAMEPREFIX=	linux-f10-
-DISTNAME=	${PORTNAME}-${PORTVERSION}-${RPMVERSION}
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	General purpose crypto library based on code used in GnuPG
 
+USE_LINUX=	f10
 USE_LINUX_RPM=	yes
-LINUX_DIST_VER=	10
+
 RPMVERSION=	1.fc10
 USE_LDCONFIG=	yes
 
 PLIST_FILES=	lib/libgcrypt.so.11 lib/libgcrypt.so.11.5.2
-PLIST_DIRSTRY=	etc/gcrypt
+PLIST_DIRS=	etc/gcrypt
 DESCR=		${.CURDIR}/../libgcrypt/pkg-descr
 
 post-install:

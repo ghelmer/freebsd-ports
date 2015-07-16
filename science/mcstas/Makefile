@@ -1,44 +1,40 @@
-# Created by: Joerg Pulz <Joerg.Pulz@frm2.tum.de>
+# Created by: Erik B Knudsen <erkn@fysik.dtu.dk>
 # $FreeBSD$
 
 PORTNAME=	mcstas
-PORTVERSION=	1.12c
-PORTREVISION=	3
+PORTVERSION=	2.1
 CATEGORIES=	science
-MASTER_SITES=	http://www.mcstas.org/download/ \
-		http://www.c-s.li/ports/
+MASTER_SITES=	http://download.mcstas.org/${PORTNAME}-${PORTVERSION}/unix/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
+DISTFILES=	McStas-${PORTVERSION}-UNIX-src.tar.gz
+DIST_SUBDIR=	${PORTNAME}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A neutron ray-trace simulation package
+MAINTAINER=	erkn@fysik.dtu.dk
+COMMENT=	Monte Carlo neutron ray tracing package
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	pgxwin_server:${PORTSDIR}/graphics/pgplot
-RUN_DEPENDS=	PDL>=0:${PORTSDIR}/math/PDL \
-		p5-Tk>=0:${PORTSDIR}/x11-toolkits/p5-Tk
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
 
-STRIP=
-USES=		perl5 gmake
+USES=		cmake gmake bison:build
+#should perhaps use the toolchain file - but remember the arch
+CMAKE_ARGS=	"-Denable_mcstas=1"
 GNU_CONFIGURE=	yes
-NO_MTREE=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-PERL_ARCHNAME!=	perl -V:archname 2>/dev/null || echo
+.include <bsd.port.pre.mk>
 
-PLIST_SUB+=	PERL_PORT=perl5 PERL_ARCHNAME=${PERL_ARCHNAME:S/archname='//:S/';//}
+# this is necessary since mcxtrace and mcstas are packaged in a
+# single tarball in which the kernel, component library, manual,
+# and tool tarballs reside
+post-fetch:
+.if !exists(${DISTDIR}/${DIST_SUBDIR}/${DISTNAME}${EXTRACT_SUFX})
+	cd ${DISTDIR}/${DIST_SUBDIR};\
+	${TAR} --strip-components 1 -xzf ${DISTFILES} McStas-2.1-UNIX-src/${DISTNAME}.tar.gz;
+.endif
 
-MAN1=		mcconvert.1 \
-		mcdisplay.1 \
-		mcdoc.1 \
-		mcformat.1 \
-		mcgui.1 \
-		mcplot.1 \
-		mcrun.1 \
-		mcstas.1 \
+post-stage:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/mcstas/2.1/bin/mcstas
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/mcstas/2.1/bin/mcformat
 
-NO_STAGE=	yes
-post-configure:
-		@cd ${WRKSRC}; make pgplot
-
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

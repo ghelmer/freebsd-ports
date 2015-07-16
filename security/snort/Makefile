@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	snort
-PORTVERSION=	2.9.6.1
+PORTVERSION=	2.9.7.3
 CATEGORIES=	security
 MASTER_SITES=	SF/snort/snort \
+		https://snort.org/downloads/snort/ \
 		http://mirrors.rit.edu/zi/
 
 PATCH_DIST_STRIP=	-p1
@@ -15,66 +16,63 @@ COMMENT=	Lightweight network intrusion detection system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
-BUILD_DEPENDS=	daq>=2.0.0:${PORTSDIR}/net/daq \
-		${LOCALBASE}/lib/libnet11/libnet.a:${PORTSDIR}/net/libnet
-RUN_DEPENDS=	daq>=2.0.0:${PORTSDIR}/net/daq \
-		${LOCALBASE}/lib/libnet11/libnet.a:${PORTSDIR}/net/libnet
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
+		libnet.so:${PORTSDIR}/net/libnet
+BUILD_DEPENDS=	daq>=2.0.0:${PORTSDIR}/net/daq
+RUN_DEPENDS=	daq>=2.0.0:${PORTSDIR}/net/daq
 
-OPTIONS_DEFINE=		IPV6 MPLS GRE TARGETBASED ZLIB NORMALIZER REACT \
-			PERFPROFILE FLEXRESP3 LRGPCAP SOURCEFIRE NONETHER \
-			DOCS
+OPTIONS_DEFINE=		IPV6 GRE HA NORMALIZER DOCS APPID \
+			PERFPROFILE LRGPCAP SOURCEFIRE NONETHER \
+			FILEINSPECT
 
 OPTIONS_GROUP=		ADDONS DEV
 OPTIONS_GROUP_ADDONS=	BARNYARD PULLEDPORK
 OPTIONS_GROUP_DEV=	DBGSNORT
+OPTIONS_SUB=		yes
+OPTIONS_DEFAULT=	IPV6 GRE NORMALIZER BARNYARD \
+			PERFPROFILE SOURCEFIRE PULLEDPORK
 
-OPTIONS_DEFAULT=	IPV6 MPLS GRE TARGETBASED ZLIB NORMALIZER REACT \
-			PERFPROFILE FLEXRESP3 SOURCEFIRE PULLEDPORK \
-			BARNYARD
-
-FLEXRESP3_DESC=		Flexible response on events (v3)
 GRE_DESC=		GRE support
 IPV6_DESC=		IPv6 in snort.conf
 LRGPCAP_DESC=		Pcaps larger than 2GB
 NONETHER_DESC=		Non-Ethernet Decoders
 NORMALIZER_DESC=	Normalizer
 PERFPROFILE_DESC=	Performance profiling
-REACT_DESC=		React
-SOURCEFIRE_DESC=	Sourcefire-specific build options
+SOURCEFIRE_DESC=	Sourcefire recommended build options
 TARGETBASED_DESC=	Targetbased support
-ZLIB_DESC=		GZIP support
-
+APPID_DESC=		Build with application id support (EXPERIMENTAL)
+HA_DESC=		Enable high-availability state sharing (EXPERIMENTAL)
+FILEINSPECT_DESC=	Build with extended file inspection features (EXPERIMENTAL)
 ADDONS_DESC=		Depend on 3rd party addons
 BARNYARD_DESC=		Depend on barnyard2 (supports also snortsam)
 PULLEDPORK_DESC=	Depend on pulledpork
-
-DEV_DESC=		Developper options
+DEV_DESC=		Developer options
 DBGSNORT_DESC=		Enable debugging symbols+core dumps
 
 DBGSNORT_CONFIGURE_ENABLE=	corefiles debug
 DBGSNORT_MAKE_ENV=		DONTSTRIP="yes"
-FLEXRESP3_CONFIGURE_ENABLE=	flexresp3 active-response
 GRE_CONFIGURE_ENABLE=		gre
 LRGPCAP_CONFIGURE_ENABLE=	large-pcap
-MPLS_CONFIGURE_ENABLE=		mpls
 NONETHER_CONFIGURE_ENABLE=	non-ether-decoders
 NORMALIZER_CONFIGURE_ENABLE=	normalizer
 PERFPROFILE_CONFIGURE_ENABLE=	perfprofiling ppm
-REACT_CONFIGURE_ENABLE=		react
 SOURCEFIRE_CONFIGURE_ENABLE=	sourcefire
-TARGETBASED_CONFIGURE_ENABLE=	targetbased
-ZLIB_CONFIGURE_ENABLE=		zlib
+APPID_CONFIGURE_ENABLE=		open-appid
+HA_CONFIGURE_ENABLE=		ha
+FILEINSPECT_CONFIGURE_ENABLE=	file-inspect
 
 BARNYARD_RUN_DEPENDS=	barnyard2:${PORTSDIR}/security/barnyard2
 PULLEDPORK_RUN_DEPENDS=	pulledpork.pl:${PORTSDIR}/security/pulledpork
+APPID_LIB_DEPENDS=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
+APPID_CONFIGURE_ENV+=	luajit_CFLAGS="-I${LOCALBASE}/include/luajit-2.0" \
+			luajit_LIBS="-L${LOCALBASE}/lib -lluajit-5.1"
 
 .include <bsd.port.options.mk>
 
 USE_RC_SUBR=	snort
 SUB_FILES=	pkg-message
 
-USES=		pathfix libtool
+USES=		cpe pathfix libtool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
@@ -84,7 +82,7 @@ PREPROC_RULE_DIR=	${ETCDIR}/preproc_rules
 LOGS_DIR=		/var/log/snort
 
 CONFIG_FILES=	classification.config gen-msg.map reference.config \
-		snort.conf threshold.conf unicode.map
+		snort.conf threshold.conf unicode.map file_magic.conf
 
 DOCS=		RELEASE.NOTES doc/AUTHORS doc/BUGS doc/CREDITS \
 		doc/README* doc/USAGE doc/*.pdf
@@ -104,13 +102,14 @@ LIBNET_LIBDIR=	${LIBNET_LIBS:M-L*:S/-L//}
 
 CFLAGS+=	-fstack-protector
 CONFIGURE_ARGS+=--enable-reload \
+		--enable-mpls --enable-targetbased \
 		--enable-reload-error-restart \
 		--with-dnet-includes=${LIBNET_INCDIR} \
 		--with-dnet-libraries=${LIBNET_LIBDIR}
 
 post-patch:
-	@${FIND} ${WRKSRC} \( -name 'Makefile.in' -o -name snort.conf \) -print0 | \
-		${XARGS} -0 ${REINPLACE_CMD} -e 's|lib/snort_|lib/snort/|g'
+#@${FIND} ${WRKSRC} \( -name 'Makefile.in' -o -name snort.conf \) -print0 | \
+#${XARGS} -0 ${REINPLACE_CMD} -e 's|lib/snort_|lib/snort/|g'
 
 	@${REINPLACE_CMD} "s,/etc/snort.conf,${ETCDIR}/snort.conf," \
 		${WRKSRC}/src/snort.c ${WRKSRC}/snort.8

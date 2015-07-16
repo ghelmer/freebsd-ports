@@ -3,11 +3,11 @@
 
 PORTNAME=	dahdi-kmod26
 PORTVERSION=	${DAHDI_VERSION:S/-/./g}
+PORTREVISION=	1
 CATEGORIES=	misc
-MASTER_SITES=	${MASTER_SITE_LOCAL}\
+MASTER_SITES=	LOCAL/fjoe \
 		http://people.freebsd.org/~fjoe/dahdi/\
 		http://downloads.digium.com/pub/telephony/firmware/releases/:firmware
-MASTER_SITE_SUBDIR=	fjoe
 DISTNAME=	dahdi-freebsd-${DAHDI_VERSION}
 DISTFILES=	${DISTNAME}.tar.bz2\
 		oslec-linux-${OSLEC_VERSION}${EXTRACT_SUFX}\
@@ -48,7 +48,7 @@ ONLY_FOR_ARCHS=	i386 amd64 sparc64
 CONFLICTS=	zaptel-[0-9]* dahdi-kmod-*
 
 KMODDIR=	${PREFIX}/lib/dahdi
-USES=		kmod
+USES=		kmod uidfix
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386" || ${ARCH} == "amd64"

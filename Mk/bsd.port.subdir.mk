@@ -74,13 +74,8 @@ OSVERSION!=	${SYSCTL} -n kern.osreldate
 .endif
 .endif
 
-.if ${OSVERSION} >= 1000017
-.if !defined(WITHOUT_PKGNG)
+WITH_PKG=	yes
 WITH_PKGNG=	yes
-.else
-.undef	WITH_PKGNG
-.endif
-.endif
 
 .if !defined(_OSRELEASE)
 _OSRELEASE!=			${UNAME} -r
@@ -132,9 +127,7 @@ INDEXDIR?=	${PORTSDIR}
 INDEXFILE?=	INDEX-${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}
 
 # local customization of the ports tree
-.if exists(${.CURDIR}/Makefile.local)
-.include "${.CURDIR}/Makefile.local"
-.endif
+.sinclude "${.CURDIR}/Makefile.local"
 
 TARGETS+=	all
 TARGETS+=	build

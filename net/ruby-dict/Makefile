@@ -9,8 +9,8 @@ PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DISTNAME=	ruby-${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	ruby
 
-MAINTAINER=	miwi@FreeBSD.org
-COMMENT=	A client-side implementation of the DICT protocol in Ruby
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Client-side implementation of the DICT protocol in Ruby
 
 USE_RUBY=	yes
 USE_RUBY_SETUP=	yes
@@ -20,6 +20,8 @@ RUBY_SHEBANG_FILES=	${WRKSRC}/rdict
 
 DOCS=		Changelog README doc/dict.html doc/rdict.html
 
+OPTIONS_DEFINE=	DOCS
+
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/rdict ${STAGEDIR}${PREFIX}/bin/
 	${MKDIR} ${STAGEDIR}${RUBY_MODDOCDIR}
@@ -27,4 +29,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.2
+BROKEN=		Does not build
+.endif
+
+.include <bsd.port.post.mk>

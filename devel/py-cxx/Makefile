@@ -11,20 +11,19 @@ DISTNAME=	pycxx-${PORTVERSION}
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Make it easier to extend Python with C++
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-USE_PYTHON_PREFIX=	yes
+USES=		python
+USE_PYTHON=	distutils pythonprefix
 PYDISTUTILS_PKGNAME=	CXX
 PYDISTUTILS_PKGVERSION=	5.3
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 PORTDOCS=	*
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-		@${MKDIR} ${STAGEDIR}${DOCSDIR}
-		${INSTALL_DATA} ${WRKSRC}/Doc/PyCXX.html ${STAGEDIR}${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/Doc/PyCXX.html ${STAGEDIR}${DOCSDIR}
 
 post-patch:
 	@${REINPLACE_CMD} \

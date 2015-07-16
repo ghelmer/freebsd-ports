@@ -3,49 +3,42 @@
 
 PORTNAME=	libvncserver
 PORTVERSION=	0.9.9
-PORTREVISION=	7
+PORTREVISION=	11
 CATEGORIES=	net devel
 MASTER_SITES=	SF
 DISTNAME=	LibVNCServer-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Provide an easy API to write one's own vnc server
+COMMENT=	Provide an easy API to a custom vnc server
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
-USES=	pathfix
+USES=		jpeg libtool pathfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 CONFIGURE_ARGS=	--without-x
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	GNUTLS OPENSSL GCRYPT IPV6
-OPTIONS_DEFAULT=	OPENSSL
+OPTIONS_DEFAULT=OPENSSL
 GCRYPT_DESC=	libgcrypt support
 
-GNUTLS_LIB_DEPENDS=	gnutls:${PORTSDIR}/security/gnutls
-GNUTLS_CONFIGURE_ON=	--with-gnutls
-GNUTLS_CONFIGURE_OFF=	--without-gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
+GNUTLS_CONFIGURE_WITH=	gnutls
 
-OPENSSL_CONFIGURE_ON=	--with-ssl
-OPENSSL_CONFIGURE_OFF=	--without-crypto --without-ssl
+OPENSSL_CONFIGURE_WITH=	crypto ssl
+OPENSSL_USE=		OPENSSL=yes
 
-GCRYPT_LIB_DEPENDS=	gcrypt:${PORTSDIR}/security/libgcrypt
-GCRYPT_CONFIGURE_ON=	--with-gcrypt
-GCRYPT_CONFIGURE_OFF=	--without-gcrypt
+GCRYPT_LIB_DEPENDS=	libgcrypt.so:${PORTSDIR}/security/libgcrypt
+GCRYPT_CONFIGURE_WITH=	gcrypt
 
-IPV6_CONFIGURE_ON=	--with-ipv6
-IPV6_CONFIGURE_OFF=	--without-ipv6
-
-OPENSSL_USE=	OPENSSL=yes
+IPV6_CONFIGURE_WITH=	ipv6
 
 post-patch:
-	@${REINPLACE_CMD} -e \
-		's|-lpthread|${PTHREAD_LIBS}|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e \
 		'/^SUBDIRS/s|x11vnc||g' ${WRKSRC}/Makefile.in
 

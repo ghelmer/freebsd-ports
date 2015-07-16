@@ -11,32 +11,25 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Python module for producing high quality PostScript graphics
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+LICENSE=	GPLv2
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+PYSCRIPT_MANUAL=doc/manual/pyscript.pdf
+
+USES=		python
+USE_PYTHON=	distutils
 USE_TEX=	latex dvipsk
 
-DATADIR=	${PYTHONPREFIX_SITELIBDIR}/${PORTNAME}
+.include <bsd.port.options.mk>
 
-PYSCRIPT_EXAMPLES=	doc/examples/*.py
-PYSCRIPT_MANUAL=	doc/manual/pyscript.pdf
-
-.if defined(WITHOUT_EXAMPLES)
-PLIST_SUB=	PORTEXAMPLES="@comment "
-.else
-PLIST_SUB=	PORTEXAMPLES=""
-.endif
-
-NO_STAGE=	yes
 post-install:
-
-.if !defined(WITHOUT_EXAMPLES)
-	${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/${PYSCRIPT_EXAMPLES} ${EXAMPLESDIR}
+.if ${PORT_OPTIONS:MEXAMPLES}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@(cd ${WRKSRC}/doc/examples; \
+	${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} "! -name Makefile")
 .endif
-
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/${PYSCRIPT_MANUAL} ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${PYSCRIPT_MANUAL}  ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

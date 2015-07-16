@@ -2,10 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	vanitygen
-PORTVERSION=	0.21
-PORTREVISION=	1
+PORTVERSION=	0.22
 CATEGORIES=	finance
-MASTER_SITES=	GH
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standalone vanity address generator for bitcoin
@@ -16,7 +14,7 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	samr7
-GH_COMMIT=	b9237a0
+GH_TAGNAME=	cd1a728
 
 USES=		gmake
 USE_OPENSSL=	yes

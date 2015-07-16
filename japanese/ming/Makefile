@@ -2,7 +2,7 @@
 
 PORTNAME=	ming
 PORTVERSION=	0.1.5
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	japanese graphics
 MASTER_SITES=	http://dist.bsdlab.org/
 #MASTER_SITES=	http://blue.ribbon.to/~harpy/ming/jaming/
@@ -11,15 +11,15 @@ DISTNAME=	jaming-${PORTVERSION}
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	LGPL'ed Flash 4/5 movie output library with Japanese languages support
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
-		gif.5:${PORTSDIR}/graphics/giflib
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
+		libgif.so:${PORTSDIR}/graphics/giflib
 
 CONFLICTS=	ming-*
 
 WRKSRC=		${WRKDIR}/jaming-${PORTVERSION}/src
 MAKE_ARGS=	NO_PROFILE=true
 USE_LDCONFIG=	yes
-USES=		bison
+USES=		bison uidfix
 MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
 
 UTILS=		gif2dbl \
@@ -36,6 +36,8 @@ DOCS=		CHANGES \
 		TODO
 DOCS_UTIL=	README \
 		TODO
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	${SED} -e 's:"\.\./\.\./ming\.h":<ming.h>:g' \
@@ -74,7 +76,6 @@ post-install:
 .for f in ${UTILS}
 	${INSTALL_PROGRAM} ${WRKSRC}/../util/${f} ${STAGEDIR}${PREFIX}/bin/
 .endfor
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/ming/utils
 .for f in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/../${f} ${STAGEDIR}${PREFIX}/share/doc/ming/
@@ -82,6 +83,5 @@ post-install:
 .for f in ${DOCS_UTIL}
 	${INSTALL_DATA} ${WRKSRC}/../util/${f} ${STAGEDIR}${PREFIX}/share/doc/ming/utils/
 .endfor
-.endif
 
 .include <bsd.port.mk>

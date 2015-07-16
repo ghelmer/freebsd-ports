@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Tk
-PORTVERSION=	804.032
+PORTVERSION=	804.033
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits tk perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,8 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Re-port of a perl5 interface to Tk8.4
 
-LIB_DEPENDS=	libjpeg.so.11:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
 OPTIONS_DEFINE=	XFT
@@ -20,7 +20,9 @@ XFT_DESC=	Client-side fonts via libXft
 
 CONFIGURE_ARGS=	X11INC=${LOCALBASE}/include X11LIB=${LOCALBASE}/lib
 MAKE_JOBS_UNSAFE=	yes
-USES=		perl5
+USES=		jpeg perl5 shebangfix
+SHEBANG_FILES=	pTk/Tcl-pTk \
+		pTk/mkVFunc
 USE_PERL5=	configure
 USE_XORG=	x11
 
@@ -48,11 +50,12 @@ post-configure:
 		`${FIND} ${WRKSRC} -name Makefile`
 
 post-stage:
-	${FIND} ${STAGEDIR} -name '*.bs' -size 0c -exec ${RM} {} \;
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/mach/auto/Tk/Tk.so
+	@${RM} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/pTk/extralibs.ld
+	@${RMDIR} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/pTk
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/Tk.so
 .for i in Canvas Compound Entry Event HList IO InputO JPEG Listbox Menubutton Mwm NBFrame PNG Pixmap Scale Scrollbar TList Text TixGrid WinPhoto X Xlib
 		${STRIP_CMD} \
-		    ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}/mach/auto/Tk/${i}/${i}.so
+		    ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Tk/${i}/${i}.so
 .endfor
 
 .include <bsd.port.mk>

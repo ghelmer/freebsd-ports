@@ -4,14 +4,14 @@
 PORTNAME=	bulksms
 PORTVERSION=	0.1
 CATEGORIES=	comms python
-MASTER_SITES=	http://ngsoftwareltd.com/freebsd/distfiles/
+MASTER_SITES=	http://bsdtec.com/freebsd/distfiles/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	craig001@lerwick.hopto.org
 COMMENT=	Python client for the BulkSMS.co.uk HTTP API
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=			python
+USE_PYTHON=		distutils
 PYDISTUTILS_PKGNAME=	BulkSMS
 PYDISTUTILS_PKGVERSION=	1.0
 

@@ -3,24 +3,25 @@
 
 PORTNAME=	aiksaurus
 PORTVERSION=	1.2.1
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES?=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER?=	gnome@FreeBSD.org
-COMMENT?=	A set of libraries and applications which provide a thesaurus
+COMMENT?=	Set of libraries and applications which provide a thesaurus
 
 LICENSE=	GPLv2
 
-USE_AUTOTOOLS=	libtool
+USES=		gmake libtool pathfix pkgconfig
 USE_CSTD=	gnu89
-USES=		pathfix gmake pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--without-gtk
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|echo aout|echo elf|g' \
-	    	${WRKSRC}/configure
+.include <bsd.port.pre.mk>
 
-.include <bsd.port.mk>
+.if defined(PKGNAMESUFFIX) && ${OPSYS} == FreeBSD && ${OSVERSION} > 1000000
+BROKEN=		does not link against GTK2 on FreeBSD 10+
+.endif
+
+.include <bsd.port.post.mk>

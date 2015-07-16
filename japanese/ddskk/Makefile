@@ -3,50 +3,59 @@
 
 PORTNAME=	ddskk
 PORTVERSION=	15.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	japanese elisp
 MASTER_SITES=	http://openlab.ring.gr.jp/skk/maintrunk/ \
 		ftp://ftp.ring.gr.jp/pub/elisp/skk/maintrunk/ \
 		http://www.ring.gr.jp/archives/elisp/skk/maintrunk/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 
-MAINTAINER=	hiroto.kagotani@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple Kana to Kanji conversion program on Emacsen
+
+LICENSE=	GPLv2
+
+NO_ARCH=	yes
+
+USE_EMACS=	yes
+MAKE_ARGS=	PREFIX="${STAGEDIR}${PREFIX}" \
+		SKK_LISPDIR="${STAGEDIR}${PREFIX}/${SKK_LISPDIR}" \
+		SKK_INFODIR="${STAGEDIR}${PREFIX}/${INFO_PATH}"
+ALL_TARGET=	elc info
+
+INFO=		skk
+PORTDOCS=	*
+PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USE_EMACS=	yes
-INFO=		skk
-
 SKK_LISPDIR=	${EMACS_VERSION_SITE_LISPDIR}/skk
-PORTDOCS=	AUTHORS.ja CODENAME.ja Contributors FAQ.ja NEWS.ja README
-PORTEXAMPLES=	Emacs.ad dot.emacs dot.skk
 
-ALL_TARGET=	elc info
-MAKE_ARGS+=	SKK_LISPDIR=${PREFIX}/${SKK_LISPDIR} SKK_INFODIR=${PREFIX}/${INFO_PATH}
+post-patch:
+	@${REINPLACE_CMD} -e \
+		'/skk-tut-file/s|@TUT@|${PREFIX}/share/skk/SKK.tut|' \
+		${WRKSRC}/skk-setup.el.in
 
-NO_STAGE=	yes
-pre-install:
-	# required for non-standard PREFIX
-	${MKDIR} ${PREFIX}/${SKK_LISPDIR}
-
-.include <bsd.port.options.mk>
+pre-build:
+.for i in skk-lookup.el skk-jisx0213.el
+	@${MV} ${WRKSRC}/${i} ${WRKDIR}
+.endfor
 
 post-install:
-.for i in skk-jisx0213 skk-lookup
-	${INSTALL_DATA} ${WRKSRC}/${i}.el ${PREFIX}/${SKK_LISPDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SKK_LISPDIR}
+.for i in skk-lookup.el skk-jisx0213.el
+	(cd ${WRKDIR} && ${INSTALL_DATA} ${i} \
+		${STAGEDIR}${PREFIX}/${SKK_LISPDIR})
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-.for i in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/READMEs/${i} ${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for i in AUTHORS.ja CODENAME.ja Contributors FAQ.ja NEWS.ja README
+	(cd ${WRKSRC}/READMEs && ${INSTALL_DATA} ${i} \
+		${STAGEDIR}${DOCSDIR})
 .endfor
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${EXAMPLESDIR}
-.for i in ${PORTEXAMPLES}
-	${INSTALL_DATA}	${WRKSRC}/etc/${i} ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+.for i in Emacs.ad dot.emacs dot.skk
+	(cd ${WRKSRC}/etc && ${INSTALL_DATA} ${i} \
+		${STAGEDIR}${EXAMPLESDIR})
 .endfor
-.endif
 
 .include <bsd.port.mk>

@@ -3,9 +3,9 @@
 
 PORTNAME=	fdmf
 DISTVERSION=	0.0.9s
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	audio
-MASTER_SITES=	http://w140.com/audio/ CENKES
+MASTER_SITES=	http://w140.com/audio/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find similar music by perceptual hashing

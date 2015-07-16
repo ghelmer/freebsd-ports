@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	reposado
-PORTVERSION=	0.0.20130415
+PORTVERSION=	0.0.20150131
 CATEGORIES=	net
 
 MAINTAINER=	masaki@club.kyutech.ac.jp
@@ -12,16 +12,16 @@ RUN_DEPENDS=	curl:${PORTSDIR}/ftp/curl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	wdas
-GH_COMMIT=	${GH_TAGNAME}
-GH_PROJECT=	${PORTNAME}
-GH_TAGNAME=	1bcf4f0
+GH_TAGNAME=	6d62d49
 
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 
 SUB_FILES=	pkg-message
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e "s,%%LOCALBASE%%,${LOCALBASE},g" \
@@ -30,10 +30,8 @@ post-patch:
 		${WRKSRC}/setup.py
 
 post-install:
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR} && \
 		${INSTALL_DATA} ${WRKSRC}/docs/* ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

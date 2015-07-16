@@ -2,31 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	mifluz
-PORTVERSION=	0.25.0
+PORTVERSION=	0.26.0
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
-MAINTAINER=	pclin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ library to build and query a full text inverted index
 
 LICENSE=	GPLv3
 
-USE_GCC=	any
-USES=		bison iconv makeinfo pathfix
-USE_AUTOTOOLS=	libtool
-CONFIGURE_ARGS=	--without-unac
+USES=		bison iconv libtool makeinfo pathfix
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-posixmutexes \
+		--localstatedir="${PREFIX}/var" \
+		--without-unac
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 SUB_FILES=	pkg-message
 
 INFO=		mifluz
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
 post-patch:
-	@${REINPLACE_CMD} -e 's|-D_THREAD_SAFE -pthread|${PTHREAD_CFLAGS}|g' \
-		${WRKSRC}/configure
-
+	@${REINPLACE_CMD} -e \
+		'/^#ifndef HAVE_ALLOCA/s|_H||' ${WRKSRC}/clib/strncoll2.c
 
 .include <bsd.port.mk>

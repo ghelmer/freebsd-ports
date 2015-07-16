@@ -3,7 +3,7 @@
 
 PORTNAME=	froxlor
 PORTVERSION=	0.9.32
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	sysutils www
 MASTER_SITES=	http://files.froxlor.org/releases/
 
@@ -20,7 +20,7 @@ SUB_FILES+=	pkg-message pkg-deinstall
 SUB_LIST+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 PLIST_SUB+=	${SUB_LIST}
 
-USE_PHP=	xml bcmath posix filter session ftp mysql mysqli
+USE_PHP=	bcmath curl filter ftp json mysql mysqli pdo_mysql posix session xml
 
 WANT_PHP_CLI=	YES
 
@@ -105,7 +105,7 @@ MYSQLS_USE=	MYSQL=server
 
 PCNTL_USE=	PHP=pcntl
 
-NLS_USES=	gettext:run
+NLS_USES=	gettext-runtime:run
 NLS_USE=	PHP=gettext
 
 .include <bsd.port.options.mk>

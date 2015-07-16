@@ -1,36 +1,30 @@
 # $FreeBSD$
 
 PORTNAME=	tlsdate
-PORTVERSION=	0.0.7
+PORTVERSION=	0.0.12
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	sysutils
-DISTNAME=	${GH_ACCOUNT}-${GH_PROJECT}-${PORTVERSION}-${GH_COMMIT}
 
-MAINTAINER=	fk@fabiankeil.de
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Secure parasitic rdate replacement
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	ioerror
-# Technically tlsdate 0.0.7 is 004f6f6, but a couple of follow-up
-# commits are required to fix the build on FreeBSD.
-GH_COMMIT=	44fa3b7
-GH_TAGNAME=	${GH_COMMIT}
-
-USE_AUTOTOOLS=	autoconf aclocal automake libtool
-USES=		pkgconfig
+LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
 
 OPTIONS_DEFINE=	DOCS
 
-post-patch:
-# Required for FreeBSD 8.4
-	@${REINPLACE_CMD} -e 's@AC_MSG_ERROR(\[M@AC_MSG_WARN([M@' ${WRKSRC}/configure.ac
+GNU_CONFIGURE=	yes
+USE_OPENSSL=	yes
+USES=		autoreconf libtool pkgconfig
 
-pre-configure:
-	@(cd ${WRKSRC} && ./autogen.sh)
+PLIST_SUB=	PKGNAME=${PKGNAME}
+PORTDOCS=	*
 
-regression-test: build
-	@cd ${WRKSRC} && make test
+USE_GITHUB=	yes
+GH_ACCOUNT=	ioerror
+
+regression-test test: build
+	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} test
 
 .include <bsd.port.mk>

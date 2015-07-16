@@ -2,17 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	sys-admin
-PORTVERSION=	1.6.0
+PORTVERSION=	1.6.3
 CATEGORIES=	sysutils rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Unified, cross platform replacement for the Etc module
 
-RUN_DEPENDS=	rubygem-ffi>=1.0.0:${PORTSDIR}/devel/rubygem-ffi
+LICENSE=	ART20
 
-USE_RUBY=		yes
-USE_RUBYGEMS=		yes
+RUN_DEPENDS=	rubygem-ffi>=1.1.0:${PORTSDIR}/devel/rubygem-ffi
+
+NO_ARCH=	yes
+USE_RUBY=	yes
+USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
 
 .include <bsd.port.mk>

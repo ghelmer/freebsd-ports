@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear-data
-PORTVERSION=	3.0.0
+PORTVERSION=	3.4.0
+PORTREVISION=	1
 CATEGORIES=	games
 # see http://www.flightgear.org/templates.js
 MASTER_SITES=	http://mirrors.ibiblio.org/flightgear/ftp/Shared/ \
@@ -25,7 +26,7 @@ DATADIR=	${PREFIX}/share/flightgear
 PLIST=		${WRKDIR}/pkg-plist
 PLIST_DIRS=	%%DATADIR%%
 
-MANUAL_PACKAGE_BUILD=	very large distfile (>900 MB)
+MANUAL_PACKAGE_BUILD=	very large distfile (>1 GB)
 
 post-patch:
 	@${RM} -f ${WRKSRC}/COPYING
@@ -37,8 +38,8 @@ pre-install:
 		| ${SED} -e 's|^|@exec ${MKDIR} %D/share/flightgear/|' >> ${PLIST} && \
 	${FIND} * -type f | ${SORT} \
 		| ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST} && \
-	${FIND} * -type d | ${SORT} -r \
-		| ${SED} -e 's|^|@dirrm %%DATADIR%%/|' >> ${PLIST}
+	${FIND} * -type d -empty | ${SORT} -r \
+		| ${SED} -e 's|^|@dir %%DATADIR%%/|' >> ${PLIST}
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

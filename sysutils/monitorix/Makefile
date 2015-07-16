@@ -1,20 +1,21 @@
 # $FreeBSD$
 
 PORTNAME=	monitorix
-PORTVERSION=	3.4.0
+PORTVERSION=	3.5.1
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.monitorix.org/ \
 		http://www.monitorix.org/old_versions/ \
 		http://www.bayofrum.net/dist/${PORTNAME}/
 
 MAINTAINER=	crees@FreeBSD.org
-COMMENT=	A web based monitoring system
+COMMENT=	Web based monitoring system
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	librrd.so:${PORTSDIR}/databases/rrdtool
 RUN_DEPENDS=	p5-ParallelUA>=0:${PORTSDIR}/www/p5-ParallelUA \
-		p5-CGI.pm>=0:${PORTSDIR}/www/p5-CGI.pm \
+		p5-CGI>=0:${PORTSDIR}/www/p5-CGI \
 		p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
 		p5-MIME-Lite>=0:${PORTSDIR}/mail/p5-MIME-Lite \
 		p5-XML-Simple>=0:${PORTSDIR}/textproc/p5-XML-Simple \
@@ -70,6 +71,8 @@ post-patch:
 		${WRKSRC}/${PORTNAME} \
 		${WRKSRC}/${PORTNAME}.cgi
 	@${REINPLACE_CMD} \
+		-e '\|user *= *nobody|s|nobody|www|' \
+		-e '\|group *= *nobody|s|nobody|www|' \
 		-e 's|^\(base_dir *= *\).*|\1${WWWDIR}/|' \
 		-e 's|^\(base_lib *= *\).*|\1${DBDIR}/|' \
 		-e 's|^\(base_cgi *= *\).*|\1${CGIPATH}/|' \

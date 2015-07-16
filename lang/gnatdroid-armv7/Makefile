@@ -5,8 +5,7 @@ PORTNAME=	armv7
 PORTVERSION=	${SNAPSHOT}
 PORTREVISION=	${ARMV7_PR}
 CATEGORIES=	lang
-MASTER_SITES=	${MASTER_SITE_GCC}
-MASTER_SITE_SUBDIR=	releases/gcc-${GCC_VERSION}
+MASTER_SITES=	GCC/releases/gcc-${GCC_VERSION}
 PKGNAMEPREFIX=	gnatdroid-
 DISTFILES=	${IDENTIFICATION}.tar.bz2
 
@@ -24,7 +23,7 @@ NO_LICENSES_INSTALL= yes
 
 .include "${.CURDIR}/../gcc-aux/Makefile.common"
 
-USES+=		ada gmake
+USES+=		ada:49 gmake
 LANGS=		c c++ ada
 APPLY_DIFFS=	core ada cxx ada-testsuite
 NO_MTREE=	YES
@@ -59,6 +58,10 @@ CROSS=			gnat gnatbind gnatchop gnatclean gnatfind gnatkr \
 			gnatlink gnatls gnatmake gnatprep gnatxref
 
 .include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSREL:R:M8}
+BROKEN=	multiple definition of __x86.get_pc_thunk.cx on FreeBSD 8
+.endif
 
 .if ${PORT_OPTIONS:MFORT}
 LANGS+=		fortran
@@ -114,8 +117,8 @@ post-extract:
 
 do-configure:
 	${MKDIR} ${BUILD_WRKSRC}
-	cd ${BUILD_WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
-		${CFG_SCRIPT} ${ADA_CONFIG_ARGS}
+	(cd ${BUILD_WRKSRC} && ${SETENV} ${CONFIGURE_ENV} \
+		${CFG_SCRIPT} ${ADA_CONFIG_ARGS})
 
 do-install:
 #	Buggy makefile; seems to have forgotten this is a cross compiler
@@ -125,31 +128,29 @@ do-install:
 	${CP} -a ${BUILD_WRKSRC}/gcc/${X}-cross ${BUILD_WRKSRC}/gcc/${X}
 .  endif
 .endfor
-	cd ${BUILD_WRKSRC} && ${SETENV} ${INSTALL_ENV} \
-		${MAKE_CMD} install-strip DESTDIR=${STAGEDIR}
+	(cd ${BUILD_WRKSRC} && ${SETENV} ${INSTALL_ENV} \
+		${MAKE_CMD} install-strip DESTDIR=${STAGEDIR})
 	${MV} ${STAGEDIR}${PREFIX}/bin/ada \
 		${STAGEDIR}${PREFIX}/bin/${DROID_TARGET}-ada
 
-post-install:
+post-stage:
 .for loop in A B
-	cd ${STAGEDIR}${PREFIX}; ${FIND} * -type d -empty | \
-		${SORT} -dr | ${XARGS} ${RMDIR}
+	(cd ${STAGEDIR}${PREFIX}; ${FIND} * -type d -empty | \
+		${SORT} -dr | ${XARGS} ${RMDIR})
 .endfor
-	cd ${STAGEDIR}${PREFIX}; \
-	   ${FIND} * \( -type f -or -type l \) | ${SORT} | \
-	   ${SED} -e '/^bin\//d' -e '/^${DROID_TARGET}\/bin\//d' \
-	   >> ${TMPPLIST}
-	cd ${STAGEDIR}${PREFIX}; ${FIND} * -type d | ${SORT} -dr | \
-	   ${SED} -e 's/^/@dirrmtry /g' >> ${TMPPLIST}
+	(cd ${STAGEDIR}${PREFIX}; \
+		${FIND} * \( -type f -or -type l \) | ${SORT} | \
+		${SED} -e '/^bin\//d' -e '/^${DROID_TARGET}\/bin\//d' \
+		>> ${TMPPLIST})
 
 acats: build
-	cd ${BUILD_WRKSRC}/gcc && ${SETENV} \
-	   PATH=${LOCALBASE}/gcc-aux/bin:${PATH}:${PREFIX}/bin \
-	   gmake -sk check-acats
+	(cd ${BUILD_WRKSRC}/gcc && ${SETENV} \
+		PATH=${LOCALBASE}/gcc-aux/bin:${PATH}:${PREFIX}/bin \
+		${GMAKE} -sk check-acats)
 
 gnatdg: build
-	cd ${BUILD_WRKSRC}/gcc && ${SETENV} \
-	   PATH=${LOCALBASE}/gcc-aux/bin:${PATH}:${PREFIX}/bin \
-	   gmake -sk check-gnat RUNTESTFLAGS=--target_board=gnatdroid
-	
+	(cd ${BUILD_WRKSRC}/gcc && ${SETENV} \
+		PATH=${LOCALBASE}/gcc-aux/bin:${PATH}:${PREFIX}/bin \
+		${GMAKE} -sk check-gnat RUNTESTFLAGS=--target_board=gnatdroid)
+
 .include <bsd.port.mk>

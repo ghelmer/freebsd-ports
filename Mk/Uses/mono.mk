@@ -10,7 +10,7 @@
 .if !defined(_INCLUDE_USES_MONO_MK)
 _INCLUDE_USES_MONO_MK=	yes
 
-.if defined(mono_ARGS)
+.if !empty(mono_ARGS)
 IGNORE=	USES=mono takes no arguments
 .endif
 
@@ -18,7 +18,7 @@ IGNORE=	USES=mono takes no arguments
 # can always assume to be writable.
 MONO_SHARED_DIR=	${WRKDIR}
 CONFIGURE_ENV+=		MONO_SHARED_DIR="${MONO_SHARED_DIR}"
-MAKE_ENV+=		MONO_SHARED_DIR="${MONO_SHARED_DIR}"
+MAKE_ENV+=		MONO_SHARED_DIR="${MONO_SHARED_DIR}" TZ=UTC
 BUILD_DEPENDS+=		mono:${PORTSDIR}/lang/mono
 RUN_DEPENDS+=		mono:${PORTSDIR}/lang/mono
 

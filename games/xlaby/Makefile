@@ -5,16 +5,14 @@ PORTNAME=	xlaby
 PORTVERSION=	2.0.1
 PORTREVISION=	3
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_SUNSITE} \
+MASTER_SITES=	SUNSITE/games/strategy \
 		ftp://quatramaran.ens.fr/pub/madore/xlaby/
-MASTER_SITE_SUBDIR=	games/strategy
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Daemonic X Labyrinth played directly with the mouse pointer
 
 NO_WRKSUBDIR=	yes
-USES=		imake
+USES=		imake tar:tgz
 USE_XORG=	x11
 PLIST_FILES=	man/man6/xlaby.6.gz
 

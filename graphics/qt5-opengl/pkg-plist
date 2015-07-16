@@ -12,6 +12,7 @@
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qgraphicsshadereffect_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qpaintengineex_opengl2_p.h
 %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private/qtextureglyphcache_gl_p.h
+%%QT_INCDIR%%/QtOpenGL/QGL
 %%QT_INCDIR%%/QtOpenGL/QGLBuffer
 %%QT_INCDIR%%/QtOpenGL/QGLColormap
 %%QT_INCDIR%%/QtOpenGL/QGLContext
@@ -38,7 +39,6 @@
 %%QT_INCDIR%%/QtOpenGL/qtopenglversion.h
 %%QT_LIBDIR%%/cmake/Qt5OpenGL/Qt5OpenGLConfig.cmake
 %%QT_LIBDIR%%/cmake/Qt5OpenGL/Qt5OpenGLConfigVersion.cmake
-%%QT_LIBDIR%%/libQt5OpenGL.la
 %%QT_LIBDIR%%/libQt5OpenGL.prl
 %%QT_LIBDIR%%/libQt5OpenGL.so
 %%QT_LIBDIR%%/libQt5OpenGL.so.5
@@ -48,13 +48,3 @@
 %%QT_MKSPECDIR%%/modules/qt_lib_opengl.pri
 %%QT_MKSPECDIR%%/modules/qt_lib_opengl_private.pri
 libdata/pkgconfig/Qt5OpenGL.pc
-@dirrmtry %%QT_MKSPECDIR%%/modules
-@dirrmtry %%QT_MKSPECDIR%%
-@dirrmtry %%QT_ARCHDIR%%
-@dirrm %%QT_LIBDIR%%/cmake/Qt5OpenGL
-@dirrmtry %%QT_LIBDIR%%/cmake
-@dirrm %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL/private
-@dirrm %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%/QtOpenGL
-@dirrm %%QT_INCDIR%%/QtOpenGL/%%FULLVER%%
-@dirrm %%QT_INCDIR%%/QtOpenGL
-@dirrmtry %%QT_INCDIR%%

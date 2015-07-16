@@ -3,11 +3,10 @@
 PORTNAME=	bugzilla
 PORTVERSION=	4.4.4
 CATEGORIES=	russian
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=bugzilla-ru/bugzilla-${PORTVERSION:R}-ru/${PORTVERSION}
+MASTER_SITES=	SF/bugzilla-ru/bugzilla-${PORTVERSION:R}-ru/${PORTVERSION}
 DISTNAME=	bugzilla-${PORTVERSION}-ru-20140422
 
-MAINTAINER=	bugzilla@FreeBSD.org
+MAINTAINER=	bz-ports@FreeBSD.org
 COMMENT=	Russian localization for Bugzilla
 
 RUN_DEPENDS=	bugzilla44>=${PORTVERSION}:${PORTSDIR}/devel/bugzilla44
@@ -23,7 +22,7 @@ do-install:
 # Maintainer
 plist:	patch
 	@( cd ${WRKSRC}/ && ${FIND} * -type f | ${AWK} '{print "%%WWWDIR%%/"$$1}' | ${SORT} > ${PLIST}.new )
-	@( cd ${WRKSRC}/ && ${FIND} * -type d | ${AWK} '{print "@dirrmtry %%WWWDIR%%/"$$1}' | ${SORT} -r >> ${PLIST}.new )
+	@( cd ${WRKSRC}/ && ${FIND} * -type d -empty | ${AWK} '{print "@dir %%WWWDIR%%/"$$1}' | ${SORT} -r >> ${PLIST}.new )
 	@if ${DIFF} -u ${PLIST} ${PLIST}.new ; then \
 		${ECHO_MSG} no pkg-plist changes; \
 		${RM} ${PLIST}.new ; \

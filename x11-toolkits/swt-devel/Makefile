@@ -3,11 +3,10 @@
 
 PORTNAME=	swt
 DISTVERSION=	3.7.1
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	x11-toolkits devel java
-MASTER_SITES=	ECLIPSE
-MASTER_SITE_SUBDIR=	R-${DISTVERSION}-201109091335
+MASTER_SITES=	ECLIPSE/R-${DISTVERSION}-201109091335
 PKGNAMESUFFIX=	-devel
 DISTNAME=	swt-${DISTVERSION}-${DIST_EXT}
 
@@ -48,7 +47,7 @@ OPTIONS_DEFAULT=CAIRO GNOMEVFS
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCAIRO}
-LIB_DEPENDS+=	cairo:${PORTSDIR}/graphics/cairo
+LIB_DEPENDS+=	libcairo.so:${PORTSDIR}/graphics/cairo
 PLIST_FILES+=	lib/libswt-cairo-gtk-%%BUILD%%.so
 MAKE_CAIRO=	make_cairo
 .endif
@@ -79,14 +78,8 @@ DIST_EXT=	gtk-linux-ppc64
 DIST_EXT=	gtk-linux-x86
 .endif
 
-.include <bsd.port.pre.mk>
-
 post-extract:
-.if ${OSVERSION} > 900044
-	@(cd ${WRKSRC} && /usr/bin/unzip -qo *.zip)
-.else
-	@(cd ${WRKSRC} && ${UNZIP_CMD} -qo *.zip)
-.endif
+	@(cd ${WRKSRC} && ${UNZIP_NATIVE_CMD} -qo *.zip)
 	@${RM} -f ${WRKSRC}/*.o ${WRKSRC}/*.so ${WRKSRC}/*.jar
 
 post-patch:
@@ -99,4 +92,4 @@ do-install:
 	${INSTALL_LIB} ${WRKSRC}/libswt-*.so ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_DATA} ${WRKSRC}/${OUTPUT_JAR} ${STAGEDIR}${JAVAJARDIR}/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

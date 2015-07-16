@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mpg123
-PORTVERSION=	1.19.0
-PORTREVISION=	1
+PORTVERSION=	1.22.2
 CATEGORIES=	audio ipv6
 MASTER_SITES=	SF \
 		http://www.mpg123.de/download/
@@ -13,15 +12,16 @@ COMMENT=	Command-line player for MPEG Layer 1, 2, and 3 audio files
 
 LICENSE=	LGPL21
 
-USES=		tar:bzip2 gmake libtool:keepla pathfix
-USE_AUTOTOOLS=	libltdl
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+
+USES=		tar:bzip2 gmake libtool pathfix
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-optimization=0 \
 		--with-audio=oss \
-		--with-default-audio=oss
-CONFIGURE_ENV=	CONFIG_SHELL=${SH}
+		--with-default-audio=oss \
+		--with-module-suffix=.so
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
@@ -39,6 +39,8 @@ WITH_CPU=	i486
 .endif
 .elif ${ARCH} == "amd64"
 WITH_CPU=	x86-64
+.elif ${ARCH} == "arm"
+WITH_CPU=	arm_nofpu
 .endif
 
 .if defined(WITH_CPU)

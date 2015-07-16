@@ -2,7 +2,7 @@
 
 PORTNAME=	llvm
 PORTVERSION=	3.3
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	devel lang
 MASTER_SITES=	http://llvm.org/releases/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
@@ -11,15 +11,13 @@ PKGNAMESUFFIX=	${LLVM_SUFFIX}
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	Low Level Virtual Machine
 
-LIB_DEPENDS=	execinfo:${PORTSDIR}/devel/libexecinfo
-
 LLVM_SUFFIX=	${PORTVERSION:S/.//g}
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 UNIQUENAME=	${PORTNAME}${LLVM_SUFFIX}
 
-USES=		gmake perl5
+USES=		execinfo gmake perl5
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
 USE_LDCONFIG=	${LLVM_PREFIX}/lib
@@ -87,6 +85,9 @@ CONFIGURE_ARGS+=--enable-experimental-targets=R600
 
 .include <bsd.port.options.mk>
 
+# keep in sync with /usr/src/lib/clang/clang.build.mk
+CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}
+
 .if ${PORT_OPTIONS:MASSERTS}
 CONFIGURE_ARGS+=	--enable-assertions
 RELEASE_TYPE=		Release+Asserts
@@ -112,10 +113,10 @@ CONFIGURE_ARGS+=	--disable-docs
 
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=		lit.1
-USE_PYTHON=		-2.9
+USES+=			python:-2.9
 LIT_COMMANDS=		lit llvm-lit FileCheck
 .else
-USE_PYTHON_BUILD=	-2.9
+USES+=			python:-2.9,build
 .endif
 
 .if ${PORT_OPTIONS:MLTOPLUGIN}

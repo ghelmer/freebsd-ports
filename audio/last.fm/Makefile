@@ -4,7 +4,7 @@
 PORTNAME=	last.fm
 PORTVERSION=	1.5.4.26862
 DISTVERSIONSUFFIX=	.src
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	audio net
 MASTER_SITES=	http://cdn.last.fm/client/src/
 
@@ -21,7 +21,8 @@ LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib \
 
 WRKSRC=		${WRKDIR}/last.fm-${PORTVERSION}
 
-USES=		dos2unix qmake:norecursive tar:bzip2
+USES=		cpe dos2unix qmake:norecursive tar:bzip2
+CPE_VENDOR=	last
 DOS2UNIX_GLOB=	*.h *.cpp
 USE_QT4=	moc_build rcc_build uic_build \
 		gui network sql xml imageformats_run
@@ -37,6 +38,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's|/usr/include/gpod|${LOCALBASE}/include/gpod| ; \
 		 s|/usr/include/glib|${LOCALBASE}/include/glib| ; \
+		 s|/usr/lib/glib|${LOCALBASE}/lib/glib| ; \
 		 s|linux|freebsd|' ${WRKSRC}/src/mediadevices/ipod/ipod.pro
 	@${REINPLACE_CMD} -e \
 		's|^RUNDIR.*|RUNDIR=${PREFIX}/lib/last.fm|' \

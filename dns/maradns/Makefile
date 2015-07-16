@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	maradns
-PORTVERSION=	2.0.09
+PORTVERSION=	2.0.11
 CATEGORIES=	dns
-MASTER_SITES=	http://www.maradns.org/download/2.0/${PORTVERSION}/\
+MASTER_SITES=	http://maradns.samiam.org/download/2.0/${PORTVERSION}/\
 		SF/${PORTNAME}/MaraDNS/${PORTVERSION}/
 
 MAINTAINER=	mat@FreeBSD.org
@@ -13,7 +13,7 @@ COMMENT=	DNS server with focus on security and simplicity
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-DEADWOOD_VER=	3.2.05
+DEADWOOD_VER=	3.2.07
 
 REINPLACE_ARGS=	-i ""
 MAKE_ENV=	FLAGS="${CFLAGS}"
@@ -21,14 +21,12 @@ CONFIGURE_ENV=	LANG=
 
 HAS_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME} zoneserver Deadwood
-USES=		tar:bzip2
+USES=		tar:bz2
 USERS=		bind
 GROUPS=		bind
 INSTALL_TARGET=	install PREFIX=${STAGEDIR}${PREFIX}
 
 OPTIONS_DEFINE=	IPV6 DOCS EXAMPLES
-OPTIONS_DEFAULT=	IPV6
-IPV6_DESC=	With support for IPv6
 
 IPV6_CONFIGURE_ON=	--ipv6
 

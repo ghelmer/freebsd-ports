@@ -3,14 +3,15 @@
 
 PORTNAME=	bc
 PORTVERSION=	1.06
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	math
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
 
 MAINTAINER=	gabor@FreeBSD.org
-COMMENT=	The GNU bc/dc calculator
+COMMENT=	GNU bc/dc calculator
+
+LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-libedit
@@ -25,12 +26,12 @@ PORTEXAMPLES=	ckbook.b \
 		primes.b \
 		twins.b
 
+OPTIONS_DEFINE=	EXAMPLES
+
 post-install:
-.if !defined(NOPORTEXAMPLES)
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for f in ${PORTEXAMPLES}
 	${INSTALL_DATA} ${WRKSRC}/Examples/${f} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

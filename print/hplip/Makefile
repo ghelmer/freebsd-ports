@@ -2,16 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	hplip
-PORTVERSION=	3.14.4
-PORTREVISION=	1
+PORTVERSION=	3.14.10
 CATEGORIES=	print
 MASTER_SITES=	SF
 
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Drivers and utilities for HP Printers and All-in-One devices
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libcupsmime.so:${PORTSDIR}/print/cups-base \
+LIB_DEPENDS=	libcupsmime.so:${PORTSDIR}/print/cups-base \
 		libcups.so:${PORTSDIR}/print/cups-client \
 		libcupsimage.so:${PORTSDIR}/print/cups-image \
 		libdbus-1.so:${PORTSDIR}/devel/dbus
@@ -22,10 +20,11 @@ RUN_DEPENDS=	espgs:${PORTSDIR}/print/cups-pstoraster \
 
 CONFLICTS_INSTALL=	hpijs-[0-9]*
 
+INSTALL_TARGET=	install-strip
+USES=		dos2unix jpeg libtool pkgconfig python shebangfix
 USE_GHOSTSCRIPT_RUN=	yes
-USE_PYTHON=	yes
 USE_GNOME=	pygobject
-USES=		dos2unix pkgconfig shebangfix
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-foomatic-ppd-install \
@@ -39,12 +38,9 @@ CONFIGURE_ARGS=	--enable-foomatic-ppd-install \
 		--with-mimedir=${PREFIX}/etc/cups \
 		--with-docdir=${DOCSDIR} \
 		--with-htmldir=${DOCSDIR} \
-		--with-drvdir=${PREFIX}/libexec/cups/driver \
-		--enable-libusb01_build
+		--with-drvdir=${PREFIX}/libexec/cups/driver
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS}
-
-USE_LDCONFIG=	yes
+LIBS+=		-L${LOCALBASE}/lib
 
 SUB_FILES=	pkg-message
 DOS2UNIX_REGEX=.+\.(c|cpp|h|py)$
@@ -77,14 +73,9 @@ FILES4FIX=	Makefile.in \
 		ui4/devmgr5.py
 
 PYTHON_SITELIBDIR_REL=	${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;}
-STRIP_FILES=	lib/libhpip.so.0 \
-		lib/libhpmud.so.0 \
-		${PYTHON_SITELIBDIR_REL}/pcardext.so \
-		${PYTHON_SITELIBDIR_REL}/hpmudext.so \
-		${PYTHON_SITELIBDIR_REL}/cupsext.so
 
 OPTIONS_DEFINE=	QT FAX SNMP SCAN XSANE DOCS
-OPTIONS_DEFAULT=	QT
+OPTIONS_DEFAULT=	QT SNMP SCAN
 OPTIONS_SUB=		yes # QT FAX SCAN
 
 QT_DESC=	Graphical User Interface (Qt 4)
@@ -103,7 +94,7 @@ SNMP_CONFIGURE_ENABLE=	network-build
 
 SCAN_DESC=	Scanning support
 SCAN_LIB_DEPENDS=	libsane.so:${PORTSDIR}/graphics/sane-backends
-SCAN_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/PIL/_imaging.so:${PORTSDIR}/graphics/py-imaging
+SCAN_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow
 SCAN_CONFIGURE_ENABLE=	scan-build
 
 XSANE_DESC=	Install XSane for scanning (requires SCAN)
@@ -116,14 +107,12 @@ DOCS_CONFIGURE_ENABLE=	doc-build
 . if ${PORT_OPTIONS:MXSANE}
 RUN_DEPENDS+=	xsane:${PORTSDIR}/graphics/xsane
 . endif
-
-STRIP_FILES+=	${PYTHON_SITELIBDIR_REL}/scanext.so \
-		lib/sane/libsane-hpaio.so.1
 .endif
 
 post-patch:
-	${REINPLACE_CMD} -e 's,-lpthread,${PTHREAD_LIBS},g' \
-		-e 's|-ldld||g; s|-ldl||g' \
+	${REINPLACE_CMD} -e 's|-ldld||g; s|-ldl||g' \
+		-e 's,-lusb-1.0,-lusb,g' \
+		-e 's,libusb-1.0/libusb.h,libusb.h,g' \
 		${WRKSRC}/configure \
 		${WRKSRC}/Makefile.in
 	${REINPLACE_CMD} -e '/[[:space:]]install-dist_rulesDATA/ s,install-dist_rulesDATA,,' \
@@ -161,7 +150,8 @@ post-install:
 .endif
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/hp
 	${INSTALL_DATA} ${WRKSRC}/hplip.conf ${STAGEDIR}${PREFIX}/etc/hp/hplip.conf.sample
-	${STRIP_CMD} ${STRIP_FILES:S,^,${STAGEDIR}${PREFIX}/,}
 	${LN} -sf ${LOCALBASE}/bin/foomatic-rip ${STAGEDIR}${PREFIX}/libexec/cups/filter/foomatic-rip-hplip
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/cups/model
+	${LN} -sf ${LOCALBASE}/share/ppd/HP ${STAGEDIR}${PREFIX}/share/cups/model/hplip
 
 .include <bsd.port.mk>

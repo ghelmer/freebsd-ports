@@ -5,15 +5,13 @@ PORTNAME=	unclutter
 PORTVERSION=	8
 PORTREVISION=	3
 CATEGORIES=	misc
-MASTER_SITES=	${MASTER_SITE_XCONTRIB}
-MASTER_SITE_SUBDIR=	utilities
-EXTRACT_SUFX=	.tar.Z
+MASTER_SITES=	XCONTRIB/utilities
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Remove idle cursor image from screen
 
 WRKSRC=		${WRKDIR}/unclutter
-USES=		imake
+USES=		imake tar:Z
 USE_XORG=	x11 xext
 
 PLIST_FILES=	bin/unclutter \

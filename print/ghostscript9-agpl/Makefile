@@ -1,14 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	ghostscript
-PORTVERSION=	9.07
-PORTREVISION=	7
+PORTVERSION=	9.15
+PORTREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	http://downloads.ghostscript.com/public/:gs_srcs \
 		SF/ghostscript/GPL%20Ghostscript/${PORTVERSION}:gs_srcs \
 		ftp://mirror.cs.wisc.edu/pub/mirrors/ghost/GPL/gs${PORTVERSION:S/.//}/:gs_srcs \
 		http://www.humblesoft.com/pub/:epag
-MASTER_SITE_SUBDIR=	ghostscript/:gs_srcs
 PKGNAMESUFFIX=	9-agpl
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:gs_srcs ${EPAG_SRCS}:epag
 DIST_SUBDIR=	${PORTNAME}
@@ -23,8 +22,7 @@ LICENSE=	AGPLv3
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
 		libidn.so:${PORTSDIR}/dns/libidn \
 		libjbig2dec.so:${PORTSDIR}/graphics/jbig2dec \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		liblcms2.so:${PORTSDIR}/graphics/lcms2 \
 		libpaper.so:${PORTSDIR}/print/libpaper
@@ -35,7 +33,7 @@ CONFLICTS_INSTALL= \
 		ghostscript[789]-[0-9]* \
 		ghostscript[789]-nox11-[0-9]*
 
-USES=		gmake pkgconfig:build tar:bzip2
+USES=		gmake jpeg pkgconfig:build tar:bzip2
 WANT_GNOME=	yes
 USE_LDCONFIG=	yes
 USE_AUTOTOOLS=	autoconf
@@ -57,13 +55,11 @@ CONFIGURE_ARGS=	--disable-compile-inits \
 CPPFLAGS+=	-DUPD_SIGNAL=0 -I. \
 		-I${WRKSRC}/lcms2/include \
 		-I${LOCALBASE}/include/libpng \
-		-I${WRKSRC}/openjpeg/libopenjpeg \
-		-I${WRKSRC}/openjpeg \
+		-I${WRKSRC}/openjpeg/src/lib/openjp2 \
 		-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-XCFLAGS=	${PTHREAD_CFLAGS} \
-		-DA4
-XLDFLAGS=	${PTHREAD_LIBS}
+XCFLAGS=	-DA4
+XLDFLAGS=	-lpthread
 
 PLIST_SUB=	GS_VERSION="${PORTVERSION}" \
 		X11BITS=${X11BITS}
@@ -158,8 +154,6 @@ post-install-docs:
 		( cd ${STAGEDIR}${DOCSDIR} && ${TAR} -xof - )
 
 post-install:
-	${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DATADIR}/${PORTVERSION}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/gsc ${STAGEDIR}${PREFIX}/bin/gsx
 	${LN} -sf gsc ${STAGEDIR}${PREFIX}/bin/gs
 	${LN} -s -f ${LOCALBASE}/share/fonts/CIDFont \
 		${STAGEDIR}${DATADIR}/${PORTVERSION}/Resource/CIDFont/fonts

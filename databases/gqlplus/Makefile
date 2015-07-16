@@ -2,15 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	gqlplus
-PORTVERSION=	1.15
+PORTVERSION=	1.16
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
 MAINTAINER=	leeym@FreeBSD.org
 COMMENT=	SQL*PLUS with commandline editing, history, and name completion
 
+LICENSE=	GPLv2
+
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake readline
 
 PORTDOCS=	README ChangeLog
 PLIST_FILES=	bin/gqlplus

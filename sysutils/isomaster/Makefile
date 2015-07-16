@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	isomaster
-PORTVERSION=	1.3.11
+PORTVERSION=	1.3.13
 CATEGORIES=	sysutils
 MASTER_SITES=	http://littlesvr.ca/isomaster/releases/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	GTK2 (bootable) CD ISO Image editor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	iniparser:${PORTSDIR}/devel/iniparser
+LIB_DEPENDS=	libiniparser.so:${PORTSDIR}/devel/iniparser
 RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
 
 USES=		desktop-file-utils gettext gmake pkgconfig tar:bzip2

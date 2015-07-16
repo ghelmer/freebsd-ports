@@ -5,14 +5,14 @@ PORTNAME=	lvwimax
 PORTVERSION=	0.1
 PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	ftp://ftp.wart.ru/pub/download/ \
-		${MASTER_SITE_LOCAL}
+MASTER_SITES=	ftp://ftp.wart.ru/pub/download/
 
 MAINTAINER=	bsam@FreeBSD.org
 COMMENT=	Userland driver for Samsung WiMAX modems
 
 LICENSE=	GPLv2
 
+USES=		uidfix
 USE_RC_SUBR=	lvwimax
 
 PLIST_FILES=	etc/devd/lvwimax.conf sbin/lvwimax

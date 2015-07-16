@@ -8,12 +8,12 @@ MASTER_SITES=	http://instinctive.eu/code/
 MAINTAINER=	natbsd@instinctive.eu
 COMMENT=	Flexible C library for markdown
 
-LICENSE=	BSD
+LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 MAKEFILE=	BSDmakefile
 USE_LDCONFIG=	yes
-USE_BZIP2=	yes
+USES=	tar:bzip2
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/libsoldout.so.1 ${STAGEDIR}${PREFIX}/lib

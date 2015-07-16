@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lxappearance
-PORTVERSION=	0.5.3
+PORTVERSION=	0.6.1
 CATEGORIES=	x11-themes gnome
 MASTER_SITES=	SF/lxde/LXAppearance
 
@@ -11,24 +11,22 @@ COMMENT=	Desktop-independent theme switcher for GTK+
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
+
+USES=		gettext-tools gmake pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig
-USE_GNOME=	gnomehack gtk20 intlhack
+USE_GNOME=	gtk20
+CONFIGURE_ARGS=	--enable-dbus
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTDOCS=	AUTHORS README
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
-NLS_USES=	gettext
-
-.include <bsd.port.options.mk>
-
-post-patch:
-.if ! ${PORT_OPTIONS:MNLS}
-	@${REINPLACE_CMD} -e 's|man po|man|' \
-		${WRKSRC}/Makefile.in
-.endif
+NLS_USES=	gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

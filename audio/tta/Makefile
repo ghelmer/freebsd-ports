@@ -6,19 +6,20 @@ PORTVERSION=	3.4.1
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}enc-src
 DISTNAME=	${PORTNAME}enc-${PORTVERSION}-src
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	The True Audio Encoder, lossless (de)compressor
 
 LICENSE=	GPLv2
 
-USES=		gmake
+USES=		gmake tar:tgz
 ALL_TARGET=	ttaenc
 MAKE_ARGS=	CFLAGS="${CFLAGS}" INSDIR="${STAGEDIR}${PREFIX}/bin"
 
 PLIST_FILES=	bin/ttaenc
 PORTDOCS=	README
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e '/ifdef _BIG_ENDIAN/s|ifdef|if _BYTE_ORDER ==|' \

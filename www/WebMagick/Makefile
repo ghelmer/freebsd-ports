@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	WebMagick
-PORTVERSION=	2.03p24
-DISTVERSION=	2.03pre24
-PORTREVISION=	2
+PORTVERSION=	2.03p26
+DISTVERSION=	2.03pre26
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	www graphics
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}-beta/${DISTVERSION}
@@ -13,12 +13,13 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Image Web Generator - recursively build HTMLs, imagemaps, thumbnails
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libMagickCore-6.Q*.so:${PORTSDIR}/graphics/ImageMagick
+LIB_DEPENDS=	libMagickCore-6.so:${PORTSDIR}/graphics/ImageMagick
 RUN_DEPENDS=	p5-Sort-Naturally>=0:${PORTSDIR}/textproc/p5-Sort-Naturally
 
-USES=		shebangfix perl5
-USE_AUTOTOOLS=  autoconf aclocal automake
+USES=		shebangfix perl5 autoreconf
+GNU_CONFIGURE=	yes
 AUTOMAKE_ARGS+= --add-missing
 INFO=		webmagick
 MAKE_ARGS+=	ICON_INSTALL_DIR=${STAGEDIR}${PREFIX}/www/data/webmagick \
@@ -34,17 +35,24 @@ SHEBANG_FILES=	utils/aub \
 		utils/help2man \
 		utils/make_dir_index.pl
 
+OPTIONS_DEFINE=		X11
+X11_BUILD_DEPENDS=	xlsfonts:${PORTSDIR}/x11-fonts/xlsfonts
+X11_RUN_DEPENDS=	xlsfonts:${PORTSDIR}/x11-fonts/xlsfonts
+X11_CONFIGURE_ENV_OFF=	with_x=no
+
 .include <bsd.port.pre.mk>
 
-.if !exists(${LOCALBASE}/bin/xlsfonts)
-WITHOUT_X11=	yes
-.endif
-
-.if defined(WITHOUT_X11)
-CONFIGURE_ENV+=with_x=no
-.endif
+pre-configure:
+	@if [ ! -f ${SITE_ARCH}/Image/Magick.pm ]; then \
+		${ECHO_CMD} ERROR: ImageMagick must be installed with the PERL option enabled; \
+		${FALSE}; \
+	fi
 
 pre-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/www/data
+
+post-install:
+	${MV} ${STAGEDIR}${PREFIX}/etc/webmagickrc.dist \
+		${STAGEDIR}${PREFIX}/etc/webmagickrc.sample
 
 .include <bsd.port.post.mk>

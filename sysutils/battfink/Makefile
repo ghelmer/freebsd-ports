@@ -9,7 +9,7 @@ MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	An energy saving preferences app for GNOME
+COMMENT=	Energy saving preferences app for GNOME
 
 INSTALLS_OMF=	yes
 USE_GNOME=	gnomeprefix libgnomeui

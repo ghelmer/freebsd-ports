@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	enet
-PORTVERSION=	1.3.12
-PORTREVISION=	1
+PORTVERSION=	1.3.13
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	http://enet.bespin.org/download/
@@ -14,10 +13,8 @@ COMMENT=	Simple and robust communication library based on UDP
 LICENSE=	MIT
 
 USES=		pathfix libtool
-PATHFIX_MAKEFILEIN=	Makefile.am
-USE_AUTOTOOLS=	aclocal automake autoconf
-ACLOCAL_ARGS=	-I ${LOCALBASE}/share/aclocal
-AUTOMAKE_ARGS=	--add-missing
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*
@@ -25,7 +22,6 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libenet.so.7
 	@(cd ${WRKSRC}/docs && ${COPYTREE_SHARE} html ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

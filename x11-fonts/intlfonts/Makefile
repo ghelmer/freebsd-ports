@@ -5,8 +5,7 @@ PORTNAME=	intlfonts
 PORTVERSION=	1.2.1
 PORTREVISION=	4
 CATEGORIES=	x11-fonts
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	intlfonts
+MASTER_SITES=	GNU
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free X11 fonts for all characters that Emacs can handle
@@ -59,16 +58,14 @@ do-build:
 
 
 do-install:
-	(cd ${WRKSRC}; \
-	  ${MKDIR} ${STAGEDIR}${PREFIX}/${FONTSDIR}; \
-	  for dir in ${NORMAL_FONTS} ${BIG_FONTS}; do \
-	  	${INSTALL_DATA} $$dir/*.pcf.gz ${STAGEDIR}${PREFIX}/${FONTSDIR} ; \
-	  done; \
-	  ${MKDIR} ${STAGEDIR}${PREFIX}/${T1_FONTSDIR}; \
-	  ${INSTALL_DATA} Type1/*.* ${STAGEDIR}${PREFIX}/${T1_FONTSDIR} ; \
-	  ${MKDIR} ${STAGEDIR}${PREFIX}/${TT_FONTSDIR}; \
-	  ${INSTALL_DATA} TrueType/*.ttf ${STAGEDIR}${PREFIX}/${TT_FONTSDIR} ; \
-	)
+.for d in ${FONTSDIR} ${T1_FONTSDIR} ${TT_FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/$d
+.endfor
+	for dir in ${NORMAL_FONTS} ${BIG_FONTS}; do \
+		${INSTALL_DATA} ${WRKSRC}/$$dir/*.pcf.gz ${STAGEDIR}${PREFIX}/${FONTSDIR}; \
+	done
+	${INSTALL_DATA} ${WRKSRC}/Type1/*.* ${STAGEDIR}${PREFIX}/${T1_FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/TrueType/*.ttf ${STAGEDIR}${PREFIX}/${TT_FONTSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${WRKSRC}/Emacs.ap ${WRKSRC}/NEWS \
 		${STAGEDIR}${DOCSDIR}

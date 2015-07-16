@@ -4,14 +4,12 @@
 PORTNAME=	dvdimagecmp
 PORTVERSION=	0.3
 CATEGORIES=	sysutils
-MASTER_SITES=	SUNSITE
-MASTER_SITE_SUBDIR=	apps/video
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	SUNSITE/apps/video
 
 MAINTAINER=	ports@thepentagon.org
-COMMENT=	A simple tool for comparing an image to a burned disc
+COMMENT=	Simple tool for comparing an image to a burned disc
 
-USES=		gmake
+USES=		gmake tar:tgz
 
 CFLAGS+=	-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	hastymail2
 PORTVERSION=	1.1
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	www mail
 MASTER_SITES=	SF/hastymail/Hastymail2%20Stable%20Releases/Hastymail2%201.1/
@@ -12,12 +12,13 @@ DISTNAME=	hastymail2_${WIKEDVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small, fast and secure yet powerful IMAP webmail
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
-CONFLICTS=	hastymail-* hastymail2-devel-*
+CONFLICTS_INSTALL=	hastymail2-devel-[0-9]*
 
 WANT_PHP_WEB=	yes
 USE_PHP=	ctype pcre session xml
@@ -26,6 +27,7 @@ WIKEDVERSION=	1_1
 WRKSRC=		${WRKDIR}/${PORTNAME}_${WIKEDVERSION}
 NO_BUILD=	yes
 FIND_SKIP_OPTS=	-not -name hastymail2.conf.example -not -name '*.orig'
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
 OPTIONS_DEFINE=	PGSQL MYSQL DB ICONV MBSTRING
 
@@ -42,7 +44,7 @@ RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/mysql.php:${PORTSDIR}/database
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=	pgsql
 .if ! ${PORT_OPTIONS:MDB}
 RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/pgsql.php:${PORTSDIR}/databases/pear-MDB2_Driver_pgsql
 .endif
@@ -67,11 +69,10 @@ post-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
-	@cd ${WRKSRC} && ${FIND} . ${FIND_SKIP_OPTS} \
+	cd ${WRKSRC} && ${FIND} . ${FIND_SKIP_OPTS} \
 		| ${PAX} -rwd ${STAGEDIR}${WWWDIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${WWWDIR}
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
-	@${INSTALL_DATA} ${WRKSRC}/hastymail2.conf.example \
+	${INSTALL_DATA} ${WRKSRC}/hastymail2.conf.example \
 		${STAGEDIR}${ETCDIR}/hastymail2.conf.sample
 
 .include <bsd.port.mk>

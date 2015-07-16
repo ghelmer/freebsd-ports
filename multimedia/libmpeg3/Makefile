@@ -10,14 +10,14 @@ MASTER_SITES=	SF/heroines/releases/081108
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced editing and manipulation of MPEG streams
 
-LIB_DEPENDS=	a52.0:${PORTSDIR}/audio/liba52
+LIB_DEPENDS=	liba52.so:${PORTSDIR}/audio/liba52
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_DEFINE_i386=	MMX
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-USES=	gmake tar:bzip2
+USES=		alias gmake tar:bzip2
 MAKE_ARGS=	CC="${CC}" USE_CSS=0 OBJDIR="obj" \
 		CFLAGS="${CFLAGS} ${CPPFLAGS}" LIBS="${LIBS}"
 

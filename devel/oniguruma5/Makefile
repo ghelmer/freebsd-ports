@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	oniguruma
-PORTVERSION=	5.9.5
+PORTVERSION=	5.9.6
 CATEGORIES=	devel textproc
 MASTER_SITES=	http://www.geocities.jp/kosako3/oniguruma/archive/
 PKGNAMESUFFIX=	5
@@ -12,14 +12,16 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BSDL Regular Expressions library compatible with POSIX/GNU/Perl
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 CONFLICTS=	oniguruma-2.*
 
-USES=		pathfix
+USES=		libtool pathfix
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 .include <bsd.port.options.mk>

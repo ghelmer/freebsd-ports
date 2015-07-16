@@ -3,7 +3,7 @@
 
 PORTNAME=	conky
 PORTVERSION=	1.9.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
@@ -13,7 +13,7 @@ COMMENT?=	Advanced, highly configurable system monitor for X11
 CONFLICTS?=	conky-awesome-[0-9]*
 SLAVEDIRS=	sysutils/conky-awesome
 
-USES=		gmake iconv pkgconfig tar:bzip2
+USES=		cpe gmake iconv pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-portmon \
 			--disable-hddtemp \
@@ -33,7 +33,7 @@ OPTIONS_DEFINE=	APCUPSD AUDACIOUS INOTIFY LUA METAR MOC MPD NCURSES RSS \
 
 OPTIONS_GROUP?=	X11
 OPTIONS_GROUP_X11=	ARGB DOUBLE_BUFFER IMLIB2 XFT LUA_CAIRO LUA_IMLIB2
-OPTIONS_DEFAULT?=	X11 ARGB DOUBLE_BUFFER
+OPTIONS_DEFAULT?=	X11 ARGB DOUBLE_BUFFER XFT
 
 APCUPSD_DESC=		Monitor APCUPSD
 APCUPSD_CONFIGURE_ENABLE=apcupsd

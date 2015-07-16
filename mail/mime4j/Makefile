@@ -4,12 +4,11 @@
 PORTNAME=	mime4j
 PORTVERSION=	0.7.2
 CATEGORIES=	mail java
-MASTER_SITES=	${MASTER_SITE_APACHE}
-MASTER_SITE_SUBDIR=	james/${PORTNAME}
+MASTER_SITES=	APACHE/james/${PORTNAME}
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}-bin
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A Java parser for e-mail message streams
+COMMENT=	Java parser for e-mail message streams
 
 LICENSE=	APACHE20
 

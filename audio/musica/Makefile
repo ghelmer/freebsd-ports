@@ -3,15 +3,16 @@
 
 PORTNAME=	musica
 PORTVERSION=	1.1.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://ict.ewi.tudelft.nl/~erik/open-source/musica/
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK based midi player
 
 LICENSE=	GPLv2
 
+BROKEN=		Unfetchable
 USE_GNOME=	gtk12
 
 GNU_CONFIGURE=	yes

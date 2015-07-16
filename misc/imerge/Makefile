@@ -5,13 +5,12 @@ PORTNAME=	imerge
 PORTVERSION=	0.2.4
 CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.iDaemons.org/pub/distfiles/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	knu
+		LOCAL/knu
 
 MAINTAINER=	knu@FreeBSD.org
-COMMENT=	A tool to help merge one file to another interactively
+COMMENT=	Tool to help merge one file to another interactively
 
-USE_BZIP2=	yes
+USES=		tar:bzip2 uidfix
 
 MAKE_ARGS=	PREFIX="${PREFIX}" MANPREFIX="${MANPREFIX}"
 MAKEFILE=	BSDmakefile

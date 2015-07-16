@@ -8,9 +8,9 @@ include/libtextcat/utf8misc.h
 include/libtextcat/wg_mempool.h
 include/textcat.h
 lib/libtextcat.a
-lib/libtextcat.la
 lib/libtextcat.so
 lib/libtextcat.so.0
+lib/libtextcat.so.0.0.0
 %%DATADIR%%/LM/afrikaans.lm
 %%DATADIR%%/LM/albanian.lm
 %%DATADIR%%/LM/amharic-utf.lm
@@ -88,6 +88,3 @@ lib/libtextcat.so.0
 %%DATADIR%%/LM/welsh.lm
 %%DATADIR%%/LM/yiddish-utf.lm
 %%DATADIR%%/conf.txt
-@dirrm %%DATADIR%%/LM
-@dirrm %%DATADIR%%
-@dirrm include/libtextcat

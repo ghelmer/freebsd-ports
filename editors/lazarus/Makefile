@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	lazarus
-PORTVERSION=	1.2.4
-PORTREVISION?=	1
+PORTVERSION=	1.4.0
+DISTVERSIONSUFFIX=	-0
+PORTREVISION?=	0
 CATEGORIES=	editors devel
-MASTER_SITES=	SF/${PORTNAME}/Lazarus%20Zip%20_%20GZip/Lazarus%20${PORTVERSION} \
-		${MASTER_SITE_LOCAL:S|$|acm/freepascal/|}
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/$/-0/}
+MASTER_SITES=	SF/${PORTNAME}/Lazarus%20Zip%20_%20GZip/Lazarus%20${PORTVERSION:S/.0//} \
+		LOCAL/acm/freepascal
 DIST_SUBDIR=	freepascal
 
-MAINTAINER?=	acm@FreeBSD.org
+MAINTAINER?=	freebsd-fpc@FreeBSD.org
 COMMENT?=	A portable Delphi-like IDE for the FreePascal compiler
 
 BUILD_DEPENDS?=	#
@@ -68,7 +68,7 @@ SUB_FILES=	pkg-message
 SUB_LIST+=	PORTSDIR="${PORTSDIR}"
 
 .if ${PORT_OPTIONS:MGDB}
-RUN_DEPENDS+=	gdb771:${PORTSDIR}/devel/gdb
+RUN_DEPENDS+=	${LOCALBASE}/bin/gdb:${PORTSDIR}/devel/gdb
 .endif
 
 .if ${PORT_OPTIONS:MGTK2}
@@ -88,7 +88,7 @@ RUN_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editor
 .endif
 
 .if ${PORT_OPTIONS:MQT4}
-LIB_DEPENDS+=	Qt4Pas.5:${PORTSDIR}/x11-toolkits/qt4pas
+LIB_DEPENDS+=	libQt4Pas.so:${PORTSDIR}/x11-toolkits/qt4pas
 LCL_PLATFORM=	qt
 BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-qt
 RUN_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:${PORTSDIR}/editors/lazarus-lcl-qt
@@ -105,13 +105,15 @@ post-extract:
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' -e 's|%%DATADIR%%|${DATADIR}|g' \
-			-e 's|tools: lcl|tools:|g' -e '2840d' -e '2842d' -e '2843d' -e '2844d' ${WRKSRC}/${MAKEFILE}
+			-e 's|tools: lcl|tools:|g' -e '3080d' -e '3082d' -e '3083d' -e '3084d' -e '3085d' -e '3086d' ${WRKSRC}/${MAKEFILE}
 
 pre-build:
-	@${LN} -s ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/lcl/units ${WRKSRC}/lcl/units
-	@${LN} -s ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/ideintf/units ${WRKSRC}/components/ideintf/units
-	@${LN} -s ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/synedit/units ${WRKSRC}/components/synedit/units
-	@${LN} -s ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/lazcontrols/lib ${WRKSRC}/components/lazcontrols/lib
+	@${LN} -sf ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/lcl/units ${WRKSRC}/lcl/units
+	@${LN} -sf ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/debuggerintf/lib ${WRKSRC}/components/debuggerintf/lib
+	@${LN} -sf ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/ideintf/units ${WRKSRC}/components/ideintf/units
+	@${LN} -sf ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/synedit/units ${WRKSRC}/components/synedit/units
+	@${LN} -sf ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/lazcontrols/lib ${WRKSRC}/components/lazcontrols/lib
+	@${LN} -sf ${LOCALBASE}/share/${PORTNAME}-${PORTVERSION}/components/lazdebuggergdbmi/lib ${WRKSRC}/components/lazdebuggergdbmi/lib
 
 do-build:
 	@cd ${WRKSRC} && \
@@ -132,6 +134,9 @@ pre-install:
 
 	@${RM} -f ${PLIST}
 	@${RM} -f ${WRKSRC}/lcl/units
+	@${RM} -r ${WRKSRC}/components/chmhelp/lhelp/lhelp.app/Contents/MacOS \
+		${WRKSRC}/lazarus.app/Contents/MacOS \
+		${WRKSRC}/lazarus.app/Contents/Resources/startlazarus.app/Contents/MacOS
 
 .	for FILE in bin/lazarus bin/lazbuild
 		@${ECHO_CMD} ${FILE} >> ${PLIST}
@@ -140,26 +145,18 @@ pre-install:
 		@${ECHO_CMD} man/man1/${m}.gz >> ${PLIST}
 .	endfor
 
-.if !defined(NOPORTDOCS)
 	@${ECHO_CMD} "%%DATADIR%%/docs" >> ${PLIST}
 	@cd ${WRKDIR}/docs && \
-		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DOCSDIR%%/|' >> ${PLIST} && \
-			${FIND} * -type d | ${SORT} -r | ${SED} -e 's|^|@dirrm %%DOCSDIR%%/|' >> ${PLIST}
-	@${ECHO_CMD} "@dirrm %%DOCSDIR%%" >> ${PLIST}
-.endif
+		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DOCSDIR%%/|' >> ${PLIST}
 
-.if !defined(NOPORTEXAMPLES)
 	@${ECHO_CMD} "%%DATADIR%%/examples" >> ${PLIST}
 	@cd ${WRKDIR}/examples && \
 		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%EXAMPLESDIR%%/|' >> ${PLIST} && \
-			${FIND} * -type d | ${SORT} -r | ${SED} -e 's|^|@dirrm %%EXAMPLESDIR%%/|' >> ${PLIST}
-	@${ECHO_CMD} "@dirrm %%EXAMPLESDIR%%" >> ${PLIST}
-.endif
+		${FIND} * -type d -empty | ${SORT} | ${SED} -e 's|^|@dir %%EXAMPLESDIR%%/|' >> ${PLIST}
 
 	@cd ${WRKSRC} && \
 		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST} && \
-			${FIND} * -type d | ${SORT} -r | ${SED} -e 's|^|@dirrmtry %%DATADIR%%/|' >> ${PLIST}
-	@${ECHO_CMD} "@dirrmtry %%DATADIR%%" >> ${PLIST}
+		${FIND} * -type d -empty | ${SORT} | ${SED} -e 's|^|@dir %%DATADIR%%/|' >> ${PLIST}
 
 do-install:
 .for DIRE in components converter debugger designer doceditor ide images install languages lazarus.app lcl \
@@ -176,19 +173,15 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${FILE} ${STAGEDIR}${DATADIR}
 .endfor
 
-.if !defined(NOPORTDOCS)
 	@cd ${WRKDIR}/docs && \
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${DOCSDIR}/{}" \; && \
 			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DOCSDIR}/{}" \;
 	@${LN} -s ${DOCSDIR} ${STAGEDIR}${DATADIR}/docs
-.endif
 
-.if !defined(NOPORTEXAMPLES)
 	@cd ${WRKDIR}/examples && \
 		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${EXAMPLESDIR}/{}" \; && \
 			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${EXAMPLESDIR}/{}" \;
 	@${LN} -s ${EXAMPLESDIR} ${STAGEDIR}${DATADIR}/examples
-.endif
 
 	${INSTALL_SCRIPT} ${WRKSRC}/localize.sh ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/lazarus-wrapper ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

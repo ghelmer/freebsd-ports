@@ -3,7 +3,7 @@
 
 PORTNAME=	djmount
 PORTVERSION=	0.71
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libupnp.so:${PORTSDIR}/devel/upnp
 
 PLIST_FILES=	bin/${PORTNAME}
 GNU_CONFIGURE=	yes
-USES=		fuse iconv:build pkgconfig
+USES=		fuse iconv:build pkgconfig readline
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} \
 		--with-fuse-prefix=${LOCALBASE} \
 		--with-external-libupnp --with-libupnp-prefix=${LOCALBASE}

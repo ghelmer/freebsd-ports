@@ -14,6 +14,7 @@ include/gwyddion/app/gwymoduleutils-file.h
 include/gwyddion/app/gwymoduleutils.h
 include/gwyddion/app/gwyplaintool.h
 include/gwyddion/app/gwytool.h
+include/gwyddion/app/help.h
 include/gwyddion/app/log.h
 include/gwyddion/app/menu.h
 include/gwyddion/app/meta.h
@@ -45,6 +46,7 @@ include/gwyddion/libgwyddion/gwymathfallback.h
 include/gwyddion/libgwyddion/gwymd5.h
 include/gwyddion/libgwyddion/gwynlfit.h
 include/gwyddion/libgwyddion/gwynlfitpreset.h
+include/gwyddion/libgwyddion/gwyrandgenset.h
 include/gwyddion/libgwyddion/gwyresource.h
 include/gwyddion/libgwyddion/gwyserializable.h
 include/gwyddion/libgwyddion/gwysiunit.h
@@ -149,6 +151,7 @@ lib/gwyddion/modules/file/aistfile.so
 lib/gwyddion/modules/file/alicona.so
 lib/gwyddion/modules/file/ambfile.so
 lib/gwyddion/modules/file/anfatec.so
+lib/gwyddion/modules/file/apedaxfile.so
 lib/gwyddion/modules/file/apefile.so
 lib/gwyddion/modules/file/asciiexport.so
 lib/gwyddion/modules/file/assing-afm.so
@@ -165,6 +168,9 @@ lib/gwyddion/modules/file/dmefile.so
 lib/gwyddion/modules/file/dumbfile.so
 lib/gwyddion/modules/file/ecsfile.so
 lib/gwyddion/modules/file/ezdfile.so
+lib/gwyddion/modules/file/femtoscan.so
+lib/gwyddion/modules/file/femtoscan-txt.so
+lib/gwyddion/modules/file/fitsfile.so
 lib/gwyddion/modules/file/gdeffile.so
 lib/gwyddion/modules/file/gsffile.so
 lib/gwyddion/modules/file/gwyfile.so
@@ -174,10 +180,12 @@ lib/gwyddion/modules/file/hdrimage.so
 lib/gwyddion/modules/file/hitachi-afm.so
 lib/gwyddion/modules/file/hitachi-sem.so
 lib/gwyddion/modules/file/igorfile.so
+lib/gwyddion/modules/file/imgexport.so
 lib/gwyddion/modules/file/intematix.so
 lib/gwyddion/modules/file/iso28600.so
 lib/gwyddion/modules/file/jeol.so
 lib/gwyddion/modules/file/jpkscan.so
+lib/gwyddion/modules/file/jspmfile.so
 lib/gwyddion/modules/file/lextfile.so
 lib/gwyddion/modules/file/magellan.so
 lib/gwyddion/modules/file/mapvue.so
@@ -190,13 +198,16 @@ lib/gwyddion/modules/file/nanoeducator.so
 lib/gwyddion/modules/file/nanomagnetics.so
 lib/gwyddion/modules/file/nanonics.so
 lib/gwyddion/modules/file/nanonis.so
+lib/gwyddion/modules/file/nanoobserver.so
 lib/gwyddion/modules/file/nanoscan.so
+lib/gwyddion/modules/file/nanoscantech.so
 lib/gwyddion/modules/file/nanoscope-ii.so
 lib/gwyddion/modules/file/nanoscope.so
 lib/gwyddion/modules/file/nanotop.so
 lib/gwyddion/modules/file/netcdf.so
 lib/gwyddion/modules/file/nrrdfile.so
 lib/gwyddion/modules/file/nt-mdt.so
+lib/gwyddion/modules/file/nxiifile.so
 lib/gwyddion/modules/file/oldmda.so
 lib/gwyddion/modules/file/ols.so
 lib/gwyddion/modules/file/ometiff.so
@@ -204,6 +215,7 @@ lib/gwyddion/modules/file/omicron.so
 lib/gwyddion/modules/file/omicronflat.so
 lib/gwyddion/modules/file/omicronmatrix.so
 lib/gwyddion/modules/file/opdfile.so
+lib/gwyddion/modules/file/opengps.so
 lib/gwyddion/modules/file/pixmap.so
 lib/gwyddion/modules/file/pltfile.so
 lib/gwyddion/modules/file/pnifile.so
@@ -213,6 +225,7 @@ lib/gwyddion/modules/file/quesant.so
 lib/gwyddion/modules/file/rawfile.so
 lib/gwyddion/modules/file/rawgraph.so
 lib/gwyddion/modules/file/rawxyz.so
+lib/gwyddion/modules/file/renishaw.so
 lib/gwyddion/modules/file/rhk-sm3.so
 lib/gwyddion/modules/file/rhk-sm4.so
 lib/gwyddion/modules/file/rhk-spm32.so
@@ -229,6 +242,7 @@ lib/gwyddion/modules/file/spip-asc.so
 lib/gwyddion/modules/file/spml.so
 lib/gwyddion/modules/file/spmlab.so
 lib/gwyddion/modules/file/spmlabf.so
+lib/gwyddion/modules/file/spmxfile.so
 lib/gwyddion/modules/file/stmprg.so
 lib/gwyddion/modules/file/stpfile.so
 lib/gwyddion/modules/file/surffile.so
@@ -236,13 +250,16 @@ lib/gwyddion/modules/file/tescan.so
 lib/gwyddion/modules/file/tiaser.so
 lib/gwyddion/modules/file/unisoku.so
 lib/gwyddion/modules/file/vtkfile.so
+lib/gwyddion/modules/file/win_stm.so
 lib/gwyddion/modules/file/wipfile.so
 lib/gwyddion/modules/file/witec-asc.so
 lib/gwyddion/modules/file/witfile.so
 lib/gwyddion/modules/file/wsffile.so
 lib/gwyddion/modules/file/wsxmfile.so
+lib/gwyddion/modules/file/xyzexport.so
 lib/gwyddion/modules/file/zeiss.so
 lib/gwyddion/modules/file/zemax.so
+lib/gwyddion/modules/graph/graph_align.so
 lib/gwyddion/modules/graph/graph_cd.so
 lib/gwyddion/modules/graph/graph_cut.so
 lib/gwyddion/modules/graph/graph_dos_spectrum.so
@@ -265,6 +282,7 @@ lib/gwyddion/modules/process/angle_dist.so
 lib/gwyddion/modules/process/arithmetic.so
 lib/gwyddion/modules/process/averaging.so
 lib/gwyddion/modules/process/basicops.so
+lib/gwyddion/modules/process/bdep_synth.so
 lib/gwyddion/modules/process/calcoefs_load.so
 lib/gwyddion/modules/process/calcoefs_new.so
 lib/gwyddion/modules/process/calcoefs_simple.so
@@ -277,6 +295,7 @@ lib/gwyddion/modules/process/crosscor.so
 lib/gwyddion/modules/process/curvature.so
 lib/gwyddion/modules/process/cwt.so
 lib/gwyddion/modules/process/deposit_synth.so
+lib/gwyddion/modules/process/diff_synth.so
 lib/gwyddion/modules/process/domain_synth.so
 lib/gwyddion/modules/process/drift.so
 lib/gwyddion/modules/process/dwt.so
@@ -285,25 +304,29 @@ lib/gwyddion/modules/process/edge.so
 lib/gwyddion/modules/process/extend.so
 lib/gwyddion/modules/process/facet-level.so
 lib/gwyddion/modules/process/facet_analysis.so
+lib/gwyddion/modules/process/fbm_synth.so
 lib/gwyddion/modules/process/fft.so
 lib/gwyddion/modules/process/fft_filter_1d.so
 lib/gwyddion/modules/process/fft_filter_2d.so
 lib/gwyddion/modules/process/fft_profile.so
 lib/gwyddion/modules/process/fft_synth.so
 lib/gwyddion/modules/process/fit_2d.so
+lib/gwyddion/modules/process/flatten_base.so
 lib/gwyddion/modules/process/fraccor.so
 lib/gwyddion/modules/process/fractal.so
 lib/gwyddion/modules/process/gradient.so
 lib/gwyddion/modules/process/grain_cross.so
 lib/gwyddion/modules/process/grain_dist.so
 lib/gwyddion/modules/process/grain_edge.so
+lib/gwyddion/modules/process/grain_filter.so
 lib/gwyddion/modules/process/grain_mark.so
-lib/gwyddion/modules/process/grain_rem_threshold.so
+lib/gwyddion/modules/process/grain_stat.so
 lib/gwyddion/modules/process/grain_wshed.so
 lib/gwyddion/modules/process/hough.so
 lib/gwyddion/modules/process/immerse.so
 lib/gwyddion/modules/process/indent_analyze.so
 lib/gwyddion/modules/process/laplace.so
+lib/gwyddion/modules/process/lat_synth.so
 lib/gwyddion/modules/process/latsim.so
 lib/gwyddion/modules/process/level.so
 lib/gwyddion/modules/process/level_grains.so
@@ -327,10 +350,12 @@ lib/gwyddion/modules/process/pid.so
 lib/gwyddion/modules/process/polydistort.so
 lib/gwyddion/modules/process/polylevel.so
 lib/gwyddion/modules/process/presentationops.so
+lib/gwyddion/modules/process/psdf_logphi.so
 lib/gwyddion/modules/process/rank.so
 lib/gwyddion/modules/process/rotate.so
 lib/gwyddion/modules/process/scale.so
 lib/gwyddion/modules/process/scars.so
+lib/gwyddion/modules/process/semsim.so
 lib/gwyddion/modules/process/shade.so
 lib/gwyddion/modules/process/slope_dist.so
 lib/gwyddion/modules/process/sphere-revolve.so
@@ -343,6 +368,7 @@ lib/gwyddion/modules/process/unrotate.so
 lib/gwyddion/modules/process/volumize.so
 lib/gwyddion/modules/process/volumize_layers.so
 lib/gwyddion/modules/process/wave_synth.so
+lib/gwyddion/modules/process/wpour_mark.so
 lib/gwyddion/modules/process/xydenoise.so
 %%PYTHON%%lib/gwyddion/modules/pygwy.so
 lib/gwyddion/modules/tool/crop.so
@@ -368,6 +394,9 @@ lib/gwyddion/modules/volume/volume_calibrate.so
 lib/gwyddion/modules/volume/volume_extract.so
 lib/gwyddion/modules/volume/volume_fdfit.so
 lib/gwyddion/modules/volume/volume_invert.so
+lib/gwyddion/modules/volume/volume_kmeans.so
+lib/gwyddion/modules/volume/volume_kmedians.so
+lib/gwyddion/modules/volume/volume_slice.so
 %%PERL%%lib/gwyddion/perl/Gwyddion/dump.pm
 %%PYTHON%%lib/gwyddion/python/Gwyddion/__init__.py
 %%PYTHON%%lib/gwyddion/python/Gwyddion/__init__.pyc
@@ -378,22 +407,22 @@ lib/gwyddion/modules/volume/volume_invert.so
 %%RUBY%%lib/gwyddion/ruby/gwyddion/dump.rb
 lib/libgwyapp2.so
 lib/libgwyapp2.so.0
-lib/libgwyapp2.so.0.10.1
+lib/libgwyapp2.so.0.12.0
 lib/libgwyddion2.so
 lib/libgwyddion2.so.0
-lib/libgwyddion2.so.0.12.0
+lib/libgwyddion2.so.0.16.0
 lib/libgwydgets2.so
 lib/libgwydgets2.so.0
-lib/libgwydgets2.so.0.14.2
+lib/libgwydgets2.so.0.18.0
 lib/libgwydraw2.so
 lib/libgwydraw2.so.0
-lib/libgwydraw2.so.0.2.0
+lib/libgwydraw2.so.0.3.0
 lib/libgwymodule2.so
 lib/libgwymodule2.so.0
-lib/libgwymodule2.so.0.7.0
+lib/libgwymodule2.so.0.8.0
 lib/libgwyprocess2.so
 lib/libgwyprocess2.so.0
-lib/libgwyprocess2.so.0.20.0
+lib/libgwyprocess2.so.0.24.0
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/gwy.so
 libdata/pkgconfig/gwyddion.pc
 libexec/gwyddion/plugins/file/dump
@@ -512,6 +541,7 @@ share/applications/gwyddion.desktop
 %%DATADIR%%/pixmaps/gwy_color_range_auto-24.png
 %%DATADIR%%/pixmaps/gwy_color_range_fixed-24.png
 %%DATADIR%%/pixmaps/gwy_color_range_full-24.png
+%%DATADIR%%/pixmaps/gwy_correct_affine-24.png
 %%DATADIR%%/pixmaps/gwy_crop-24.png
 %%DATADIR%%/pixmaps/gwy_cwt-24.png
 %%DATADIR%%/pixmaps/gwy_data_measure-24.png
@@ -519,6 +549,7 @@ share/applications/gwyddion.desktop
 %%DATADIR%%/pixmaps/gwy_drift-24.png
 %%DATADIR%%/pixmaps/gwy_dwt-24.png
 %%DATADIR%%/pixmaps/gwy_edge-24.png
+%%DATADIR%%/pixmaps/gwy_extend-24.png
 %%DATADIR%%/pixmaps/gwy_facet_level-24.png
 %%DATADIR%%/pixmaps/gwy_favourite-24.png
 %%DATADIR%%/pixmaps/gwy_fft-24.png
@@ -558,6 +589,7 @@ share/applications/gwyddion.desktop
 %%DATADIR%%/pixmaps/gwy_line_level-24.png
 %%DATADIR%%/pixmaps/gwy_logscale_horizontal-24.png
 %%DATADIR%%/pixmaps/gwy_logscale_vertical-24.png
+%%DATADIR%%/pixmaps/gwy_mark_with-24.png
 %%DATADIR%%/pixmaps/gwy_mask-16.png
 %%DATADIR%%/pixmaps/gwy_mask-24.png
 %%DATADIR%%/pixmaps/gwy_mask_add-24.png
@@ -606,6 +638,16 @@ share/applications/gwyddion.desktop
 %%DATADIR%%/pixmaps/gwy_stat_quantities-24.png
 %%DATADIR%%/pixmaps/gwy_subscript-20.png
 %%DATADIR%%/pixmaps/gwy_superscript-20.png
+%%DATADIR%%/pixmaps/gwy_synthetic_columnar-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_diffusion-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_domains-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_lattice-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_line_noise-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_noise-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_objects-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_particles-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_pattern-24.png
+%%DATADIR%%/pixmaps/gwy_synthetic_waves-24.png
 %%DATADIR%%/pixmaps/gwy_unrotate-24.png
 %%DATADIR%%/pixmaps/gwy_value_invert-24.png
 %%DATADIR%%/pixmaps/gwy_zoom_1_1-24.png
@@ -616,45 +658,14 @@ share/applications/gwyddion.desktop
 %%DATADIR%%/pixmaps/splash.png
 %%PYTHON%%%%DATADIR%%/pygwy/gwyutils.py
 %%DATADIR%%/ui/toolbox.xml
+%%DATADIR%%/user-guide-modules
 share/icons/hicolor/48x48/apps/gwyddion.png
 share/locale/cs/LC_MESSAGES/gwyddion.mo
 share/locale/de/LC_MESSAGES/gwyddion.mo
 share/locale/es/LC_MESSAGES/gwyddion.mo
 share/locale/fr/LC_MESSAGES/gwyddion.mo
 share/locale/it/LC_MESSAGES/gwyddion.mo
+share/locale/ko/LC_MESSAGES/gwyddion.mo
 share/locale/ru/LC_MESSAGES/gwyddion.mo
 share/mime/packages/gwyddion.xml
 share/thumbnailers/gwyddion.thumbnailer
-@dirrmtry share/thumbnailers
-@dirrm %%DATADIR%%/ui
-%%PYTHON%%@dirrm %%DATADIR%%/pygwy
-@dirrm %%DATADIR%%/pixmaps
-@dirrm %%DATADIR%%/gradients
-@dirrm %%DATADIR%%/glmaterials
-@dirrm %%DATADIR%%
-@dirrm libexec/gwyddion/plugins/process
-@dirrm libexec/gwyddion/plugins/file
-@dirrm libexec/gwyddion/plugins
-@dirrm libexec/gwyddion
-%%RUBY%%@dirrm lib/gwyddion/ruby/gwyddion
-%%RUBY%%@dirrm lib/gwyddion/ruby
-%%PYTHON%%@dirrm lib/gwyddion/python/Gwyddion
-%%PYTHON%%@dirrm lib/gwyddion/python
-%%PERL%%@dirrm lib/gwyddion/perl/Gwyddion
-%%PERL%%@dirrm lib/gwyddion/perl
-@dirrm lib/gwyddion/modules/volume
-@dirrm lib/gwyddion/modules/tool
-@dirrm lib/gwyddion/modules/process
-@dirrm lib/gwyddion/modules/layer
-@dirrm lib/gwyddion/modules/graph
-@dirrm lib/gwyddion/modules/file
-@dirrm lib/gwyddion/modules
-@dirrm lib/gwyddion/include
-@dirrm lib/gwyddion
-@dirrm include/gwyddion/libprocess
-@dirrm include/gwyddion/libgwymodule
-@dirrm include/gwyddion/libgwydgets
-@dirrm include/gwyddion/libgwyddion
-@dirrm include/gwyddion/libdraw
-@dirrm include/gwyddion/app
-@dirrm include/gwyddion

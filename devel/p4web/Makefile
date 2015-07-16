@@ -3,9 +3,9 @@
 
 PORTNAME=	p4web
 PORTVERSION=	2012.1.732581
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	ftp://ftp.perforce.com/perforce/${P4VERSION}/bin.${PLATFORM}/ \
-		http://filehost.perforce.com/perforce/r${P4VERSION}/bin.${PLATFORM}/
+MASTER_SITES=	http://swarm.workshop.perforce.com/download/guest/perforce_software/p4web/bin/${P4VERSION}/bin.${PLATFORM}/
 DISTNAME=	p4web
 EXTRACT_SUFX=
 EXTRACT_ONLY=	# none
@@ -32,7 +32,19 @@ USE_RC_SUBR=	p4web
 
 .include <bsd.port.pre.mk>
 
-.include "${.CURDIR}/../p4/Makefile.inc"
+# 10.x (and higher) needs compat libs
+.if ${OSVERSION} >= 1000054
+LIB_DEPENDS+=	libstdc++.so.6:${PORTSDIR}/misc/compat9x
+.endif
+
+# Figure out what to install
+.if ${ARCH} == amd64
+PLATFORM=	freebsd70x86_64
+.elif ${ARCH} == i386
+PLATFORM=	freebsd70x86
+.else
+IGNORE=		unsupported OS release, sorry
+.endif
 
 USERS=	p4admin
 GROUPS=	p4admin

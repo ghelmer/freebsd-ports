@@ -18,13 +18,14 @@ BUILD_DEPENDS=	darcsver:${PORTSDIR}/devel/py-darcsver \
 		unsort:${PORTSDIR}/devel/py-pyutil
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|share/doc|${DOCSDIR}|g ; \
@@ -38,4 +39,4 @@ post-install:
 .endfor
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

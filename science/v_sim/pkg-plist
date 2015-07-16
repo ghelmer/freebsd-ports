@@ -1,12 +1,12 @@
 bin/v_sim
 lib/libv_sim-3.a
-lib/libv_sim-3.la
 lib/libv_sim-3.so
 lib/libv_sim-3.so.7
+lib/libv_sim-3.so.7.0.0
 %%BABEL%%lib/v_sim/plug-ins/libobloader.a
-%%BABEL%%lib/v_sim/plug-ins/libobloader.la
 %%BABEL%%lib/v_sim/plug-ins/libobloader.so
 %%BABEL%%lib/v_sim/plug-ins/libobloader.so.7
+%%BABEL%%lib/v_sim/plug-ins/libobloader.so.7.0.0
 %%PORTDOCS%%man/man1/v_sim.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.en
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.fr
@@ -235,23 +235,3 @@ share/pixmaps/v_sim.xpm
 %%DATADIR%%/v_sim.par
 %%DATADIR%%/v_sim.rc
 %%DATADIR%%/v_sim.res
-@dirrm %%DATADIR%%/pixmaps
-@dirrm %%DATADIR%%
-@dirrmtry share/icons/hicolor/scalable/apps
-@dirrmtry share/icons/hicolor/scalable
-@dirrmtry share/icons/hicolor/48x48/apps
-@dirrmtry share/icons/hicolor/48x48
-@dirrmtry share/icons/hicolor/32x32/apps
-@dirrmtry share/icons/hicolor/32x32
-@dirrmtry share/icons/hicolor/24x24/apps
-@dirrmtry share/icons/hicolor/24x24
-@dirrmtry share/icons/hicolor/22x22/apps
-@dirrmtry share/icons/hicolor/22x22
-@dirrmtry share/icons/hicolor/16x16/apps
-@dirrmtry share/icons/hicolor/16x16
-@dirrmtry share/icons/hicolor
-@dirrmtry share/icons
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm lib/v_sim/plug-ins
-@dirrm lib/v_sim

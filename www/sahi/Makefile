@@ -4,9 +4,9 @@
 PORTNAME=	sahi
 PORTVERSION=	3.5.${SAHI_BUILD}
 #PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	${PORTNAME}/${PORTNAME}-v${PORTVERSION:R:R:R:S,.,,}/${SAHI_BUILD:S,.,,g}/
+MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-v${PORTVERSION:R:R:R:S,.,,}/${SAHI_BUILD:S,.,,g}/
 DISTNAME=	${PORTNAME}_${SAHI_BUILD:S,.,,g}
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -37,7 +37,6 @@ OPERA_DESC=	Use Opera as default browser
 USES=		dos2unix zip
 DOS2UNIX_GLOB=	linux.xml os.properties sahi.properties
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 SAHI_BUILD=	2011.07.19
@@ -67,20 +66,19 @@ post-patch:
 		| ${XARGS} -0 ${REINPLACE_CMD}
 
 do-install:
-	@${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${PREFIX}/bin/${PORTNAME}
-	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${DATADIR}
+	@${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
 
 post-install:
-	@${CP} ${DATADIR}/config/browser_types/linux.xml ${DATADIR}/userdata/config/browser_types.xml
+	@${CP} ${STAGEDIR}${DATADIR}/config/browser_types/linux.xml ${STAGEDIR}${DATADIR}/userdata/config/browser_types.xml
 .for	d in bin userdata/bin
-	@${CHMOD} ${BINMODE} ${DATADIR}/${d}/*
+	@${CHMOD} ${BINMODE} ${STAGEDIR}${DATADIR}/${d}/*
 .endfor
 .if ${PORT_OPTIONS:MDOCS}
-	@${MV} ${DATADIR}/docs ${DOCSDIR}
+	@${MV} ${STAGEDIR}${DATADIR}/docs ${STAGEDIR}${DOCSDIR}
 .else
-	@${RM} -r ${DATADIR}/docs
+	@${RM} -r ${STAGEDIR}${DATADIR}/docs
 .endif
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.pre.mk>
 

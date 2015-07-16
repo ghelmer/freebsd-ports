@@ -3,13 +3,13 @@
 
 PORTNAME=	XML-Validate
 PORTVERSION=	1.025
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	demon@FreeBSD.org
-COMMENT=	An XML validator factory
+COMMENT=	XML validator factory
 
 BUILD_DEPENDS=	p5-XML-LibXML>=0:${PORTSDIR}/textproc/p5-XML-LibXML \
 		p5-Log-TraceMessages>=0:${PORTSDIR}/devel/p5-Log-TraceMessages

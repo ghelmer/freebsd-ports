@@ -3,7 +3,7 @@
 
 PORTNAME=	iceicepenguin
 PORTVERSION=	1.5.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games python
 MASTER_SITES=	SF/${PORTNAME}/Default/Ice%20Ice%20Penguin/ \
 		SF/nemysisfreebsdp/games/:icons
@@ -11,7 +11,7 @@ DISTFILES=	iip.${DISTVERSION}-final${EXTRACT_SUFX} \
 		${PORTNAME}_icons_1${EXTRACT_SUFX}:icons
 DIST_SUBDIR=	python
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Remake of an old SEGA Dreamcast game called Chu Chu Rocket
 
 LICENSE=	GPLv3
@@ -20,8 +20,7 @@ RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/"ice ice penguin"
 
-USES=		zip
-USE_PYTHON=	yes
+USES=		python:run zip
 NO_BUILD=	yes
 
 PORTDOCS=	CHANGELOG.txt readme.txt

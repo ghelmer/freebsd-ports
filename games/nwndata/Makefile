@@ -6,8 +6,8 @@ PORTVERSION=	${NWNVER}
 PORTREVISION=	${NWNREV}
 CATEGORIES=	games
 MASTER_SITES=	http://files.bioware.com/neverwinternights/updates/linux/ \
-		http://bioware.vo.llnwd.net/o1/neverwinternights/updates/linux/
-# Also at:	http://www.fileshack.com/file.x?fid=2508
+		http://nwdownloads.bioware.com/neverwinternights/linux/129/ \
+		http://lvlt.bioware.cdn.ea.com/bioware/u/f/eagames/bioware/neverwinternights/updates/linux/
 DISTNAME=	${NWRESOURCES}
 .if defined(CDROM_MOUNT) && exists(${CDROM_MOUNT}/KingmakerSetup.exe)
 DISTFILES=
@@ -36,6 +36,9 @@ PLIST_SUB+=	DIAMOND="@comment " ORIGINAL=""
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/nwn
 RESTRICTED=	Distribution not allowed
+
+ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS_REASON=	Binary Distribution on x86 only
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

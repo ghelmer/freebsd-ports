@@ -3,7 +3,7 @@
 
 PORTNAME=	collectd
 PORTVERSION=	4.10.9
-PORTREVISION=	7
+PORTREVISION=	21
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://collectd.org/files/
 
@@ -12,10 +12,11 @@ COMMENT=	Systems & network statistics collection daemon
 
 LICENSE=	GPLv2
 
-USES=		gmake libtool
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	autoconf autoheader automake libltdl
-WANT_GNOME=	yes
+USES=		autoreconf gmake libtool shebangfix
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		CGI BIND DEBUG GCRYPT LIBVIRT
 OPTIONS_GROUP=		INPUT OUTPUT
@@ -135,7 +136,7 @@ CONFIGURE_ARGS+=--enable-debug
 
 .if ${PORT_OPTIONS:MCGI}
 RUN_DEPENDS+=	p5-URI>=0:${PORTSDIR}/net/p5-URI \
-		p5-CGI.pm>=0:${PORTSDIR}/www/p5-CGI.pm \
+		p5-CGI>=0:${PORTSDIR}/www/p5-CGI \
 		p5-Data-Dumper>=0:${PORTSDIR}/devel/p5-Data-Dumper \
 		p5-HTML-Parser>=0:${PORTSDIR}/www/p5-HTML-Parser
 PLIST_SUB+=	CGI=""
@@ -333,7 +334,7 @@ PLIST_SUB+=	PDNS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 CONFIGURE_ARGS+=--enable-postgresql
 PLIST_SUB+=	PGSQL=""
 .else
@@ -351,7 +352,7 @@ PLIST_SUB+=	PING="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=		yes
+USES+=		python
 CONFIGURE_ARGS+=--enable-python --with-python=${PYTHON_CMD}
 PLIST_SUB+=	PYTHON=""
 .else
@@ -431,17 +432,17 @@ CONFIGURE_ARGS+=--disable-xmms
 PLIST_SUB+=	XMMS="@comment "
 .endif
 
-AUTOTOOLSFILES=	aclocal.m4
+SHEBANG_FILES=	contrib/collection.cgi
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|1.11.1|%%AUTOMAKE_APIVER%%|g' \
-			  -e 's|2.65|%%AUTOCONF_VERSION%%|g' \
-			  ${WRKSRC}/aclocal.m4
+	@${RM} -r ${WRKSRC}/libltdl
 	@${REINPLACE_CMD} \
 		-e 's;@prefix@/var/;/var/;' \
 		-e 's;/var/lib/;/var/db/;' \
 		${WRKSRC}/src/collectd.conf.in
-	@${REINPLACE_CMD} -e '/\$$[(]mkinstalldirs)/d' ${WRKSRC}/Makefile.in \
+	@${REINPLACE_CMD} \
+		-e '/^ACLOCAL_AMFLAGS =/s;libltdl/m4;m4;' \
+		-e '/\$$[(]mkinstalldirs)/d' \
 		${WRKSRC}/Makefile.am
 	@${REINPLACE_CMD} \
 		-e 's;/etc/collection\.conf;${WWWDIR}/collection.conf;' \

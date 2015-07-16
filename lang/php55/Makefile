@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	php55
-PORTVERSION=	5.5.13
+PORTVERSION=	5.5.26
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
-MASTER_SITES=	${MASTER_SITE_PHP}
-MASTER_SITE_SUBDIR=	distributions
+MASTER_SITES=	PHP/distributions
 DISTNAME=	php-${PORTVERSION}
 
 MAINTAINER=	ale@FreeBSD.org
@@ -39,6 +38,9 @@ USE_GNOME=	libxml2
 
 OPTIONS_DEFINE+=CLI CGI FPM EMBED DEBUG DTRACE IPV6 MAILHEAD LINKTHR ZTS
 OPTIONS_DEFAULT=CLI CGI FPM IPV6 LINKTHR
+# Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
+OPTIONS_EXCLUDE_mips=FPM
+OPTIONS_EXCLUDE_mips64=FPM
 OPTIONS_SUB=	yes
 
 CLI_DESC=	Build CLI version
@@ -52,7 +54,7 @@ MAILHEAD_DESC=	Enable mail header patch
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 ZTS_DESC=	Force Zend Thread Safety (ZTS) build
 
-CONFLICTS=	php53-5* php54-5* php5-5*
+CONFLICTS=	php53-5* php54-5* php56-5* php5-5*
 
 DESTDIRNAME=	INSTALL_ROOT
 
@@ -60,8 +62,7 @@ DESTDIRNAME=	INSTALL_ROOT
 
 PATCH_DIST_STRIP=	-p1
 
-PATCH_SITES+=	${MASTER_SITE_LOCAL}
-PATCH_SITE_SUBDIR=	ale
+PATCH_SITES+=	LOCAL/ale
 
 .if ${PORT_OPTIONS:MMAILHEAD}
 PATCHFILES+=	php-5.5.x-mail-header.patch:mail
@@ -143,7 +144,7 @@ CONFIGURE_ENV+=	ac_cv_pthreads_lib="" \
 		lt_cv_path_SED="sed"
 
 .if ${PORT_OPTIONS:MLINKTHR}
-LIBS+=		${PTHREAD_LIBS}
+LIBS+=		-lpthread
 .endif
 
 .if ${PORT_OPTIONS:MDEBUG}
@@ -159,6 +160,9 @@ CONFIGURE_ARGS+=--enable-maintainer-zts
 IGNORE=		cannot be built with DTrace support on FreeBSD < 9.x
 .endif
 CONFIGURE_ARGS+=--enable-dtrace
+PLIST_SUB+=	DTRACE=""
+.else
+PLIST_SUB+=	DTRACE="@comment "
 .endif
 
 .if empty(PORT_OPTIONS:MIPV6)

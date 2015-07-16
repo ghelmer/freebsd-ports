@@ -3,19 +3,19 @@
 
 PORTNAME=	goblin
 DISTVERSION=	2.8b30
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}2/${PORTNAME}2/${PORTNAME}.${DISTVERSION}
 DISTNAME=	${PORTNAME}.${DISTVERSION}
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	gahr@FreeBSD.org
-COMMENT=	A Graph Object Library for Network Programming Problems
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Graph Object Library for Network Programming Problems
 
 CONFLICTS=	glpk-*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-USES=		gmake tk
+USES=		gmake tk tar:tgz
 USE_LDCONFIG=	yes
 MAKE_ARGS=	CC="${CC}" CCFLAGS="${CFLAGS}" \
 		CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" \
@@ -55,9 +55,9 @@ do-install:
 	${INSTALL} -d ${STAGEDIR}${PREFIX}/lib/${PORTNAME}
 	(cd ${WRKSRC}/tcl && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/lib/${PORTNAME})
 	${INSTALL_DATA} ${WRKSRC}/lib/libgoblin.a ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${WRKSRC}/libgoblin.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/libgoblin.so ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_DATA} ${WRKSRC}/lib/libglpk.a ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_DATA} ${WRKSRC}/libglpk.so ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/libglpk.so ${STAGEDIR}${PREFIX}/lib
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html

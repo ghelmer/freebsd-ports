@@ -7,81 +7,78 @@ CATEGORIES=	net
 MASTER_SITES=	SF/fsp/fsp/2.8.1b26
 DISTNAME=	fsp-2.8.1b26
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	hsn@sendmail.cz
 COMMENT=	FSP daemon, clients, and scanner
 
-BUILD_DEPENDS=	sgmlfmt:${PORTSDIR}/textproc/sgmlformat
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 CLIENTS=	fcatcmd fcdcmd fducmd ffindcmd fgetcmd fgrabcmd fhostcmd \
 		flscmd fmkdir fprocmd fput frmcmd frmdircmd fver fspmerge \
 		fstatcmd fmvcmd fbye fsetupcmd
-DOCDIR=		share/doc/${PORTNAME}
-PORTDOCS=	BETA.README COPYRIGHT ChangeLog FILES INFO INSTALL MACHINES \
-		TODO PROTOCOL HISTORY faq.html fsp-faq.html
-MAN1=		fcatcmd.1 fcdcmd.1 fducmd.1 ffindcmd.1 fgetcmd.1 fgrabcmd.1 \
-		fhostcmd.1 flscmd.1 fmkdir.1 fprocmd.1 fput.1 \
-		frmcmd.1 frmdircmd.1 fspd.1 fspscan.1 fver.1 \
-		fstatcmd.1 fmvcmd.1 fsetupcmd.1
-MAN5=		fsp_prof.5 fspsites.5
-MAN7=		fsp_env.7
-MLINKS=		fcatcmd.1 fcat.1 fcdcmd.1 fcd.1 fducmd.1 fdu.1 \
-		ffindcmd.1 ffind.1 fgetcmd.1 fget.1 fgrabcmd.1 fgrab.1 \
-		fhostcmd.1 fhost.1 flscmd.1 fls.1 fprocmd.1 fpro.1 \
-		frmdircmd.1 frmdir.1 fstatcmd.1 fstat.1 fmvcmd.1 fmv.1 \
-		fsetupcmd.1 fsetup.1
+FSPDOCS=	BETA.README COPYRIGHT ChangeLog FILES INFO INSTALL MACHINES \
+		TODO PROTOCOL HISTORY faq.html
+MAN1CLIENT=	fcatcmd.1 fcdcmd.1 fducmd.1 ffindcmd.1 fgetcmd.1 fgrabcmd.1 \
+		fhostcmd.1 flscmd.1 fmkdir.1 fprocmd.1 fput.1 frmcmd.1 \
+		frmdircmd.1 fver.1 fstatcmd.1 fmvcmd.1 fsetupcmd.1
+MAN1SERVER=	fspscan.1 fspd.1
+MAN5CLIENT=	fsp_prof.5 fspsites.5
+MAN7CLIENT=	fsp_env.7
 
 USES=		scons tar:bzip2
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
-OPTIONS_DEFINE=	NOCLIENTS INFINITE
-NOCLIENTS_DESC=	Omit client commands
+OPTIONS_DEFINE=	CLIENTS INFINITE DOCS
+CLIENTS_DESC=	Install client commands
 INFINITE_DESC=	Infinite retry in client commands
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_SUB=	yes
+
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MINFINITE}
-MAKE_ARGS+=	disable-timeout=yes
+SCONS_ARGS+=	disable-timeout=yes
 .endif
 
-.if ! ${PORT_OPTIONS:MNOCLIENTS}
-.for command in ${CLIENTS}
-PLIST_FILES+=	bin/${command}
-.endfor
-.else
+.if ! ${PORT_OPTIONS:MCLIENTS}
 SCONS_ARGS+=	without-clients=yes
 .endif
-
-PLIST_FILES+=	etc/fspd.conf.sample bin/fspscan bin/fspd
 
 post-extract:
 	@${CP} ${WRKSRC}/doc/PROTOCOL ${WRKSRC}
 	@${CP} ${WRKSRC}/doc/HISTORY ${WRKSRC}
+	: > ${WRKSRC}/doc/SConscript
 
 post-build:
 	@${CP} ${WRKSRC}/doc/*.html ${WRKSRC}
 
 do-install:
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-.for doc in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${doc} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for doc in ${FSPDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}${DOCSDIR}
 .endfor
 .endif
-.if ! ${PORT_OPTIONS:MNOCLIENTS}
+.if ${PORT_OPTIONS:MCLIENTS}
 .for command in ${CLIENTS}
-	${INSTALL_PROGRAM} ${WRKSRC}/clients/${command} ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/clients/${command} ${STAGEDIR}${PREFIX}/bin
+.endfor
+.for page in ${MAN1CLIENT}
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man1
+.endfor
+.for page in ${MAN5CLIENT}
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man5
+.endfor
+.for page in ${MAN7CLIENT}
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man7
 .endfor
 .endif
-	${INSTALL_PROGRAM} ${WRKSRC}/contrib/fspscan ${PREFIX}/bin
-	${INSTALL_PROGRAM} ${WRKSRC}/server/fspd ${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/fspd.conf ${PREFIX}/etc/fspd.conf.sample
-.for page in ${MAN1}
-	${INSTALL_MAN} ${WRKSRC}/man/${page} ${PREFIX}/man/man1
+	${INSTALL_PROGRAM} ${WRKSRC}/contrib/fspscan ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/server/fspd ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/fspd.conf \
+	    ${STAGEDIR}${PREFIX}/etc/fspd.conf.sample
+.for page in ${MAN1SERVER}
+	${INSTALL_MAN} ${WRKSRC}/man/${page} ${STAGEDIR}${PREFIX}/man/man1
 .endfor
-.for page in ${MAN5}
-	${INSTALL_MAN} ${WRKSRC}/man/${page} ${PREFIX}/man/man5
-.endfor
-	${INSTALL_MAN} ${WRKSRC}/man/${MAN7} ${PREFIX}/man/man7
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

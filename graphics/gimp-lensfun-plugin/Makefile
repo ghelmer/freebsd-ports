@@ -3,7 +3,7 @@
 
 PORTNAME=	lensfun
 DISTVERSION=	0.2.4-dev
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	gimp-
 PKGNAMESUFFIX=	-plugin
@@ -23,10 +23,9 @@ USES=		gmake pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	seebk
 GH_PROJECT=	GIMP-Lensfun
-GH_COMMIT=	d0a0bd2
-GH_TAGNAME=	${GH_COMMIT}
+GH_TAGNAME=	d0a0bd2
 
-PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins/
+PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins
 PLUGINS=	gimp-lensfun
 
 # installed files
@@ -34,15 +33,12 @@ PLUGINS=	gimp-lensfun
 PLIST_FILES+=	${PLUGIN_DIR}/${plugin}
 .endfor
 
-# installed dirs
-PLIST_DIRSTRY=	libexec/gimp/2.2/plug-ins \
-		libexec/gimp/2.2 \
-		libexec/gimp
-
 post-patch:
 	@${REINPLACE_CMD} \
 		-e 's|gimptool-2.0|${LOCALBASE}/bin/gimptool-2.0|' \
 		${WRKSRC}/Makefile
+# CCI support has been removed from recent versions of lensfun
+	@${REINPLACE_CMD} -e '/CCI/d' ${WRKSRC}/src/gimplensfun.cpp
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${PLUGIN_DIR}

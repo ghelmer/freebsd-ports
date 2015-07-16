@@ -8,7 +8,7 @@ CATEGORIES=	multimedia
 MASTER_SITES=	http://apollo.backplane.com/FreeBSDPorts/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A client/server based TV capture/display program
+COMMENT=	Client/server based TV capture/display program
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -16,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 RUN_DEPENDS=	wish8.4:${PORTSDIR}/x11-toolkits/tk84
 
 MAKE_ENV=	X11BASE=${LOCALBASE}
+USES=		uidfix
 USE_XORG=	xau x11 xext xxf86dga
 NOT_FOR_ARCHS=	sparc64
 

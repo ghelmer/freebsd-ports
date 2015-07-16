@@ -7,8 +7,6 @@
     SUBDIR += CNS11643-font
     SUBDIR += FreeWnn-lib
     SUBDIR += FreeWnn-server
-    SUBDIR += acroread8-zh_CN
-    SUBDIR += acroread8-zh_TW
     SUBDIR += arphicttf
     SUBDIR += aterm
     SUBDIR += auto-cn-l10n
@@ -16,9 +14,9 @@
     SUBDIR += autoconvert
     SUBDIR += bg5pdf
     SUBDIR += bg5ps
-    SUBDIR += big5con
     SUBDIR += big5width
     SUBDIR += bitchx
+    SUBDIR += brise
     SUBDIR += bsdconv-opencc
     SUBDIR += bug5
     SUBDIR += c2t
@@ -29,13 +27,12 @@
     SUBDIR += celvis
     SUBDIR += chiconv
     SUBDIR += cless
-    SUBDIR += cmexfonts
     SUBDIR += cnprint
-    SUBDIR += cwtex
     SUBDIR += cwtexttf
     SUBDIR += dictd-database
     SUBDIR += docproj
     SUBDIR += enscript
+    SUBDIR += eric6
     SUBDIR += eterm
     SUBDIR += fcitx
     SUBDIR += fcitx-chewing
@@ -57,11 +54,11 @@
     SUBDIR += gcin
     SUBDIR += gimp-help-zh_CN
     SUBDIR += gugod-clean
-    SUBDIR += hanzim
     SUBDIR += hc
-    SUBDIR += hztty
     SUBDIR += ibus-chewing
+    SUBDIR += ibus-libpinyin
     SUBDIR += ibus-pinyin
+    SUBDIR += ibus-table-chinese
     SUBDIR += irssi
     SUBDIR += jis2gb
     SUBDIR += joe
@@ -77,10 +74,7 @@
     SUBDIR += librime
     SUBDIR += libtabe
     SUBDIR += lunar
-    SUBDIR += miniChinput
-    SUBDIR += moefonts-cid
     SUBDIR += moettf
-    SUBDIR += msttf
     SUBDIR += muni
     SUBDIR += mutt
     SUBDIR += oicq
@@ -110,8 +104,8 @@
     SUBDIR += php-cconv
     SUBDIR += phpbb-tw
     SUBDIR += phpbb3-tw
-    SUBDIR += pine4
     SUBDIR += py-cconv
+    SUBDIR += pyzy
     SUBDIR += qe
     SUBDIR += qt4-codecs-cn
     SUBDIR += qt4-codecs-tw
@@ -128,14 +122,11 @@
     SUBDIR += ttf2pt1
     SUBDIR += ttfm
     SUBDIR += unrar
-    SUBDIR += unzip
     SUBDIR += ve
     SUBDIR += wenju
     SUBDIR += wordpress-zh_CN
     SUBDIR += wordpress-zh_TW
     SUBDIR += xpdf
-    SUBDIR += xsim
     SUBDIR += ydict
-    SUBDIR += zhcon
 
 .include <bsd.port.subdir.mk>

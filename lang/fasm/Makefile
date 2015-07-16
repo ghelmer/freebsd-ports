@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	fasm
-PORTVERSION=	1.71.17
+PORTVERSION=	1.71.39
 CATEGORIES=	lang devel
 MASTER_SITES=	http://flatassembler.net/
 
 MAINTAINER=	graudeejs@gmail.com
 COMMENT=	Flat, multiple-pass assembler for IA-32 & x86-64 architectures
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
 ONLY_FOR_ARCHS=	i386 amd64 ia64

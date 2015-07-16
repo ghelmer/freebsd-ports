@@ -1,20 +1,11 @@
---- configure.ac.orig	2014-06-12 13:00:46.943316659 +0200
-+++ configure.ac	2014-06-12 13:00:39.783317665 +0200
-@@ -4024,7 +4024,7 @@
-         PLATFORMID=freebsd_x86
-         OUTPATH=unxfbsdi
-         ;;
--    x86_64)
-+    x86_64|amd64)
-         CPUNAME=X86_64
-         RTL_ARCH=X86_64
-         PLATFORMID=freebsd_x86_64
-@@ -7051,7 +7051,7 @@
-             JAVA_ARCH="i386"
-             JAVA_TOOLKIT="client"
-             ;;
--        x86_64)
-+        x86_64|amd64)
-             if test "`echo $JAVA_HOME | sed -e 's,.*/,,'`" = "linux"; then
-                 JAVA_ARCH="i386"
-                 JAVA_TOOLKIT="client"
+--- configure.ac.orig	2015-01-28 07:00:34.000000000 -0500
++++ configure.ac	2015-01-28 18:11:00.936172000 -0500
+@@ -7789,7 +7789,7 @@
+ dnl ===================================================================
+ # libcmis requires curl and we can't build curl for iOS
+ if test $_os != iOS; then
+-    libo_CHECK_SYSTEM_MODULE([libcmis],[CMIS],[libcmis-0.4 >= 0.4.0])
++    libo_CHECK_SYSTEM_MODULE([libcmis],[CMIS],[libcmis-0.5 >= 0.5.0])
+     ENABLE_CMIS=TRUE
+ else
+     ENABLE_CMIS=

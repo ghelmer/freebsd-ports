@@ -3,7 +3,7 @@
 
 PORTNAME=	flashrom
 PORTVERSION=	0.9.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.flashrom.org/releases/
 
@@ -48,6 +48,9 @@ FTDI_LIB_DEPENDS=	libftdi.so:${PORTSDIR}/devel/libftdi
 FTDI_USES=		pkgconfig
 FTDI_LDFLAGS=		-lz
 FTDI_MAKE_ENV_OFF=	2_SPI=no
+
+post-patch:
+	${REINPLACE_CMD} -e "s,-Werror,,g" ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/

@@ -8,8 +8,8 @@ COMMENT=	RAR decoder codec for p7zip
 LICENSE=		LGPL21 UNRAR
 LICENSE_COMB=		multi
 LICENSE_NAME_UNRAR=	unRAR usage restriction license
-LICENSE_FILE_UNRAR=	${WRKSRC}/DOCS/unRarLicense.txt
-LICENSE_PERMS_UNRAR=	dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_FILE_UNRAR=	${WRKSRC}/DOC/unRarLicense.txt
+LICENSE_PERMS_UNRAR=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
 MASTERDIR=	${.CURDIR}/../p7zip
 ALL_TARGET=	common7z

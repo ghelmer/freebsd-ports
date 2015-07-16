@@ -3,6 +3,7 @@
 
 PORTNAME=	ez-perspective
 PORTVERSION=	0.1.2
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://registry.gimp.org/files/
 PKGNAMEPREFIX=	gimp-
@@ -21,21 +22,14 @@ LICENSE_DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gimp-2.0.pc:${PORTSDIR}/graphics/gimp-app \
 		${LOCALBASE}/libexec/gimp/2.2/python/gimpfu.py:${PORTSDIR}/graphics/py-gimp
 
-USES=		zip
-USE_PYTHON_RUN=	yes
+USES=		python:run zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
-PLIST_SUB=	PLUGIN_DIR=${PLUGIN_DIR}
-PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins/
+PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins
 
 # installed files
-PLIST_FILES=	%%PLUGIN_DIR%%/${DISTNAME}
-
-# installed dirs
-PLIST_DIRSTRY=	libexec/gimp/2.2/plug-ins \
-		libexec/gimp/2.2 \
-		libexec/gimp
+PLIST_FILES=	${PLUGIN_DIR}/${DISTNAME}
 
 post-patch:
 	@${REINPLACE_CMD} \

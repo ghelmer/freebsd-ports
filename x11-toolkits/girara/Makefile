@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	girara
-PORTVERSION=	0.2.0
+PORTVERSION=	0.2.4
 CATEGORIES=	x11-toolkits graphics
 MASTER_SITES=	http://pwmt.org/projects/girara/download/
 
@@ -13,6 +13,7 @@ USE_GNOME=	glib20 gtk30
 USES=		compiler:c11 gmake pkgconfig
 USE_LDCONFIG=	yes
 LIBDIR=		${PREFIX}/lib
+MAKE_ENV+=	SFLAGS=${STRIP}
 
 OPTIONS_DEFINE=	NLS
 

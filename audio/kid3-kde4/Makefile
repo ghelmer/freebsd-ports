@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	kid3
-PORTVERSION=	3.1
+PORTVERSION=	3.2.0
 CATEGORIES=	audio kde
 MASTER_SITES=	SF
 
@@ -13,12 +13,13 @@ LICENSE=	GPLv2
 USE_PERL5=	build
 USES=		cmake:outsource perl5
 CMAKE_ARGS=	-DWITH_DOCBOOKDIR=${LOCALBASE}/share/xsl/docbook \
-		-DWITH_MANDIR=man
+		-DWITH_MANDIR=man \
+		-DFFMPEG_ROOT=${LOCALBASE}
 CXXFLAGS+=	-I${LOCALBASE}/include
 
 OPTIONS_DEFINE=	CHROMAPRINT FLAC ID3LIB MP4V2 VORBIS TAGLIB \
 		CLI
-OPTIONS_DEFAULT=	${OPTIONS_DEFINE}
+OPTIONS_DEFAULT:=	${OPTIONS_DEFINE}
 OPTIONS_SUB=	yes
 NO_OPTIONS_SORT=	yes
 
@@ -28,10 +29,19 @@ CONFLICTS_INSTALL+=	kid3-qt4-3.*
 USE_QT5=	core dbus gui multimedia network testlib xml widgets \
 		buildtools_build linguisttools_build qmake_build
 CMAKE_ARGS+=	-DWITH_QT5=true
+
+OPTIONS_DEFINE+=	QML
+OPTIONS_DEFAULT+=	QML
+QML_DESC=	Scripting support (using QML/JavaScript)
+QML_CMAKE_ON=	-DWITH_QML=ON
+QML_CMAKE_OFF=	-DWITH_QML=OFF
+QML_USE=	QT5=qml,quick
 .else
 # Qt 4 and KDE 4
 USE_QT4=	qmake_build moc_build rcc_build uic_build \
-		linguist_build
+		linguisttools_build
+CMAKE_ARGS+=	-DWITH_QML=OFF
+PLIST_SUB+=	QML="@comment "
 .endif
 
 .if defined(PKGNAMESUFFIX) && ${PKGNAMESUFFIX} == "-qt4"
@@ -63,7 +73,7 @@ CMAKE_ARGS+=	-DWITH_APPS="${KID3_CLI}KDE"
 PLIST_SUB+=	QT="@comment " KDE=""
 .endif
 
-PLIST_SUB+=	SHLIB_VER=${PORTVERSION}.0
+PLIST_SUB+=	SHLIB_VER=${PORTVERSION}
 
 CLI_DESC=	Build and install command line utility
 CLI_USES=	readline
@@ -110,8 +120,5 @@ PLIST_SUB+=	OGGFLAC=""
 .else
 PLIST_SUB+=	OGGFLAC="@comment "
 .endif
-
-pre-configure:
-	${REINPLACE_CMD} 's,-lstdc++,,' ${WRKSRC}/src/app/qt/CMakeLists.txt
 
 .include <bsd.port.mk>

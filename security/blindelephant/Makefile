@@ -5,9 +5,8 @@ PORTNAME=	blindelephant
 PORTVERSION=	1.0
 PORTREVISION=	20100819
 CATEGORIES=	security www
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
+MASTER_SITES=	LOCAL/niels \
 		http://people.freebsd.org/~niels/distfiles/
-MASTER_SITE_SUBDIR=	niels
 DISTNAME=	${PORTNAME}-${PORTREVISION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,9 +14,8 @@ COMMENT=	Fingerprint the web applications used by a web site
 
 LICENSE=	LGPL3
 
-USES=		tar:bzip2
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	YES
+USES=		python tar:bzip2
+USE_PYTHON=	distutils
 
 SUB_FILES=	${PORTNAME}.sh
 SUB_LIST=	PYTHON_CMD=${PYTHON_CMD} \

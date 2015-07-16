@@ -7,16 +7,14 @@
     SUBDIR += artemis
     SUBDIR += avida
     SUBDIR += babel
+    SUBDIR += bcftools
     SUBDIR += biococoa
     SUBDIR += biojava
-    SUBDIR += blast
     SUBDIR += blat
-    SUBDIR += boinc-simap
     SUBDIR += chemeq
     SUBDIR += clustalw
     SUBDIR += consed
     SUBDIR += crux
-    SUBDIR += embassy
     SUBDIR += emboss
     SUBDIR += fasta
     SUBDIR += fasta3
@@ -28,6 +26,7 @@
     SUBDIR += gperiodic
     SUBDIR += grappa
     SUBDIR += hmmer
+    SUBDIR += htslib
     SUBDIR += iolib
     SUBDIR += jalview
     SUBDIR += lagan
@@ -42,6 +41,7 @@
     SUBDIR += mrbayes
     SUBDIR += mummer
     SUBDIR += muscle
+    SUBDIR += ncbi-blast+
     SUBDIR += ncbi-toolkit
     SUBDIR += njplot
     SUBDIR += ortep3
@@ -59,7 +59,6 @@
     SUBDIR += p5-bioperl
     SUBDIR += p5-bioperl-run
     SUBDIR += paml
-    SUBDIR += phd2fasta
     SUBDIR += phrap
     SUBDIR += phred
     SUBDIR += phylip
@@ -74,10 +73,10 @@
     SUBDIR += py-biopython
     SUBDIR += pycogent
     SUBDIR += pyfasta
-    SUBDIR += pymol
     SUBDIR += python-nexus
     SUBDIR += recombine
     SUBDIR += ruby-bio
+    SUBDIR += samtools
     SUBDIR += seaview
     SUBDIR += seqan
     SUBDIR += seqio

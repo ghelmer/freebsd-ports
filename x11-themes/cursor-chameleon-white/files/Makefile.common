@@ -1,4 +1,4 @@
-USE_BZIP2=	yes
+USES=	tar:bzip2
 NO_BUILD=	yes
 PKGMESSAGE?=	${.CURDIR}/../../x11-themes/cursor-chameleon-white/pkg-message
 
@@ -10,6 +10,3 @@ do-install:
 		${COPYTREE_SHARE} \* \
 		${STAGEDIR}${PREFIX}/lib/X11/icons/${PORTNAME}${PKGNAMESUFFIX}-${i:tl}
 .endfor
-
-post-install:
-	@${CAT} ${PKGMESSAGE}

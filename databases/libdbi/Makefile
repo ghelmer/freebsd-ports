@@ -3,17 +3,22 @@
 
 PORTNAME=	libdbi
 PORTVERSION=	0.9.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	clsung@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Database Independent Abstraction Layer for C
 
-USES=		pathfix
-USE_AUTOTOOLS=	libtool
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		libtool pathfix
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|-O20|${CFLAGS}|g" -e "s|-std=gnu99||g" \

@@ -3,58 +3,40 @@
 
 PORTNAME=	cyberbit-ttfonts
 PORTVERSION=	2.0.20050220
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://ftp.netscape.com/pub/communicator/extras/fonts/windows/ \
 		http://aol-4.vo.llnwd.net/pub/communicator/extras/fonts/windows/ \
-		ftp://ftp.netscape.com/pub/communicator/extras/fonts/windows/
-DISTFILES=	Cyberbit.ZIP
+		ftp://ftp.netscape.com/pub/communicator/extras/fonts/windows/ \
+		http://www.skysmurf.nl/comp/FreeBSD/distfiles/cyberbit/
+DISTFILES=	Cyberbit.ZIP 97CyberBase.Doc 97CyberBit.Doc 97CyberCJK.Doc \
+		CYBERBIT.DOC CYBERCJK.DOC READMEfirst.txt ReadMe.htm
 DIST_SUBDIR=	cyberbit
 EXTRACT_ONLY=	Cyberbit.ZIP
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Bitstream Cyberbit is a TrueType font covers Unicode 2.0
+MAINTAINER=	freebsd@skysmurf.nl
+COMMENT=	Bitstream Cyberbit is a TrueType font that covers Unicode 2.0
 
 RESTRICTED=	Redistribution not permitted; single user license only.
 
-USES=		zip
-NO_BUILD=	yes
+USES=		fonts zip
 
-FONTSDIR=	lib/X11/fonts/TrueType
-MAKE_ENV=	FONTSDIR=${FONTSDIR}
-PLIST_SUB=	FONTSDIR=${FONTSDIR}
+SUB_FILES=	pkg-message
+
 WRKSRC=		${WRKDIR}
 
-OPTIONS_DEFINE=	DOCS
-
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-DISTFILES+=	97CyberBase.Doc 97CyberBit.Doc 97CyberCJK.Doc \
+PORTDOCS=	97CyberBase.Doc 97CyberBit.Doc 97CyberCJK.Doc \
 		CYBERBIT.DOC CYBERCJK.DOC READMEfirst.txt ReadMe.htm
-.endif
+
+OPTIONS_DEFINE=	DOCS
+NO_BUILD=	yes
 
 do-install:
-.if !exists(${PREFIX}/${FONTSDIR})
-	@${ECHO} "*********************************************************"
-	@${ECHO} "Please add ${PREFIX}/${FONTSDIR} to your font path"
-	@${ECHO} "and load 'xtt' module in /etc/x11/xorg.conf."
-	@${ECHO} "*********************************************************"
-	${MKDIR} ${PREFIX}/${FONTSDIR}
-.endif
-	${INSTALL_DATA} ${WRKSRC}/*.ttf \
-			${FILESDIR}/fonts.dir.cyberbit \
-			${PREFIX}/${FONTSDIR}
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/97CyberBase.Doc ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/97CyberBit.Doc  ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/97CyberCJK.Doc  ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/CYBERBIT.DOC    ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/CYBERCJK.DOC    ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/READMEfirst.txt ${DOCSDIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/ReadMe.htm      ${DOCSDIR}
-.endif
-	${SETENV} PKG_PREFIX=${PREFIX} ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	${INSTALL_DATA} ${WRKSRC}/Cyberbit.ttf ${STAGEDIR}${FONTSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for doc in ${PORTDOCS}
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${doc} ${STAGEDIR}${DOCSDIR}
+.endfor
+
 .include <bsd.port.mk>

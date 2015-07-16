@@ -28,8 +28,7 @@ session.save_path = "/tmp"
 Alias /sugarcrm %%WWWDIR%%
 <Directory %%WWWDIR%%>
 	AllowOverride None
-	Order allow,deny
-	Allow from all
+	Require all granted
 </Directory>
 
 4.  For full information on how to get the best out of Sugar Community

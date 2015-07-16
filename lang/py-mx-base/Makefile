@@ -2,17 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	mx-base
-PORTVERSION=	3.2.7
+PORTVERSION=	3.2.8
 CATEGORIES=	lang python
-MASTER_SITES=	https://downloads.egenix.com/python/
+MASTER_SITES=	http://downloads.egenix.com/python/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	egenix-${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	eGenix mx-Extension Series for Python
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
+LICENSE=	EGENIX
+LICENSE_NAME=	EGENIX.COM Public License
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+USES=		python:2
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	egenix-mx-base
 PLIST_FILES=	%%PYTHON_SITELIBDIR%%/${PYDISTUTILS_PKGNAME:C/[^A-Za-z0-9.]+/_/g}-${PYDISTUTILS_PKGVERSION:C/[^A-Za-z0-9.]+/_/g}-py${PYTHON_VER}-nspkg.pth
 
@@ -36,6 +41,17 @@ PORTEXAMPLES=	*
 post-patch:
 	@${REINPLACE_CMD} -e '/pdf/d' ${WRKSRC}/egenix_mx_base.py
 	@${REINPLACE_CMD} -e '/Examples/d' ${WRKSRC}/egenix_mx_base.py
+
+post-stage:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/DateTime/mxDateTime/mxDateTime.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/BeeBase/mxBeeBase/mxBeeBase.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/Proxy/mxProxy/mxProxy.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/UID/mxUID/mxUID.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/Stack/mxStack/mxStack.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/URL/mxURL/mxURL.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/TextTools/mxTextTools/mxTextTools.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/Tools/mxTools/mxTools.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/mx/Queue/mxQueue/mxQueue.so
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

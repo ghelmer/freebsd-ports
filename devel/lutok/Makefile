@@ -3,9 +3,10 @@
 
 PORTNAME=	lutok
 PORTVERSION=	0.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	https://github.com/jmmv/lutok/releases/download/${PORTNAME}-${PORTVERSION}/ \
+		LOCAL/jmmv
 
 MAINTAINER=	jmmv@FreeBSD.org
 COMMENT=	Lightweight C++ API for Lua
@@ -22,8 +23,8 @@ OPTIONS_DEFAULT=TEST
 
 OPTIONS_SUB=		yes
 TEST_CONFIGURE_WITH=	atf
-TEST_BUILD_DEPENDS=	atf>=0.20:${PORTSDIR}/devel/atf
-TEST_RUN_DEPENDS=	atf>=0.20:${PORTSDIR}/devel/atf
+TEST_BUILD_DEPENDS=	atf>=0.21:${PORTSDIR}/devel/atf
+TEST_RUN_DEPENDS=	atf>=0.21:${PORTSDIR}/devel/atf
 
 .include <bsd.port.options.mk>
 

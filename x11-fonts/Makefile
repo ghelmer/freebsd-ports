@@ -3,6 +3,7 @@
 
     COMMENT = X11 fonts and font utilities
 
+    SUBDIR += alef
     SUBDIR += alegreya-sans
     SUBDIR += alfont
     SUBDIR += andika
@@ -118,6 +119,7 @@
     SUBDIR += libXft
     SUBDIR += liberation-fonts-ttf
     SUBDIR += libfontenc
+    SUBDIR += linux-c6-fontconfig
     SUBDIR += linux-f10-fontconfig
     SUBDIR += linuxlibertine
     SUBDIR += linuxlibertine-g
@@ -133,6 +135,7 @@
     SUBDIR += montecarlo_fonts
     SUBDIR += moveable-type-fonts
     SUBDIR += nexfontsel
+    SUBDIR += noto
     SUBDIR += nucleus
     SUBDIR += p5-Font-AFM
     SUBDIR += p5-Font-TTF
@@ -154,10 +157,11 @@
     SUBDIR += sourcesanspro-ttf
     SUBDIR += stix-fonts
     SUBDIR += suxus
+    SUBDIR += symbola
     SUBDIR += terminus-font
     SUBDIR += tkfont
+    SUBDIR += tlwg-ttf
     SUBDIR += tmu
-    SUBDIR += ttmkfdir
     SUBDIR += tv-fonts
     SUBDIR += ubuntu-font
     SUBDIR += urwfonts

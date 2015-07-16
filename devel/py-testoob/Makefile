@@ -10,27 +10,16 @@ MASTER_SITES=	SF \
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Testoob is an advanced unit testing framework for PyUnit
+COMMENT=	Advanced unit testing framework for PyUnit
 
-OPTIONS_DEFINE=	TWISTED HTML
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/docs/LICENSE-2.0.txt
+
+OPTIONS_DEFINE=	TWISTED
+TWISTED_USES=	twisted
 TWISTED_DESC=	enable running in threads
-HTML_DESC=	enable HTML output
 
-# bypass infrastructure bug (taken from www/py-django)
-OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
+USES=		python tar:bzip2
+USE_PYTHON=	autoplist distutils
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MTWISTED}
-USES+=		twisted tar:bzip2
-.endif
-
-.if ${PORT_OPTIONS:MHTML}
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/Ft/Xml/__init__.py:${PORTSDIR}/textproc/py-4suite-xml
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

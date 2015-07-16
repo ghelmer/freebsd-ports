@@ -10,9 +10,7 @@ MASTER_SITES=	http://convey.sourceforge.net/downloads/ \
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	An Instant Message (IM) program using the Jabber protocol
-
-RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper
+COMMENT=	Instant Message (IM) program using the Jabber protocol
 
 USE_ANT=	yes
 USE_JAVA=	yes

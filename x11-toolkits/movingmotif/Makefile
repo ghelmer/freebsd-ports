@@ -3,23 +3,23 @@
 
 PORTNAME=	movingmotif
 PORTVERSION=	2.3.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}_2_1/movingmotiv-2.3.1
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Display scientific data as dynamic plot
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		motif libtool
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-.include <bsd.port.pre.mk>
+CFLAGS_sparc64=	-O0
 
-.if ${ARCH} == "sparc64"
-CFLAGS+=	-O0
-.endif
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

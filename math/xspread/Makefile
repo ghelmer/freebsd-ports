@@ -3,7 +3,7 @@
 
 PORTNAME=	xspread
 PORTVERSION=	3.1.1c
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://archive.debian.org/%SUBDIR%/ \
 		http://mirror.safehostnet.com/debian-archive/%SUBDIR%/ \
@@ -31,7 +31,7 @@ PLIST_FILES=	bin/pxspread bin/xspread man/man1/pxspread.1.gz \
 
 .if ${PORT_OPTIONS:MX11}
 USE_XORG=	x11 xau xcb xdmcp xt
-LIB_DEPENDS+=	pthread-stubs:${PORTSDIR}/devel/libpthread-stubs
+LIB_DEPENDS+=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 .else
@@ -52,10 +52,6 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/x/notes ${STAGEDIR}${DOCSDIR}
-.for dir in doc documents sample_files tests
-	@${TAR} -C ${WRKSRC} --exclude '*.tmp' -cf - ${dir} | \
-		${TAR} -C ${STAGEDIR}${DOCSDIR} --unlink -xf -
-.endfor
-	@${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "doc documents sample_files tests" ${STAGEDIR}${DOCSDIR} "! -name *.tmp")
 
 .include <bsd.port.mk>

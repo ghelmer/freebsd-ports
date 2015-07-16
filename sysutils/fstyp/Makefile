@@ -6,15 +6,13 @@ PORTVERSION=	0.1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} http://thegaul.org/src/
 
-MAINTAINER=	sacchi@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Detect which filesystem type a device/partition contains
 
-GNU_CONFIGURE=	yes
 USES=		gmake
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV+=	ac_cv_prog_CC="${CC}"
 
-PLIST_FILES=	bin/fstyp
+PLIST_FILES=	bin/fstyp man/man8/fstyp.8.gz
 
-MAN8=		fstyp.8
-
-NO_STAGE=	yes
 .include <bsd.port.mk>

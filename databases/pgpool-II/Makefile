@@ -3,6 +3,7 @@
 
 PORTNAME=	pgpool-II
 PORTVERSION=	3.1.6
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	LOCAL/kuriyama \
 		http://www.pgpool.net/mediawiki/images/
@@ -10,11 +11,11 @@ MASTER_SITES=	LOCAL/kuriyama \
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Connection pool server for PostgreSQL
 
-LICENSE=	BSD
+LICENSE=	MIT
 
-USES=		gmake
 GNU_CONFIGURE=	yes
-USE_PGSQL=	yes
+INSTALL_TARGET=	install-strip
+USES=		gmake pgsql:9.2- libtool
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 CONFIGURE_ARGS=	--with-openssl
@@ -46,8 +47,6 @@ PLIST_SUB=	PGSQL9="@comment "
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|echo aout|echo elf|g' \
-	${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's| pg_config| ${LOCALBASE}/bin/pg_config|g' \
 	${WRKSRC}/sql/pgpool-recovery/Makefile
 

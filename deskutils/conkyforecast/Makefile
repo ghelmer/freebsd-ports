@@ -3,6 +3,7 @@
 
 PORTNAME=	conkyforecast
 PORTVERSION=	2.20
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpadlibrarian.net/70673352/ \
 		LOCAL/vg
@@ -13,23 +14,15 @@ COMMENT=	Weather forecast script for conky
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	fc-cache:${PORTSDIR}/x11-fonts/fontconfig
 RUN_DEPENDS=	conky:${PORTSDIR}/sysutils/conky \
-		pidof:${PORTSDIR}/sysutils/pidof \
-		fc-cache:${PORTSDIR}/x11-fonts/fontconfig
+		pidof:${PORTSDIR}/sysutils/pidof
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-INSTALL_EGGINFO=yes
-USES=		gettext
+USES=		gettext python fonts
+USE_PYTHON=	distutils
 SUB_FILES=	pkg-message
-SUB_LIST+=	FONTSDIR="${FONTSDIR:S|${PREFIX}/||}"
-PLIST_SUB=	FONTSDIR="${FONTSDIR:S|${PREFIX}/||}"
-FONTSDIR=	${PREFIX}/lib/X11/fonts/${PORTNAME}
 
 WRKSRC=		${WRKDIR}/src
 
-NO_STAGE=	yes
 post-patch:
 	@cd ${WRKSRC} && ${REINPLACE_CMD} -e 's,/usr/share/${PORTNAME},${DATADIR},g' \
 		setup.py \
@@ -49,11 +42,7 @@ post-patch:
 	@cd ${WRKSRC} && ${RM} -fr test/*.bak example/*.bak
 
 post-install:
-	@${MKDIR} ${FONTSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/fonts/* ${FONTSDIR}
-	@${ECHO_MSG} "===> Running fc-cache"
-	-${LOCALBASE}/bin/fc-cache -f -v ${FONTSDIR}
-	@${ECHO_MSG}
-	${CAT} ${PKGMESSAGE}
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/fonts/* ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

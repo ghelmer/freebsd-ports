@@ -3,7 +3,7 @@
 
 PORTNAME=	sdl_jewels
 PORTVERSION=	1.1.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://www.linuxmotors.com/gljewel/downloads/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -12,16 +12,14 @@ DISTFILES=	${PORTNAME:S/sdl/SDL/}-${DISTVERSION}.tgz \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME:S/sdl/SDL/}-${DISTVERSION}.tgz
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tile-matching 8x8 puzzle game
-
-LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/${PORTNAME:S/sdl/SDL/}-${PORTVERSION}
 
 USES=		gmake
 USE_SDL=	sdl image mixer
-ALL_TARGET=
+ALL_TARGET=	# empty
 
 PORTDOCS=	ChangeLog README
 OPTIONS_DEFINE=	DOCS

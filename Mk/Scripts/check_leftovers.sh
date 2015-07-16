@@ -40,7 +40,7 @@ if [ -n "${LOCALBASE}" ]; then
 else
 	LOCALBASE=$(make -C ${portdir} -VLOCALBASE)
 fi
-homedirs=$(awk -F: -v users=$(make -C ${portdir} -V USERS|sed -e 's, ,|,g;/^$/d') 'users && $1 ~ users {print $9}' ${PORTSDIR}/UIDs|sort -u|sed -e "s|/usr/local|${PREFIX}|")
+homedirs=$(awk -F: -v users=$(make -C ${portdir} -V USERS|sed -e 's, ,|,g;/^$/d;s,^,^(,;s,$,)$,') 'users && $1 ~ users {print $9}' ${PORTSDIR}/UIDs|sort -u|sed -e "s|/usr/local|${PREFIX}|"|tr "\n" " ")
 plistsub_sed=$(make -C ${portdir} -VPLIST_SUB_SED | /bin/sh ${PORTSDIR}/Mk/Scripts/plist_sub_sed_sort.sh)
 tmpplist=$(make -C ${portdir} -VTMPPLIST)
 
@@ -66,11 +66,11 @@ while read modtype path extra; do
 	ignore_path=0
 	sub_path=$(echo "$path" | sed -e "s|^${PREFIX}/||" -e "${plistsub_sed}")
 	orig_sub_path="${sub_path}"
-	# If this is a directory, use @dirrm in output
+	# If this is a directory, use @dir in output
 	is_dir=0
 	if [ -d "${path}" ]; then
 		is_dir=1
-		sub_path="@dirrm ${sub_path}"
+		sub_path="@dir ${sub_path}"
 	fi
 
 	# Handle PORTDOCS/PORTEXAMPLES/etc
@@ -89,7 +89,7 @@ while read modtype path extra; do
 			esac
 			# Don't show dirs already in plist (due to parents)
 			grep -qE \
-			    "^@(unexec rmdir \"?(%D/|${PREFIX})?${path#${PREFIX}/}[ \"]|dirrm(try)? ${path#${PREFIX}/}\$)" \
+			    "^@(unexec rmdir \"?(%D/|${PREFIX})?${path#${PREFIX}/}[ \"]|dir(rm|rmtry)? ${path#${PREFIX}/}\$)" \
 			    ${tmpplist} && continue
 		fi
 
@@ -108,9 +108,17 @@ while read modtype path extra; do
 		esac
 		;;
 	-)
+		# Skip removal of PREFIX and PREFIX/info from
+		# bsd.port.mk for now.
 		# Skip if it is PREFIX and non-LOCALBASE. See misc/kdehier4
 		# or mail/qmail for examples
 		[ "${path}" = "${PREFIX}" -a "${LOCALBASE}" != "${PREFIX}" ] &&
+		    ignore_path=1
+
+		# The removal of info may be a bug; it's part of BSD.local.dist.
+		# See ports/74691
+
+		[ "${sub_path}" = "info" -a "${LOCALBASE}" != "${PREFIX}" ] &&
 		    ignore_path=1
 
 		[ $ignore_path -eq 0 ] && echo "- ${sub_path}"
@@ -145,7 +153,7 @@ while read modtype path extra; do
 			/etc/pwd.db|\
 			/etc/shells|\
 			/etc/spwd.db) ;;
-			*) echo "M ${sub_path#@dirrm } ${extra}" ;;
+			*) echo "M ${sub_path#@dir } ${extra}" ;;
 		esac
 		;;
 	esac

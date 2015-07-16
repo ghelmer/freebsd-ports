@@ -2,38 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-systemload-plugin
-PORTVERSION=	1.1.1
+PORTVERSION=	1.1.2
 PORTREVISION=	1
 CATEGORIES=	sysutils xfce
-MASTER_SITES=	${MASTER_SITE_XFCE}
-MASTER_SITE_SUBDIR=	src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	System Load plugin for Xfce4 panel
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 
 LIB_DEPENDS=	libupower-glib.so:${PORTSDIR}/sysutils/upower
 
+SSP_UNSAFE=	yes
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
+INSTALL_TARGET=	install-strip
+USES=		gmake libtool pkgconfig gettext-tools xfce tar:bzip2
 USE_GNOME=	gtk20 intltool intlhack
-USE_XFCE=	configenv libmenu libutil panel
-USES=	pkgconfig gmake
+USE_XFCE=	panel
 
 OPTIONS_DEFINE= NLS
-OPTIONS_DEFAULT=        NLS
+OPTIONS_DEFAULT=NLS
+OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-CONFIGURE_ARGS+=--enable-nls
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=	gettext-runtime
 
 .include <bsd.port.mk>

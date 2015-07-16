@@ -7,10 +7,11 @@ CATEGORIES=	chinese net gnome
 MASTER_SITES=	http://pcmanx-gtk2.googlecode.com/files/
 DISTNAME=	${PORTNAME}-gtk2-${PORTVERSION}
 
-MAINTAINER=	pclin@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BBS client using GTK+ 2.x
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GNOME=	gtk20 intlhack
 USES=		tar:xz iconv gmake pkgconfig
@@ -36,6 +37,7 @@ PLIST_SUB+=	NLS=""
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 .else
+USES+=		gettext
 CONFIGURE_ARGS+=--disable-nls
 PLIST_SUB+=	NLS="@comment "
 .endif

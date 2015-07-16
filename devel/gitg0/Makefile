@@ -11,7 +11,8 @@ PKGNAMESUFFIX=	0
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	GTK-based git repository viewer (gtk2 version)
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	git:${PORTSDIR}/devel/git
 
@@ -19,7 +20,7 @@ CONFLICTS=	gitg-[0-9]*
 
 USES=		tar:bzip2 gmake pkgconfig pathfix libtool
 GNU_CONFIGURE=	yes
-USE_GNOME=	gconf2 gtk20 gtksourceview2
+USE_GNOME=	gconf2 gtk20 gtksourceview2 intlhack
 INSTALL_TARGET=	install-strip
 
 INSTALLS_ICONS=	yes
@@ -33,10 +34,6 @@ OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=nls
 NLS_CPPFLAGS=	-I${LOCALBASE}/include
-NLS_LDFLAGS=	-L${LOCALBASE}/lib
-
-post-patch:
-	@${REINPLACE_CMD} '/shell_LDADD =/s/$$/ -lgio-2.0 -lgobject-2.0 -lglib-2.0/' \
-		${WRKSRC}/tests/Makefile.in ${WRKSRC}/tools/Makefile.in
+NLS_LIBS=	-L${LOCALBASE}/lib
 
 .include <bsd.port.mk>

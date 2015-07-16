@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	http-cookie
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby library to handle HTTP Cookies
+
+LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-domain_name>=0.5.1:${PORTSDIR}/net/rubygem-domain_name
 

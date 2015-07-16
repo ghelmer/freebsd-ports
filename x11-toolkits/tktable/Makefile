@@ -9,10 +9,12 @@ MASTER_SITES=	SF
 DISTNAME=	${PORTNAME:S/tk/Tk/}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A table/matrix widget extension to Tk
+COMMENT=	Table/matrix widget extension to Tk
 
-LICENSE=	BSD
+LICENSE=	TclTk
+LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/license.txt
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES+=		tk
 USE_LDCONFIG=	${PREFIX}/lib/${DISTNAME}

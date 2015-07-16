@@ -11,12 +11,13 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	office@FreeBSD.org
 COMMENT=	French hyphenation rules
 
+LICENSE=	LGPL21
+
 USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	%%DATADIR%%/hyph_fr.dic
-PLIST_DIRSTRY=	%%DATADIR%%
 
 FRALIASES=	fr_FR fr_BE fr_CA fr_CH fr_LU
 .for ALIAS in ${FRALIASES}

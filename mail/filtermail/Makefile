@@ -1,18 +1,13 @@
-# Created by: Harry Newton
 # $FreeBSD$
 
-# Called this port 'filtermail' because there is already a 'mailfilter'
-# in the ports tree.
-
 PORTNAME=	filtermail
-PORTVERSION=	0.8.2
+PORTVERSION=	0.8.3
+PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	SFP \
-		http://home.in.tum.de/baueran/%SUBDIR%/
-MASTER_SITE_SUBDIR=	mailfilter/Mailfilter/${PORTVERSION}
+MASTER_SITES=	http://sourceforge.net/projects/mailfilter/files/Mailfilter/
 DISTNAME=	mailfilter-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jmc-filtermail@milibyte.co.uk
 COMMENT=	Filter mail on a POP3 server: saves downloading spam
 
 LICENSE=	GPLv3
@@ -29,18 +24,18 @@ EXTRACT_AFTER_ARGS=	| ${SED} 's/[mM][aA][iI][lL][fF][iI][lL][tT][eE][rR]/filterm
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		bison gmake
+USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
-
-MAN1=		filtermail.1
-MAN5=		filtermailex.5 filtermailrc.5
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-PLIST_FILES=	bin/filtermail
+PLIST_FILES=	bin/${PORTNAME} \
+		man/man1/${PORTNAME}.1.gz \
+		man/man5/${PORTNAME}ex.5.gz \
+		man/man5/${PORTNAME}rc.5.gz
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|filtermail.sourceforge|mailfilter.sourceforge|g' ${WRKSRC}/README
 

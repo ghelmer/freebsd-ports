@@ -3,6 +3,7 @@
 
 PORTNAME=	plplot
 PORTVERSION=	${RELEASE}
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20Source
 PKGNAMESUFFIX=	-ada
@@ -12,7 +13,7 @@ COMMENT=	Ada bindings for PLplot
 
 LICENSE=	LGPL3
 
-LIB_DEPENDS=	libplplotd.so:${PORTSDIR}/math/plplot
+LIB_DEPENDS=	libplplot.so:${PORTSDIR}/math/plplot
 
 USES=		ada
 
@@ -24,7 +25,7 @@ INSTALL_WRKSRC=	${WRKSRC}/bindings
 post-extract:
 	${CP} ${FILESDIR}/build_plplot.gpr ${FILESDIR}/Makefile \
 		${BUILD_WRKSRC}
-	${CAT} ${FILESDIR}/plplot.gpr.in | ${SED} -e "s|@PREFIX@|${PREFIX}|g" > \
-		${BUILD_WRKSRC}/plplot.gpr
+	${CAT} ${FILESDIR}/plplot.gpr.in | \
+		${SED} -e "s|@PREFIX@|${PREFIX}|g" > ${BUILD_WRKSRC}/plplot.gpr
 
 .include <bsd.port.mk>

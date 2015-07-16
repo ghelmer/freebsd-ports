@@ -3,11 +3,11 @@
 
 PORTNAME=	mountapp
 PORTVERSION=	3.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	sysutils windowmaker
 MASTER_SITES=	SF
 
-MAINTAINER=	nm@web.am
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Windowmaker application, Resembles wmmount with extra functionality
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libWINGs.a:${PORTSDIR}/x11-wm/windowmaker

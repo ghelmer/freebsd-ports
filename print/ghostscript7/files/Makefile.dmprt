@@ -16,11 +16,11 @@ post-patch-dmprt:
 post-install-dmprt:
 	cd ${WRKSRC}/src \
 		&& ${INSTALL_DATA} dmp_init.ps dmp_site.ps escp_24.src \
-		${DATADIR}/${PORTVERSION}/lib
+		${STAGEDIR}${DATADIR}/${PORTVERSION}/lib
 
 post-install-docs-dmprt:
-	${MKDIR} ${DOCSDIR}/dmprt
-	${INSTALL_DATA} ${WRKSRC}/src/gdevdmpr.sj ${DOCSDIR}/dmprt
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/dmprt
+	${INSTALL_DATA} ${WRKSRC}/src/gdevdmpr.sj ${STAGEDIR}${DOCSDIR}/dmprt
 
 post-extract: post-extract-dmprt
 post-patch: post-patch-dmprt

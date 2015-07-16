@@ -1,13 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	leiningen
-PORTVERSION=	2.3.4
+PORTVERSION=	2.5.1
 CATEGORIES=	devel lisp java
-MASTER_SITES=	GITHUB:source1 \
-		https://leiningen.s3.amazonaws.com/downloads/:source2
-DISTFILES=	leiningen-${PORTVERSION}.tar.gz:source1 \
-		leiningen-${PORTVERSION}-standalone.jar:source2
-EXTRACT_ONLY=	leiningen-${PORTVERSION}.tar.gz
+MASTER_SITES=	GH:source1 \
+		https://github.com/technomancy/leiningen/releases/download/${PORTVERSION}/:source2
+DISTFILES=	${DISTNAME}.tar.gz:source1 \
+		leiningen-${PORTVERSION}-standalone.zip:source2
+EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	rpaulo@FreeBSD.org
 COMMENT=	Automate Clojure projects
@@ -16,8 +16,6 @@ LICENSE=	EPL
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	technomancy
-GH_TAGNAME=	${PORTVERSION}
-GH_COMMIT=	e0edbb0
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -35,6 +33,6 @@ post-patch:
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/lein-pkg ${STAGEDIR}${PREFIX}/bin/lein
-	${INSTALL_DATA} ${DISTDIR}/leiningen-${PORTVERSION}-standalone.jar ${STAGEDIR}${JAVAJARDIR}/leiningen.jar
+	${INSTALL_DATA} ${DISTDIR}/leiningen-${PORTVERSION}-standalone.zip ${STAGEDIR}${JAVAJARDIR}/leiningen.jar
 
 .include <bsd.port.mk>

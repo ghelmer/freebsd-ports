@@ -2,7 +2,7 @@
 
 PORTNAME=	python2
 PORTVERSION=	${PYTHON_MAJOR_VER}
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -11,19 +11,15 @@ EXTRACT_ONLY=	# empty
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	The "meta-port" for version 2 of the Python interpreter
 
-USE_PYTHON_RUN=	yes
-PYTHON_VERSION=	${PYTHON2_DEFAULT_VERSION}
-NO_BUILD=	yes
-PYTHON_NO_DEPENDS=	yes
+USES=			python:run
+PYTHON_VERSION=		${PYTHON2_DEFAULT_VERSION}
+NO_BUILD=		yes
 
 PLIST_FILES=	bin/2to3-${PYTHON_MAJOR_VER} \
 		bin/idle${PYTHON_MAJOR_VER} \
 		bin/pydoc${PYTHON_MAJOR_VER} \
 		bin/python${PYTHON_MAJOR_VER} \
 		bin/python${PYTHON_MAJOR_VER}-config \
-		bin/python-shared${PYTHON_MAJOR_VER} \
-		bin/python-shared${PYTHON_MAJOR_VER}-config \
-		bin/smtpd${PYTHON_MAJOR_VER}.py \
 		libdata/pkgconfig/python${PYTHON_MAJOR_VER}.pc
 
 .include <bsd.port.pre.mk>
@@ -31,18 +27,14 @@ PLIST_FILES=	bin/2to3-${PYTHON_MAJOR_VER} \
 RUN_DEPENDS+=	${PYTHON_CMD}:${PYTHON_PORTSDIR}
 
 do-install:
-.for file in idle pydoc python python-shared
+.for file in idle pydoc python
 	${LN} -sf ${file}${PYTHON_VER} \
 		${STAGEDIR}${PREFIX}/bin/${file}${PYTHON_MAJOR_VER}
 .endfor
 	${LN} -sf 2to3-${PYTHON_VER} \
 		${STAGEDIR}${PREFIX}/bin/2to3-${PYTHON_MAJOR_VER}
-	${LN} -sf smtpd${PYTHON_VER}.py \
-		${STAGEDIR}${PREFIX}/bin/smtpd${PYTHON_MAJOR_VER}.py
 	${LN} -sf python${PYTHON_VER}-config \
 		${STAGEDIR}${PREFIX}/bin/python${PYTHON_MAJOR_VER}-config
-	${LN} -sf python-shared${PYTHON_VER}-config \
-		${STAGEDIR}${PREFIX}/bin/python-shared${PYTHON_MAJOR_VER}-config
 	${LN} -sf python-${PYTHON_VER}.pc \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/python${PYTHON_MAJOR_VER}.pc
 
@@ -53,12 +45,7 @@ PORTUPGRADE_CMD=	${LOCALBASE}/sbin/portupgrade
 PORTUPGRADE_CMD=	${LOCALBASE}/sbin/portmaster
 .endif
 
-.if defined(WITH_PKGNG)
 PKG_LIST=	${PKG_BIN} query -a '%n-%v'
 PKG_LIST_FILES=	${PKG_INFO} -l
-.else
-PKG_LIST=	${PKG_INFO} -Ea
-PKG_LIST_FILES=	${PKG_INFO} -L
-.endif
 
 .include <bsd.port.post.mk>

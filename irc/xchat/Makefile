@@ -17,7 +17,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	xchat-1* xchat-systray-plugin-[0-9]*
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES=		cpe gettext gmake libtool pathfix pkgconfig tar:bzip2
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -70,7 +70,7 @@ PLIST_SUB+=	PERL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USES+=		python
 CONFIGURE_ARGS+=--enable-python
 PLIST_SUB+=	PYTHON=""
 .else
@@ -97,8 +97,9 @@ PLIST_SUB+=	TCL="@comment "
 post-patch:
 	@${REINPLACE_CMD} -e 's|glib/.*\.h>|glib.h>|g' \
 		${WRKSRC}/src/common/*.[ch]
-	@${REINPLACE_CMD} '/xchat_LDADD =/s/$$/ -lgmodule-2.0/' \
-		${WRKSRC}/src/fe-gtk/Makefile.in
+	@${REINPLACE_CMD} '/_LDADD =/s/$$/ -lgmodule-2.0/' \
+		${WRKSRC}/src/fe-gtk/Makefile.in \
+		${WRKSRC}/src/fe-text/Makefile.in
 
 # Create plugins directory even when no plugins are installed
 post-install:

@@ -3,32 +3,37 @@
 
 PORTNAME=	ghemical
 PORTVERSION=	3.0.0
-PORTREVISION=	3
+PORTREVISION=	8
 CATEGORIES=	science
-MASTER_SITES=	http://bioinformatics.org/ghemical/download/release20111012/	\
-		http://bioinformatics.org/ghemical/download/current
+MASTER_SITES=	http://bioinformatics.org/ghemical/download/%SUBDIR%/
+MASTER_SITE_SUBDIR=	release20111012 current
 
-MAINTAINER=	maho@FreeBSD.org
-COMMENT=	Ghemical is a computational chemistry software package
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Computational chemistry software package
 
-BUILD_DEPENDS=	f2c:${PORTSDIR}/lang/f2c \
-		obabel:${PORTSDIR}/science/openbabel \
-		ld:${PORTSDIR}/devel/binutils
-RUN_DEPENDS=	f2c:${PORTSDIR}/lang/f2c
-LIB_DEPENDS=	mpqc:${PORTSDIR}/science/mpqc \
-		gtkglext-x11-1.0:${PORTSDIR}/x11-toolkits/gtkglext \
-		ghemical:${PORTSDIR}/science/libghemical \
-		oglappth:${PORTSDIR}/science/liboglappth \
-		mopac7:${PORTSDIR}/biology/mopac
+LICENSE=	GPLv2 # (or later)
 
-USES=		fortran gettext gmake pkgconfig
-USE_GNOME=	glib20 gtk20 libglade2
-USE_GL=		glut
+LIB_DEPENDS=	libmopac7.so:${PORTSDIR}/biology/mopac \
+		libghemical.so:${PORTSDIR}/science/libghemical \
+		liboglappth.so:${PORTSDIR}/science/liboglappth \
+		libmpqc.so:${PORTSDIR}/science/mpqc \
+		libopenbabel.so:${PORTSDIR}/science/openbabel \
+		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
+RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+
+USES=		fortran gettext gmake pathfix pkgconfig
+USE_GNOME=	gtk20 libglade2
+USE_GL=		glu
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-gamess --enable-mpqc --enable-openbabel --enable-gtk --enable-threads --enable-mopac7
+CONFIGURE_ARGS=	--enable-gtk --enable-threads --enable-openbabel
+
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+
 PLIST_SUB=	GHEMICAL_VERSION="${PORTVERSION}"
 
-MAKE_ENV=	PKG_CONFIG=${LOCALBASE}/pkg-config
+post-patch:
+	@${REINPLACE_CMD} -e \
+		's|"mozilla "|"xdg-open "|' ${WRKSRC}/src/gtk_app.cpp
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

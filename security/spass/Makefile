@@ -5,7 +5,7 @@ PORTVERSION=	3.0
 PORTREVISION=	2
 CATEGORIES=	security
 
-MAINTAINER=	eadler@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Secure password generator with a true random number generator
 
 LICENSE=	GPLv3
@@ -17,7 +17,6 @@ LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib \
 USE_GITHUB=	yes
 GH_ACCOUNT=	guyru
 GH_TAGNAME=	cb0de64
-GH_COMMIT=	cb0de64
 
 USES=		cmake
 CFLAGS+=	-I${LOCALBASE}/include

@@ -3,7 +3,7 @@
 
 PORTNAME=	gracer
 PORTVERSION=	0.1.5
-PORTREVISION=	14
+PORTREVISION=	19
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -12,23 +12,23 @@ COMMENT=	3D motor sport simulator
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:${PORTSDIR}/x11-toolkits/plib
 LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib \
-		libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg
+		libpng.so:${PORTSDIR}/graphics/png
 
 USE_GL=		glut
-USES=		gmake perl5 tcl:84
+USES=		gmake jpeg perl5 tcl:84
 USE_PERL5=	build
-USE_AUTOTOOLS=	autoconf213
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-plib=${LOCALBASE}
 CPPFLAGS+=	-I${LOCALBASE}/include \
 		-I${TCL_INCLUDEDIR}
 LIBS+=		-L${LOCALBASE}/lib
-# for plib (sound):
-CONFIGURE_ARGS+=	--with-plib=${LOCALBASE}/plib
 
-.include <bsd.port.pre.mk>
-
-pre-patch:
+post-patch:
 	@${REINPLACE_CMD} -i '' -e 's|<malloc.h>|<stdlib.h>|' \
 		${WRKSRC}/common/gr_memory.h
+	@${REINPLACE_CMD} \
+		-e 's|lib/tclConfig.sh|lib/tcl${TCL_VER}/tclConfig.sh|' \
+		-e '/SOUND_LIBS=/s/"$$/ -lplibul"/' \
+		${WRKSRC}/configure
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

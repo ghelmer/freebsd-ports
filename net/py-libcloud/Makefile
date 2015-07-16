@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	libcloud
-PORTVERSION=	0.14.1
+PORTVERSION=	0.17.0
+PORTREVISION=	1
 CATEGORIES=	net python
-MASTER_SITES=	${MASTER_SITE_APACHE}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	APACHE/${PORTNAME}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	apache-${PORTNAME}-${PORTVERSION}
 
@@ -15,10 +15,9 @@ COMMENT=	Standard client library for many popular cloud providers
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_BZIP2=	yes
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		cpe python tar:bzip2
+USE_PYTHON=	distutils autoplist
+CPE_VENDOR=	apache
 
 post-extract:
 	@${MV} ${WRKSRC}/libcloud/test ${WRKSRC}/test # no need to install tests

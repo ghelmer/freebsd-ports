@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	musicpd
-PORTVERSION=	0.18.11
-PORTREVISION=	1
+PORTVERSION=	0.18.23
 CATEGORIES=	audio ipv6
 MASTER_SITES=	http://www.musicpd.org/download/mpd/${PORTVERSION:R}/
 DISTNAME=	mpd-${PORTVERSION}
@@ -27,7 +26,7 @@ PORTDOCS=	AUTHORS README COPYING NEWS UPGRADING
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=	ID3TAG IPV6 ARCHIVE SAMPLERATE SQLITE3 \
-		CDPARANOIA LAME MMS VORBISENC
+		CDPARANOIA LAME MMS VORBISENC DOCS
 
 OPTIONS_RADIO=	ZEROCONF
 OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
@@ -45,12 +44,10 @@ ADPLUG_DESC=	AdPlug support
 FLUIDSYNTH_DESC=FludSynth support (MIDI files)
 GME_DESC=	GME support (video game music files)
 LAME_DESC=	Support for MP3 Icecast Streams
-OPUS_DESC=	Opus decoder
 SIDPLAY2_DESC=	Sidplay support (C64 mono and stereo files)
 TREMOR_DESC=	Tremor decoder (not with SHOUTCAST; use VORBIS)
 TWOLAME_DESC=	TwoLAME support (mp2)
 VORBISENC_DESC=	Ogg Vorbis encoder
-WAVPACK_DESC=	WavPack support
 WILDMIDI_DESC=	WildMIDI support (MIDI files)
 
 OPTIONS_DEFAULT=ID3TAG IPV6 MAD OSS FLAC VORBIS WAV FFMPEG SNDFILE CURL
@@ -125,17 +122,11 @@ WAVPACK_LIB_DEPENDS=libwavpack.so:${PORTSDIR}/audio/wavpack
 WILDMIDI_CONFIGURE_ENABLE=wildmidi
 WILDMIDI_LIB_DEPENDS=libWildMidi.so:${PORTSDIR}/audio/wildmidi
 
-MPDDIR?=	/var/mpd
 MPDUSER?=	mpd
 MPDGROUP?=	mpd
 
 USERS=	${MPDUSER}
 GROUPS=	${MPDGROUP}
-
-PLIST_SUB=	MPDUSER=${MPDUSER} \
-		MPDDIR=${MPDDIR}   \
-		MPDGROUP=${MPDGROUP}
-SUB_LIST+=	MPDDIR=${MPDDIR}
 
 .include <bsd.port.options.mk>
 
@@ -144,7 +135,7 @@ IGNORE=Please remove the MPDCONF line from make.conf, then rename ${PREFIX}/etc/
 .endif
 
 .if exists(${PREFIX}/etc/mpd.conf)
-MSG=You still have ${PREFIX}/etc/mpd.conf in existence-- this file is no longer used by musicpd.
+MSG=does not expect ${PREFIX}/etc/mpd.conf to exist.
 .if !exists(${PREFIX}/etc/musicpd.conf)
 IGNORE=${MSG}  Move it to ${PREFIX}/etc/musicpd.conf.
 .else
@@ -157,7 +148,7 @@ CONFIGURE_ARGS+=--enable-bzip2 \
 		--enable-zzip \
 		--enable-iso9660
 LIB_DEPENDS+=	libzzip.so:${PORTSDIR}/devel/zziplib \
-		libiso9660.so:${PORTSDIR}/sysutils/libcdio
+		libcdio_paranoia.so:${PORTSDIR}/sysutils/libcdio-paranoia
 .else
 CONFIGURE_ARGS+=--disable-bzip2 \
 		--disable-zzip \
@@ -192,8 +183,8 @@ CONFIGURE_ARGS+=--disable-shout
 .endif
 
 post-patch:
-# Replace ~/ with MPDDIR and make musicpd run as mpd by default
-	@${REINPLACE_CMD} -e 's,^#\([^"]*"\)~/,\1${MPDDIR}/,g' \
+# Replace ~/ with /var/mpd and make musicpd run as mpd by default
+	@${REINPLACE_CMD} -e 's,^#\([^"]*"\)~/,\1/var/mpd,g' \
 		-e 's,^#\(user[^"]*"\)nobody,\1${MPDUSER},g' \
 		${WRKSRC}/doc/mpdconf.example
 # Uncomment OSS audio output part from MPDCONF; dragons!
@@ -210,25 +201,17 @@ post-patch:
 		-e 's#^mpd.conf#${PORTNAME}.conf#' \
 		-e 's#^mpd(1)#musicpd(1)#' \
 		${WRKSRC}/doc/mpd.1 ${WRKSRC}/doc/mpd.conf.5
-.if (${OSVERSION} < 800000)
-	${REINPLACE_CMD} -e 's/nan[f]*(\"\")/NAN/g' \
-		${WRKSRC}/src/crossfade.c \
-		${WRKSRC}/src/player_thread.c \
-		${WRKSRC}/src/player_control.c
-.endif
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/src/mpd \
+	${INSTALL_PROGRAM} ${WRKSRC}/src/mpd \
 		${STAGEDIR}/${PREFIX}/bin/${PORTNAME}
-	@${INSTALL_MAN} ${WRKSRC}/doc/mpd.1 \
+	${INSTALL_MAN} ${WRKSRC}/doc/mpd.1 \
 		${STAGEDIR}/${PREFIX}/man/man1/${PORTNAME}.1
-	@${INSTALL_MAN} ${WRKSRC}/doc/mpd.conf.5 \
+	${INSTALL_MAN} ${WRKSRC}/doc/mpd.conf.5 \
 		${STAGEDIR}/${PREFIX}/man/man5/${PORTNAME}.conf.5
-	@${MKDIR} ${STAGEDIR}/${DOCSDIR}
-.for doc in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${doc} ${STAGEDIR}/${DOCSDIR}/
-.endfor
-	@${INSTALL_DATA} ${WRKSRC}/doc/mpdconf.example \
+	${MKDIR} ${STAGEDIR}/${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}/${DOCSDIR}/
+	${INSTALL_DATA} ${WRKSRC}/doc/mpdconf.example \
 		${STAGEDIR}/${PREFIX}/etc/${PORTNAME}.conf.sample
 
 .include <bsd.port.mk>

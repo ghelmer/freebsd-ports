@@ -5,7 +5,7 @@ PORTVERSION=	0.4.0
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	http://launchpadlibrarian.net/74803944/ \
-		LOCAL/${MAINTAINER:C/([^@]*)@.*/\1/}
+		LOCAL/sbz
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sbz@FreeBSD.org
@@ -15,9 +15,8 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	cython>0:${PORTSDIR}/lang/cython
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 regression-test: extract
 	(cd ${WRKSRC}; ${MAKE} check)

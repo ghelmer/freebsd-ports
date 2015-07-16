@@ -3,24 +3,26 @@
 
 PORTNAME=	cscout
 PORTVERSION=	2.7
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.spinellis.gr/cscout/ \
 		http://www.dmst.aueb.gr/dds/cscout/
-DISTFILES=	${PORTNAME}-${PORTVERSION}-neutral${EXTRACT_SUFX} \
-		${PORTNAME}-${PORTVERSION}-fbsd-${ARCH}${EXTRACT_SUFX}
+DISTFILES=	${DISTNAME}-neutral${EXTRACT_SUFX} \
+		${DISTNAME}-fbsd-${ARCH}${EXTRACT_SUFX}
 
 MAINTAINER=	dds@FreeBSD.org
 COMMENT=	Source code analyzer and refactoring browser for C program collections
 
 LIB_DEPENDS+=	libc.so.6:${PORTSDIR}/misc/compat6x
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 NO_BUILD=	yes
 ONLY_FOR_ARCHS=	i386 amd64 sparc64
 ONLY_FOR_ARCHS_REASON=	The port fetches and installs precompiled binaries
-USES=		perl5
+USES=		perl5 shebangfix
 USE_PERL5=	run
+SHEBANG_FILES=	bin/csmake bin/cswc
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
@@ -50,9 +52,7 @@ do-install:
 .if ${PORT_OPTIONS:MDOCS}
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 .endif
-.if !defined(NO_INSTALL_MANPAGES)
 	${INSTALL_MAN} ${WRKSRC}/man/cscout.1 ${STAGEDIR}${PREFIX}/man/man1
 	${INSTALL_MAN} ${WRKSRC}/man/cswc.1 ${STAGEDIR}${PREFIX}/man/man1
-.endif
 
 .include <bsd.port.mk>

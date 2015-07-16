@@ -3,6 +3,7 @@
 
 PORTNAME=	ircd-ratbox
 PORTVERSION=	3.0.8
+PORTREVISION=	4
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://www.ratbox.org/download/				\
 		http://www.ratbox.org/download/old/
@@ -14,11 +15,14 @@ LICENSE=	GPLv2
 
 CONFLICTS=	ircd-ratbox-devel-[0-9]* charybdis-[0-9]*
 
-USE_BZIP2=	yes
+USES=		cpe libtool tar:bzip2
+CPE_VENDOR=	ratbox
 #MAN8=		ircd.8
 USE_RC_SUBR=	ircd-ratbox
 USE_SQLITE=	3
 USE_LDCONFIG=	${PREFIX}/lib/ircd-ratbox
+
+MAKE_JOBS_UNSAFE=	yes
 
 USERS=		ircd
 GROUPS=		${USERS}
@@ -39,6 +43,7 @@ CONFIGURE_ARGS=	--with-confdir=${PREFIX}/etc/${PORTNAME}		\
 		--libdir=${PREFIX}/lib/${PORTNAME}			\
 		--with-sqlite3=${LOCALBASE}				\
 		--disable-backups
+INSTALL_TARGET=	install-strip
 
 PORTDOCS=	[^i]*.txt README.* technical/[^i]*.txt Tao-of-IRC.*
 
@@ -60,26 +65,31 @@ OPTIONS_EXCLUDE=	NLS EXAMPLES
 
 #----------------------------------------------------------------------
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MOPENSSL}
-WITH_OPENSSL_BASE=yes
+USE_OPENSSL=	yes
 CONFIGURE_ARGS+=	--enable-openssl
 .else
 CONFIGURE_ARGS+=	--disable-openssl
 .endif
 
 .if ${PORT_OPTIONS:MIPV6}
+CONFIGURE_ARGS+=	--enable-ipv6
+.else
 CONFIGURE_ARGS+=	--disable-ipv6
 .endif
 
 .if ${PORT_OPTIONS:MZIPLINKS}
+CONFIGURE_ARGS+=	--enable-zlib
+.else
 CONFIGURE_ARGS+=	--disable-zlib
 .endif
 
 .if ${PORT_OPTIONS:MSHARED_MODS}
-CONFIGURE_ARGS+=	--disable-shared-modules
+CONFIGURE_ARGS+=	--disable-static
+.else
+CONFIGURE_ARGS+=	--enable-static
 .endif
 
 .if ${PORT_OPTIONS:MASSERT}
@@ -114,6 +124,11 @@ CONFIGURE_ARGS+=	--with-nicklen=${NICKLEN}
 .endif
 
 #-----------------------------------------------------------------------
+
+post-patch:
+.if !defined(WITH_DEBUG)
+	${REINPLACE_CMD} 's|@INSTALL@|@INSTALL@ -s|' ${WRKSRC}/install-mod.sh.in
+.endif
 
 pre-configure:
 	@${ECHO_MSG} ""
@@ -194,53 +209,40 @@ pre-build:
 .endif
 
 post-build:
-	@cd ${INSTALL_WRKSRC}/contrib && ${SETENV} ${MAKE_ENV} ${MAKE} \
+	@cd ${INSTALL_WRKSRC}/contrib && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS}
 
 # ----- Need to build the m_rsshortcut.so module for ircd-shortcut.pl ----
 .if ${PORT_OPTIONS:MSHORTCUTS}
 	@${ECHO_MSG} "Building m_rsshortcut.la for ircd-shortcuts."
-	@cd ${INSTALL_WRKSRC}/contrib && ${SETENV} ${MAKE_ENV} ${MAKE} \
+	@cd ${INSTALL_WRKSRC}/contrib && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
 		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} m_rsshortcut.la
 .endif
 
-pre-su-install:
-	${MKDIR} ${PREFIX}/etc/${PORTNAME}
-	${MKDIR} ${DATADIR}/help
-	${MKDIR} ${PREFIX}/lib/${PORTNAME}/modules
+pre-install:
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}/help
+	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	cd ${INSTALL_WRKSRC}/contrib && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} \
+		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
+	${INSTALL_DATA} ${WRKSRC}/doc/ircd.motd ${STAGEDIR}${PREFIX}/etc/${PORTNAME}/ircd.motd.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/example.conf ${STAGEDIR}${PREFIX}/etc/${PORTNAME}/ircd.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/example.efnet.conf ${STAGEDIR}${PREFIX}/etc/${PORTNAME}/ircd-efnet.conf.sample
+	${INSTALL_DATA} ${WRKSRC}/doc/genssl.sh ${STAGEDIR}${PREFIX}/etc/${PORTNAME}/genssl.sh
+.if !defined(WITH_DEBUG)
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ircd-ratbox/libcore.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/ircd-ratbox/libratbox.so
 .endif
-	@cd ${INSTALL_WRKSRC}/contrib && ${SETENV} ${MAKE_ENV} ${MAKE} \
-		${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} install
-	${INSTALL_DATA} ${WRKSRC}/doc/ircd.motd ${PREFIX}/etc/${PORTNAME}/ircd.motd.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/example.conf ${PREFIX}/etc/${PORTNAME}/ircd.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/example.efnet.conf ${PREFIX}/etc/${PORTNAME}/ircd-efnet.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/doc/genssl.sh ${PREFIX}/etc/${PORTNAME}/genssl.sh
 
 # ----- We need to install the shortcut.pl module ----
 .if ${PORT_OPTIONS:MSHORTCUTS}
 	@${ECHO_MSG} "Executing install-mod.sh for ircd-shortcuts module installation."
 	${SH} ${WRKSRC}/install-mod.sh ${WRKSRC}/contrib/m_rsshortcut.la \
-		${PREFIX}/lib/${PORTNAME}/modules/contrib
+		${STAGEDIR}${PREFIX}/lib/${PORTNAME}/modules/contrib
 .endif
-
-	@if [ ! -f ${PREFIX}/etc/${PORTNAME}/ircd.conf ]; then \
-		${ECHO} "Installing default configuration file."; \
-		${CP} -p ${PREFIX}/etc/${PORTNAME}/ircd.conf.sample ${PREFIX}/etc/${PORTNAME}/ircd.conf ; \
-	fi
-
-	@if [ ! -f ${PREFIX}/etc/${PORTNAME}/ircd.motd ]; then \
-		${ECHO} "Installing default motd file."; \
-		${CP} -p ${PREFIX}/etc/${PORTNAME}/ircd.motd.sample ${PREFIX}/etc/${PORTNAME}/ircd.motd ; \
-	fi
-
-	@${SETENV} "PKG_PREFIX=${PREFIX}" ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
-	@${CAT} ${PKGMESSAGE}
-
-#-----------------------------------------------------------------------
 
 .include <bsd.port.mk>

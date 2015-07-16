@@ -3,7 +3,7 @@
 
 PORTNAME=	openjazz
 PORTVERSION=	20120819
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://alister.eu/jazz/oj/ \
 		LOCAL/martymac
@@ -25,7 +25,7 @@ USE_SDL=	sdl
 
 CPPFLAGS+=	-I${LOCALBASE}/include `${SDL_CONFIG} --cflags` \
 		-DDATAPATH=\\\"${DATADIR}/\\\" -DHOMEDIR
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS} `${SDL_CONFIG} --libs`
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib `${SDL_CONFIG} --libs`
 
 SUB_FILES=	pkg-message
 
@@ -35,9 +35,6 @@ pre-extract:
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/openjazz.000 ${STAGEDIR}${DATADIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/OpenJazz ${STAGEDIR}${PREFIX}/bin/openjazz
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/openjazz
+	${INSTALL_PROGRAM} ${WRKSRC}/OpenJazz ${STAGEDIR}${PREFIX}/bin/openjazz
 
 .include <bsd.port.mk>

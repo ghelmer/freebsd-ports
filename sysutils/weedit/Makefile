@@ -5,15 +5,14 @@ PORTNAME=	weedit
 PORTVERSION=	2.0.3
 CATEGORIES=	sysutils
 MASTER_SITES=	http://adm1n.cjb.net/cw/ \
-		CRITICAL
-EXTRACT_SUFX=	.tgz
+		LOCAL/ehaupt
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	File duplicate scanner with database support
 
 LICENSE=	GPLv2
 
-USES=		dos2unix
+USES=		dos2unix tar:tgz
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 SRCF=		crc32 dlink weedit md5

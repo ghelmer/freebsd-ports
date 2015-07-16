@@ -13,8 +13,6 @@
 .if !defined(_INCLUDE_USES_ICONV_MK)
 _INCLUDE_USES_ICONV_MK=	yes
 
-iconv_ARGS:=	${iconv_ARGS:S/,/ /g}
-
 .if !exists(/usr/include/iconv.h) || ${iconv_ARGS:Mwchar_t} || ${iconv_ARGS:Mtranslit}
 
 ICONV_CMD=	${LOCALBASE}/bin/iconv
@@ -28,7 +26,7 @@ BUILD_DEPENDS+=	${ICONV_CMD}:${PORTSDIR}/converters/libiconv
 .elif ${iconv_ARGS:Mpatch}
 PATCH_DEPENDS+=	${ICONV_CMD}:${PORTSDIR}/converters/libiconv
 .else
-LIB_DEPENDS+=	libiconv.so.3:${PORTSDIR}/converters/libiconv
+LIB_DEPENDS+=	libiconv.so:${PORTSDIR}/converters/libiconv
 .endif
 
 .else
@@ -39,7 +37,10 @@ ICONV_PREFIX=	/usr
 ICONV_CONFIGURE_ARG=
 ICONV_CONFIGURE_BASE=
 
-.if exists(${LOCALBASE}/include/iconv.h)
+.if ${OPSYS} == DragonFly || (${OPSYS} == FreeBSD && (${OSVERSION} < 1001514 \
+ || (${OSVERSION} >= 1100000 && ${OSVERSION} < 1100069))) \
+ || exists(${LOCALBASE}/include/iconv.h)
+BUILD_DEPENDS+=	libiconv>=1.14_8:${PORTSDIR}/converters/libiconv
 CPPFLAGS+=	-DLIBICONV_PLUG
 CFLAGS+=	-DLIBICONV_PLUG
 CXXFLAGS+=	-DLIBICONV_PLUG

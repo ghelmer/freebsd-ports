@@ -1,40 +1,26 @@
-**************************************************
-Daemon:
-  The user %%USERS%% has been added to your system.
+When you first run minecraft-server, it will populate the file
+%%ETCDIR%%/eula.txt
 
-  To run the server automativally with the system
-  add the following line to your /etc/rc.conf:
+It is required to read the EULA, and then set eula=true
 
-  minecraft_enable="YES"
+- Configuration files can be found at %%ETCDIR%%
+- Log and debug output files can be found at /var/log/minecraft-server/
+- World files can be found at /var/db/minecraft-server
 
-  Serverfiles will be in 
-  %%PREFIX%%/share/minecraft-server
+Without daemon option:
+- To run the server, run %%PREFIX%%/bin/minecraft-server
+- To edit java's parameters, edit %%ETCDIR%%/java-args.txt
 
-  Configuration can be done using the config-files
-  or as OP using the Client. Config files are in
-  %%PREFIX%%/etc/minecraft
+With daemon option:
+- The service has been installed with the name 'minecraft'
+- To adjust memory usage, use MINECRAFT_MEM= in /etc/rc.conf
+- To add other java parameters, use MINECRAFT_ARGS= in /etc/rc.conf
+- To see the interactive console, type service minecraft console
 
-  If you have trouble starting or stopping the
-  server try to delete an unclean server.log.lck:
+Users upgrading from version < 1.8 are advised to run the server to
+generate new config files, and then modify them based on their existing
+configuration, as most files are now JSON instead of txt.
 
-  %%PREFIX%%/etc/rc.d/minecraft clean
-
-  If you don't like your generated world it can
-  be deleted (do generate a new one next time
-  the server starts) using:
-  
-  %%PREFIX%%/etc/rc.d/minecraft killworld
-
-  You can delete the server.log (so it's not
-  getting to fat) using:
-
-  %%PREFIX%%/etc/rc.d/minecraft clearlog
-
-Unprivileged users:
-  Running a server as unprivilieged user try
-  minecraft-server{-nogui}
-
-  The serverfiles will be in
-  ~/.minecraft-server
-
-**************************************************
+Users upgrading from from 1.8 will need to re-accept the EULA. They
+may also wish to delete %%DATADIR%% as it is 
+no longer used.

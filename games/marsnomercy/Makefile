@@ -3,13 +3,15 @@
 
 PORTNAME=	marsnomercy
 PORTVERSION=	0.2.1
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	games
 MASTER_SITES=	SF/mars/mars/${PORTVERSION}
 DISTNAME=	mars-${PORTVERSION}-src
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Turn-based strategy game setting on Mars
+
+LICENSE=	GPLv2 # version unspecified actually
 
 BUILD_DEPENDS=	scons:${PORTSDIR}/devel/scons
 
@@ -17,15 +19,16 @@ USE_GL=		gl
 USE_SDL=	sdl image ttf
 SCONS_ARGS=	prefix=${PREFIX}
 
-PLIST=		${WRKDIR}/pkg-plist
-PLIST_FILES=	bin/mars-nomercy libexec/mars
-PLIST_DIRS=	%%DATADIR%%
 SUB_FILES=	mars-nomercy pkg-message
 WRKSRC=		${WRKDIR}/mars-${PORTVERSION}
 
+PLIST_FILES=	bin/mars-nomercy \
+		libexec/mars
+PLIST_DIRS=	%%DATADIR%%/img/units/mercenaries
+PORTDATA=	*
+
 OPTIONS_DEFINE=	DEBUG OPENGL
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDEBUG}
@@ -43,21 +46,10 @@ SCONS_ARGS+=	with_opengl=0
 do-build:
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} scons ${SCONS_ARGS}
 
-pre-install:
-	@${RM} -f ${PLIST}
-	@cd ${WRKSRC}/data && \
-		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/|' >> ${PLIST} && \
-		${FIND} * -type d | ${SORT} -r | ${SED} -e 's|^|@dirrm %%DATADIR%%/|' >> ${PLIST}
-
 do-install:
-	@${MKDIR} ${DATADIR}
-	@cd ${WRKSRC}/data && \
-		${FIND} * -type d -exec ${MKDIR} "${DATADIR}/{}" \; && \
-			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${DATADIR}/{}" \;
-	@${INSTALL_SCRIPT} ${WRKDIR}/mars-nomercy ${PREFIX}/bin
-	@${INSTALL_PROGRAM} ${WRKSRC}/mars ${PREFIX}/libexec/mars
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+	${INSTALL_SCRIPT} ${WRKDIR}/mars-nomercy ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_PROGRAM} ${WRKSRC}/mars ${STAGEDIR}${PREFIX}/libexec/mars
+	cd ${WRKSRC}/data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}
+	@${RM} -f ${STAGEDIR}${DATADIR}/SConscript
 
 .include <bsd.port.mk>

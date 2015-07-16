@@ -3,12 +3,12 @@
 
 PORTNAME=	wmclockmon
 PORTVERSION=	0.8.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-clocks windowmaker
 MASTER_SITES=	http://tnemeth.free.fr/projets/programmes/
 
 MAINTAINER=	xride@FreeBSD.org
-COMMENT=	A digital clock dockapp with a similar look to wmcpuload
+COMMENT=	Digital clock dockapp with a similar look to wmcpuload
 
 USE_XORG=	xpm
 USE_GNOME=	gtk12

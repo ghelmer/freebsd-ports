@@ -3,25 +3,27 @@
 
 PORTNAME=	pdfFox
 PORTVERSION=	0.5.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/Nuggets
 PKGNAMEPREFIX=	razorback-
 DIST_SUBDIR=	razorback
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for an intelligence driven security - PDF Fox
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	librazorback_api.so:${PORTSDIR}/security/razorback-api
+LIB_DEPENDS=	librazorback_api.so:${PORTSDIR}/security/razorback-api \
+		libjson-c.so:${PORTSDIR}/devel/json-c
 BUILD_DEPENDS=	razorback-masterNugget>=0.5.0:${PORTSDIR}/security/razorback-masterNugget
 RUN_DEPENDS=	razorback-masterNugget>=0.5.0:${PORTSDIR}/security/razorback-masterNugget
 
 RB_LIBDIR?=	${PREFIX}/lib/razorback
 GNU_CONFIGURE=	yes
 USES=		libtool pkgconfig
+USE_AUTOTOOLS=	autoconf
 USE_LDCONFIG=	${RB_LIBDIR}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

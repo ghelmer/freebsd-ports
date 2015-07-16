@@ -6,15 +6,14 @@ PORTVERSION=	1.94
 CATEGORIES=	science math
 MASTER_SITES=	http://www.csie.ntu.edu.tw/~cjlin/liblinear/ \
 		http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/
-DISTNAME=	${PORTNAME}-${PORTVERSION:C/0$//}
 
-MAINTAINER=	rafan@FreeBSD.org
-COMMENT=	A library for Large Linear Classification
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Library for Large Linear Classification
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-OPTIONS_DEFINE=	OPTIMIZED_CFLAGS
+OPTIONS_DEFINE=	OPTIMIZED_CFLAGS DOCS
 OPTIONS_DEFAULT=OPTIMIZED_CFLAGS
 
 USES=		zip

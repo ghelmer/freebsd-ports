@@ -1,0 +1,16 @@
+# $FreeBSD$
+
+DISTVERSION=	1.0.1-600
+DISTVERSIONSUFFIX=	-gc27e634
+PORTREVISION=	0
+PKGNAMESUFFIX=	-devel
+
+GH_TAGNAME=	e855bc7:lang ba829ad:native a0b878f:ext_armips
+
+CONFLICTS_INSTALL?=	${PORTNAME}-[0-9]*
+
+MASTERDIR=	${.CURDIR}/../ppsspp
+PATCHDIR=	${.CURDIR}/files
+DISTINFO_FILE=	${.CURDIR}/distinfo
+
+.include "${MASTERDIR}/Makefile"

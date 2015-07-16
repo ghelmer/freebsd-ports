@@ -5,8 +5,7 @@ PORTNAME?=	xpbiff
 PORTVERSION?=	1.27
 PORTREVISION=	4
 CATEGORIES=	mail
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=     sanpei
+MASTER_SITES=	LOCAL/sanpei
 
 DISTNAME=	xpbiff
 DISTFILES=	xpbiff-1.27-with-YOUBIN.tar.gz.uu
@@ -14,10 +13,9 @@ DISTFILES=	xpbiff-1.27-with-YOUBIN.tar.gz.uu
 MAINTAINER?=	sanpei@FreeBSD.org
 COMMENT?=	Replacement for xbiff that handles popup window with mail header
 
-USES=		imake
+USES=		imake:noman
 USE_GCC=	any
 USE_XORG=	xpm xaw xmu
-NO_INSTALL_MANPAGES=	yes
 PLIST_FILES=	bin/xpbiff
 WRKSRC=		${WRKDIR}/xpbiff
 

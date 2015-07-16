@@ -15,11 +15,10 @@ LIB_DEPENDS=	libykclient.so:${PORTSDIR}/security/ykclient \
 		libyubikey.so:${PORTSDIR}/security/libyubikey
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig
+USES=		libtool pkgconfig
 
-PLIST_FILES=	lib/security/pam_yubico.la \
-		lib/security/pam_yubico.so
-PLIST_DIRS=	lib/security
+PLIST_FILES=	lib/security/pam_yubico.so \
+		man/man8/pam_yubico.8.gz
 SUB_FILES=	pkg-message
 PORTDOCS=	*
 

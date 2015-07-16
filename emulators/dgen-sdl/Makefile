@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dgen-sdl
-PORTVERSION=	1.32
+PORTVERSION=	1.33
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF/dgen/dgen/${PORTVERSION}
 
@@ -11,7 +12,7 @@ COMMENT=	Wonderful Sega Genesis/MegaDrive emulator
 
 USE_SDL=	sdl
 USE_GL=		yes
-USES=		fmake
+USES=		gmake
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/dgen \

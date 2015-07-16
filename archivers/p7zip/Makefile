@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	p7zip
-PORTVERSION=	9.20.1
-PORTREVISION?=	2
+PORTVERSION=	9.38.1
+PORTREVISION?=	0
 CATEGORIES=	archivers
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${DISTVERSION}_src_all
@@ -14,7 +14,8 @@ COMMENT?=	File archiver with high compression ratio
 LICENSE?=	LGPL21
 
 ALL_TARGET?=	all3
-USES=		tar:bzip2
+USES=		cpe tar:bzip2
+CPE_VENDOR=	7-zip
 MAKEFILE=	makefile
 MAKE_ARGS=	OPTFLAGS="${CXXFLAGS}"
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}
@@ -24,19 +25,18 @@ CFLAGS_ia64=	-fPIC
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	${SED} -e 's!g\+\+!${CXX}!' \
 	       -e 's!gcc!${CC}!' \
+	       -e 's/ -s //' \
 	       -e 's/-D_LARGEFILE_SOURCE//' \
 	       -e 's/-D_FILE_OFFSET_BITS=64//' \
 	       ${WRKSRC}/makefile.freebsd6 > ${WRKSRC}/makefile.machine
 	${REINPLACE_CMD} -e 's|{DEST_SHARE_DOC}|${DOCSDIR}|' \
 		${WRKSRC}/man1/*
-	${MV} ${WRKSRC}/README ${WRKSRC}/DOCS/readme.unix
+	${MV} ${WRKSRC}/README ${WRKSRC}/DOC/readme.unix
 
-.if ${SLAVE_PORT} == "no"
+.if ! defined(PKGNAMESUFFIX)
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/libexec/p7zip
 .for BINARY in 7z 7za 7zr 7zCon.sfx
@@ -48,7 +48,7 @@ do-install:
 	${LN} -sf 7z ${STAGEDIR}${PREFIX}/bin/7za
 	${LN} -sf 7z ${STAGEDIR}${PREFIX}/bin/7zr
 
-	(cd ${WRKSRC}/DOCS && \
+	(cd ${WRKSRC}/DOC && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 	(cd ${WRKSRC}/man1 && \
 		${INSTALL_MAN} 7z*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1)

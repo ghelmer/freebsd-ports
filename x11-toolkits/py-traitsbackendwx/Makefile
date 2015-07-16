@@ -3,7 +3,7 @@
 
 PORTNAME=	traitsbackendwx
 PORTVERSION=	3.2.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	x11-toolkits python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,11 +15,9 @@ COMMENT=	Wx backend for TraitsGUI
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}traits>=3.2.0:${PORTSDIR}/devel/py-traits
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-USE_WX=		2.8
+USES=		python
+USE_PYTHON=	distutils autoplist
+USE_WX=		3.0+
 WX_COMPS=	python
 
 .include <bsd.port.mk>
-

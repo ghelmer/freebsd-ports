@@ -15,7 +15,7 @@ LICENSE=	GPLv3
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		gmake libtool:keepla
+USES=		libtool:keepla
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -33,7 +33,5 @@ post-patch:
 		-e "s|BINOWN = bin|BINOWN = root|" -e "s|BINGRP = bin|BINGRP = wheel|" \
 		-e "s|libgdbm.la libgdbm_compat.la|libgdbm.la libgdbm_compat.la gdbm.info|" \
 			${WRKSRC}/Makefile.in
-	@${REINPLACE_CMD} '/_LDADD =/s/$$/ @LTLIBINTL@/' \
-		${WRKSRC}/src/Makefile.in
 
 .include <bsd.port.mk>

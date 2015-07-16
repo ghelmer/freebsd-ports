@@ -2,16 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	Class-Std-Utils
-DISTVERSION=	v0.0.3
+PORTVERSION=	0.0.3
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	Class
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Utility subroutines for building "inside-out" objects
 
-USES=		perl5
+LICENSE=	ART10 GPLv1
+LICENSE_COMB=	dual
+
 USE_PERL5=	configure
+USES=		perl5
 
 .include <bsd.port.mk>

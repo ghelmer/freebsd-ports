@@ -3,6 +3,7 @@
 
 PORTNAME=	amule
 PORTVERSION=	10834
+PORTREVISION=	4
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://amule.sourceforge.net/tarballs/
 PKGNAMESUFFIX=	-devel
@@ -30,8 +31,7 @@ CONFIGURE_ENV=	LEX="${FLEX}" PKG_CONFIG="${PKG_CONFIG}" \
 		docdir='$${prefix}/${DOCSDIR_REL}'
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-CFLAGS+=	${PTHREAD_CFLAGS}
-LDFLAGS+=	${PTHREAD_LIBS} -L${LOCALBASE}/lib
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	ALC ALCC AMULECMD AMULEDAEMON AMULEGUI CAS DEBUG DOCS ED2K \
 	FILEVIEW GEOIP MMAP MONOLITHIC NLS OPTIMIZED_CFLAGS PLASMAMULE UPNP \
@@ -95,7 +95,6 @@ PLASMAMULE_CONFIGURE_ENV= \
 			ac_cv_path_KDE4_CONFIG=${KDE4_PREFIX}/bin/kde4-config \
 			KBUILDSYCOCA=${KDE4_PREFIX}/bin/kbuildsycoca4 \
 			UPDATE_MIME_DATABASE=/usr/bin/true
-PLASMAMULE_PLIST_SUB+=	RESETPREFIX=${PREFIX}
 
 UPNP_LIB_DEPENDS=	libupnp.so:${PORTSDIR}/devel/upnp
 UPNP_CONFIGURE_OFF=	--disable-upnp
@@ -126,8 +125,7 @@ WX_UNICODE=		yes
 .endif
 
 post-patch:	.SILENT
-	${REINPLACE_CMD} -e '/LDFLAGS/s/-lpthread/${PTHREAD_LIBS}/' \
-		-e 's/test.*-print-file-name.*`/true/' \
+	${REINPLACE_CMD} -e 's/test.*-print-file-name.*`/true/' \
 		-e '/if.*test/s/==/=/' \
 		${WRKSRC}/configure
 .if ! ${PORT_OPTIONS:MDOCS}

@@ -3,7 +3,7 @@
 
 PORTNAME=	kvirc
 PORTVERSION=	4.2.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	irc kde
 MASTER_SITES=	ftp://ftp.kvirc.de/pub/kvirc/%SUBDIR%/ \
 		http://kvirc.gmake.de/pub/kvirc/%SUBDIR%/ \
@@ -26,7 +26,7 @@ USE_OPENSSL=	yes
 USE_PERL5=	build
 USE_QT4=	moc_build qmake_build rcc_build uic_build \
 		dbus gui network sql xml
-USES=		cmake gettext perl5 tar:bzip2
+USES=		cmake cpe gettext perl5 tar:bzip2
 CMAKE_ARGS=	-DWANT_ESD=no -DWANT_DOXYGEN=no \
 		-DMANDIR=${MANPREFIX}
 INSTALLS_ICONS=	yes
@@ -87,7 +87,7 @@ CMAKE_ARGS+=	-DWANT_GSM=no
 
 #scripting support
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USES+=		python
 PLIST_SUB+=	PYTHON=""
 .else
 CMAKE_ARGS+=	-DWANT_PYTHON=no

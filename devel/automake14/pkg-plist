@@ -75,5 +75,4 @@ share/automake-%%BUILD_VERSION%%/texi-vers.am
 share/automake-%%BUILD_VERSION%%/texinfo.tex
 share/automake-%%BUILD_VERSION%%/texinfos.am
 share/automake-%%BUILD_VERSION%%/ylwrap
-@dirrm share/aclocal-%%BUILD_VERSION%%
-@dirrm share/automake-%%BUILD_VERSION%%
+@dir share/aclocal

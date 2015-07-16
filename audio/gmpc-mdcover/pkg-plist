@@ -1,4 +1,3 @@
-lib/gmpc/plugins/mdcaplugin.la
 lib/gmpc/plugins/mdcaplugin.so
 share/locale/bs/LC_MESSAGES/gmpc-mdcover.mo
 share/locale/de/LC_MESSAGES/gmpc-mdcover.mo
@@ -11,5 +10,3 @@ share/locale/ru/LC_MESSAGES/gmpc-mdcover.mo
 share/locale/sq/LC_MESSAGES/gmpc-mdcover.mo
 share/locale/sv/LC_MESSAGES/gmpc-mdcover.mo
 share/locale/zh_CN/LC_MESSAGES/gmpc-mdcover.mo
-@dirrmtry lib/gmpc/plugins
-@dirrmtry lib/gmpc

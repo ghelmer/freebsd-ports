@@ -7,31 +7,30 @@ PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SF/${PORTNAME}/ENMA/${PORTVERSION}
 
-MAINTAINER=	umq@ueo.co.jp
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Sender authentication milter supporting SPF and Sender ID
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 OPTIONS_DEFINE=	LIBBIND
 LIBBIND_DESC=	Link against dns/libbind instead of dns/ldns
 
-HAS_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--prefix=${PREFIX} --mandir=${PREFIX}/man \
-			--with-ssl-incdir=${OPENSSLINC} --with-ssl-libdir=${OPENSSLLIB}
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-ssl-incdir=${OPENSSLINC} \
+		--with-ssl-libdir=${OPENSSLLIB}
 
-USES=		gmake perl5
+USES=		gmake libtool perl5
 USE_RC_SUBR=	milter-enma
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 USE_PERL5=	build
+LDFLAGS+=	-lssl
 MANLANG=	"" ja_JP.UTF-8
-MAN1=		enma.1
-MANCOMPRESSED=	no
-PLIST_FILES=	bin/sidfquery etc/enma.conf.sample lib/libsauth.a lib/libsauth.la \
-		lib/libsauth.so lib/libsauth.so.0 libexec/enma
 PORTDOCS=	ChangeLog INSTALL LICENSE README
 SUB_FILES=	milter-enma
+
+OPTIONS_DEFINE=	DOCS
 
 .if defined(WITH_POSTFIX_MILTER) || defined(WITH_POSTFIX) || defined(WITH_POSTFIX_CURRENT)
 CONF_SUB=	${REINPLACE_CMD} -e '/milter\.postfix/s/false/true/' ${WRKSRC}/enma/etc/enma.conf.sample
@@ -42,8 +41,7 @@ RUN_DEPENDS+=	${LOCALBASE}/libexec/postfix/smtpd:${PORTSDIR}/mail/postfix
 . endif
 .endif
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 .include "${PORTSDIR}/mail/sendmail/bsd.milter.mk"
 
 .if ${PORT_OPTIONS:MLIBBIND}
@@ -53,21 +51,23 @@ CONFIGURE_ARGS+=	--with-resolver=libbind \
 BUILD_DEPENDS+=	${LOCALBASE}/lib/libbind.a:${PORTSDIR}/dns/libbind
 .else
 CONFIGURE_ARGS+=	--with-resolver=ldns
-LIB_DEPENDS+=	ldns:${PORTSDIR}/dns/ldns
+LIB_DEPENDS+=	libldns.so:${PORTSDIR}/dns/ldns
 .endif
 
 pre-configure:
 	$$(${CONF_SUB})
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/enma/etc/enma.conf.sample ${PREFIX}/etc
+	${INSTALL_DATA} ${WRKSRC}/enma/etc/enma.conf.sample \
+		${STAGEDIR}${PREFIX}/etc
 .if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-.for f in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
-.endfor
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+.  for f in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
+.  endfor
 .endif
-	@${ECHO_CMD} "@unexec ${RMDIR} %D/man/ja_JP.UTF-8/man1 2>/dev/null || true" >> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec ${RMDIR} %D/man/ja_JP.UTF-8 2>/dev/null || true" >> ${TMPPLIST}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sidfquery \
+		${STAGEDIR}${PREFIX}/lib/libsauth.so \
+		${STAGEDIR}${PREFIX}/libexec/enma
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

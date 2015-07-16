@@ -4,17 +4,16 @@
 PORTNAME=	danzfs
 PORTVERSION=	0.2.0
 CATEGORIES=	sysutils python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	knaggsy2000@gmail.com
 COMMENT=	Provides a Python API for interacting with ZFS without using libzfs
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
-USES=		tar:xz
+USE_PYTHON=	distutils
+USES=		python tar:xz
 
 WRKSRC=	${WRKDIR}/danzfs
 

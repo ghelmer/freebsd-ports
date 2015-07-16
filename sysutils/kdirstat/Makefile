@@ -3,6 +3,7 @@
 
 PORTNAME=	kdirstat
 PORTVERSION=	2.7.5
+PORTREVISION=	2
 CATEGORIES=	sysutils kde
 MASTER_SITES=	https://bitbucket.org/jeromerobert/k4dirstat/get/
 DISTNAME=	k4dirstat-${PORTVERSION}
@@ -11,10 +12,12 @@ MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	KDE utility that sums up disk usage for directory trees
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/jeromerobert-k4dirstat-1ad2e96d73fa
 
-USES=		cmake desktop-file-utils tar:bzip2
+USES=		cmake cpe desktop-file-utils gettext-tools tar:bzip2
+CPE_VENDOR=	kdirstat_project
 USE_KDE4=	automoc4 kdelibs kdeprefix libkonq
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 INSTALLS_ICONS=	yes

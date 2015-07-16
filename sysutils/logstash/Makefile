@@ -2,43 +2,54 @@
 # $FreeBSD$
 
 PORTNAME=	logstash
-PORTVERSION=	1.2.1
+PORTVERSION=	1.5.1
 CATEGORIES=	sysutils java
-MASTER_SITES=	https://logstash.objects.dreamhost.com/release/ \
-		https://download.elasticsearch.org/logstash/logstash/
-DISTNAME=	${PORTNAME}-${PORTVERSION}-flatjar
-EXTRACT_SUFX=	.jar
-EXTRACT_ONLY=
+MASTER_SITES=	http://download.elastic.co/logstash/logstash/
 
-MAINTAINER=	regis.despres@gmail.com
+MAINTAINER=	enrico.m.crisostomo@gmail.com
 COMMENT=	Tool for managing events and logs
 
-USE_JAVA=	yes
-JAVA_VERSION=	1.6+
+LICENSE=	APACHE20
 
+RUN_DEPENDS=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
+
+USES=		cpe
+CPE_VENDOR=	elasticsearch
+USE_JAVA=	yes
+JAVA_VERSION=	1.7+
+JAVA_EXTRACT=	yes
+JAVA_RUN=	yes
 NO_BUILD=	yes
+
+LOGSTASH_DIR=	${PREFIX}/${PORTNAME}
 
 USE_RC_SUBR=	logstash
 
 LOGSTASH_HOME?=	${PREFIX}/${PORTNAME}
-LOGSTASH_HOME_REL?=	${LOGSTASH_HOME:S,^${PREFIX}/,,}
-LOGSTASH_JAR?=	${DISTNAME}${EXTRACT_SUFX}
 LOGSTASH_RUN?=	/var/run/${PORTNAME}
 LOGSTASH_DATA_DIR?=	/var/db/${PORTNAME}
 
 SUB_LIST=	LOGSTASH_DATA_DIR=${LOGSTASH_DATA_DIR} JAVA_HOME=${JAVA_HOME} \
-		LOGSTASH_HOME=${LOGSTASH_HOME} LOGSTASH_JAR=${LOGSTASH_JAR}
-PLIST_SUB+=	LOGSTASH_HOME=${LOGSTASH_HOME_REL} LOGSTASH_JAR=${LOGSTASH_JAR} \
-		LOGSTASH_RUN=${LOGSTASH_RUN} \
-		LOGSTASH_DATA_DIR=${LOGSTASH_DATA_DIR}
+		LOGSTASH_HOME=${LOGSTASH_HOME}
+
+LOGSTASH_BIN_FILES=	  logstash
+LOGSTASH_JRUBY_SUBDIR=	  vendor/jruby/bin
+LOGSTASH_JRUBY_BIN_FILES=	ast irb jirb jruby jruby.sh rdoc testrb gem \
+				jgem jirb_swing jruby.bash jrubyc rake ri
 
 do-install:
+	@${FIND} ${WRKSRC} -name '*.bat' -delete
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-	${MKDIR} ${STAGEDIR}${LOGSTASH_HOME}
 	${MKDIR} ${STAGEDIR}${LOGSTASH_RUN}
 	${MKDIR} ${STAGEDIR}${LOGSTASH_DATA_DIR}
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${LOGSTASH_JAR} ${STAGEDIR}${LOGSTASH_HOME}
+	@(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${LOGSTASH_DIR})
 	${INSTALL_DATA} ${FILESDIR}/logstash.conf.sample ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${FILESDIR}/elasticsearch.yml.sample ${STAGEDIR}${ETCDIR}
+.for x in ${LOGSTASH_BIN_FILES}
+	@${CHMOD} ${BINMODE} ${STAGEDIR}${LOGSTASH_DIR}/bin/${x}
+.endfor
+.for x in ${LOGSTASH_JRUBY_BIN_FILES}
+	@${CHMOD} ${BINMODE} ${STAGEDIR}${LOGSTASH_DIR}/${LOGSTASH_JRUBY_SUBDIR}/${x}
+.endfor
 
 .include <bsd.port.mk>

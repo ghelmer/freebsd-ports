@@ -12,7 +12,6 @@
 %%QT_INCDIR%%/QtSvg/qsvggenerator.h
 %%QT_INCDIR%%/QtSvg/qsvgrenderer.h
 %%QT_INCDIR%%/QtSvg/qsvgwidget.h
-%%QT_LIBDIR%%/libQtSvg.la
 %%QT_LIBDIR%%/libQtSvg.prl
 %%QT_LIBDIR%%/libQtSvg.so
 %%QT_LIBDIR%%/libQtSvg.so.4
@@ -20,7 +19,3 @@
 %%QT_LIBDIR%%/libQtSvg.so.%%FULLVER%%
 %%DEBUG%%%%QT_LIBDIR%%/libQtSvg.so.%%FULLVER%%.debug
 libdata/pkgconfig/QtSvg.pc
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtSvg
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

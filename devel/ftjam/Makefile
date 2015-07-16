@@ -6,12 +6,13 @@ PORTVERSION=	2.5.2
 CATEGORIES=	devel
 MASTER_SITES=	SF/freetype/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small build tool that can be used as a replacement for make(1)
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		gmake tar:bzip2
+USES=		dos2unix gmake tar:bzip2
+DOS2UNIX_GLOB=	*.c
 
 PORTDOCS=	Jam.html \
 		Jambase.html \
@@ -23,7 +24,7 @@ PORTDOCS=	Jam.html \
 
 PLIST_FILES=	bin/${PORTNAME}
 
-do-configure:
+post-patch:
 	@${REINPLACE_CMD} -e '/^CC/s|=|?=|; /^CFLAGS/s|=|?=|' \
 	    ${BUILD_WRKSRC}/${MAKEFILE}
 

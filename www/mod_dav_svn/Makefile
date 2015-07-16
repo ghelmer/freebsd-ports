@@ -19,13 +19,18 @@ SVN_BUILD_ADDONS=	yes
 USE_APACHE=	22+
 
 CONFIGURE_ARGS+=	--with-apxs=${APXS} \
-			--with-apache-libexecdir
-
-SUB_FILES=	pkg-install
+			--with-apache-libexecdir \
+			--without-gnome-keyring \
+			--without-kwallet
+SUB_FILES+=	220_subversion.conf.sample
 
 PLIST_SUB+=	SED=${SED}
 
 ALL_TARGET=	apache-mod
 INSTALL_TARGET=	install-mods-shared
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
+	${INSTALL_DATA} ${WRKDIR}/220_subversion.conf.sample ${STAGEDIR}${PREFIX}/${APACHEETCDIR}/modules.d
 
 .include <bsd.port.post.mk>

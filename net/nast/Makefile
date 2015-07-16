@@ -3,17 +3,17 @@
 
 PORTNAME=	nast
 PORTVERSION=	0.2.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	BERLIOS
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A packet sniffer
+COMMENT=	Packet sniffer
 
 LICENSE=	GPLv2 # (or later)
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	net:${PORTSDIR}/net/libnet
+LIB_DEPENDS=	libnet.so:${PORTSDIR}/net/libnet
 
 USES=		gmake
 GNU_CONFIGURE=	yes

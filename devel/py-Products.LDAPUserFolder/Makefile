@@ -3,6 +3,7 @@
 
 PORTNAME=	Products.LDAPUserFolder
 PORTVERSION=	2.26
+PORTREVISION=	1
 CATEGORIES=	devel python zope
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,15 +15,14 @@ COMMENT=	LDAP-enabled Zope 2 user folder
 LICENSE=	ZPL21
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-git>=0.4.2:${PORTSDIR}/devel/py-setuptools-git
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ldap2>=2.0.6:${PORTSDIR}/net/py-ldap2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ldap>=2.0.6:${PORTSDIR}/net/py-ldap
 
 OPTIONS_DEFINE=		POSIXGROUP_PATCH
 POSIXGROUP_PATCH_DESC=	Use posixGroup for group membership
 OPTIONS_DEFAULT=	POSIXGROUP_PATCH
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-#USES=			zope
+USE_PYTHON=	distutils
+USES=		python:2
 
 .include <bsd.port.options.mk>
 

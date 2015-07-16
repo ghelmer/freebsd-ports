@@ -3,7 +3,7 @@
 
 PORTNAME=	ayttm
 PORTVERSION=	0.6.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-im
 MASTER_SITES=	SF
 
@@ -14,9 +14,9 @@ LICENSE=	GPLv2 # (or later)
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libaudiofile.so:${PORTSDIR}/audio/libaudiofile \
+		libltdl.so:${PORTSDIR}/devel/libltdl \
 		libjasper.so:${PORTSDIR}/graphics/jasper \
 		libgpgme.so:${PORTSDIR}/security/gpgme \
-		libpspell.so:${PORTSDIR}/textproc/aspell \
 		libenchant.so:${PORTSDIR}/textproc/enchant
 
 OPTIONS_DEFINE=	ESOUND YAHOO
@@ -27,7 +27,6 @@ USES=		gettext gmake iconv libtool pkgconfig shebangfix tar:bzip2
 USE_XORG=	xpm xscrnsaver
 USE_GNOME=	gtk20
 USE_OPENSSL=	yes
-USE_AUTOTOOLS=	libltdl
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-oscar --disable-workwizu --enable-smtp --enable-lj \
 		--disable-arts

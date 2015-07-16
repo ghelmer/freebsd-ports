@@ -26,8 +26,8 @@ ruby_OLD_CMD=	/usr/proj/bioruby/bin/ruby
 
 XML_PARSER_RUN_DEPENDS=	${RUBY_SITEARCHLIBDIR}/xmlparser.so:${PORTSDIR}/textproc/ruby-xmlparser
 BDB4_RUN_DEPENDS=	${RUBY_SITEARCHLIBDIR}/bdb.so:${PORTSDIR}/databases/ruby-bdb
-MYSQL_RUN_DEPENDS=	${RUBY_SITELIBDIR}/DBD/Mysql/Mysql.rb:${PORTSDIR}/databases/ruby-dbd_mysql
-PGSQL_RUN_DEPENDS=	${RUBY_SITELIBDIR}/DBD/Pg/Pg.rb:${PORTSDIR}/databases/ruby-dbd_pg
+MYSQL_RUN_DEPENDS=	rubygem-dbd-mysql>=0:${PORTSDIR}/databases/rubygem-dbd-mysql
+PGSQL_RUN_DEPENDS=	rubygem-dbd-pg>=0:${PORTSDIR}/databases/rubygem-dbd-pg
 
 post-patch:
 	${RUBY} -i -pe 'gsub(%r"(/etc/bioinformatics/)") { "${PREFIX}" + $$1 }' \
@@ -46,4 +46,10 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/*.rd ${STAGEDIR}${RUBY_MODDOCDIR}/
 	${INSTALL_DATA} ${WRKSRC}/doc/*.rd.ja ${STAGEDIR}${RUBY_MODDOCDIR}/ja/
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.2
+BROKEN=         Does not build
+.endif
+
+.include <bsd.port.post.mk>

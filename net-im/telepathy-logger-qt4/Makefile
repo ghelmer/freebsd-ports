@@ -1,30 +1,27 @@
 # $FreeBSD$
 
 PORTNAME=	telepathy-logger-qt4
-PORTVERSION=	0.6.0
-PORTREVISION=	1
+PORTVERSION=	${KTP_VERSION}
 CATEGORIES=	net-im
-MASTER_SITES=	${MASTER_SITE_KDE}
-MASTER_SITE_SUBDIR=	stable/kde-telepathy/${PORTVERSION}/src
+MASTER_SITES=	KDE/stable/${PORTNAME:C/4$//}/${PORTVERSION}/src
 DISTNAME=	${PORTNAME:C/4$//}-${PORTVERSION}
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt binding for Telepathy Logger
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	dbus-1:${PORTSDIR}/devel/dbus \
-		dbus-glib-1:${PORTSDIR}/devel/dbus-glib \
-		telepathy-glib:${PORTSDIR}/net-im/telepathy-glib \
-		telepathy-logger:${PORTSDIR}/net-im/telepathy-logger \
-		telepathy-qt4:${PORTSDIR}/net-im/telepathy-qt4
+LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
+		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
+		libtelepathy-glib.so:${PORTSDIR}/net-im/telepathy-glib \
+		libtelepathy-logger.so:${PORTSDIR}/net-im/telepathy-logger \
+		libtelepathy-qt4.so:${PORTSDIR}/net-im/telepathy-qt4
 
 USE_GNOME=	glib20 libxml2
 USE_GSTREAMER=	qt4
 USE_KDE4=	# empty
-USE_PYTHON_BUILD=	yes
 USE_QT4=	corelib dbus moc_build qmake_build rcc_build uic_build
-USES=		bison:build cmake pkgconfig tar:bzip2
+USES=		bison:build cmake pkgconfig python:build tar:bzip2
 CMAKE_ARGS=	-DUSE_COMMON_CMAKE_PACKAGE_CONFIG_DIR:BOOL=True
 USE_LDCONFIG=	yes
 

@@ -3,6 +3,7 @@
 
 PORTNAME=	epic4
 PORTVERSION=	2.10.5
+PORTREVISION=	1
 CATEGORIES=	irc ipv6
 MASTER_SITES=	http://ftp.epicsol.org/pub/epic/EPIC4-PRODUCTION/ \
 		http://tehran.lain.pl/epic-mirror/EPIC4-PRODUCTION/ \
@@ -22,6 +23,7 @@ CONFLICTS=	epic5-0.[0-2]*
 GNU_CONFIGURE=	yes
 USE_OPENSSL=	yes
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
+USES+=		tar:bzip2
 CFLAGS:=	${CFLAGS:C/-O2/-g -O/g}
 
 OPTIONS_DEFINE=	IPV6 TCL PERL SSL TERMCAP DOCS
@@ -35,7 +37,7 @@ CONFIGURE_ARGS+=	--without-ipv6
 .endif
 
 .if ${PORT_OPTIONS:MTCL}
-LIB_DEPENDS+=		tcl84:${PORTSDIR}/lang/tcl84
+LIB_DEPENDS+=		libtcl84.so:${PORTSDIR}/lang/tcl84
 CONFIGURE_ARGS+=	--with-tcl
 .else
 CONFIGURE_ARGS+=	--without-tcl
@@ -49,8 +51,8 @@ CONFIGURE_ARGS+=	--without-tcl
 # SITE_PERL and PERL_VERSION to create the path.
 #
 .if ${PORT_OPTIONS:MPERL}
-USES+=		perl5 tar:bzip2
-CONFIGURE_ARGS+=	--with-perl=${SITE_PERL}/../../${PERL_VERSION}/mach/CORE
+USES+=		perl5
+CONFIGURE_ARGS+=	--with-perl=${LOCALBASE}/lib/perl5/${PERL_VERSION}/${PERL_ARCH}/CORE
 .else
 CONFIGURE_ARGS+=	--without-perl
 .endif

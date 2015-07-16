@@ -2,19 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	Auth_RADIUS
-PORTVERSION=	1.0.7
+PORTVERSION=	1.1.0
 CATEGORIES=	net security pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	PEAR wrapper classes for the RADIUS PECL
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICNSE=		BSD3CLAUSE
 
 USE_PHP=	radius
+USES=	pear
 
-PEAR_AUTOINSTALL=	yes
-
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

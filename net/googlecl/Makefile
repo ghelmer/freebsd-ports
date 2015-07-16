@@ -4,7 +4,7 @@
 PORTNAME=	googlecl
 PORTVERSION=	0.9.14
 CATEGORIES=	net www python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Command line tools for the Google Data APIs
@@ -13,11 +13,12 @@ LICENSE=	APACHE20
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdata>0:${PORTSDIR}/devel/py-gdata
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USES=		python:2
+USE_PYTHON=	autoplist distutils
 
 OPTIONS_DEFINE=	DOCS
 
+PLIST_FILES=	man/man1/google.1.gz
 PORTDOCS=	*
 
 .include <bsd.port.options.mk>

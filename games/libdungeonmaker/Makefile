@@ -3,12 +3,15 @@
 
 PORTNAME=	libdungeonmaker
 PORTVERSION=	2.05
+PORTREVISION=	1
 CATEGORIES=	games devel
 MASTER_SITES=	SF/dungeonmaker/dungeonmaker/${PORTVERSION}
 DISTNAME=	dungeonmaker-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Program/library that "grows" dungeons for use in isometric games
+
+LICENSE=	GPLv1
 
 USE_LDCONFIG=	yes
 
@@ -19,10 +22,9 @@ MAKEFILE=	Makefile.bsd
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
-	${INSTALL_LIB} ${WRKSRC}/libdungeonmaker.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA} ${WRKSRC}/libdungeonmaker.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/libdungeonmaker.so ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_LIB} ${WRKSRC}/libdungeonmaker.so.2 ${STAGEDIR}${PREFIX}/lib
-	${INSTALL_LIB} ${WRKSRC}/libdungeonmaker_p.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL} ${WRKSRC}/DungeonMaker.h ${STAGEDIR}${PREFIX}/include
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/DM2_Manual/* ${STAGEDIR}${DOCSDIR}

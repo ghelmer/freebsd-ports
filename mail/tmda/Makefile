@@ -6,18 +6,15 @@ PORTVERSION=	1.1.12
 PORTREVISION=	1
 CATEGORIES=	mail python
 MASTER_SITES=	ftp://tmda.net/pub/tmda/releases/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	sergei
-EXTRACT_SUFX=	.tgz
+		LOCAL/sergei
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python-based SPAM reduction system
 
-.if defined(WITH_CDB)
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/cdbmodule.so:${PORTSDIR}/databases/py-cdb
-.endif
+OPTIONS_DEFINE=	CDB DOCS EXAMPLES
+CDB_RUN_DEPENDS=${PYTHON_SITELIBDIR}/cdbmodule.so:${PORTSDIR}/databases/py-cdb
 
-USE_PYTHON=	yes
+USES=		python tar:tgz
 
 SUB_FILES=	pkg-message
 

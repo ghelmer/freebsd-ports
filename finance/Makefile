@@ -22,6 +22,7 @@
     SUBDIR += aqbanking
     SUBDIR += aqmoney
     SUBDIR += beanie
+    SUBDIR += bitcoin-armory
     SUBDIR += cbb
     SUBDIR += electrum
     SUBDIR += expense
@@ -43,10 +44,8 @@
     SUBDIR += moneymanagerex
     SUBDIR += mybudget
     SUBDIR += myphpmoney
-    SUBDIR += openerp-server
     SUBDIR += openerp-web
     SUBDIR += openhbci
-    SUBDIR += opentaxsolver
     SUBDIR += p5-Business-CreditCard
     SUBDIR += p5-Business-MaxMind-CreditCardFraudDetection
     SUBDIR += p5-Business-OCV
@@ -95,6 +94,7 @@
     SUBDIR += prestashop
     SUBDIR += py-stripe
     SUBDIR += py-vatnumber
+    SUBDIR += py-ystockquote
     SUBDIR += qhacc
     SUBDIR += rubygem-money
     SUBDIR += sabernetdcs-client

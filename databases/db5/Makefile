@@ -3,6 +3,7 @@
 
 PORTNAME=	db5
 PORTVERSION=	5.3.28
+PORTREVISION=	2
 CATEGORIES=	databases java
 MASTER_SITES=	http://download.oracle.com/berkeley-db/
 PKGNAMEPREFIX?=
@@ -24,20 +25,24 @@ CONFIGURE_ARGS=	--enable-cxx --enable-stl \
 		--bindir=${PREFIX}/bin/${PORTNAME}
 CONFIGURE_SCRIPT=	../dist/configure
 GNU_CONFIGURE=	yes
-USES=		gmake
+USES=		gmake libtool
 INSTALL_TARGET=	install_include install_lib install_utilities
-LIBTOOLFILES=	${CONFIGURE_SCRIPT}
 WRKSRC=		${WRKDIR}/${DISTNAME}/build_unix
 USE_LDCONFIG=	yes
 PLIST_SUB=	BDBMAJ=${BDBMAJ} BDBVER=${BDBVER}
 
-OPTIONS_DEFINE=	CRYPTO L10N SQL JAVA
+OPTIONS_DEFINE=	CRYPTO L10N SQL JAVA DOCS
 OPTIONS_DEFAULT=CRYPTO
 CRYPTO_DESC=	Cryptography support
 L10N_DESC=	Localization support (EXPERIMENTAL)
 SQL_DESC=	Enable SQL API (EXPERIMENTAL)
 
 .include <bsd.port.options.mk>
+
+.if ${ARCH} == "armv6"
+# db5 uses a deprecated instruction for mutexes on ARM, fbsd bug#197227
+CONFIGURE_ARGS+=	--enable-posixmutexes
+.endif
 
 .if ${PORT_OPTIONS:MDOCS}
 INSTALL_TARGET+=install_docs docdir=${DOCSDIR}

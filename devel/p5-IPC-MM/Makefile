@@ -3,6 +3,7 @@
 
 PORTNAME=	IPC-MM
 PORTVERSION=	0.03
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,7 +11,7 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl interface to Ralf Engelschall's mm library
 
-LIB_DEPENDS=	mm.14:${PORTSDIR}/devel/mm
+LIB_DEPENDS=	libmm.so:${PORTSDIR}/devel/mm
 
 USES=		perl5
 USE_PERL5=	configure

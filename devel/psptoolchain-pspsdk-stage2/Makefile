@@ -1,6 +1,8 @@
 # Created by: Tassilo Philipp <tphilipp@potion-studios.com>
 # $FreeBSD$
 
+PORTREVISION=		1
+
 PKGNAMESUFFIX=		-stage2
 
 MAINTAINER=		tphilipp@potion-studios.com
@@ -18,5 +20,4 @@ CONFIGURE_ARGS=		--prefix=${PREFIX} --with-pspdev="${LOCALBASE}"
 PLIST=			${.CURDIR}/pkg-plist
 MASTERDIR=		${.CURDIR}/../psptoolchain-pspsdk-stage1
 
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

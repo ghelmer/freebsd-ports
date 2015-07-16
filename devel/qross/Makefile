@@ -3,8 +3,8 @@
 
 PORTNAME=	qross
 PORTVERSION=	0.3.1
+PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	GH GHC
 
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Qt-only fork of Kross, the KDE scripting framework
@@ -17,20 +17,15 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	0xd34df00d
 GH_PROJECT=	Qross
 
-WRKSRC=		${WRKDIR}/0xd34df00d-Qross-82e1fd2/src
+WRKSRC_SUBDIR=	src
 
 OPTIONS_DEFINE=	PYTHON
+OPTIONS_SUB=	yes
+PYTHON_DESC=		Python bindings
+PYTHON_CMAKE_ON=	-DENABLE_PYTHON:BOOL=true
+PYTHON_CMAKE_OFF=	-DENABLE_PYTHON:BOOL=false
+PYTHON_BUILD_DEPENDS=	sip:${PORTSDIR}/devel/py-sip
 OPTIONS_DEFAULT=PYTHON
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MPYTHON}
-BUILD_DEPENDS=	sip:${PORTSDIR}/devel/py-sip
-PLIST_SUB+=	PYTHON=""
-.else
-CMAKE_ARGS=	-DENABLE_PYTHON=OFF
-PLIST_SUB+=	PYTHON="@comment "
-.endif
 
 post-extract:
 	@${CP} ${FILESDIR}/CMakeLists.txt ${WRKSRC}

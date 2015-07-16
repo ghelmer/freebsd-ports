@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	urllib3
-PORTVERSION=	1.8.3
+PORTVERSION=	1.10.4
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,22 +13,18 @@ COMMENT=	Enhance HTTP Python's standard library
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=	python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.pre.mk>
 
 # ndg_httpclient is only available for Python 2
-.if ${PYTHON_REL} < 300
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ndg_httpsclient>=0.3.2:${PORTSDIR}/net/py-ndg_httpsclient
-PLIST_SUB+=	SSL=""
-.else
-PLIST_SUB+=	SSL="@comment "
+.if ${PYTHON_REL} < 3000
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ndg_httpsclient>=0.3.3:${PORTSDIR}/net/py-ndg_httpsclient
 .endif
 
 post-extract:
-.if ${PYTHON_REL} >= 300
+.if ${PYTHON_REL} >= 3000
 	@${RM} ${WRKSRC}/urllib3/contrib/pyopenssl.py
 .endif
 

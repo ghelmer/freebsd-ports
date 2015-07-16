@@ -3,20 +3,21 @@
 
 PORTNAME=	libkate
 PORTVERSION=	0.4.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	multimedia
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	bar@FreeBSD.org
 COMMENT=	Codec for karaoke and text encapsulation for Ogg
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libogg.so:${PORTSDIR}/audio/libogg \
 		libpng.so:${PORTSDIR}/graphics/png
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig gmake libtool:oldver
+USES=		pkgconfig gmake libtool
 USE_LDCONFIG=	yes
 
 CFLAGS+=	"-I${LOCALBASE}/include"
@@ -39,7 +40,7 @@ CONFIGURE_ARGS+=	--disable-doc
 
 .if ${PORT_OPTIONS:MKATEDJ}
 RUN_DEPENDS=	${LOCALBASE}/bin/oggz:${PORTSDIR}/audio/liboggz
-USE_PYTHON=	yes
+USES+=		python
 USE_WX=		2.8
 WX_COMPS=	wx contrib python:lib
 MANPAGE+=	KateDJ.1

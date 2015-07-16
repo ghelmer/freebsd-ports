@@ -4,15 +4,14 @@
 PORTNAME=	porttree
 PORTVERSION=	0.3.r${SVN_REV}
 CATEGORIES=	ports-mgmt python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	Vladimir.Chukharev@gmail.com
 COMMENT=	Show dependences of FreeBSD port as pseudo graphical tree
 
 LICENSE=	MIT
 
-USE_BZIP2=	yes
-USE_PYTHON=	yes
+USES=		python tar:bzip2
 
 RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}networkx>=1.5:${PORTSDIR}/math/py-networkx
 

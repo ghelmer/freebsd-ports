@@ -1,7 +1,7 @@
---- ./base/test/launcher/test_launcher.cc.orig	2014-04-30 22:41:42.000000000 +0200
-+++ ./base/test/launcher/test_launcher.cc	2014-05-04 14:38:46.000000000 +0200
-@@ -40,6 +40,10 @@
- #include "base/mac/scoped_nsautorelease_pool.h"
+--- base/test/launcher/test_launcher.cc.orig	2014-10-10 09:15:29 UTC
++++ base/test/launcher/test_launcher.cc
+@@ -45,6 +45,10 @@
+ #include "base/win/windows_version.h"
  #endif
  
 +#if defined(OS_FREEBSD)

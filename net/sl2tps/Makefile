@@ -15,10 +15,11 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
 LIB_DEPENDS=	libpdel.so:${PORTSDIR}/devel/libpdel
 
+USES=		uidfix
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		's|$${PREFIX}/include|$${LOCALBASE}/include|g ; \
-		 s|-pthread|${PTHREAD_LIBS}|g ; \
 		 /-g/s|^CFLAGS|#CFLAGS|g ; \
 		 s|$${PREFIX}/lib|$${LOCALBASE}/lib|g' ${WRKSRC}/Makefile
 

@@ -3,6 +3,7 @@
 
 PORTNAME=	pcapy
 PORTVERSION=	0.10.8
+PORTREVISION=	1
 CATEGORIES=	net python
 MASTER_SITES=	http://corelabs.coresecurity.com/index.php?module=Wiki&action=attachment&type=tool&page=Pcapy&file=
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -16,9 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 FETCH_BEFORE_ARGS=-o ${DISTFILES}
-USES=		dos2unix
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USES=		dos2unix python
+USE_PYTHON=	distutils
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
@@ -27,6 +27,7 @@ PORTDOCS=	README pcapy.html
 
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/pcapy.so
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

@@ -1,14 +1,14 @@
 # Created by: Seamus Venasse <svenasse@polaris.ca>
 # $FreeBSD$
 
-PORTNAME=		Number-Format
-PORTVERSION=		1.73
-CATEGORIES=		textproc perl5
-MASTER_SITES=		CPAN
-PKGNAMEPREFIX=		p5-
+PORTNAME=	Number-Format
+PORTVERSION=	1.75
+CATEGORIES=	textproc perl5
+MASTER_SITES=	CPAN
+PKGNAMEPREFIX=	p5-
 
-MAINTAINER=		clsung@FreeBSD.org
-COMMENT=		Perl extension for formatting numbers
+MAINTAINER=	perl@FreeBSD.org
+COMMENT=	Perl extension for formatting numbers
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual

@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	wget
-DISTVERSION=	1.15
-PORTREVISION=	1
+DISTVERSION=	1.16.3
 CATEGORIES=	ftp www ipv6
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	wget
+MASTER_SITES=	GNU
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	Retrieve files from the Net via HTTP(S) and FTP
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		charsetfix gmake makeinfo perl5 tar:xz
+USES=		charsetfix cpe gmake makeinfo perl5 tar:xz
 USE_PERL5=	build
+CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
+OPTIONS_SUB=	yes
 
 OPTIONS_RADIO=	SSL
 OPTIONS_RADIO_SSL=GNUTLS OPENSSL
@@ -24,54 +25,38 @@ OPTIONS_DEFAULT=OPENSSL IDN
 
 PCRE_DESC=	Support Perl regular expressions in addition to POSIX
 
+IPV6_CONFIGURE_ENABLE=	ipv6
+
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
+NLS_CPPFLAGS=		-I${LOCALBASE}/include
+NLS_LDFLAGS=		-L${LOCALBASE}/lib
+
+IDN_USES=		iconv
+IDN_LIB_DEPENDS=	libidn.so:${PORTSDIR}/dns/libidn
+IDN_CONFIGURE_ENABLE=	iri
+IDN_CONFIGURE_ON=	--with-libidn=${LOCALBASE}
+
+PCRE_LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+PCRE_CPPFLAGS=		-I${LOCALBASE}/include
+PCRE_LDFLAGS=		-L${LOCALBASE}/lib
+PCRE_CONFIGURE_ENV_OFF=	ac_cv_header_pcre_h=no
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MOPENSSL}
 USE_OPENSSL=	yes
-CONFIGURE_ARGS+=--with-ssl=openssl
+CONFIGURE_ARGS+=--with-ssl=openssl --with-libssl-prefix=${OPENSSLBASE}
 CPPFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 .elif ${PORT_OPTIONS:MGNUTLS}
+USES+=		pkgconfig
 LIB_DEPENDS+=	libgnutls.so:${PORTSDIR}/security/gnutls
 CONFIGURE_ARGS+=--with-ssl=gnutls
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 .else
 CONFIGURE_ARGS+=--without-ssl
-.endif
-
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=--enable-ipv6
-.else
-CONFIGURE_ARGS+=--disable-ipv6
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-CONFIGURE_ARGS+=--enable-nls
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MIDN}
-LIB_DEPENDS+=	libidn.so:${PORTSDIR}/dns/libidn
-CONFIGURE_ARGS+=--enable-iri --with-libidn=${LOCALBASE}
-USES+=		iconv
-.else
-CONFIGURE_ARGS+=--disable-iri
-.endif
-
-.if ${PORT_OPTIONS:MPCRE}
-# Wget will pick pcre automatically and link with it if it is present.
-LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-.else
-CONFIGURE_ENV+=	ac_cv_header_pcre_h=no
 .endif
 
 INFO=		wget
@@ -84,5 +69,7 @@ post-patch:
 	${REINPLACE_CMD} -e 's,/usr/local/etc/wgetrc,${PREFIX}/etc/wgetrc,' \
 			 -e 's,@file{},@file{${PREFIX}},' \
 		${WRKSRC}/doc/sample.wgetrc* ${WRKSRC}/doc/wget.texi
+	${REINPLACE_CMD} -e '/ac_fn_c_check_header_mongrel.*uuid\/uuid.h/ d' \
+		${WRKSRC}/configure
 
 .include <bsd.port.mk>

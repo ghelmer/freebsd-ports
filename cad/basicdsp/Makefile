@@ -3,19 +3,17 @@
 
 PORTNAME=	basicdsp
 PORTVERSION=	1.01
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	cad hamradio
 MASTER_SITES=	http://wwwhome.cs.utwente.nl/~ptdeboer/ham/basicdsp/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	db
-EXTRACT_SUFX=	.tgz
+		LOCAL/db
 
 MAINTAINER=	db@FreeBSD.org
 COMMENT=	Program for experimenting with simple audio DSP algorithms
 
 LICENSE=	GPLv2
 
-USES=		dos2unix
+USES=		dos2unix tar:tgz
 USE_WX=		2.8+
 WX_UNICODE=	yes
 WX_COMPS=	wx wx:build wx:run

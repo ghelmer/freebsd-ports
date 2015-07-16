@@ -3,7 +3,7 @@
 
 PORTNAME=	asc
 PORTVERSION=	2.6.0.0
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}-hq/ASC%20Source/${PORTVERSION:R} \
 		http://www.asc-hq.org/music/:music
@@ -14,20 +14,22 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Turn based, multiplayer strategic game with nice graphics
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
-		${LOCALBASE}/lib/libloki.so:${PORTSDIR}/devel/loki
+BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip
+RUN_DEPENDS:=	${BUILD_DEPENDS}
 LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libboost_regex.so:${PORTSDIR}/devel/boost-libs \
 		libsigc-1.2.so:${PORTSDIR}/devel/libsigc++12 \
-		libexpat.so:${PORTSDIR}/textproc/expat2
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+		libexpat.so:${PORTSDIR}/textproc/expat2 \
+		libloki.so:${PORTSDIR}/devel/loki
 
 OPTIONS_DEFINE=	MUSIC XVID
 MUSIC_DESC=	Install extra music files
 
-USES=		gmake libtool lua:51 perl5 pkgconfig tar:bzip2
+USES=		compiler:c++11-lib gmake libtool lua:51 perl5 pkgconfig tar:bzip2
+USE_CXXSTD=	c++11
 USE_SDL=	image mixer sound sdl
 USE_WX=		3.0
 WX_UNICODE=	yes
@@ -49,28 +51,13 @@ PLIST_FILES=	bin/asc \
 		man/man6/asc_mapedit.6.gz \
 		man/man6/asc_mount.6.gz \
 		man/man6/asc_weaponguide.6.gz \
-		share/appdata/asc.appdata.xml \
-		%%DATADIR%%/asc2_dlg.zip \
-		%%DATADIR%%/main.ascdat
-PLIST_DIRS=	${ASC_MUSICDIR} \
-		%%DATADIR%%
-PLIST_DIRSTRY=	share/appdata
+		share/appdata/asc.appdata.xml
+PORTDATA=	*
 
 DESKTOP_ENTRIES="Advanced Strategic Command" "Turn based strategic game" "" \
 		"${PORTNAME}" "" ""
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMUSIC}
-ASC_MUSICS=	frontiers.ogg time_to_strike.ogg machine_wars.ogg
-ASC_MUSICDIR=	%%DATADIR%%/music
-.for i in ${ASC_MUSICS}
-PLIST_FILES+=	${ASC_MUSICDIR}/${i}
-.endfor
-.else
-.undef ASC_MUSICS
-.undef ASC_MUSICDIR
-.endif
 
 .if ${PORT_OPTIONS:MXVID}
 LIB_DEPENDS+=	libxvidcore.so:${PORTSDIR}/multimedia/xvid
@@ -78,10 +65,12 @@ LIB_DEPENDS+=	libxvidcore.so:${PORTSDIR}/multimedia/xvid
 CONFIGURE_ENV+=	ac_cv_lib_xvidcore_xvid_encore=no
 .endif
 
-post-extract:
 .if ${PORT_OPTIONS:MMUSIC}
+ASC_MUSICS=	frontiers.ogg time_to_strike.ogg machine_wars.ogg
+
+post-extract:
 .for i in ${ASC_MUSICS}
-	@(cd ${DISTDIR}/${DIST_SUBDIR} && ${PAX} -rw ${i} ${WRKSRC}/data/music)
+	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${i} ${WRKSRC}/data/music
 .endfor
 .endif
 

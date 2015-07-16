@@ -2,35 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	libffi
-PORTVERSION=	3.0.13
-PORTREVISION=	1
+PORTVERSION=	3.2.1
 CATEGORIES=	devel
-MASTER_SITES=	SOURCEWARE
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	SOURCEWARE/${PORTNAME}
 
 MAINTAINER=	zeising@FreeBSD.org
 COMMENT=	Foreign Function Interface
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 TEST_DEPENDS=	runtest:${PORTSDIR}/misc/dejagnu
 
-USES=		pathfix
+USES=		libtool pathfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	TESTS
-TESTS_DESC=	Include tools for test suite
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MTESTS}
-BUILD_DEPENDS:=	${TEST_DEPENDS}
-.endif
+TESTS_DESC=		Include tools for test suite
+TESTS_BUILD_DEPENDS=	${TEST_DEPENDS}
 
 INSTALL_TARGET=	install-strip
 INFO=		libffi
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's| -Wno-psabi||g' \
+		${WRKSRC}/testsuite/lib/libffi.exp
 
 post-install:
 	@${LN} -sf ../lib/libffi-${PORTVERSION}/include/ffi.h \
@@ -39,6 +38,6 @@ post-install:
 	    ${STAGEDIR}${PREFIX}/include/
 
 regression-test: build
-	@cd ${WRKSRC} && ${MAKE} check
+	@(cd ${WRKSRC} && ${MAKE_CMD} check)
 
 .include <bsd.port.mk>

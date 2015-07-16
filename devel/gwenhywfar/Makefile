@@ -2,7 +2,7 @@
 
 PORTNAME=	gwenhywfar
 PORTVERSION=	4.3.3
-PORTREVISION?=	7
+PORTREVISION?=	8
 CATEGORIES=	devel net security
 MASTER_SITES=	http://www.aquamaniac.de/sites/download/download.php?package=01&release=67&file=01&dummy=/
 
@@ -79,8 +79,6 @@ post-install:
 		${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR}/apidoc
 	@${FIND} -P ${STAGEDIR}${DOCSDIR} -type f 2>/dev/null | \
 		${SED} -ne 's|^${STAGEDIR}${PREFIX}/||p' >> ${TMPPLIST}
-	@${FIND} -P -d ${STAGEDIR}${DOCSDIR} -type d 2>/dev/null | \
-		${SED} -ne 's|^${STAGEDIR}${PREFIX}/|@dirrm |p' >> ${TMPPLIST}
 .endif
 
 .include <bsd.port.mk>

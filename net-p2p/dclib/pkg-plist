@@ -58,11 +58,8 @@ include/dclib/dclib-stl-use.h
 include/dclib/dclib.h
 include/dclib/dcobject.h
 include/dclib/dcos.h
-lib/libdc.la
 lib/libdc.so
 lib/libdc.so.5
-@dirrmtry lib/dclib/plugin
-@dirrmtry lib/dclib
+lib/libdc.so.5.0.0
 libdata/pkgconfig/dclib.pc
-@dirrm include/dclib/core
-@dirrm include/dclib
+@dir lib/dclib/plugin

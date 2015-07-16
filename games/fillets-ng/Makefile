@@ -3,11 +3,11 @@
 
 PORTNAME=	fillets-ng
 PORTVERSION=	1.0.1
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
-MASTER_SITES=	SF/fillets/Fish%20Fillets%20-%20Next%20Generation/${PORTVERSION}:source \
+MASTER_SITES=	SF/fillets/Fish%20Fillets%20-%20Next%20Generation/${PORTVERSION} \
 		SF/fillets/Fish%20Fillets%20-%20Next%20Generation/${DATAVERSION}:data
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}:source \
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}-data-${DATAVERSION}${EXTRACT_SUFX}:data
 
 MAINTAINER=	amdmi3@FreeBSD.org

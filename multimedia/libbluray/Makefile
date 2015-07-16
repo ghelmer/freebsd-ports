@@ -2,32 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	libbluray
-PORTVERSION=	0.5.0
+PORTVERSION=	0.7.0
 PORTEPOCH=	1
 CATEGORIES=	multimedia
 MASTER_SITES=	ftp://ftp.videolan.org/pub/videolan/${PORTNAME}/${PORTVERSION}/ \
 		http://blu.opsec.eu/
 
-MAINTAINER=	kamikaze@bsdforen.de
+MAINTAINER=	kami@FreeBSD.org
 COMMENT=	Blu-Ray discs playback library for media players
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
-# dlopen dependencies, libbdplus not yet available
-LIB_DEPENDS+=	libaacs.so:${PORTSDIR}/multimedia/libaacs
+LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
+		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
+# dlopen dependencies
+LIB_DEPENDS+=	libaacs.so:${PORTSDIR}/multimedia/libaacs \
+		libbdplus.so:${PORTSDIR}/multimedia/libbdplus
 
-USES=		iconv pkgconfig tar:bzip2
+INSTALL_TARGET=	install-strip
+USES=		autoreconf iconv libtool pathfix pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	autoconf aclocal automake libtool
 USE_GNOME=	libxml2
+GNU_CONFIGURE=	yes
 
-HAS_CONFIGURE=	yes
-MAKE_ARGS=	pkgconfigdir="${PREFIX}/libdata/pkgconfig"
-CONFIGURE_ARGS=	--prefix="${PREFIX}" \
-		--disable-debug
+.include "Makefile.include"
 
 OPTIONS_DEFINE=	JAVA
+OPTIONS_SUB=	yes
 JAVA_DESC=	Enable Blu-Ray Java support
 
 .include <bsd.port.options.mk>
@@ -43,6 +44,11 @@ CONFIGURE_ARGS+=	--enable-bdjava --with-bdj-type=j2se
 CONFIGURE_ENV+=	JDK_HOME="${JAVA_HOME}"
 .endif
 
+#
+# NOTE:
+# makeplist has no support for options, leave this in place
+#
+
 # Create PLIST_SUB definitions for options
 .for _option in ${OPTIONS_DEFINE}
 .if ${PORT_OPTIONS:M${_option}}
@@ -52,9 +58,6 @@ PLIST_SUB+=	${_option}="@comment "
 .endif
 .endfor
 
-run-autotools:
-	@cd ${WRKSRC} && ${SH} bootstrap
-
 plist:
 	@${ECHO} "===> Rebuilding PLIST."
 .for _option in "" ${OPTIONS_DEFINE}
@@ -62,9 +65,7 @@ plist:
 	                     WITH=${_option}
 	@${MTREE_CMD} -cp "${STAGEDIR}${PREFIX}/" > "${WRKDIR}/mtree.${_option}"
 	@${MTREE_CMD} -Sf "${WRKDIR}/mtree.${_option}" -f "${MTREE_FILE}" \
-		| ${SED} -ne '/share\/licenses/b dirs' \
-		         -e '/ dir /{s/ .*//;s/^/@dirrm /;H;};t dirs' \
-		         -e 's/ .*//p;:dirs' -e '$${g;s/^\n//p;}' \
+		| ${SED} -e '/share\/licenses/d' -e '/ dir /d' -e 's/ .*//' \
 		> "plist.${_option}"
 .endfor
 .for _option in ${OPTIONS_DEFINE}
@@ -72,7 +73,8 @@ plist:
 		| ${SED} 's/^/%%${_option}%%/' > "plist.add.${_option}"
 	@${RM} "plist.${_option}"
 .endfor
-	@${CAT} plist. ${OPTIONS_DEFINE:C/^/plist.add./} > ${PLIST}
+	@${CAT} plist. ${OPTIONS_DEFINE:C/^/plist.add./} \
+		| ${SED} "${PLIST_SUB_SED}" > ${PLIST}
 	@${RM} plist. ${OPTIONS_DEFINE:C/^/plist.add./}
 
 .include <bsd.port.mk>

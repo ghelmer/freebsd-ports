@@ -3,18 +3,19 @@
 
 PORTNAME=	amavis-stats
 PORTVERSION=	0.1.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
-MASTER_SITES=	LOCAL
-MASTER_SITE_SUBDIR=	feld
+MASTER_SITES=	LOCAL/feld
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Simple AMaViS statistics generator based on rrdtool
 
 RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool
 
-USES=		perl5
+USES=		perl5 shebangfix
 USE_PERL5=	run
+SHEBANG_FILES=	amavis-stats
+perl_CMD=	${PERL} -w
 USE_PHP=	pcre
 
 NO_BUILD=	yes
@@ -31,6 +32,8 @@ PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SUB_FILES=	pkg-message
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.options.mk>
 
 do-install:
@@ -46,8 +49,5 @@ do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 .endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

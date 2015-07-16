@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	qmc2
-PORTVERSION=	0.43
+PORTVERSION=	0.51
 CATEGORIES=	emulators
 MASTER_SITES=	SF
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Qt4 based UNIX MAME/MESS frontend
 
-RUN_DEPENDS=	mame:${PORTSDIR}/emulators/mame \
-		mess:${PORTSDIR}/emulators/mess
+RUN_DEPENDS=	mame>=0.154:${PORTSDIR}/emulators/mame \
+		mess>=0.154:${PORTSDIR}/emulators/mess
 
 OPTIONS_DEFINE=	DOCS
 
@@ -22,9 +22,12 @@ USE_GL=		glu
 USE_QT4=	gui opengl phonon qtestlib webkit xml \
 		moc_build qmake_build rcc_build uic_build
 USE_SDL=	sdl
+
+CXXFLAGS+=	-I${LOCALBASE}/include/SDL/
 MAKE_ARGS=	QTDIR="${QT_PREFIX}" QMAKE="${QMAKE}" \
 		SYSCONFDIR="${PREFIX}/etc" ARCH="${OPSYS}" \
-		CC_FLAGS="${CFLAGS}" CXX_FLAGS="${CXXFLAGS}" \
+		CC_FLAGS="${CFLAGS} -DUSE_FILE32API" \
+		CXX_FLAGS="${CXXFLAGS} -DUSE_FILE32API" \
 		CC="${CC}" CXX="${CXX}" LINK="${CXX}"
 
 DESKTOP_ENTRIES="QMC2 (MAME)" "MAME frontend" "${DATADIR}/img/mame.png" \
@@ -41,6 +44,8 @@ post-patch:
 	@${CP} ${FILESDIR}/Makefile ${WRKSRC}
 	@(cd ${WRKSRC}/qmc2/inst; ${SED} -e 's|DATADIR|${PREFIX}/share|' \
 		< qmc2.ini.template > qmc2.ini)
+	@${REINPLACE_CMD} -e 's/bash/sh/' ${WRKDIR}/qmc2/scripts/sdl-libs.sh \
+		${WRKDIR}/qmc2-sdlmess/scripts/sdl-libs.sh
 
 do-install:
 	(cd ${WRKSRC}/qmc2 && ${INSTALL_PROGRAM} qmc2-sdlmame \

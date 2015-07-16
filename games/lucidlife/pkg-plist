@@ -343,62 +343,17 @@ share/pixmaps/lucidlife.png
 %%DATADIR%%/patterns/lpa/synthesis/make_hustler.glf
 %%DATADIR%%/patterns/lpa/synthesis/make_osc.glf
 %%DATADIR%%/patterns/lpa/synthesis/make_pole.glf
-%%DOCSDIR%%/billiard.gif
-%%DOCSDIR%%/blinker_horizontal.gif
-%%DOCSDIR%%/blinker_vertical.gif
-%%DOCSDIR%%/draw.png
-%%DOCSDIR%%/glf_format.html
-%%DOCSDIR%%/glider.gif
-%%DOCSDIR%%/grab.png
-%%DOCSDIR%%/index.html
-%%DOCSDIR%%/max.gif
-%%DOCSDIR%%/patterns.html
-%%DOCSDIR%%/pulsar.gif
-%%DOCSDIR%%/select.png
-%%DOCSDIR%%/style.css
-%%DOCSDIR%%/window.gif
-@dirrm %%DATADIR%%/patterns/lpa/synthesis
-@dirrm %%DATADIR%%/patterns/lpa/spaceships
-@dirrm %%DATADIR%%/patterns/lpa/space_fillers
-@dirrm %%DATADIR%%/patterns/lpa/sawtooth
-@dirrm %%DATADIR%%/patterns/lpa/rakes
-@dirrm %%DATADIR%%/patterns/lpa/puffers
-@dirrm %%DATADIR%%/patterns/lpa/oscillators
-@dirrm %%DATADIR%%/patterns/lpa/miscellaneous
-@dirrm %%DATADIR%%/patterns/lpa/math_and_CS
-@dirrm %%DATADIR%%/patterns/lpa/guns
-@dirrm %%DATADIR%%/patterns/lpa/growth_limit
-@dirrm %%DATADIR%%/patterns/lpa/fuses
-@dirrm %%DATADIR%%/patterns/lpa/corders
-@dirrm %%DATADIR%%/patterns/lpa/breeders
-@dirrm %%DATADIR%%/patterns/lpa/basics
-@dirrm %%DATADIR%%/patterns/lpa
-@dirrm %%DATADIR%%/patterns/jslife/velocity_other
-@dirrm %%DATADIR%%/patterns/jslife/velocity_c5o
-@dirrm %%DATADIR%%/patterns/jslife/velocity_c4o
-@dirrm %%DATADIR%%/patterns/jslife/velocity_c4d
-@dirrm %%DATADIR%%/patterns/jslife/velocity_c3
-@dirrm %%DATADIR%%/patterns/jslife/velocity_c2
-@dirrm %%DATADIR%%/patterns/jslife/velocity_c12d
-@dirrm %%DATADIR%%/patterns/jslife/velocity_2c5
-@dirrm %%DATADIR%%/patterns/jslife/synthesis
-@dirrm %%DATADIR%%/patterns/jslife/slideguns
-@dirrm %%DATADIR%%/patterns/jslife/sawtooth
-@dirrm %%DATADIR%%/patterns/jslife/reflectors
-@dirrm %%DATADIR%%/patterns/jslife/oscillators
-@dirrm %%DATADIR%%/patterns/jslife/odds_&_ends
-@dirrm %%DATADIR%%/patterns/jslife/mathematics
-@dirrm %%DATADIR%%/patterns/jslife/loops
-@dirrm %%DATADIR%%/patterns/jslife/guns
-@dirrm %%DATADIR%%/patterns/jslife/growers
-@dirrm %%DATADIR%%/patterns/jslife/fuses
-@dirrm %%DATADIR%%/patterns/jslife/eaters
-@dirrm %%DATADIR%%/patterns/jslife/builders
-@dirrm %%DATADIR%%/patterns/jslife/build_&_burn
-@dirrm %%DATADIR%%/patterns/jslife/breeders
-@dirrm %%DATADIR%%/patterns/jslife
-@dirrm %%DATADIR%%/patterns
-@dirrm %%DATADIR%%/icons
-@dirrm %%DATADIR%%/graphics
-@dirrm %%DATADIR%%
-@dirrm %%DOCSDIR%%
+%%PORTDOCS%%%%DOCSDIR%%/billiard.gif
+%%PORTDOCS%%%%DOCSDIR%%/blinker_horizontal.gif
+%%PORTDOCS%%%%DOCSDIR%%/blinker_vertical.gif
+%%PORTDOCS%%%%DOCSDIR%%/draw.png
+%%PORTDOCS%%%%DOCSDIR%%/glf_format.html
+%%PORTDOCS%%%%DOCSDIR%%/glider.gif
+%%PORTDOCS%%%%DOCSDIR%%/grab.png
+%%PORTDOCS%%%%DOCSDIR%%/index.html
+%%PORTDOCS%%%%DOCSDIR%%/max.gif
+%%PORTDOCS%%%%DOCSDIR%%/patterns.html
+%%PORTDOCS%%%%DOCSDIR%%/pulsar.gif
+%%PORTDOCS%%%%DOCSDIR%%/select.png
+%%PORTDOCS%%%%DOCSDIR%%/style.css
+%%PORTDOCS%%%%DOCSDIR%%/window.gif

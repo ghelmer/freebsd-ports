@@ -4,7 +4,7 @@
 
 PORTNAME=	avahi
 PORTVERSION=	0.6.31
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES?=	net dns
 MASTER_SITES=	http://www.avahi.org/download/
 PKGNAMESUFFIX?=	-app
@@ -23,7 +23,7 @@ LIB_DEPENDS?=	libexpat.so:${PORTSDIR}/textproc/expat2 \
 USERS?=		${PORTNAME}
 GROUPS?=	${USERS}
 
-USES+=		gettext gmake libtool:keepla pathfix pkgconfig
+USES+=		alias gettext gmake libtool:keepla pathfix pkgconfig
 USE_GNOME+=	glib20 intltool introspection
 USE_GNOME_SUBR=	yes
 USE_LDCONFIG=	yes

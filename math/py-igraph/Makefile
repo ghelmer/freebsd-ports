@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	igraph
-PORTVERSION=	0.5.4
-PORTREVISION=	2
+PORTVERSION=	0.7.0
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	http://igraph.org/nightly/get/python/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	python-${PORTNAME}-${PORTVERSION}
 
@@ -14,9 +13,8 @@ COMMENT=	High performance graph data structures and algorithms
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libigraph.so:${PORTSDIR}/math/igraph
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 USE_GNOME=	libxml2
 
 .include <bsd.port.mk>

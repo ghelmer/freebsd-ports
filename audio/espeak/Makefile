@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	espeak
-PORTVERSION=	1.47.11
-PORTREVISION=	0
+PORTVERSION=	1.48.04
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
@@ -13,10 +13,7 @@ COMMENT=	Software speech synthesizer
 
 LICENSE=	GPLv3
 
-# default is runtime audio detection
-LIB_DEPENDS=	${PORTAUDIOLIB} \
-		${PULSEAUDIOLIB}
-
+OPTIONS_DEFINE=	DOCS
 OPTIONS_DEFAULT=	PORTAUDIO
 OPTIONS_RADIO=	AUDIO_SYSTEM
 OPTIONS_RADIO_AUDIO_SYSTEM=	PORTAUDIO PULSEAUDIO RUNTIME
@@ -25,11 +22,19 @@ RUNTIME_DESC=	Sound interface selected at runtime
 PORTAUDIOLIB=	libportaudio.so:${PORTSDIR}/audio/portaudio
 PULSEAUDIOLIB=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 
-CONFLICTS=	speak-1.[0-9]
+PORTAUDIO_LIB_DEPENDS=	${PORTAUDIOLIB}
+PULSEAUDIO_LIB_DEPENDS=	${PULSEAUDIOLIB}
+RUNTIME_LIB_DEPENDS=	${PORTAUDIOLIB} \
+			${PULSEAUDIOLIB}
 
-MAKE_ENV+=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}" \
-		AUDIO="${AUDIO}"
+PULSEAUDIO_USES=	compiler:c++0x
+RUNTIME_USES=		compiler:c++0x
+
+PULSEAUDIO_MAKE_ENV=	AUDIO="pulseaudio"
+PORTAUDIO_MAKE_ENV=	AUDIO="portaudio"
+RUNTIME_MAKE_ENV=	AUDIO="runtime"
+
+CONFLICTS=	speak-1.[0-9]
 
 CXXFLAGS+=	-I${LOCALBASE}/include
 USES=		gmake zip
@@ -46,20 +51,11 @@ BROKEN_sparc64=	Does not compile on sparc64
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MRUNTIME}
-AUDIO=	"runtime"
-.endif
-.if ${PORT_OPTIONS:MPULSEAUDIO}
-AUDIO=	"pulseaudio"
-PORTAUDIOLIB=
-.endif
-.if ${PORT_OPTIONS:MPORTAUDIO}
-AUDIO=	"portaudio"
-PULSEAUDIOLIB=
-.endif
-
 post-patch:
 	cd ${BUILD_WRKSRC} && ${REINPLACE_CMD} ${REINPLACE_FILES}
+.if ${PORT_OPTIONS:MPORTAUDIO}
+	${MV} ${WRKSRC}/src/portaudio19.h ${WRKSRC}/src/portaudio.h
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

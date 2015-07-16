@@ -9,9 +9,11 @@ MASTER_SITES=	http://web.cecs.pdx.edu/~mpj/goferarc/
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	haskell@FreeBSD.org
-COMMENT=	A lazy functional language
+COMMENT=	Lazy functional language
 
 WRKSRC=		${WRKDIR}/src
+
+USES=		readline
 
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS} -DUSE_READLINE=1" \
 		LDFLAGS="${LDFLAGS} -lm -lreadline" OPTFLAGS=""

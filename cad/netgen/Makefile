@@ -3,7 +3,7 @@
 
 PORTNAME=	netgen
 PORTVERSION=	5.0.0
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	cad
 MASTER_SITES=	SF/netgen-mesher/netgen-mesher/${PORTVERSION:S|.0$||}/
 
@@ -11,11 +11,10 @@ MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Automatic 3D tetrahedral mesh generator
 
 LIB_DEPENDS=	libTix8.4.3.so:${PORTSDIR}/x11-toolkits/tix \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libtogl.so:${PORTSDIR}/graphics/togl
 
 USE_LDCONFIG=	yes
-USES=		gmake tk
+USES=		gmake jpeg libtool tk
 USE_GL=		yes
 USE_XORG=	xmu xi
 GNU_CONFIGURE=	yes
@@ -41,7 +40,7 @@ CONFIGURE_ARGS+=	--enable-occ
 .endif
 
 .if ${PORT_OPTIONS:MFFMPEG}
-LIB_DEPENDS+=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg
+LIB_DEPENDS+=	libavcodec0.so:${PORTSDIR}/multimedia/ffmpeg0
 CONFIGURE_ARGS+=	--enable-ffmpeg
 .endif
 
@@ -58,11 +57,14 @@ pre-configure:
 	${REINPLACE_CMD} -e "s|%%DATADIR%%|${DATADIR}|"		\
 		${WRKSRC}/ng/ngappinit.cpp
 
+post-configure:
+	${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|"	\
+		${WRKSRC}/configure
+
 post-install:
 #	copy some additional headers for build cad/salome-netgenplugin
 	${MKDIR} ${STAGEDIR}${DATADIR}/include
 	${SH} ${FILESDIR}/netgen_copy_include_for_salome ${WRKSRC} ${STAGEDIR}${PREFIX}
 	${LN} ${STAGEDIR}${PREFIX}/lib/libnglib.so ${STAGEDIR}${PREFIX}/lib/libnglib.so.1
-	${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

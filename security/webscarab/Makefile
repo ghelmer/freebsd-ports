@@ -4,9 +4,8 @@
 PORTNAME=	webscarab
 PORTVERSION=	20090427
 CATEGORIES=	security www java
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
+MASTER_SITES=	LOCAL/niels \
 		http://people.freebsd.org/~niels/distfiles/
-MASTER_SITE_SUBDIR=	niels
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for analysing HTTP and HTTPS web application traffic
@@ -19,6 +18,8 @@ WRKSRC=		${WRKDIR}/${DISTNAME}-1304
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
 PORTDOCS=	README LICENSE ChangeLog
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -37,11 +38,9 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.jar ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}_lite
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .       for i in ${PORTDOCS}
 		${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .       endfor
-.endif
 
 .include <bsd.port.post.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	Geo-Coder-OpenCage
 PORTVERSION=	0.05
+PORTREVISION=	1
 CATEGORIES=	misc geography perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:KAORU
@@ -24,11 +25,6 @@ USE_PERL5=	configure
 USES=		perl5
 
 .include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501600
-BUILD_DEPENDS+=	p5-Carp>=1.26:${PORTSDIR}/devel/p5-Carp
-RUN_DEPENDS+=	p5-Carp>=1.26:${PORTSDIR}/devel/p5-Carp
-.endif
 
 .if ${PERL_LEVEL} < 502000
 BUILD_DEPENDS+=	p5-HTTP-Tiny>=0.028:${PORTSDIR}/www/p5-HTTP-Tiny \

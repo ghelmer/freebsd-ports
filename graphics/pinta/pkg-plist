@@ -1,13 +1,21 @@
 bin/pinta
-lib/pinta/Pinta.exe
 lib/pinta/Pinta.Core.dll
 lib/pinta/Pinta.Effects.dll
 lib/pinta/Pinta.Gui.Widgets.dll
 lib/pinta/Pinta.Resources.dll
 lib/pinta/Pinta.Tools.dll
+lib/pinta/Pinta.exe
+man/man1/pinta.1.gz
 share/applications/pinta.desktop
+share/icons/hicolor/16x16/apps/pinta.png
+share/icons/hicolor/22x22/apps/pinta.png
+share/icons/hicolor/24x24/apps/pinta.png
+share/icons/hicolor/32x32/apps/pinta.png
+share/icons/hicolor/96x96/apps/pinta.png
+share/icons/hicolor/scalable/apps/pinta.svg
 share/locale/af/LC_MESSAGES/pinta.mo
 share/locale/ar/LC_MESSAGES/pinta.mo
+share/locale/az/LC_MESSAGES/pinta.mo
 share/locale/bg/LC_MESSAGES/pinta.mo
 share/locale/br/LC_MESSAGES/pinta.mo
 share/locale/bs/LC_MESSAGES/pinta.mo
@@ -63,32 +71,3 @@ share/locale/vi/LC_MESSAGES/pinta.mo
 share/locale/zh_CN/LC_MESSAGES/pinta.mo
 share/locale/zh_TW/LC_MESSAGES/pinta.mo
 share/pixmaps/pinta.xpm
-share/icons/hicolor/16x16/apps/pinta.png
-share/icons/hicolor/22x22/apps/pinta.png
-share/icons/hicolor/24x24/apps/pinta.png
-share/icons/hicolor/32x32/apps/pinta.png
-share/icons/hicolor/96x96/apps/pinta.png
-share/icons/hicolor/scalable/apps/pinta.svg
-@dirrmtry share/locale/la/LC_MESSAGES
-@dirrmtry share/locale/la
-@dirrmtry share/locale/hy/LC_MESSAGES
-@dirrmtry share/locale/hy
-@dirrmtry share/locale/fo/LC_MESSAGES
-@dirrmtry share/locale/fo
-@dirrmtry share/locale/fil/LC_MESSAGES
-@dirrmtry share/locale/fil
-@dirrmtry share/icons/hicolor/scalable/apps
-@dirrmtry share/icons/hicolor/scalable
-@dirrmtry share/icons/hicolor/96x96/apps
-@dirrmtry share/icons/hicolor/96x96
-@dirrmtry share/icons/hicolor/32x32/apps
-@dirrmtry share/icons/hicolor/32x32
-@dirrmtry share/icons/hicolor/24x24/apps
-@dirrmtry share/icons/hicolor/24x24
-@dirrmtry share/icons/hicolor/22x22/apps
-@dirrmtry share/icons/hicolor/22x22
-@dirrmtry share/icons/hicolor/16x16/apps
-@dirrmtry share/icons/hicolor/16x16
-@dirrmtry share/icons/hicolor
-@dirrmtry share/icons
-@dirrm lib/pinta

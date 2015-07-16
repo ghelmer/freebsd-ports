@@ -9,9 +9,9 @@ CATEGORIES=	math
 MASTER_SITES=	SF
 
 MAINTAINER=	stephen@FreeBSD.org
-COMMENT=	A computer algebra system, forked from axiom
+COMMENT=	Computer algebra system, forked from axiom
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license/LICENSE.AXIOM
 
 BUILD_DEPENDS=	noweb:${PORTSDIR}/devel/noweb \

@@ -1,5 +1,7 @@
 bin/bbox
 bin/ps2eps
+man/man1/bbox.1.gz
+man/man1/ps2eps.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/README.txt
 %%PORTDOCS%%%%DOCSDIR%%/Changes.txt
 %%PORTDOCS%%%%DOCSDIR%%/LICENSE.txt
@@ -7,6 +9,3 @@ bin/ps2eps
 %%PORTDOCS%%%%DOCSDIR%%/html/ps2eps.html
 %%PORTDOCS%%%%DOCSDIR%%/pdf/bbox.pdf
 %%PORTDOCS%%%%DOCSDIR%%/pdf/ps2eps.pdf
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/html
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/pdf
-%%PORTDOCS%%@dirrm %%DOCSDIR%%

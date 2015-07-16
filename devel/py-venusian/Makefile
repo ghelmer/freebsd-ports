@@ -2,18 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	venusian
-PORTVERSION=	1.0a8
+PORTVERSION=	1.0
+PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	clsung@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Python library for deferring decorator actions
 
 LICENSE=	BSD4CLAUSE
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

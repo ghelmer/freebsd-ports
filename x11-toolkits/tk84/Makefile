@@ -4,9 +4,7 @@ PORTNAME=	tk
 PORTVERSION=	8.4.20
 PORTEPOCH=	2
 CATEGORIES=	x11-toolkits tk
-MASTER_SITES=	${MASTER_SITE_TCLTK} \
-		SF/tcl/Tcl/${PORTVERSION}
-MASTER_SITE_SUBDIR=tcl8_4
+MASTER_SITES=	TCLTK/tcl8_4 SF/tcl/Tcl/${PORTVERSION}
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
@@ -16,7 +14,7 @@ COMMENT=	Graphical toolkit for Tcl
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	TKMAN THREADS
 OPTIONS_DEFAULT=THREADS

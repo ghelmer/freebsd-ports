@@ -3,11 +3,10 @@
 
 PORTNAME=	openkim
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	http://s3.openkim.org/openkim-api/
 DISTNAME=	${PORTNAME}-api-v${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	jwbacon@tds.net
 COMMENT=	Knowledgebase of Interatomic Models
@@ -16,7 +15,7 @@ LICENSE=	CDDL
 
 MAKE_ENV+=	KIM_DIR=${WRKSRC}
 
-USES=		gmake fortran
+USES=		gmake fortran tar:tgz
 
 MAKE_JOBS_UNSAFE=yes
 

@@ -2,10 +2,10 @@
 
 PORTNAME=	qzeitgeist
 PORTVERSION=	0.8.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	${MASTER_SITE_KDE:C@$@:kde@} \
+MASTER_SITES=	KDE/stable/lib${PORTNAME}/${PORTVERSION}/src/:kde \
 		http://launchpad.net/zeitgeist/${ZEITGEIST_VERSION:R}/${ZEITGEIST_VERSION}/+download/
-MASTER_SITE_SUBDIR=	stable/lib${PORTNAME}/${PORTVERSION}/src/:kde
 DISTNAME=	lib${PORTNAME}-${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:kde \
 		zeitgeist-${ZEITGEIST_VERSION}.tar.gz
@@ -21,10 +21,9 @@ BUILD_DEPENDS=	rapper:${PORTSDIR}/textproc/raptor2 \
 		${PYTHON_SITELIBDIR}/rdflib/__init__.py:${PORTSDIR}/textproc/py-rdflib
 
 USE_KDE4=	automoc4
-USE_PYTHON_BUILD=	yes
 USE_QT4=	dbus declarative qtestlib \
 		moc_build qmake_build rcc_build uic_build
-USES=		tar:bzip2 cmake
+USES=		cmake python:build tar:bzip2
 USE_LDCONFIG=	yes
 
 # To be kept in sync with sysutils/zeitgeist.

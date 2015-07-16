@@ -1,5 +1,5 @@
 This patch adds support for GIF, XPM, WBMP, and JPEG file formats, which
-are support by the underlying GD.
+are supported by the underlying GD.
 
 GIF, JPEG, and WBMP formats are also added as _output_ formats.
 

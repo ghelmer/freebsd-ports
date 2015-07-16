@@ -2,11 +2,12 @@
 
 PORTNAME=	libtommath
 PORTVERSION=	0.42.0
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://libtom.org/files/
 DISTNAME=	ltm-${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Comprehensive, modular, and portable mathematical routines
 
 OPTIONS_DEFINE=	DOCS SHARED
@@ -25,13 +26,12 @@ PLIST_FILES=	include/tommath.h include/tommath_class.h \
 
 post-patch:
 	${REINPLACE_CMD} -e 's|gcc|${CC}|g' ${WRKSRC}/makefile.shared
-	${REINPLACE_CMD} -e 's|DESTDIR=|DESTDIR?=|' ${WRKSRC}/${MAKEFILE}
+	${REINPLACE_CMD} -e 's|DESTDIR=|DESTDIR?=| ; s|-g $$(GROUP) -o $$(USER)||' ${WRKSRC}/${MAKEFILE}
 
 .if ${PORT_OPTIONS:MSHARED}
-BUILD_DEPENDS=	libtool:${PORTSDIR}/devel/libtool
-USES+=		libtool:keepla
+USES+=		libtool:build
 USE_LDCONFIG=	yes
-PLIST_FILES+=	lib/libtommath.la lib/libtommath.so.0 lib/libtommath.so
+PLIST_FILES+=	lib/libtommath.so lib/libtommath.so.0 lib/libtommath.so.0.0.41
 MAKEFILE=	makefile.shared
 .else
 MAKEFILE=	makefile

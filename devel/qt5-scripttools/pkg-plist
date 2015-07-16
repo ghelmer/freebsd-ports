@@ -90,7 +90,6 @@
 %%QT_INCDIR%%/QtScriptTools/qtscripttoolsversion.h
 %%QT_LIBDIR%%/cmake/Qt5ScriptTools/Qt5ScriptToolsConfig.cmake
 %%QT_LIBDIR%%/cmake/Qt5ScriptTools/Qt5ScriptToolsConfigVersion.cmake
-%%QT_LIBDIR%%/libQt5ScriptTools.la
 %%QT_LIBDIR%%/libQt5ScriptTools.prl
 %%QT_LIBDIR%%/libQt5ScriptTools.so
 %%QT_LIBDIR%%/libQt5ScriptTools.so.5
@@ -100,13 +99,3 @@
 %%QT_MKSPECDIR%%/modules/qt_lib_scripttools.pri
 %%QT_MKSPECDIR%%/modules/qt_lib_scripttools_private.pri
 libdata/pkgconfig/Qt5ScriptTools.pc
-@dirrmtry %%QT_MKSPECDIR%%/modules
-@dirrmtry %%QT_MKSPECDIR%%
-@dirrmtry %%QT_ARCHDIR%%
-@dirrm %%QT_LIBDIR%%/cmake/Qt5ScriptTools
-@dirrmtry %%QT_LIBDIR%%/cmake
-@dirrm %%QT_INCDIR%%/QtScriptTools/%%FULLVER%%/QtScriptTools/private
-@dirrm %%QT_INCDIR%%/QtScriptTools/%%FULLVER%%/QtScriptTools
-@dirrm %%QT_INCDIR%%/QtScriptTools/%%FULLVER%%
-@dirrm %%QT_INCDIR%%/QtScriptTools
-@dirrmtry %%QT_INCDIR%%

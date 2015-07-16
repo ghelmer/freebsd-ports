@@ -3,10 +3,9 @@
 
 PORTNAME=	soundtracker
 PORTVERSION=	0.6.8
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	audio
-MASTER_SITES=	http://www.soundtracker.org/dl/%SUBDIR%/
-MASTER_SITE_SUBDIR=	v${PORTVERSION:R}
+MASTER_SITES=	http://www.soundtracker.org/dl/v${PORTVERSION:R}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mod player/tracking tool which supports XM and MOD formats

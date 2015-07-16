@@ -2,31 +2,43 @@
 # $FreeBSD$
 
 PORTNAME=	hamsterdb
-PORTVERSION=	1.1.15
+PORTVERSION=	2.1.11
 CATEGORIES=	databases
-MASTER_SITES=	http://hamsterdb.com/public/dl/
+MASTER_SITES=	http://files.hamsterdb.com/dl/
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Lightweight Embedded Database Engine
 
+LICENSE=	APACHE20
+
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:${PORTSDIR}/devel/boost-libs
+
 GNU_CONFIGURE=	yes
-USES=		gmake
+CONFIGURE_ARGS+=	--with-boost=${LOCALBASE}
+INSTALL_TARGET=	install-strip
+CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
+USES=		alias gmake libtool
 USE_LDCONFIG=	yes
 
 HAM_DOCS=	README INSTALL ChangeLog TODO AUTHORS CREDITS
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS
 
-post-extract:
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} < 900000
+BROKEN=	fails to compile on 8.x
+.endif
+
+post-patch:
 	${REINPLACE_CMD} -e 's#-ldl##g' ${WRKSRC}/configure
 	${REINPLACE_CMD} -e 's#-ldl##g' ${WRKSRC}/unittests/Makefile.in
+	${REINPLACE_CMD} -e 's#-ldl##g' ${WRKSRC}/tools/ham_bench/Makefile.in
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${HAM_DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}/
 .endfor
-.endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

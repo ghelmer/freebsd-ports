@@ -14,7 +14,6 @@ include/adasockets/sockets-utils.ads
 include/adasockets/sockets.adb
 include/adasockets/sockets.ads
 lib/adasockets/libadasockets.a
-lib/adasockets/libadasockets.la
 lib/adasockets/sockets-constants.ali
 lib/adasockets/sockets-link.ali
 lib/adasockets/sockets-multicast.ali
@@ -27,8 +26,3 @@ lib/adasockets/sockets.ali
 lib/gnat/adasockets.gpr
 libdata/pkgconfig/adasockets.pc
 share/man/man1/adasockets-config.1
-@dirrmtry share/man/man1
-@dirrmtry share/man
-@dirrmtry lib/gnat
-@dirrm lib/adasockets
-@dirrm include/adasockets

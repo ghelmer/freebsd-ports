@@ -2,23 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	gnuchess
-PORTVERSION=	6.1.1
+PORTVERSION=	6.2.1
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	chess
+MASTER_SITES=	GNU/chess
 # The DISTFILES here is explicitly needed because it can be extended later.
 DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	"Classic" Gnu Chess
 
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	MKDIR_P="${MKDIR}"
 INFO=		gnuchess
-USES=		shebangfix
+USES=		cpe shebangfix
 SHEBANG_FILES=	doc/quotes.rb
+CPE_PRODUCT=	chess
+CPE_VENDOR=	gnu
 
-OPTIONS_DEFINE=		OPENING_BOOK
+OPTIONS_DEFINE=		OPENING_BOOK DOCS NLS
 OPTIONS_DEFAULT=	OPENING_BOOK
+OPTIONS_SUB=		yes
 OPENING_BOOK_DESC=	Install opening book (25 MB download)
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.options.mk>
 
@@ -26,17 +32,6 @@ OPENING_BOOK_DESC=	Install opening book (25 MB download)
 DISTFILES+=	book_1.02.pgn.gz
 EXTRACT_ONLY+=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}
 .endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	MKDIR_P="${MKDIR}"
 
 post-build:
 .if ${PORT_OPTIONS:MOPENING_BOOK}

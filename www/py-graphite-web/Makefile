@@ -3,9 +3,8 @@
 
 PORTNAME=	graphite-web
 PORTVERSION=	0.9.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www python
-MASTER_SITES=	http://github.com/graphite-project/${PORTNAME}/archive/${PORTVERSION}.tar.gz?dummy=/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	swills@FreeBSD.org
@@ -20,12 +19,14 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cairo>=1.8.10:${PORTSDIR}/graphics/py-cairo 
 		xorg-fonts-truetype>=0:${PORTSDIR}/x11-fonts/xorg-fonts-truetype
 
 FETCH_ARGS=	-o ${DISTNAME}${EXTRACT_SUFX}
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
+USES=		python:2
+USE_GITHUB=	yes
+GH_ACCOUNT=	graphite-project
+USE_PYTHON=	distutils
 SUB_FILES=	pkg-message
 SUB_LIST+=	PYTHON_SITELIBDIR=${PYTHON_SITELIBDIR} WWWOWN=${WWWOWN} \
 		WWWGRP=${WWWGRP} DATADIR=${DATADIR}
-PLIST_SUB+=	RESETPREFIX=${PREFIX}
+PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
 post-patch:
 	@${RM} ${WRKSRC}/bin/build-index.sh.orig
@@ -43,11 +44,9 @@ post-install:
 	@(cd ${WRKSRC}/examples && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/examples)
 	@${MKDIR} ${STAGEDIR}${DATADIR}/content
 	@(cd ${WRKSRC}/webapp/content && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/content)
-	@${MKDIR} -p ${STAGEDIR}/var/log/graphite/webapp
-	@${MKDIR} -p ${STAGEDIR}/var/db/graphite
-	@${CHOWN} ${WWWOWN} ${STAGEDIR}/var/log/graphite
-	@${CHOWN} ${WWWOWN} ${STAGEDIR}/var/db/graphite
+	@${MKDIR} ${STAGEDIR}/var/log/graphite/webapp
+	@${MKDIR} ${STAGEDIR}/var/db/graphite
 	@${CP} ${STAGEDIR}${PYTHON_SITELIBDIR}/graphite/local_settings.py.example ${STAGEDIR}${PREFIX}/etc/graphite/local_settings.py.example
-	@${LN} -s ${PREFIX}/etc/graphite/local_settings.py ${STAGEDIR}${PYTHON_SITELIBDIR}/graphite/local_settings.py 
+	@${LN} -s ${PREFIX}/etc/graphite/local_settings.py ${STAGEDIR}${PYTHON_SITELIBDIR}/graphite/local_settings.py
 
 .include <bsd.port.mk>

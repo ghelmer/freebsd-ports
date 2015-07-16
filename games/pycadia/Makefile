@@ -3,23 +3,24 @@
 
 PORTNAME=	pycadia
 PORTVERSION=	0.5.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games python
-MASTER_SITES=	GENTOO/distfiles \
+MASTER_SITES=	GENTOO \
 		SF/nemysisfreebsdp/games/
 DIST_SUBDIR=	python
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Home to vector gaming, Python style
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
+USES=		python:2
 USE_GNOME=	pygtk2 libgnomeui
-USE_PYTHON=	2
 
 PORTDOCS=	CHANGELOG README gravity.txt
 OPTIONS_DEFINE=	DOCS

@@ -3,11 +3,12 @@
 
 PORTNAME=	Net-IPv6Addr
 PORTVERSION=	0.2
+PORTREVISION=	1
 CATEGORIES=	net-mgmt perl5 ipv6
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for manipulating IPv6 addresses
 
 LICENSE=	ART10 GPLv1

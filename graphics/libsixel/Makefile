@@ -1,9 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	libsixel
-PORTVERSION=	0.19.5
+PORTVERSION=	1.4.12
+DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	graphics
+MASTER_SITES=	GH
 
 MAINTAINER=	sue@iwmt.org
 COMMENT=	Encoder/decoder library for DEC SIXEL graphics
@@ -13,42 +15,36 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	saitoha
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	200e4d9
 
 USE_LDCONFIG=	yes
-USES=		libtool
+USES=		libtool pkgconfig
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-pkgconfigdir=${LOCALBASE}/libdata/pkgconfig
 
-INSTALL_TARGET=		install-strip
+INSTALL_TARGET=	install-strip
 
 PORTDOCS=	README.md
 
-OPTIONS_DEFINE=	CURL GD PIXBUF
+OPTIONS_DEFINE=	CURL GD JPEG PIXBUF PNG
 OPTIONS_DEFAULT=
 
-CURL_DESC=	libcurl support
-GD_DESC=	gd support
-PIXBUF_DESC=	gdk-pixbuf2 support
+CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+CURL_CONFIGURE_WITH=	libcurl
 
-.include <bsd.port.options.mk>
+GD_LIB_DEPENDS=		libgd.so:${PORTSDIR}/graphics/gd
+GD_CONFIGURE_WITH=	gd
 
-.if ${PORT_OPTIONS:MCURL}
-LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
-CONFIGURE_ARGS+=--with-libcurl
-.endif
+JPEG_USES=		jpeg
+JPEG_CONFIGURE_WITH=	jpeg
+JPEG_CPPFLAGS=		-I${LOCALBASE}/include
+JPEG_LDFLAGS=		-L${LOCALBASE}/lib
 
-.if ${PORT_OPTIONS:MGD}
-LIB_DEPENDS+=	libgd.so:${PORTSDIR}/graphics/gd
-CONFIGURE_ARGS+=--with-gd
-.endif
+PIXBUF_LIB_DEPENDS=	libgdk_pixbuf-2.0.so:${PORTSDIR}/graphics/gdk-pixbuf2
+PIXBUF_CONFIGURE_WITH=	gdk-pixbuf2
 
-.if ${PORT_OPTIONS:MPIXBUF}
-LIB_DEPENDS+=	libgdk_pixbuf-2.0.so:${PORTSDIR}/graphics/gdk-pixbuf2
-CONFIGURE_ARGS+=--with-gdk-pixbuf2
-.endif
+PNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+PNG_CONFIGURE_WITH=	png
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

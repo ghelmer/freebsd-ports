@@ -1,36 +1,28 @@
 # Created by: Motoyuki Kasahara <m-kasahr@sra.co.jp>
 # $FreeBSD$
 
-PORTNAME?=	libtool
-PORTVERSION=	2.4.2
-PORTREVISION=	3
-CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	libtool
-DISTNAME=	libtool-${PORTVERSION}
+PORTNAME=	libtool
+PORTREVISION=	0
 
-MAINTAINER=	autotools@FreeBSD.org
-COMMENT?=	Generic shared library support script
+COMMENT=	Generic shared library support script
 
-LICENSE?=        GPLv2
+.include "${.CURDIR}/../libtool/Makefile.common"
 
-CONFLICTS=	libtool-fixed-[0-9]*
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		makeinfo
+BUILD_DEPENDS=	gm4:${PORTSDIR}/devel/m4
+RUN_DEPENDS=	gm4:${PORTSDIR}/devel/m4
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS?= --disable-ltdl-install
-CONFIGURE_ENV=	MAKEINFO="makeinfo --no-split"
-INFO?=		libtool
+CONFIGURE_ARGS=	--disable-ltdl-install
+MAKE_ARGS=	MAKEINFOFLAGS=--no-split
+USES+=		makeinfo
 
-post-extract:
-	@${RM} -f ${WRKSRC}/doc/*.info*
+INFO=		libtool
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|sed gsed|sed|g' \
-		-e 's|CC=cc|CC=${CC}|g' \
-		${WRKSRC}/configure ${WRKSRC}/libltdl/configure
-
-post-configure:
-	@${FIND} ${WRKSRC} -type f | ${XARGS} ${TOUCH} -f
+	@${RM} -f ${WRKSRC}/doc/*.info*
+	@${TOUCH} ${WRKSRC}/doc/libtool.1
 
 .include <bsd.port.mk>

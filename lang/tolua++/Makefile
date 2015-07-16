@@ -9,7 +9,7 @@ MASTER_SITES=	http://www.codenix.com/~tolua/ \
 		http://mirror.amdmi3.ru/distfiles/
 
 MAINTAINER=	amdmi3@FreeBSD.org
-COMMENT=	An extended version of tolua, a tool to integrate C/C++ code with Lua
+COMMENT=	Extended version of tolua, a tool to integrate C/C++ code with Lua
 
 USES=		scons lua:51 tar:bzip2
 MAKE_ARGS=	prefix=${PREFIX} SONAME="libtolua++-${LUA_VER}.so"
@@ -29,6 +29,9 @@ BROKEN=		Does not install on sparc64-9
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|'lualib',||; s|lua|lua-${LUA_VER}|g" ${WRKSRC}/config_posix.py
+
+post-build:
+	${STRIP_CMD} ${WRKSRC}/lib/libtolua++.so
 
 do-install:
 	${MKDIR} ${STAGEDIR}${TGT_BINDIR} ${STAGEDIR}${TGT_INCDIR} ${STAGEDIR}${TGT_LIBDIR}

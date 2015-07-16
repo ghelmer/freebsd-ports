@@ -2,30 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	bleach
-PORTVERSION=	1.2.2
-PORTREVISION=	2
+PORTVERSION=	1.4.1
 CATEGORIES=	www python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	koobs@FreeBSD.org
-COMMENT=	Easy whitelist-based HTML-sanitizing tool for Python
+COMMENT=	Easy whitelist-based HTML-sanitizing tool
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}html5lib>=0.95:${PORTSDIR}/www/py-html5lib
-TEST_DEPENDS:=	${RUN_DEPENDS} \
-		nosetests:${PORTSDIR}/devel/py-nose
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}html5lib>=0.999:${PORTSDIR}/www/py-html5lib
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}html5lib>=0.999:${PORTSDIR}/www/py-html5lib \
+		${PYTHON_PKGNAMEPREFIX}nose>=1.3:${PORTSDIR}/devel/py-nose
 
-USE_GITHUB=		yes
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+OPTIONS_DEFINE=	TESTS
 
-GH_ACCOUNT=	jsocol
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	baf1eac
+TESTS_DESC=		Install test suite requirements
+TESTS_BUILD_DEPENDS=	${TEST_DEPENDS}
+
+USES=		python
+USE_PYTHON=	autoplist distutils
 
 regression-test: build
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYSETUP} test
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

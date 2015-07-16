@@ -2,11 +2,10 @@
 
 PORTNAME=	squeezeboxserver
 PORTVERSION=	7.5.4
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	http://downloads.slimdevices.com/SqueezeboxServer_v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-noCPAN
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	markk@knigma.org
 COMMENT=	Slim Devices audio streaming server
@@ -43,7 +42,7 @@ RUN_DEPENDS+=	p5-Package-DeprecationManager>=0.10:${PORTSDIR}/devel/p5-Package-D
 
 USERS=		${SLIMUSER}
 GROUPS=		${SLIMGROUP}
-USES=		perl5
+USES=		perl5 tar:tgz
 
 .include <bsd.port.pre.mk>
 
@@ -135,7 +134,7 @@ SUB_FILES=	Custom.pm \
 		custom-convert.conf
 SUB_LIST=	PERL=${PERL} \
 		PORTNAME=${PORTNAME} \
-		SITE_PERL=${SITE_PERL} \
+		SITE_PERL=${PREFIX}/${SITE_PERL_REL} \
 		SLIMDIR=${SLIMDIR} \
 		SLIMDBDIR=${SLIMDBDIR} \
 		SLIMUSER=${SLIMUSER} \
@@ -160,7 +159,7 @@ post-patch:
 	    -e 's|%%DISTDIR%%|${_DISTDIR}|g' \
 	    -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
 	    -e 's|%%PREFIX%%|${PREFIX}|g' \
-	    -e 's|%%SITE_PERL%%|${SITE_PERL}|g' \
+	    -e 's|%%SITE_PERL%%|${PREFIX}/${SITE_PERL_REL}|g' \
 	    -e 's|%%SLIMDBDIR%%|${SLIMDBDIR}|g' \
 	    -e 's|%%TMP_SLIMDIR%%|${TMP_SLIMDIR}|g' \
 		${WRKSRC}/scanner.pl \

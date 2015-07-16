@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	trytond
-PORTVERSION=	2.8.2
-PORTREVISION=	1
+PORTVERSION=	2.8.13
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
 PKGNAMESUFFIX=	28
 
@@ -42,9 +41,8 @@ SUB_LIST=	PYTHON_SITELIBDIR=${PYTHON_SITELIBDIR} \
 PIDDIR?=	/var/run
 LOGDIR?=	/var/log
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PIDDIR%%|${PIDDIR}|g' -e 's|%%LOGDIR%%|${LOGDIR}|g' \

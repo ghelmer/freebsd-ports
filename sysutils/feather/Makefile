@@ -13,20 +13,20 @@ COMMENT=	Python script for managing tarsnap backups
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=0:${PORTSDIR}/devel/py-yaml \
 		tarsnap>=0:${PORTSDIR}/sysutils/tarsnap
 
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 NO_INSTALL=	yes
 STRIP=
 
 SUB_FILES=	pkg-message
 
+OPTIONS_DEFINE=	DOCS
+
 do-install:
 	@${INSTALL_PROGRAM} ${WRKSRC}/feather ${STAGEDIR}${PREFIX}/bin
-	@${INSTALL_DATA} ${WRKSRC}/feather.yaml.dist ${STAGEDIR}${PREFIX}/etc
-.if !defined(NOPORTDOCS)
-	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKSRC}/feather.yaml.dist ${STAGEDIR}${PREFIX}/etc
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 x-generate-tarball:
 	${SETENV} ${FETCH_ENV} ${FETCH_BINARY} -m -o ${PORTNAME}.tar.gz \

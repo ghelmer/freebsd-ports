@@ -1,15 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	commons-codec
-PORTVERSION=	1.9
+PORTVERSION=	1.10
 CATEGORIES=	java converters
-MASTER_SITES=	${MASTER_SITE_APACHE_COMMONS_SOURCE}
-MASTER_SITE_SUBDIR=	${PORTNAME:S,commons-,,}
+MASTER_SITES=	APACHE_COMMONS_SOURCE
 PKGNAMEPREFIX=	jakarta-
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	An implementations of common encoders and decoders
+COMMENT=	Implementations of common encoders and decoders
 
 LICENSE=	APACHE20
 
@@ -26,6 +25,9 @@ PLIST_FILES=	%%JAVAJARDIR%%/${PORTNAME}.jar
 PORTDOCS=	*
 
 .include <bsd.port.options.mk>
+
+post-patch:
+	@${REINPLACE_CMD} 's/1.9-SNAPSHOT/1.10/' ${WRKSRC}/default.properties
 
 do-install:
 	@${ECHO_MSG} -n ">> Installing JAR file as ${JAVAJARDIR}/${PORTNAME}.jar..."

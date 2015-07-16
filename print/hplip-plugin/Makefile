@@ -2,28 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	hplip-plugin
-PORTVERSION=	3.14.4
+PORTVERSION=	3.14.10
 CATEGORIES=	print
-MASTER_SITES=	http://www.openprinting.org/download/printdriver/auxfiles/HP/plugins/
+MASTER_SITES=	http://hplipopensource.com/hplip-web/plugin/
 DISTNAME=	hplip-${DISTVERSION}-plugin
 EXTRACT_SUFX=	.run
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Binary plugin for some HP Printers and All-in-One devices
-
-DEPRECATED=	Unmaintained interactive port
-EXPIRATION_DATE=2014-08-20
 
 RUN_DEPENDS=	hp-plugin:${PORTSDIR}/print/hplip
 
-USE_PYTHON=	yes
+RESTRICTED=	License agreement is required
+
+USES=		python
 NO_BUILD=	yes
-RESTRICTED=	User must accept the license terms
-NO_PACKAGE=	${RESTRICTED}
-IS_INTERACTIVE=	yes
 WRKSRC=		${WRKDIR}/plugin_tmp
 HPLIP_FAKEDIR=	${WRKDIR}/hplip_fakedir
-MAKE_ENV=	HOME=/dev/null
 
 ONLY_FOR_ARCHS=	amd64 i386
 
@@ -55,8 +50,8 @@ do-extract:
 	@cd ${WRKDIR} && ${SH} ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} --keep --noexec
 
 post-patch:
-#	${REINPLACE_CMD} -e 's|ok, ans = tui.enter_yes_no.*|ok, ans = 1, 1|' \
-#		${WRKSRC}/plugin_install.py
+	${REINPLACE_CMD} -e 's|ok, ans = tui.enter_yes_no.*|ok, ans = 1, 1|' \
+		${WRKSRC}/plugin_install.py
 	${REINPLACE_CMD} -e 's|rules,||;s|rules_alt,||' ${WRKSRC}/plugin.spec
 	${REINPLACE_CMD} -e 's|/etc/hp|${HPLIP_FAKEDIR}|g' \
 		${WRKSRC}/plugin_install.py
@@ -71,10 +66,13 @@ do-install:
 	${LN} -sf ${LOCALBASE}/share/hplip/prnt ${HPLIP_FAKEDIR}
 	${CP} -R ${LOCALBASE}/share/hplip/installer ${HPLIP_FAKEDIR}
 	${REINPLACE_CMD} -e 's,HOMEDIR = .*,HOMEDIR = "${STAGEDIR}${PREFIX}/share/hplip",' \
-		${HPLIP_FAKEDIR}/installer/pluginhandler.py
+		-e 's,/var/lib/hp/hplip.state,${STAGEDIR}&,' \
+		${HPLIP_FAKEDIR}/installer/pluginhandler.py \
+		${HPLIP_FAKEDIR}/installer/core_install.py
+	${MKDIR} ${STAGEDIR}/var/lib/hp
 # install hplip-plugin
 	${MKDIR} ${PLUGIN_DIRS:S,^,${STAGEDIR}${PREFIX}/share/hplip/,}
-	(cd ${WRKSRC} && ${PYTHON_CMD} -B plugin_install.py)
+	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${PYTHON_CMD} -B plugin_install.py)
 .for i in ${PLUGIN_LINKS}
 	${LN} -sf ${i:T}-${LINARCH}.so ${STAGEDIR}${PREFIX}/share/hplip/${i}.so
 .endfor

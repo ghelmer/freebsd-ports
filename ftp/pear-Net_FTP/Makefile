@@ -2,19 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	Net_FTP
-PORTVERSION=	1.3.7
-PORTREVISION=	1
+PORTVERSION=	1.4.0
 CATEGORIES=	ftp www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR OO interface to the PHP FTP functions plus some additions
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICENSE=	BSD2CLAUSE
 
 USE_PHP=	ftp
-PEAR_AUTOINSTALL=	yes
+USES=		pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

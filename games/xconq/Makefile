@@ -3,6 +3,7 @@
 
 PORTNAME=	xconq
 DISTVERSION=	7.5.0-0pre.0.20050612
+PORTREVISION=	1
 CATEGORIES=	games tcl tk
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}
 
@@ -13,8 +14,7 @@ LICENSE=	GPLv2 # (or later)
 
 OPTIONS_DEFINE=	SDL
 
-USE_BZIP2=	yes
-USES=		compiler gmake makeinfo
+USES=		compiler gmake makeinfo tar:bzip2
 USE_XORG=	x11
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-alternate-scoresdir=${SCOREDIR} \
@@ -74,5 +74,6 @@ post-install:
 .endfor
 .endif
 	@${FIND} ${STAGEDIR}${DATADIR} -empty -delete
+	@${MKDIR} ${STAGEDIR}${SCOREDIR}
 
 .include <bsd.port.post.mk>

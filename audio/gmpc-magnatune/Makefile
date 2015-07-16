@@ -3,11 +3,11 @@
 
 PORTNAME=	gmpc-magnatune
 PORTVERSION=	11.8.16
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	http://download.sarine.nl/Programs/gmpc/${PORTVERSION}/
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Magnatune plugin let's you preview music from Magnatune
 
 LIB_DEPENDS=	libmpd.so:${PORTSDIR}/audio/libmpd \
@@ -17,6 +17,6 @@ RUN_DEPENDS=	gmpc:${PORTSDIR}/audio/gmpc
 
 GNU_CONFIGURE=	yes
 USE_GNOME=	intltool glib20 gtk20 libglade2
-USES=		gettext gmake pkgconfig
+USES=		gettext gmake libtool pkgconfig
 
 .include <bsd.port.mk>

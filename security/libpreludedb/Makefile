@@ -3,99 +3,72 @@
 
 PORTNAME=	libpreludedb
 PORTVERSION=	1.0.1p1
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	security
 MASTER_SITES=	https://www.prelude-ids.org/attachments/download/287/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework library for access to Prelude NIDS database
 
-LIB_DEPENDS=	gmp:${PORTSDIR}/math/gmp \
-		gnutls:${PORTSDIR}/security/gnutls \
-		gcrypt:${PORTSDIR}/security/libgcrypt \
-		gpg-error:${PORTSDIR}/security/libgpg-error \
-		prelude:${PORTSDIR}/security/libprelude \
-		nettle:${PORTSDIR}/security/nettle \
-		p11-kit:${PORTSDIR}/security/p11-kit
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_AUTOTOOLS=	libltdl
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
+		libgmp.so:${PORTSDIR}/math/gmp \
+		libgnutls.so:${PORTSDIR}/security/gnutls \
+		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
+		libgpg-error.so:${PORTSDIR}/security/libgpg-error \
+		libprelude.so:${PORTSDIR}/security/libprelude \
+		libnettle.so:${PORTSDIR}/security/nettle \
+		libp11-kit.so:${PORTSDIR}/security/p11-kit
+
+USES=		gettext gmake iconv libtool
 GNU_CONFIGURE=	yes
-USES=		gettext iconv gmake
-
-CONFIGURE_ARGS=	--enable-gtk-doc=no
+CONFIGURE_ARGS=	--enable-gtk-doc=no \
+		--with-html-dir=${PREFIX}/share/doc
+INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-MAN1=		preludedb-admin.1
 PORTDOCS=	*
 
-OPTIONS_DEFINE=	DOCS MYSQL PERL PGSQL PYTHON SQLITE
-OPTIONS_DEFAULT=MYSQL
-PERL_DESC=	Perl bindings
-MYSQL_DESC=	MySQL plugin
-PQSQL_DESC=	PostgreSQL plugin
-SQLITE_DESC=	SQLite3 plugin
+OPTIONS_DEFINE=		DOCS PERL PYTHON
+OPTIONS_MULTI=		DB
+OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
+OPTIONS_DEFAULT=	MYSQL
+OPTIONS_SUB=		yes
 
-NO_STAGE=	yes
+MYSQL_DESC=		MySQL plugin
+MYSQL_USE=		mysql=yes
+MYSQL_CONFIGURE_WITH=	mysql
+PERL_DESC=		Perl bindings
+PERL_USES=		perl5
+PERL_USE=		perl5=build,run
+PERL_CONFIGURE_WITH=	perl
+PGSQL_DESC=		PostgreSQL plugin
+PGSQL_USES=		pgsql
+PGSQL_CONFIGURE_WITH=	postgresql
+PYTHON_USES=		python
+PYTHON_CONFIGURE_WITH=	python
+PYTHON_PLIST_SUB=	PYTHON_VER="${PYTHON_VER}"
+SQLITE_DESC=		SQLite3 plugin
+SQLITE_USE=		sqlite=yes
+SQLITE_CONFIGURE_WITH=	sqlite3
+
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MPERL}
-USES+=			perl5
-CONFIGURE_ARGS+=	--with-perl
-PLIST_SUB+=		WITH_PERL=""
-.else
-CONFIGURE_ARGS+=	--without-perl
-PLIST_SUB+=		WITH_PERL="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
-CONFIGURE_ARGS+=	--with-python
-PLIST_SUB+=		WITH_PYTHON="" PYTHON_VER=${PYTHON_VER}
-.else
-CONFIGURE_ARGS+=	--without-python
-PLIST_SUB+=		WITH_PYTHON="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL}
-USE_MYSQL=		yes
-CONFIGURE_ARGS+=	--with-mysql
-PLIST_SUB+=		WITH_MYSQL=""
-.else
-CONFIGURE_ARGS+=	--without-mysql
-PLIST_SUB+=		WITH_MYSQL="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=		yes
-CONFIGURE_ARGS+=	--with-postgresql
-PLIST_SUB+=		WITH_PGSQL=""
-.else
-CONFIGURE_ARGS+=	--without-postgresql
-PLIST_SUB+=		WITH_PGSQL="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MSQLITE}
-USE_SQLITE=		yes
-CONFIGURE_ARGS+=	--with-sqlite3
-PLIST_SUB+=		WITH_SQLITE=""
-LIB_DEPENDS+=		sqlite3:${PORTSDIR}/databases/sqlite3
-.else
-CONFIGURE_ARGS+=	--without-sqlite3
-PLIST_SUB+=		WITH_SQLITE="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MDOCS}
-CONFIGURE_ARGS+=	--with-html-dir=${PREFIX}/share/doc
-.endif
-
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${INSTALL} -d ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/api/html/* ${DOCSDIR}
-.endif
+	(cd ${WRKSRC}/docs/manpages && ${INSTALL_MAN} *.1 \
+		${STAGEDIR}${MAN1PREFIX}/man/man1)
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/docs/api/html && ${INSTALL_DATA} * \
+		${STAGEDIR}${DOCSDIR})
 .if ${PORT_OPTIONS:MPERL}
-	@${RM} -f ${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod
+	@${FIND} ${STAGEDIR}${PREFIX}/lib/perl5 \
+		-name "*.so" | ${XARGS} ${STRIP_CMD}
 .endif
-	@${INSTALL_MAN} ${WRKSRC}/docs/manpages/*.1 ${MAN1PREFIX}/man/man1/
+.if ${PORT_OPTIONS:MPYTHON}
+	@${FIND} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} \
+		-name "*.so" | ${XARGS} ${STRIP_CMD}
+.endif
 
 .include <bsd.port.mk>

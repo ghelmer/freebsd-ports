@@ -2,6 +2,7 @@
 
 PORTNAME=	qmake
 DISTVERSION=	${QT5_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -9,6 +10,7 @@ MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt Makefile generator
 
 USE_QT5=	# empty
+USES=		pkgconfig
 QT_DIST=	base
 REINPLACE_ARGS=	-i ""
 HAS_CONFIGURE=	yes
@@ -17,38 +19,36 @@ CONFIGURE_ARGS=	-no-accessibility -no-openssl -no-gui -no-cups \
 		-no-iconv -no-icu -no-dbus -no-xcb -no-opengl \
 		-no-glib -no-audio-backend -no-fontconfig \
 		-no-gtkstyle -no-xinput2 -no-xrender \
-		-no-xkbcommon
+		-no-evdev -no-xkbcommon -no-alsa \
+		-no-freetype -no-gif -no-harfbuzz -no-libjpeg \
+		-no-libpng -no-pulseaudio -no-widgets
 # Features yet to be removed from qconfig.pri.
-TBR_CONFIG=	alsa|concurrent|.*freetype|.*gif|.*gui|.*harfbuzz|inotify|.*jpeg|.*pkg-config|.*png|pulseaudio|.*widgets|xlib
+TBR_CONFIG=	concurrent|inotify|xlib
 QMAKESPEC=	${WRKSRC}/mkspecs/freebsd-${QMAKE_COMPILER}
 INSTALL_TARGET=	install_qmake install_mkspecs
 
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
-
-.include <bsd.port.pre.mk>
-
-# Needs bsd.port.pre.mk to override -dont-process from bsd.qt.mk.
-CONFIGURE_ARGS+=-process
 
 post-patch:
 # Prevent qconfig.pri from being module dependent.
 	@${REINPLACE_CMD} -E -e '/"\$$QT_CONFIG +(${TBR_CONFIG})"/ d' \
 		${WRKSRC}/configure
 
-	@${RM} ${WRKSRC}/mkspecs/*/*.orig
-
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \
 		${WRKSRC}/mkspecs/common/freebsd.conf
 	@${REINPLACE_CMD} -e 's|unix.conf|freebsd.conf|' \
 		${WRKSRC}/mkspecs/freebsd-icc/qmake.conf
 
-# Add mkspec for Clang.
-	@${CP} -a ${WRKSRC}/mkspecs/freebsd-g++ \
+# Add mkspec for Clang. For now, this means adjusting the existing
+# unsupported/freebsd-clang mkspec while we get it into shape upstream.
+	@${MV} ${WRKSRC}/mkspecs/unsupported/freebsd-clang \
 		${WRKSRC}/mkspecs/freebsd-clang
-	@${REINPLACE_CMD} -e 's|g++|clang|g' \
-		-e '/gcc-base-unix.conf/d' \
+	@${REINPLACE_CMD} -e 's|(../|(|g' \
 		${WRKSRC}/mkspecs/freebsd-clang/qmake.conf
+	@${REINPLACE_CMD} -e 's|"../|"|g' \
+		${WRKSRC}/mkspecs/freebsd-clang/qplatformdefs.h
 
+	@${RM} ${WRKSRC}/mkspecs/*/*.orig
 	@${RM} -Rf ${WRKSRC}/mkspecs/freebsd-g++46
 
 post-build:
@@ -61,4 +61,4 @@ post-build:
 	@${REINPLACE_CMD} -En -e '/^(CONFIG|QT_BUILD_PARTS|.*_DIR) / p' \
 		${WRKSRC}/mkspecs/qmodule.pri
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

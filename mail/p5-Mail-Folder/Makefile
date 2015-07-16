@@ -3,12 +3,13 @@
 
 PORTNAME=	Mail-Folder
 PORTVERSION=	0.07
+PORTREVISION=	1
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 DISTNAME=	MailFolder-${PORTVERSION}
 
-MAINTAINER=	chifeng@gmail.com
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for a folder-independant interface to email folders
 
 BUILD_DEPENDS=	p5-Mail-Tools>=0:${PORTSDIR}/mail/p5-Mail-Tools \

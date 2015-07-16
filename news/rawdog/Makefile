@@ -2,25 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	rawdog
-PORTVERSION=	2.19
+PORTVERSION=	2.20
 CATEGORIES=	news python
 MASTER_SITES=	http://offog.org/files/ \
 		http://ftp.i-scream.org/pub/offog.org/files/
 
 MAINTAINER=	tdb@FreeBSD.org
-COMMENT=	A simple RSS aggregator
+COMMENT=	Simple RSS aggregator
 
 LICENSE=	GPLv2
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/feedparser.py:${PORTSDIR}/textproc/py-feedparser
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 NO_ARCH=	yes
 
 PORTDOCS=	README
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -28,20 +32,20 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/style.css ${STAGEDIR}${EXAMPLESDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
-.if !defined(NOPORTEXAMPLES) || !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
 	@${ECHO_MSG} "    ---------------------------------------------" \
 		>>${PKGMESSAGE}
 .endif
-.if !defined(NOPORTEXAMPLES)
+.if ${PORT_OPTIONS:MEXAMPLES}
 	@${ECHO_MSG} "    Sample config and stylesheet installed in:" \
 		>>${PKGMESSAGE}
 	@${ECHO_MSG} "        ${EXAMPLESDIR}" >>${PKGMESSAGE}
 .endif
-.if !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS}
 	@${ECHO_MSG} "    Please read the README:" >>${PKGMESSAGE}
 	@${ECHO_MSG} "        ${DOCSDIR}/README" >>${PKGMESSAGE}
 .endif
-.if !defined(NOPORTEXAMPLES) || !defined(NOPORTDOCS)
+.if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
 	@${ECHO_MSG} "    ---------------------------------------------" \
 		>>${PKGMESSAGE}
 .endif

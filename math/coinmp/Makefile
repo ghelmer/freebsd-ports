@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	CoinMP
-PORTVERSION=	1.7.2
+PORTVERSION=	1.8.2
 CATEGORIES=	math
 MASTER_SITES=	http://www.coin-or.org/download/source/CoinMP/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	cpm@fbsd.es
 COMMENT=	Optimization library with support for COIN-OR CLP, CBC, and CGL
 
 LICENSE=	CPL
@@ -16,20 +16,21 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 CONFLICTS=	clp-[0-9]*
 
-USES=	pkgconfig tar:tgz
-USE_AUTOTOOLS=	libtool
+GNU_CONFIGURE=	yes
+USES=	libtool pkgconfig tar:tgz
 USE_LDCONFIG=	yes
-USE_GCC=	any
 CONFIGURE_ARGS+=	PKG_CONFIG_PATH=${STAGEDIR}${PREFIX}/libdata/pkgconfig
+CXXFLAGS+=	-ffast-math
 
-OPTIONS_DEFINE=	DEBUG DOCS
+OPTIONS_DEFINE=	DEBUG DOCS GLPK
+
+GLPK_DESC=	GNU Linear Programming Kit support
 
 PORTDOCS=	*
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGLPK}
-BROKEN =	the GLPK option requires math/glpk headers that are not currently installed by that port
 CONFIGURE_ARGS+=	--with-gmpl-incdir=${LOCALBASE}/include	\
 		--with-gmpl-lib="-L${LOCALBASE}/lib -lglpk"
 LIB_DEPENDS+=	libglpk.so:${PORTSDIR}/math/glpk
@@ -37,32 +38,31 @@ LIB_DEPENDS+=	libglpk.so:${PORTSDIR}/math/glpk
 CONFIGURE_ARGS+=	--disable-glpk-libcheck
 .endif
 
-CXXFLAGS+=	-ffast-math
 .if ${PORT_OPTIONS:MDEBUG}
 CXXFLAGS+=	-fomit-frame-pointer
 .endif
 
-post-patch::
-	@${REINPLACE_CMD} -e \
-		's|$$(libdir)/pkgconfig|${PREFIX}/libdata/pkgconfig|' \
-		${WRKSRC}/Clp/Makefile.in ${WRKSRC}/Osi/Makefile.in \
-		${WRKSRC}/Cbc/Makefile.in ${WRKSRC}/Cgl/Makefile.in \
-		${WRKSRC}/CoinUtils/Makefile.in ${WRKSRC}/CoinMP/Makefile.in \
-		${WRKSRC}/Data/Sample/Makefile.in
-	@${REINPLACE_CMD} -e 's|$$(DESTDIR)$$(addlibsdir)|$$(addlibsdir)|g' \
-		${WRKSRC}/CoinMP/Makefile.in
+STRIP_FILES=	libCoinUtils libOsi libOsiClp libOsiCommonTests libClp libClpSolver \
+		libCgl libCbc libCbcSolver libOsiCbc libCoinMP
 
-pre-build:
-.for dir in Cbc Cgl Clp CoinMP CoinUtils Osi
-	${CP} ${LTMAIN} ${WRKSRC}/${dir}
-.endfor
+post-patch::
+	@${FIND} ${WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
+		's|$$(libdir)/pkgconfig|${PREFIX}/libdata/pkgconfig|' \
+		-e 's|$$(DESTDIR)$$(addlibsdir)|$$(addlibsdir)|g' \
+		-e 's|addlibs_DATA = examples/Makefile examples/example.c||g' \
+		-e 's|DocInstallDir = $$(datadir)/coin/doc/$$(PACKAGE_NAME)|DocInstallDir = $$(datadir)/doc/CoinMP/$$(PACKAGE_NAME)|' \
+		-e 's|	$$(MAKE) $$(AM_MAKEFLAGS) install-data-hook||'
+	${REINPLACE_CMD} -e 's|datacoin_DATA = $$(EXAMPLE_FILES)|datacoin_DATA = |' \
+		-e 's|datacoindir = $$(datadir)/coin/Data/Sample|datacoindir = |' ${WRKSRC}/Data/Sample/Makefile.in
+	${REINPLACE_CMD} -e 's|addlibsdir = $$(DESTDIR)$$(datadir)/coin/doc/CoinMP|addlibsdir = |' ${WRKSRC}/CoinMP/Makefile.in
 
 post-install:
-	${MV} ${STAGEDIR}${PREFIX}/share/coin/doc ${STAGEDIR}${DOCSDIR}
-	${RM} -rf ${STAGEDIR}${PREFIX}/share/coin
+.for filename in ${STRIP_FILES}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${filename}.so.*
+.endfor
 
 check regression-test test: build
-	@(cd ${WRKSRC};  ${SETENV} ${MAKE_ENV} ${MAKE} ${_MAKE_JOBS} \
-	${MAKE_ARGS} test)
+	${SETENV} ${MAKE_ENV} ${MAKE} ${_MAKE_JOBS} \
+		${MAKE_ARGS} test -C ${WRKSRC}
 
 .include <bsd.port.mk>

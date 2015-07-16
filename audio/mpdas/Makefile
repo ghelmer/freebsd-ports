@@ -2,18 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	mpdas
-PORTVERSION=	0.3.0
-PORTREVISION=	5
+PORTVERSION=	0.3.2
 CATEGORIES=	audio
 MASTER_SITES=	http://50hz.ws/mpdas/
 
-MAINTAINER=	henrik@affekt.org	
+MAINTAINER=	henrik@affekt.org
 COMMENT=	MPD AudioScrobbler written in C++ supporting the latest protocol
+
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
 		libmpd.so:${PORTSDIR}/audio/libmpd
 
-USES=		pkgconfig tar:bzip2
+USES=		pkgconfig
 
 USE_RC_SUBR=	mpdas
 
@@ -24,6 +26,6 @@ PLIST_FILES=	bin/mpdas \
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mpdas ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/mpdas.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/mpdas.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.mk>

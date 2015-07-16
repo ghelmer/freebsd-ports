@@ -1,5 +1,5 @@
-bin/mate-power-bugreport.sh
 bin/mate-power-manager
+bin/mate-power-manager-bugreport
 bin/mate-power-preferences
 bin/mate-power-statistics
 etc/xdg/autostart/mate-power-manager.desktop
@@ -12,6 +12,246 @@ share/applications/mate-power-statistics.desktop
 share/dbus-1/services/mate-power-manager.service
 share/dbus-1/services/org.mate.panel.applet.BrightnessAppletFactory.service
 share/dbus-1/services/org.mate.panel.applet.InhibitAppletFactory.service
+share/help/C/mate-power-manager/figures/applet-brightness.png
+share/help/C/mate-power-manager/figures/applet-inhibit.png
+share/help/C/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/C/mate-power-manager/figures/gpm-charged.png
+share/help/C/mate-power-manager/figures/gpm-critical.png
+share/help/C/mate-power-manager/figures/gpm-low.png
+share/help/C/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/C/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/C/mate-power-manager/figures/gpm-prefs-general.png
+share/help/C/mate-power-manager/figures/gpm-stats-graph.png
+share/help/C/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/C/mate-power-manager/figures/gpm-unplugged.png
+share/help/C/mate-power-manager/figures/gs-prefs.png
+share/help/C/mate-power-manager/index.docbook
+share/help/C/mate-power-manager/legal.xml
+share/help/ca/mate-power-manager/figures/applet-brightness.png
+share/help/ca/mate-power-manager/figures/applet-inhibit.png
+share/help/ca/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/ca/mate-power-manager/figures/gpm-charged.png
+share/help/ca/mate-power-manager/figures/gpm-critical.png
+share/help/ca/mate-power-manager/figures/gpm-low.png
+share/help/ca/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/ca/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/ca/mate-power-manager/figures/gpm-prefs-general.png
+share/help/ca/mate-power-manager/figures/gpm-stats-graph.png
+share/help/ca/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/ca/mate-power-manager/figures/gpm-unplugged.png
+share/help/ca/mate-power-manager/figures/gs-prefs.png
+share/help/ca/mate-power-manager/index.docbook
+share/help/ca/mate-power-manager/legal.xml
+share/help/de/mate-power-manager/figures/applet-brightness.png
+share/help/de/mate-power-manager/figures/applet-inhibit.png
+share/help/de/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/de/mate-power-manager/figures/gpm-charged.png
+share/help/de/mate-power-manager/figures/gpm-critical.png
+share/help/de/mate-power-manager/figures/gpm-low.png
+share/help/de/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/de/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/de/mate-power-manager/figures/gpm-prefs-general.png
+share/help/de/mate-power-manager/figures/gpm-stats-graph.png
+share/help/de/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/de/mate-power-manager/figures/gpm-unplugged.png
+share/help/de/mate-power-manager/figures/gs-prefs.png
+share/help/de/mate-power-manager/index.docbook
+share/help/de/mate-power-manager/legal.xml
+share/help/el/mate-power-manager/figures/applet-brightness.png
+share/help/el/mate-power-manager/figures/applet-inhibit.png
+share/help/el/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/el/mate-power-manager/figures/gpm-charged.png
+share/help/el/mate-power-manager/figures/gpm-critical.png
+share/help/el/mate-power-manager/figures/gpm-low.png
+share/help/el/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/el/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/el/mate-power-manager/figures/gpm-prefs-general.png
+share/help/el/mate-power-manager/figures/gpm-stats-graph.png
+share/help/el/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/el/mate-power-manager/figures/gpm-unplugged.png
+share/help/el/mate-power-manager/figures/gs-prefs.png
+share/help/el/mate-power-manager/index.docbook
+share/help/el/mate-power-manager/legal.xml
+share/help/en_GB/mate-power-manager/figures/applet-brightness.png
+share/help/en_GB/mate-power-manager/figures/applet-inhibit.png
+share/help/en_GB/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/en_GB/mate-power-manager/figures/gpm-charged.png
+share/help/en_GB/mate-power-manager/figures/gpm-critical.png
+share/help/en_GB/mate-power-manager/figures/gpm-low.png
+share/help/en_GB/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/en_GB/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/en_GB/mate-power-manager/figures/gpm-prefs-general.png
+share/help/en_GB/mate-power-manager/figures/gpm-stats-graph.png
+share/help/en_GB/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/en_GB/mate-power-manager/figures/gpm-unplugged.png
+share/help/en_GB/mate-power-manager/figures/gs-prefs.png
+share/help/en_GB/mate-power-manager/index.docbook
+share/help/en_GB/mate-power-manager/legal.xml
+share/help/es/mate-power-manager/figures/applet-brightness.png
+share/help/es/mate-power-manager/figures/applet-inhibit.png
+share/help/es/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/es/mate-power-manager/figures/gpm-charged.png
+share/help/es/mate-power-manager/figures/gpm-critical.png
+share/help/es/mate-power-manager/figures/gpm-low.png
+share/help/es/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/es/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/es/mate-power-manager/figures/gpm-prefs-general.png
+share/help/es/mate-power-manager/figures/gpm-stats-graph.png
+share/help/es/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/es/mate-power-manager/figures/gpm-unplugged.png
+share/help/es/mate-power-manager/figures/gs-prefs.png
+share/help/es/mate-power-manager/index.docbook
+share/help/es/mate-power-manager/legal.xml
+share/help/eu/mate-power-manager/figures/applet-brightness.png
+share/help/eu/mate-power-manager/figures/applet-inhibit.png
+share/help/eu/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/eu/mate-power-manager/figures/gpm-charged.png
+share/help/eu/mate-power-manager/figures/gpm-critical.png
+share/help/eu/mate-power-manager/figures/gpm-low.png
+share/help/eu/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/eu/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/eu/mate-power-manager/figures/gpm-prefs-general.png
+share/help/eu/mate-power-manager/figures/gpm-stats-graph.png
+share/help/eu/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/eu/mate-power-manager/figures/gpm-unplugged.png
+share/help/eu/mate-power-manager/figures/gs-prefs.png
+share/help/eu/mate-power-manager/index.docbook
+share/help/eu/mate-power-manager/legal.xml
+share/help/fi/mate-power-manager/figures/applet-brightness.png
+share/help/fi/mate-power-manager/figures/applet-inhibit.png
+share/help/fi/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/fi/mate-power-manager/figures/gpm-charged.png
+share/help/fi/mate-power-manager/figures/gpm-critical.png
+share/help/fi/mate-power-manager/figures/gpm-low.png
+share/help/fi/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/fi/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/fi/mate-power-manager/figures/gpm-prefs-general.png
+share/help/fi/mate-power-manager/figures/gpm-stats-graph.png
+share/help/fi/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/fi/mate-power-manager/figures/gpm-unplugged.png
+share/help/fi/mate-power-manager/figures/gs-prefs.png
+share/help/fi/mate-power-manager/index.docbook
+share/help/fi/mate-power-manager/legal.xml
+share/help/fr/mate-power-manager/figures/applet-brightness.png
+share/help/fr/mate-power-manager/figures/applet-inhibit.png
+share/help/fr/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/fr/mate-power-manager/figures/gpm-charged.png
+share/help/fr/mate-power-manager/figures/gpm-critical.png
+share/help/fr/mate-power-manager/figures/gpm-low.png
+share/help/fr/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/fr/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/fr/mate-power-manager/figures/gpm-prefs-general.png
+share/help/fr/mate-power-manager/figures/gpm-stats-graph.png
+share/help/fr/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/fr/mate-power-manager/figures/gpm-unplugged.png
+share/help/fr/mate-power-manager/figures/gs-prefs.png
+share/help/fr/mate-power-manager/index.docbook
+share/help/fr/mate-power-manager/legal.xml
+share/help/hu/mate-power-manager/figures/applet-brightness.png
+share/help/hu/mate-power-manager/figures/applet-inhibit.png
+share/help/hu/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/hu/mate-power-manager/figures/gpm-charged.png
+share/help/hu/mate-power-manager/figures/gpm-critical.png
+share/help/hu/mate-power-manager/figures/gpm-low.png
+share/help/hu/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/hu/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/hu/mate-power-manager/figures/gpm-prefs-general.png
+share/help/hu/mate-power-manager/figures/gpm-stats-graph.png
+share/help/hu/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/hu/mate-power-manager/figures/gpm-unplugged.png
+share/help/hu/mate-power-manager/figures/gs-prefs.png
+share/help/hu/mate-power-manager/index.docbook
+share/help/hu/mate-power-manager/legal.xml
+share/help/it/mate-power-manager/figures/applet-brightness.png
+share/help/it/mate-power-manager/figures/applet-inhibit.png
+share/help/it/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/it/mate-power-manager/figures/gpm-charged.png
+share/help/it/mate-power-manager/figures/gpm-critical.png
+share/help/it/mate-power-manager/figures/gpm-low.png
+share/help/it/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/it/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/it/mate-power-manager/figures/gpm-prefs-general.png
+share/help/it/mate-power-manager/figures/gpm-stats-graph.png
+share/help/it/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/it/mate-power-manager/figures/gpm-unplugged.png
+share/help/it/mate-power-manager/figures/gs-prefs.png
+share/help/it/mate-power-manager/index.docbook
+share/help/it/mate-power-manager/legal.xml
+share/help/oc/mate-power-manager/figures/applet-brightness.png
+share/help/oc/mate-power-manager/figures/applet-inhibit.png
+share/help/oc/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/oc/mate-power-manager/figures/gpm-charged.png
+share/help/oc/mate-power-manager/figures/gpm-critical.png
+share/help/oc/mate-power-manager/figures/gpm-low.png
+share/help/oc/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/oc/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/oc/mate-power-manager/figures/gpm-prefs-general.png
+share/help/oc/mate-power-manager/figures/gpm-stats-graph.png
+share/help/oc/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/oc/mate-power-manager/figures/gpm-unplugged.png
+share/help/oc/mate-power-manager/figures/gs-prefs.png
+share/help/oc/mate-power-manager/index.docbook
+share/help/oc/mate-power-manager/legal.xml
+share/help/pa/mate-power-manager/figures/applet-brightness.png
+share/help/pa/mate-power-manager/figures/applet-inhibit.png
+share/help/pa/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/pa/mate-power-manager/figures/gpm-charged.png
+share/help/pa/mate-power-manager/figures/gpm-critical.png
+share/help/pa/mate-power-manager/figures/gpm-low.png
+share/help/pa/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/pa/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/pa/mate-power-manager/figures/gpm-prefs-general.png
+share/help/pa/mate-power-manager/figures/gpm-stats-graph.png
+share/help/pa/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/pa/mate-power-manager/figures/gpm-unplugged.png
+share/help/pa/mate-power-manager/figures/gs-prefs.png
+share/help/pa/mate-power-manager/index.docbook
+share/help/pa/mate-power-manager/legal.xml
+share/help/ru/mate-power-manager/figures/applet-brightness.png
+share/help/ru/mate-power-manager/figures/applet-inhibit.png
+share/help/ru/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/ru/mate-power-manager/figures/gpm-charged.png
+share/help/ru/mate-power-manager/figures/gpm-critical.png
+share/help/ru/mate-power-manager/figures/gpm-low.png
+share/help/ru/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/ru/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/ru/mate-power-manager/figures/gpm-prefs-general.png
+share/help/ru/mate-power-manager/figures/gpm-stats-graph.png
+share/help/ru/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/ru/mate-power-manager/figures/gpm-unplugged.png
+share/help/ru/mate-power-manager/figures/gs-prefs.png
+share/help/ru/mate-power-manager/index.docbook
+share/help/ru/mate-power-manager/legal.xml
+share/help/sv/mate-power-manager/figures/applet-brightness.png
+share/help/sv/mate-power-manager/figures/applet-inhibit.png
+share/help/sv/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/sv/mate-power-manager/figures/gpm-charged.png
+share/help/sv/mate-power-manager/figures/gpm-critical.png
+share/help/sv/mate-power-manager/figures/gpm-low.png
+share/help/sv/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/sv/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/sv/mate-power-manager/figures/gpm-prefs-general.png
+share/help/sv/mate-power-manager/figures/gpm-stats-graph.png
+share/help/sv/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/sv/mate-power-manager/figures/gpm-unplugged.png
+share/help/sv/mate-power-manager/figures/gs-prefs.png
+share/help/sv/mate-power-manager/index.docbook
+share/help/sv/mate-power-manager/legal.xml
+share/help/zh_CN/mate-power-manager/figures/applet-brightness.png
+share/help/zh_CN/mate-power-manager/figures/applet-inhibit.png
+share/help/zh_CN/mate-power-manager/figures/gpm-cell-capacity.png
+share/help/zh_CN/mate-power-manager/figures/gpm-charged.png
+share/help/zh_CN/mate-power-manager/figures/gpm-critical.png
+share/help/zh_CN/mate-power-manager/figures/gpm-low.png
+share/help/zh_CN/mate-power-manager/figures/gpm-prefs-ac.png
+share/help/zh_CN/mate-power-manager/figures/gpm-prefs-battery.png
+share/help/zh_CN/mate-power-manager/figures/gpm-prefs-general.png
+share/help/zh_CN/mate-power-manager/figures/gpm-stats-graph.png
+share/help/zh_CN/mate-power-manager/figures/gpm-suspend-problem.png
+share/help/zh_CN/mate-power-manager/figures/gpm-unplugged.png
+share/help/zh_CN/mate-power-manager/figures/gs-prefs.png
+share/help/zh_CN/mate-power-manager/index.docbook
+share/help/zh_CN/mate-power-manager/legal.xml
 share/icons/hicolor/16x16/apps/mate-brightness-applet.png
 share/icons/hicolor/16x16/apps/mate-inhibit-applet.png
 share/icons/hicolor/16x16/apps/mate-power-manager.png
@@ -47,6 +287,7 @@ share/locale/bn/LC_MESSAGES/mate-power-manager.mo
 share/locale/bn_IN/LC_MESSAGES/mate-power-manager.mo
 share/locale/ca/LC_MESSAGES/mate-power-manager.mo
 share/locale/ca@valencia/LC_MESSAGES/mate-power-manager.mo
+share/locale/cmn/LC_MESSAGES/mate-power-manager.mo
 share/locale/cs/LC_MESSAGES/mate-power-manager.mo
 share/locale/cy/LC_MESSAGES/mate-power-manager.mo
 share/locale/da/LC_MESSAGES/mate-power-manager.mo
@@ -110,6 +351,7 @@ share/locale/te/LC_MESSAGES/mate-power-manager.mo
 share/locale/th/LC_MESSAGES/mate-power-manager.mo
 share/locale/tr/LC_MESSAGES/mate-power-manager.mo
 share/locale/uk/LC_MESSAGES/mate-power-manager.mo
+share/locale/ur/LC_MESSAGES/mate-power-manager.mo
 share/locale/vi/LC_MESSAGES/mate-power-manager.mo
 share/locale/zh_CN/LC_MESSAGES/mate-power-manager.mo
 share/locale/zh_HK/LC_MESSAGES/mate-power-manager.mo
@@ -459,338 +701,4 @@ share/mate-panel/applets/org.mate.InhibitApplet.mate-panel-applet
 %%DATADIR%%/icons/hicolor/scalable/status/gpm-ups-100-charging.svg
 %%DATADIR%%/icons/hicolor/scalable/status/gpm-ups-100.svg
 %%DATADIR%%/icons/hicolor/scalable/status/gpm-ups-missing.svg
-share/mate/help/mate-power-manager/C/figures/applet-brightness.png
-share/mate/help/mate-power-manager/C/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/C/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/C/figures/gpm-charged.png
-share/mate/help/mate-power-manager/C/figures/gpm-critical.png
-share/mate/help/mate-power-manager/C/figures/gpm-low.png
-share/mate/help/mate-power-manager/C/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/C/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/C/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/C/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/C/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/C/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/C/figures/gs-prefs.png
-share/mate/help/mate-power-manager/C/legal.xml
-share/mate/help/mate-power-manager/C/mate-power-manager.xml
-share/mate/help/mate-power-manager/ca/figures/applet-brightness.png
-share/mate/help/mate-power-manager/ca/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/ca/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/ca/figures/gpm-charged.png
-share/mate/help/mate-power-manager/ca/figures/gpm-critical.png
-share/mate/help/mate-power-manager/ca/figures/gpm-low.png
-share/mate/help/mate-power-manager/ca/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/ca/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/ca/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/ca/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/ca/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/ca/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/ca/figures/gs-prefs.png
-share/mate/help/mate-power-manager/ca/mate-power-manager.xml
-share/mate/help/mate-power-manager/de/figures/applet-brightness.png
-share/mate/help/mate-power-manager/de/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/de/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/de/figures/gpm-charged.png
-share/mate/help/mate-power-manager/de/figures/gpm-critical.png
-share/mate/help/mate-power-manager/de/figures/gpm-low.png
-share/mate/help/mate-power-manager/de/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/de/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/de/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/de/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/de/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/de/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/de/figures/gs-prefs.png
-share/mate/help/mate-power-manager/de/mate-power-manager.xml
-share/mate/help/mate-power-manager/el/figures/applet-brightness.png
-share/mate/help/mate-power-manager/el/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/el/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/el/figures/gpm-charged.png
-share/mate/help/mate-power-manager/el/figures/gpm-critical.png
-share/mate/help/mate-power-manager/el/figures/gpm-low.png
-share/mate/help/mate-power-manager/el/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/el/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/el/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/el/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/el/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/el/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/el/figures/gs-prefs.png
-share/mate/help/mate-power-manager/el/mate-power-manager.xml
-share/mate/help/mate-power-manager/en_GB/figures/applet-brightness.png
-share/mate/help/mate-power-manager/en_GB/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-charged.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-critical.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-low.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/en_GB/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/en_GB/figures/gs-prefs.png
-share/mate/help/mate-power-manager/en_GB/mate-power-manager.xml
-share/mate/help/mate-power-manager/es/figures/applet-brightness.png
-share/mate/help/mate-power-manager/es/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/es/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/es/figures/gpm-charged.png
-share/mate/help/mate-power-manager/es/figures/gpm-critical.png
-share/mate/help/mate-power-manager/es/figures/gpm-low.png
-share/mate/help/mate-power-manager/es/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/es/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/es/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/es/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/es/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/es/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/es/figures/gs-prefs.png
-share/mate/help/mate-power-manager/es/mate-power-manager.xml
-share/mate/help/mate-power-manager/eu/figures/applet-brightness.png
-share/mate/help/mate-power-manager/eu/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/eu/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/eu/figures/gpm-charged.png
-share/mate/help/mate-power-manager/eu/figures/gpm-critical.png
-share/mate/help/mate-power-manager/eu/figures/gpm-low.png
-share/mate/help/mate-power-manager/eu/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/eu/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/eu/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/eu/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/eu/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/eu/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/eu/figures/gs-prefs.png
-share/mate/help/mate-power-manager/eu/mate-power-manager.xml
-share/mate/help/mate-power-manager/fi/figures/applet-brightness.png
-share/mate/help/mate-power-manager/fi/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/fi/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/fi/figures/gpm-charged.png
-share/mate/help/mate-power-manager/fi/figures/gpm-critical.png
-share/mate/help/mate-power-manager/fi/figures/gpm-low.png
-share/mate/help/mate-power-manager/fi/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/fi/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/fi/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/fi/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/fi/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/fi/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/fi/figures/gs-prefs.png
-share/mate/help/mate-power-manager/fi/mate-power-manager.xml
-share/mate/help/mate-power-manager/fr/figures/applet-brightness.png
-share/mate/help/mate-power-manager/fr/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/fr/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/fr/figures/gpm-charged.png
-share/mate/help/mate-power-manager/fr/figures/gpm-critical.png
-share/mate/help/mate-power-manager/fr/figures/gpm-low.png
-share/mate/help/mate-power-manager/fr/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/fr/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/fr/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/fr/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/fr/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/fr/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/fr/figures/gs-prefs.png
-share/mate/help/mate-power-manager/fr/mate-power-manager.xml
-share/mate/help/mate-power-manager/hu/figures/applet-brightness.png
-share/mate/help/mate-power-manager/hu/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/hu/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/hu/figures/gpm-charged.png
-share/mate/help/mate-power-manager/hu/figures/gpm-critical.png
-share/mate/help/mate-power-manager/hu/figures/gpm-low.png
-share/mate/help/mate-power-manager/hu/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/hu/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/hu/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/hu/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/hu/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/hu/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/hu/figures/gs-prefs.png
-share/mate/help/mate-power-manager/hu/mate-power-manager.xml
-share/mate/help/mate-power-manager/it/figures/applet-brightness.png
-share/mate/help/mate-power-manager/it/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/it/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/it/figures/gpm-charged.png
-share/mate/help/mate-power-manager/it/figures/gpm-critical.png
-share/mate/help/mate-power-manager/it/figures/gpm-low.png
-share/mate/help/mate-power-manager/it/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/it/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/it/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/it/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/it/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/it/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/it/figures/gs-prefs.png
-share/mate/help/mate-power-manager/it/mate-power-manager.xml
-share/mate/help/mate-power-manager/oc/figures/applet-brightness.png
-share/mate/help/mate-power-manager/oc/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/oc/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/oc/figures/gpm-charged.png
-share/mate/help/mate-power-manager/oc/figures/gpm-critical.png
-share/mate/help/mate-power-manager/oc/figures/gpm-low.png
-share/mate/help/mate-power-manager/oc/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/oc/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/oc/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/oc/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/oc/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/oc/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/oc/figures/gs-prefs.png
-share/mate/help/mate-power-manager/oc/mate-power-manager.xml
-share/mate/help/mate-power-manager/pa/figures/applet-brightness.png
-share/mate/help/mate-power-manager/pa/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/pa/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/pa/figures/gpm-charged.png
-share/mate/help/mate-power-manager/pa/figures/gpm-critical.png
-share/mate/help/mate-power-manager/pa/figures/gpm-low.png
-share/mate/help/mate-power-manager/pa/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/pa/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/pa/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/pa/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/pa/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/pa/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/pa/figures/gs-prefs.png
-share/mate/help/mate-power-manager/pa/mate-power-manager.xml
-share/mate/help/mate-power-manager/ru/figures/applet-brightness.png
-share/mate/help/mate-power-manager/ru/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/ru/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/ru/figures/gpm-charged.png
-share/mate/help/mate-power-manager/ru/figures/gpm-critical.png
-share/mate/help/mate-power-manager/ru/figures/gpm-low.png
-share/mate/help/mate-power-manager/ru/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/ru/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/ru/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/ru/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/ru/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/ru/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/ru/figures/gs-prefs.png
-share/mate/help/mate-power-manager/ru/mate-power-manager.xml
-share/mate/help/mate-power-manager/sv/figures/applet-brightness.png
-share/mate/help/mate-power-manager/sv/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/sv/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/sv/figures/gpm-charged.png
-share/mate/help/mate-power-manager/sv/figures/gpm-critical.png
-share/mate/help/mate-power-manager/sv/figures/gpm-low.png
-share/mate/help/mate-power-manager/sv/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/sv/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/sv/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/sv/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/sv/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/sv/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/sv/figures/gs-prefs.png
-share/mate/help/mate-power-manager/sv/mate-power-manager.xml
-share/mate/help/mate-power-manager/zh_CN/figures/applet-brightness.png
-share/mate/help/mate-power-manager/zh_CN/figures/applet-inhibit.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-cell-capacity.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-charged.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-critical.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-low.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-prefs-ac.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-prefs-battery.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-prefs-general.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-stats-graph.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-suspend-problem.png
-share/mate/help/mate-power-manager/zh_CN/figures/gpm-unplugged.png
-share/mate/help/mate-power-manager/zh_CN/figures/gs-prefs.png
-share/mate/help/mate-power-manager/zh_CN/mate-power-manager.xml
-share/omf/mate-power-manager/mate-power-manager-C.omf
-share/omf/mate-power-manager/mate-power-manager-ca.omf
-share/omf/mate-power-manager/mate-power-manager-de.omf
-share/omf/mate-power-manager/mate-power-manager-el.omf
-share/omf/mate-power-manager/mate-power-manager-en_GB.omf
-share/omf/mate-power-manager/mate-power-manager-es.omf
-share/omf/mate-power-manager/mate-power-manager-eu.omf
-share/omf/mate-power-manager/mate-power-manager-fi.omf
-share/omf/mate-power-manager/mate-power-manager-fr.omf
-share/omf/mate-power-manager/mate-power-manager-hu.omf
-share/omf/mate-power-manager/mate-power-manager-it.omf
-share/omf/mate-power-manager/mate-power-manager-oc.omf
-share/omf/mate-power-manager/mate-power-manager-pa.omf
-share/omf/mate-power-manager/mate-power-manager-ru.omf
-share/omf/mate-power-manager/mate-power-manager-sv.omf
-share/omf/mate-power-manager/mate-power-manager-zh_CN.omf
 share/polkit-1/actions/org.mate.power.policy
-@dirrmtry share/polkit-1/actions
-@dirrmtry share/polkit-1
-@dirrm share/omf/mate-power-manager
-@dirrm share/mate/help/mate-power-manager/zh_CN/figures
-@dirrm share/mate/help/mate-power-manager/zh_CN
-@dirrm share/mate/help/mate-power-manager/sv/figures
-@dirrm share/mate/help/mate-power-manager/sv
-@dirrm share/mate/help/mate-power-manager/ru/figures
-@dirrm share/mate/help/mate-power-manager/ru
-@dirrm share/mate/help/mate-power-manager/pa/figures
-@dirrm share/mate/help/mate-power-manager/pa
-@dirrm share/mate/help/mate-power-manager/oc/figures
-@dirrm share/mate/help/mate-power-manager/oc
-@dirrm share/mate/help/mate-power-manager/it/figures
-@dirrm share/mate/help/mate-power-manager/it
-@dirrm share/mate/help/mate-power-manager/hu/figures
-@dirrm share/mate/help/mate-power-manager/hu
-@dirrm share/mate/help/mate-power-manager/fr/figures
-@dirrm share/mate/help/mate-power-manager/fr
-@dirrm share/mate/help/mate-power-manager/fi/figures
-@dirrm share/mate/help/mate-power-manager/fi
-@dirrm share/mate/help/mate-power-manager/eu/figures
-@dirrm share/mate/help/mate-power-manager/eu
-@dirrm share/mate/help/mate-power-manager/es/figures
-@dirrm share/mate/help/mate-power-manager/es
-@dirrm share/mate/help/mate-power-manager/en_GB/figures
-@dirrm share/mate/help/mate-power-manager/en_GB
-@dirrm share/mate/help/mate-power-manager/el/figures
-@dirrm share/mate/help/mate-power-manager/el
-@dirrm share/mate/help/mate-power-manager/de/figures
-@dirrm share/mate/help/mate-power-manager/de
-@dirrm share/mate/help/mate-power-manager/ca/figures
-@dirrm share/mate/help/mate-power-manager/ca
-@dirrm share/mate/help/mate-power-manager/C/figures
-@dirrm share/mate/help/mate-power-manager/C
-@dirrm share/mate/help/mate-power-manager
-@dirrm %%DATADIR%%/icons/hicolor/scalable/status
-@dirrm %%DATADIR%%/icons/hicolor/scalable/actions
-@dirrm %%DATADIR%%/icons/hicolor/scalable
-@dirrm %%DATADIR%%/icons/hicolor/48x48/status
-@dirrm %%DATADIR%%/icons/hicolor/48x48/actions
-@dirrm %%DATADIR%%/icons/hicolor/48x48
-@dirrm %%DATADIR%%/icons/hicolor/32x32/status
-@dirrm %%DATADIR%%/icons/hicolor/32x32/actions
-@dirrm %%DATADIR%%/icons/hicolor/32x32
-@dirrm %%DATADIR%%/icons/hicolor/24x24/status
-@dirrm %%DATADIR%%/icons/hicolor/24x24/actions
-@dirrm %%DATADIR%%/icons/hicolor/24x24
-@dirrm %%DATADIR%%/icons/hicolor/22x22/status
-@dirrm %%DATADIR%%/icons/hicolor/22x22/actions
-@dirrm %%DATADIR%%/icons/hicolor/22x22
-@dirrm %%DATADIR%%/icons/hicolor/16x16/status
-@dirrm %%DATADIR%%/icons/hicolor/16x16/actions
-@dirrm %%DATADIR%%/icons/hicolor/16x16
-@dirrm %%DATADIR%%/icons/hicolor
-@dirrm %%DATADIR%%/icons
-@dirrm %%DATADIR%%
-@dirrmtry share/mate-panel/applets
-@dirrmtry share/mate-panel
-@dirrmtry share/locale/zh_HK/LC_MESSAGES
-@dirrmtry share/locale/zh_HK
-@dirrmtry share/locale/te/LC_MESSAGES
-@dirrmtry share/locale/te
-@dirrmtry share/locale/sr@latin/LC_MESSAGES
-@dirrmtry share/locale/sr@latin
-@dirrmtry share/locale/si/LC_MESSAGES
-@dirrmtry share/locale/si
-@dirrmtry share/locale/oc/LC_MESSAGES
-@dirrmtry share/locale/oc
-@dirrmtry share/locale/mr/LC_MESSAGES
-@dirrmtry share/locale/mr
-@dirrmtry share/locale/mg/LC_MESSAGES
-@dirrmtry share/locale/mg
-@dirrmtry share/locale/mai/LC_MESSAGES
-@dirrmtry share/locale/mai
-@dirrmtry share/locale/ky/LC_MESSAGES
-@dirrmtry share/locale/ky
-@dirrmtry share/locale/ku/LC_MESSAGES
-@dirrmtry share/locale/ku
-@dirrmtry share/locale/en@shaw/LC_MESSAGES
-@dirrmtry share/locale/en@shaw
-@dirrmtry share/locale/dz/LC_MESSAGES
-@dirrmtry share/locale/dz
-@dirrmtry share/locale/ca@valencia/LC_MESSAGES
-@dirrmtry share/locale/ca@valencia
-@dirrmtry share/locale/bn_IN/LC_MESSAGES
-@dirrmtry share/locale/bn_IN
-@dirrmtry share/locale/be@latin/LC_MESSAGES
-@dirrmtry share/locale/be@latin
-@dirrmtry share/locale/ast/LC_MESSAGES
-@dirrmtry share/locale/ast
-@dirrmtry share/locale/as/LC_MESSAGES
-@dirrmtry share/locale/as

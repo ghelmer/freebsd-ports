@@ -3,12 +3,12 @@
 
 PORTNAME=	Lingua-ZH-Summarize
 PORTVERSION=	0.01
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	chinese perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Chinese Text Summarization
 
 BUILD_DEPENDS=	p5-Lingua-ZH-Toke>=0:${PORTSDIR}/chinese/p5-Lingua-ZH-Toke \

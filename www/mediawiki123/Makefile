@@ -2,32 +2,43 @@
 # $FreeBSD$
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.23.1
+PORTVERSION=	1.23.9
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	123
 
 MAINTAINER=	wen@FreeBSD.org
-COMMENT=	The wiki engine used by Wikipedia
+COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki119-[0-9]* mediawiki12[12]-[0-9]*
+CONFLICTS=	mediawiki119-[0-9]* mediawiki12[45]-[0-9]*
 
-USE_PHP=	ctype iconv mbstring pcre session xml zlib readline dom json
+USES=		shebangfix
+SHEBANG_FILES=	maintenance/dev/*.sh \
+		maintenance/hiphop/run-server
+SHEBANG_LANG=	hhvm
+hhvm_OLD_CMD=	/usr/bin/hhvm
+hhvm_CMD=	${LOCALBASE}/bin/hhvm # not installed by anything yet
+USE_PHP=	ctype hash iconv mbstring pcre session xml zlib readline dom json
 WANT_PHP_WEB=	yes
 MEDIAWIKIDIR?=	www/mediawiki
 
 NO_BUILD=	yes
+PLIST=		${WRKDIR}/plist
+
+SUB_FILES=	pkg-message
+SUB_LIST=	MEDIAWIKIDIR=${PREFIX}/${MEDIAWIKIDIR}
 
 OPTIONS_DEFINE=	MYSQL PGSQL SQLITE LDAP MEMCACHED APC EACCEL XCACHE IMAGICK
 OPTIONS_DEFAULT=MYSQL
 
-MEMCACHED_DESC=	use memcached
-APC_DESC=	use pecl-APC(Mediawiki recommended)
-EACCEL_DESC=	use eAccelerator (instead of pecl-APC)
-XCACHE_DESC=	use xCache (instead of pecl-APC)
-IMAGICK_DESC=	use ImageMagick
+MEMCACHED_DESC=	Use memcached
+APC_DESC=	Use pecl-APC (Mediawiki recommended)
+EACCEL_DESC=	Use eAccelerator (instead of pecl-APC)
+XCACHE_DESC=	Use xCache (instead of pecl-APC)
+IMAGICK_DESC=	Use ImageMagick
 
 .include <bsd.port.options.mk>
 
@@ -64,16 +75,16 @@ RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/eaccelerator.so:${PORTSDIR}/ww
 RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xcache.so:${PORTSDIR}/www/xcache
 .endif
 
+pre-install:
+	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}
+	@${ECHO_CMD} "@group ${WWWGRP}" >> ${PLIST}
+	@${FIND} -s -d ${WRKSRC} -not -type d | ${SED} "s?${WRKSRC}?${MEDIAWIKIDIR}?g" >>${PLIST}
+	@${ECHO} @dir ${MEDIAWIKIDIR} >> ${PLIST}
+	@${ECHO_CMD} "@group" >> ${PLIST}
+	@${ECHO_CMD} "@owner" >> ${PLIST}
+
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${MEDIAWIKIDIR}
 	${CP} -r ${WRKSRC}/ ${STAGEDIR}${PREFIX}/${MEDIAWIKIDIR}
-	${CHOWN} -R ${WWWOWN}:${WWWGRP} ${STAGEDIR}${PREFIX}/${MEDIAWIKIDIR}
-
-post-install:
-	@${FIND} ${WRKSRC}/${file} -not -type d \
-		| ${SED} -ne 's,^${WRKSRC},${MEDIAWIKIDIR},p' >> ${TMPPLIST}
-	@${FIND} -d ${WRKSRC}/${file} -type d \
-		| ${SED} -ne 's,^${WRKSRC},@dirrm ${MEDIAWIKIDIR},p' >> ${TMPPLIST}
-	@${SED} -e 's|%%MEDIAWIKIDIR%%|${PREFIX}/${MEDIAWIKIDIR}|' ${PKGMESSAGE}
 
 .include <bsd.port.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fusefs
-PORTVERSION=	2.9.3
-PORTREVISION=	2
+PORTVERSION=	2.9.4
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/fuse/fuse-2.X/${PORTVERSION}
 PKGNAMESUFFIX=	-libs
@@ -14,12 +13,17 @@ COMMENT=	FUSE allows filesystem implementation in userspace
 
 OPTIONS_DEFINE=	DOCS
 
+LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING.LIB
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	MOUNT_FUSE_PATH=${PREFIX}/sbin
-USE_LDCONFIG=	yes
-USES=		iconv
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
+INSTALL_TARGET=	install-strip
+USES=		iconv libtool
+USE_LDCONFIG=	yes
+
 PORTDOCS=	*
 
 post-install:
@@ -27,4 +31,10 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/libs
 	${INSTALL_DATA} ${WRKSRC}/doc/how-fuse-works ${WRKSRC}/doc/kernel.txt ${STAGEDIR}${DOCSDIR}/libs
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OPSYS} == DragonFly
+IGNORE=	fusefs has not been implemented on DragonFly
+.endif
+
+.include <bsd.port.post.mk>

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	shibboleth-sp
-PORTVERSION=	2.5.3
-PORTREVISION=	1
+PORTVERSION=	2.5.4
 CATEGORIES=	security www
 MASTER_SITES=	http://shibboleth.net/downloads/service-provider/${PORTVERSION}/
 
@@ -24,7 +23,7 @@ LATEST_LINK=	shibboleth2-sp
 USERS=		shibd
 GROUPS=		shibd
 
-USE_APACHE=	22-24
+USE_APACHE=	22+
 USE_OPENSSL=	yes
 
 .include <bsd.port.pre.mk>
@@ -39,7 +38,7 @@ PLIST_SUB+=	WITH_APACHE_22="@comment "
 PLIST_SUB+=	WITH_APACHE_24=""
 .endif
 
-SUB_LIST+=	SH=${SH}
+SUB_LIST+=	SH=${SH} WWWGRP=${WWWGRP}
 PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
 SUB_LIST+=	SHIBD_USER=${USERS}

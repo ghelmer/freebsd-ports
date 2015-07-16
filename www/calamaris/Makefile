@@ -8,11 +8,13 @@ CATEGORIES=	www textproc
 MASTER_SITES=	http://cord.de/tools/squid/calamaris/
 
 MAINTAINER=	demon@FreeBSD.org
-COMMENT=	A perl script to produce statistics out of Squid log files
+COMMENT=	Perl script to produce statistics out of Squid log files
 
 USES=		shebangfix perl5
 NO_BUILD=	yes
 SHEBANG_FILES=	calamaris
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1

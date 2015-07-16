@@ -6,9 +6,8 @@ PORTVERSION=	8.4.20
 PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	lang tcl
-MASTER_SITES=	${MASTER_SITE_TCLTK} \
+MASTER_SITES=	TCLTK/tcl8_4 \
 		SF/tcl/Tcl/${PORTVERSION}
-MASTER_SITE_SUBDIR=	tcl8_4
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
@@ -18,7 +17,7 @@ COMMENT=	Tool Command Language
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	TCLMAN THREADS
 OPTIONS_DEFAULT=THREADS

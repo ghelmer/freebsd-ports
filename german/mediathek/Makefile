@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediathek
-PORTVERSION=	6
+PORTVERSION=	9
 CATEGORIES=	german java
 MASTER_SITES=	SF/zdfmediathk/Mediathek/Mediathek%20${PORTVERSION}
 DISTNAME=	MediathekView_${PORTVERSION}
@@ -21,6 +21,7 @@ SUB_FILES=	mediathek
 INSTALLFILES=	MediathekView.jar MediathekView.ico
 INSTALLDOCS=	Kurzanleitung.pdf Instructions.pdf
 
+OPTIONS_DEFINE=		DOCS
 OPTIONS_MULTI=		BACKEND
 OPTIONS_MULTI_BACKEND=	MPLAYER VLC
 

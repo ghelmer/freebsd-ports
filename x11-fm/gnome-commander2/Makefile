@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-commander
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.7
 PORTEPOCH=	1
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	GNOME/sources/gnome-commander/1.4
@@ -18,9 +18,8 @@ LIB_DEPENDS=	libunique-1.0.so:${PORTSDIR}/x11-toolkits/unique
 RUN_DEPENDS=	meld:${PORTSDIR}/textproc/meld \
 		yelp:${PORTSDIR}/x11/yelp
 
-USES=		gettext gmake libtool pathfix pkgconfig tar:xz
+USES=		gettext gmake libtool pathfix pkgconfig python tar:xz
 USE_GNOME=	gnomedocutils gnomeprefix gnomevfs2 libgnomeui
-USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 INSTALLS_OMF=	yes

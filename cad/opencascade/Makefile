@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	opencascade
-PORTVERSION=	6.7.1
-PORTREVISION=	1
+PORTVERSION=	6.8.0
+PORTREVISION=	3
 CATEGORIES=	cad science
 MASTER_SITES=	http://files.opencascade.com/OCCT/OCC_${PORTVERSION}_release/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Open CASCADE Technology, 3D modeling & numerical simulation
@@ -16,22 +15,24 @@ LICENSE_NAME=	LGPL21 with exception
 LICENSE_FILE=	${WRKSRC}/OCCT_LGPL_EXCEPTION.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+LIB_DEPENDS=	libtbb.so:${PORTSDIR}/devel/tbb		\
+		libvtksys-${VTKVER}.so:${PORTSDIR}/math/vtk6
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
 # Check ${WRKSRC}/dox/overview/Overview.md
 # and ${WRKSRC}/dox/dev_guides/building
-USES=		bison cmake compiler dos2unix gmake shebangfix tk
+USES=		bison cmake compiler dos2unix gmake shebangfix tk tar:tgz
 USE_XORG=	xmu
 DOS2UNIX_FILES=	adm/templates/*
 SHEBANG_FILES=	adm/templates/env.sh.in adm/templates/draw.sh		\
 		adm/templates/custom.sh.in adm/templates/custom.sh.main	\
 		adm/start.tcl draw.sh xcode.sh env.sh custom.sh.in	\
 		gendoc codeblocks.sh
+VTKVER=		6.1
 
-OPTIONS_DEFINE=	TBB VIS
-TBB_DESC=	"Build with TBB"
-VIS_DESC=	"Build Visualizazion module (requires OpenGL, freetype, ftgl and gl2ps)"
-OPTIONS_DEFAULT=TBB VIS
+OPTIONS_DEFINE=	VIS DOCS
+VIS_DESC=	Build Visualizazion module (requires OpenGL, freetype, ftgl and gl2ps)
+OPTIONS_DEFAULT=VIS
 OPTIONS_SUB=	yes
 
 REINPLACE_ARGS=	-i ""
@@ -39,18 +40,26 @@ CFLAGS+=	-I${LOCALBASE}/include -I${TCL_INCLUDEDIR} -I${TK_INCLUDEDIR}
 LDFLAGS+=	-L${LOCALBASE}/lib -L${TCL_LIBDIR} -L${TK_LIBDIR}
 CMAKE_ARGS+=	-D3RDPARTY_TCL_INCLUDE_DIR=${TCL_INCLUDEDIR}	\
 		-D3RDPARTY_TCL_LIBRARY=${TCL_LIBDIR}		\
-		-D3RDPARTY_TCL_DLL=libtcl${TCL_VER:C|\.||}	\
-		-DINSTALL_DIR=${OCCROOT}/
+		-D3RDPARTY_TBB_DIR=${LOCALBASE}			\
+		-D3RDPARTY_TBB_LIBRARY_DIR=${LOCALBASE}/lib	\
+		-DINSTALL_DIR=${OCCROOT}/ -DUSE_TBB:BOOL=ON	\
+		-D3RDPARTY_TBBMALLOC_LIBRARY=${LOCALBASE}/lib/libtbbmalloc.so	\
+		-D3RDPARTY_TBB_LIBRARY=${LOCALBASE}/lib/libtbb.so	\
+		-D3RDPARTY_TBBMALLOC_LIBRARY_DIR=${LOCALBASE}/lib	\
+		-DUSE_VTK:BOOL=ON -D3RDPARTY_VTK_DIR=${LOCALBASE}	\
+		-D3RDPARTY_VTK_INCLUDE_DIR=${LOCALBASE}/include/vtk-${VTKVER}	\
+		-D3RDPARTY_VTK_LIBRARY_DIR=${LOCALBASE}/lib/vtk-${VTKVER}
+
 USE_LDCONFIG=	yes
 
 LOCCROOT=	OpenCAS
 OCCROOT=	${PREFIX}/${LOCCROOT}
 PLIST_SUB=	OCCROOT="${LOCCROOT}" BITS=${BITS} CC=${COMPILER_TYPE}
 
-TBB_LIB_DEPENDS=	libtbb.so:${PORTSDIR}/devel/tbb
-TBB_CMAKE_ON=		-DUSE_TBB:BOOL=ON
-
-VIS_CMAKE_ON=		-DUSE_FREEIMAGE:BOOL=ON -DUSE_GL2PS:BOOL=ON
+VIS_CMAKE_ON=		-DUSE_FREEIMAGE:BOOL=ON -DUSE_GL2PS:BOOL=ON	\
+			-DUSE_FREETYPE:BOOL=ON
+VIS_CMAKE_OFF=		-DUSE_FREEIMAGE:BOOL=OFF -DUSE_GL2PS:BOOL=OFF	\
+			-DUSE_FREETYPE:BOOL=OFF
 VIS_USE=		GL=glu
 VIS_LIB_DEPENDS=	libftgl.so:${PORTSDIR}/graphics/ftgl		\
 			libfreetype.so:${PORTSDIR}/print/freetype2	\
@@ -62,17 +71,14 @@ VIS_LIB_DEPENDS=	libftgl.so:${PORTSDIR}/graphics/ftgl		\
 .if ${PORT_OPTIONS:MVIS}
 CMAKE_ARGS+=	-D3RDPARTY_FREETYPE_DIR=${LOCALBASE}	\
 		-D3RDPARTY_FREEIMAGE_DIR=${LOCALBASE}	\
-		-D3RDPARTY_GL2PS_DIR=${LOCALBASE}	\
-		-D3RDPARTY_TBB_DIR=${LOCALBASE}		\
-		-D3RDPARTY_TBB_DLL=${LOCALBASE}/lib	\
-		-D3RDPARTY_TBB_MALLOC_DLL=${LOCALBASE}/lib
+		-D3RDPARTY_GL2PS_DIR=${LOCALBASE}
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
+USE_TEX+=	latex:build
 BUILD_DEPENDS+=	bash:${PORTSDIR}/shells/bash		\
 		doxygen:${PORTSDIR}/devel/doxygen	\
 		dot:${PORTSDIR}/graphics/graphviz	\
-		pdflatex:${PORTSDIR}/print/teTeX-base	\
 		inkscape:${PORTSDIR}/graphics/inkscape
 RUN_DEPENDS+=	${LOCALBASE}/www/MathJax/MathJax.js:${PORTSDIR}/www/mathjax
 .endif
@@ -120,11 +126,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/OpenCASCADE
 	(cd ${STAGEDIR}${OCCROOT}/inc && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/include/OpenCASCADE)
 	${RM} -rf ${STAGEDIR}${OCCROOT}/inc
-	${MKDIR} ${STAGEDIR}${OCCROOT}/inc
-	(cd ${STAGEDIR}${PREFIX}/include/OpenCASCADE		\
-	&& for i in *; do					\
-	${LN} -sf $${i} ${STAGEDIR}${OCCROOT}/inc/$${i};	\
-	done)
+	${LN} -sf ${PREFIX}/include/OpenCASCADE ${STAGEDIR}${OCCROOT}/inc
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} tests ${STAGEDIR}${OCCROOT})
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

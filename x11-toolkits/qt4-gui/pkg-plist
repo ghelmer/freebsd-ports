@@ -1145,7 +1145,6 @@
 %%QT_INCDIR%%/QtGui/qwsutils_qws.h
 %%QT_INCDIR%%/QtGui/qx11embed_x11.h
 %%QT_INCDIR%%/QtGui/qx11info_x11.h
-%%QT_LIBDIR%%/libQtGui.la
 %%QT_LIBDIR%%/libQtGui.prl
 %%QT_LIBDIR%%/libQtGui.so
 %%QT_LIBDIR%%/libQtGui.so.4
@@ -1154,7 +1153,3 @@
 %%DEBUG%%%%QT_LIBDIR%%/libQtGui.so.%%FULLVER%%.debug
 libdata/pkgconfig/QtGui.pc
 share/pixmaps/qtlogo.png
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtGui
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

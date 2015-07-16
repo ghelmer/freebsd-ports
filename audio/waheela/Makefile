@@ -2,7 +2,7 @@
 
 PORTNAME=	waheela
 PORTVERSION=	0.3
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	audio kde
 MASTER_SITES=	http://linux.wuertz.org/dists/sid/main/source/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 RUN_DEPENDS=	amarok>=2:${PORTSDIR}/audio/amarok-kde4
 
 USES=		cmake
-USE_KDE4=	automoc4 kdeprefix kdehier kdelibs
+USE_KDE4=	automoc4 kdeprefix kdelibs
 USE_QT4=	gui dbus network svg xml \
 		qmake_build moc_build rcc_build uic_build
 

@@ -3,12 +3,12 @@
 
 PORTNAME=	quake3
 PORTVERSION=	1.32c
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	ftp://mancubus.net/pub/idgames/idstuff/source/ \
 		http://ftp.mancubus.net/pub/idgames/idstuff/source/ \
 		http://www.gamers.org/pub/idgames/idstuff/source/ \
-		${MASTER_SITE_IDSOFTWARE:S|$|source/|}
+		IDSOFTWARE/source/
 DISTNAME=	${PORTNAME}-${REALVERSION}-source
 
 MAINTAINER=	shirshegsm@gmail.com
@@ -39,7 +39,6 @@ REALVERSION=	1.32b
 VM_ARCHS=	i386 powerpc
 
 .include <bsd.port.options.mk>
-.include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
 BUILD_DEPENDS+=	nasm:${PORTSDIR}/devel/nasm
@@ -88,8 +87,7 @@ MAKE_ENV+=	OPTIMIZED_CFLAGS=YES
 .endif
 
 .if ${PORT_OPTIONS:MTHREADS}
-MAKE_ENV+=	SMP=YES \
-		PTHREAD_LIBS="${PTHREAD_LIBS}"
+MAKE_ENV+=	SMP=YES
 PLIST_SUB+=	SMP=""
 Q3BIN+=		quake3-smp
 .else
@@ -116,4 +114,4 @@ do-install:
 .endif
 
 .include "${.CURDIR}/../quake3-data/Makefile.include"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,6 +1,5 @@
 # $FreeBSD$
 
-PORTREVISION=	3
 CATEGORIES=	java devel
 PKGNAMESUFFIX=	-jre
 

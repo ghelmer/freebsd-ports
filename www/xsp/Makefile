@@ -2,18 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	xsp
-PORTVERSION=	2.10.2
+PORTVERSION=	3.0.11
 CATEGORIES=	www
-MASTER_SITES=	http://ftp.novell.com/pub/mono/sources/${PORTNAME}/
 
 MAINTAINER=	mono@FreeBSD.org
 COMMENT=	Mono based web server
 
+LICENSE=	MIT
+
 MAKE_JOBS_UNSAFE=	yes
 
+GH_ACCOUNT=	mono
+USE_GITHUB=	yes
 USE_SQLITE=	3
-USES=		mono pathfix pkgconfig gmake tar:bzip2
+USES=		gmake mono pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	ac_cv_path_GMCS=${LOCALBASE}/bin/mcs
+USE_AUTOTOOLS=	automake autoconf aclocal
+PATHFIX_MAKEFILEIN=Makefile.am
+
+AUTOMAKE_ARGS=	--add-missing --copy
+ACLOCAL_ARGS=	-I build/m4/shamrock -I build/m4/shave
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 

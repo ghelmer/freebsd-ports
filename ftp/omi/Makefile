@@ -9,11 +9,13 @@ MASTER_SITES=	http://www.secnetix.de/~olli/distfiles/ \
 		http://atreides.freenix.no/~anders/
 #	http://dorifer.heim3.tu-clausthal.de/~olli/omi/
 
-MAINTAINER=	anders@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	"mirror" subtrees of FTP servers
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ALL_TARGET=	freebsd
+
+OPTIONS_DEFINE=	DOCS
 
 pre-patch:
 	${REINPLACE_CMD} -E -e "s@^(OPTFLAGS).*@\1=${CFLAGS}@" \

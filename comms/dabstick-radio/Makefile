@@ -3,9 +3,10 @@
 
 PORTNAME=	dabstick-radio
 PORTVERSION=	0.96
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	comms audio hamradio
-MASTER_SITES=	http://www.sdr-j.tk/
+MASTER_SITES=	http://www.sdr-j.tk/ \
+		LOCAL/nox/
 
 MAINTAINER=	nox@FreeBSD.org
 COMMENT=	DAB/DAB+ and wideband FM receiver for RTL2832-based USB sticks
@@ -14,7 +15,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS+=	librtlsdr.so:${PORTSDIR}/comms/rtl-sdr \
 		libqwt.so:${PORTSDIR}/x11-toolkits/qwt5 \
-		libportaudio.so.2:${PORTSDIR}/audio/portaudio2 \
+		libportaudio.so:${PORTSDIR}/audio/portaudio \
 		libsndfile.so:${PORTSDIR}/audio/libsndfile \
 		libavcodec.so:${PORTSDIR}/multimedia/ffmpeg \
 		libfftw3.so:${PORTSDIR}/math/fftw3 \

@@ -1,9 +1,9 @@
 # Created by: Alexander Nedotsukov <bland@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/trunk/devel/libsigc++20/Makefile 18634 2013-07-26 10:42:35Z kwm $
+#   $MCom: ports/trunk/devel/libsigc++20/Makefile 19952 2014-10-15 08:11:00Z gusi $
 
 PORTNAME=	libsigc++
-PORTVERSION=	2.3.1
+PORTVERSION=	2.4.1
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
@@ -12,15 +12,15 @@ COMMENT=	Callback Framework for C++
 
 BUILD_DEPENDS=	gm4:${PORTSDIR}/devel/m4
 
-USE_AUTOTOOLS=	libtool
-USE_XZ=		yes
-USE_PERL5=	build
-LATEST_LINK=	libsigc++20
-USE_LDCONFIG=	yes
-USES=		gmake pathfix perl5
 GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+USES=		gmake libtool pathfix perl5 tar:xz
+USE_PERL5=	build
+USE_LDCONFIG=	yes
 
-PLIST_SUB=	VERSION="2.0" API_VERSION="2.0"
+PLIST_SUB=	API_VERSION="2.0"
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 

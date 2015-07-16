@@ -3,9 +3,9 @@
 
 PORTNAME=	sipp
 PORTVERSION=	3.3
+PORTREVISION=	2
 CATEGORIES=	benchmarks net
 MASTER_SITES=	SF
-MASTER_SITE_SUBDIR=	sipp/sipp/${PORTVERSION}
 DISTNAME=	${PORTNAME}-3.3beta2
 
 MAINTAINER=	ports@FreeBSD.org
@@ -44,9 +44,6 @@ PCAP_FILES=	dtmf_2833_0.pcap dtmf_2833_1.pcap dtmf_2833_2.pcap \
 		dtmf_2833_9.pcap dtmf_2833_pound.pcap dtmf_2833_star.pcap \
 		g711a.pcap
 
-PLIST_DIRS=	%%DATADIR%%/pcap \
-		%%DATADIR%%
-
 .for f in ${PCAP_FILES}
 PLIST_FILES+=	%%DATADIR%%/pcap/${f}
 .endfor
@@ -54,6 +51,7 @@ PLIST_FILES+=	%%DATADIR%%/pcap/${f}
 
 .if ${PORT_OPTIONS:MOPENSSL}
 
+USE_OPENSSL=	yes
 .if ${PORT_OPTIONS:MPCAPPLAY}
 ALL_TARGET=	pcapplay_ossl
 .else

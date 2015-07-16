@@ -4,11 +4,10 @@
 PORTNAME=	webcopy
 PORTVERSION=	0.98b7
 CATEGORIES=	www
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	cy
+MASTER_SITES=	LOCAL/cy
 
 MAINTAINER=	cy@FreeBSD.org
-COMMENT=	A Web Mirroring Program
+COMMENT=	Web Mirroring Program
 
 RESTRICTED=	This program cannot be distributed if modified in any way.  Don't sell for profit without written permission
 ALL_TARGET=

@@ -1,26 +1,5 @@
-sbin/babeld
-sbin/bgpd
-%%ISISD%%sbin/isisd
-sbin/ospf6d
-%%OSPFAPI%%sbin/ospfclient
-sbin/ospfd
-sbin/ripd
-sbin/ripngd
-sbin/watchquagga
-sbin/zebra
+%%PIMD%%bin/test_igmpv3_join
 bin/vtysh
-lib/libospf.a
-lib/libospf.so
-lib/libospf.so.0
-lib/libospf.so.0.0.0
-%%OSPFAPI%%lib/libospfapiclient.a
-%%OSPFAPI%%lib/libospfapiclient.so
-%%OSPFAPI%%lib/libospfapiclient.so.0
-%%OSPFAPI%%lib/libospfapiclient.so.0.0.0
-lib/libzebra.a
-lib/libzebra.so
-lib/libzebra.so.0
-lib/libzebra.so.0.0.0
 include/quagga/buffer.h
 include/quagga/checksum.h
 include/quagga/command.h
@@ -32,13 +11,14 @@ include/quagga/if.h
 include/quagga/if_rmap.h
 include/quagga/jhash.h
 include/quagga/keychain.h
+include/quagga/libospf.h
 include/quagga/linklist.h
 include/quagga/log.h
 include/quagga/md5.h
 include/quagga/memory.h
 include/quagga/memtypes.h
 include/quagga/network.h
-%%OSPFAPI%%include/quagga/ospfapi/ospf_apiclient.h
+%%OSPF_OPAQUE_LSA%%include/quagga/ospfapi/ospf_apiclient.h
 include/quagga/ospfd/ospf_api.h
 include/quagga/ospfd/ospf_asbr.h
 include/quagga/ospfd/ospf_dump.h
@@ -52,8 +32,8 @@ include/quagga/plist.h
 include/quagga/pqueue.h
 include/quagga/prefix.h
 include/quagga/privs.h
-include/quagga/routemap.h
 include/quagga/route_types.h
+include/quagga/routemap.h
 include/quagga/sigevent.h
 include/quagga/smux.h
 include/quagga/sockopt.h
@@ -69,29 +49,50 @@ include/quagga/workqueue.h
 include/quagga/zassert.h
 include/quagga/zclient.h
 include/quagga/zebra.h
+lib/libospf.a
+lib/libospf.so
+lib/libospf.so.0
+lib/libospf.so.0.0.0
+%%OSPF_OPAQUE_LSA%%lib/libospfapiclient.a
+%%OSPF_OPAQUE_LSA%%lib/libospfapiclient.so
+%%OSPF_OPAQUE_LSA%%lib/libospfapiclient.so.0
+%%OSPF_OPAQUE_LSA%%lib/libospfapiclient.so.0.0.0
+lib/libzebra.a
+lib/libzebra.so
+lib/libzebra.so.0
+lib/libzebra.so.0.0.0
+man/man1/vtysh.1.gz
+man/man8/bgpd.8.gz
+%%ISISD%%man/man8/isisd.8.gz
+man/man8/ospf6d.8.gz
+%%OSPF_OPAQUE_LSA%%man/man8/ospfclient.8.gz
+man/man8/ospfd.8.gz
+%%PIMD%%man/man8/pimd.8.gz
+man/man8/ripd.8.gz
+man/man8/ripngd.8.gz
+man/man8/watchquagga.8.gz
+man/man8/zebra.8.gz
+sbin/babeld
+sbin/bgpd
+%%ISISD%%sbin/isisd
+sbin/ospf6d
+%%OSPF_OPAQUE_LSA%%sbin/ospfclient
+sbin/ospfd
+%%PIMD%%sbin/pimd
+sbin/ripd
+sbin/ripngd
+sbin/watchquagga
+sbin/zebra
 %%EXAMPLESDIR%%/babeld.conf.sample
 %%EXAMPLESDIR%%/bgpd.conf.sample
 %%EXAMPLESDIR%%/bgpd.conf.sample2
 %%ISISD%%%%EXAMPLESDIR%%/isisd.conf.sample
 %%EXAMPLESDIR%%/ospf6d.conf.sample
 %%EXAMPLESDIR%%/ospfd.conf.sample
+%%PIMD%%%%PORTEXAMPLES%%%%EXAMPLESDIR%%/pimd.conf.sample
 %%EXAMPLESDIR%%/ripd.conf.sample
 %%EXAMPLESDIR%%/ripngd.conf.sample
 %%EXAMPLESDIR%%/vtysh.conf.sample
 %%EXAMPLESDIR%%/zebra.conf.sample
-man/man1/vtysh.1.gz
-man/man8/bgpd.8.gz
-man/man8/ospf6d.8.gz
-man/man8/ospfd.8.gz
-%%OSPFAPI%%man/man8/ospfclient.8.gz
-man/man8/ripd.8.gz
-man/man8/ripngd.8.gz
-man/man8/watch%%ENABLE_USER%%.8.gz
-man/man8/zebra.8.gz
-@dirrm include/quagga/ospfd
-%%OSPFAPI%%@dirrm include/quagga/ospfapi
-@dirrm include/quagga
-@dirrm share/examples/quagga
-@dirrm etc/quagga
-@dirrmtry %%LOCALSTATE_DIR%%
-@dirrmtry %%ETCDIR%%
+@dir(%%ENABLE_USER%%,%%ENABLE_GROUP%%,750) %%LOCALSTATE_DIR%%
+@dir(%%ENABLE_USER%%,%%ENABLE_GROUP%%,750) %%ETCDIR%%

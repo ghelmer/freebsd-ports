@@ -3,7 +3,7 @@
 
 PORTNAME=	mhonarc
 PORTVERSION=	2.6.18
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www mail
 MASTER_SITES=	http://www.mhonarc.org/release/MHonArc/tar/ \
 		http://www.oac.uci.edu/indiv/ehood/tar/
@@ -16,11 +16,15 @@ USES=		tar:bzip2 perl5
 NO_BUILD=	Yes
 
 INSTALL_ARGS=	-prefix ${STAGEDIR} -binpath ${STAGEDIR}${PREFIX}/bin \
-		-libpath ${STAGEDIR}${SITE_PERL} \
+		-libpath ${STAGEDIR}${PREFIX}/${SITE_PERL_REL} \
 		-manpath ${STAGEDIR}${PREFIX}/man \
 		-batch
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MDOCS}
 THEDOCSDIR=	${STAGEDIR}${PREFIX}/share/doc/MHonArc
 DOCSDIR=${PREFIX}/share/doc/MHonArc
 INSTALL_ARGS+=	-docpath ${THEDOCSDIR}

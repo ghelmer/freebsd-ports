@@ -3,7 +3,7 @@
 
 PORTNAME=	funnyboat
 PORTVERSION=	1.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -15,8 +15,7 @@ RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:${PORTSDIR}/devel/py-game
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		zip
-USE_PYTHON=	yes
+USES=		python:run zip
 NO_BUILD=	yes
 
 SUB_FILES=	funnyboat_

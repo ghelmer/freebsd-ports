@@ -10,7 +10,7 @@
 .if !defined(_INCLUDE_USES_GMAKE_MK)
 _INCLUDE_USES_GMAKE_MK=	yes
 
-.if defined(gmake_ARGS)
+.if !empty(gmake_ARGS)
 .if ${gmake_ARGS} == lite
 _GMAKE_EXT=	-lite
 .else
@@ -24,6 +24,6 @@ _GMAKE_EXT=	-lite
 
 BUILD_DEPENDS+=		gmake${_GMAKE_EXT}:${PORTSDIR}/devel/gmake${_GMAKE_EXT}
 CONFIGURE_ENV+=		MAKE=gmake${_GMAKE_EXT}
-MAKE_CMD?=		gmake${_GMAKE_EXT}
+MAKE_CMD=		gmake${_GMAKE_EXT}
 
 .endif

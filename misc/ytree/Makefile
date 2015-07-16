@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ytree
-PORTVERSION=	1.97
+PORTVERSION=	1.98
 CATEGORIES=	misc
 MASTER_SITES=	http://www.han.de/~werner/
 
@@ -10,6 +10,8 @@ MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	DOS-XTREE(tm) look-a-like file manager
 
 ALL_TARGET=	ytree
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ytree ${STAGEDIR}${PREFIX}/bin

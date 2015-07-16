@@ -3,11 +3,12 @@
 
 PORTNAME=	razor-agents
 PORTVERSION=	2.84
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	SF/razor/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	garga@FreeBSD.org
-COMMENT=	A distributed, collaborative, spam detection and filtering network
+COMMENT=	Distributed, collaborative, spam detection and filtering network
 
 LICENSE=	ART10
 

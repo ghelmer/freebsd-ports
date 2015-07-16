@@ -3,6 +3,7 @@
 
 PORTNAME=	founts
 PORTVERSION=	13
+PORTREVISION=	2
 CATEGORIES=	graphics games
 MASTER_SITES=	http://www.linuxmotors.com/founts/downloads/
 DISTFILES=	${PORTNAME}-${DISTVERSION}.tgz

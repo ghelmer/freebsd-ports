@@ -1,0 +1,48 @@
+# $FreeBSD$
+
+PORTNAME=	seafdav
+PORTVERSION=	4.0.6
+DISTVERSIONPREFIX=	v
+DISTVERSIONSUFFIX=	-server
+CATEGORIES=	www python
+PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+
+MAINTAINER=	yan_jingfeng@yahoo.com
+COMMENT=	Python library for accessing seafile data model
+
+LICENSE=	APACHE20
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	haiwen
+
+USES=		python:2
+NO_BUILD=	yes
+
+HAIWENDIR=	www/haiwen
+SEAFILE_SERVER=	${HAIWENDIR}/seafile-server
+SEAHUBDIR=	${SEAFILE_SERVER}/seahub
+SITEPACKAGEDIR=	${SEAHUBDIR}/thirdpart
+
+SEAFILE_USERNAME?=	www
+SEAFILE_GROUPNAME?=	${SEAFILE_USERNAME}
+
+PLIST_SUB=	SEAFILE_USERNAME=${SEAFILE_USERNAME} \
+		SEAFILE_GROUPNAME=${SEAFILE_GROUPNAME} \
+		SEAFILE_SERVER=${SEAFILE_SERVER} \
+		SEAHUBDIR=${SEAHUBDIR} \
+		HAIWENDIR=${HAIWENDIR} \
+		SITEPACKAGEDIR=${SITEPACKAGEDIR}
+
+do-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${SITEPACKAGEDIR}/wsgidav
+	(cd ${WRKSRC}/wsgidav && \
+		${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
+			-d ${WRKSRC}/wsgidav \
+			-f ${WRKSRC}/wsgidav && \
+		${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
+			-d ${WRKSRC}/wsgidav \
+			-f ${WRKSRC}/wsgidav)
+	(cd ${WRKSRC}/wsgidav && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${SITEPACKAGEDIR}/wsgidav)
+
+.include <bsd.port.mk>

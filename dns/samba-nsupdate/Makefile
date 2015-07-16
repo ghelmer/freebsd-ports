@@ -4,8 +4,7 @@ PORTNAME=		nsupdate
 PORTVERSION=		9.8.6
 PORTREVISION=		1
 CATEGORIES=		dns net ipv6
-MASTER_SITES=		${MASTER_SITE_ISC}
-MASTER_SITE_SUBDIR=	bind9/${ISCVERSION}
+MASTER_SITES=		ISC/bind9/${ISCVERSION}
 PKGNAMEPREFIX=		samba-
 DISTNAME=		bind-${ISCVERSION}
 
@@ -61,7 +60,7 @@ CONFIGURE_ARGS+=	--with-gssapi="${HEIMDAL_HOME}"
 .elif exists(/usr/lib/libkrb5.so) && exists(/usr/bin/krb5-config)
 CONFIGURE_ARGS+=	--with-gssapi="/usr"
 .else
-LIB_DEPENDS+=		krb5:${PORTSDIR}/security/heimdal
+LIB_DEPENDS+=		libkrb5.so:${PORTSDIR}/security/heimdal
 CONFIGURE_ARGS+=	--with-gssapi="${LOCALBASE}"
 .endif
 

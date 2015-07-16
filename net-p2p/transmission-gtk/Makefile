@@ -1,6 +1,7 @@
 # $FreeBSD$
 
 PKGNAMESUFFIX=	-gtk
+PORTREVISION=	4
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Fast and lightweight GTK+2 BitTorrent client
@@ -24,7 +25,6 @@ INSTALLS_ICONS=	yes
 EXTRA_CONF_ARGS=--disable-cli \
 		--disable-daemon \
 		--with-gtk \
-		--enable-inotify \
 		--disable-mac \
 		--enable-nls
 

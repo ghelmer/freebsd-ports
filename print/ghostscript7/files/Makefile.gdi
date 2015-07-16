@@ -11,8 +11,8 @@ post-extract-gdi:
 		${DISTDIR}/${DIST_SUBDIR}/Samsung-SmartGDI-all-GS.orig.tar.gz
 
 post-install-docs-gdi:
-	${MKDIR} ${DOCSDIR}/gdi
-	${INSTALL_DATA} ${WRKSRC}/src/README ${DOCSDIR}/gdi
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/gdi
+	${INSTALL_DATA} ${WRKSRC}/src/README ${STAGEDIR}${DOCSDIR}/gdi
 
 post-extract: post-extract-gdi
 post-install-docs: post-install-docs-gdi

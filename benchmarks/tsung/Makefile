@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tsung
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.1
 CATEGORIES=	benchmarks sysutils
 MASTER_SITES=	http://tsung.erlang-projects.org/dist/
 
@@ -15,17 +15,19 @@ BUILD_DEPENDS=	erlc:${PORTSDIR}/lang/erlang
 RUN_DEPENDS=	erl:${PORTSDIR}/lang/erlang
 
 USE_PERL5=	run
-USE_PYTHON_RUN=	yes
 
 GNU_CONFIGURE=	yes
-USES=		gmake perl5 shebangfix
+USES=		gmake perl5 python:run shebangfix
 SHEBANG_FILES=	src/*.pl.in src/tsung-plotter/tsung/tsung.py
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 post-patch:
 	@${REINPLACE_CMD} -e 's|MAN_DIR   = $$(datadir)/man/man1/|MAN_DIR   = $$(prefix)/man/man1/| ; \
-		s|CONFDIR   = $$(docdir)/examples|CONFDIR   = $$(prefix)/share/examples/tsung|' \
+		s|CONFDIR   = $$(docdir)/examples|CONFDIR   = $$(prefix)/share/examples/tsung| ; \
+		s|install: doc|install: tsung doc|' \
 		${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

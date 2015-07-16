@@ -11,11 +11,16 @@ MASTER_SITES=	ftp://freebsd.sinica.edu.tw/pub/statue/bg5pdf/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert Chinese-Big5 encoded files to PDF, using PDFlib
 
+LICENSE=	GPLv2
+
 LIB_DEPENDS=	libpdf.so:${PORTSDIR}/print/pdflib
 
+USES=		python:2
+
 CFLAGS+=	-fPIC
-USE_PYTHON=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
+
+OPTIONS_DEFINE=	EXAMPLES
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/usr/bin/python,python,g'  ${WRKSRC}/bg5pdf

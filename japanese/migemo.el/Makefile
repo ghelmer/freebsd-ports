@@ -3,6 +3,7 @@
 
 PORTNAME=	migemo.el
 PORTVERSION=	1.9
+PORTREVISION=	2
 CATEGORIES=	japanese elisp
 
 MAINTAINER=	nobutaka@FreeBSD.org
@@ -17,8 +18,7 @@ RUN_DEPENDS=	cmigemo:${PORTSDIR}/japanese/cmigemo
 
 GH_ACCOUNT=	emacs-jp
 GH_PROJECT=	migemo
-GH_TAGNAME=	38f4756abaa5d0f363126b85c873f1e1b08b50ee
-GH_COMMIT=	38f4756
+GH_TAGNAME=	38f4756
 
 CONFLICTS=	ja-migemo-emacs24-[0-9]*
 
@@ -31,7 +31,6 @@ OPTIONS_DEFINE=	DOCS
 OPTINOS_DEFAULT=	DOCS
 
 .include <bsd.port.options.mk>
-.include <bsd.port.pre.mk>
 
 do-install:
 	${INSTALL_DATA} ${WRKSRC}/migemo.el ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}
@@ -40,4 +39,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

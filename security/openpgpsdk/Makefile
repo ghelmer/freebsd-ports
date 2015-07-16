@@ -5,15 +5,15 @@ PORTNAME=	openpgpsdk
 PORTVERSION=	0.9
 CATEGORIES=	security
 MASTER_SITES=	http://openpgp.nominet.org.uk/downloads/
-EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenPGP SDK
 
 BUILD_DEPENDS=	gpg2:${PORTSDIR}/security/gnupg
 LIB_DEPENDS=	libcunit.so:${PORTSDIR}/devel/cunit
 
-USES=		perl5
+USES=		perl5 shebangfix tar:tgz
+SHEBANG_FILES=	configure util/*.pl
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-idea --with-cunit=${LOCALBASE}
 

@@ -2,24 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	cmus
-PORTVERSION=	2.5.0
-PORTREVISION=	4
+PORTVERSION=	2.6.0
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	audio
-MASTER_SITES=	SF/${PORTNAME}
-DISTNAME=	${PORTNAME}-v${PORTVERSION}
 
 MAINTAINER=	h.skuhra@gmail.com
 COMMENT=	Console-based music player with really cool features
 
-USES=		tar:bzip2 gmake pkgconfig iconv ncurses
+LICENSE=	GPLv2
+
+USE_GITHUB=	yes
+
+USES=		gmake pkgconfig iconv ncurses
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV+=	HOSTCC=${CC}
 CONFIGURE_ARGS+=prefix=${PREFIX} mandir=${MANPREFIX}/man \
 		exampledir=${EXAMPLESDIR} \
 		CONFIG_ALSA=n CONFIG_ARTS=n CONFIG_ROAR=n
 
-OPTIONS_DEFINE=	AAC AO CDDB CDIO CUE DISCID FLAC MAD MIKMOD \
-		MODPLUG MP4 MUSEPACK PULSEAUDIO TREMOR VORBIS WAVPACK
+OPTIONS_DEFINE=	AAC AO CDDB CDIO CUE DISCID FFMPEG FLAC JACK MAD MIKMOD \
+		MODPLUG MP4 MUSEPACK OPUS PULSEAUDIO SAMPLERATE TREMOR \
+		VORBIS WAVPACK
 OPTIONS_DEFAULT=FLAC MAD VORBIS
 DISCID_DESC=	DISCID support
 
@@ -69,6 +73,15 @@ CONFIGURE_ARGS+=CONFIG_MPC=n
 PLIST_SUB+=	MPC="@comment "
 .endif
 
+.if ${PORT_OPTIONS:MOPUS}
+LIB_DEPENDS+=	libopusfile.so:${PORTSDIR}/audio/opusfile
+CONFIGURE_ARGS+=CONFIG_OPUS=y
+PLIST_SUB+=	OPUS=""
+.else
+CONFIGURE_ARGS+=CONFIG_OPUS=n
+PLIST_SUB+=	OPUS="@comment "
+.endif
+
 .if ${PORT_OPTIONS:MVORBIS} || ${PORT_OPTIONS:MTREMOR}
 LIB_DEPENDS+=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis
 CONFIGURE_ARGS+=CONFIG_VORBIS=y
@@ -111,15 +124,15 @@ CONFIGURE_ARGS+=CONFIG_WAVPACK=n
 PLIST_SUB+=	WAVPACK="@comment "
 .endif
 
-#.if ${PORT_OPTIONS:MFFMPEG}
-#BUILD_DEPENDS+=	ffmpeg>=2:${PORTSDIR}/multimedia/ffmpeg
-#RUN_DEPENDS+=	ffmpeg>=2:${PORTSDIR}/multimedia/ffmpeg
-#CONFIGURE_ARGS+=CONFIG_FFMPEG=y
-#PLIST_SUB+=	FFMPEG=""
-#.else
+.if ${PORT_OPTIONS:MFFMPEG}
+BUILD_DEPENDS+=	ffmpeg>=2:${PORTSDIR}/multimedia/ffmpeg
+RUN_DEPENDS+=	ffmpeg>=2:${PORTSDIR}/multimedia/ffmpeg
+CONFIGURE_ARGS+=CONFIG_FFMPEG=y
+PLIST_SUB+=	FFMPEG=""
+.else
 CONFIGURE_ARGS+=CONFIG_FFMPEG=n
 PLIST_SUB+=	FFMPEG="@comment "
-#.endif
+.endif
 
 .if ${PORT_OPTIONS:MAO}
 LIB_DEPENDS+=	libao.so:${PORTSDIR}/audio/libao
@@ -142,14 +155,12 @@ PLIST_SUB+=	PULSEAUDIO="@comment "
 .if ${PORT_OPTIONS:MCDDB} && ${PORT_OPTIONS:MCDIO}
 LIB_DEPENDS+=	libcddb.so:${PORTSDIR}/audio/libcddb
 CONFIGURE_ARGS+=CONFIG_CDDB=y
-PLIST_SUB+=	CDDB=""
 .else
 CONFIGURE_ARGS+=CONFIG_CDDB=n
-PLIST_SUB+=	CDDB="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MCDIO}
-LIB_DEPENDS+=	libcdio.so:${PORTSDIR}/sysutils/libcdio
+LIB_DEPENDS+=	libcdio_cdda.so:${PORTSDIR}/sysutils/libcdio-paranoia
 CONFIGURE_ARGS+=CONFIG_CDIO=y
 PLIST_SUB+=	CDIO=""
 .else
@@ -173,9 +184,29 @@ CONFIGURE_ARGS+=CONFIG_DISCID=y
 CONFIGURE_ARGS+=CONFIG_DISCID=n
 .endif
 
+.if ${PORT_OPTIONS:MJACK}
+LIB_DEPENDS+=	libjack.so:${PORTSDIR}/audio/jack
+CONFIGURE_ARGS+=CONFIG_JACK=y
+PLIST_SUB+=	JACK=""
+.else
+CONFIGURE_ARGS+=CONFIG_JACK=n
+PLIST_SUB+=	JACK="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MSAMPLERATE} && ${PORT_OPTIONS:MJACK}
+LIB_DEPENDS+=	libsamplerate.so:${PORTSDIR}/audio/libsamplerate
+CONFIGURE_ARGS+=CONFIG_SAMPLERATE=y
+.else
+CONFIGURE_ARGS+=CONFIG_SAMPLERATE=n
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} -e 's,doc/cmus/examples,examples/cmus,g' \
 		${WRKSRC}/Doc/cmus.txt
 	@${REINPLACE_CMD} -e 's,/usr,${PREFIX},g' ${WRKSRC}/Doc/cmus.txt
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cmus*
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/cmus/[io]p/*.so
 
 .include <bsd.port.mk>

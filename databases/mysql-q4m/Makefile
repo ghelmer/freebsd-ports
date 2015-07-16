@@ -20,7 +20,7 @@ USE_PERL5=	run
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -DDBUG_OFF
-LDFLAGS+=	${PTHREAD_LIBS} -L${LOCALBASE}/lib -L${LOCALBASE}/lib/mysql
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib -L${LOCALBASE}/lib/mysql
 CONFIGURE_ARGS=	--prefix="${PREFIX}" \
 		--libdir="${PREFIX}/lib/mysql/plugin" \
 		--with-mysql="$$(cd ${PORTSDIR}/${_MYSQL_SERVER}; ${MAKE} -V WRKSRC)"
@@ -29,7 +29,8 @@ INSTALL_TARGET=	bindir=${STAGEDIR}${PREFIX}/bin install
 post-extract:
 	${CP} -p ${WRKSRC}/support-files/install.sql ${WRKSRC}/examples/
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 PORTDOCS=	AUTHORS ChangeLog README doc
 PORTEXAMPLES=	crawler install.sql
 
@@ -45,7 +46,6 @@ post-install:
 .for f in ${PORTEXAMPLES}
 	cd ${WRKSRC}/examples; ${COPYTREE_SHARE} ${f} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.endif
 
 install-functions:
 	mysql -u root -p -f mysql < ${EXAMPLESDIR}/install.sql

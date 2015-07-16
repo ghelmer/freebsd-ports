@@ -11,17 +11,17 @@ include/bsm/audit_uevents.h
 include/bsm/auditd_lib.h
 include/bsm/libbsm.h
 lib/auditfilter_noop.a
-lib/auditfilter_noop.la
 lib/auditfilter_noop.so
 lib/auditfilter_noop.so.0
+lib/auditfilter_noop.so.0.0.0
 lib/libauditd.a
-lib/libauditd.la
 lib/libauditd.so
 lib/libauditd.so.0
+lib/libauditd.so.0.0.0
 lib/libbsm.a
-lib/libbsm.la
 lib/libbsm.so
 lib/libbsm.so.0
+lib/libbsm.so.0.0.0
 man/man1/auditreduce.1.gz
 man/man1/praudit.1.gz
 man/man2/audit.2.gz
@@ -63,11 +63,5 @@ sbin/auditdistd
 sbin/auditfilterd
 sbin/auditreduce
 sbin/praudit
-@dirrm include/bsm
-@cwd /
-@exec mkdir -m 0770 var/audit/dist
-@exec mkdir -m 0700 var/audit/remote
-@exec chown %%USERS%%:%%GROUPS%% var/audit/dist
-@exec chown %%USERS%%:wheel var/audit/remote
-@dirrmtry var/audit/dist
-@dirrmtry var/audit/remote
+%%NEEDVARDIRS%%@dir(%%USERS%%,%%GROUPS%%,770) /var/audit/dist
+%%NEEDVARDIRS%%@dir(%%USERS%%,%%GROUPS%%,700) /var/audit/remote

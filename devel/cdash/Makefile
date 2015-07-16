@@ -3,12 +3,12 @@
 
 PORTNAME=	cdash
 PORTVERSION=	2.0.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://www.cdash.org/download/
 DISTNAME=	CDash-${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web-based software testing server
 
 LICENSE=	BSD3CLAUSE
@@ -24,6 +24,7 @@ CMAKE_ARGS+=	-DCDASH_DB_NAME:STRING=cdash \
 USE_PHP=	curl gd xsl
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/./-/g}
+PLIST_SUB=	WWWOWN="${WWWOWN}"
 SUB_FILES=	pkg-message
 SUB_LIST+=	DB_TYPE=${DB_TYPE}
 
@@ -36,7 +37,7 @@ DB_TYPE=	mysql
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 USE_PHP+=	pgsql
 DB_TYPE=	pgsql
 .endif
@@ -45,11 +46,5 @@ do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/www/CDash
 	${RM} -f ${WRKSRC}/CMakeLists.txt.orig
 	cd ${WRKSRC} && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/www/CDash
-	${CHOWN} www ${STAGEDIR}${PREFIX}/www/CDash/backup ${STAGEDIR}${PREFIX}/www/CDash/rss
-
-post-install:
-	@${ECHO}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO}
 
 .include <bsd.port.mk>

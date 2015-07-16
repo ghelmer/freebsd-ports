@@ -2,23 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	spandsp
-PORTVERSION=	0.0.5
+PORTVERSION=	0.0.6
 CATEGORIES=	comms
-MASTER_SITES=	http://www.soft-switch.org/downloads/spandsp/ \
-		http://www.soft-switch.org/downloads/spandsp/old/
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	http://www.soft-switch.org/downloads/spandsp/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DSP library and software FAX machine
 
+LICENSE=	LGPL21
+
 LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
 
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	libtool autoconf
-USES=		gmake
+INSTALL_TARGET=	install-strip
+USES=		autoreconf gmake libtool
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 USE_LDCONFIG=	yes
 

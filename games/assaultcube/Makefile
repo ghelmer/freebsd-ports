@@ -3,6 +3,7 @@
 
 PORTNAME=	assaultcube
 PORTVERSION=	1.2.0.2
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	SF/actiongame/AssaultCube%20Version%20${PORTVERSION}
 DISTNAME=	AssaultCube_v${PORTVERSION}
@@ -10,91 +11,95 @@ DISTNAME=	AssaultCube_v${PORTVERSION}
 MAINTAINER=	lightside@gmx.com
 COMMENT=	Total conversion of the FPS game called Cube
 
-LICENSE_COMB=	multi
 LICENSE=	ACUBE CUBE MIT OTHER
+LICENSE_COMB=	multi
 LICENSE_NAME_ACUBE=	AssaultCube ZLIB-like license with additions
-LICENSE_FILE_ACUBE=	${WRKSRC}/source/README.txt
-LICENSE_PERMS_ACUBE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_NAME_CUBE=	Cube game engine ZLIB-like license with additions
-LICENSE_FILE_CUBE=	${WRKSRC}/source/README_CUBEENGINE.txt
-LICENSE_PERMS_CUBE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_NAME_OTHER=	various package licences
+LICENSE_FILE_ACUBE=	${WRKSRC}/source/README.txt
+LICENSE_FILE_CUBE=	${WRKSRC}/source/README_CUBEENGINE.txt
 LICENSE_FILE_OTHER=	${WRKSRC}/docs/package_copyrights.txt
+LICENSE_PERMS_ACUBE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_CUBE=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_OTHER=	dist-mirror pkg-mirror auto-accept
 
-USE_BZIP2=	yes
-USES=		gmake openal:al
-GNU_CONFIGURE=	yes
-ALL_TARGET=	libenet
+USES=		gmake tar:bzip2
+ALL_TARGET=	# empty
 WRKSRC=		${WRKDIR}/AssaultCube_v${PORTVERSION}
-CONFIGURE_ARGS=	--enable-shared=no --enable-static=yes
-CONFIGURE_WRKSRC=	${WRKSRC}/source/enet
 BUILD_WRKSRC=	${WRKSRC}/source/src
+SUB_FILES=	${PLIST_FILES:Mbin/*:T}
 
 PORTDATA=	config packages scripts
 PORTDOCS=	*
+PLIST_DIRS=	%%DATADIR%%/packages/maps/servermaps/incoming
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS PORT_ENET
 OPTIONS_MULTI=	BUILD
 OPTIONS_MULTI_BUILD=	CLIENT DEDICATED MASTER
 OPTIONS_DEFAULT=	CLIENT DEDICATED
+
 CLIENT_DESC=	Build client
+CLIENT_USES=		gettext-runtime openal:al
+CLIENT_USE=		GL=gl SDL=image,sdl XORG=x11
+CLIENT_LIB_DEPENDS=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
+			libcurl.so:${PORTSDIR}/ftp/curl
+CLIENT_ALL_TARGET=	client
+CLIENT_PLIST_FILES=	bin/${PORTNAME}_client libexec/${PORTNAME}_client \
+			share/pixmaps/${PORTNAME}.png
 DEDICATED_DESC=	Build dedicated server
+DEDICATED_ALL_TARGET=	server
+DEDICATED_PLIST_FILES=	bin/${PORTNAME}_server libexec/${PORTNAME}_server
 MASTER_DESC=	Build master server
+MASTER_ALL_TARGET=	master
+MASTER_PLIST_FILES=	bin/${PORTNAME}_master libexec/${PORTNAME}_master
+PORT_ENET_DESC=	Use libenet from net/enet
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLIENT}
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-USES+=		gettext
-USE_GL=		yes
-USE_SDL=	image mixer sdl
-ALL_TARGET+=	client
-SUB_FILES+=	${PORTNAME}_client
-ACUBE_BIN+=	client
-
 DESKTOP_ENTRIES="AssaultCube" "${COMMENT}" \
 	"${PREFIX}/share/pixmaps/${PORTNAME}.png" "${PORTNAME}_client" \
 	"Game;" false
 .endif
 
-.if ${PORT_OPTIONS:MDEDICATED}
-ALL_TARGET+=	server
-SUB_FILES+=	${PORTNAME}_server
-ACUBE_BIN+=	server
+.if ${PORT_OPTIONS:MPORT_ENET}
+LIB_DEPENDS+=	libenet.so:${PORTSDIR}/net/enet
+.else
+ALL_TARGET+=	libenet
+GNU_CONFIGURE=		yes
+CONFIGURE_ARGS+=	--enable-shared=no --enable-static=yes
+CONFIGURE_WRKSRC=	${WRKSRC}/source/enet
 .endif
 
-.if ${PORT_OPTIONS:MMASTER}
-ALL_TARGET+=	master
-SUB_FILES+=	${PORTNAME}_master
-ACUBE_BIN+=	master
+post-patch: .SILENT
+	${REINPLACE_CMD} -e '/^CXXFLAGS=/d ; /^CXX=/d ; /^CLIENT_PCH/d ; \
+		/^INCLUDES=/s|$$| -I$$(LOCALBASE)/include| ; \
+		s|-I/usr/include || ; \
+		s|sdl-config|$$(SDL_CONFIG)| ; \
+		s|$$(USRLIB)|$$(LOCALBASE)/lib| ; \
+		/^CLIENT_LIBS=/s|$$| -lintl| ; \
+		/^SERVER_LIBS=/s|$$| -L$$(LOCALBASE)/lib|' \
+		${BUILD_WRKSRC}/Makefile
+.if ${PORT_OPTIONS:MPORT_ENET}
+	${SED} -i '.port_enet.bak' -e 's/libenet // ; \
+		s|-I\.\./enet/include|| ; \
+		s|-L\.\./enet/\.libs||' \
+		${BUILD_WRKSRC}/Makefile
 .endif
-
-pre-install: .SILENT
-	# 	Current STAGEDIR doesn't create empty directories for package,
-	# in case of dynamically generated TMPPLIST, where these directories exist
-	${RMDIR} ${WRKSRC}/packages/maps/servermaps/incoming
 
 do-install:
-.for f in ${ACUBE_BIN}
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}_${f} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/ac_${f} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}_${f}
+.for f in ${PLIST_FILES:Mbin/*}
+	${INSTALL_SCRIPT} ${WRKDIR}/${f:T} ${STAGEDIR}${PREFIX}/${f}
 .endfor
-	@${MKDIR} ${STAGEDIR}${DATADIR}
-	cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDATA}" ${STAGEDIR}${DATADIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
-.if ${PORT_OPTIONS:MCLIENT}
-	${INSTALL_DATA} ${WRKSRC}/docs/images/icon.png ${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
-.endif
-
-post-install:
-.for f in ${ACUBE_BIN}
-	@${ECHO_CMD} bin/${PORTNAME}_${f} >> ${TMPPLIST}
-	@${ECHO_CMD} libexec/${PORTNAME}_${f} >> ${TMPPLIST}
+.for f in ${PLIST_FILES:Mlibexec/*}
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${f:T:S/${PORTNAME}/ac/} \
+		${STAGEDIR}${PREFIX}/${f}
 .endfor
 .if ${PORT_OPTIONS:MCLIENT}
-	@${ECHO_CMD} share/pixmaps/${PORTNAME}.png >> ${TMPPLIST}
+	${INSTALL_DATA} ${WRKSRC}/docs/images/icon.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 .endif
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDATA}" ${STAGEDIR}${DATADIR})
+	(cd ${WRKSRC}/docs && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

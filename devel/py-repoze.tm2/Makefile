@@ -2,20 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	repoze.tm2
-PORTVERSION=	1.0
+PORTVERSION=	2.0
 PORTEPOCH=	2
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wen@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Zope-like transaction manager via WSGI middleware
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}transaction>=1.0.0:${PORTSDIR}/devel/py-transaction
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

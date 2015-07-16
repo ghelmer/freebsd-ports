@@ -1,14 +1,14 @@
 # $FreeBSD$
 
 PORTNAME=	geniplate
-PORTVERSION=	0.6.0.3
-PORTREVISION=	5
+PORTVERSION=	0.6.0.4
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Use template Haskell to generate Uniplate-like functions
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	mtl
 

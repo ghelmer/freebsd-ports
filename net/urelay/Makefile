@@ -7,8 +7,9 @@ CATEGORIES=	net
 MASTER_SITES=	http://devel.ringlet.net/net/urelay/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	An UCSPI-based TCP forwarder
+COMMENT=	UCSPI-based TCP forwarder
 
+USES=		uidfix
 PLIST_FILES=	bin/urelay \
 		man/man1/urelay.1.gz
 

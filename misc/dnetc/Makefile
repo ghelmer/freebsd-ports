@@ -6,9 +6,8 @@ PORTVERSION=	${VERSION}
 PORTREVISION=	${REVISION}
 PORTEPOCH=	1
 CATEGORIES=	misc
-MASTER_SITES=	http://http.distributed.net/pub/dcti/%SUBDIR%/ \
-		ftp://ftp.distributed.net/pub/dcti/%SUBDIR%/
-MASTER_SITE_SUBDIR=	${PORTVERSION:S/^/v/:R}
+MASTER_SITES=	http://http.distributed.net/pub/dcti/v${PORTVERSION:R}/ \
+		ftp://ftp.distributed.net/pub/dcti/v${PORTVERSION:R}/
 # This is architecture dependent
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd-${ARCH:S/i386/x86/}-elf
 
@@ -38,25 +37,25 @@ SUB_LIST=	BINDIR="${BINDIR}"
 
 .if ${ARCH} == i386
 VERSION=	2.9110.519
-REVISION=	0
+REVISION=	1
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH:S/i386/x86/}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH:S/i386/x86/}
 
 .elif ${ARCH} == amd64
 VERSION=	2.9110.519
-REVISION=	0
+REVISION=	1
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 
 .elif ${ARCH} == sparc64
 VERSION=	2.9109.518
-REVISION=	0
+REVISION=	1
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 
 .elif ${ARCH} == powerpc
 VERSION=	2.9109.518
-REVISION=	0
+REVISION=	1
 DISTNAME=	dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 WRKSRC=		${WRKDIR}/dnetc${PORTVERSION:E}-freebsd8-${ARCH}
 .endif

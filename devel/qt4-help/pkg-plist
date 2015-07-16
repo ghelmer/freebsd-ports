@@ -28,7 +28,6 @@
 %%QT_INCDIR%%/QtHelp/qhelpsearchengine.h
 %%QT_INCDIR%%/QtHelp/qhelpsearchquerywidget.h
 %%QT_INCDIR%%/QtHelp/qhelpsearchresultwidget.h
-%%QT_LIBDIR%%/libQtHelp.la
 %%QT_LIBDIR%%/libQtHelp.prl
 %%QT_LIBDIR%%/libQtHelp.so
 %%QT_LIBDIR%%/libQtHelp.so.4
@@ -36,7 +35,3 @@
 %%QT_LIBDIR%%/libQtHelp.so.%%FULLVER%%
 %%DEBUG%%%%QT_LIBDIR%%/libQtHelp.so.%%FULLVER%%.debug
 libdata/pkgconfig/QtHelp.pc
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtHelp
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

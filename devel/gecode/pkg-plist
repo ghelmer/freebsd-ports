@@ -8,6 +8,7 @@ include/gecode/flatzinc/ast.hh
 include/gecode/flatzinc/conexpr.hh
 include/gecode/flatzinc/option.hh
 include/gecode/flatzinc/parser.hh
+include/gecode/flatzinc/parser.tab.hh
 include/gecode/flatzinc/plugin.hh
 include/gecode/flatzinc/registry.hh
 include/gecode/flatzinc/symboltable.hh
@@ -90,6 +91,7 @@ include/gecode/gist/zoomToFitIcon.hpp
 include/gecode/int.hh
 include/gecode/int/arithmetic.hh
 include/gecode/int/arithmetic/abs.hpp
+include/gecode/int/arithmetic/argmax.hpp
 include/gecode/int/arithmetic/divmod.hpp
 include/gecode/int/arithmetic/max.hpp
 include/gecode/int/arithmetic/mult.hpp
@@ -99,6 +101,7 @@ include/gecode/int/arithmetic/pow.hpp
 include/gecode/int/array-traits.hpp
 include/gecode/int/array.hpp
 include/gecode/int/bin-packing.hh
+include/gecode/int/bin-packing/conflict-graph.hpp
 include/gecode/int/bin-packing/propagate.hpp
 include/gecode/int/bool.hh
 include/gecode/int/bool/base.hpp
@@ -186,6 +189,8 @@ include/gecode/int/gcc/dom.hpp
 include/gecode/int/gcc/post.hpp
 include/gecode/int/gcc/val.hpp
 include/gecode/int/gcc/view.hpp
+include/gecode/int/idx-view.hh
+include/gecode/int/idx-view.hpp
 include/gecode/int/int-set-1.hpp
 include/gecode/int/int-set-2.hpp
 include/gecode/int/ldsb.hh
@@ -384,6 +389,7 @@ include/gecode/search/bab.hpp
 include/gecode/search/cutoff.hpp
 include/gecode/search/dfs.hpp
 include/gecode/search/engine-base.hpp
+include/gecode/search/engine.hpp
 include/gecode/search/exception.hpp
 include/gecode/search/meta/nogoods.hh
 include/gecode/search/meta/rbs.hh
@@ -598,38 +604,40 @@ include/gecode/third-party/boost/numeric/interval/transc.hpp
 include/gecode/third-party/boost/numeric/interval/utility.hpp
 include/gecode/third-party/boost/type.hpp
 lib/libgecodedriver.so
-lib/libgecodedriver.so.36
-lib/libgecodedriver.so.36.0
+lib/libgecodedriver.so.%%SHLIB_VERSION%%
+lib/libgecodedriver.so.%%SHLIB_VERSION%%.0
 lib/libgecodeflatzinc.so
-lib/libgecodeflatzinc.so.36
-lib/libgecodeflatzinc.so.36.0
+lib/libgecodeflatzinc.so.%%SHLIB_VERSION%%
+lib/libgecodeflatzinc.so.%%SHLIB_VERSION%%.0
 lib/libgecodefloat.so
-lib/libgecodefloat.so.36
-lib/libgecodefloat.so.36.0
+lib/libgecodefloat.so.%%SHLIB_VERSION%%
+lib/libgecodefloat.so.%%SHLIB_VERSION%%.0
 %%GIST%%lib/libgecodegist.so
-%%GIST%%lib/libgecodegist.so.36
-%%GIST%%lib/libgecodegist.so.36.0
+%%GIST%%lib/libgecodegist.so.%%SHLIB_VERSION%%
+%%GIST%%lib/libgecodegist.so.%%SHLIB_VERSION%%.0
 lib/libgecodeint.so
-lib/libgecodeint.so.36
-lib/libgecodeint.so.36.0
+lib/libgecodeint.so.%%SHLIB_VERSION%%
+lib/libgecodeint.so.%%SHLIB_VERSION%%.0
 lib/libgecodekernel.so
-lib/libgecodekernel.so.36
-lib/libgecodekernel.so.36.0
+lib/libgecodekernel.so.%%SHLIB_VERSION%%
+lib/libgecodekernel.so.%%SHLIB_VERSION%%.0
 lib/libgecodeminimodel.so
-lib/libgecodeminimodel.so.36
-lib/libgecodeminimodel.so.36.0
+lib/libgecodeminimodel.so.%%SHLIB_VERSION%%
+lib/libgecodeminimodel.so.%%SHLIB_VERSION%%.0
 lib/libgecodesearch.so
-lib/libgecodesearch.so.36
-lib/libgecodesearch.so.36.0
+lib/libgecodesearch.so.%%SHLIB_VERSION%%
+lib/libgecodesearch.so.%%SHLIB_VERSION%%.0
 lib/libgecodeset.so
-lib/libgecodeset.so.36
-lib/libgecodeset.so.36.0
+lib/libgecodeset.so.%%SHLIB_VERSION%%
+lib/libgecodeset.so.%%SHLIB_VERSION%%.0
 lib/libgecodesupport.so
-lib/libgecodesupport.so.36
-lib/libgecodesupport.so.36.0
+lib/libgecodesupport.so.%%SHLIB_VERSION%%
+lib/libgecodesupport.so.%%SHLIB_VERSION%%.0
 %%DATADIR%%/mznlib/all_different_int.mzn
 %%DATADIR%%/mznlib/all_equal_int.mzn
 %%DATADIR%%/mznlib/among.mzn
+%%DATADIR%%/mznlib/arg_max_int.mzn
+%%DATADIR%%/mznlib/arg_min_int.mzn
 %%DATADIR%%/mznlib/at_least_int.mzn
 %%DATADIR%%/mznlib/at_least_set.mzn
 %%DATADIR%%/mznlib/at_most_int.mzn
@@ -669,6 +677,7 @@ lib/libgecodesupport.so.36.0
 %%DATADIR%%/mznlib/nvalue.mzn
 %%DATADIR%%/mznlib/partition_set.mzn
 %%DATADIR%%/mznlib/range.mzn
+%%DATADIR%%/mznlib/redefinitions-2.0.mzn
 %%DATADIR%%/mznlib/redefinitions.mzn
 %%DATADIR%%/mznlib/regular.mzn
 %%DATADIR%%/mznlib/roots.mzn
@@ -678,86 +687,3 @@ lib/libgecodesupport.so.36.0
 %%DATADIR%%/mznlib/table_int.mzn
 %%DATADIR%%/mznlib/value_precede_int.mzn
 %%DATADIR%%/mznlib/value_precede_set.mzn
-@dirrm %%DATADIR%%/mznlib
-@dirrm %%DATADIR%%
-@dirrm include/gecode/third-party/boost/numeric/interval/detail
-@dirrm include/gecode/third-party/boost/numeric/interval/compare
-@dirrm include/gecode/third-party/boost/numeric/interval
-@dirrm include/gecode/third-party/boost/numeric
-@dirrm include/gecode/third-party/boost/detail
-@dirrm include/gecode/third-party/boost/config/stdlib
-@dirrm include/gecode/third-party/boost/config/platform
-@dirrm include/gecode/third-party/boost/config/no_tr1
-@dirrm include/gecode/third-party/boost/config/compiler
-@dirrm include/gecode/third-party/boost/config
-@dirrm include/gecode/third-party/boost
-@dirrm include/gecode/third-party
-@dirrm include/gecode/support/thread
-@dirrm include/gecode/support
-@dirrm include/gecode/set/view
-@dirrm include/gecode/set/var-imp
-@dirrm include/gecode/set/var
-@dirrm include/gecode/set/sequence
-@dirrm include/gecode/set/rel-op
-@dirrm include/gecode/set/rel
-@dirrm include/gecode/set/precede
-@dirrm include/gecode/set/ldsb
-@dirrm include/gecode/set/int
-@dirrm include/gecode/set/element
-@dirrm include/gecode/set/distinct
-@dirrm include/gecode/set/convex
-@dirrm include/gecode/set/channel
-@dirrm include/gecode/set/branch
-@dirrm include/gecode/set
-@dirrm include/gecode/search/sequential
-@dirrm include/gecode/search/parallel
-@dirrm include/gecode/search/meta
-@dirrm include/gecode/search
-@dirrm include/gecode/minimodel
-@dirrm include/gecode/kernel
-@dirrm include/gecode/iter
-@dirrm include/gecode/int/view-val-graph
-@dirrm include/gecode/int/view
-@dirrm include/gecode/int/var-imp
-@dirrm include/gecode/int/var
-@dirrm include/gecode/int/unary
-@dirrm include/gecode/int/task
-@dirrm include/gecode/int/sorted
-@dirrm include/gecode/int/sequence
-@dirrm include/gecode/int/rel
-@dirrm include/gecode/int/precede
-@dirrm include/gecode/int/nvalues
-@dirrm include/gecode/int/no-overlap
-@dirrm include/gecode/int/member
-@dirrm include/gecode/int/linear
-@dirrm include/gecode/int/ldsb
-@dirrm include/gecode/int/gcc
-@dirrm include/gecode/int/extensional
-@dirrm include/gecode/int/exec
-@dirrm include/gecode/int/element
-@dirrm include/gecode/int/dom
-@dirrm include/gecode/int/distinct
-@dirrm include/gecode/int/cumulatives
-@dirrm include/gecode/int/cumulative
-@dirrm include/gecode/int/count
-@dirrm include/gecode/int/circuit
-@dirrm include/gecode/int/channel
-@dirrm include/gecode/int/branch
-@dirrm include/gecode/int/bool
-@dirrm include/gecode/int/bin-packing
-@dirrm include/gecode/int/arithmetic
-@dirrm include/gecode/int
-@dirrm include/gecode/gist
-@dirrm include/gecode/float/view
-@dirrm include/gecode/float/var-imp
-@dirrm include/gecode/float/var
-@dirrm include/gecode/float/trigonometric
-@dirrm include/gecode/float/transcendental
-@dirrm include/gecode/float/rel
-@dirrm include/gecode/float/linear
-@dirrm include/gecode/float/branch
-@dirrm include/gecode/float/arithmetic
-@dirrm include/gecode/float
-@dirrm include/gecode/flatzinc
-@dirrm include/gecode/driver
-@dirrm include/gecode

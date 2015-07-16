@@ -2,37 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	busybox
-PORTVERSION=	1.22.1
-PORTREVISION=	1
+PORTVERSION=	1.23.2
 CATEGORIES=	sysutils misc shells
 MASTER_SITES=	http://www.busybox.net/downloads/
 
 PATCH_SITES=	http://www.busybox.net/downloads/fixes-${PORTVERSION}/
 PATCH_DIST_STRIP=	-p1
-PATCHFILES=	busybox-1.22.1-ash.patch \
-		busybox-1.22.1-date.patch \
-		busybox-1.22.1-iplink.patch \
-		#
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Busybox for FreeBSD
 
 LICENSE=	GPLv2
 
-PORTSCOUT=	skipv:1.23.0
-
 BUILD_DEPENDS=	gsed:${PORTSDIR}/textproc/gsed
 
 CONFLICTS_INSTALL=	busybox-unstable-*
 
+PORTSCOUT=	skipv:1.24.0
+
+CFLAGS+=	-fno-builtin-mempcpy	# avoid -Wshadow warnings
 MAKE_ARGS+=	SKIP_STRIP=y CC="${CC}" HOSTCC="${CC}" CXX="${CXX}" HOSTCXX="${CXX}"
-USE_BZIP2=	yes
 # findutils/find.c l. 752+, uses a GCC extension/invalid C code:
-USES=		compiler:nestedfct gmake
+USES=		compiler:nestedfct cpe gmake tar:bzip2
 
 PLIST_FILES=	bin/busybox
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS STATIC
+
+STATIC_LDFLAGS=	-static
 
 .include <bsd.port.options.mk>
 

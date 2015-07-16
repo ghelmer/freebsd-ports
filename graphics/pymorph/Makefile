@@ -3,19 +3,18 @@
 
 PORTNAME=	pymorph
 PORTVERSION=	0.96
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 
 MAINTAINER=	sawp@sawp.com.br
 COMMENT=	Pymorph is a pure implementations of image morphology functions
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS+=	${PYNUMPY}
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

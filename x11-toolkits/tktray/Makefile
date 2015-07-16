@@ -4,7 +4,7 @@
 PORTNAME=	tktray
 PORTVERSION=	1.3.9
 CATEGORIES=	x11-toolkits tk
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	tcltk@FreeBSD.org
@@ -21,6 +21,5 @@ TKPKG=		${PORTNAME}${PORTVERSION}
 PLIST_FILES=	lib/${TKPKG}/libtktray.so.1 \
 		lib/${TKPKG}/pkgIndex.tcl \
 		man/mann/${PORTNAME}.n.gz
-PLIST_DIRS=	lib/${TKPKG}
 
 .include <bsd.port.mk>

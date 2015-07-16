@@ -2,15 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	htop
-PORTVERSION=	1.0.2
-PORTREVISION=	1
+PORTVERSION=	1.0.3
 CATEGORIES=	sysutils
-MASTER_SITES=	SF
+MASTER_SITES=	http://hisham.hm/htop/releases/${PORTVERSION}/
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	Better top(1) - interactive process viewer
 
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo
+LICENSE=	GPLv2
 
 OPTIONS_DEFINE=	LSOF
 OPTIONS_DEFAULT=LSOF
@@ -22,11 +21,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lexecinfo
 
 CONFIGURE_ARGS=	--with-proc=/compat/linux/proc --enable-unicode
-USES=		ncurses libtool
-USE_AUTOTOOLS=	autoconf aclocal automake
-ACLOCAL_ARGS=	-I ${ACLOCAL_DIR}
-
-USE_PYTHON_BUILD=	yes
+USES=		autoreconf ncurses libtool execinfo python:2,build
 
 LSOF_RUN_DEPENDS=	lsof:${PORTSDIR}/sysutils/lsof
 

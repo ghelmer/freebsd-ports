@@ -6,15 +6,14 @@ PORTVERSION=	1.21.2
 PORTREVISION=	3
 CATEGORIES=	print python
 MASTER_SITES=	http://www.reportlab.com/ftp/ \
-		${MASTER_SITE_LOCAL:S/$/:accel/} \
+		LOCAL/erwin/:accel \
 		http://www.cs.nctu.edu.tw/~lwhsu/ports/distfiles/:accel
-MASTER_SITE_SUBDIR=	erwin/:accel
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	1
 DISTFILES=	reportlab-${PORTVERSION}.tar.gz \
 		rl_accel-3004.tgz:accel
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Library to create PDF documents using the Python language
 
 CONFLICTS=	py*-reportlab[^1]-[^1].* \
@@ -22,10 +21,8 @@ CONFLICTS=	py*-reportlab[^1]-[^1].* \
 
 PORTSCOUT=	ignore:1	# Last version of 1.X branch
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGNAME=	Reportlab
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 WRKSRC=		${WRKDIR}/reportlab_${PORTVERSION:S/./_/g}/reportlab
 MAKE_ENV=	PACKAGE_PATH="${REPORTLABDIR}"
@@ -46,6 +43,5 @@ post-install:
 .for i in ${PORTDOCS}
 	${CP} ${WRKSRC}/docs/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

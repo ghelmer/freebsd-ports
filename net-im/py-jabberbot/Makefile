@@ -9,15 +9,14 @@ MASTER_SITES=	SF/pythonjabberbot/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	vg@FreeBSD.org
-COMMENT=	A simple Jabber Bot for Python
+COMMENT=	Simple Jabber Bot for Python
 
 LICENSE=	GPLv3
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xmpppy>0:${PORTSDIR}/net-im/py-xmpppy
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
 post-patch:
 	@${GREP} -lr '/usr/bin/python' ${WRKSRC} | \

@@ -5,10 +5,9 @@ PORTNAME=	wmcube
 PORTVERSION=	0.98
 PORTREVISION=	3
 CATEGORIES=	sysutils windowmaker
-MASTER_SITES=	${MASTER_SITE_TUCOWS} \
+MASTER_SITES=	TUCOWS/x11/dock \
 		http://dockapps.org/download.php/id/222/ \
 		http://freebsd.unixfreunde.de/sources/
-MASTER_SITE_SUBDIR=	x11/dock
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Window Maker dockapp that displays cpu load and a realtime 3D object
@@ -24,10 +23,9 @@ PORTDOCS=	CHANGES README TODO
 SUB_FILES=	pkg-message
 USE_CSTD=	gnu89
 MAKE_JOBS_UNSAFE=	yes
-NEED_ROOT=	yes
 
 do-install:
-	${INSTALL_PROGRAM} -m 2755 -o root -g kmem ${WRKSRC}/wmcube ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} -m 2755 ${WRKSRC}/wmcube ${STAGEDIR}${PREFIX}/bin
 .for file in *.wmc
 	@${ECHO} "===>   Installing extra 3d objects in ${STAGEDIR}${PREFIX}/share/${PORTNAME}"
 	@${MKDIR} ${STAGEDIR}${DATADIR}

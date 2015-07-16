@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	1.11.0
-PORTREVISION=	4
+PORTVERSION=	1.11.2
+PORTREVISION=	3
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://download.osgeo.org/gdal/${PORTVERSION}/ \
 		ftp://ftp.remotesensing.org/pub/gdal/${PORTVERSION}/ \
@@ -14,25 +14,40 @@ COMMENT=	Translator library for raster geospatial data formats
 
 LICENSE=	MIT
 
-OPTIONS_DEFINE=	ARMADILLO CFITSIO CURL ECW EXPAT FREEXL GEOS GEOTIFF GIF GTA \
-		HDF5 ICONV JASPER JPEG KML LIBXML2 MYSQL NETCDF ODBC PCRE \
-		PGSQL PNG PROJ SQLITE TIFF WEBP XERCES
+LIB_DEPENDS=	libgeotiff.so:${PORTSDIR}/graphics/libgeotiff \
+		libgif.so:${PORTSDIR}/graphics/giflib \
+		libjson-c.so:${PORTSDIR}/devel/json-c \
+		libpng.so:${PORTSDIR}/graphics/png \
+		libtiff.so:${PORTSDIR}/graphics/tiff
+
+OPTIONS_DEFINE=	ARMADILLO CFITSIO CURL ECW EXPAT FREEXL GEOS GTA HDF5 ICONV \
+		JASPER KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL PROJ \
+		SQLITE WEBP XERCES
+OPTIONS_DEFAULT=JASPER
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
-OPTIONS_DEFAULT=GEOTIFF GIF JASPER JPEG PNG TIFF
 PCRE_DESC=	Regular expression support for SQLite
 
 CFLAGS+=	-fPIC
 CONFIGURE_ARGS=	--datadir=${DATADIR} \
-		--with-libz=/usr --with-liblzma=yes --with-threads=yes
+		--enable-static=yes \
+		--with-geotiff=${LOCALBASE} \
+		--with-gif=${LOCALBASE} \
+		--with-jpeg=${LOCALBASE} \
+		--with-libjson-c=${LOCALBASE} \
+		--with-liblzma=yes \
+		--with-libtiff=${LOCALBASE} \
+		--with-libz=/usr \
+		--with-png=${LOCALBASE} \
+		--with-threads=yes \
+		--without-libtool
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE} -pthread
 MAKE_JOBS_UNSAFE=	yes
 MAKEFILE=	GNUmakefile
-USE_AUTOTOOLS=	libtool
 USE_LDCONFIG=	yes
-USES=		gmake
+USES=		gmake jpeg tar:xz
 
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 PORTDATA=	*
 
 SLAVEDIRS=	graphics/p5-Geo-GDAL graphics/php-gdal graphics/py-gdal graphics/ruby-gdal
@@ -58,12 +73,6 @@ FREEXL_LIB_DEPENDS=	libfreexl.so:${PORTSDIR}/textproc/freexl
 GEOS_CONFIGURE_OFF=	--with-geos=no
 GEOS_CONFIGURE_ON=	--with-geos=${LOCALBASE}/bin/geos-config
 GEOS_LIB_DEPENDS=	libgeos.so:${PORTSDIR}/graphics/geos
-GEOTIFF_CONFIGURE_OFF=	--with-geotiff=internal
-GEOTIFF_CONFIGURE_ON=	--with-geotiff=${LOCALBASE}
-GEOTIFF_LIB_DEPENDS=	libgeotiff.so:${PORTSDIR}/graphics/libgeotiff
-GIF_CONFIGURE_OFF=	--with-gif=internal
-GIF_CONFIGURE_ON=	--with-gif=${LOCALBASE}
-GIF_LIB_DEPENDS=	libgif.so:${PORTSDIR}/graphics/giflib
 GTA_CONFIGURE_OFF=	--with-gta=no
 GTA_CONFIGURE_ON=	--with-gta=${LOCALBASE}
 GTA_LIB_DEPENDS=	libgta.so:${PORTSDIR}/devel/libgta
@@ -72,14 +81,12 @@ HDF5_CONFIGURE_ON=	--with-hdf5=${LOCALBASE}
 HDF5_LIB_DEPENDS=	libhdf5.so:${PORTSDIR}/science/hdf5
 ICONV_CONFIGURE_OFF=	--with-libiconv-prefix=no
 ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
+ICONV_CPPFLAGS=		-I${LOCALBASE}/include
 ICONV_LDFLAGS=		-L${ICONV_PREFIX}/lib ${ICONV_LIB}
 ICONV_USES=		iconv
 JASPER_CONFIGURE_OFF=	--with-jasper=no
 JASPER_CONFIGURE_ON=	--with-jasper=${LOCALBASE}
 JASPER_LIB_DEPENDS=	libjasper.so:${PORTSDIR}/graphics/jasper
-JPEG_CONFIGURE_OFF=	--with-jpeg=internal
-JPEG_CONFIGURE_ON=	--with-jpeg=${LOCALBASE}
-JPEG_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
 KML_CONFIGURE_OFF=	--with-libkml=no
 KML_CONFIGURE_ON=	--with-libkml=${LOCALBASE}
 KML_LIB_DEPENDS=	libkmlbase.so:${PORTSDIR}/science/libkml
@@ -95,15 +102,15 @@ NETCDF_LIB_DEPENDS=	libnetcdf.so:${PORTSDIR}/science/netcdf
 ODBC_CONFIGURE_OFF=	--with-odbc=no
 ODBC_CONFIGURE_ON=	--with-odbc=${LOCALBASE}
 ODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC
+OPENJPEG_CONFIGURE_OFF=	--with-openjpeg=no
+OPENJPEG_CONFIGURE_ON=	--with-openjpeg=${LOCALBASE}
+OPENJPEG_LIB_DEPENDS=	libopenjp2.so:${PORTSDIR}/graphics/openjpeg
 PCRE_CONFIGURE_OFF=	--with-pcre=no
 PCRE_CONFIGURE_ON=	--with-pcre=${LOCALBASE}
 PCRE_LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 PGSQL_CONFIGURE_OFF=	--with-pg=no
 PGSQL_CONFIGURE_ON=	--with-pg=${LOCALBASE}/bin/pg_config
-PGSQL_USE=		PGSQL=yes
-PNG_CONFIGURE_OFF=	--with-png=internal
-PNG_CONFIGURE_ON=	--with-png=${LOCALBASE}
-PNG_LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
+PGSQL_USES=		pgsql
 PODOFO_CONFIGURE_OFF=	--with-podofo=no
 PODOFO_CONFIGURE_ON=	--with-podofo=${LOCALBASE}
 PODOFO_LIB_DEPENDS=	libpodofo.so:${PORTSDIR}/graphics/podofo
@@ -116,9 +123,6 @@ PROJ_LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj
 SQLITE_CONFIGURE_OFF=	--with-sqlite3=no
 SQLITE_CONFIGURE_ON=	--with-sqlite3=${LOCALBASE}
 SQLITE_USE=		SQLITE=yes
-TIFF_CONFIGURE_OFF=	--with-libtiff=internal
-TIFF_CONFIGURE_ON=	--with-libtiff=${LOCALBASE}
-TIFF_LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
 WEBP_CONFIGURE_OFF=	--with-webp=no
 WEBP_CONFIGURE_ON=	--with-webp=${LOCALBASE}
 WEBP_LIB_DEPENDS=	libwebp.so:${PORTSDIR}/graphics/webp
@@ -127,12 +131,21 @@ XERCES_CONFIGURE_ON=	--with-xerces=${LOCALBASE}
 XERCES_LIB_DEPENDS=	libxerces-c.so:${PORTSDIR}/textproc/xerces-c3
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|-lpthread|-pthread|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|$$(INST_LIB)/pkgconfig|${PREFIX}/libdata/pkgconfig|' ${WRKSRC}/GNUmakefile
+# Cleanup bundled libraries
+	@${RM} -fr ${WRKSRC}/frmts/gif/giflib/
+	@${RM} -fr ${WRKSRC}/frmts/gtiff/libgeotiff/
+	@${RM} -fr ${WRKSRC}/frmts/gtiff/libtiff/
+	@${RM} -fr ${WRKSRC}/frmts/jpeg/libjpeg/
+	@${RM} -fr ${WRKSRC}/frmts/jpeg/libjpeg12/
+	@${RM} -fr ${WRKSRC}/frmts/png/libpng/
+	@${RM} -fr ${WRKSRC}/frmts/zlib/
+	@${RM} -fr ${WRKSRC}/ogr/ogrsf_frmts/geojson/libjson/
 
 post-install:
+	${INSTALL_DATA} ${WRKSRC}/libgdal.a ${STAGEDIR}${PREFIX}/lib/
 	${TOUCH} ${STAGEDIR}${PREFIX}/lib/gdalplugins/.keepme
 	${INSTALL_DATA} ${WRKSRC}/GDALmake.opt ${STAGEDIR}${DATADIR}/
-	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/libgdal.so.19
+	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/libgdal.so.${PORTVERSION}
 
 .include <bsd.port.mk>

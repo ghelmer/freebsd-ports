@@ -1,34 +1,22 @@
-# Created by: Wojciech A. Koszek <wkoszek@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	xc3sprog
-PORTVERSION=	r449
-PORTREVISION=	1
+PORTVERSION=	r769
 CATEGORIES=	devel
-MASTER_SITES=	http://FreeBSD.czest.pl/~wkoszek/ports/
+MASTER_SITES=	http://opsec.eu/src/xc3sprog/
 
-MAINTAINER=	wkoszek@FreeBSD.org
+MAINTAINER=	uffe@uffe.org
 COMMENT=	Free programmer for Xilinx Spartan S3E Starter Kit
 
-LIB_DEPENDS=	ftdi:${PORTSDIR}/devel/libftdi
+LIB_DEPENDS=	libftdi.so:${PORTSDIR}/devel/libftdi
 RUN_DEPENDS=	${LOCALBASE}/sbin/fxload:${PORTSDIR}/misc/fxload
 
-USES=		cmake
+USES=		tar:xz cmake
 ALL_TARGET=	xc3sprog
 
 PLIST_FILES=	bin/xc3sprog
 
-NO_STAGE=	yes
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/xc3sprog ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/xc3sprog ${STAGEDIR}${PREFIX}/bin
 
-post-install:
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.pre.mk>
-
-.if (${OSVERSION} < 800069)
-BROKEN=	doesn't build on FreeBSD prior libusb(8) integration to base system
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,9 +1,9 @@
---- pypy/sandbox/pypy_interact.py.orig	2012-06-07 14:24:48.000000000 +0200
-+++ pypy/sandbox/pypy_interact.py	2012-07-02 21:08:19.000000000 +0200
+--- pypy/sandbox/pypy_interact.py.orig	2014-05-08 18:36:08.000000000 +0200
++++ pypy/sandbox/pypy_interact.py	2014-05-12 20:20:57.000000000 +0200
 @@ -22,11 +22,14 @@
  
  import sys, os
- sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
+ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..', '..')))
 +from pypy.module.sys.version import PYPY_VERSION
  from rpython.translator.sandbox.sandlib import SimpleIOSandboxedProc
  from rpython.translator.sandbox.sandlib import VirtualizedSandboxedProc
@@ -18,7 +18,7 @@
 @@ -56,10 +59,10 @@
          return Dir({
              'bin': Dir({
-                 'pypy-c': RealFile(self.executable),
+                 'pypy-c': RealFile(self.executable, mode=0111),
 -                'lib-python': RealDir(os.path.join(libroot, 'lib-python'),
 -                                      exclude=exclude), 
 -                'lib_pypy': RealDir(os.path.join(libroot, 'lib_pypy'),

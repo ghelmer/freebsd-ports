@@ -4,7 +4,7 @@
 PORTNAME=	sfio
 PORTVERSION=	1999
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_NETBSD}
+MASTER_SITES=	NETBSD
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 EXTRACT_SUFX=	.src.unix.cpio
 
@@ -27,7 +27,7 @@ do-build:
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/sfio
 	${INSTALL_DATA} ${WRKDIR}/include/* ${STAGEDIR}${PREFIX}/include/sfio
-	cd ${WRKDIR}/lib ; ${INSTALL_DATA} libsfio.a libstdio.a ${STAGEDIR}${PREFIX}/lib
+	(cd ${WRKDIR}/lib && ${INSTALL_DATA} libsfio.a libstdio.a ${STAGEDIR}${PREFIX}/lib)
 	${INSTALL_MAN} ${WRKDIR}/man/man1/iffe.1 ${STAGEDIR}${PREFIX}/man/man1
 	${INSTALL_MAN} ${WRKDIR}/man/man3/sfio.3 ${STAGEDIR}${PREFIX}/man/man3
 

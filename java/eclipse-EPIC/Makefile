@@ -3,7 +3,7 @@
 
 PORTNAME=	EPIC
 PORTVERSION=	0.6.35
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	java editors devel
 MASTER_SITES=	SF/e-p-i-c/e-p-i-c/${PORTNAME}%20${PORTVERSION}
 PKGNAMEPREFIX=	eclipse-
@@ -42,8 +42,8 @@ post-install:
 .for file in ${EPICFILES}
 	@${FIND} ${WRKSRC}/${file} -type f \
 	  | ${SED} -ne 's,^${WRKSRC},${ECLIPSE:S,^${PREFIX}/,,},p' >> ${TMPPLIST}
-	@${FIND} -d ${WRKSRC}/${file} -type d \
-	  | ${SED} -ne 's,^${WRKSRC},@dirrm ${ECLIPSE:S,^${PREFIX}/,,},p' >> ${TMPPLIST}
+	@${FIND} -d ${WRKSRC}/${file} -type d -empty \
+	  | ${SED} -ne 's,^${WRKSRC},@dir ${ECLIPSE:S,^${PREFIX}/,,},p' >> ${TMPPLIST}
 .endfor
 
 .include <bsd.port.mk>

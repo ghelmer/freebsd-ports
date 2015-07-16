@@ -3,12 +3,12 @@
 
 PORTNAME=	pdfcube
 PORTVERSION=	0.0.5
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	print
 MASTER_SITES=	http://code.100allora.it/releases/pdfcube/
 
 MAINTAINER=	lwhsu@FreeBSD.org
-COMMENT=	An OpenGL presentation viewer on a spinning cube
+COMMENT=	OpenGL presentation viewer on a spinning cube
 
 LIB_DEPENDS=	libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext \
 		libpoppler-glib.so:${PORTSDIR}/graphics/poppler-glib \

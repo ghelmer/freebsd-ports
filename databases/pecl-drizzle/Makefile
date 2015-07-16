@@ -6,40 +6,29 @@ PORTVERSION=	0.4.2
 CATEGORIES=	databases
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
-EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	PECL
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP wrapper for the libdrizzle library
 
-LIB_DEPENDS=	libdrizzle.so:${PORTSDIR}/databases/libdrizzle
-
 LICENSE=	PHP301
 
+LIB_DEPENDS=	libdrizzle.so:${PORTSDIR}/databases/libdrizzle
+
+USES=		tar:tgz
 USE_PHP=	yes
 USE_PHPEXT=	yes
-DEFAULT_PHP_VER=53
-IGNORE_WITH_PHP=5
-NO_STAGE=	yes
+IGNORE_WITH_PHP=5 56
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 PORTDOCS=	README EXPERIMENTAL ChangeLog CREDITS
-
-post-install::
-		@${MKDIR} ${DOCSDIR}
-		@cd ${WRKSRC} && ${INSTALL} ${PORTDOCS} ${DOCSDIR}
-.else
-PORTDOCS=
-.endif
-
-.if !defined(NOPORTEXAMPLES)
 PORTEXAMPLES=	drizzle.php
 
-post-install::
-		@${MKDIR} ${EXAMPLESDIR}
-		@cd ${WRKSRC} && ${INSTALL} ${PORTEXAMPLES} ${EXAMPLESDIR}
-.else
-PORTEXAMPLES=
-.endif
+post-install:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@cd ${WRKSRC} && ${INSTALL} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@cd ${WRKSRC} && ${INSTALL} ${PORTEXAMPLES} ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

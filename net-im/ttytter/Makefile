@@ -3,6 +3,7 @@
 
 PORTNAME=	ttytter
 PORTVERSION=	2.1.00
+PORTREVISION=	1
 CATEGORIES=	net-im perl5
 MASTER_SITES=	http://www.floodgap.com/software/ttytter/dist2/:dist \
 		http://www.floodgap.com/software/ffsl/:license
@@ -15,7 +16,7 @@ COMMENT=	Command-line Twitter client in Perl
 LICENSE=	FFSL
 LICENSE_NAME=	Floodgap Free Software License
 LICENSE_FILE=	${WRKSRC}/license.txt
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS=	curl:${PORTSDIR}/ftp/curl \
 		p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate

@@ -2,37 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	xe-guest-utilities
-PORTVERSION=	6.0.2
-PORTREVISION=	2
+PORTVERSION=	6.2.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	https://github.com/${GIT_ACCOUNT}/${GIT_PROJECT}/tarball/${GIT_VERSION}/
-DISTNAME=	${GIT_ACCOUNT}-${GIT_PROJECT}-${GIT_VERSION}
+MASTER_SITES=	LOCAL/feld
+DISTNAME=	${PORTNAME}-6.0.2
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	FreeBSD VM tools for Citrix XenServer and XCP
 
-RUN_DEPENDS=	xen-tools>0:${PORTSDIR}/sysutils/xen-tools
+RUN_DEPENDS=	xen-guest-tools>0:${PORTSDIR}/${PKGCATEGORY}/xen-guest-tools
 
-GIT_ACCOUNT=	felderado
-GIT_PROJECT=	freebsd-xen-tools-scripts
-GIT_VERSION=	5a355c9
-GITSRC=		${WRKDIR}/${GIT_ACCOUNT}-${GIT_PROJECT}-${GIT_VERSION}/src/
-
-USES=		gmake
-USE_PYTHON=	yes
+USES=		gmake python
 USE_RC_SUBR=	xenguest
 
 ONLY_FOR_ARCHS=		amd64 i386
-ONLY_FOR_ARCHS_REASON=	"Requires i385 XEN or amd64 XENHVM kernels"
+ONLY_FOR_ARCHS_REASON=	"Requires i386 XEN or amd64 XENHVM kernels"
+NO_BUILD=	yes
 
 PLIST_FILES=	sbin/xe-daemon \
 		sbin/xe-update-guest-attrs
 
-do-build:
-	@${DO_NADA}
-
 do-install:
-	${INSTALL_SCRIPT} ${GITSRC}/sbin/xe-daemon ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_SCRIPT} ${GITSRC}/sbin/xe-update-guest-attrs ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${WRKSRC}/src/sbin/xe-daemon ${STAGEDIR}${PREFIX}/sbin
+	${INSTALL_SCRIPT} ${WRKSRC}/src/sbin/xe-update-guest-attrs ${STAGEDIR}${PREFIX}/sbin
 
 .include <bsd.port.mk>

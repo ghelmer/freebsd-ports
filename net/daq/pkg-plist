@@ -4,22 +4,19 @@ include/daq_api.h
 include/daq_common.h
 include/sfbpf.h
 include/sfbpf_dlt.h
-lib/daq/daq_dump.la
 lib/daq/daq_dump.so
-lib/daq/daq_ipfw.la
 lib/daq/daq_ipfw.so
-lib/daq/daq_pcap.la
+%%NETMAP%%lib/daq/daq_netmap.so
 lib/daq/daq_pcap.so
 lib/libdaq.a
-lib/libdaq.la
 lib/libdaq.so
 lib/libdaq.so.2
+@comment lib/libdaq.so.%%PORTVERSION%%
+lib/libdaq.so.2.0.4
 lib/libdaq_static.a
-lib/libdaq_static.la
 lib/libdaq_static_modules.a
-lib/libdaq_static_modules.la
 lib/libsfbpf.a
-lib/libsfbpf.la
 lib/libsfbpf.so
 lib/libsfbpf.so.0
-@dirrm lib/daq
+lib/libsfbpf.so.0.0.1
+@dir lib/daq

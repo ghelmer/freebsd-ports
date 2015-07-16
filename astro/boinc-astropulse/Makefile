@@ -3,12 +3,10 @@
 
 PORTNAME=	boinc-astropulse
 PORTVERSION=	6.01
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	astro
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
-		ftp://rene-ladan.nl/pub/distfiles/
+MASTER_SITES=	LOCAL/rene
 DISTNAME=	astropulse-svn-1702 # modified archive, see leftout in top directory
-MASTER_SITE_SUBDIR=rene
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Astropulse for BOINC
@@ -21,16 +19,12 @@ BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:${PORTSDIR}/math/fftw3 \
 RUN_DEPENDS=	boinc_client:${PORTSDIR}/net/boinc-client
 LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float
 
-USES=		tar:xz gmake pkgconfig
-USE_AUTOTOOLS=	autoconf:env automake:env libtool
 GNU_CONFIGURE=	yes
+USES=		autoreconf gmake libtool pkgconfig tar:xz
 WRKSRC=		${WRKDIR}/${DISTNAME}/client
 
-CFLAGS+=	-O2 -I${LOCALBASE}/include/boinc -I${LOCALBASE}/include \
-		-L${LOCALBASE}/lib
-.if defined(CPUTYPE)
-CFLAGS+=	-march=${CPUTYPE}
-.endif
+CPPFLAGS+=	-I${LOCALBASE}/include/boinc -I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 # these must match settings in ${PORTSDIR}/net/boinc-client/Makefile
 BOINC_CLIENT_USER?=	boinc
@@ -43,7 +37,7 @@ X11_DESC=	Build screensaver (requires net/boinc-client with X11)
 OPTIONS_SUB=	yes
 
 X11_BUILD_DEPENDS=	${LOCALBASE}/lib/libboinc_graphics2.a:${PORTSDIR}/net/boinc-client
-X11_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+X11_USES=		jpeg
 X11_USE=		GL=gl,glu,glut \
 			XORG=ice,sm,x11,xau,xcb,xext,xi,xdamage,xdmcp,xfixes,xmu,xt,xxf86vm
 X11_CONFIGURE_ENABLE=	graphics
@@ -52,11 +46,6 @@ X11_CONFIGURE_ENABLE=	graphics
 
 .if ! ${PORT_OPTIONS:MX11}
 BUILD_DEPENDS+=	${LOCALBASE}/include/boinc/std_fixes.h:${PORTSDIR}/net/boinc-client
-.endif
-
-.if ${ARCH} == amd64 || ${ARCH} == i386
-# comment out if world is built with clang and port with gcc
-CFLAGS+=	-mtune=native
 .endif
 
 SETI_WORK!=	cd ${.CURDIR}/../boinc-setiathome-v7 && ${MAKE} -V WRKSRC
@@ -81,9 +70,6 @@ PLIST_SUB+=	AP_BINARY=${AP_BINARY} \
 		BOINC_CLIENT_HOME=${BOINC_CLIENT_HOME} \
 		BOINC_CLIENT_USER=${BOINC_CLIENT_USER} \
 		BOINC_CLIENT_GROUP=${BOINC_CLIENT_GROUP}
-
-pre-configure:
-	(cd ${WRKSRC} ; ./_autosetup)
 
 do-install:
 	${INSTALL} -d ${STAGEDIR}${BOINC_CLIENT_HOME}/projects

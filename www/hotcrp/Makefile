@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	hotcrp
-PORTVERSION=	2.92
+PORTVERSION=	2.94
 CATEGORIES=	www
 MASTER_SITES=	http://www.read.seas.harvard.edu/~kohler/hotcrp/
 
@@ -17,7 +17,7 @@ USE_MYSQL=	server
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
-LICENSE=	BSD
+LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 do-install:

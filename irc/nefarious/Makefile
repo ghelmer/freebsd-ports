@@ -3,50 +3,73 @@
 
 PORTNAME=	Nefarious
 PORTVERSION=	1.2.0
+PORTREVISION=	1
 CATEGORIES=	irc
 MASTER_SITES=	SF/evilnet/${PORTNAME}%20IRCu/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	IRC server used by evilnet based off of Undernet\'s ircu
+COMMENT=	IRC server used by evilnet based off of Undernet's ircu
 
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 HAS_CONFIGURE=	yes
+BINMODE=	711
 PLIST_SUB+=	INSTALL_PREFIX=${INSTALL_PREFIX:S/${PREFIX}\///}
-MAN8=		ircd.8
 
-.if defined(WITH_OPENSSL)
-USE_OPENSSL=	yes
-CONFIGURE_ARGS+=	--enable-ssl
-.endif
+OPTIONS_DEFINE=	SSL CHROOT DOCS
+CHROOT_DESC=	Chroot the irc daemon within INSTALL_PREFIX
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+SSL_CONFIGURE_ENABLE=	ssl
+SSL_USE=		OPENSSL=yes
+CHROOT_CONFIGURE_ON=	--with-chroot=${INSTALL_PREFIX}
 
-.if !defined(INSTALL_PREFIX)
+.if defined(NEFARIUS_INSTALL_PREFIX)
+INSTALL_PREFIX=${NEFARIUS_INSTALL_PREFIX}
+.else
 INSTALL_PREFIX=${PREFIX}/${PORTNAME}
 .endif
+STAGEPREFIX=${STAGEDIR}${INSTALL_PREFIX}
 
-.if defined(WITH_CHROOT)
-CONFIGURE_ARGS+=	--with-chroot=${INSTALL_PREFIX}
+.if defined(NEFARIOUS_DOMAIN)
+CONFIGURE_ARGS+=	--with-domain=${NEFARIOUS_DOMAIN}
 .endif
 
-.if defined(DOMAIN)
-CONFIGURE_ARGS+=	--with-domain=${DOMAIN}
-.endif
+CONFIGURE_ARGS+=	--prefix=${INSTALL_PREFIX} \
+			--mandir=${MANPREFIX}/man
 
-CONFIGURE_ARGS+=	--prefix=${INSTALL_PREFIX} --mandir=${MANPREFIX}/man --infodir=${PREFIX}/${INFO_PATH}
+SYMLINKS=	admin away challenge invite names nick version \
+		join kick motd oper part quit time cnotice \
+		cprivmsg credits copyright info ircops ison links \
+		lusers map notice pass rules silence sethost topic \
+		userhost userip wallchops wallhops wallvoices whois \
+		commands
+
+post-extract:
+	@${FIND} ${WRKSRC} -type d -name ".svn" | ${XARGS} ${RM} -rf
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|@PREFIX@|${PREFIX}|g' ${WRKSRC}/configure
 
 pre-configure:
-	@${ECHO_CMD} ""
 	@${ECHO_CMD} "User configurable options for ${PORTNAME}:"
-	@${ECHO_CMD} "INSTALL_PREFIX	-	Where to install all Nefarious files (default: PREFIX/Nefarious)"
-	@${ECHO_CMD} "WITH_OPENSSL	-	Compile with SSL support"
-	@${ECHO_CMD} "WITH_CHROOT	-	chroot the ircd within INSTALL_PREFIX"
-	@${ECHO_CMD} "DOMAIN		-	Domain to use for IRCd"
-	@${ECHO_CMD} ""
-	@sleep 5
+	@${ECHO_CMD} "NEFARIOUS_INSTALL_PREFIX - Install location for Nefarious"
+	@${ECHO_CMD} "                           (default: ${PREFIX}/Nefarious)"
+	@${ECHO_CMD} "NEFARIOUS_DOMAIN         - Domain to use for IRCd"
 
-.include <bsd.port.post.mk>
+do-install:
+	@${MKDIR} ${STAGEPREFIX}/bin ${STAGEPREFIX}/lib/help
+	${INSTALL_PROGRAM} ${WRKSRC}/ircd/ircd ${STAGEPREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/ircd/chkconf ${STAGEPREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/doc/example.conf ${STAGEPREFIX}/lib
+	${INSTALL_MAN} ${WRKSRC}/doc/ircd.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	(cd ${WRKSRC}/help && \
+		${COPYTREE_SHARE} users ${STAGEPREFIX}/lib/help && \
+		${COPYTREE_SHARE} opers ${STAGEPREFIX}/lib/help)
+	(cd ${STAGEPREFIX}/lib/help/opers && ${CP} ${SYMLINKS} ../users)
+
+post-install:
+	${STRIP_CMD} ${STAGEPREFIX}/bin/chkconf
+
+.include <bsd.port.mk>

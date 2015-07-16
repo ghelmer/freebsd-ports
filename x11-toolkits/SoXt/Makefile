@@ -3,18 +3,19 @@
 
 PORTNAME=	SoXt
 PORTVERSION=	1.3.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	http://ftp.coin3d.org/coin/src/all/
+MASTER_SITES=	https://bitbucket.org/Coin3D/coin/downloads/
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	GUI binding for using Open Inventor with Xt/Motif
 
 LIB_DEPENDS=	libCoin.so:${PORTSDIR}/graphics/Coin
 
-USES=		libtool motif pathfix perl5
+USES=		libtool motif pathfix perl5 shebangfix
 USE_GL=		yes
 USE_PERL5=	build
+SHEBANG_FILES=	cfg/doxy4win.pl
 USE_XORG=	xi
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--with-pthread=yes --with-coin=${LOCALBASE}

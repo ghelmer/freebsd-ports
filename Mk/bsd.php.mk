@@ -57,6 +57,9 @@ PHP_VER?=	${DEFAULT_PHP_VER}
 .if ${PHP_VER}  == 53
 PHP_EXT_DIR=	20090626
 PHP_EXT_INC=	pcre spl
+.elif ${PHP_VER}  == 56
+PHP_EXT_DIR=	20131226
+PHP_EXT_INC=	pcre spl
 .elif ${PHP_VER}  == 55
 PHP_EXT_DIR=	20121212
 PHP_EXT_INC=	pcre spl
@@ -192,7 +195,7 @@ PHP_HEADER_DIRS?=	""
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
-	@${INSTALL_DATA} ${WRKSRC}/modules/${PHP_MODNAME}.so \
+	@${INSTALL_LIB} ${WRKSRC}/modules/${PHP_MODNAME}.so \
 		${STAGEDIR}${PREFIX}/lib/php/${PHP_EXT_DIR}
 .	for header in . ${PHP_HEADER_DIRS}
 		@${MKDIR} ${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME}/${header}
@@ -203,28 +206,13 @@ do-install:
 	@${GREP} "#define \(COMPILE\|HAVE\|USE\)_" ${WRKSRC}/config.h \
 		> ${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME}/config.h
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/php
-.if defined(NO_STAGE)
-	@${ECHO_CMD} \#include \"ext/${PHP_MODNAME}/config.h\" \
-		>> ${PREFIX}/include/php/ext/php_config.h
-.if defined(USE_ZENDEXT)
-	@${ECHO_CMD} zend_extension=${PREFIX}/lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}.so \
-		>> ${PREFIX}/etc/php/extensions.ini
-.else
-	@${ECHO_CMD} extension=${PHP_MODNAME}.so \
-		>> ${PREFIX}/etc/php/extensions.ini
-.endif
-.endif
 
 add-plist-info: add-plist-phpext
 add-plist-phpext:
 	@${ECHO_CMD} "lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}.so" \
 		>> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec rmdir %D/lib/php/${PHP_EXT_DIR} 2> /dev/null || true" \
-		>> ${TMPPLIST}
 	@${FIND} -P ${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME} ! -type d 2>/dev/null | \
 		${SED} -ne 's,^${STAGEDIR}${PREFIX}/,,p' >> ${TMPPLIST}
-	@${FIND} -P -d ${STAGEDIR}${PREFIX}/include/php/ext/${PHP_MODNAME} -type d 2>/dev/null | \
-		${SED} -ne 's,^${STAGEDIR}${PREFIX}/,@dirrm ,p' >> ${TMPPLIST}
 	@${ECHO_CMD} "@exec echo \#include \\\"ext/${PHP_MODNAME}/config.h\\\" >> %D/include/php/ext/php_config.h" \
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec cp %D/include/php/ext/php_config.h %D/include/php/ext/php_config.h.orig" \
@@ -233,7 +221,7 @@ add-plist-phpext:
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec rm %D/include/php/ext/php_config.h.orig" \
 		>> ${TMPPLIST}
-	@${ECHO_CMD} "@exec mkdir -p %D/etc/php" \
+	@${ECHO_CMD} "@dir etc/php" \
 		>> ${TMPPLIST}
 .if defined(USE_ZENDEXT)
 	@${ECHO_CMD} "@exec echo zend_extension=%D/lib/php/${PHP_EXT_DIR}/${PHP_MODNAME}.so >> %D/etc/php/extensions.ini" \
@@ -254,8 +242,6 @@ add-plist-phpext:
 	@${ECHO_CMD} "@unexec rm %D/etc/php/extensions.ini.orig" \
 		>> ${TMPPLIST}
 	@${ECHO_CMD} "@unexec [ -s %D/etc/php/extensions.ini ] || rm %D/etc/php/extensions.ini" \
-		>> ${TMPPLIST}
-	@${ECHO_CMD} "@unexec rmdir %D/etc/php 2> /dev/null || true" \
 		>> ${TMPPLIST}
 
 package-message: php-ini
@@ -291,6 +277,7 @@ _USE_PHP_ALL=	apc bcmath bitset bz2 calendar ctype curl dba dom \
 _USE_PHP_VER5=	${_USE_PHP_ALL} phar sqlite3
 _USE_PHP_VER53=	${_USE_PHP_ALL} phar sqlite sqlite3
 _USE_PHP_VER55=	${_USE_PHP_ALL} phar sqlite3
+_USE_PHP_VER56=	${_USE_PHP_ALL} phar sqlite3
 
 apc_DEPENDS=	www/pecl-APC
 bcmath_DEPENDS=	math/php${PHP_VER}-bcmath
@@ -311,7 +298,7 @@ gettext_DEPENDS=devel/php${PHP_VER}-gettext
 gmp_DEPENDS=	math/php${PHP_VER}-gmp
 hash_DEPENDS=	security/php${PHP_VER}-hash
 iconv_DEPENDS=	converters/php${PHP_VER}-iconv
-igbinary_DEPENDS=	converters/igbinary
+igbinary_DEPENDS=	converters/pecl-igbinary
 imap_DEPENDS=	mail/php${PHP_VER}-imap
 interbase_DEPENDS=	databases/php${PHP_VER}-interbase
 intl_DEPENDS=	devel/pecl-intl
@@ -327,7 +314,7 @@ mysqli_DEPENDS=	databases/php${PHP_VER}-mysqli
 ncurses_DEPENDS=devel/php${PHP_VER}-ncurses
 odbc_DEPENDS=	databases/php${PHP_VER}-odbc
 oci8_DEPENDS=	databases/php${PHP_VER}-oci8
-.if ${PHP_VER} == 55
+.if ${PHP_VER} == 55 || ${PHP_VER} == 56
 opcache_DEPENDS=	www/php${PHP_VER}-opcache
 .else
 opcache_DEPENDS=	www/pecl-zendopcache

@@ -3,26 +3,23 @@
 
 PORTNAME=	afterstep
 PORTVERSION=	2.2.12
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	x11-wm afterstep
-MASTER_SITES=	${MASTER_SITE_AFTERSTEP}
-MASTER_SITE_SUBDIR=	stable
+MASTER_SITES=	AFTERSTEP/stable
 DISTNAME=	AfterStep-${PORTVERSION}
 
 MAINTAINER=	glewis@FreeBSD.org
-COMMENT=	A stable version of the AfterStep window manager
+COMMENT=	Stable version of the AfterStep window manager
 
 LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libgif.so:${PORTSDIR}/graphics/giflib \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 RUN_DEPENDS=	xli:${PORTSDIR}/graphics/xli
 
-USES=		gmake pkgconfig shebangfix tar:bzip2
+USES=		execinfo gmake jpeg pkgconfig shebangfix tar:bzip2
 USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 librsvg2 pango
 USE_XORG+=	ice sm x11 xcomposite xcursor xdamage xext xfixes xi xinerama \
 		xrandr xrender
@@ -58,9 +55,7 @@ PLIST_SUB+=	GNOME=""
 PLIST_SUB+=	GNOME="@comment "
 .endif
 
-.if ${OSVERSION} >= 1000000
-STATIC_LIBEXECINFO=
-.else
+.if !exists(/usr/lib/libexecinfo.so)
 STATIC_LIBEXECINFO=	${LOCALBASE}/lib/libexecinfo.a
 .endif
 

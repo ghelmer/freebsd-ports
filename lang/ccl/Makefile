@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ccl
-PORTVERSION=	1.9
+PORTVERSION=	1.10
 CATEGORIES=	lang lisp
 MASTER_SITES=	ftp://ftp.clozure.com/pub/release/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-freebsdx86
@@ -23,10 +23,6 @@ USE_ASDF=	yes
 .include "${.CURDIR}/../../devel/cl-asdf/bsd.cl-asdf.mk"
 
 .include <bsd.port.pre.mk>
-
-.if ${ARCH} == "amd64" && ${OSVERSION} >= 700000 && ${OSVERSION} < 800000
-MANUAL_PACKAGE_BUILD=yes
-.endif
 
 .if ${ARCH} == "i386"
 LISP_ARCH=	x8632
@@ -64,13 +60,10 @@ do-install:
 post-install:
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/ccl/* -type d -empty \
 		| ${SORT} \
-		| ${SED} -e 's#^#@exec ${MKDIR} %D/#g' \
+		| ${SED} -e 's#^#@dir #g' \
 		> ${CCL_PLIST}
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/ccl/* -type f -o -type l \
 		| ${SORT} \
-		>> ${CCL_PLIST}
-	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/ccl/* -type d | ${SORT} -r \
-	    	| ${SED} -e 's/^/@dirrm /g' \
 		>> ${CCL_PLIST}
 	@${ECHO_CMD} "r ${TMPPLIST}"		> ${WRKDIR}/ex.script
 	@${ECHO_CMD} "/start"			>> ${WRKDIR}/ex.script

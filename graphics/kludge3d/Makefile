@@ -3,18 +3,17 @@
 
 PORTNAME=	kludge3d
 PORTVERSION=	20040822
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/source/2004-08-22
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple 3D editor
 
-LIB_DEPENDS=	lib3ds-1.so:${PORTSDIR}/graphics/lib3ds \
+LIB_DEPENDS=	lib3ds.so:${PORTSDIR}/graphics/lib3ds \
 		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
 
-USE_PYTHON=	yes
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig python
 USE_GL=		gl
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
@@ -22,10 +21,8 @@ CONFIGURE_ARGS=	--with-lib-GL
 
 PLIST_FILES=	bin/kludge3d
 
-CPPFLAGS+=	-I${LOCALBASE}/include \
-		-I${PYTHON_INCLUDEDIR} ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib \
-		-L${PYTHON_LIBDIR}/config -lm ${PTHREAD_LIBS}
+CPPFLAGS+=	-I${LOCALBASE}/include -I${PYTHON_INCLUDEDIR}
+LDFLAGS+=	-L${LOCALBASE}/lib -L${PYTHON_LIBDIR}/config -lpthread -lm
 
 post-patch:
 	@${FIND} ${WRKSRC} -name "Makefile.in" | ${XARGS} ${REINPLACE_CMD} -e \

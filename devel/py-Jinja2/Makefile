@@ -17,10 +17,9 @@ LICENSE=	BSD3CLAUSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MarkupSafe>=0.18:${PORTSDIR}/textproc/py-MarkupSafe
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MarkupSafe>=0.18:${PORTSDIR}/textproc/py-MarkupSafe
 
-USE_PYTHON=		yes
+USES=		python
 .if empty(PKGNAMESUFFIX)
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USE_PYTHON=	distutils autoplist
 .endif
 
 EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
@@ -46,14 +45,14 @@ PORT_OPTIONS:=	${PORT_OPTIONS:NEXAMPLES}
 .endif
 
 # no problem with Python > 3.2
-.if ${PYTHON_REL} >= 320
+.if ${PYTHON_REL} >= 3200
 pre-build:
 	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/jinja2
 .endif
 
 .if ${PKGNAMESUFFIX} == "-doc"
 do-build:
-.	if ${PYTHON_REL} >= 300
+.	if ${PYTHON_REL} >= 3000
 	@${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/docs
 .	endif
 	(cd ${WRKSRC}/docs && ${MAKE} html)
@@ -67,7 +66,7 @@ do-install:
 .if ${PORT_OPTIONS:MEXAMPLES}
 PORTEXAMPLES=	*
 post-build:
-.	if ${PYTHON_REL} >= 300
+.	if ${PYTHON_REL} >= 3000
 	${PY2TO3_CMD} ${PY2TO3_ARGS} ${WRKSRC}/examples
 .	endif
 	${PYTHON_CMD} -m compileall ${WRKSRC}/examples ; \

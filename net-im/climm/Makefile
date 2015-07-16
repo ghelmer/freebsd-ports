@@ -3,7 +3,7 @@
 
 PORTNAME=	climm
 PORTVERSION=	0.7.1
-PORTREVISION=	10
+PORTREVISION=	11
 CATEGORIES=	net-im
 MASTER_SITES=	http://www.climm.org/source/ \
 		http://http.bg.climm.org/source/
@@ -16,7 +16,7 @@ USES=		gmake pkgconfig
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	ICONV P2P TCL OTR REMOTE XMPP
+OPTIONS_DEFINE=	ICONV P2P TCL OTR REMOTE XMPP DOCS
 OPTIONS_DEFAULT=ICONV P2P TCL OTR REMOTE
 P2P_DESC=	Enable Peer2peer connection support
 OTR_DESC=	Enable OTR encryption support

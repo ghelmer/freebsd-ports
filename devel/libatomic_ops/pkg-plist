@@ -63,23 +63,10 @@ include/atomic_ops/sysdeps/loadstore/short_acquire_release_volatile.h
 include/atomic_ops/sysdeps/loadstore/short_atomic_load.h
 include/atomic_ops/sysdeps/loadstore/short_atomic_store.h
 lib/libatomic_ops.a
-lib/libatomic_ops.la
 lib/libatomic_ops_gpl.a
-lib/libatomic_ops_gpl.la
 libdata/pkgconfig/atomic_ops.pc
 %%PORTDOCS%%%%DOCSDIR%%/LICENSING.txt
 %%PORTDOCS%%%%DOCSDIR%%/README.txt
 %%PORTDOCS%%%%DOCSDIR%%/README_malloc.txt
 %%PORTDOCS%%%%DOCSDIR%%/README_stack.txt
 %%PORTDOCS%%%%DOCSDIR%%/README_win32.txt
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm include/atomic_ops/sysdeps/sunc
-@dirrm include/atomic_ops/sysdeps/msftc
-@dirrm include/atomic_ops/sysdeps/icc
-@dirrm include/atomic_ops/sysdeps/ibmc
-@dirrm include/atomic_ops/sysdeps/hpc
-@dirrm include/atomic_ops/sysdeps/gcc
-@dirrm include/atomic_ops/sysdeps/armcc
-@dirrm include/atomic_ops/sysdeps/loadstore
-@dirrm include/atomic_ops/sysdeps
-@dirrm include/atomic_ops

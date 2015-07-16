@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	concurrencykit
-PORTVERSION=	0.4.2
+PORTVERSION=	0.4.5
 CATEGORIES=	devel
 MASTER_SITES=	http://concurrencykit.org/releases/ \
 		http://repnop.org/releases/
@@ -12,9 +12,10 @@ MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Lock-free data structures for high performance concurrent systems
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-OPTIONS_DEFINE=	RTM VMAPACK
-OPTIONS_DEFAULT=RTM VMAPACK
+OPTIONS_DEFINE=		RTM VMAPACK
+OPTIONS_DEFAULT=	VMAPACK
 
 RTM_DESC=	Restricted Transactional Memory (x86_64 only)
 VMAPACK_DESC=	Enable pointer packing
@@ -33,6 +34,9 @@ PLIST_SUB+=	VERSION=${PORTVERSION}
 post-extract:
 	${REINPLACE_CMD} -e 's|PKGCONFIG_DATA=@LIBRARY@|PKGCONFIG_DATA=${PREFIX}/libdata/|g' \
 	${WRKSRC}/Makefile.in
+
+post-install:
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libck.so.${PORTVERSION}
 
 regression-test: build
 	@cd ${WRKSRC} && ${MAKE} check

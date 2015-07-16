@@ -3,18 +3,18 @@
 
 PORTNAME=	pxlib
 PORTVERSION=	0.6.5
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	C library to read various Paradox files
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser
 
-USE_AUTOTOOLS=	libtool
-USES=		gmake iconv pathfix perl5
+USES=		gmake iconv libtool pathfix perl5
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include

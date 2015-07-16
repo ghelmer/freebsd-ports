@@ -5,17 +5,15 @@ PORTNAME=	gtksourceview
 PORTVERSION=	2.10.1
 PORTREVISION=	1
 CATEGORIES=	x11-toolkits gnome python
-MASTER_SITES=	GNOME
-MASTER_SITE_SUBDIR=	sources/pygtksourceview/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
+MASTER_SITES=	GNOME/sources/pygtksourceview/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	pygtksourceview-${PORTVERSION}
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Python bindings for GtkSourceView 2
 
-USES=		gmake libtool:keepla pathfix pkgconfig tar:bzip2
+USES=		gmake libtool:keepla pathfix pkgconfig python tar:bzip2
 USE_GNOME=	gnomeprefix gtksourceview2 pygtk2
-USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-docs
 INSTALL_TARGET=	install-strip

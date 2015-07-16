@@ -4,9 +4,8 @@
 PORTNAME=	pdf4tcl
 PORTVERSION=	0.8
 CATEGORIES=	print
-MASTER_SITES=	${MASTER_SITE_BERLIOS}
-MASTER_SITE_SUBDIR=	${PORTNAME}
-DISTFILES=	${PORTNAME}${PORTVERSION:S/.//}${EXTRACT_SUFX}/from_sourceforge
+MASTER_SITES=	SF/${PORTNAME}
+DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Pure Tcl library to generate PDF files
@@ -24,7 +23,6 @@ PLIST_FILES=	lib/${PKGNAME}/glyph2uni.tcl \
 		lib/${PKGNAME}/pdf4tcl.tcl \
 		lib/${PKGNAME}/stdmetrics.tcl \
 		man/mann/pdf4tcl.n.gz
-PLIST_DIRS=	lib/${PKGNAME}
 
 .include <bsd.port.options.mk>
 

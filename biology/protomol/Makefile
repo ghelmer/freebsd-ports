@@ -3,20 +3,30 @@
 
 PORTNAME=	protomol
 PORTVERSION=	2.0.3
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	biology
 MASTER_SITES=	SF/${PORTNAME}/ProtoMol/${PORTVERSION}
-DISTNAME=	${PORTNAME}-${PORTVERSION}-tar.gz
-EXTRACT_SUFX=	# empty
+DISTFILES=	${DISTNAME}-tar.gz
 
-MAINTAINER=	sangwoos@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OO, component based, framework for molecular dynamics (MD) simulations
 
-LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 
+USES=		shebangfix
+SHEBANG_FILES=	examples/butane_4/procDihedralFile.awk \
+		examples/butane_4/cleanOutput.bash \
+		examples/butane_4/runButaneResults.sh \
+		examples/butane_4/runButaneTests.sh
+SHEBANG_LANG=	awk
+awk_OLD_CMD=	/usr/bin/gawk
+awk_CMD=	/usr/bin/awk # base awk works fine in this case
 GNU_CONFIGURE=	yes
+USES=		jpeg
 USE_XORG=	xmu xt sm ice xext x11 xi
 
 # Hack to cure a misbehavior of the configure script
@@ -30,21 +40,17 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 OPTIONS_DEFINE=	GLUT
 OPTIONS_DEFAULT=	GLUT
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+GLUT_CONFIGURE_ON=	--with-glut=yes
+GLUT_USE=	GL=glut
+GLUT_CONFIGURE_OFF=	--with-glut=no
 
-.if ${PORT_OPTIONS:MGLUT}
-CONFIGURE_ARGS+=	--with-glut=yes
-USE_GL=	glut
-.else
-CONFIGURE_ARGS+=	--with-glut=no
-.endif
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MEXAMPLES}
 post-install:
-	@${MKDIR} ${EXAMPLESDIR}
-	cd ${WRKSRC}/examples && ${FIND} . | ${EGREP} -v '\.cvsignore' | \
-		${CPIO} -pdmu -R ${SHAREOWN}:${SHAREGRP} ${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples ; \
+		${COPYTREE_SHARE} .  ${STAGEDIR}${EXAMPLESDIR} "! -name .cvsignore"
 .endif
 
 .include <bsd.port.mk>

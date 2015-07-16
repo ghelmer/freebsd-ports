@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	recoll
-PORTVERSION=	1.19.14
+PORTVERSION=	1.20.2
 CATEGORIES=	deskutils
 MASTER_SITES=	http://www.lesbonscomptes.com/${PORTNAME}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Personal full text search package, based on Xapian
 
 LICENSE=	GPLv2
@@ -15,7 +15,7 @@ BUILD_DEPENDS=	xapian-core>=0:${PORTSDIR}/databases/xapian-core
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		antiword:${PORTSDIR}/textproc/antiword \
 		catdoc:${PORTSDIR}/textproc/catdoc \
-		wpd2html:${PORTSDIR}/textproc/libwpd \
+		wpd2html:${PORTSDIR}/textproc/libwpd010 \
 		xsltproc:${PORTSDIR}/textproc/libxslt \
 		unrar:${PORTSDIR}/archivers/unrar \
 		unrtf:${PORTSDIR}/textproc/unrtf
@@ -45,10 +45,10 @@ IMAGE_RUN_DEPENDS=	exiftool:${PORTSDIR}/graphics/p5-Image-ExifTool-devel
 KONQUEROR_DESC=		Konqueror webarchive format with Python
 KONQUEROR_RUN_DEPENDS=	kwebkitpart:${PORTSDIR}/www/kwebkitpart
 LATEX_RUN_DEPENDS=	detex:${PORTSDIR}/print/detex \
-			dvips:${PORTSDIR}/print/dvips
+			dvips:${PORTSDIR}/print/tex-dvipsk
 PDF_RUN_DEPENDS=	xpdf:${PORTSDIR}/graphics/xpdf
 PS_RUN_DEPENDS=		pstotext:${PORTSDIR}/print/pstotext
-PYTHON_USE=		python=yes
+PYTHON_USES=		python
 PYTHON_CONFIGURE_ENABLE=	python-module
 QT4_USE=		qt4=moc_build,qmake_build,rcc_build,uic_build \
 			qt4=iconengines_run,imageformats_run \

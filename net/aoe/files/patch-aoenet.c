@@ -1,5 +1,5 @@
---- aoenet.c.orig	2006-05-25 23:10:11.000000000 +0700
-+++ aoenet.c	2014-06-05 17:19:44.000000000 +0700
+--- aoenet.c.orig	2006-05-25 20:10:11.000000000 +0400
++++ aoenet.c	2014-10-02 20:18:23.000000000 +0400
 @@ -77,8 +77,11 @@
  #define NECODES (sizeof(aoe_errlist) /  sizeof(char *) - 1)
  #if (__FreeBSD_version < 600000)
@@ -13,15 +13,33 @@
  #endif
  #define IFLISTSZ 1024
  
-@@ -190,10 +193,18 @@
+@@ -160,7 +163,11 @@
+         register char *p, *q;
+         register int len;
+ 
++#if __FreeBSD_version >= 1100030
++        switch (ifp->if_type) {
++#else
+         switch (ifp->if_data.ifi_type) {
++#endif
+         default:
+                 return (FALSE);
+         case IFT_ETHER:
+@@ -190,10 +197,24 @@
  /* 
   * a dummy "free" function for mbuf ext buffer 
   */
 +#if __FreeBSD_version >= 1000050
++#if __FreeBSD_version >= 1100028
++static void
++#else
 +static int
++#endif
 +nilfn(struct mbuf *m, void *a, void *b)
 +{
++#if __FreeBSD_version < 1100028
 +	return EXT_FREE_OK;
++#endif
 +}
 +#else
  static void
@@ -32,7 +50,7 @@
  
  /* Create a mbuf chain and point to our data section(s). */
  static struct mbuf *
-@@ -201,7 +212,7 @@
+@@ -201,7 +222,7 @@
  {
          struct mbuf *m;
  
@@ -41,7 +59,7 @@
  		return (NULL);
  	m->m_len = AOEHDRSZ;
  	m->m_pkthdr.len = f->f_mlen;
-@@ -215,7 +226,7 @@
+@@ -215,14 +236,21 @@
                  u_int len;
  
                  len = f->f_mlen - AOEHDRSZ;
@@ -50,9 +68,13 @@
  			m_freem(m);
  			return (NULL);
  		}
-@@ -223,6 +234,9 @@
+ 		m->m_next = m1;
  
++#if __FreeBSD_version >= 1100028
++		m1->m_ext.ext_cnt = NULL;
++#else
  		m1->m_ext.ref_cnt = NULL;
++#endif
  		MEXTADD(m1, f->f_data, len, nilfn, 
 +#if (__FreeBSD_version >= 800000)
 +			f->f_data,
@@ -60,7 +82,7 @@
  			NULL, 0, EXT_NET_DRV);
  		m1->m_len = len;
  		m1->m_next = NULL;
-@@ -276,7 +290,7 @@
+@@ -276,7 +304,7 @@
  		if (!is_aoe_netif(ifp))
  			continue;
  		memcpy(h->ah_src, IFPADDR(ifp), sizeof(h->ah_src));
@@ -69,7 +91,43 @@
  		if (m == NULL) {
  			IPRINTK("m_copypacket failure\n");
  			continue;
-@@ -384,9 +398,9 @@
+@@ -298,7 +326,11 @@
+ aoenet_maxsize(struct ifnet *ifp)
+ {
+ 	/* max payload size of packet based on interface mtu setting */
++#if __FreeBSD_version >= 1100030
++	return ((ifp->if_mtu - AOEHDRSZ) & ~(DEV_BSIZE - 1));
++#else
+ 	return ((ifp->if_data.ifi_mtu - AOEHDRSZ) & ~(DEV_BSIZE - 1));
++#endif
+ }
+ 
+ 
+@@ -362,7 +394,11 @@
+          */
+         if ((m->m_flags & M_PKTHDR) == 0) {
+                 if_printf(ifp, "discard frame w/o packet header\n");
++#if __FreeBSD_version >= 1100036
++		if_inc_counter(ifp, IFCOUNTER_IERRORS, 1);
++#else
+                 ifp->if_ierrors++;
++#endif
+                 m_freem(m);
+                 return;
+ 	}
+@@ -371,7 +407,11 @@
+                 if_printf(ifp, "discard frame w/o leading ethernet "
+                                 "header (len %u pkt len %u)\n",
+                                 m->m_len, m->m_pkthdr.len);
++#if __FreeBSD_version >= 1100036
++		if_inc_counter(ifp, IFCOUNTER_IERRORS, 1);
++#else
+                 ifp->if_ierrors++;
++#endif
+                 m_freem(m);
+                 return;
+         }
+@@ -384,17 +424,25 @@
          if (m->m_pkthdr.len >
              ETHER_MAX_FRAME(ifp, etype, m->m_flags & M_HASFCS)) {
                  if_printf(ifp, "discard oversize frame "
@@ -79,5 +137,69 @@
 -                                ETHER_MAX_FRAME(ifp, etype,
 +                                (int) ETHER_MAX_FRAME(ifp, etype,
                                                  m->m_flags & M_HASFCS));
++#if __FreeBSD_version >= 1100036
++		if_inc_counter(ifp, IFCOUNTER_IERRORS, 1);
++#else
                  ifp->if_ierrors++;
++#endif
                  m_freem(m);
+                 return;
+         }
+         if (m->m_pkthdr.rcvif == NULL) {
+                 if_printf(ifp, "discard frame w/o interface pointer\n");
++#if __FreeBSD_version >= 1100036
++		if_inc_counter(ifp, IFCOUNTER_IERRORS, 1);
++#else
+                 ifp->if_ierrors++;
++#endif
+                 m_freem(m);
+                 return;
+ 	}
+@@ -417,7 +465,11 @@
+                 m->m_flags &= ~M_HASFCS;
+         }
+ 
++#if __FreeBSD_version >= 1100036
++	if_inc_counter(ifp, IFCOUNTER_IBYTES, m->m_pkthdr.len);
++#else
+         ifp->if_ibytes += m->m_pkthdr.len;
++#endif
+ 
+         if (ETHER_IS_MULTICAST(eh->ether_dhost)) {
+                 if (bcmp(etherbroadcastaddr, eh->ether_dhost,
+@@ -427,7 +479,11 @@
+                         m->m_flags |= M_MCAST;
+         }
+         if (m->m_flags & (M_BCAST|M_MCAST))
++#if __FreeBSD_version >= 1100036
++		if_inc_counter(ifp, IFCOUNTER_IMCASTS, 1);
++#else
+                 ifp->if_imcasts++;
++#endif
+ 
+ 	aoeintr(m); 
+ 	/* netisr_dispatch(NETISR_AOE, m); */
+@@ -472,7 +528,11 @@
+ 
+ 	IFNET_RLOCK();
+ 	TAILQ_FOREACH(ifp, &ifnet, if_link) {
++#if __FreeBSD_version >= 1100030
++        	switch (ifp->if_type) {
++#else
+         	switch (ifp->if_data.ifi_type) {
++#endif
+         	case IFT_ETHER:
+         	case IFT_FASTETHER:
+         	case IFT_GIGABITETHERNET:
+@@ -501,7 +561,11 @@
+ 
+ 	IFNET_RLOCK();
+ 	TAILQ_FOREACH(ifp, &ifnet, if_link) {
++#if __FreeBSD_version >= 1100030
++        	switch (ifp->if_type) {
++#else
+         	switch (ifp->if_data.ifi_type) {
++#endif
+         	case IFT_ETHER:
+         	case IFT_FASTETHER:
+         	case IFT_GIGABITETHERNET:

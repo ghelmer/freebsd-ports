@@ -9,13 +9,13 @@ MASTER_SITES=	http://blogs.sun.com/constantin/resource/
 DISTNAME=	${PORTNAME}_v${PORTVERSION}
 
 MAINTAINER=	jnlin@csie.nctu.edu.tw
-COMMENT=	A ZFS Snapshot Replication Script
+COMMENT=	ZFS Snapshot Replication Script
 
 RUN_DEPENDS=	ksh:${PORTSDIR}/shells/pdksh
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
-USE_BZIP2=	yes
+USES=	tar:bzip2
 
 PLIST_FILES=	sbin/zfs-replicate
 

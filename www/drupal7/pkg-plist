@@ -145,6 +145,8 @@
 %%DRUPAL_BASE%%/misc/tableheader.js
 %%DRUPAL_BASE%%/misc/tableselect.js
 %%DRUPAL_BASE%%/misc/textarea.js
+%%DRUPAL_BASE%%/misc/throbber-active.gif
+%%DRUPAL_BASE%%/misc/throbber-inactive.png
 %%DRUPAL_BASE%%/misc/throbber.gif
 %%DRUPAL_BASE%%/misc/timezone.js
 %%DRUPAL_BASE%%/misc/tree-bottom.png
@@ -423,7 +425,6 @@
 %%DRUPAL_BASE%%/modules/forum/forums.tpl.php
 %%DRUPAL_BASE%%/modules/help/help-rtl.css
 %%DRUPAL_BASE%%/modules/help/help.admin.inc
-%%DRUPAL_BASE%%/modules/help/help.api.php
 %%DRUPAL_BASE%%/modules/help/help.css
 %%DRUPAL_BASE%%/modules/help/help.info
 %%DRUPAL_BASE%%/modules/help/help.module
@@ -571,6 +572,8 @@
 %%DRUPAL_BASE%%/modules/search/tests/search_embedded_form.module
 %%DRUPAL_BASE%%/modules/search/tests/search_extra_type.info
 %%DRUPAL_BASE%%/modules/search/tests/search_extra_type.module
+%%DRUPAL_BASE%%/modules/search/tests/search_node_tags.info
+%%DRUPAL_BASE%%/modules/search/tests/search_node_tags.module
 %%DRUPAL_BASE%%/modules/shortcut/shortcut-rtl.css
 %%DRUPAL_BASE%%/modules/shortcut/shortcut.admin.css
 %%DRUPAL_BASE%%/modules/shortcut/shortcut.admin.inc
@@ -584,9 +587,6 @@
 %%DRUPAL_BASE%%/modules/shortcut/shortcut.test
 %%DRUPAL_BASE%%/modules/simpletest/drupal_web_test_case.php
 %%DRUPAL_BASE%%/modules/simpletest/files/README.txt
-%%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder/css_input_with_import.css
-%%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder/css_input_with_import.css.optimized.css
-%%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder/css_input_with_import.css.unoptimized.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/comment_hacks.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/comment_hacks.css.optimized.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/comment_hacks.css.unoptimized.css
@@ -596,12 +596,16 @@
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_input_without_import.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_input_without_import.css.optimized.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_input_without_import.css.unoptimized.css
+%%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder/css_input_with_import.css
+%%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder/css_input_with_import.css.optimized.css
+%%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder/css_input_with_import.css.unoptimized.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/import1.css
 %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/import2.css
 %%DRUPAL_BASE%%/modules/simpletest/files/html-1.txt
 %%DRUPAL_BASE%%/modules/simpletest/files/html-2.html
 %%DRUPAL_BASE%%/modules/simpletest/files/image-1.png
 %%DRUPAL_BASE%%/modules/simpletest/files/image-2.jpg
+%%DRUPAL_BASE%%/modules/simpletest/files/image-test-transparent-out-of-range.gif
 %%DRUPAL_BASE%%/modules/simpletest/files/image-test.gif
 %%DRUPAL_BASE%%/modules/simpletest/files/image-test.jpg
 %%DRUPAL_BASE%%/modules/simpletest/files/image-test.png
@@ -620,6 +624,7 @@
 %%DRUPAL_BASE%%/modules/simpletest/simpletest.module
 %%DRUPAL_BASE%%/modules/simpletest/simpletest.pages.inc
 %%DRUPAL_BASE%%/modules/simpletest/simpletest.test
+%%DRUPAL_BASE%%/modules/simpletest/src/Tests/PSR4WebTest.php
 %%DRUPAL_BASE%%/modules/simpletest/tests/actions.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/actions_loop_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/actions_loop_test.install
@@ -647,6 +652,10 @@
 %%DRUPAL_BASE%%/modules/simpletest/tests/database_test.install
 %%DRUPAL_BASE%%/modules/simpletest/tests/database_test.module
 %%DRUPAL_BASE%%/modules/simpletest/tests/database_test.test
+%%DRUPAL_BASE%%/modules/simpletest/tests/drupal_autoload_test/drupal_autoload_test.info
+%%DRUPAL_BASE%%/modules/simpletest/tests/drupal_autoload_test/drupal_autoload_test.module
+%%DRUPAL_BASE%%/modules/simpletest/tests/drupal_autoload_test/drupal_autoload_test_class.inc
+%%DRUPAL_BASE%%/modules/simpletest/tests/drupal_autoload_test/drupal_autoload_test_interface.inc
 %%DRUPAL_BASE%%/modules/simpletest/tests/drupal_system_listing_compatible_test/drupal_system_listing_compatible_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/drupal_system_listing_compatible_test/drupal_system_listing_compatible_test.module
 %%DRUPAL_BASE%%/modules/simpletest/tests/drupal_system_listing_incompatible_test/drupal_system_listing_incompatible_test.info
@@ -655,10 +664,10 @@
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_cache_test.module
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_cache_test_dependency.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_cache_test_dependency.module
+%%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud_hook_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud_hook_test.module
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud_hook_test.test
-%%DRUPAL_BASE%%/modules/simpletest/tests/entity_crud.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_query.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_query_access_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/entity_query_access_test.module
@@ -700,6 +709,10 @@
 %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/lib/Drupal/psr_0_test/Tests/Nested/NestedExampleTest.php
 %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/psr_0_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/psr_0_test.module
+%%DRUPAL_BASE%%/modules/simpletest/tests/psr_4_test/psr_4_test.info
+%%DRUPAL_BASE%%/modules/simpletest/tests/psr_4_test/psr_4_test.module
+%%DRUPAL_BASE%%/modules/simpletest/tests/psr_4_test/src/Tests/ExampleTest.php
+%%DRUPAL_BASE%%/modules/simpletest/tests/psr_4_test/src/Tests/Nested/NestedExampleTest.php
 %%DRUPAL_BASE%%/modules/simpletest/tests/registry.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/requirements1_test.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/requirements1_test.install
@@ -735,6 +748,7 @@
 %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_basetheme/test_basetheme.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_subtheme/test_subtheme.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_theme/template.php
+%%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_theme/templates/node--1.tpl.php
 %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_theme/test_theme.info
 %%DRUPAL_BASE%%/modules/simpletest/tests/unicode.test
 %%DRUPAL_BASE%%/modules/simpletest/tests/update.test
@@ -796,12 +810,12 @@
 %%DRUPAL_BASE%%/modules/statistics/statistics.admin.inc
 %%DRUPAL_BASE%%/modules/statistics/statistics.info
 %%DRUPAL_BASE%%/modules/statistics/statistics.install
+%%DRUPAL_BASE%%/modules/statistics/statistics.js
 %%DRUPAL_BASE%%/modules/statistics/statistics.module
 %%DRUPAL_BASE%%/modules/statistics/statistics.pages.inc
+%%DRUPAL_BASE%%/modules/statistics/statistics.php
 %%DRUPAL_BASE%%/modules/statistics/statistics.test
 %%DRUPAL_BASE%%/modules/statistics/statistics.tokens.inc
-%%DRUPAL_BASE%%/modules/statistics/statistics.js
-%%DRUPAL_BASE%%/modules/statistics/statistics.php
 %%DRUPAL_BASE%%/modules/syslog/syslog.info
 %%DRUPAL_BASE%%/modules/syslog/syslog.install
 %%DRUPAL_BASE%%/modules/syslog/syslog.module
@@ -838,9 +852,9 @@
 %%DRUPAL_BASE%%/modules/system/system.theme.css
 %%DRUPAL_BASE%%/modules/system/system.tokens.inc
 %%DRUPAL_BASE%%/modules/system/system.updater.inc
-%%DRUPAL_BASE%%/modules/system/theme.api.php
 %%DRUPAL_BASE%%/modules/system/tests/cron_queue_test.info
 %%DRUPAL_BASE%%/modules/system/tests/cron_queue_test.module
+%%DRUPAL_BASE%%/modules/system/theme.api.php
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy-term.tpl.php
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy.admin.inc
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy.api.php
@@ -959,6 +973,7 @@
 %%DRUPAL_BASE%%/scripts/password-hash.sh
 %%DRUPAL_BASE%%/scripts/run-tests.sh
 %%DRUPAL_BASE%%/scripts/test.script
+%%DRUPAL_BASE%%/sites/all/libraries/README.txt
 %%DRUPAL_BASE%%/sites/all/modules/README.txt
 %%DRUPAL_BASE%%/sites/all/themes/README.txt
 @sample %%DRUPAL_BASE%%/sites/default/default.settings.php.sample
@@ -1071,145 +1086,8 @@
 %%DRUPAL_BASE%%/update.php
 %%DRUPAL_BASE%%/web.config
 %%DRUPAL_BASE%%/xmlrpc.php
+@dir %%DRUPAL_BASE%%/sites/all/libraries
+@dir %%DRUPAL_BASE%%/sites/default/files
 @unexec rm -f %%DRUPAL_BASE%%/files/.htaccess 2> /dev/null || true
-@dirrm %%DRUPAL_BASE%%/themes/stark
-@dirrm %%DRUPAL_BASE%%/themes/seven/images
-@dirrm %%DRUPAL_BASE%%/themes/seven
-@dirrm %%DRUPAL_BASE%%/themes/garland/images
-@dirrm %%DRUPAL_BASE%%/themes/garland/color
-@dirrm %%DRUPAL_BASE%%/themes/garland
-@dirrm %%DRUPAL_BASE%%/themes/engines/phptemplate
-@dirrm %%DRUPAL_BASE%%/themes/engines
-@dirrm %%DRUPAL_BASE%%/themes/bartik/templates
-@dirrm %%DRUPAL_BASE%%/themes/bartik/images
-@dirrm %%DRUPAL_BASE%%/themes/bartik/css
-@dirrm %%DRUPAL_BASE%%/themes/bartik/color
-@dirrm %%DRUPAL_BASE%%/themes/bartik
-@dirrm %%DRUPAL_BASE%%/themes
-@dirrmtry %%DRUPAL_BASE%%/sites/default/files
-@dirrmtry %%DRUPAL_BASE%%/sites/default
-@dirrmtry %%DRUPAL_BASE%%/sites/all/themes
-@dirrmtry %%DRUPAL_BASE%%/sites/all/modules
-@dirrmtry %%DRUPAL_BASE%%/sites/all/libraries
-@dirrmtry %%DRUPAL_BASE%%/sites/all
-@dirrmtry %%DRUPAL_BASE%%/sites
-@dirrm %%DRUPAL_BASE%%/scripts
-@dirrm %%DRUPAL_BASE%%/profiles/testing/modules/drupal_system_listing_incompatible_test
-@dirrm %%DRUPAL_BASE%%/profiles/testing/modules/drupal_system_listing_compatible_test
-@dirrm %%DRUPAL_BASE%%/profiles/testing/modules
-@dirrm %%DRUPAL_BASE%%/profiles/testing
-@dirrm %%DRUPAL_BASE%%/profiles/standard/translations
-@dirrm %%DRUPAL_BASE%%/profiles/standard
-@dirrm %%DRUPAL_BASE%%/profiles/minimal/translations
-@dirrm %%DRUPAL_BASE%%/profiles/minimal
-@dirrm %%DRUPAL_BASE%%/profiles
-@dirrm %%DRUPAL_BASE%%/modules/user/tests
-@dirrm %%DRUPAL_BASE%%/modules/user
-@dirrm %%DRUPAL_BASE%%/modules/update/tests/themes/update_test_subtheme
-@dirrm %%DRUPAL_BASE%%/modules/update/tests/themes/update_test_basetheme
-@dirrm %%DRUPAL_BASE%%/modules/update/tests/themes
-@dirrm %%DRUPAL_BASE%%/modules/update/tests
-@dirrm %%DRUPAL_BASE%%/modules/update
-@dirrm %%DRUPAL_BASE%%/modules/trigger/tests
-@dirrm %%DRUPAL_BASE%%/modules/trigger
-@dirrm %%DRUPAL_BASE%%/modules/translation/tests
-@dirrm %%DRUPAL_BASE%%/modules/translation
-@dirrm %%DRUPAL_BASE%%/modules/tracker
-@dirrm %%DRUPAL_BASE%%/modules/toolbar
-@dirrm %%DRUPAL_BASE%%/modules/taxonomy
-@dirrm %%DRUPAL_BASE%%/modules/system/tests
-@dirrm %%DRUPAL_BASE%%/modules/system
-@dirrm %%DRUPAL_BASE%%/modules/syslog
-@dirrm %%DRUPAL_BASE%%/modules/statistics
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/upgrade
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_theme
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_subtheme
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/themes/test_basetheme
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/themes
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/lib/Drupal/psr_0_test/Tests/Nested
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/lib/Drupal/psr_0_test/Tests
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/lib/Drupal/psr_0_test
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/lib/Drupal
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test/lib
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/psr_0_test
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/drupal_system_listing_incompatible_test
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests/drupal_system_listing_compatible_test
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/tests
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/lib/Drupal/simpletest/Tests
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/lib/Drupal/simpletest
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/lib/Drupal
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/lib
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files/css_subfolder
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/files/css_test_files
-@dirrm %%DRUPAL_BASE%%/modules/simpletest/files
-@dirrm %%DRUPAL_BASE%%/modules/simpletest
-@dirrm %%DRUPAL_BASE%%/modules/shortcut
-@dirrm %%DRUPAL_BASE%%/modules/search/tests
-@dirrm %%DRUPAL_BASE%%/modules/search
-@dirrm %%DRUPAL_BASE%%/modules/rdf/tests
-@dirrm %%DRUPAL_BASE%%/modules/rdf
-@dirrm %%DRUPAL_BASE%%/modules/profile
-@dirrm %%DRUPAL_BASE%%/modules/poll
-@dirrm %%DRUPAL_BASE%%/modules/php
-@dirrm %%DRUPAL_BASE%%/modules/path
-@dirrm %%DRUPAL_BASE%%/modules/overlay/images
-@dirrm %%DRUPAL_BASE%%/modules/overlay
-@dirrm %%DRUPAL_BASE%%/modules/openid/tests
-@dirrm %%DRUPAL_BASE%%/modules/openid
-@dirrm %%DRUPAL_BASE%%/modules/node/tests
-@dirrm %%DRUPAL_BASE%%/modules/node
-@dirrm %%DRUPAL_BASE%%/modules/menu
-@dirrm %%DRUPAL_BASE%%/modules/locale/tests/translations
-@dirrm %%DRUPAL_BASE%%/modules/locale/tests
-@dirrm %%DRUPAL_BASE%%/modules/locale
-@dirrm %%DRUPAL_BASE%%/modules/image/tests
-@dirrm %%DRUPAL_BASE%%/modules/image
-@dirrm %%DRUPAL_BASE%%/modules/help
-@dirrm %%DRUPAL_BASE%%/modules/forum
-@dirrm %%DRUPAL_BASE%%/modules/filter/tests
-@dirrm %%DRUPAL_BASE%%/modules/filter
-@dirrm %%DRUPAL_BASE%%/modules/file/tests
-@dirrm %%DRUPAL_BASE%%/modules/file/icons
-@dirrm %%DRUPAL_BASE%%/modules/file
-@dirrm %%DRUPAL_BASE%%/modules/field_ui
-@dirrm %%DRUPAL_BASE%%/modules/field/theme
-@dirrm %%DRUPAL_BASE%%/modules/field/tests
-@dirrm %%DRUPAL_BASE%%/modules/field/modules/text
-@dirrm %%DRUPAL_BASE%%/modules/field/modules/options
-@dirrm %%DRUPAL_BASE%%/modules/field/modules/number
-@dirrm %%DRUPAL_BASE%%/modules/field/modules/list/tests
-@dirrm %%DRUPAL_BASE%%/modules/field/modules/list
-@dirrm %%DRUPAL_BASE%%/modules/field/modules/field_sql_storage
-@dirrm %%DRUPAL_BASE%%/modules/field/modules
-@dirrm %%DRUPAL_BASE%%/modules/field
-@dirrm %%DRUPAL_BASE%%/modules/dblog
-@dirrm %%DRUPAL_BASE%%/modules/dashboard
-@dirrm %%DRUPAL_BASE%%/modules/contextual/images
-@dirrm %%DRUPAL_BASE%%/modules/contextual
-@dirrm %%DRUPAL_BASE%%/modules/contact
-@dirrm %%DRUPAL_BASE%%/modules/comment
-@dirrm %%DRUPAL_BASE%%/modules/color/images
-@dirrm %%DRUPAL_BASE%%/modules/color
-@dirrm %%DRUPAL_BASE%%/modules/book
-@dirrm %%DRUPAL_BASE%%/modules/blog
-@dirrm %%DRUPAL_BASE%%/modules/block/tests/themes/block_test_theme
-@dirrm %%DRUPAL_BASE%%/modules/block/tests/themes
-@dirrm %%DRUPAL_BASE%%/modules/block/tests
-@dirrm %%DRUPAL_BASE%%/modules/block
-@dirrm %%DRUPAL_BASE%%/modules/aggregator/tests
-@dirrm %%DRUPAL_BASE%%/modules/aggregator
-@dirrmtry %%DRUPAL_BASE%%/modules
-@dirrm %%DRUPAL_BASE%%/misc/ui/images
-@dirrm %%DRUPAL_BASE%%/misc/ui
-@dirrm %%DRUPAL_BASE%%/misc/farbtastic
-@dirrm %%DRUPAL_BASE%%/misc
-@dirrm %%DRUPAL_BASE%%/includes/filetransfer
-@dirrm %%DRUPAL_BASE%%/includes/database/sqlite
-@dirrm %%DRUPAL_BASE%%/includes/database/pgsql
-@dirrm %%DRUPAL_BASE%%/includes/database/mysql
-@dirrm %%DRUPAL_BASE%%/includes/database
-@dirrm %%DRUPAL_BASE%%/includes
-@dirrmtry %%DRUPAL_BASE%%/
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
 @owner root
 @group wheel

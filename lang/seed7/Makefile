@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	seed7
-DISTVERSION=	05_20140615
+DISTVERSION=	05_20140907
 CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High-level, extensible programming language
 
 # The language libraries are licensed under the LGPL21 license. Starting from

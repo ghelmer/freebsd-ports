@@ -3,13 +3,15 @@
 
 PORTNAME=	Net-CUPS
 PORTVERSION=	0.61
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	print perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	vg@FreeBSD.org
 COMMENT=	Interface to the CUPS API
+
+BROKEN=		Fails to configure or build
 
 BUILD_DEPENDS=	cups-config:${PORTSDIR}/print/cups-client
 LIB_DEPENDS=	libcupsimage.so:${PORTSDIR}/print/cups-image \

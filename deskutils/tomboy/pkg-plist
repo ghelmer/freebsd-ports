@@ -1,5 +1,4 @@
 bin/tomboy
-%%APPLET%%bin/tomboy-panel
 lib/tomboy/Tomboy.exe
 lib/tomboy/Tomboy.exe.config
 lib/tomboy/Tomboy.exe.mdb
@@ -9,8 +8,8 @@ lib/tomboy/addins/Backlinks.dll
 lib/tomboy/addins/Backlinks.dll.mdb
 lib/tomboy/addins/Bugzilla.dll
 lib/tomboy/addins/Bugzilla.dll.mdb
-lib/tomboy/addins/Evolution.dll
-lib/tomboy/addins/Evolution.dll.mdb
+%%EVOLUTION%%lib/tomboy/addins/Evolution.dll
+%%EVOLUTION%%lib/tomboy/addins/Evolution.dll.mdb
 lib/tomboy/addins/ExportToHtml.dll
 lib/tomboy/addins/ExportToHtml.dll.mdb
 lib/tomboy/addins/FileSystemSyncService.dll
@@ -38,18 +37,25 @@ lib/tomboy/addins/WebDavSyncService.dll
 lib/tomboy/addins/WebDavSyncService.dll.mdb
 lib/tomboy/addins/WebSyncServiceAddin.dll
 lib/tomboy/addins/WebSyncServiceAddin.dll.mdb
-lib/tomboy/libtomboy.la
 lib/tomboy/libtomboy.so
-%%APPLET%%libdata/bonobo/servers/GNOME_TomboyApplet.server
 libdata/pkgconfig/tomboy-addins.pc
+man/man1/tomboy.1.gz
 share/applications/tomboy.desktop
 share/dbus-1/services/org.gnome.Tomboy.service
-share/gnome/help/tomboy/C/addins-desktop.page
-share/gnome/help/tomboy/C/addins-formatting.page
-share/gnome/help/tomboy/C/addins-sync.page
-share/gnome/help/tomboy/C/addins-tools.page
+share/gnome/help/tomboy/C/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/C/addins-desktop-printing.page
+share/gnome/help/tomboy/C/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/C/addins-formatting-underline.page
+share/gnome/help/tomboy/C/addins-preferences.page
+share/gnome/help/tomboy/C/addins-sync-local.page
+share/gnome/help/tomboy/C/addins-sync-ssh.page
+share/gnome/help/tomboy/C/addins-sync-webdav.page
+share/gnome/help/tomboy/C/addins-sync-webservice.page
+share/gnome/help/tomboy/C/addins-tools-backlinks.page
+share/gnome/help/tomboy/C/addins-tools-html-export.page
+share/gnome/help/tomboy/C/addins-tools-note-of-day.page
+share/gnome/help/tomboy/C/addins-tools-timestamp.page
 share/gnome/help/tomboy/C/addins.page
-share/gnome/help/tomboy/C/advanced.page
 share/gnome/help/tomboy/C/create-note.page
 share/gnome/help/tomboy/C/create-notebook.page
 share/gnome/help/tomboy/C/delete-notes.page
@@ -77,18 +83,26 @@ share/gnome/help/tomboy/C/index.page
 share/gnome/help/tomboy/C/introduction.page
 share/gnome/help/tomboy/C/legal.xml
 share/gnome/help/tomboy/C/note-edit-prefs.page
+share/gnome/help/tomboy/C/pin-notes.page
 share/gnome/help/tomboy/C/prefs.page
-share/gnome/help/tomboy/C/problems.page
 share/gnome/help/tomboy/C/search.page
 share/gnome/help/tomboy/C/sync-setup.page
 share/gnome/help/tomboy/C/sync.page
 share/gnome/help/tomboy/C/whatsnew.page
-share/gnome/help/tomboy/ca/addins-desktop.page
-share/gnome/help/tomboy/ca/addins-formatting.page
-share/gnome/help/tomboy/ca/addins-sync.page
-share/gnome/help/tomboy/ca/addins-tools.page
+share/gnome/help/tomboy/ca/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/ca/addins-desktop-printing.page
+share/gnome/help/tomboy/ca/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/ca/addins-formatting-underline.page
+share/gnome/help/tomboy/ca/addins-preferences.page
+share/gnome/help/tomboy/ca/addins-sync-local.page
+share/gnome/help/tomboy/ca/addins-sync-ssh.page
+share/gnome/help/tomboy/ca/addins-sync-webdav.page
+share/gnome/help/tomboy/ca/addins-sync-webservice.page
+share/gnome/help/tomboy/ca/addins-tools-backlinks.page
+share/gnome/help/tomboy/ca/addins-tools-html-export.page
+share/gnome/help/tomboy/ca/addins-tools-note-of-day.page
+share/gnome/help/tomboy/ca/addins-tools-timestamp.page
 share/gnome/help/tomboy/ca/addins.page
-share/gnome/help/tomboy/ca/advanced.page
 share/gnome/help/tomboy/ca/create-note.page
 share/gnome/help/tomboy/ca/create-notebook.page
 share/gnome/help/tomboy/ca/delete-notes.page
@@ -116,18 +130,26 @@ share/gnome/help/tomboy/ca/index.page
 share/gnome/help/tomboy/ca/introduction.page
 share/gnome/help/tomboy/ca/legal.xml
 share/gnome/help/tomboy/ca/note-edit-prefs.page
+share/gnome/help/tomboy/ca/pin-notes.page
 share/gnome/help/tomboy/ca/prefs.page
-share/gnome/help/tomboy/ca/problems.page
 share/gnome/help/tomboy/ca/search.page
 share/gnome/help/tomboy/ca/sync-setup.page
 share/gnome/help/tomboy/ca/sync.page
 share/gnome/help/tomboy/ca/whatsnew.page
-share/gnome/help/tomboy/cs/addins-desktop.page
-share/gnome/help/tomboy/cs/addins-formatting.page
-share/gnome/help/tomboy/cs/addins-sync.page
-share/gnome/help/tomboy/cs/addins-tools.page
+share/gnome/help/tomboy/cs/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/cs/addins-desktop-printing.page
+share/gnome/help/tomboy/cs/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/cs/addins-formatting-underline.page
+share/gnome/help/tomboy/cs/addins-preferences.page
+share/gnome/help/tomboy/cs/addins-sync-local.page
+share/gnome/help/tomboy/cs/addins-sync-ssh.page
+share/gnome/help/tomboy/cs/addins-sync-webdav.page
+share/gnome/help/tomboy/cs/addins-sync-webservice.page
+share/gnome/help/tomboy/cs/addins-tools-backlinks.page
+share/gnome/help/tomboy/cs/addins-tools-html-export.page
+share/gnome/help/tomboy/cs/addins-tools-note-of-day.page
+share/gnome/help/tomboy/cs/addins-tools-timestamp.page
 share/gnome/help/tomboy/cs/addins.page
-share/gnome/help/tomboy/cs/advanced.page
 share/gnome/help/tomboy/cs/create-note.page
 share/gnome/help/tomboy/cs/create-notebook.page
 share/gnome/help/tomboy/cs/delete-notes.page
@@ -155,18 +177,26 @@ share/gnome/help/tomboy/cs/index.page
 share/gnome/help/tomboy/cs/introduction.page
 share/gnome/help/tomboy/cs/legal.xml
 share/gnome/help/tomboy/cs/note-edit-prefs.page
+share/gnome/help/tomboy/cs/pin-notes.page
 share/gnome/help/tomboy/cs/prefs.page
-share/gnome/help/tomboy/cs/problems.page
 share/gnome/help/tomboy/cs/search.page
 share/gnome/help/tomboy/cs/sync-setup.page
 share/gnome/help/tomboy/cs/sync.page
 share/gnome/help/tomboy/cs/whatsnew.page
-share/gnome/help/tomboy/de/addins-desktop.page
-share/gnome/help/tomboy/de/addins-formatting.page
-share/gnome/help/tomboy/de/addins-sync.page
-share/gnome/help/tomboy/de/addins-tools.page
+share/gnome/help/tomboy/de/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/de/addins-desktop-printing.page
+share/gnome/help/tomboy/de/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/de/addins-formatting-underline.page
+share/gnome/help/tomboy/de/addins-preferences.page
+share/gnome/help/tomboy/de/addins-sync-local.page
+share/gnome/help/tomboy/de/addins-sync-ssh.page
+share/gnome/help/tomboy/de/addins-sync-webdav.page
+share/gnome/help/tomboy/de/addins-sync-webservice.page
+share/gnome/help/tomboy/de/addins-tools-backlinks.page
+share/gnome/help/tomboy/de/addins-tools-html-export.page
+share/gnome/help/tomboy/de/addins-tools-note-of-day.page
+share/gnome/help/tomboy/de/addins-tools-timestamp.page
 share/gnome/help/tomboy/de/addins.page
-share/gnome/help/tomboy/de/advanced.page
 share/gnome/help/tomboy/de/create-note.page
 share/gnome/help/tomboy/de/create-notebook.page
 share/gnome/help/tomboy/de/delete-notes.page
@@ -194,18 +224,26 @@ share/gnome/help/tomboy/de/index.page
 share/gnome/help/tomboy/de/introduction.page
 share/gnome/help/tomboy/de/legal.xml
 share/gnome/help/tomboy/de/note-edit-prefs.page
+share/gnome/help/tomboy/de/pin-notes.page
 share/gnome/help/tomboy/de/prefs.page
-share/gnome/help/tomboy/de/problems.page
 share/gnome/help/tomboy/de/search.page
 share/gnome/help/tomboy/de/sync-setup.page
 share/gnome/help/tomboy/de/sync.page
 share/gnome/help/tomboy/de/whatsnew.page
-share/gnome/help/tomboy/el/addins-desktop.page
-share/gnome/help/tomboy/el/addins-formatting.page
-share/gnome/help/tomboy/el/addins-sync.page
-share/gnome/help/tomboy/el/addins-tools.page
+share/gnome/help/tomboy/el/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/el/addins-desktop-printing.page
+share/gnome/help/tomboy/el/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/el/addins-formatting-underline.page
+share/gnome/help/tomboy/el/addins-preferences.page
+share/gnome/help/tomboy/el/addins-sync-local.page
+share/gnome/help/tomboy/el/addins-sync-ssh.page
+share/gnome/help/tomboy/el/addins-sync-webdav.page
+share/gnome/help/tomboy/el/addins-sync-webservice.page
+share/gnome/help/tomboy/el/addins-tools-backlinks.page
+share/gnome/help/tomboy/el/addins-tools-html-export.page
+share/gnome/help/tomboy/el/addins-tools-note-of-day.page
+share/gnome/help/tomboy/el/addins-tools-timestamp.page
 share/gnome/help/tomboy/el/addins.page
-share/gnome/help/tomboy/el/advanced.page
 share/gnome/help/tomboy/el/create-note.page
 share/gnome/help/tomboy/el/create-notebook.page
 share/gnome/help/tomboy/el/delete-notes.page
@@ -233,18 +271,26 @@ share/gnome/help/tomboy/el/index.page
 share/gnome/help/tomboy/el/introduction.page
 share/gnome/help/tomboy/el/legal.xml
 share/gnome/help/tomboy/el/note-edit-prefs.page
+share/gnome/help/tomboy/el/pin-notes.page
 share/gnome/help/tomboy/el/prefs.page
-share/gnome/help/tomboy/el/problems.page
 share/gnome/help/tomboy/el/search.page
 share/gnome/help/tomboy/el/sync-setup.page
 share/gnome/help/tomboy/el/sync.page
 share/gnome/help/tomboy/el/whatsnew.page
-share/gnome/help/tomboy/en_GB/addins-desktop.page
-share/gnome/help/tomboy/en_GB/addins-formatting.page
-share/gnome/help/tomboy/en_GB/addins-sync.page
-share/gnome/help/tomboy/en_GB/addins-tools.page
+share/gnome/help/tomboy/en_GB/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/en_GB/addins-desktop-printing.page
+share/gnome/help/tomboy/en_GB/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/en_GB/addins-formatting-underline.page
+share/gnome/help/tomboy/en_GB/addins-preferences.page
+share/gnome/help/tomboy/en_GB/addins-sync-local.page
+share/gnome/help/tomboy/en_GB/addins-sync-ssh.page
+share/gnome/help/tomboy/en_GB/addins-sync-webdav.page
+share/gnome/help/tomboy/en_GB/addins-sync-webservice.page
+share/gnome/help/tomboy/en_GB/addins-tools-backlinks.page
+share/gnome/help/tomboy/en_GB/addins-tools-html-export.page
+share/gnome/help/tomboy/en_GB/addins-tools-note-of-day.page
+share/gnome/help/tomboy/en_GB/addins-tools-timestamp.page
 share/gnome/help/tomboy/en_GB/addins.page
-share/gnome/help/tomboy/en_GB/advanced.page
 share/gnome/help/tomboy/en_GB/create-note.page
 share/gnome/help/tomboy/en_GB/create-notebook.page
 share/gnome/help/tomboy/en_GB/delete-notes.page
@@ -272,18 +318,26 @@ share/gnome/help/tomboy/en_GB/index.page
 share/gnome/help/tomboy/en_GB/introduction.page
 share/gnome/help/tomboy/en_GB/legal.xml
 share/gnome/help/tomboy/en_GB/note-edit-prefs.page
+share/gnome/help/tomboy/en_GB/pin-notes.page
 share/gnome/help/tomboy/en_GB/prefs.page
-share/gnome/help/tomboy/en_GB/problems.page
 share/gnome/help/tomboy/en_GB/search.page
 share/gnome/help/tomboy/en_GB/sync-setup.page
 share/gnome/help/tomboy/en_GB/sync.page
 share/gnome/help/tomboy/en_GB/whatsnew.page
-share/gnome/help/tomboy/es/addins-desktop.page
-share/gnome/help/tomboy/es/addins-formatting.page
-share/gnome/help/tomboy/es/addins-sync.page
-share/gnome/help/tomboy/es/addins-tools.page
+share/gnome/help/tomboy/es/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/es/addins-desktop-printing.page
+share/gnome/help/tomboy/es/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/es/addins-formatting-underline.page
+share/gnome/help/tomboy/es/addins-preferences.page
+share/gnome/help/tomboy/es/addins-sync-local.page
+share/gnome/help/tomboy/es/addins-sync-ssh.page
+share/gnome/help/tomboy/es/addins-sync-webdav.page
+share/gnome/help/tomboy/es/addins-sync-webservice.page
+share/gnome/help/tomboy/es/addins-tools-backlinks.page
+share/gnome/help/tomboy/es/addins-tools-html-export.page
+share/gnome/help/tomboy/es/addins-tools-note-of-day.page
+share/gnome/help/tomboy/es/addins-tools-timestamp.page
 share/gnome/help/tomboy/es/addins.page
-share/gnome/help/tomboy/es/advanced.page
 share/gnome/help/tomboy/es/create-note.page
 share/gnome/help/tomboy/es/create-notebook.page
 share/gnome/help/tomboy/es/delete-notes.page
@@ -311,18 +365,26 @@ share/gnome/help/tomboy/es/index.page
 share/gnome/help/tomboy/es/introduction.page
 share/gnome/help/tomboy/es/legal.xml
 share/gnome/help/tomboy/es/note-edit-prefs.page
+share/gnome/help/tomboy/es/pin-notes.page
 share/gnome/help/tomboy/es/prefs.page
-share/gnome/help/tomboy/es/problems.page
 share/gnome/help/tomboy/es/search.page
 share/gnome/help/tomboy/es/sync-setup.page
 share/gnome/help/tomboy/es/sync.page
 share/gnome/help/tomboy/es/whatsnew.page
-share/gnome/help/tomboy/eu/addins-desktop.page
-share/gnome/help/tomboy/eu/addins-formatting.page
-share/gnome/help/tomboy/eu/addins-sync.page
-share/gnome/help/tomboy/eu/addins-tools.page
+share/gnome/help/tomboy/eu/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/eu/addins-desktop-printing.page
+share/gnome/help/tomboy/eu/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/eu/addins-formatting-underline.page
+share/gnome/help/tomboy/eu/addins-preferences.page
+share/gnome/help/tomboy/eu/addins-sync-local.page
+share/gnome/help/tomboy/eu/addins-sync-ssh.page
+share/gnome/help/tomboy/eu/addins-sync-webdav.page
+share/gnome/help/tomboy/eu/addins-sync-webservice.page
+share/gnome/help/tomboy/eu/addins-tools-backlinks.page
+share/gnome/help/tomboy/eu/addins-tools-html-export.page
+share/gnome/help/tomboy/eu/addins-tools-note-of-day.page
+share/gnome/help/tomboy/eu/addins-tools-timestamp.page
 share/gnome/help/tomboy/eu/addins.page
-share/gnome/help/tomboy/eu/advanced.page
 share/gnome/help/tomboy/eu/create-note.page
 share/gnome/help/tomboy/eu/create-notebook.page
 share/gnome/help/tomboy/eu/delete-notes.page
@@ -350,18 +412,26 @@ share/gnome/help/tomboy/eu/index.page
 share/gnome/help/tomboy/eu/introduction.page
 share/gnome/help/tomboy/eu/legal.xml
 share/gnome/help/tomboy/eu/note-edit-prefs.page
+share/gnome/help/tomboy/eu/pin-notes.page
 share/gnome/help/tomboy/eu/prefs.page
-share/gnome/help/tomboy/eu/problems.page
 share/gnome/help/tomboy/eu/search.page
 share/gnome/help/tomboy/eu/sync-setup.page
 share/gnome/help/tomboy/eu/sync.page
 share/gnome/help/tomboy/eu/whatsnew.page
-share/gnome/help/tomboy/fr/addins-desktop.page
-share/gnome/help/tomboy/fr/addins-formatting.page
-share/gnome/help/tomboy/fr/addins-sync.page
-share/gnome/help/tomboy/fr/addins-tools.page
+share/gnome/help/tomboy/fr/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/fr/addins-desktop-printing.page
+share/gnome/help/tomboy/fr/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/fr/addins-formatting-underline.page
+share/gnome/help/tomboy/fr/addins-preferences.page
+share/gnome/help/tomboy/fr/addins-sync-local.page
+share/gnome/help/tomboy/fr/addins-sync-ssh.page
+share/gnome/help/tomboy/fr/addins-sync-webdav.page
+share/gnome/help/tomboy/fr/addins-sync-webservice.page
+share/gnome/help/tomboy/fr/addins-tools-backlinks.page
+share/gnome/help/tomboy/fr/addins-tools-html-export.page
+share/gnome/help/tomboy/fr/addins-tools-note-of-day.page
+share/gnome/help/tomboy/fr/addins-tools-timestamp.page
 share/gnome/help/tomboy/fr/addins.page
-share/gnome/help/tomboy/fr/advanced.page
 share/gnome/help/tomboy/fr/create-note.page
 share/gnome/help/tomboy/fr/create-notebook.page
 share/gnome/help/tomboy/fr/delete-notes.page
@@ -389,18 +459,26 @@ share/gnome/help/tomboy/fr/index.page
 share/gnome/help/tomboy/fr/introduction.page
 share/gnome/help/tomboy/fr/legal.xml
 share/gnome/help/tomboy/fr/note-edit-prefs.page
+share/gnome/help/tomboy/fr/pin-notes.page
 share/gnome/help/tomboy/fr/prefs.page
-share/gnome/help/tomboy/fr/problems.page
 share/gnome/help/tomboy/fr/search.page
 share/gnome/help/tomboy/fr/sync-setup.page
 share/gnome/help/tomboy/fr/sync.page
 share/gnome/help/tomboy/fr/whatsnew.page
-share/gnome/help/tomboy/gl/addins-desktop.page
-share/gnome/help/tomboy/gl/addins-formatting.page
-share/gnome/help/tomboy/gl/addins-sync.page
-share/gnome/help/tomboy/gl/addins-tools.page
+share/gnome/help/tomboy/gl/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/gl/addins-desktop-printing.page
+share/gnome/help/tomboy/gl/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/gl/addins-formatting-underline.page
+share/gnome/help/tomboy/gl/addins-preferences.page
+share/gnome/help/tomboy/gl/addins-sync-local.page
+share/gnome/help/tomboy/gl/addins-sync-ssh.page
+share/gnome/help/tomboy/gl/addins-sync-webdav.page
+share/gnome/help/tomboy/gl/addins-sync-webservice.page
+share/gnome/help/tomboy/gl/addins-tools-backlinks.page
+share/gnome/help/tomboy/gl/addins-tools-html-export.page
+share/gnome/help/tomboy/gl/addins-tools-note-of-day.page
+share/gnome/help/tomboy/gl/addins-tools-timestamp.page
 share/gnome/help/tomboy/gl/addins.page
-share/gnome/help/tomboy/gl/advanced.page
 share/gnome/help/tomboy/gl/create-note.page
 share/gnome/help/tomboy/gl/create-notebook.page
 share/gnome/help/tomboy/gl/delete-notes.page
@@ -428,18 +506,26 @@ share/gnome/help/tomboy/gl/index.page
 share/gnome/help/tomboy/gl/introduction.page
 share/gnome/help/tomboy/gl/legal.xml
 share/gnome/help/tomboy/gl/note-edit-prefs.page
+share/gnome/help/tomboy/gl/pin-notes.page
 share/gnome/help/tomboy/gl/prefs.page
-share/gnome/help/tomboy/gl/problems.page
 share/gnome/help/tomboy/gl/search.page
 share/gnome/help/tomboy/gl/sync-setup.page
 share/gnome/help/tomboy/gl/sync.page
 share/gnome/help/tomboy/gl/whatsnew.page
-share/gnome/help/tomboy/hu/addins-desktop.page
-share/gnome/help/tomboy/hu/addins-formatting.page
-share/gnome/help/tomboy/hu/addins-sync.page
-share/gnome/help/tomboy/hu/addins-tools.page
+share/gnome/help/tomboy/hu/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/hu/addins-desktop-printing.page
+share/gnome/help/tomboy/hu/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/hu/addins-formatting-underline.page
+share/gnome/help/tomboy/hu/addins-preferences.page
+share/gnome/help/tomboy/hu/addins-sync-local.page
+share/gnome/help/tomboy/hu/addins-sync-ssh.page
+share/gnome/help/tomboy/hu/addins-sync-webdav.page
+share/gnome/help/tomboy/hu/addins-sync-webservice.page
+share/gnome/help/tomboy/hu/addins-tools-backlinks.page
+share/gnome/help/tomboy/hu/addins-tools-html-export.page
+share/gnome/help/tomboy/hu/addins-tools-note-of-day.page
+share/gnome/help/tomboy/hu/addins-tools-timestamp.page
 share/gnome/help/tomboy/hu/addins.page
-share/gnome/help/tomboy/hu/advanced.page
 share/gnome/help/tomboy/hu/create-note.page
 share/gnome/help/tomboy/hu/create-notebook.page
 share/gnome/help/tomboy/hu/delete-notes.page
@@ -467,18 +553,26 @@ share/gnome/help/tomboy/hu/index.page
 share/gnome/help/tomboy/hu/introduction.page
 share/gnome/help/tomboy/hu/legal.xml
 share/gnome/help/tomboy/hu/note-edit-prefs.page
+share/gnome/help/tomboy/hu/pin-notes.page
 share/gnome/help/tomboy/hu/prefs.page
-share/gnome/help/tomboy/hu/problems.page
 share/gnome/help/tomboy/hu/search.page
 share/gnome/help/tomboy/hu/sync-setup.page
 share/gnome/help/tomboy/hu/sync.page
 share/gnome/help/tomboy/hu/whatsnew.page
-share/gnome/help/tomboy/it/addins-desktop.page
-share/gnome/help/tomboy/it/addins-formatting.page
-share/gnome/help/tomboy/it/addins-sync.page
-share/gnome/help/tomboy/it/addins-tools.page
+share/gnome/help/tomboy/it/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/it/addins-desktop-printing.page
+share/gnome/help/tomboy/it/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/it/addins-formatting-underline.page
+share/gnome/help/tomboy/it/addins-preferences.page
+share/gnome/help/tomboy/it/addins-sync-local.page
+share/gnome/help/tomboy/it/addins-sync-ssh.page
+share/gnome/help/tomboy/it/addins-sync-webdav.page
+share/gnome/help/tomboy/it/addins-sync-webservice.page
+share/gnome/help/tomboy/it/addins-tools-backlinks.page
+share/gnome/help/tomboy/it/addins-tools-html-export.page
+share/gnome/help/tomboy/it/addins-tools-note-of-day.page
+share/gnome/help/tomboy/it/addins-tools-timestamp.page
 share/gnome/help/tomboy/it/addins.page
-share/gnome/help/tomboy/it/advanced.page
 share/gnome/help/tomboy/it/create-note.page
 share/gnome/help/tomboy/it/create-notebook.page
 share/gnome/help/tomboy/it/delete-notes.page
@@ -506,18 +600,26 @@ share/gnome/help/tomboy/it/index.page
 share/gnome/help/tomboy/it/introduction.page
 share/gnome/help/tomboy/it/legal.xml
 share/gnome/help/tomboy/it/note-edit-prefs.page
+share/gnome/help/tomboy/it/pin-notes.page
 share/gnome/help/tomboy/it/prefs.page
-share/gnome/help/tomboy/it/problems.page
 share/gnome/help/tomboy/it/search.page
 share/gnome/help/tomboy/it/sync-setup.page
 share/gnome/help/tomboy/it/sync.page
 share/gnome/help/tomboy/it/whatsnew.page
-share/gnome/help/tomboy/lt/addins-desktop.page
-share/gnome/help/tomboy/lt/addins-formatting.page
-share/gnome/help/tomboy/lt/addins-sync.page
-share/gnome/help/tomboy/lt/addins-tools.page
+share/gnome/help/tomboy/lt/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/lt/addins-desktop-printing.page
+share/gnome/help/tomboy/lt/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/lt/addins-formatting-underline.page
+share/gnome/help/tomboy/lt/addins-preferences.page
+share/gnome/help/tomboy/lt/addins-sync-local.page
+share/gnome/help/tomboy/lt/addins-sync-ssh.page
+share/gnome/help/tomboy/lt/addins-sync-webdav.page
+share/gnome/help/tomboy/lt/addins-sync-webservice.page
+share/gnome/help/tomboy/lt/addins-tools-backlinks.page
+share/gnome/help/tomboy/lt/addins-tools-html-export.page
+share/gnome/help/tomboy/lt/addins-tools-note-of-day.page
+share/gnome/help/tomboy/lt/addins-tools-timestamp.page
 share/gnome/help/tomboy/lt/addins.page
-share/gnome/help/tomboy/lt/advanced.page
 share/gnome/help/tomboy/lt/create-note.page
 share/gnome/help/tomboy/lt/create-notebook.page
 share/gnome/help/tomboy/lt/delete-notes.page
@@ -545,18 +647,26 @@ share/gnome/help/tomboy/lt/index.page
 share/gnome/help/tomboy/lt/introduction.page
 share/gnome/help/tomboy/lt/legal.xml
 share/gnome/help/tomboy/lt/note-edit-prefs.page
+share/gnome/help/tomboy/lt/pin-notes.page
 share/gnome/help/tomboy/lt/prefs.page
-share/gnome/help/tomboy/lt/problems.page
 share/gnome/help/tomboy/lt/search.page
 share/gnome/help/tomboy/lt/sync-setup.page
 share/gnome/help/tomboy/lt/sync.page
 share/gnome/help/tomboy/lt/whatsnew.page
-share/gnome/help/tomboy/lv/addins-desktop.page
-share/gnome/help/tomboy/lv/addins-formatting.page
-share/gnome/help/tomboy/lv/addins-sync.page
-share/gnome/help/tomboy/lv/addins-tools.page
+share/gnome/help/tomboy/lv/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/lv/addins-desktop-printing.page
+share/gnome/help/tomboy/lv/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/lv/addins-formatting-underline.page
+share/gnome/help/tomboy/lv/addins-preferences.page
+share/gnome/help/tomboy/lv/addins-sync-local.page
+share/gnome/help/tomboy/lv/addins-sync-ssh.page
+share/gnome/help/tomboy/lv/addins-sync-webdav.page
+share/gnome/help/tomboy/lv/addins-sync-webservice.page
+share/gnome/help/tomboy/lv/addins-tools-backlinks.page
+share/gnome/help/tomboy/lv/addins-tools-html-export.page
+share/gnome/help/tomboy/lv/addins-tools-note-of-day.page
+share/gnome/help/tomboy/lv/addins-tools-timestamp.page
 share/gnome/help/tomboy/lv/addins.page
-share/gnome/help/tomboy/lv/advanced.page
 share/gnome/help/tomboy/lv/create-note.page
 share/gnome/help/tomboy/lv/create-notebook.page
 share/gnome/help/tomboy/lv/delete-notes.page
@@ -584,18 +694,26 @@ share/gnome/help/tomboy/lv/index.page
 share/gnome/help/tomboy/lv/introduction.page
 share/gnome/help/tomboy/lv/legal.xml
 share/gnome/help/tomboy/lv/note-edit-prefs.page
+share/gnome/help/tomboy/lv/pin-notes.page
 share/gnome/help/tomboy/lv/prefs.page
-share/gnome/help/tomboy/lv/problems.page
 share/gnome/help/tomboy/lv/search.page
 share/gnome/help/tomboy/lv/sync-setup.page
 share/gnome/help/tomboy/lv/sync.page
 share/gnome/help/tomboy/lv/whatsnew.page
-share/gnome/help/tomboy/oc/addins-desktop.page
-share/gnome/help/tomboy/oc/addins-formatting.page
-share/gnome/help/tomboy/oc/addins-sync.page
-share/gnome/help/tomboy/oc/addins-tools.page
+share/gnome/help/tomboy/oc/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/oc/addins-desktop-printing.page
+share/gnome/help/tomboy/oc/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/oc/addins-formatting-underline.page
+share/gnome/help/tomboy/oc/addins-preferences.page
+share/gnome/help/tomboy/oc/addins-sync-local.page
+share/gnome/help/tomboy/oc/addins-sync-ssh.page
+share/gnome/help/tomboy/oc/addins-sync-webdav.page
+share/gnome/help/tomboy/oc/addins-sync-webservice.page
+share/gnome/help/tomboy/oc/addins-tools-backlinks.page
+share/gnome/help/tomboy/oc/addins-tools-html-export.page
+share/gnome/help/tomboy/oc/addins-tools-note-of-day.page
+share/gnome/help/tomboy/oc/addins-tools-timestamp.page
 share/gnome/help/tomboy/oc/addins.page
-share/gnome/help/tomboy/oc/advanced.page
 share/gnome/help/tomboy/oc/create-note.page
 share/gnome/help/tomboy/oc/create-notebook.page
 share/gnome/help/tomboy/oc/delete-notes.page
@@ -623,18 +741,26 @@ share/gnome/help/tomboy/oc/index.page
 share/gnome/help/tomboy/oc/introduction.page
 share/gnome/help/tomboy/oc/legal.xml
 share/gnome/help/tomboy/oc/note-edit-prefs.page
+share/gnome/help/tomboy/oc/pin-notes.page
 share/gnome/help/tomboy/oc/prefs.page
-share/gnome/help/tomboy/oc/problems.page
 share/gnome/help/tomboy/oc/search.page
 share/gnome/help/tomboy/oc/sync-setup.page
 share/gnome/help/tomboy/oc/sync.page
 share/gnome/help/tomboy/oc/whatsnew.page
-share/gnome/help/tomboy/pl/addins-desktop.page
-share/gnome/help/tomboy/pl/addins-formatting.page
-share/gnome/help/tomboy/pl/addins-sync.page
-share/gnome/help/tomboy/pl/addins-tools.page
+share/gnome/help/tomboy/pl/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/pl/addins-desktop-printing.page
+share/gnome/help/tomboy/pl/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/pl/addins-formatting-underline.page
+share/gnome/help/tomboy/pl/addins-preferences.page
+share/gnome/help/tomboy/pl/addins-sync-local.page
+share/gnome/help/tomboy/pl/addins-sync-ssh.page
+share/gnome/help/tomboy/pl/addins-sync-webdav.page
+share/gnome/help/tomboy/pl/addins-sync-webservice.page
+share/gnome/help/tomboy/pl/addins-tools-backlinks.page
+share/gnome/help/tomboy/pl/addins-tools-html-export.page
+share/gnome/help/tomboy/pl/addins-tools-note-of-day.page
+share/gnome/help/tomboy/pl/addins-tools-timestamp.page
 share/gnome/help/tomboy/pl/addins.page
-share/gnome/help/tomboy/pl/advanced.page
 share/gnome/help/tomboy/pl/create-note.page
 share/gnome/help/tomboy/pl/create-notebook.page
 share/gnome/help/tomboy/pl/delete-notes.page
@@ -662,18 +788,26 @@ share/gnome/help/tomboy/pl/index.page
 share/gnome/help/tomboy/pl/introduction.page
 share/gnome/help/tomboy/pl/legal.xml
 share/gnome/help/tomboy/pl/note-edit-prefs.page
+share/gnome/help/tomboy/pl/pin-notes.page
 share/gnome/help/tomboy/pl/prefs.page
-share/gnome/help/tomboy/pl/problems.page
 share/gnome/help/tomboy/pl/search.page
 share/gnome/help/tomboy/pl/sync-setup.page
 share/gnome/help/tomboy/pl/sync.page
 share/gnome/help/tomboy/pl/whatsnew.page
-share/gnome/help/tomboy/pt_BR/addins-desktop.page
-share/gnome/help/tomboy/pt_BR/addins-formatting.page
-share/gnome/help/tomboy/pt_BR/addins-sync.page
-share/gnome/help/tomboy/pt_BR/addins-tools.page
+share/gnome/help/tomboy/pt_BR/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/pt_BR/addins-desktop-printing.page
+share/gnome/help/tomboy/pt_BR/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/pt_BR/addins-formatting-underline.page
+share/gnome/help/tomboy/pt_BR/addins-preferences.page
+share/gnome/help/tomboy/pt_BR/addins-sync-local.page
+share/gnome/help/tomboy/pt_BR/addins-sync-ssh.page
+share/gnome/help/tomboy/pt_BR/addins-sync-webdav.page
+share/gnome/help/tomboy/pt_BR/addins-sync-webservice.page
+share/gnome/help/tomboy/pt_BR/addins-tools-backlinks.page
+share/gnome/help/tomboy/pt_BR/addins-tools-html-export.page
+share/gnome/help/tomboy/pt_BR/addins-tools-note-of-day.page
+share/gnome/help/tomboy/pt_BR/addins-tools-timestamp.page
 share/gnome/help/tomboy/pt_BR/addins.page
-share/gnome/help/tomboy/pt_BR/advanced.page
 share/gnome/help/tomboy/pt_BR/create-note.page
 share/gnome/help/tomboy/pt_BR/create-notebook.page
 share/gnome/help/tomboy/pt_BR/delete-notes.page
@@ -701,18 +835,26 @@ share/gnome/help/tomboy/pt_BR/index.page
 share/gnome/help/tomboy/pt_BR/introduction.page
 share/gnome/help/tomboy/pt_BR/legal.xml
 share/gnome/help/tomboy/pt_BR/note-edit-prefs.page
+share/gnome/help/tomboy/pt_BR/pin-notes.page
 share/gnome/help/tomboy/pt_BR/prefs.page
-share/gnome/help/tomboy/pt_BR/problems.page
 share/gnome/help/tomboy/pt_BR/search.page
 share/gnome/help/tomboy/pt_BR/sync-setup.page
 share/gnome/help/tomboy/pt_BR/sync.page
 share/gnome/help/tomboy/pt_BR/whatsnew.page
-share/gnome/help/tomboy/ru/addins-desktop.page
-share/gnome/help/tomboy/ru/addins-formatting.page
-share/gnome/help/tomboy/ru/addins-sync.page
-share/gnome/help/tomboy/ru/addins-tools.page
+share/gnome/help/tomboy/ru/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/ru/addins-desktop-printing.page
+share/gnome/help/tomboy/ru/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/ru/addins-formatting-underline.page
+share/gnome/help/tomboy/ru/addins-preferences.page
+share/gnome/help/tomboy/ru/addins-sync-local.page
+share/gnome/help/tomboy/ru/addins-sync-ssh.page
+share/gnome/help/tomboy/ru/addins-sync-webdav.page
+share/gnome/help/tomboy/ru/addins-sync-webservice.page
+share/gnome/help/tomboy/ru/addins-tools-backlinks.page
+share/gnome/help/tomboy/ru/addins-tools-html-export.page
+share/gnome/help/tomboy/ru/addins-tools-note-of-day.page
+share/gnome/help/tomboy/ru/addins-tools-timestamp.page
 share/gnome/help/tomboy/ru/addins.page
-share/gnome/help/tomboy/ru/advanced.page
 share/gnome/help/tomboy/ru/create-note.page
 share/gnome/help/tomboy/ru/create-notebook.page
 share/gnome/help/tomboy/ru/delete-notes.page
@@ -740,18 +882,26 @@ share/gnome/help/tomboy/ru/index.page
 share/gnome/help/tomboy/ru/introduction.page
 share/gnome/help/tomboy/ru/legal.xml
 share/gnome/help/tomboy/ru/note-edit-prefs.page
+share/gnome/help/tomboy/ru/pin-notes.page
 share/gnome/help/tomboy/ru/prefs.page
-share/gnome/help/tomboy/ru/problems.page
 share/gnome/help/tomboy/ru/search.page
 share/gnome/help/tomboy/ru/sync-setup.page
 share/gnome/help/tomboy/ru/sync.page
 share/gnome/help/tomboy/ru/whatsnew.page
-share/gnome/help/tomboy/sl/addins-desktop.page
-share/gnome/help/tomboy/sl/addins-formatting.page
-share/gnome/help/tomboy/sl/addins-sync.page
-share/gnome/help/tomboy/sl/addins-tools.page
+share/gnome/help/tomboy/sl/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/sl/addins-desktop-printing.page
+share/gnome/help/tomboy/sl/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/sl/addins-formatting-underline.page
+share/gnome/help/tomboy/sl/addins-preferences.page
+share/gnome/help/tomboy/sl/addins-sync-local.page
+share/gnome/help/tomboy/sl/addins-sync-ssh.page
+share/gnome/help/tomboy/sl/addins-sync-webdav.page
+share/gnome/help/tomboy/sl/addins-sync-webservice.page
+share/gnome/help/tomboy/sl/addins-tools-backlinks.page
+share/gnome/help/tomboy/sl/addins-tools-html-export.page
+share/gnome/help/tomboy/sl/addins-tools-note-of-day.page
+share/gnome/help/tomboy/sl/addins-tools-timestamp.page
 share/gnome/help/tomboy/sl/addins.page
-share/gnome/help/tomboy/sl/advanced.page
 share/gnome/help/tomboy/sl/create-note.page
 share/gnome/help/tomboy/sl/create-notebook.page
 share/gnome/help/tomboy/sl/delete-notes.page
@@ -779,18 +929,26 @@ share/gnome/help/tomboy/sl/index.page
 share/gnome/help/tomboy/sl/introduction.page
 share/gnome/help/tomboy/sl/legal.xml
 share/gnome/help/tomboy/sl/note-edit-prefs.page
+share/gnome/help/tomboy/sl/pin-notes.page
 share/gnome/help/tomboy/sl/prefs.page
-share/gnome/help/tomboy/sl/problems.page
 share/gnome/help/tomboy/sl/search.page
 share/gnome/help/tomboy/sl/sync-setup.page
 share/gnome/help/tomboy/sl/sync.page
 share/gnome/help/tomboy/sl/whatsnew.page
-share/gnome/help/tomboy/sv/addins-desktop.page
-share/gnome/help/tomboy/sv/addins-formatting.page
-share/gnome/help/tomboy/sv/addins-sync.page
-share/gnome/help/tomboy/sv/addins-tools.page
+share/gnome/help/tomboy/sv/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/sv/addins-desktop-printing.page
+share/gnome/help/tomboy/sv/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/sv/addins-formatting-underline.page
+share/gnome/help/tomboy/sv/addins-preferences.page
+share/gnome/help/tomboy/sv/addins-sync-local.page
+share/gnome/help/tomboy/sv/addins-sync-ssh.page
+share/gnome/help/tomboy/sv/addins-sync-webdav.page
+share/gnome/help/tomboy/sv/addins-sync-webservice.page
+share/gnome/help/tomboy/sv/addins-tools-backlinks.page
+share/gnome/help/tomboy/sv/addins-tools-html-export.page
+share/gnome/help/tomboy/sv/addins-tools-note-of-day.page
+share/gnome/help/tomboy/sv/addins-tools-timestamp.page
 share/gnome/help/tomboy/sv/addins.page
-share/gnome/help/tomboy/sv/advanced.page
 share/gnome/help/tomboy/sv/create-note.page
 share/gnome/help/tomboy/sv/create-notebook.page
 share/gnome/help/tomboy/sv/delete-notes.page
@@ -818,18 +976,26 @@ share/gnome/help/tomboy/sv/index.page
 share/gnome/help/tomboy/sv/introduction.page
 share/gnome/help/tomboy/sv/legal.xml
 share/gnome/help/tomboy/sv/note-edit-prefs.page
+share/gnome/help/tomboy/sv/pin-notes.page
 share/gnome/help/tomboy/sv/prefs.page
-share/gnome/help/tomboy/sv/problems.page
 share/gnome/help/tomboy/sv/search.page
 share/gnome/help/tomboy/sv/sync-setup.page
 share/gnome/help/tomboy/sv/sync.page
 share/gnome/help/tomboy/sv/whatsnew.page
-share/gnome/help/tomboy/uk/addins-desktop.page
-share/gnome/help/tomboy/uk/addins-formatting.page
-share/gnome/help/tomboy/uk/addins-sync.page
-share/gnome/help/tomboy/uk/addins-tools.page
+share/gnome/help/tomboy/uk/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/uk/addins-desktop-printing.page
+share/gnome/help/tomboy/uk/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/uk/addins-formatting-underline.page
+share/gnome/help/tomboy/uk/addins-preferences.page
+share/gnome/help/tomboy/uk/addins-sync-local.page
+share/gnome/help/tomboy/uk/addins-sync-ssh.page
+share/gnome/help/tomboy/uk/addins-sync-webdav.page
+share/gnome/help/tomboy/uk/addins-sync-webservice.page
+share/gnome/help/tomboy/uk/addins-tools-backlinks.page
+share/gnome/help/tomboy/uk/addins-tools-html-export.page
+share/gnome/help/tomboy/uk/addins-tools-note-of-day.page
+share/gnome/help/tomboy/uk/addins-tools-timestamp.page
 share/gnome/help/tomboy/uk/addins.page
-share/gnome/help/tomboy/uk/advanced.page
 share/gnome/help/tomboy/uk/create-note.page
 share/gnome/help/tomboy/uk/create-notebook.page
 share/gnome/help/tomboy/uk/delete-notes.page
@@ -857,18 +1023,26 @@ share/gnome/help/tomboy/uk/index.page
 share/gnome/help/tomboy/uk/introduction.page
 share/gnome/help/tomboy/uk/legal.xml
 share/gnome/help/tomboy/uk/note-edit-prefs.page
+share/gnome/help/tomboy/uk/pin-notes.page
 share/gnome/help/tomboy/uk/prefs.page
-share/gnome/help/tomboy/uk/problems.page
 share/gnome/help/tomboy/uk/search.page
 share/gnome/help/tomboy/uk/sync-setup.page
 share/gnome/help/tomboy/uk/sync.page
 share/gnome/help/tomboy/uk/whatsnew.page
-share/gnome/help/tomboy/vi/addins-desktop.page
-share/gnome/help/tomboy/vi/addins-formatting.page
-share/gnome/help/tomboy/vi/addins-sync.page
-share/gnome/help/tomboy/vi/addins-tools.page
+share/gnome/help/tomboy/vi/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/vi/addins-desktop-printing.page
+share/gnome/help/tomboy/vi/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/vi/addins-formatting-underline.page
+share/gnome/help/tomboy/vi/addins-preferences.page
+share/gnome/help/tomboy/vi/addins-sync-local.page
+share/gnome/help/tomboy/vi/addins-sync-ssh.page
+share/gnome/help/tomboy/vi/addins-sync-webdav.page
+share/gnome/help/tomboy/vi/addins-sync-webservice.page
+share/gnome/help/tomboy/vi/addins-tools-backlinks.page
+share/gnome/help/tomboy/vi/addins-tools-html-export.page
+share/gnome/help/tomboy/vi/addins-tools-note-of-day.page
+share/gnome/help/tomboy/vi/addins-tools-timestamp.page
 share/gnome/help/tomboy/vi/addins.page
-share/gnome/help/tomboy/vi/advanced.page
 share/gnome/help/tomboy/vi/create-note.page
 share/gnome/help/tomboy/vi/create-notebook.page
 share/gnome/help/tomboy/vi/delete-notes.page
@@ -896,18 +1070,26 @@ share/gnome/help/tomboy/vi/index.page
 share/gnome/help/tomboy/vi/introduction.page
 share/gnome/help/tomboy/vi/legal.xml
 share/gnome/help/tomboy/vi/note-edit-prefs.page
+share/gnome/help/tomboy/vi/pin-notes.page
 share/gnome/help/tomboy/vi/prefs.page
-share/gnome/help/tomboy/vi/problems.page
 share/gnome/help/tomboy/vi/search.page
 share/gnome/help/tomboy/vi/sync-setup.page
 share/gnome/help/tomboy/vi/sync.page
 share/gnome/help/tomboy/vi/whatsnew.page
-share/gnome/help/tomboy/zh_CN/addins-desktop.page
-share/gnome/help/tomboy/zh_CN/addins-formatting.page
-share/gnome/help/tomboy/zh_CN/addins-sync.page
-share/gnome/help/tomboy/zh_CN/addins-tools.page
+share/gnome/help/tomboy/zh_CN/addins-desktop-bugzilla.page
+share/gnome/help/tomboy/zh_CN/addins-desktop-printing.page
+share/gnome/help/tomboy/zh_CN/addins-formatting-fixed-width.page
+share/gnome/help/tomboy/zh_CN/addins-formatting-underline.page
+share/gnome/help/tomboy/zh_CN/addins-preferences.page
+share/gnome/help/tomboy/zh_CN/addins-sync-local.page
+share/gnome/help/tomboy/zh_CN/addins-sync-ssh.page
+share/gnome/help/tomboy/zh_CN/addins-sync-webdav.page
+share/gnome/help/tomboy/zh_CN/addins-sync-webservice.page
+share/gnome/help/tomboy/zh_CN/addins-tools-backlinks.page
+share/gnome/help/tomboy/zh_CN/addins-tools-html-export.page
+share/gnome/help/tomboy/zh_CN/addins-tools-note-of-day.page
+share/gnome/help/tomboy/zh_CN/addins-tools-timestamp.page
 share/gnome/help/tomboy/zh_CN/addins.page
-share/gnome/help/tomboy/zh_CN/advanced.page
 share/gnome/help/tomboy/zh_CN/create-note.page
 share/gnome/help/tomboy/zh_CN/create-notebook.page
 share/gnome/help/tomboy/zh_CN/delete-notes.page
@@ -935,8 +1117,8 @@ share/gnome/help/tomboy/zh_CN/index.page
 share/gnome/help/tomboy/zh_CN/introduction.page
 share/gnome/help/tomboy/zh_CN/legal.xml
 share/gnome/help/tomboy/zh_CN/note-edit-prefs.page
+share/gnome/help/tomboy/zh_CN/pin-notes.page
 share/gnome/help/tomboy/zh_CN/prefs.page
-share/gnome/help/tomboy/zh_CN/problems.page
 share/gnome/help/tomboy/zh_CN/search.page
 share/gnome/help/tomboy/zh_CN/sync-setup.page
 share/gnome/help/tomboy/zh_CN/sync.page
@@ -1051,71 +1233,3 @@ share/mime/packages/tomboy.xml
 %%DATADIR%%/icons/hicolor/24x24/places/notebook.png
 %%DATADIR%%/icons/hicolor/48x48/actions/notebook-new.png
 %%DATADIR%%/icons/hicolor/scalable/actions/notebook-new.svg
-@dirrm %%DATADIR%%/icons/hicolor/scalable/actions
-@dirrm %%DATADIR%%/icons/hicolor/scalable
-@dirrm %%DATADIR%%/icons/hicolor/48x48/actions
-@dirrm %%DATADIR%%/icons/hicolor/48x48
-@dirrm %%DATADIR%%/icons/hicolor/24x24/places
-@dirrm %%DATADIR%%/icons/hicolor/24x24/actions
-@dirrm %%DATADIR%%/icons/hicolor/24x24
-@dirrm %%DATADIR%%/icons/hicolor/22x22/places
-@dirrm %%DATADIR%%/icons/hicolor/22x22/actions
-@dirrm %%DATADIR%%/icons/hicolor/22x22
-@dirrm %%DATADIR%%/icons/hicolor/16x16/status
-@dirrm %%DATADIR%%/icons/hicolor/16x16/places
-@dirrm %%DATADIR%%/icons/hicolor/16x16/actions
-@dirrm %%DATADIR%%/icons/hicolor/16x16
-@dirrm %%DATADIR%%/icons/hicolor
-@dirrm %%DATADIR%%/icons
-@dirrm %%DATADIR%%
-@dirrm share/gnome/help/tomboy/zh_CN/figures
-@dirrm share/gnome/help/tomboy/zh_CN
-@dirrm share/gnome/help/tomboy/vi/figures
-@dirrm share/gnome/help/tomboy/vi
-@dirrm share/gnome/help/tomboy/uk/figures
-@dirrm share/gnome/help/tomboy/uk
-@dirrm share/gnome/help/tomboy/sv/figures
-@dirrm share/gnome/help/tomboy/sv
-@dirrm share/gnome/help/tomboy/sl/figures
-@dirrm share/gnome/help/tomboy/sl
-@dirrm share/gnome/help/tomboy/ru/figures
-@dirrm share/gnome/help/tomboy/ru
-@dirrm share/gnome/help/tomboy/pt_BR/figures
-@dirrm share/gnome/help/tomboy/pt_BR
-@dirrm share/gnome/help/tomboy/pl/figures
-@dirrm share/gnome/help/tomboy/pl
-@dirrm share/gnome/help/tomboy/oc/figures
-@dirrm share/gnome/help/tomboy/oc
-@dirrm share/gnome/help/tomboy/lv/figures
-@dirrm share/gnome/help/tomboy/lv
-@dirrm share/gnome/help/tomboy/lt/figures
-@dirrm share/gnome/help/tomboy/lt
-@dirrm share/gnome/help/tomboy/it/figures
-@dirrm share/gnome/help/tomboy/it
-@dirrm share/gnome/help/tomboy/hu/figures
-@dirrm share/gnome/help/tomboy/hu
-@dirrm share/gnome/help/tomboy/gl/figures
-@dirrm share/gnome/help/tomboy/gl
-@dirrm share/gnome/help/tomboy/fr/figures
-@dirrm share/gnome/help/tomboy/fr
-@dirrm share/gnome/help/tomboy/eu/figures
-@dirrm share/gnome/help/tomboy/eu
-@dirrm share/gnome/help/tomboy/es/figures
-@dirrm share/gnome/help/tomboy/es
-@dirrm share/gnome/help/tomboy/en_GB/figures
-@dirrm share/gnome/help/tomboy/en_GB
-@dirrm share/gnome/help/tomboy/el/figures
-@dirrm share/gnome/help/tomboy/el
-@dirrm share/gnome/help/tomboy/de/figures
-@dirrm share/gnome/help/tomboy/de
-@dirrm share/gnome/help/tomboy/cs/figures
-@dirrm share/gnome/help/tomboy/cs
-@dirrm share/gnome/help/tomboy/ca/figures
-@dirrm share/gnome/help/tomboy/ca
-@dirrm share/gnome/help/tomboy/C/figures
-@dirrm share/gnome/help/tomboy/C
-@dirrm share/gnome/help/tomboy
-%%APPLET%%@dirrmtry libdata/bonobo/servers
-%%APPLET%%@dirrmtry libdata/bonobo
-@dirrmtry lib/tomboy/addins
-@dirrmtry lib/tomboy

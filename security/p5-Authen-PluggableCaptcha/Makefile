@@ -3,7 +3,7 @@
 
 PORTNAME=	Authen-PluggableCaptcha
 PORTVERSION=	0.05
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -17,5 +17,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

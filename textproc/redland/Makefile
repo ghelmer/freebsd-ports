@@ -3,7 +3,7 @@
 
 PORTNAME=	redland
 PORTVERSION=	1.0.17
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	http://download.librdf.org/source/
 
@@ -15,10 +15,10 @@ COMMENT=	High-level interface for RDF
 LICENSE=	APACHE20 GPLv2 GPLv3 LGPL21
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	libraptor2.so:${PORTSDIR}/textproc/raptor2 \
+LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
+		libraptor2.so:${PORTSDIR}/textproc/raptor2 \
 		librasqal.so:${PORTSDIR}/textproc/rasqal
 
-USE_AUTOTOOLS=	libltdl
 USE_PERL5=	build
 USES=		gmake libtool pathfix perl5 pkgconfig shebangfix
 SHEBANG_FILES=	scripts/touch-mtime.pl
@@ -51,7 +51,7 @@ PLIST_SUB+=	MYSQL="@comment "
 #.endif
 
 #.if defined(WITH_PGSQL)
-#USE_PGSQL=	yes
+#USES+=		pgsql
 #CONFIGURE_ARGS+=--with-postgresql=yes
 #PLIST_SUB+=	PGSQL=""
 #.else

@@ -3,7 +3,7 @@
 
 PORTNAME=	drpython
 PORTVERSION=	3.11.4
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel python
 MASTER_SITES=	SF/${PORTNAME}/DrPython%20%283.x%29/${PORTVERSION}
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
@@ -20,11 +20,9 @@ RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		zip
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-USE_WX=		2.8
+USES=		python zip
+USE_PYTHON=	distutils autoplist
+USE_WX=		3.0+
 WX_COMPS=	python:lib
 
 PLIST_FILES=	bin/drpython
@@ -39,6 +37,7 @@ post-patch:
 	@${RM} ${WRKSRC}/setup.cfg
 	@${REINPLACE_CMD} -e \
 		's|firefox|xdg-open|' ${WRKSRC}/drPreferences.py
+	@${REINPLACE_CMD} -e 's|%%PYTHON%%|${PYTHON_CMD}|' ${WRKSRC}/drpython.lin
 
 pre-build:
 	@(cd ${WRKSRC}/docsrc && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} html)

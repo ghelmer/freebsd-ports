@@ -3,6 +3,7 @@
 
 PORTNAME=	gimpfx-foundry
 PORTVERSION=	2.6
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-scriptpack/${PORTNAME}-${PORTVERSION}-1
@@ -20,14 +21,14 @@ NO_WRKSUBDIR=	yes
 
 PORTDOCS=	release-notes.txt
 
+OPTIONS_DEFINE=	DOCS
+
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/gimp/scripts/
 	${INSTALL_DATA} ${WRKSRC}/*.scm ${STAGEDIR}${PREFIX}/share/gimp/scripts/
 
 post-install:
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/release-notes.txt ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	runit
-PORTVERSION=	2.1.1
+PORTVERSION=	2.1.2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://smarden.org/${PORTNAME}/ \
 		http://www.bayofrum.net/dist/${PORTNAME}/
@@ -10,7 +10,7 @@ MASTER_SITES=	http://smarden.org/${PORTNAME}/ \
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Service supervision tools compatible with DJB daemontools
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/package/COPYING
 
 USE_RC_SUBR=	runsvdir

@@ -3,6 +3,7 @@
 
 PORTNAME=	mosh
 PORTVERSION=	1.2.4
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://mosh.mit.edu/ \
 		http://mirrors.rit.edu/zi/
@@ -37,8 +38,5 @@ LIB_DEPENDS+=	libutempter.so:${PORTSDIR}/sysutils/libutempter
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 .endif
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

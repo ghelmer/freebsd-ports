@@ -3,11 +3,11 @@
 
 PORTNAME=	ario
 PORTVERSION=	1.5.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	audio
 MASTER_SITES=	SF/ario-player/ario-player/${PORTVERSION}
 
-MAINTAINER=	gblach@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ario is a GTK2 client for MPD
 
 LICENSE=	GPLv2
@@ -22,11 +22,14 @@ LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
 		libunique-1.0.so:${PORTSDIR}/x11-toolkits/unique \
 		libmpdclient.so:${PORTSDIR}/audio/libmpdclient
 
-USES=		gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
+USES=		gmake libtool pkgconfig
 USE_LDCONFIG=	yes
 USE_GNOME=	gtk20
 INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	AVAHI NLS
 AVAHI_DESC=	Zeroconf support (Avahi)

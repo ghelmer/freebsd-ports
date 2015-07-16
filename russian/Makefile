@@ -9,7 +9,9 @@
     SUBDIR += bugzilla44
     SUBDIR += calligra-l10n
     SUBDIR += d1489
+    SUBDIR += emkatic
     SUBDIR += eric4
+    SUBDIR += eric6
     SUBDIR += fortune-bashorgru
     SUBDIR += fortuneru
     SUBDIR += gd
@@ -20,7 +22,6 @@
     SUBDIR += kde4-l10n
     SUBDIR += koi2koi
     SUBDIR += koi8r-ps
-    SUBDIR += libcyrillic
     SUBDIR += libreoffice
     SUBDIR += mueller-dic
     SUBDIR += muttprint
@@ -32,11 +33,8 @@
     SUBDIR += p5-Text-Hyphen-RU
     SUBDIR += p5-XML-Parser-encodings
     SUBDIR += p5-cyrillic
-    SUBDIR += prawda
-    SUBDIR += pscyr
     SUBDIR += rubygem-russian
     SUBDIR += rubygem-rutils
-    SUBDIR += rux
     SUBDIR += stardict-bars
     SUBDIR += stardict-computer
     SUBDIR += stardict-dal
@@ -44,9 +42,7 @@
     SUBDIR += stardict-mueller7
     SUBDIR += stardict-mueller7accent
     SUBDIR += stardict-pc
-    SUBDIR += tac+ia
     SUBDIR += tidyup-mail
-    SUBDIR += unzip
     SUBDIR += wordpress
     SUBDIR += xcode
     SUBDIR += xpi-tabextensions

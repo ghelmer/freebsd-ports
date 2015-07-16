@@ -86,6 +86,7 @@ share/alsa/cards/ICE1724.conf
 share/alsa/cards/ICH-MODEM.conf
 share/alsa/cards/ICH.conf
 share/alsa/cards/ICH4.conf
+share/alsa/cards/Loopback.conf
 share/alsa/cards/Maestro3.conf
 share/alsa/cards/NFORCE.conf
 share/alsa/cards/PC-Speaker.conf
@@ -121,6 +122,7 @@ share/alsa/pcm/iec958.conf
 share/alsa/pcm/modem.conf
 share/alsa/pcm/rear.conf
 share/alsa/pcm/side.conf
+share/alsa/pcm/surround21.conf
 share/alsa/pcm/surround40.conf
 share/alsa/pcm/surround41.conf
 share/alsa/pcm/surround50.conf
@@ -130,6 +132,11 @@ share/alsa/smixer.conf
 share/alsa/sndo-mixer.alisp
 share/alsa/ucm/DAISY-I2S/DAISY-I2S.conf
 share/alsa/ucm/DAISY-I2S/HiFi.conf
+share/alsa/ucm/GoogleNyan/GoogleNyan.conf
+share/alsa/ucm/GoogleNyan/HiFi.conf
+share/alsa/ucm/PAZ00/HiFi.conf
+share/alsa/ucm/PAZ00/PAZ00.conf
+share/alsa/ucm/PAZ00/Record.conf
 share/alsa/ucm/PandaBoard/FMAnalog
 share/alsa/ucm/PandaBoard/PandaBoard.conf
 share/alsa/ucm/PandaBoard/hifi
@@ -153,19 +160,3 @@ share/alsa/ucm/SDP4430/voice
 share/alsa/ucm/SDP4430/voiceCall
 share/alsa/ucm/tegraalc5632/tegraalc5632.conf
 @sample etc/asound.conf.sample
-@dirrm share/alsa/ucm/PandaBoardES
-@dirrm share/alsa/ucm/SDP4430
-@dirrm share/alsa/ucm/DAISY-I2S
-@dirrm share/alsa/ucm/tegraalc5632
-@dirrm share/alsa/ucm/PandaBoard
-@dirrm share/alsa/ucm
-@dirrm share/alsa/pcm
-@dirrm share/alsa/cards/SI7018
-@dirrm share/alsa/cards
-@dirrm share/alsa/alsa.conf.d
-@dirrm share/alsa
-@dirrm lib/alsa-lib/smixer
-@dirrm lib/alsa-lib
-@dirrmtry include/sys
-@dirrm include/alsa/sound
-@dirrm include/alsa

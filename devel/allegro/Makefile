@@ -3,7 +3,7 @@
 
 PORTNAME=	allegro
 DISTVERSION=	4.4.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	SF/alleg/allegro/${PORTVERSION}
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
@@ -13,7 +13,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 MAINTAINER=	koalative@gmail.com
 COMMENT=	Cross-platform library for games and multimedia programming
 
-LIB_DEPENDS+=	libpng15.so:${PORTSDIR}/graphics/png \
+LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png \
 		libvorbis.so:${PORTSDIR}/audio/libvorbis
 
 USES=		cmake gmake makeinfo pkgconfig
@@ -33,7 +33,7 @@ SHLIB_VER=	${PORTVERSION}
 # Wrong versioning upstream
 PORTSCOUT=	ignore:1
 
-OPTIONS_DEFINE=	ALSA JACK OGG
+OPTIONS_DEFINE=	ALSA JACK OGG DOCS
 OPTIONS_GROUP=	DEMOS_EXAMPLES
 OPTIONS_GROUP_DEMOS_EXAMPLES=	DEMOS EXAMPLES
 OPTIONS_DEFAULT=	ALSA DEMOS OGG
@@ -88,10 +88,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|jack_client = jack_client_new(jack_client_name);|jack_client = jack_client_open(jack_client_name, (jack_options_t)0, NULL);|' \
 		${WRKSRC}/src/unix/jack.c
 .endif
-.if ! ${PORT_OPTIONS:MDOCS}
-	@${REINPLACE_CMD} -e 's|add_subdirectory(docs)|#add_subdirectory(docs)|' \
-		${WRKSRC}/CMakeLists.txt
-.endif
 
 post-install:
 	@${INSTALL_MAN} ${WRKSRC}/docs/man/*.3 ${STAGEDIR}${MAN3PREFIX}/man/man3/
@@ -104,7 +100,9 @@ post-install:
 	expat exquat exrgbhsv exrotscl exsample exscale exscn3d exscroll exshade \
 	exspline exsprite exstars exstream exswitch exsyscur extimer extrans \
 	extrans2 extruec exunicod exupdate exxfade exzbuf
+	@${CHMOD} u+w ${STAGEDIR}${EXAMPLESDIR}/${l}
 	${STRIP_CMD} ${STAGEDIR}${EXAMPLESDIR}/${l}
+	@${CHMOD} u-w ${STAGEDIR}${EXAMPLESDIR}/${l}
 . endfor
 .endif
 

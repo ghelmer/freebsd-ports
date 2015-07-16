@@ -1,6 +1,5 @@
 bin/dbic-migration
 man/man1/dbic-migration.1.gz
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/DBIx/Class/Migration/.packlist
 %%SITE_PERL%%/Catalyst/TraitFor/Model/DBIC/Schema/FromMigration.pm
 %%SITE_PERL%%/Catalyst/TraitFor/Model/DBIC/Schema/FromMigration/_MigrationHelper.pm
 %%SITE_PERL%%/DBIx/Class/Migration.pm
@@ -15,6 +14,7 @@ man/man1/dbic-migration.1.gz
 %%SITE_PERL%%/DBIx/Class/Migration/RunScript/Trait/SchemaLoader.pm
 %%SITE_PERL%%/DBIx/Class/Migration/RunScript/Trait/TargetPath.pm
 %%SITE_PERL%%/DBIx/Class/Migration/Sandbox.pm
+%%SITE_PERL%%/DBIx/Class/Migration/SandboxDirSandboxBuilder.pm
 %%SITE_PERL%%/DBIx/Class/Migration/SchemaLoader.pm
 %%SITE_PERL%%/DBIx/Class/Migration/Script.pm
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help.pod
@@ -44,6 +44,7 @@ man/man1/dbic-migration.1.gz
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help/populate.pod
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help/prepare.pod
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help/sandbox_class.pod
+%%SITE_PERL%%/DBIx/Class/Migration/Script/Help/sandbox_dir.pod
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help/schema_class.pod
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help/status.pod
 %%SITE_PERL%%/DBIx/Class/Migration/Script/Help/target_dir.pod
@@ -81,6 +82,7 @@ man/man1/dbic-migration.1.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::RunScript::Trait::SchemaLoader.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::RunScript::Trait::TargetPath.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Sandbox.3.gz
+%%PERL5_MAN3%%/DBIx::Class::Migration::SandboxDirSandboxBuilder.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::SchemaLoader.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help.3.gz
@@ -110,6 +112,7 @@ man/man1/dbic-migration.1.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::populate.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::prepare.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::sandbox_class.3.gz
+%%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::sandbox_dir.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::schema_class.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::status.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Script::Help::target_dir.3.gz
@@ -133,19 +136,3 @@ man/man1/dbic-migration.1.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Tutorial::ThirdMigration.3.gz
 %%PERL5_MAN3%%/DBIx::Class::Migration::Types.3.gz
 %%PERL5_MAN3%%/Test::DBIx::Class::FixtureCommand::Population.3.gz
-@dirrm %%SITE_PERL%%/Test/DBIx/Class/FixtureCommand
-@dirrmtry %%SITE_PERL%%/Test/DBIx/Class
-@dirrmtry %%SITE_PERL%%/Test/DBIx
-@dirrm %%SITE_PERL%%/DBIx/Class/Migration/Tutorial
-@dirrm %%SITE_PERL%%/DBIx/Class/Migration/Script/Help
-@dirrm %%SITE_PERL%%/DBIx/Class/Migration/Script
-@dirrm %%SITE_PERL%%/DBIx/Class/Migration/RunScript/Trait
-@dirrm %%SITE_PERL%%/DBIx/Class/Migration/RunScript
-@dirrm %%SITE_PERL%%/DBIx/Class/Migration
-@dirrm %%SITE_PERL%%/Catalyst/TraitFor/Model/DBIC/Schema/FromMigration
-@dirrm %%SITE_PERL%%/Catalyst/TraitFor/Model/DBIC/Schema
-@dirrm %%SITE_PERL%%/Catalyst/TraitFor/Model/DBIC
-@dirrm %%SITE_PERL%%/Catalyst/TraitFor/Model
-@dirrm %%SITE_PERL%%/Catalyst/TraitFor
-@dirrmtry %%SITE_PERL%%/Catalyst
-@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/DBIx/Class/Migration

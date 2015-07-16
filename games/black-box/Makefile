@@ -3,7 +3,7 @@
 
 PORTNAME=	black-box
 PORTVERSION=	1.4.8
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://www.linux-games.com/black-box/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -12,10 +12,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shoot in and watch where the shot leaves the box
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_SDL=	sdl image mixer
 GNU_CONFIGURE=	yes

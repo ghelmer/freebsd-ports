@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	luafilesystem
-PORTVERSION=	1.5.0
+DISTVERSIONPREFIX=	v_
+DISTVERSION=	1_6_3
 CATEGORIES=	devel
-MASTER_SITES=	GH
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
 MAINTAINER=	fiziologus@gmail.com
@@ -12,13 +12,11 @@ COMMENT=	Library to access directory structure and file attributes
 
 LICENSE=	MIT
 
-USES=		lua:51
+USES?=		lua
+USES+=		gmake
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	keplerproject
-GH_PROGECT=	${PORTNAME}
-GH_TAGNAME=	v${PORTVERSION}
-GH_COMMIT=	8ff2013
 
 ALL_TARGET=	lib
 
@@ -29,8 +27,6 @@ MAKE_ARGS+=	INCS="-I${LUA_INCDIR}"
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	${REINPLACE_CMD} -e \
 		"s|%%PREFIX%%|${PREFIX}| ; \
@@ -38,9 +34,7 @@ post-patch:
 		s|%%INCDIR%%|${LUA_INCDIR}|" ${WRKSRC}/config
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR} && \
-	${CP} ${WRKSRC}/doc/us/* ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKSRC}/doc/us/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

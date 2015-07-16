@@ -1,29 +1,17 @@
---- ./net/net.gyp.orig	2014-04-30 22:43:09.000000000 +0200
-+++ ./net/net.gyp	2014-05-04 14:38:48.000000000 +0200
-@@ -1472,9 +1472,10 @@
-               }],
-               ['os_bsd==1', {
-                 'sources!': [
-+                  'base/address_tracker_linux.cc',
-                   'base/network_change_notifier_linux.cc',
-                   'base/network_change_notifier_netlink_linux.cc',
--                  'proxy/proxy_config_service_linux.cc',
-+#                  'proxy/proxy_config_service_linux.cc',
-                 ],
-               },{
-                 'dependencies': [
-@@ -2130,7 +2131,7 @@
-         'websockets/websocket_throttle_test.cc',
+--- net/net.gyp.orig	2015-05-13 18:35:47.000000000 -0400
++++ net/net.gyp         2015-05-20 16:09:23.255544000 -0400
+@@ -146,7 +146,7 @@
+         '<@(net_test_sources)',
        ],
        'conditions': [
 -        ['os_posix == 1 and OS != "mac" and OS != "ios" and OS != "android"', {
 +        ['os_posix == 1 and OS != "mac" and OS != "ios" and OS != "android" and os_bsd != 1', {
            'dependencies': [
-             'balsa',
+             'epoll_quic_tools',
              'epoll_server',
-@@ -2413,6 +2414,11 @@
-             '../testing/android/native_test.gyp:native_test_native_code',
-           ]
+@@ -659,6 +659,11 @@
+               'test/cert_test_util_nss.cc',
+             ],
          }],
 +        [ 'os_bsd == 1', {
 +          'sources!': [
@@ -31,5 +19,5 @@
 +          ],
 +        }],
        ],
-       'target_conditions': [
-         # These source files are excluded by default platform rules, but they
+       # TODO(jschuh): crbug.com/167187 fix size_t to int truncations.
+       'msvs_disabled_warnings': [4267, ],

@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	firefox
-PORTVERSION=	24.6.0
+PORTVERSION=	31.7.0
 CATEGORIES=	www
-MASTER_SITES=	MOZILLA/${PORTNAME:S|-i18n||}/releases/${PORTVERSION}esr/linux-i686/xpi
+MASTER_SITES=	MOZILLA/${PORTNAME:S|-i18n||}/releases/${DISTVERSION}esr/linux-i686/xpi \
+		MOZILLA/${PORTNAME:S|-i18n||}/candidates/${DISTVERSION}esr-candidates/build2/linux-i686/xpi
 PKGNAMEPREFIX=
 PKGNAMESUFFIX=	-esr-i18n
 DISTFILES=	${FIREFOX_I18N_:S/$/.xpi/}
@@ -15,7 +16,7 @@ COMMENT=	Localized interface for Firefox
 
 EXTRACT_DEPENDS=	zip:${PORTSDIR}/archivers/zip
 
-USES=		zip:infozip gecko:firefox
+USES=		zip:infozip gecko:firefox,build
 USE_XPI=	firefox
 
 NO_ARCH=	yes
@@ -26,7 +27,6 @@ WDIR=	langpack-*@firefox.mozilla.org
 XPI_DISTNAMES=	${FIREFOX_I18N_}
 
 PLIST?=		${WRKDIR}/plist
-PLISTD?=	${WRKDIR}/plist_dirs
 PLISTF?=	${WRKDIR}/plist_files
 
 .include "${.CURDIR}/Makefile.option"
@@ -58,12 +58,9 @@ do-extract:
 		fi; \
 		cd ${WRKSRC}/langpack-$$lang@firefox.mozilla.org/; \
 		${FIND} -H -s * ! -type d | \
-		${SED} -e "s|^|lib/xpi/langpack-$$lang@firefox.mozilla.org/|" >> ${PLISTF} && \
-		${FIND} -d * -type d | \
-		${SED} -e "s|^|@dirrm lib/xpi/langpack-$$lang@firefox.mozilla.org/|" >> ${PLISTD}; \
+		${SED} -e "s|^|lib/xpi/langpack-$$lang@firefox.mozilla.org/|" >> ${PLISTF}; \
 	done
 	${CAT} ${PLISTF} | ${SORT} >> ${PLIST}
-	${CAT} ${PLISTD} | ${SORT} -r >> ${PLIST}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${XPI_LIBDIR} ${STAGEDIR}${XPI_SLDIRS_ALL}

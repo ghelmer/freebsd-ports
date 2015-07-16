@@ -3,7 +3,7 @@
 
 PORTNAME=	octave-forge-dicom
 PORTVERSION=	0.1.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	math
 
 MAINTAINER=	stephen@FreeBSD.org
@@ -12,7 +12,7 @@ COMMENT=	Octave-forge package ${OCTAVE_PKGNAME}
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKDIR}/${OCTSRC}/COPYING
 
-LIB_DEPENDS+=	gdcmCommon:${PORTSDIR}/devel/gdcm
+LIB_DEPENDS+=	libgdcmCommon.so:${PORTSDIR}/devel/gdcm
 
 # OCTSRC is the name of the directory of the package.
 # It is usually ${OCTAVE_PKGNAME} or ${DISTNAME}.

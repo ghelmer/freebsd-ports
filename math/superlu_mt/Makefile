@@ -3,14 +3,12 @@
 
 PORTNAME=	superlu_mt
 PORTVERSION=	2.0.20080115
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	http://crd.lbl.gov/~xiaoye/SuperLU/ \
 		http://crd.lbl.gov/~xiaoye/:doc
 DISTNAME=	${PORTNAME}_2.0
-.ifndef NOPORTDOCS
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} simax97.ps.gz:doc
-.endif
 DIST_SUBDIR=	superlu2
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -19,7 +17,8 @@ COMMENT=	Routines for performing multithreaded sparse factorization
 
 USES=		fortran gmake
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 .if exists(${LOCALBASE}/lib/libgoto2.so)
@@ -31,14 +30,14 @@ WITH_BLAS?=	reference
 .endif
 
 .if ${WITH_BLAS} == reference
-LIB_DEPENDS+=	blas.2:${PORTSDIR}/math/blas
+LIB_DEPENDS+=	libblas.so:${PORTSDIR}/math/blas
 BLAS=	-lblas
 .elif ${WITH_BLAS} == gotoblas
-LIB_DEPENDS+=	goto2:${PORTSDIR}/math/gotoblas
+LIB_DEPENDS+=	libgoto2.so:${PORTSDIR}/math/gotoblas
 BLAS=	-lgoto2p
 BROKEN=	Build stops while testing
 .elif ${WITH_BLAS} == atlas
-LIB_DEPENDS+=	atlas:${PORTSDIR}/math/atlas
+LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
 BLAS=	-lptf77blas
 .endif
 
@@ -74,9 +73,7 @@ post-patch:
 			s+%%CFLAGS%%+${CFLAGS}+; \
 			s+%%FFLAGS%%+${FFLAGS}+; \
 			s+%%LDFLAGS%%+${LDFLAGS}+; \
-			s+%%FPIC%%++; \
-	  s+%%PTHREAD_CFLAGS%%+${PTHREAD_CFLAGS}+ ; \
-	  s+%%PTHREAD_LIBS%%+${PTHREAD_LIBS}+ ' \
+			s+%%FPIC%%++ ' \
 		${WRKSRC}/make.inc
 
 	@${REINPLACE_CMD} -e 's+%%BLAS%%+-L${LOCALBASE}/lib ${BLAS}+ ; \
@@ -85,9 +82,7 @@ post-patch:
 			s+%%CFLAGS%%+${CFLAGS} ${FPIC}+; \
 			s+%%FFLAGS%%+${FFLAGS} ${FPIC}+; \
 			s+%%LDFLAGS%%+${LDFLAGS}+; \
-			s+%%FPIC%%+${FPIC}+; \
-	  s+%%PTHREAD_CFLAGS%%+${PTHREAD_CFLAGS}+ ; \
-	  s+%%PTHREAD_LIBS%%+${PTHREAD_LIBS}+ ' \
+			s+%%FPIC%%+${FPIC}+ ' \
 		${WRKSRC_SHARED}/make.inc
 
 do-build:
@@ -102,21 +97,23 @@ do-build:
 	${FIND} ${WRKSRC_SHARED} -name "*\.a" -exec ${CP} {} ${WRKDIR}/tmp_shared \;
 	@cd ${WRKDIR}/tmp_shared ; for i in `ls *.a | ${SED}  's/\.a//' `; do \
 	${RM} -f $${i}.so.* $${i}.so ; \
-       	ld -Bshareable -o $${i}.so.${SVERSION} -x -soname $${i}.so.${SVERSION} --allow-multiple-definition --whole-archive $${i}.a ;\
+       	${FC} ${CFLAGS} ${FPIC} ${LDFLAGS} -shared -o $${i}.so.${SVERSION} \
+	-Wl,-soname,$${i}.so.${SVERSION} -Wl,--allow-multiple-definition \
+	-Wl,--whole-archive $${i}.a -Wl,--no-whole-archive -Wl,--as-needed; \
 		${LN} -s $${i}.so.${SVERSION} $${i}.so ;\
 	done
 
 do-install:
-	${INSTALL_DATA} ${WRKDIR}/tmp_static/libsuperlu_mt.a ${PREFIX}/lib
-	${INSTALL_DATA} ${WRKDIR}/tmp_shared/libsuperlu_mt.so.${SVERSION} ${PREFIX}/lib
-	cd ${PREFIX}/lib && ${LN} -s -f libsuperlu_mt.so.${SVERSION} libsuperlu_mt.so
-	${MKDIR} ${PREFIX}/include/${PORTNAME}
-	${INSTALL_DATA} ${WRKSRC}/SRC/*.h ${PREFIX}/include/${PORTNAME}
-.ifndef NOPORTDOCS
-	@${MKDIR} ${DOCSDIR}
-#	${INSTALL_DATA} ${WRKSRC}/INSTALL/*.ps ${DOCSDIR}
-#	${GZIP_CMD} ${DOCSDIR}/*.ps
-	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/simax97.ps.gz ${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/tmp_static/libsuperlu_mt.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKDIR}/tmp_shared/libsuperlu_mt.so.${SVERSION} ${STAGEDIR}${PREFIX}/lib
+	cd ${STAGEDIR}${PREFIX}/lib && ${LN} -s -f libsuperlu_mt.so.${SVERSION} libsuperlu_mt.so
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/${PORTNAME}
+	${INSTALL_DATA} ${WRKSRC}/SRC/*.h ${STAGEDIR}${PREFIX}/include/${PORTNAME}
+.if ${PORT_OPTIONS:MDOCS}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+#	${INSTALL_DATA} ${WRKSRC}/INSTALL/*.ps ${STAGEDIR}${DOCSDIR}
+#	${GZIP_CMD} ${STAGEDIR}${DOCSDIR}/*.ps
+	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/simax97.ps.gz ${STAGEDIR}${DOCSDIR}
 .endif
 
 regression-test: do-build

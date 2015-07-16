@@ -3,7 +3,7 @@
 
 PORTNAME=	qp
 PORTVERSION=	2.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www python
 MASTER_SITES=	http://www.mems-exchange.org/software/qp/ \
 		LOCAL/sunpoet
@@ -19,8 +19,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}/options
 
-USE_PYDISTUTILS=yes
-USE_PYTHON=	2
+USE_PYTHON=	distutils
+USES=		python:2
 
 SUB_FILES=	pkg-message
 
@@ -31,8 +31,8 @@ post-build:
 	@${STRIP_CMD} ${WRKSRC}/build/lib.*/qp/hub/passfd.so
 
 post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}/ ${STAGEDIR}${EXAMPLESDIR}/
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/ && ${PYTHON_CMD} ${PYSETUP} install_demo_sites ${STAGEDIR}${EXAMPLESDIR}/
+	cd ${WRKSRC}/ && ${PYTHON_CMD} setup.py install_demo_sites ${STAGEDIR}${EXAMPLESDIR}/
 
 .include <bsd.port.mk>

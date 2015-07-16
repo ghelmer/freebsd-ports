@@ -2,43 +2,45 @@
 # $FreeBSD$
 
 PORTNAME=	tor
-DISTVERSION=	0.2.5.6-alpha
+DISTVERSION=	0.2.6.7
 CATEGORIES=	security net ipv6
 MASTER_SITES=	TOR
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	bf@FreeBSD.org
-COMMENT=	An anonymizing overlay network for TCP
+COMMENT=	Anonymizing overlay network for TCP
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		gmake
+USES=		cpe gmake
+CPE_VENDOR=	torproject
+#CPE_VERSION=	${DISTVERSION:C/-.*//}
+#CPE_UPDATE=	${DISTVERSION:C/.*-//}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openssl-dir="${OPENSSLBASE}" --disable-asciidoc
-CONFIGURE_ENV=	TOR_CPPFLAGS_libevent="-I${LOCALBASE}/include/event2 -I${LOCALBASE}/include" \
-		TOR_LDFLAGS_libevent="-L${LOCALBASE}/lib/event2" \
+CONFIGURE_ENV=	TOR_CPPFLAGS_libevent="-I${LOCALBASE}/include" \
+		TOR_LDFLAGS_libevent="-L${LOCALBASE}/lib/" \
 		TOR_LIBEVENT_LIBS="${TOR_LIBEVENT_LIBS}"
 
-OPTIONS_DEFINE=	BUFFEREVENTS BUFFREELISTS INSTR_DOWNLOADS \
-		STATIC_TOR TCMALLOC THREADS TOR2WEB TRANSPARENT
+OPTIONS_DEFINE=	BUFFEREVENTS INSTR_DOWNLOADS \
+		STATIC_TOR TCMALLOC TOR2WEB TRANSPARENT
 
 BUFFEREVENTS_DESC=	Use libevent's buffered IO
-BUFFREELISTS_DESC=	Freelists for buffer RAM
 INSTR_DOWNLOADS_DESC=	Instrument downloads for analysis
 STATIC_TOR_DESC=	Build a static tor
 TCMALLOC_DESC=		Use the tcmalloc memory allocation library
 TOR2WEB_DESC=		Faster but non-anonymous hidden services
 TRANSPARENT_DESC=	Transparent proxy support
 
-OPTIONS_DEFAULT=	BUFFREELISTS THREADS TRANSPARENT
+OPTIONS_DEFAULT=	THREADS TRANSPARENT
 
 USE_OPENSSL=	yes
 
 USE_RC_SUBR=	tor
 SUB_FILES=	pkg-message
 
-GROUPS =	_tor
+GROUPS=		_tor
 USERS=		_tor
 
 CONFLICTS=	tor-[0-9]*
@@ -59,12 +61,6 @@ CONFIGURE_ARGS+=	--enable-bufferevents
 CONFIGURE_ARGS+=	--disable-bufferevents
 .endif
 
-.if ${PORT_OPTIONS:MBUFFREELISTS}
-CONFIGURE_ARGS+=	--enable-buf-freelists
-.else
-CONFIGURE_ARGS+=	--disable-buf-freelists
-.endif
-
 .if ${PORT_OPTIONS:MINSTR_DOWNLOADS}
 CONFIGURE_ARGS+=	--enable-instrument-downloads
 .else
@@ -72,19 +68,19 @@ CONFIGURE_ARGS+=	--disable-instrument-downloads
 .endif
 
 .if ${PORT_OPTIONS:MSTATIC_TOR}
-BUILD_DEPENDS +=	${LOCALBASE}/lib/event2/libevent.a:${PORTSDIR}/devel/libevent2
-CONFIGURE_ARGS+=	--enable-static-tor --with-libevent-dir=${LOCALBASE}/lib/event2 \
+BUILD_DEPENDS +=	${LOCALBASE}/lib/libevent.a:${PORTSDIR}/devel/libevent2
+CONFIGURE_ARGS+=	--enable-static-tor \
 			--with-zlib-dir=/usr/lib --disable-linker-hardening
-TOR_LIBEVENT_LIBS=	${LOCALBASE}/lib/event2/libevent.a
+TOR_LIBEVENT_LIBS=	${LOCALBASE}/lib/libevent.a
 .if ${PORT_OPTIONS:MBUFFEREVENTS}
-TOR_LIBEVENT_LIBS:=	${LOCALBASE}/lib/event2/libevent_openssl.a ${TOR_LIBEVENT_LIBS}
+TOR_LIBEVENT_LIBS:=	${LOCALBASE}/lib/libevent_openssl.a ${TOR_LIBEVENT_LIBS}
 .endif
 .else
 CONFIGURE_ARGS+=	--enable-linker-hardening
-LIB_DEPENDS+=		libevent-2.0.so:${PORTSDIR}/devel/libevent2
-TOR_LIBEVENT_LIBS=	-levent-2.0
+LIB_DEPENDS+=		libevent.so:${PORTSDIR}/devel/libevent2
+TOR_LIBEVENT_LIBS=	-levent
 .if ${PORT_OPTIONS:MBUFFEREVENTS}
-TOR_LIBEVENT_LIBS:=	-levent_openssl-2.0 ${TOR_LIBEVENT_LIBS}
+TOR_LIBEVENT_LIBS:=	-levent_openssl ${TOR_LIBEVENT_LIBS}
 .endif
 .endif
 
@@ -95,13 +91,6 @@ BUILD_DEPENDS +=	${LOCALBASE}/lib/libtcmalloc.so:${PORTSDIR}/devel/google-perfto
 .else
 LIB_DEPENDS+=		libtcmalloc.so:${PORTSDIR}/devel/google-perftools
 .endif
-.endif
-
-.if ${PORT_OPTIONS:MTHREADS}
-CONFIGURE_ARGS+=	--enable-threads
-CFLAGS+=		${PTHREAD_CFLAGS}
-.else
-CONFIGURE_ARGS+=	--disable-threads
 .endif
 
 .if ${PORT_OPTIONS:MTOR2WEB}
@@ -120,8 +109,6 @@ post-patch:
 		${WRKSRC}/configure
 
 post-configure:
-	@${FIND} -X ${WRKSRC} -type f -name Makefile | ${XARGS} ${REINPLACE_CMD} -e \
-		"s|-lpthread|${PTHREAD_LIBS}|g"
 	@${REINPLACE_CMD} -e '\|^nodist_man1_MANS =|s|$$|$$(install_mans:=.1)|' \
 		${WRKSRC}/Makefile
 

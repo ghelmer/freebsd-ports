@@ -3,25 +3,39 @@
 
 PORTNAME=	blocksolve95
 PORTVERSION=	3.0
-PORTREVISION=	12
+PORTREVISION=	16
 CATEGORIES=	math parallel
 MASTER_SITES=	ftp://ftp.mcs.anl.gov/pub/BlockSolve95/ \
 		http://ftp.mcs.anl.gov/pub/BlockSolve95/
 DISTNAME=	BlockSolve95
-EXTRACT_SUFX=	.tar.Z
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Software for the efficient solution of large, sparse linear systems
 
-BUILD_DEPENDS=	${MPIDIR}/lib/libmpich.a:${PORTSDIR}/net/mpich2
-LIB_DEPENDS=	f2c.2:${PORTSDIR}/lang/f2c
-RUN_DEPENDS=	${MPIDIR}/bin/mpirun:${PORTSDIR}/net/mpich2
+LICENSE=	AS-IS
+LICENSE_NAME=	AS-IS
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		fortran gmake
+LIB_DEPENDS=	libf2c.so:${PORTSDIR}/lang/f2c	\
+		libmpich.so:${PORTSDIR}/net/mpich2
+
+USES=		fortran gmake tar:Z
+
+OPTIONS_RADIO=	BLAS
+OPTIONS_RADIO_BLAS=	REFERENCE ATLAS
+OPTIONS_DEFAULT=	REFERENCE
+
+REFERENCE_DESC=	Blas / Lapack
+REFERENCE_USES=	blaslapack:netlib
+
+ATLAS_DESC=	ATLAS
+ATLAS_USES=	blaslapack:atlas
+
 MAKEFILE=	makefile
 MAKE_ARGS=	GMAKE=${MAKE_CMD} PETSC_ARCH=${PETSC_ARCH} BOPT=${BOPT}	\
-		BLAS_LIB="${BLAS_LIB}" LAPACK_LIB="${LAPACK_LIB}"
+		BLAS_LIB="${BLASLIB}" LAPACK_LIB="-L${LOCALBASE}/lib ${LAPACKLIB}"
 
 MPIDIR=		${LOCALBASE}
 PETSC_ARCH=	freebsd
@@ -32,34 +46,21 @@ FFLAGS+=	-O2
 INCLUDES=	BMmsg.h BSdepend.h BSlog.h BSmy_blas.h BSprivate.h BSsparse.h
 PORTDOCS=	manual.ps
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-.if exists(${LOCALBASE}/lib/libatlas.so) && !defined(WITH_BLAS)
-WITH_ATLAS=	yes
-.endif
-.if defined(WITH_ATLAS)
-LIB_DEPENDS+=	atlas.2:${PORTSDIR}/math/atlas
-BLAS_LIB=	-lf77blas
-LAPACK_LIB=	-L${LOCALBASE}/lib -lalapack -lcblas
-.else
-LIB_DEPENDS+=	lapack.4:${PORTSDIR}/math/lapack
-LIB_DEPENDS+=	blas.2:${PORTSDIR}/math/blas
-BLAS_LIB=	-lblas
-LAPACK_LIB=	-L${LOCALBASE}/lib -llapack
-.endif
+.include <bsd.port.options.mk>
 
 do-install:
 	${INSTALL_DATA}	${WRKSRC}/lib/lib${BOPT}/${PETSC_ARCH}/libBS95.a	\
-		${PREFIX}/lib
-	${INSTALL_DATA}	${INCLUDES:S|^|${WRKSRC}/include/|} ${PREFIX}/include
-	${INSTALL_MAN} ${MAN3:S|^|${WRKSRC}/doc/man/man3/|} ${MANPREFIX}/man/man3
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA}	${PORTDOCS:S|^|${WRKSRC}/doc/manual/|} ${DOCSDIR}
-	${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA}	${WRKSRC}/examples/* ${EXAMPLESDIR}
-	@${RM} ${EXAMPLESDIR}/makefile.orig
+		${STAGEDIR}${PREFIX}/lib
+	${INSTALL_DATA}	${INCLUDES:S|^|${WRKSRC}/include/|} ${STAGEDIR}${PREFIX}/include
+	${INSTALL_MAN} ${WRKSRC}/doc/man/man3/* ${STAGEDIR}${MANPREFIX}/man/man3
+.if ${PORT_OPTIONS:MDOCS}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA}	${PORTDOCS:S|^|${WRKSRC}/doc/manual/|} ${STAGEDIR}${DOCSDIR}
+.endif
+.if ${PORT_OPTIONS:MEXAMPLES}
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA}	${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
+	@${RM} ${STAGEDIR}${EXAMPLESDIR}/makefile.orig
 .endif
 
 .if defined(MAINTAINER_MODE)
@@ -70,10 +71,9 @@ regression-test:	build
 	@${ECHO_MSG} "${HOME}/.mpd.conf has been generated - please change the secret word!"
 . endif
 	${LOCALBASE}/bin/mpd &
-	@(cd ${BUILD_WRKSRC}/examples;	\
-	${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} bsrunexamples clean)
+	(cd ${BUILD_WRKSRC}/examples &&	\
+	${SETENV} ${MAKE_ENV:C|HOME=|wHOME=|} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} bsrunexamples clean)
 	${LOCALBASE}/bin/mpdallexit
 .endif
 
-.include "${FILESDIR}/BSman3.inc"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

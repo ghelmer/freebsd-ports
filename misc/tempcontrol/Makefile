@@ -11,12 +11,11 @@ COMMENT=	Temperature control for fermenting beer and other applications
 
 LICENSE=	BSD2CLAUSE
 
-MAKE_ARGS=	CFLAGS="${CFLAGS} -Wall -Wno-parentheses"
+USES=		readline
 NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/tempcontrol share/tempcontrol/temperaturecontrolrc.sample \
 		etc/rc.d/temperaturecontrol.sh.sample
-PLIST_DIRS=	share/tempcontrol
 
 PORTDOCS=	README
 
@@ -24,7 +23,7 @@ OPTIONS_DEFINE=	DOCS
 
 # Must (re)generate depedencies, otherwise parallel builds would not work
 pre-build:
-	${MAKE_CMD} -C ${WRKSRC} depend
+	${DO_MAKE_BUILD} -C ${WRKSRC} depend
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/tempcontrol ${STAGEDIR}${PREFIX}/bin/

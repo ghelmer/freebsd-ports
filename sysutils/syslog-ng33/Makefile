@@ -3,7 +3,7 @@
 
 PORTNAME=	syslog-ng
 PORTVERSION=	3.3.11
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.balabit.com/downloads/files/syslog-ng/sources/$(PORTVERSION)/source/
 PKGNAMESUFFIX=	33
@@ -12,17 +12,19 @@ DISTFILES=	$(PORTNAME)_$(PORTVERSION).tar.gz
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
 
+DEPRECATED=	No longer supported by Balabit cince November 2014.
+EXPIRATION_DATE=	2015-08-31
+
+LIB_DEPENDS=	libevtlog.so:${PORTSDIR}/sysutils/eventlog
+
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng-devel-[0-9]*
 WRKSRC=		$(WRKDIR)/$(PORTNAME)-$(PORTVERSION)
 
-OPTIONS_RADIO=	SSL JSON
-OPTIONS_RADIO_SSL=	SYS_SSL PORTS_SSL
+OPTIONS_RADIO=		JSON
 OPTIONS_RADIO_JSON=	JSON_C JSON_GLIB
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 PCRE SYSLOG2NG DOCS
-OPTIONS_DEFAULT=	PORTS_SSL PCRE
-SYS_SSL_DESC=		Build with OpenSSL support (from system)
-PORTS_SSL_DESC=		Build with OpenSSL support (from ports)
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 PCRE SYSLOG2NG DOCS OPENSSL
+OPTIONS_DEFAULT=	OPENSSL PCRE
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
 SPOOF_DESC=		Build with spoof source support
@@ -32,12 +34,10 @@ JSON_C_DESC=		Build with JSON-C support
 JSON_GLIB_DESC=		Build with JSON-GLIB support
 SYSLOG2NG_DESC=		Install syslog2ng script
 
-LIB_DEPENDS=	libevtlog.so:${PORTSDIR}/sysutils/eventlog
-
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 GNU_CONFIGURE=	yes
-USES=		gmake pathfix pkgconfig
+USES=		gmake libtool pathfix pkgconfig
 USE_GNOME=	glib20
 SUB_FILES=	pkg-message
 
@@ -46,18 +46,15 @@ CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc --localstatedir=/var/db \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MSYS_SSL} || ${PORT_OPTIONS:MPORTS_SSL}
+.if ${PORT_OPTIONS:MOPENSSL}
 USE_OPENSSL=		yes
+WITH_OPENSSL_PORT=	yes
 CONFIGURE_ARGS+=	--enable-ssl
-CONFIGURE_ENV+=		OPENSSL_CFLAGS="${OPENSSL_CFLAGS}" \
-			OPENSSL_LIBS="${OPENSSL_LDFLAGS} -lcrypto -lssl"
-PLIST_FILES+=		lib/syslog-ng/libafsocket-tls.la lib/syslog-ng/libafsocket-tls.so
+CONFIGURE_ENV+=		OPENSSL_CFLAGS="-I${OPENSSLINC}" \
+			OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
+PLIST_FILES+=		lib/syslog-ng/libafsocket-tls.so
 .else
 CONFIGURE_ARGS+=	--disable-ssl
-.endif
-
-.if ${PORT_OPTIONS:MPORTS_SSL}
-WITH_OPENSSL_PORT=	yes
 .endif
 
 .if ${PORT_OPTIONS:MTCP_WRAPPERS}
@@ -91,9 +88,9 @@ CONFIGURE_ARGS+=	--disable-pcre
 
 .if ${PORT_OPTIONS:MSQL}
 LIB_DEPENDS+=		libdbi.so:${PORTSDIR}/databases/libdbi
-CONFIGURE_ENV+=		LIBDBI_LIBS="-ldbi"
+CONFIGURE_ENV+=		LIBDBI_LIBS="-L${LOCALBASE}/lib -ldbi"
 CONFIGURE_ARGS+=	--enable-sql
-PLIST_FILES+=		lib/syslog-ng/libafsql.la lib/syslog-ng/libafsql.so
+PLIST_FILES+=		lib/syslog-ng/libafsql.so
 .else
 CONFIGURE_ARGS+=	--disable-sql
 .endif
@@ -101,11 +98,11 @@ CONFIGURE_ARGS+=	--disable-sql
 .if ${PORT_OPTIONS:MJSON_GLIB}
 LIB_DEPENDS+=		libjson-glib-1.0.so:${PORTSDIR}/devel/json-glib
 CONFIGURE_ARGS+=	--enable-json --with-json=json-glib
-PLIST_FILES+=		lib/syslog-ng/libtfjson.la lib/syslog-ng/libtfjson.so
+PLIST_FILES+=		lib/syslog-ng/libtfjson.so
 .elif ${PORT_OPTIONS:MJSON_C}
-LIB_DEPENDS+=		libjson.so:${PORTSDIR}/devel/json-c
+LIB_DEPENDS+=		libjson-c.so:${PORTSDIR}/devel/json-c
 CONFIGURE_ARGS+=	--enable-json --with-json=json-c
-PLIST_FILES+=		lib/syslog-ng/libtfjson.la lib/syslog-ng/libtfjson.so
+PLIST_FILES+=		lib/syslog-ng/libtfjson.so
 .else
 CONFIGURE_ARGS+=	--disable-json
 .endif

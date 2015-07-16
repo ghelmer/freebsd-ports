@@ -8,7 +8,7 @@ MASTER_SITES=	SF/${PORTNAME}/phpBB%202/phpBB%20v${PORTVERSION}
 DISTNAME=	phpBB-${PORTVERSION}
 
 MAINTAINER=	liukang@cn.freebsd.org
-COMMENT=	A PHP-based bulletin board / discussion forum system
+COMMENT=	PHP-based bulletin board / discussion forum system
 
 LICENSE=	GPLv2
 
@@ -45,6 +45,8 @@ PKGOPTS=	${FILESDIR}/pkg-opts
 EXCEPTFILES=	${STAGEDIR}${PREFIX}/${PHPBBDIR}/install/install.php \
 		${STAGEDIR}${PREFIX}/${PHPBBDIR}/install/upgrade.php \
 		${STAGEDIR}${PREFIX}/${PHPBBDIR}/install/update_to_latest.php
+
+OPTIONS_DEFINE=	DOCS
 
 options:
 	@ ${ECHO_MSG} "===>  Build options for ${PKGNAME}:"

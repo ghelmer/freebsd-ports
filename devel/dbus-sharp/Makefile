@@ -3,7 +3,7 @@
 
 PORTNAME=	dbus-sharp
 PORTVERSION=	0.7.0
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	devel gnome
 MASTER_SITES=	http://cloud.github.com/downloads/mono/${PORTNAME}/
@@ -14,6 +14,7 @@ COMMENT=	Mono interface to the D-BUS messaging system
 LICENSE=	MIT
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	ac_cv_path_GMCS=${LOCALBASE}/bin/mcs
 USES=		gmake mono pathfix pkgconfig
 
 .include <bsd.port.options.mk>

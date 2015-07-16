@@ -3,22 +3,22 @@
 
 PORTNAME=	nagios-spamd-plugin
 PORTVERSION=	1.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://jhweiss.de/pub/users/weiss/nagios/plugins/
 DISTNAME=	check_spamd-${PORTVERSION}.pl
-EXTRACT_SUFX=
+EXTRACT_SUFX=	# empty
 
 MAINTAINER=	alexey@renatasystems.org
 COMMENT=	Nagios plugin for checking SpamAssassins spamd
 
 RUN_DEPENDS+=	${LOCALBASE}/${NAGIOS_PLUGIN_DIR}/utils.pm:${PORTSDIR}/net-mgmt/nagios-plugins
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	check_spamd.pl
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 PLIST_FILES=	${NAGIOS_PLUGIN_DIR}/check_spamd.pl
-PLIST_DIRS=	${NAGIOS_PLUGIN_DIR}
 
 NAGIOS_PLUGIN_DIR=	libexec/nagios
 

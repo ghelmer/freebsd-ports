@@ -3,7 +3,7 @@
 
 PORTNAME=	grun
 PORTVERSION=	0.8.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	misc
 MASTER_SITES=	http://www.brettnacher.org/users/dominik/FreeBSD/
 
@@ -16,6 +16,5 @@ CONFIGURE_ARGS+=--enable-testfile
 
 PLIST_FILES=	bin/grun %%DATADIR%%/consfile %%DATADIR%%/gassoc \
 		man/man1/grun.1x.gz
-PLIST_DIRS=	%%DATADIR%%
 
 .include <bsd.port.mk>

@@ -7,21 +7,17 @@ CATEGORIES=	sysutils
 MASTER_SITES=	http://dist.epipe.com/${PORTNAME}/ \
 		http://launchpadlibrarian.net/145993356/
 
-MAINTAINER=	snabb@epipe.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	System downtime monitoring and reporting tool
 
-LICENSE=	BSD
+LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USE_XZ=		yes
-MAN1=		downtimes.1
-MAN8=		downtimed.8
+USES=		tar:xz
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 
-NO_STAGE=	yes
 post-install:
-		@${MKDIR} /var/db/downtimed
-		@${CAT} ${PKGMESSAGE}
+	${MKDIR} ${STAGEDIR}/var/db/downtimed
 
 .include <bsd.port.mk>

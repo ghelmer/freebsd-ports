@@ -2,44 +2,59 @@
 # $FreeBSD$
 
 PORTNAME=	nip2
-PORTVERSION=	7.26.3
-PORTREVISION=	3
+PORTVERSION=	8.0
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.vips.ecs.soton.ac.uk/supported/${PORTVERSION:R}/
+MASTER_SITES=	http://www.vips.ecs.soton.ac.uk/supported/${PORTVERSION}/
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Graphical user interface for VIPS
 
-LIB_DEPENDS=	libvips.so:${PORTSDIR}/graphics/vips	\
-		gsl:${PORTSDIR}/math/gsl	\
-		xml2:${PORTSDIR}/textproc/libxml2
+LICENSE=	GPLv2
 
-USES=		bison gmake pkgconfig
-USE_GNOME=	gnomemimedata glib20 gtk20
+BUILD_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+LIB_DEPENDS=	libvips.so:${PORTSDIR}/graphics/vips
+RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+
+USES=		bison desktop-file-utils dos2unix gettext gmake pkgconfig \
+		shared-mime-info
+DOS2UNIX_GLOB=	*.def
+USE_GNOME=	gnomemimedata gtk20 libxml2
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--mandir=${PREFIX}/man
-# This port has no man-pages. It installs a number of HTML files,
-# which are available through the GUI's Help. For this reason, they
-# are always installed, regardless of the NOPORTDOCS setting.
-NO_STAGE=	yes
-# The PDF version of the documentation is another story:
-.if defined(NOPORTDOCS)
-EXTRACT_AFTER_ARGS=	--exclude nipguide --exclude pdf
-.endif
-# Somehow vendor's configure misses these:
-MAKE_ENV+=	UPDATE_MIME_DATABASE=update-mime-database	\
-		UPDATE_DESKTOP_DATABASE=update-desktop-database
+CONFIGURE_ARGS=	--disable-update-desktop
+LDFLAGS+=	-lm
 
-MAN1=		nip2.1
+SUB_FILES=	run-nip2.sh
 
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=		DOCS FFTW GOFFICE GRAPHVIZ GSF GSL
+OPTIONS_DEFAULT=	FFTW GOFFICE GRAPHVIZ GSF GSL
 
-.if ${OSVERSION} >= 1000013
-EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src-parser.h
-.endif
+FFTW_LIB_DEPENDS=	libfftw3.so:${PORTSDIR}/math/fftw3
+FFTW_CONFIGURE_WITH=	fftw3
+GOFFICE_DESC=		Use libgoffice to show plots
+GOFFICE_LIB_DEPENDS=	libgoffice-*.so:${PORTSDIR}/devel/goffice
+GOFFICE_CONFIGURE_WITH=	libgoffice
+GRAPHVIZ_DESC=		Use libgvc to show workspace dependency graphs
+GRAPHVIZ_LIB_DEPENDS=	libgvc.so:${PORTSDIR}/graphics/graphviz
+GRAPHVIZ_CONFIGURE_WITH=	libgvc
+GSF_DESC=		Use libgsf to save plots to files
+GSF_USE=		gnome=libgsf
+GSF_CONFIGURE_WITH=	libgsf
+GSL_DESC=		Use gsl for numeric functions
+GSL_LIB_DEPENDS=	libgsl.so:${PORTSDIR}/math/gsl
+GSL_CONFIGURE_WITH=	gsl
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|n_bytes|x_n_bytes|g' -e 's|text_size|x_text_size|g' \
-		${WRKSRC}/src/gtkitementry.c
+post-install:
+	(cd ${WRKDIR} && ${INSTALL_SCRIPT} run-nip2.sh \
+		${STAGEDIR}/${PREFIX}/bin)
+
+test check: build
+	#
+	# Checks currently require ImageMagick's convert to be available
+	# and aren't enabled by default. They take a long time -- tail
+	# the log-file:
+	#	${WRKSRC}/test/test_all.sh.log
+	#
+	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check)
 
 .include <bsd.port.mk>

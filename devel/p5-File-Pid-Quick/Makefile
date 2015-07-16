@@ -3,11 +3,12 @@
 
 PORTNAME=	File-Pid-Quick
 PORTVERSION=	1.02
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Associates a PID file with your script
 
 LICENSE=	ART10 GPLv1

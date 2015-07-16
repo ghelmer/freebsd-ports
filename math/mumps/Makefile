@@ -3,6 +3,7 @@
 
 PORTNAME=	mumps
 PORTVERSION=	4.10.0
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	http://mumps.enseeiht.fr/		\
 		http://graal.ens-lyon.fr/MUMPS/		\
@@ -50,6 +51,8 @@ MAKE_ENV+=	ORDERINGSF=-Dmetis
 .endif
 
 PLIST_SUB+=	MUMPSVERSION=${PORTVERSION}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
 
@@ -103,7 +106,6 @@ pre-build:
 	s+@FCFLAGS@+${FCFLAGS}+g; \
 	s+@GCCLIBDIR@+${GCCLIBDIR}+g; \
 	s+@FORTRANLIBS@+${FORTRANLIBS}+g; \
-	s+@PTHREAD_LIBS@+${PTHREAD_LIBS}+g; \
 	s+@BLAS_LIBS@+${BLAS_LIBS}+ ; \
 	s+@LOCALBASE@+${LOCALBASE}+g;' \
 		${WRKSRC}/Makefile.inc
@@ -120,13 +122,10 @@ do-install:
 .ifndef WITH_MPI
 	${INSTALL_DATA} ${WRKSRC}/libseq/libmpiseq.a ${STAGEDIR}${PREFIX}/lib
 .endif
-.ifndef NOPORTDOCS
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/userguide_${PORTVERSION}.pdf ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/userguide_${PORTVERSION}.ps ${STAGEDIR}${DOCSDIR}
 	${GZIP_CMD} ${STAGEDIR}${DOCSDIR}/userguide_${PORTVERSION}.ps
-.endif
-.ifndef NOPORTEXAMPLES
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 . for ex in Makefile README *.c *.F input_simpletest_*
 	${INSTALL_DATA} ${WRKSRC}/examples/${ex} ${STAGEDIR}${EXAMPLESDIR}
@@ -134,7 +133,6 @@ do-install:
 . for ex in c_example *simpletest
 	${INSTALL_PROGRAM} ${WRKSRC}/examples/${ex} ${STAGEDIR}${EXAMPLESDIR}
 . endfor
-.endif
 
 regression-test:
 .if defined (WITH_MPI) && defined(MAINTAINER_MODE)

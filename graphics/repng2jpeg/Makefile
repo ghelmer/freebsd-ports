@@ -2,31 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	repng2jpeg
-PORTVERSION=	1.0.4
-PORTREVISION=	5
+PORTVERSION=	1.0.5
 CATEGORIES=	graphics
-MASTER_SITES=	http://sugachan.dip.jp/obsolete/arch/
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+MASTER_SITES=	http://bsdforge.com/projects/source/graphics/repng2jpeg/
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Tool to recompress JPEG/PNG/GIF
+MAINTAINER=	portmaster@bsdforge.com
+COMMENT=	Small tool to recompress JPEG, PNG, and GIF images
 
-BROKEN=		Unfetchable
+LICENSE=	GPLv1
 
-LIB_DEPENDS=	gd:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+
+USES=		tar:xz
 
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -lgd
 
 PLIST_FILES=	bin/repng2jpeg
-RESTRICTED=	No license text in tarball and website
 
-NO_STAGE=	yes
 do-build:
 	${CC} ${CFLAGS} -o ${WRKSRC}/src/repng2jpeg \
 		${WRKSRC}/src/repng2jpeg.c ${LDFLAGS}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/repng2jpeg ${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/src/repng2jpeg ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

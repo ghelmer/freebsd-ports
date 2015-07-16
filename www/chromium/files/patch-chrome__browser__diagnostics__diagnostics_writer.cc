@@ -1,6 +1,6 @@
---- ./chrome/browser/diagnostics/diagnostics_writer.cc.orig	2014-04-30 22:42:03.000000000 +0200
-+++ ./chrome/browser/diagnostics/diagnostics_writer.cc	2014-05-04 14:38:46.000000000 +0200
-@@ -268,7 +268,7 @@
+--- chrome/browser/diagnostics/diagnostics_writer.cc.orig	2014-10-10 08:54:10 UTC
++++ chrome/browser/diagnostics/diagnostics_writer.cc
+@@ -266,7 +266,7 @@
        console_->SetColor(color);
        console_->Write(base::ASCIIToUTF16(result));
      }

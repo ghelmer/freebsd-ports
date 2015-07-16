@@ -42,7 +42,6 @@
     SUBDIR += calligra-l10n-tr
     SUBDIR += chexedit
     SUBDIR += codelite
-    SUBDIR += color-mate
     SUBDIR += conglomerate
     SUBDIR += cooledit
     SUBDIR += cream
@@ -58,7 +57,6 @@
     SUBDIR += emacs
     SUBDIR += emacs-devel
     SUBDIR += emacs-nox11
-    SUBDIR += emacs23
     SUBDIR += fb
     SUBDIR += flim
     SUBDIR += fpc-ide
@@ -69,9 +67,7 @@
     SUBDIR += gedit-plugins
     SUBDIR += ghex
     SUBDIR += gmanedit
-    SUBDIR += gnome2-office
     SUBDIR += gnotepad+
-    SUBDIR += gnuserv
     SUBDIR += gobby
     SUBDIR += gwrite
     SUBDIR += heme
@@ -83,7 +79,6 @@
     SUBDIR += impress
     SUBDIR += jed
     SUBDIR += jedit
-    SUBDIR += jext
     SUBDIR += joe
     SUBDIR += joe2
     SUBDIR += jove
@@ -93,7 +88,7 @@
     SUBDIR += kile-kde4
     SUBDIR += klat4
     SUBDIR += komodo-edit
-    SUBDIR += komodo-ide
+    SUBDIR += latexila
     SUBDIR += lazarus
     SUBDIR += lazarus-lcl-gtk
     SUBDIR += lazarus-lcl-gtk2
@@ -203,10 +198,8 @@
     SUBDIR += libreoffice-zu
     SUBDIR += madedit
     SUBDIR += manedit
-    SUBDIR += mate-text-editor
     SUBDIR += mg
     SUBDIR += mined
-    SUBDIR += mlview
     SUBDIR += morla
     SUBDIR += mousepad
     SUBDIR += mp
@@ -216,7 +209,6 @@
     SUBDIR += nedit
     SUBDIR += nvi-devel
     SUBDIR += nvi-m17n
-    SUBDIR += nxml
     SUBDIR += omegaT
     SUBDIR += openoffice-4
     SUBDIR += openoffice-devel
@@ -225,23 +217,23 @@
     SUBDIR += p5-Vimana
     SUBDIR += paredit-mode.el
     SUBDIR += pico-alpine
+    SUBDIR += pluma
     SUBDIR += poedit
     SUBDIR += psgml
     SUBDIR += puff
     SUBDIR += py-room
     SUBDIR += rox-edit
     SUBDIR += scite
-    SUBDIR += scribes
     SUBDIR += se
     SUBDIR += semi
-    SUBDIR += setedit
+    SUBDIR += shed
     SUBDIR += slime
-    SUBDIR += softmaker-office
     SUBDIR += spe
-    SUBDIR += speedbar
     SUBDIR += ssam
     SUBDIR += ssed
     SUBDIR += sted
+    SUBDIR += sublime
+    SUBDIR += sublime3
     SUBDIR += tamago
     SUBDIR += tea
     SUBDIR += teco
@@ -249,8 +241,7 @@
     SUBDIR += tetradraw
     SUBDIR += texmacs
     SUBDIR += texmaker
-    SUBDIR += texmakerx
-    SUBDIR += textedit
+    SUBDIR += texstudio
     SUBDIR += textroom
     SUBDIR += texworks
     SUBDIR += thoteditor
@@ -275,7 +266,6 @@
     SUBDIR += yui
     SUBDIR += yzis
     SUBDIR += zile
-    SUBDIR += zim
     SUBDIR += zoinks
 
 .include <bsd.port.subdir.mk>

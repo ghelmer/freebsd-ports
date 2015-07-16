@@ -3,15 +3,15 @@
 
 PORTNAME=	ump
 PORTVERSION=	0.8.6
-PORTREVISION=	7
+PORTREVISION=	10
 CATEGORIES=	math
 MASTER_SITES=	SF/u-m-p/u-m-p/${PORTVERSION}
 PKGNAMESUFFIX=	-math
 
-MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	A graphical, easy to use math program
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Graphical, easy to use math program
 
-CONFLICTS=	ump-1.[0-9]*
+LICENSE=	GPLv2
 
 USES=		gmake pkgconfig tar:bzip2
 USE_GNOME=	gtk20
@@ -20,19 +20,15 @@ USE_GL=		glu
 ALL_TARGET=	${PORTNAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-MAKE_ENV+=	DATADIR="${DATADIR}"
+CONFLICTS=	ump-1.[0-9]*
 
-FIND_DIRS=	-type d
-FIND_DATA=	-type f
+DESKTOP_ENTRIES="Ump" "" "" "ump" "Education;Math;Science;GTK;" ""
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/src/main.cpp
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/ump.conf ${PREFIX}/etc/ump.conf.dist
-.if !exists(${PREFIX}/etc/ump.conf)
-	${INSTALL_DATA} ${WRKSRC}/ump.conf ${PREFIX}/etc
-.endif
+	${INSTALL_DATA} ${WRKSRC}/ump.conf \
+		${STAGEDIR}${PREFIX}/etc/ump.conf.sample
 
 .include <bsd.port.mk>

@@ -4,7 +4,7 @@
 PORTNAME=	stormlib
 PORTVERSION=	6.25
 CATEGORIES=	devel archivers
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 PKGNAMESUFFIX=	-ghost++
 DISTNAME=	${PROJECTHOST}_${PROJECTVERSION}
 
@@ -20,7 +20,6 @@ USE_LDCONFIG=	yes
 PLIST_FILES=	include/StormLib/StormLib.h \
 		include/StormLib/StormPort.h \
 		lib/libStorm.so
-PLIST_DIRS=	include/StormLib
 
 WRKSRC=		${WRKDIR}/ghost/StormLib/stormlib
 

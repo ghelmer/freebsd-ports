@@ -3,7 +3,7 @@
 
 PORTNAME=	ftjava
 PORTVERSION=	1.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games java
 MASTER_SITES=	http://www.warpfish.com/davisje/:file1 \
 		http://home.roadrunner.com/~davisje/ftjava/:doc1
@@ -15,7 +15,9 @@ EXTRACT_ONLY=	FTJavaV${PORTVERSION}.zip
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full Thrust PBEM Client
 
-BROKEN=		no distinfo provided for some of the distfiles
+LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/License.txt
+
 USES=		zip
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
@@ -28,7 +30,20 @@ DATAFILES=	Images IncomingGames OutgoingGames Ships FTJava.jar \
 		mailapi.jar png.jar pop3.jar skeetutil.jar smtp.jar xerces.jar \
 		xercesImpl.jar xmlParserAPIs.jar
 
+PLIST_FILES=	bin/ftjava
 PORTDOCS=	FTJava_Linux.html faq.html FTJava_Documentation.html
+PORTDATA=	*
+PLIST_DIRS=	%%DATADIR%%/Ships/FullThrust/Kravak \
+		%%DATADIR%%/Ships/EFSB/NonAligned \
+		%%DATADIR%%/OutgoingGames \
+		%%DATADIR%%/IncomingGames \
+		%%DATADIR%%/Images/StarFleetWars/Terran \
+		%%DATADIR%%/Images/StarFleetWars/Entomalian \
+		%%DATADIR%%/Images/ShipIcons/StarFleetWars \
+		%%DATADIR%%/Images/ShipIcons/FullThrust \
+		%%DATADIR%%/Images/FullThrust/Sylvian \
+		%%DATADIR%%/Images/FullThrust/Kali \
+		%%DATADIR%%/Images/FullThrust/Eurasian
 
 SUB_FILES=	ftjava.sh
 

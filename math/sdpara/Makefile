@@ -3,19 +3,19 @@
 
 PORTNAME=	sdpara
 PORTVERSION=	7.2.1
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	math parallel
 MASTER_SITES=	http://sdpa.indsys.chuo-u.ac.jp/sdpa/files/
 DISTFILES=	${SRCFILE}#${MANUALFILE}
 DIST_SUBDIR=	sdpa
 EXTRACT_ONLY=	${SRCFILE}
 
-MAINTAINER=	maho@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SDPARA parallel version of SDPA (math/sdpa)
 
-LIB_DEPENDS=	scalapack:${PORTSDIR}/math/scalapack \
-		blacs:${PORTSDIR}/math/blacs \
-		mpich:${PORTSDIR}/net/mpich2
+LIB_DEPENDS=	libscalapack.so:${PORTSDIR}/math/scalapack \
+		libblacs.so:${PORTSDIR}/math/blacs \
+		libmpich.so:${PORTSDIR}/net/mpich2
 
 SRCDATE=	20090109
 MANDATE=	20080618
@@ -34,16 +34,16 @@ WITH_BLAS?=	reference
 .endif
 
 . if ${WITH_BLAS} == reference
-LIB_DEPENDS+=	blas.2:${PORTSDIR}/math/blas
-LIB_DEPENDS+=	lapack.4:${PORTSDIR}/math/lapack
+LIB_DEPENDS+=	libblas.so:${PORTSDIR}/math/blas
+LIB_DEPENDS+=	liblapack.so:${PORTSDIR}/math/lapack
 BLAS=		-lblas
 LAPACK=		-llapack
 .elif ${WITH_BLAS} == gotoblas
-LIB_DEPENDS+=	goto2:${PORTSDIR}/math/gotoblas
+LIB_DEPENDS+=	libgoto2.so:${PORTSDIR}/math/gotoblas
 BLAS=		-lgoto2p
 LAPACK=		-lgoto2p
 .elif ${WITH_BLAS} == atlas
-LIB_DEPENDS+=	atlas:${PORTSDIR}/math/atlas
+LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
 BLAS=		-lptf77blas
 LAPACK=		-lalapack -lptcblas
 .endif
@@ -54,7 +54,6 @@ SCALAPACK=	-L/usr/local/lib -lscalapack -lblacs -lblacsc
 FORTRAN_LIBS=	-lgfortran
 GCCLIBDIR=	-L`${CAT} ${WRKSRC}/LIBDIR` -L`${CAT} ${WRKSRC}/LIBDIR`/../../..
 
-NO_STAGE=	yes
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%MPICC%%|${LOCALBASE}/bin/mpicc|g ; \
 				s|%%MPICXX%%|${LOCALBASE}/bin/mpicxx|g ; \
@@ -65,7 +64,6 @@ post-patch:
 				s|%%BLAS%%|${BLAS}|g ; \
 				s|%%LAPACK%%|${LAPACK}|g ; \
 				s|%%SCALAPACK%%|${SCALAPACK}|g ; \
-				s|%%PTHREAD_LIBS%%|${PTHREAD_LIBS}|g ; \
 				s|%%FORTRAN_LIBS%%|${GCCLIBDIR} ${FORTRAN_LIBS}|g '  ${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e 's|%%MPICC%%|${LOCALBASE}/bin/mpicc|g ; \
 				s|%%MPICXX%%|${LOCALBASE}/bin/mpicxx|g ; \
@@ -84,15 +82,13 @@ do-build:
 	cd ${WRKSRC} ; ${MAKE_CMD}
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/sdpara ${PREFIX}/bin
-	@${MKDIR} ${DATADIR}
-	${INSTALL_DATA}    ${WRKSRC}/param.sdpa ${DATADIR}
-	@${MKDIR} ${EXAMPLESDIR}
-	${INSTALL_DATA}    ${WRKSRC}/example* ${EXAMPLESDIR}
-	${INSTALL_DATA}    ${WRKSRC}/param.sdpa ${EXAMPLESDIR}
-#.if !defined(NOPORTDOCS)
-#	@${MKDIR} ${DOCSDIR}
-#	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${MANUALFILE} ${DOCSDIR}
-#.endif
+	${INSTALL_PROGRAM} ${WRKSRC}/sdpara ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA}    ${WRKSRC}/param.sdpa ${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA}    ${WRKSRC}/example* ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA}    ${WRKSRC}/param.sdpa ${STAGEDIR}${EXAMPLESDIR}
+#	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+#	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${MANUALFILE} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	gsoap
-PORTVERSION=	2.8.17
-PORTREVISION=	3
+PORTVERSION=	2.8.22
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}2/gSOAP
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Generator Tools for Coding SOAP/XML Web Services in C and C++
 
 LICENSE=	GPLv2
@@ -22,31 +21,24 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 OPTIONS_RADIO=	SSL
 OPTIONS_RADIO_SSL=	GNUTLS OPENSSL
 OPTIONS_DEFAULT=	OPENSSL
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGNUTLS}
-LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
-   		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-		libgpg-error.so:${PORTSDIR}/security/libgpg-error
-CONFIGURE_ARGS=	--enable-gnutls
-LDFLAGS+=	-L${LOCALBASE}/lib
-.elif ${PORT_OPTIONS:MOPENSSL}
-CONFIGURE_ARGS=	--enable-ssl
-.else
-CONFIGURE_ARGS=	--disable-ssl
-.endif
+GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
+	   		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
+			libgpg-error.so:${PORTSDIR}/security/libgpg-error
+GNUTLS_CONFIGURE_ON=	--enable-gnutls
+GNUTLS_LDFLAGS=		-L${LOCALBASE}/lib
+OPENSSL_CONFIGURE_ENABLE=	ssl
 
 post-patch:
-	${REINPLACE_CMD} -e 's| sys/timeb.h | |' \
+	@${REINPLACE_CMD} -e 's| sys/timeb.h | |' \
 	    -e 's|-DSOAPCPP_IMPORT_PATH=|-DSOAPCPP2_IMPORT_PATH=|' \
 	    -e 's|-DWSDL_IMPORT_PATH=|-DWSDL2H_IMPORT_PATH=|' \
 	    ${WRKSRC}/${CONFIGURE_SCRIPT}
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/gsoap
-	@${INSTALL_DATA} ${WRKSRC}/gsoap/stdsoap2.c \
+	${INSTALL_DATA} ${WRKSRC}/gsoap/stdsoap2.c ${WRKSRC}/gsoap/dom.cpp \
 	    ${STAGEDIR}${PREFIX}/lib/gsoap
 	@${LN} -fs stdsoap2.c ${STAGEDIR}${PREFIX}/lib/gsoap/stdsoap2.cpp
+	@${LN} -fs dom.cpp ${STAGEDIR}${PREFIX}/lib/gsoap/dom.c
 
 .include <bsd.port.mk>

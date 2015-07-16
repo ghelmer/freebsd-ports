@@ -10,7 +10,7 @@ MASTER_SITES=	SF/kmfl/kmfl/${PORTVERSION} \
 DIST_SUBDIR=	kmfl
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
-COMMENT=	An engine to interpret compiled KMFL keyboard tables
+COMMENT=	Engine to interpret compiled KMFL keyboard tables
 
 LIB_DEPENDS=	libkmflcomp.so:${PORTSDIR}/textproc/kmflcomp
 
@@ -30,7 +30,6 @@ PLIST_FILES=	include/kmfl/libkmfl.h \
 		lib/libkmfl.so \
 		lib/libkmfl.so.0.0.0 \
 		lib/libkmfl.so.0
-PLIST_DIRSTRY=	include/kmfl share/doc/kmfl
 
 post-patch:
 	@${REINPLACE_CMD} \

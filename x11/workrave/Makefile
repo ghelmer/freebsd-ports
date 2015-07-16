@@ -3,6 +3,7 @@
 
 PORTNAME=	workrave
 PORTVERSION=	1.10.1
+PORTREVISION=	2
 CATEGORIES=	x11 gnome
 MASTER_SITES=	SF
 
@@ -14,17 +15,16 @@ LICENSE=	GPLv3 # (or later)
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah>0:${PORTSDIR}/devel/py-cheetah
 LIB_DEPENDS=	libgdome.so:${PORTSDIR}/textproc/gdome2
 
-USES=		gettext gmake pathfix pkgconfig
+USES=		gettext gmake pathfix pkgconfig python
 USE_XORG=	recordproto x11 xext xmu xscrnsaver xtst
-USE_GNOME=	intlhack gconf2 gnomehier gtkmm24
-USE_PYTHON=	yes
+USE_GNOME=	intlhack gconf2 gtkmm24
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules --enable-gconf --disable-gnome3 \
 		--disable-indicator
 INSTALLS_ICONS=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		GNOME GSTREAMER PULSEAUDIO
 OPTIONS_DEFAULT=	GSTREAMER

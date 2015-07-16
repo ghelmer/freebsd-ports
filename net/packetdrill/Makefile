@@ -11,9 +11,7 @@ COMMENT=	Network stack testing tool
 
 LICENSE=	GPLv2
 
-USES=		bison
-MAKE_ENV+=	PTHREAD_CFLAGS="${PTHREAD_CFLAGS}" \
-		PTHREAD_LIBS="${PTHREAD_LIBS}"
+USES=		bison uidfix
 PORTDATA=	packetdrill.el packetdrill.vim
 PORTDOCS=	README
 PORTEXAMPLES=	tests

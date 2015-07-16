@@ -2,28 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	OpenEXR
-PORTVERSION=	2.1.0
-PORTREVISION=	3
+PORTVERSION=	2.2.0
+PORTREVISION=	5
 CATEGORIES=	graphics devel
-MASTER_SITES=	SAVANNAH/openexr/
+MASTER_SITES=	SAVANNAH/openexr/:dist \
+		LOCAL/mandree/:test
 DISTNAME=	openexr-${DISTVERSION}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:dist \
+		openexr-2.2.0-comp_dwa-test-images.tar.xz:test
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	High dynamic-range (HDR) image file format
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libImath.so:${PORTSDIR}/graphics/ilmbase
+# exact version required to avoid hard-to-debug issues
+LIB_DEPENDS=	libImath-2_2.so.12:${PORTSDIR}/graphics/ilmbase
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
-USES=		gmake libtool:keepla pathfix pkgconfig
+USES=		compiler:features gmake libtool pathfix pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--disable-ilmbasetest --enable-imfexamples
 USE_LDCONFIG=	yes
+CPPFLAGS+=	-I. -I../IlmImf
 
 # must be linked with -l{thr|pthread} explicitly
-LDFLAGS+=	${PTHREAD_LIBS}
+LDFLAGS+=	-lpthread
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -42,10 +47,10 @@ OPTIONS_SUB=	yes
 
 LARGE_STACK_CONFIGURE_ENABLE=	large-stack
 
-.include <bsd.port.options.mk>
+.include <bsd.port.pre.mk>
 
-MAJORVER=	2_1
-VER=	21
+MAJORVER=	2_2
+VER=		22
 
 PLIST_SUB=	MAJORVER=${MAJORVER}
 PLIST_SUB+=	VER=${VER}
@@ -59,19 +64,31 @@ post-patch:
 		-e 's|$$(EXTRA_DIST)||' \
 		${WRKSRC}/doc/Makefile.am ${WRKSRC}/doc/Makefile.in
 
+# too many reports about compilation failures, so sanity check C++
+# library
+_ilm_libcxx=${COMPILER_FEATURES:Mlib*c++}
+pre-configure:
+	@${OBJDUMP} -p ${LOCALBASE}/lib/libImath.so \
+	| ${EGREP} -q '^[[:space:]]*NEEDED[[:space:]]+${_ilm_libcxx:C/\+/\\+/g}\.' \
+	|| {	${ECHO_CMD} "*** Your ilmbase package uses a different C++ standard library than ***" ; \
+		${ECHO_CMD} "*** OpenEXR would. Please recompile and reinstall ilmbase with the  ***" ; \
+		${ECHO_CMD} "*** same C++ std. library before trying to build OpenEXR.  Abort.   ***" ; \
+		exit 1; }
+
 .if ! ${PORT_OPTIONS:MEXAMPLES}
 EXTRA_PATCHES+=${FILESDIR}/extra-patch-IlmImfExamples__Makefile.in
 .endif
 
 regression-test regression test check:	build
-	@(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} check)
+	@(cd ${WRKSRC}; ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${_MAKE_JOBS} check)
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libIlmImf-Imf_${MAJORVER}.so.${VER}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libIlmImf-${MAJORVER}.so.${VER}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libIlmImfUtil-${MAJORVER}.so.${VER}
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
 	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

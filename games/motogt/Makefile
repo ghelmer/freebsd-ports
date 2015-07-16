@@ -3,7 +3,7 @@
 
 PORTNAME=	motogt
 PORTVERSION=	20110505
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/motogt/
 DISTNAME=	MotoGT-${PORTVERSION}
@@ -11,7 +11,7 @@ DISTNAME=	MotoGT-${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	2D top-viewed motorcycle racing game
 
-LIB_DEPENDS=	libsfml-system.so:${PORTSDIR}/devel/sfml \
+LIB_DEPENDS=	libsfml1-system.so:${PORTSDIR}/devel/sfml1 \
 		libpng.so:${PORTSDIR}/graphics/png
 
 LICENSE=	GPLv2 CCbySA
@@ -25,7 +25,6 @@ USE_GL=		gl
 BUILD_WRKSRC=	${WRKSRC}/src
 MAKEFILE=	Makefile.lnx
 MAKE_JOBS_UNSAFE=	yes
-CFLAGS+=	-I${LOCALBASE}/include/libpng15
 SUB_FILES=	motogt
 CXXFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -34,6 +33,10 @@ PLIST_FILES=	bin/${PORTNAME} libexec/MotoGT.bin
 PORTDATA=	*
 
 WRKSRC=		${WRKDIR}/MotoGT
+
+post-patch:
+	@${REINPLACE_CMD} -e '/#include/ s|SFML|&1|' ${WRKSRC}/data/src/editor.cpp ${WRKSRC}/src/*.h
+	@${REINPLACE_CMD} -e 's|-lsfml|&1|g' ${WRKSRC}/src/Makefile.lnx
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/MotoGT.bin ${STAGEDIR}${PREFIX}/libexec/

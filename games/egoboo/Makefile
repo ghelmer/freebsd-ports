@@ -3,7 +3,7 @@
 
 PORTNAME=	egoboo
 PORTVERSION=	2.7.5
-PORTREVISION=	8
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/Linux%20Source%20Distro/${PORTVERSION}
@@ -33,5 +33,6 @@ post-patch:
 post-install:
 	@cd ${WRKDIR}/${DISTNAME:S/-/-data-/} && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/${PORTNAME}
 
 .include <bsd.port.mk>

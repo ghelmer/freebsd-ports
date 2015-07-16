@@ -2,8 +2,7 @@ include/fixbuf/autoinc.h
 include/fixbuf/private.h
 include/fixbuf/public.h
 lib/libfixbuf.a
-lib/libfixbuf.la
 lib/libfixbuf.so
 lib/libfixbuf.so.3
+lib/libfixbuf.so.3.1.2
 libdata/pkgconfig/libfixbuf.pc
-@dirrmtry include/fixbuf

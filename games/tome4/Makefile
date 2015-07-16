@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tome4
-PORTVERSION=	1.2.2
+PORTVERSION=	1.3.1
 CATEGORIES=	games
 MASTER_SITES=	http://te4.org/dl/t-engine/ \
 		SF/lifanov-ports-distfiles/${PORTNAME}/:icons
@@ -21,6 +21,7 @@ LIB_DEPENDS=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis
 DESKTOP_ENTRIES="ToME 4" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;RolePlaying;" ""
 
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 WRKSRC=		${WRKDIR}/t-engine4-src-${PORTVERSION}
 MAKE_ARGS+=	config=release verbose=yes ARCH=""
 USES=		gmake openal:al tar:bzip2
@@ -33,16 +34,15 @@ MAKE_JOBS_UNSAFE=yes
 pre-build:
 	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/premake4.lua
 	(cd ${WRKSRC} && premake4 gmake)
+	@${REINPLACE_CMD} 's|gcc|${CC}|' ${WRKSRC}/build/*.make
 	@${REINPLACE_CMD} 's|-lpthread|-pthread|' ${WRKSRC}/build/TEngine.make
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-
 	${INSTALL_PROGRAM} ${WRKSRC}/t-engine ${STAGEDIR}${DATADIR}
-	${INSTALL} -m 0755 ${WRKDIR}/tome4 ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_SCRIPT} ${WRKDIR}/tome4 ${STAGEDIR}${PREFIX}/bin
 	(cd ${WRKSRC}; ${COPYTREE_SHARE} "bootstrap game" ${STAGEDIR}${DATADIR})
-
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
-		${STAGEDIR}${PREFIX}/share/pixmaps/
+		${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

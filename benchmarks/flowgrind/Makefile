@@ -2,20 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	flowgrind
-PORTVERSION=	0.6.1
+PORTVERSION=	0.7.1
+DISTVERSIONPREFIX=	${PORTNAME}-
 PORTREVISION=	1
 CATEGORIES=	benchmarks
-MASTER_SITES=	https://launchpad.net/flowgrind/trunk/${PORTNAME}-0.6.1/+download/
 
 MAINTAINER=	lars@eggert.org
 COMMENT=	Measure throughput and other metrics for TCP
 
-LIB_DEPENDS=	libxmlrpc++.so:${PORTSDIR}/net/xmlrpc-c \
-		libgsl.so:${PORTSDIR}/math/gsl \
-		libpcap.so.1:${PORTSDIR}/net/libpcap
+LICENSE=	GPLv3
 
-USES=		tar:bzip2
+BUILD_DEPENDS=	pcap-config:${PORTSDIR}/net/libpcap
+LIB_DEPENDS=	libpcap.so:${PORTSDIR}/net/libpcap \
+		libgsl.so:${PORTSDIR}/math/gsl \
+		libxmlrpc.so:${PORTSDIR}/net/xmlrpc-c
+
+USE_GITHUB=	yes
+
+USES=		autoreconf
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-debug
+CONFIGURE_ARGS=	--enable-pcap --enable-gsl
+
+post-patch:
+	@${RM} -rf ${WRKSRC}/build-aux
+	@${REINPLACE_CMD} -e 's|AC_LIB_RPATH||g' ${WRKSRC}/configure.ac
 
 .include <bsd.port.mk>

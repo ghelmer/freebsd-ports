@@ -5,17 +5,17 @@ PORTNAME=	scheme48
 PORTVERSION=	1.9.2
 CATEGORIES=	lang scheme
 MASTER_SITES=	http://www.s48.org/${PORTVERSION}/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	lichray@gmail.com
-COMMENT=	The Scheme Underground's implementation of R5RS
+COMMENT=	Scheme Underground's implementation of R5RS
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE MIT
+LICENSE_COMB=	multi
 
 CONFLICTS=	scsh-[0-9]*
 
 ALL_TARGET=	enough
-USES=		gmake
+USES=		gmake tar:tgz
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS
@@ -26,8 +26,8 @@ PLIST_SUB+=	VER=${PORTVERSION}
 
 post-patch:
 	@${REINPLACE_CMD} \
-		-e 's/-mthreads/${PTHREAD_LIBS}/' \
-		-e 's/-mt/${PTHREAD_LIBS}/' \
+		-e 's/-mthreads/-lpthread/' \
+		-e 's/-mt/-lpthread/' \
 		-e 's/-munaligned-double//' \
 		${WRKSRC}/configure
 	@${REINPLACE_CMD} \

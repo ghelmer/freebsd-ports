@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	event
-PORTVERSION=	1.9.0
+PORTVERSION=	1.10.3
 CATEGORIES=	devel
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -14,7 +14,7 @@ COMMENT=	Provides interface to libevent library
 
 LICENSE=	PHP301
 
-LIB_DEPENDS=	libevent-2.0.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
 
 USE_OPENSSL=	yes
 CONFIGURE_ARGS=	--with-openssl-dir=${OPENSSLBASE}

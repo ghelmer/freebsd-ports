@@ -2,12 +2,14 @@
 
 PORTNAME=	gnustep-examples
 PORTVERSION=	1.4.0
+PORTREVISION=	3
 CATEGORIES=	misc gnustep
-MASTER_SITES=	${MASTER_SITE_GNUSTEP}
-MASTER_SITE_SUBDIR=	usr-apps
+MASTER_SITES=	GNUSTEP/usr-apps
 
-MAINTAINER=	theraven@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNUstep example applications
+
+BROKEN=		Not converted to USES=gnustep
 
 USE_GNUSTEP=	yes
 USE_GNUSTEP_BACK=	yes
@@ -19,7 +21,6 @@ WRKSRC=		${WRKDIR}/${DISTNAME}
 USE_GNUSTEP_MAKE_DIRS+=	. gui/Finger gui/GFractal gui/HostAddress gui/MyGL
 MAKE_ENV+=	GNUSTEP_INSTALLATION_DIR=${GNUSTEP_LOCAL_ROOT}
 
-NO_STAGE=	yes
 post-patch:
 	${REINPLACE_CMD} -e 's|^//|#|' \
 		${WRKSRC}/gui/GFractal/GNUmakefile

@@ -3,14 +3,15 @@
 
 PORTNAME=	vectoroids
 PORTVERSION=	1.1.0
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.tuxpaint.org/unix/x/vectoroids/src/
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Vector-based rock-shooting game similar to Asteroids
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
 USES=		gmake
 USE_SDL=	image mixer sdl

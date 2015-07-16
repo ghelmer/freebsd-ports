@@ -3,13 +3,13 @@
 
 PORTNAME=	Log-Dispatch-Scribe
 PORTVERSION=	0.05
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
-MASTER_SITE_SUBDIR=	Log
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
-COMMENT=	Logging via Facebook\'s Scribe server software
+COMMENT=	Logging via Facebook's Scribe server software
 
 BUILD_DEPENDS=	p5-Log-Dispatch>0:${PORTSDIR}/devel/p5-Log-Dispatch
 RUN_DEPENDS:=	${BUILD_DEPENDS}

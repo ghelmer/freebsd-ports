@@ -12,17 +12,16 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XSL Transformations (XSLT) implementation in Java
 
 RUN_DEPENDS=	${JAVALIBDIR}/xml-apis.jar:${PORTSDIR}/textproc/xerces-j \
-		${JAVALIBDIR}/xp.jar:${PORTSDIR}/textproc/xp \
-		${LOCALBASE}/bin/classpath:${PORTSDIR}/java/javavmwrapper
+		${JAVALIBDIR}/xp.jar:${PORTSDIR}/textproc/xp
 
 USE_JAVA=	YES
 JAVA_VERSION=	1.6+
 NO_BUILD=	YES
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
 OTHERDOCS=	copying.txt copyingjc.txt index.html
 PORTDOCS=	${OTHERDOCS} api
-.endif
 SAMPLES=	date.xsl nxml.xsl slides.xml slides.xsl sort-uniq.xml \
 		sort-uniq.xsl split.xml split.xsl textfile.xml textfile.xsl
 
@@ -41,15 +40,13 @@ do-install:
 	@${ECHO_MSG} "  [ DONE ]"
 	@${ECHO_MSG} ">> Installing samples in ${EXAMPLESDIR}..."
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/demo && ${INSTALL_DATA} ${SAMPLES} ${STAGEDIR}${EXAMPLESDIR}/
+	(cd ${WRKSRC}/demo && ${INSTALL_DATA} ${SAMPLES} ${STAGEDIR}${EXAMPLESDIR}/)
 	@${ECHO_MSG} "  [ DONE ]"
-.if !defined(NOPORTDOCS)
 	@${ECHO_MSG} ">> Installing documentation in ${DOCSDIR}..."
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC}/doc && ${FIND} api \
-	  | ${CPIO} -pdmu -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DOCSDIR} > /dev/null 2>&1
-	cd ${WRKSRC} && ${INSTALL_DATA} ${OTHERDOCS} ${STAGEDIR}${DOCSDIR}/
+	(cd ${WRKSRC}/doc && ${FIND} api \
+	  | ${CPIO} -pdmu -R ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DOCSDIR} > /dev/null 2>&1)
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${OTHERDOCS} ${STAGEDIR}${DOCSDIR}/)
 	@${ECHO_MSG} "  [ DONE ]"
-.endif
 
 .include <bsd.port.mk>

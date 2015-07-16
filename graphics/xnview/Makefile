@@ -11,6 +11,7 @@ DISTFILES=	XnView-x86-unknown-FreeBSD5.x-static.tgz
 MAINTAINER=	petr@petrovich.kiev.ua
 COMMENT=	Easy graphics viewer / converter
 
+USES=		cpe
 ONLY_FOR_ARCHS=	i386
 NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/XnView-${PORTVERSION}-x86-unknown-FreeBSD5.x-static
@@ -18,7 +19,7 @@ INSTALL_SLIB=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-LIB_DEPENDS+=	c.5:${PORTSDIR}/misc/compat5x
+LIB_DEPENDS+=	libc.so.5:${PORTSDIR}/misc/compat5x
 DISTFILES+=	NConvert-x86-unknown-FreeBSD6.x.tgz
 WRKSRC_NC=	${WRKDIR}/NConvert
 

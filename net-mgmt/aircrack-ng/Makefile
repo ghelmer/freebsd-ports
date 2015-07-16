@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	aircrack-ng
-DISTVERSION=	1.2-beta3
+DISTVERSION=	1.2-rc1
 CATEGORIES=	net-mgmt security
 MASTER_SITES=	http://download.aircrack-ng.org/ \
 		http://bsd-geek.de/FreeBSD/distfiles/
@@ -13,7 +13,9 @@ COMMENT=	802.11 WEP and WPA-PSK keys cracking program
 LICENSE=	GPLv2 BSD3CLAUSE APACHE20
 LICENSE_COMB=	dual
 
-USES=		gmake dos2unix
+USES=		cpe gmake dos2unix
+CPE_VERSION=	${DISTVERSION:C/-.*//}
+CPE_UPDATE=	${DISTVERSION:C/^[^-]*$//:C/.*-//}
 DOS2UNIX_FILES=	src/osdep/byteorder.h
 MAKE_ARGS=	unstable=true libnl=false prefix=${PREFIX}
 USE_OPENSSL=	yes
@@ -50,9 +52,6 @@ post-patch:
 	@${REINPLACE_CMD} \
 		-E 's/air(driver|mon)-ng\.1 //' \
 			${WRKSRC}/manpages/Makefile
-	@${REINPLACE_CMD} \
-		-e 's|-lpthread|${PTHREAD_LIBS}|' \
-			${WRKSRC}/src/Makefile
 
 post-install:
 	@${STRIP_CMD} ${BIN_FILES:S,^,${STAGEDIR}${PREFIX}/bin/,} \

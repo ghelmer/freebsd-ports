@@ -3,10 +3,9 @@
 
 PORTNAME=	xfce4-datetime-plugin
 PORTVERSION=	0.6.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	x11-clocks xfce
-MASTER_SITES=	${MASTER_SITE_XFCE}
-MASTER_SITE_SUBDIR=src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
@@ -14,11 +13,11 @@ COMMENT=	Datetime panel plugin for the Xfce desktop
 
 LICENSE=	GPLv2
 
-USE_BZIP2=	yes
-INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
+INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install-strip
+USES=		gettext gmake libtool pkgconfig xfce tar:bzip2
 USE_GNOME=	gtk20 intltool intlhack
-USE_XFCE=	configenv libmenu libutil panel
-USES=		pkgconfig gettext gmake
+USE_XFCE=	panel
 
 .include <bsd.port.mk>

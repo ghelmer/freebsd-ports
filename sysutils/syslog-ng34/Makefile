@@ -3,7 +3,7 @@
 
 PORTNAME=	syslog-ng
 PORTVERSION=	3.4.8
-PORTREVISION=	1
+PORTREVISION=	9
 CATEGORIES=	sysutils
 DISTVERSION=	$(PORTVERSION:S/a/alpha/:S/b/beta/:S/r/rc/)
 PKGNAMESUFFIX=	34
@@ -11,19 +11,17 @@ DISTFILES=	syslog-ng_${DISTVERSION}.tar.gz
 MASTER_SITES=	http://www.balabit.com/downloads/files/syslog-ng/open-source-edition/${DISTVERSION}/source/
 
 MAINTAINER=	cy@FreeBSD.org
-COMMENT=	A powerful syslogd replacement
+COMMENT=	Powerful syslogd replacement
+
+LIB_DEPENDS=	libevtlog.so:${PORTSDIR}/sysutils/eventlog
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
 		syslog-ng-devel-[0-9]*
 WRKSRC=		$(WRKDIR)/$(PORTNAME)-$(DISTVERSION)
 
-OPTIONS_RADIO=	SSL
-OPTIONS_RADIO_SSL=	SYS_SSL PORTS_SSL
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 PCRE SMTP JSON GEOIP DOCS
-OPTIONS_DEFAULT=	PORTS_SSL PCRE
-SYS_SSL_DESC=		Build with OpenSSL support (from system)
-PORTS_SSL_DESC=		Build with OpenSSL support (from ports)
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 PCRE SMTP JSON GEOIP DOCS OPENSSL
+OPTIONS_DEFAULT=	OPENSSL PCRE
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
 SPOOF_DESC=		Build with spoof source support
@@ -33,12 +31,7 @@ SMTP_DESC=		Build with SMTP support
 JSON_DESC=		Build with JSON-C support
 GEOIP_DESC=		Build with GeoIP support
 
-USES=		gmake pkgconfig pathfix
-
-.include <bsd.port.options.mk>
-
-LIB_DEPENDS=	libevtlog.so:${PORTSDIR}/sysutils/eventlog
-
+USES=		gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 GNU_CONFIGURE=	yes
@@ -49,24 +42,19 @@ CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc --localstatedir=/var/db \
 		--enable-dynamic-linking \
 		--enable-debug
 
-.if ${PORT_OPTIONS:MSYS_SSL} || ${PORT_OPTIONS:MPORTS_SSL}
+BROKEN_sparc64=	Does not compile on sparc64: gcc core dump
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MOPENSSL}
 USE_OPENSSL=		yes
+WITH_OPENSSL_PORT=	yes
 CONFIGURE_ARGS+=	--enable-ssl
 CONFIGURE_ENV+=		OPENSSL_CFLAGS="${OPENSSL_CFLAGS}" \
 			OPENSSL_LIBS="${OPENSSL_LDFLAGS} -lcrypto -lssl"
-PLIST_FILES+=		lib/syslog-ng/libafsocket-tls.la lib/syslog-ng/libafsocket-tls.so
+PLIST_FILES+=		lib/syslog-ng/libafsocket-tls.so
 .else
 CONFIGURE_ARGS+=	--disable-ssl
-.endif
-
-.if ${PORT_OPTIONS:MPORTS_SSL}
-WITH_OPENSSL_PORT=	yes
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "sparc64"
-BROKEN=		Does not compile on sparc64: gcc core dump
 .endif
 
 .if ${PORT_OPTIONS:MTCP_WRAPPERS}
@@ -76,7 +64,7 @@ CONFIGURE_ARGS+=	--disable-tcp-wrapper
 .endif
 
 .if ${PORT_OPTIONS:MSPOOF}
-BUILD_DEPENDS+=		${LIBNET_CONFIG}:${PORTSDIR}/net/libnet
+LIB_DEPENDS+=		libnet.so:${PORTSDIR}/net/libnet
 LIBNET_CONFIG?=		${LOCALBASE}/bin/libnet11-config
 CONFIGURE_ARGS+=	--enable-spoof-source --with-libnet=${LOCALBASE}/bin
 CFLAGS+=		`${LIBNET_CONFIG} --cflags` -I${LOCALBASE}/include
@@ -102,7 +90,7 @@ CONFIGURE_ARGS+=	--disable-pcre
 CONFIGURE_ARGS+=	--enable-geoip
 LIB_DEPENDS+=		libGeoIP.so:${PORTSDIR}/net/GeoIP
 CONFIGURE_ENV+=		GEOIP_LIBS="-lGeoIP"
-PLIST_FILES+=		lib/syslog-ng/libtfgeoip.la lib/syslog-ng/libtfgeoip.so
+PLIST_FILES+=		lib/syslog-ng/libtfgeoip.so
 .else
 CONFIGURE_ARGS+=	--disable-geoip
 .endif
@@ -110,27 +98,29 @@ CONFIGURE_ARGS+=	--disable-geoip
 .if ${PORT_OPTIONS:MSMTP}
 CONFIGURE_ARGS+=	--with-libesmtp=/usr/local/
 LIB_DEPENDS+=		libesmtp.so:${PORTSDIR}/mail/libesmtp
-PLIST_FILES+=		lib/syslog-ng/libafsmtp.la lib/syslog-ng/libafsmtp.so
+PLIST_FILES+=		lib/syslog-ng/libafsmtp.so
 .else
 CONFIGURE_ARGS+=	--disable-smtp
 .endif
 
 .if ${PORT_OPTIONS:MSQL}
 LIB_DEPENDS+=		libdbi.so:${PORTSDIR}/databases/libdbi
-CONFIGURE_ENV+=		LIBDBI_LIBS="-ldbi"
+CONFIGURE_ENV+=		LIBDBI_LIBS="-L${LOCALBASE}/lib -ldbi"
 CONFIGURE_ARGS+=	--enable-sql
-PLIST_FILES+=		lib/syslog-ng/libafsql.la lib/syslog-ng/libafsql.so
+PLIST_FILES+=		lib/syslog-ng/libafsql.so
 .else
 CONFIGURE_ARGS+=	--disable-sql
 .endif
 
 .if ${PORT_OPTIONS:MJSON}
-LIB_DEPENDS+=		libjson.so:${PORTSDIR}/devel/json-c
+LIB_DEPENDS+=		libjson-c.so:${PORTSDIR}/devel/json-c
 CONFIGURE_ARGS+=	--enable-json
-PLIST_FILES+= 		lib/syslog-ng/libjson-plugin.la lib/syslog-ng/libjson-plugin.so
+PLIST_FILES+= 		lib/syslog-ng/libjson-plugin.so
 .else
 CONFIGURE_ARGS+=        --disable-json
 .endif
+
+.include <bsd.port.pre.mk>
 
 .if ${OSVERSION} >= 900034
 CONFIGURE_ARGS+=        --disable-linux-caps
@@ -138,8 +128,8 @@ CONFIGURE_ARGS+=        --disable-linux-caps
 
 post-patch:
 	@${REINPLACE_CMD} -e 's:libnet-config:libnet11-config:g' ${WRKSRC}/configure
-	@${LN} ${WRKSRC}/scl/syslog-ng.conf ${WRKSRC}/scl/syslog-ng.conf.dist
-	@${LN} ${WRKSRC}/scl/scl.conf ${WRKSRC}/scl/scl.conf.dist
+	@${LN} ${WRKSRC}/scl/syslog-ng.conf ${WRKSRC}/scl/syslog-ng.conf.sample
+	@${LN} ${WRKSRC}/scl/scl.conf ${WRKSRC}/scl/scl.conf.sample
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
@@ -149,7 +139,7 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/NEWS ${STAGEDIR}${DOCSDIR}
 .endif
 	${INSTALL_DATA} ${FILESDIR}/syslog-ng.conf.sample ${STAGEDIR}${PREFIX}/etc
-	${INSTALL_DATA} ${WRKSRC}/scl/syslog-ng.conf.dist ${STAGEDIR}${PREFIX}/etc
-	${INSTALL_DATA} ${WRKSRC}/scl/scl.conf.dist ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_DATA} ${WRKSRC}/scl/syslog-ng.conf.sample ${STAGEDIR}${PREFIX}/etc
+	${INSTALL_DATA} ${WRKSRC}/scl/scl.conf.sample ${STAGEDIR}${PREFIX}/etc
 
 .include <bsd.port.post.mk>

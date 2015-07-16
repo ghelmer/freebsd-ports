@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	tk
-PORTVERSION=	8.5.15
+PORTVERSION=	8.5.18
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	${MASTER_SITE_TCLTK} \
-		SF/tcl/Tcl/${PORTVERSION}
-MASTER_SITE_SUBDIR=tcl8_5
+MASTER_SITES=	TCLTK/tcl8_5 SF/tcl/Tcl/${PORTVERSION}
 PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
 DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
@@ -16,7 +14,7 @@ COMMENT=	Graphical toolkit for Tcl
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
 LICENSE_FILE=	${WRKSRC}/../license.terms
-LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES+=		tcl:${SHORT_TK_VER}
 USE_XORG=	x11 xft xscrnsaver
@@ -41,7 +39,6 @@ INSTALL_TARGET=	install
 MAKE_ENV=	SHORT_TK_VER=${SHORT_TK_VER}
 PLIST_SUB=	TK_VER=${TK_VER} SHORT_TK_VER=${SHORT_TK_VER}
 NOPRECIOUSMAKEVARS=	yes # Otherwise 'make readmes' is broken
-MANCOMPRESSED=	no
 DATADIR=	${PREFIX}/share/${PORTNAME}${TK_VER}
 SUB_FILES=	pkgIndex.tcl
 
@@ -96,8 +93,8 @@ post-configure:
 
 post-install:
 	${INSTALL_DATA} ${WRKDIR}/pkgIndex.tcl ${STAGEDIR}${PREFIX}/lib/tk${TK_VER}/
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/wish${TK_VER}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtk${SHORT_TK_VER}.so.1
+	${LN} -fs libtk${SHORT_TK_VER}.so.1.0 \
+	    ${STAGEDIR}${PREFIX}/lib/libtk${SHORT_TK_VER}.so.1
 
 regression-test:	build
 	cd ${WRKSRC}; ${MAKE} test

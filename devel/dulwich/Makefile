@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dulwich
-PORTVERSION=	0.9.7
+PORTVERSION=	0.10.1a
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -18,9 +18,9 @@ PORTDOCS=	AUTHORS HACKING NEWS README.md file-format.txt \
 		repo.txt tag.txt
 PORTEXAMPLES=	clone.py config.py diff.py latest_change.py
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		cpe python:2
+CPE_VENDOR=	dulwich_project
+USE_PYTHON=	distutils autoplist
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

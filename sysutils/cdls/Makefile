@@ -4,10 +4,11 @@
 PORTNAME=	cdls
 PORTVERSION=	4.2
 CATEGORIES=	sysutils
-MASTER_SITES=	ftp://pd7w.fs2a.eu/
+MASTER_SITES=	ftp://zml12.dyndns.org/ \
+		ftp://vps337.directvps.nl/
 
 MAINTAINER=	hans@dehartog.nl
-COMMENT=	A curses based file manager for system managers
+COMMENT=	Curses based file manager for system managers
 
 PLIST_FILES=	bin/cdls
 
@@ -20,7 +21,7 @@ USES=		ncurses
 CONFIGURE_ARGS+=	NCURSES_CONFIG=/usr/bin/true
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${STAGEDIR}${PREFIX}|g' ${WRKSRC}/Makefile
+do-install:
+	${INSTALL_PROGRAM} ${WRKSRC}/cdls ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.post.mk>

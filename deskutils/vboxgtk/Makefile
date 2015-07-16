@@ -3,18 +3,18 @@
 
 PORTNAME=	vboxgtk
 PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	deskutils emulators gnome
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK frontend for VirtualBox
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/xpcom/vboxxpcom.py:${PORTSDIR}/emulators/virtualbox-ose
 
-USE_PYTHON=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 USE_GNOME=	gtk30 pygtk2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	NLS

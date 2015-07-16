@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ganyremote
-PORTVERSION=	6.3.1
+PORTVERSION=	6.3.3
 CATEGORIES=	deskutils comms gnome
 MASTER_SITES=	SF/anyremote/${PORTNAME}/${PORTVERSION}
 
@@ -13,15 +13,14 @@ LICENSE=	GPLv2 # (or later)
 
 RUN_DEPENDS=	anyremote:${PORTSDIR}/comms/anyremote
 
-OPTIONS_DEFINE=	DOCS
-
-USES=		gettext
+USES=		gettext python
 USE_GNOME=	pygtk2
-USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e \

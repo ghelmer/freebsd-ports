@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	netatalk
-PORTVERSION=	3.1.2
+PORTVERSION=	3.1.7
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
-#MASTER_SITE_SUBDIR=${PORTNAME}/${PORTNAME}/3.1
 PKGNAMESUFFIX=	3
 
 MAINTAINER=	marcus@FreeBSD.org
@@ -16,7 +15,7 @@ COMMENT=	File server for Mac OS X
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-    		libevent-2.0.so:${PORTSDIR}/devel/libevent2
+    		libevent.so:${PORTSDIR}/devel/libevent2
 
 USE_BDB=	5+
 USES=		iconv gmake pkgconfig perl5 libtool tar:bzip2
@@ -32,9 +31,9 @@ CONFIGURE_ARGS+=	--with-pkgconfdir=${PREFIX}/etc \
 			--localstatedir=/var \
 			--disable-bundled-libevent \
 			--with-libevent-header=${LOCALBASE}/include \
-			--with-libevent-lib=${LOCALBASE}/lib/event2
+			--with-libevent-lib=${LOCALBASE}/lib
 
-OPTIONS_DEFINE=PAM KRB5 LDAP SENDFILE KERBEROS DTRACE DBUS MYSQL ACL TCPWRAP
+OPTIONS_DEFINE=PAM KRB5 LDAP SENDFILE KERBEROS DBUS MYSQL ACL TCPWRAP
 OPTIONS_DEFAULT=KERBEROS DBUS TCPWRAP
 OPTIONS_RADIO=ZEROCONF
 OPTIONS_RADIO_ZEROCONF=AVAHI MDNSRESPONDER
@@ -42,7 +41,7 @@ OPTIONS_DEFAULT+=AVAHI
 
 NOZEROCONF_DESC=Disable Zeroconf(Bonjour) support
 KRB5_DESC=	Enable Kerberos V UAM
-DTRACE_DESC=	Enable DTrace support
+#DTRACE_DESC=	Enable DTrace support
 MYSQL_DESC=	Enable MySQL CNID backend support
 SENDFILE_DESC=	Enable Sendfile support
 ACL_DESC=	Enable ACL support
@@ -114,7 +113,7 @@ CONFIGURE_ARGS+=	--disable-sendfile
 
 .if ${PORT_OPTIONS:MDBUS} || exists(${LOCALBASE}/libdata/pkgconfig/dbus-glib-1.pc)
 LIB_DEPENDS+=		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
-RUN_DEPENDS+=		${LOCALBASE}/libdata/pkgconfig/dbus-python.pc:${PORTSDIR}/devel/py-dbus
+RUN_DEPENDS+=		${LOCALBASE}/libdata/pkgconfig/dbus-python.pc:${PORTSDIR}/devel/pydbus-common
 PLIST_SUB+=		DBUS=""
 .else
 PLIST_SUB+=		DBUS="@comment "
@@ -139,17 +138,15 @@ CONFIGURE_ARGS+=--enable-tcp-wrappers
 CONFIGURE_ARGS+=--disable-tcp-wrappers
 .endif
 
-.if ${OSVERSION} < 800031
-PLIST_SUB+=	ATFUNCS="@comment "
-.else
-PLIST_SUB+=	ATFUNCS=""
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%DB_NAME%%|${BDB_INCLUDE_DIR:T}| ; \
 	    	s|%%DB_LIB%%|-l${BDB_LIB_NAME}|g ; \
 		s|%%LOCALBASE%%|${LOCALBASE}|g' \
 		${WRKSRC}/configure
+
+post-stage:
+	@${RM} -f ${STAGEDIR}${PREFIX}/etc/afp.conf \
+		${STAGEDIR}${PREFIX}/etc/extmap.conf
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/macusers/macusers \
@@ -158,6 +155,5 @@ post-install:
 		${INSTALL_DATA} -c ${STAGEDIR}${PREFIX}/etc/afp.conf.dist ${STAGEDIR}${PREFIX}/etc/afp.conf
 	[ -f ${STAGEDIR}${PREFIX}/etc/extmap.conf ] || \
 		${INSTALL_DATA} -c ${STAGEDIR}${PREFIX}/etc/extmap.conf.dist ${STAGEDIR}${PREFIX}/etc/extmap.conf
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

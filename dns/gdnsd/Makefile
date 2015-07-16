@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	gdnsd
-PORTVERSION=	1.11.3
+PORTVERSION=	1.11.4
+PORTREVISION=	2
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/blblack/gdnsd/releases/download/v${PORTVERSION}/ \
 		http://gdnsd.scaleengine.net/gdnsd/
 
-MAINTAINER=	allanjude@freebsd.org
+MAINTAINER=	allanjude@FreeBSD.org
 COMMENT=	Authoritative-only GeoIP-aware DNS server
 
 LICENSE=	GPLv3
@@ -20,7 +21,9 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var --with-rootdir=${LOCALBASE}/etc/gdnsd
 USE_LDCONFIG=	yes
 USES=		pkgconfig libtool tar:xz
-CPPFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib
+CPPFLAGS+=	-I${LOCALBASE}/include
+LDFLAGS+=	-L${LOCALBASE}/lib
+CONFLICTS_INSTALL=	gdnsd2-2.[0-9]*
 
 USE_RC_SUBR=	gdnsd
 
@@ -31,7 +34,7 @@ OPTIONS_DEFINE=	DOCS GEOIP URCU
 OPTIONS_DEFAULT=	GEOIP
 
 GEOIP_DESC=		Enable GeoIP Support
-GEOIP_RUN_DEPENDS=	${LOCALBASE}/share/GeoIP/GeoIP.dat:${PORTSDIR}/net/GeoIP
+GEOIP_RUN_DEPENDS=	GeoIP>=0:${PORTSDIR}/net/GeoIP
 
 URCU_DESC=		Read-Copy-Update Support (Faster Zone Parsing)
 URCU_CONFIGURE_WITH=	urcu

@@ -3,13 +3,12 @@
 
 PORTNAME=	carve
 PORTVERSION=	1.4.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	GOOGLE_CODE
 
-MAINTAINER=	gahr@FreeBSD.org
-COMMENT=	A fast, robust constructive solid geometry library
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Fast, robust constructive solid geometry library
 
 LICENSE=	GPLv2
 
@@ -17,7 +16,7 @@ LIB_DEPENDS=	libboost_filesystem.so:${PORTSDIR}/devel/boost-libs
 
 OPTIONS_DEFINE=	DOCS GUI
 
-USES=		cmake:outsource compiler:c++11-lib
+USES=		cmake:outsource compiler:c++11-lib tar:tgz
 USE_GL=		glut
 USE_LDCONFIG=	yes
 

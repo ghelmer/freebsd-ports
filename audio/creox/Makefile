@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	creox
-PORTVERSION=	0.3.0
-PORTREVISION=	1
+PORTVERSION=	0.3
+PORTREVISION=	3
 CATEGORIES=	audio kde
 
 MAINTAINER=	ports@FreeBSD.org
@@ -16,8 +16,6 @@ LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
 USE_GITHUB=	yes
 GH_ACCOUNT=	laudrup
 GH_PROJECT=	Creox4
-GH_TAGNAME=	0.3
-GH_COMMIT=	8e27483
 
 USES=		cmake:outsource
 USE_KDE4=	automoc4 kdelibs kdeprefix

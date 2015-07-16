@@ -624,7 +624,6 @@
 %%QT_INCDIR%%/QtCore/qvector.h
 %%QT_INCDIR%%/QtCore/qwaitcondition.h
 %%QT_INCDIR%%/QtCore/qxmlstream.h
-%%QT_LIBDIR%%/libQtCore.la
 %%QT_LIBDIR%%/libQtCore.prl
 %%QT_LIBDIR%%/libQtCore.so
 %%QT_LIBDIR%%/libQtCore.so.4
@@ -634,10 +633,3 @@
 %%QT_PLUGINDIR%%/.keep_me
 libdata/pkgconfig/QtCore.pc
 %%QT_MKSPECDIR%%/qconfig.pri
-@dirrmtry %%QT_MKSPECDIR%%
-@dirrmtry %%QT_DATADIR%%
-@dirrmtry %%QT_PLUGINDIR%%
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtCore
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

@@ -3,7 +3,7 @@
 
 PORTNAME=	aster
 DISTVERSION=	${ASTER_DISTVERSION}
-PORTREVISION=	2
+PORTREVISION=	1
 CATEGORIES=	french cad
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -44,8 +44,15 @@ RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}gnuplot>0:${PORTSDIR}/math/py-gnuplot	\
 		${SHELL_INSTALL_ASTER}:${PORTSDIR}/shells/${SHIADEP}		\
 		astk-serveur>0:${PORTSDIR}/cad/astk-serveur
 
-USES=		bison fortran tk
-USE_PYTHON=	2       # >2.5 and <3.0
+USES=		bison fortran tk python:2
+USE_BINUTILS=	yes
+
+.if defined(WITH_ATLAS)
+USES+=		blaslapack:atlas
+.else
+USES+=		blaslapack:netlib
+.endif
+
 HAS_CONFIGURE=	yes
 MAKE_ENV=	INCLUDES="${LOCALBASE}/include ${LOCALBASE}/include/metis"
 REINPLACE_ARGS=	-i ""
@@ -71,19 +78,6 @@ INTERACTIVE_SCRIPTS=	check_compilers.py setup.py
 FLAGARCH=	-DP_LINUX -DLINUX
 .else
 FLAGARCH=	-DLINUX64
-.endif
-
-# Avoid renaming .f into .F
-#F90FLAGS=	-x f77-cpp-input ${FFLAGS}
-
-.if exists(${LOCALBASE}/lib/libatlas.so) && !defined(WITH_BLAS)
-WITH_ATLAS=	yes
-.endif
-.if defined(WITH_ATLAS)
-LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
-.else
-LIB_DEPENDS+=	libblas.so:${PORTSDIR}/math/blas
-LIB_DEPENDS+=	liblapack.so:${PORTSDIR}/math/lapack
 .endif
 
 .if !defined(WITHOUT_ASTK_CLI)
@@ -156,9 +150,6 @@ RUN_DEPENDS+=	${LOCALBASE}/bin/gvim:${PORTSDIR}/editors/vim
 . elif exists(${LOCALBASE}/bin/emacs)
 WITH_ED=	emacs
 RUN_DEPENDS+=	${LOCALBASE}/bin/emacs:${PORTSDIR}/editors/emacs
-. elif exists(${LOCALBASE}/bin/xemacs)
-WITH_ED=	xemacs
-RUN_DEPENDS+=	${LOCALBASE}/bin/xemacs:${PORTSDIR}/editors/xemacs
 . elif exists(${LOCALBASE}/bin/gedit)
 WITH_ED=	gedit
 RUN_DEPENDS+=	${LOCALBASE}/bin/gedit:${PORTSDIR}/editors/gedit
@@ -173,7 +164,11 @@ WITH_ED=	vi
 INST_DAT=	elements
 INST_SH=	as_run parallel_cp
 PFX2FIX=	bin/as_run ${VE}/include/aster/asterc_config.h ${VE}/config.txt	\
-		${VE}/include/aster/asterf_config.h ${VE}/profile.sh
+		${VE}/include/aster/asterf_config.h ${VE}/profile.sh		\
+		${VE}/lib/aster/aster_pkginfo.py
+V_HOMARD=	V11_2
+V_HOMARD0=	V10_6
+V_H2FIX=	${VE}/lib/aster/Cata/cata.py ${VE}/tests/zzzz121a.comm
 inst_dir=	${PREFIX}/${PORTNAME}
 tools_dir=	${PREFIX}/${PORTNAME}/outils
 tools=		kmetis onmetis pmetis gnuplot
@@ -190,15 +185,7 @@ v_ifdef=	${OPSYS:tu}
 SHELL_INSTALL_ASTER=	${LOCALBASE}/bin/${SHIA}
 tcl_dir=	${LOCALBASE}
 hdf_dir=	${LOCALBASE}
-.if defined(WITH_ATLAS)
-lib_blas=	ptf77blas
-lib_atlas=	atlas
-lib_math=	"-L${LOCALBASE}/lib -lptf77blas -latlas"
-.else
-lib_blas=	blas
-lib_atlas=	# empty
-lib_math=	"-L${LOCALBASE}/lib -lblas -llapack"
-.endif
+lib_math=	"-L${LOCALBASE}/lib ${BLASLIB} ${LAPACKLIB} ${ATLASLIB}"
 
 LASTKDIR?=	${PORTNAME}/ASTK/ASTK_CLIENT
 ASTKDIR=	${LOCALBASE}/${LASTKDIR}
@@ -266,9 +253,9 @@ pre-configure:
 	${ECHO_CMD} "F90='${FC}'"				>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "MATHLIB='${lib_math} ${LDFLAGS} -lgfortran -lm -lkvm'"		\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "OTHERLIB='-Xlinker -export-dynamic -lutil ${PTHREAD_LIBS} -lz'"	\
+	${ECHO_CMD} "OTHERLIB='-Xlinker -export-dynamic -lutil -lpthread -lz'"	\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "SYSLIB='${PTHREAD_LIBS} -lz'"		>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "SYSLIB='-lpthread -lz'"			>> ${WRKSRC}/setup.cfg
 .if defined(WITH_MPI)
 	${ECHO_CMD} "HOME_MPI = '${HOME_MPI}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "MPIRUN = 'mpirun'"				>> ${WRKSRC}/setup.cfg
@@ -281,9 +268,9 @@ pre-configure:
 	${ECHO_CMD} "HOME_MED='${LOCALBASE}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "HOME_TCL_TK='${tcl_dir}'"			>> ${WRKSRC}/setup.cfg
 .if defined(WITH_ATLAS)
-	${ECHO_CMD} "ATLASLIB='${lib_atlas}'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "ATLASLIB='${_ATLASLIB}'"			>> ${WRKSRC}/setup.cfg
 .endif
-	${ECHO_CMD} "BLASLIB='${lib_blas}'"			>> ${WRKSRC}/setup.cfg
+	${ECHO_CMD} "BLASLIB='${_BLASLIB}'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "LAPACKLIB='lapack'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "GZIP='/usr/bin/gzip'"			>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "SHELL_EXECUTION='${SHELL_INSTALL_ASTER}'"	>> ${WRKSRC}/setup.cfg
@@ -299,18 +286,18 @@ pre-configure:
 		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "F90FLAGS_DBG='-c -g ${FFLAGS:C|O2|O0|} -fno-tree-dse ${FLAGARCH} -I${HOME_MPI}/include'"	\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "CFLAGS='-c ${CFLAGS} ${PTHREAD_CFLAGS} ${FLAGARCH} -I${HOME_MPI}/include'"	\
+	${ECHO_CMD} "CFLAGS='-c ${CFLAGS} ${FLAGARCH} -I${HOME_MPI}/include'"	\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "CFLAGS_DBG='-c -g -O -pipe ${PTHREAD_CFLAGS} ${FLAGARCH} -I${HOME_MPI}/include'"	\
+	${ECHO_CMD} "CFLAGS_DBG='-c -g -O -pipe ${FLAGARCH} -I${HOME_MPI}/include'"	\
 		>> ${WRKSRC}/setup.cfg
 .else
 	${ECHO_CMD} "F90FLAGS='-c ${FFLAGS} -fno-tree-dse ${FLAGARCH}'"	\
 		>> ${WRKSRC}/setup.cfg
 	${ECHO_CMD} "F90FLAGS_DBG='-c -g ${FFLAGS:C|O2|O0|} -fno-tree-dse ${FLAGARCH}'"	\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "CFLAGS='-c ${CFLAGS} ${PTHREAD_CFLAGS} ${FLAGARCH}'"	\
+	${ECHO_CMD} "CFLAGS='-c ${CFLAGS} ${FLAGARCH}'"	\
 		>> ${WRKSRC}/setup.cfg
-	${ECHO_CMD} "CFLAGS_DBG='-c -g -O -pipe ${PTHREAD_CFLAGS} ${FLAGARCH}'"	\
+	${ECHO_CMD} "CFLAGS_DBG='-c -g -O -pipe ${FLAGARCH}'"	\
 		>> ${WRKSRC}/setup.cfg
 .endif
 .for is in ${INTERACTIVE_SCRIPTS}
@@ -360,6 +347,9 @@ post-install:
 	${MV} ${STAGEDIR}${inst_dir}/${VE}/share/aster/*	\
 		${STAGEDIR}${inst_dir}/${VE}/
 	${RM} -rf ${STAGEDIR}${inst_dir}/${VE}/share
+.for f in ${V_H2FIX}
+	${REINPLACE_CMD} -e 's|${V_HOMARD0}|${V_HOMARD}|' ${STAGEDIR}${inst_dir}/${f}
+.endfor
 .for f in ${PFX2FIX}
 	${REINPLACE_CMD} -e 's|${STAGEDIR}||g' ${STAGEDIR}${inst_dir}/${f}
 .endfor
@@ -395,7 +385,7 @@ regression-test:	install
 		--filter='"I" not in testlist' -o /tmp/list_seq )
 	(cd /tmp &&	\
 	${LOCALBASE}/aster/ASTK/ASTK_SERV/bin/as_run astout.export) || ${TRUE}
-	@${ECHO_MSG} "Check /tmp/resu_test/*.erre"
+	@${ECHO_MSG} "Check /tmp/resu_test/NOOK"
 .endif
 
 .include <bsd.port.post.mk>

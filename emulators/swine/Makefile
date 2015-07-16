@@ -3,6 +3,7 @@
 
 PORTNAME=	swine
 PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	emulators deskutils python
 
 MAINTAINER=	koalative@gmail.com
@@ -21,11 +22,9 @@ DATADIRLIB=	${PREFIX}/lib/${PORTNAME}
 USE_GITHUB=	yes
 GH_ACCOUNT=	dswd
 GH_PROJECT=	Swine
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	1770c40
+GH_TAGNAME=	1770c40
 
-USES=		gmake
-USE_PYTHON=	yes
+USES=		gmake python
 NO_BUILD=	yes
 USE_QT4=	linguist_build
 ONLY_FOR_ARCHS=	i386 amd64

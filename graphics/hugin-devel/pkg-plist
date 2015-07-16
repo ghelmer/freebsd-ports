@@ -40,6 +40,35 @@ lib/hugin/libhugin_python_interface.so.0.0
 lib/hugin/libhuginbasewx.so.0.0
 lib/hugin/libicpfindlib.so.0.0
 lib/hugin/liblocalfeatures.so.0.0
+man/man1/PTBatcher.1.gz
+man/man1/PTBatcherGUI.1.gz
+man/man1/align_image_stack.1.gz
+man/man1/autooptimiser.1.gz
+man/man1/autopano-noop.sh.1.gz
+man/man1/calibrate_lens_gui.1.gz
+man/man1/celeste_standalone.1.gz
+man/man1/checkpto.1.gz
+man/man1/cpclean.1.gz
+man/man1/cpfind.1.gz
+man/man1/deghosting_mask.1.gz
+man/man1/fulla.1.gz
+man/man1/hugin.1.gz
+man/man1/hugin_hdrmerge.1.gz
+man/man1/hugin_stitch_project.1.gz
+man/man1/icpfind.1.gz
+man/man1/linefind.1.gz
+man/man1/matchpoint.1.gz
+man/man1/nona.1.gz
+man/man1/nona_gui.1.gz
+man/man1/pano_modify.1.gz
+man/man1/pano_trafo.1.gz
+man/man1/pto2mk.1.gz
+man/man1/pto_gen.1.gz
+man/man1/pto_lensstack.1.gz
+man/man1/pto_merge.1.gz
+man/man1/pto_var.1.gz
+man/man1/tca_correct.1.gz
+man/man1/vig_optimize.1.gz
 share/locale/bg/LC_MESSAGES/hugin.mo
 share/locale/da/LC_MESSAGES/hugin.mo
 share/locale/de/LC_MESSAGES/hugin.mo
@@ -644,22 +673,3 @@ share/mime/packages/hugin.xml
 %%DATADIR%%/xrc/data/help_it_IT/Hugin_Images_tab.html
 %%DATADIR%%/xrc/data/help_it_IT/PPI.html
 %%DATADIR%%/xrc/data/help_it_IT/Autopano.html
-@dirrmtry share/locale/ca_ES/LC_MESSAGES
-@dirrmtry share/locale/ca_ES
-@dirrmtry share/locale/cs_CZ/LC_MESSAGES
-@dirrmtry share/locale/cs_CZ
-@dirrm lib/hugin
-@dirrmtry share/icons/gnome/48x48/mimetypes
-@dirrmtry share/icons/gnome/48x48
-@dirrmtry share/icons/gnome
-@dirrmtry share/icons
-@dirrmtry share/mime/packages
-@dirrmtry share/mime
-@dirrm %%DATADIR%%/data/plugins-templates
-@dirrm %%DATADIR%%/data/plugins
-@dirrm %%DATADIR%%/data
-@dirrm %%DATADIR%%/xrc/data/help_en_EN
-@dirrm %%DATADIR%%/xrc/data/help_it_IT
-@dirrm %%DATADIR%%/xrc/data
-@dirrm %%DATADIR%%/xrc
-@dirrm %%DATADIR%%

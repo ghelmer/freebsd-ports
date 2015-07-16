@@ -12,7 +12,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:data,src \
 		Lights-Bots${EXTRACT_SUFX}:src
 
 MAINTAINER=	danfe@FreeBSD.org
-COMMENT=	Lights modification for Quake II
+COMMENT=	Lights and weapon effects modification for Quake II
 
 USES=		gmake tar:bzip2
 NO_WRKSUBDIR=	yes
@@ -20,6 +20,8 @@ BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}/src
 ALL_TARGET=	release
 
 DOCSDIR=	${PREFIX}/share/doc/${LATEST_LINK}
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/__linux__/__unix__/' ${BUILD_WRKSRC}/q_shared.c

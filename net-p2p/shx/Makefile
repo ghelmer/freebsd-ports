@@ -5,7 +5,6 @@ PORTNAME=	shx
 PORTVERSION=	0.2.4
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://synhxd.sourceforge.net/releases/
-EXTRACT_SUFX=	.tgz
 
 PATCH_SITES=	${MASTER_SITES}
 PATCHFILES=	${DISTNAME}.diff.gz
@@ -16,7 +15,7 @@ COMMENT=	Text based Hotline Communications client for Unix
 LICENSE=	GPLv1
 
 OPTIONS_DEFINE=	WARNINGS HTXF_PTHREAD HFS HOPE CIPHER COMPRESS HAL XMMS NOIPV4
-OPTIONS_DEFAULT=	HTXF_PTHREAD HFS HOPE CIPHER COMPRESS XMMS
+OPTIONS_DEFAULT=HTXF_PTHREAD HFS HOPE CIPHER COMPRESS XMMS
 
 WARNINGS_DESC=		Show compiler warnings
 HTXF_PTHREAD_DESC=	Use pthread instead of fork or clone for htxf
@@ -28,6 +27,7 @@ HAL_DESC=		Compile MegaHAL (enables hal command)
 XMMS_DESC=		Enable trackname command
 NOIPV4_DESC=		IPv6 support (disables IPv4 support)
 
+USES=		readline tar:tgz
 MAKEFILE=	makefile
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=
@@ -71,8 +71,6 @@ CONFIGURE_ARGS+=	--enable-ipv6
 PLIST_FILES=	bin/hx				\
 		share/examples/shx/hxrc		\
 		share/examples/shx/hxvars
-
-PLIST_DIRS=	share/examples/shx
 
 do-install:
 	${CP} -fv ${WRKSRC}/run/hx ${STAGEDIR}${PREFIX}/bin/

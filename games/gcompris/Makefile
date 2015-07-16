@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcompris
-PORTVERSION=	13.11
+PORTVERSION=	14.07
 PORTREVISION=	2
 CATEGORIES=	games gnome
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}/
@@ -21,10 +21,10 @@ LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
 		gnucap:${PORTSDIR}/cad/gnucap
 
-USES=		display:configure gettext gmake libtool pathfix pkgconfig tar:bzip2
+USES=		display:configure gettext gmake libtool pathfix pkgconfig \
+		python:2 tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GSTREAMER=	yes
-USE_PYTHON=	2
 USE_SQLITE=	3
 USE_SDL=	mixer
 USE_GNOME=	intlhack gnomeprefix gtk20 pygtk2 libxml2 librsvg2

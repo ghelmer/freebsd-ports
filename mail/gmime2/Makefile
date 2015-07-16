@@ -8,11 +8,12 @@ CATEGORIES?=	mail
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	2
 
-MAINTAINER?=	ahicks@p-o.co.uk
+MAINTAINER?=	bofh@FreeBSD.org
 COMMENT?=	Library (written in C) for parsing and creating messages using MIME
 
 LICENSE=	LGPL21
 
+PORTSCOUT=	limit:^2\.2
 CONFLICTS=	gmime-1.0.* gmime-2.4.*
 
 SLAVEDIRS=	mail/gmime2-sharp

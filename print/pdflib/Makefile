@@ -3,13 +3,13 @@
 
 PORTNAME=	pdflib
 PORTVERSION=	7.0.5
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	print perl5 java
 MASTER_SITES=	http://www.pdflib.com/binaries/PDFlib/${PORTVERSION:S/.//g}/
 DISTNAME=	PDFlib-Lite-${PORTVERSION}p3
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A C library for dynamically generating PDF
+COMMENT=	C library for dynamically generating PDF
 
 RESTRICTED=	Many odd restrictions on usage and distribution
 

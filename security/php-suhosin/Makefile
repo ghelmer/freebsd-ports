@@ -2,24 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	suhosin
-PORTVERSION=	0.9.36
+PORTVERSION=	0.9.37.1
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://download.suhosin.org/
 PKGNAMEPREFIX=	php-
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A PHP extension that implements high-level protections
+COMMENT=	PHP extension that implements high-level protections
 
 LICENSE=	PHP301
 
 OPTIONS_DEFINE=	EXAMPLES
 
-USE_PHP=	yes
+USE_PHP=	session
 USE_PHPEXT=	yes
-IGNORE_WITH_PHP=53
+USE_PHP_BUILD=	yes
 
 CONFIGURE_ARGS=	--enable-suhosin
+
+PORTEXAMPLES=	suhosin.ini
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

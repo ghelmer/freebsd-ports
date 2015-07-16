@@ -2,7 +2,7 @@
 
 PORTNAME=	distel
 PORTVERSION=	2012.05.28
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel elisp
 
 MAINTAINER=	olgeni@FreeBSD.org
@@ -10,10 +10,9 @@ COMMENT=	Distel extends Emacs Lisp with Erlang-style message passing
 
 BUILD_DEPENDS+=	erlc:${PORTSDIR}/lang/erlang
 
-USE_GITHUB=     yes
-GH_ACCOUNT=     massemanet
-GH_COMMIT=      ecc8581
-GH_TAGNAME=	${GH_COMMIT}
+USE_GITHUB=	yes
+GH_ACCOUNT=	massemanet
+GH_TAGNAME=	ecc8581
 
 PLIST_SUB=	VERSION="${PORTVERSION}"
 
@@ -21,6 +20,8 @@ USE_EMACS=	yes
 
 DISTEL_DOCS=	AUTHORS ChangeLog INSTALL INSTALL.WIN32 NEWS README README.ie-session
 DISTEL_ROOT=	${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}
+
+OPTIONS_DEFINE=	DOCS
 
 do-build:
 	@${MKDIR} ${WRKSRC}/ebin
@@ -30,7 +31,6 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/${PORTNAME}
 	@${INSTALL_DATA} ${WRKSRC}/elisp/*el ${STAGEDIR}${PREFIX}/${EMACS_SITE_LISPDIR}/${PORTNAME}
 
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@for FILE in ${DISTEL_DOCS}; do \
 		${INSTALL_DATA} ${WRKSRC}/$${FILE} ${STAGEDIR}${DOCSDIR}; \
@@ -38,7 +38,7 @@ do-install:
 	@${INSTALL_DATA} ${WRKSRC}/doc/*.pdf ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
 	@${INSTALL_DATA} ${WRKSRC}/doc/distel/*.html ${STAGEDIR}${DOCSDIR}/html
-.endif
+
 	@${MKDIR} ${STAGEDIR}${DISTEL_ROOT}/src
 	@${MKDIR} ${STAGEDIR}${DISTEL_ROOT}/ebin
 	@${INSTALL_DATA} ${WRKSRC}/src/*.erl ${STAGEDIR}${DISTEL_ROOT}/src

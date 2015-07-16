@@ -3,10 +3,9 @@
 
 PORTNAME=	winpdb
 PORTVERSION=	1.4.8
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
-MASTER_SITE_SUBDIR=	winpdb
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	mva@FreeBSD.org
 COMMENT=	Advanced Python debugger
@@ -19,6 +18,5 @@ USES=		python
 USE_PYTHON=	autoplist distutils
 USE_WX=		3.0+
 WX_COMPS=	python
-WANT_UNICODE=	yes
 
 .include <bsd.port.mk>

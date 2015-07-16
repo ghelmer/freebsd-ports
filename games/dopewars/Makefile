@@ -3,14 +3,17 @@
 
 PORTNAME=	dopewars
 PORTVERSION=	1.5.12
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	UNIX rewrite of a game originally based on "Drug Wars"
 
-USES=		gmake gettext
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		cpe gmake gettext
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk12
 
@@ -24,6 +27,7 @@ OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's!/pixmaps!/dopewars/pixmaps!' \
+		-e '/chmod 2755/d' \
 		${WRKSRC}/src/Makefile.in
 	@${REINPLACE_CMD} -e 's!^CFLAGS =!CFLAGS = \@GLIB_CFLAGS\@!' \
 		${WRKSRC}/src/gui_client/Makefile.in \

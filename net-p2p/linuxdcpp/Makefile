@@ -9,12 +9,13 @@ MASTER_SITES=	http://launchpadlibrarian.net/69733951/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Port of the DC++ Direct Connect client to Unix-like systems
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/License.txt
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/version.hpp:${PORTSDIR}/devel/boost-libs
 
+USES=		gettext iconv pkgconfig scons tar:bzip2
 USE_GNOME=	libglade2
-USES=		iconv pkgconfig scons tar:bzip2
 USE_OPENSSL=	yes
 PORTDOCS=	*
 DESTDIRNAME=	FAKE_ROOT

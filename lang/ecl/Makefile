@@ -2,18 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	ecl
-PORTVERSION=	13.5.1
+PORTVERSION=	15.3.7
 CATEGORIES=	lang lisp
-MASTER_SITES=	SF/${PORTNAME}s/${PORTNAME}s/13.5/
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	SF/${PORTNAME}s/${PORTNAME}s/15.3/
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	ANSI Common Lisp implementation
 
-LIB_DEPENDS=	gmp:${PORTSDIR}/math/gmp
+LICENSE=	LGPL20
+
+LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
 
 MAKE_JOBS_UNSAFE=	yes
-USES=		gmake perl5
+USES=		gmake perl5 tar:tgz
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-system-gmp --with-gmp-prefix=${LOCALBASE} --enable-boehm=system
@@ -29,6 +30,7 @@ CLX_DESC=	Enable X11 interface
 SOCKETS_DESC=	Enable socket interface
 DFFI_DESC=	Dynamic foreign-function support
 
+OPTIONS_SUB=	yes
 PLIST_SUB=	VERSION="${PORTVERSION}"
 
 .include <bsd.port.pre.mk>
@@ -39,51 +41,45 @@ BROKEN=		Does not compile on ${ARCH}
 
 .if ${PORT_OPTIONS:MASDF}
 CONFIGURE_ARGS+=--with-asdf=yes
-PLIST_SUB+=	ASDF=""
 .else
 CONFIGURE_ARGS+=--with-asdf=no
-PLIST_SUB+=	ASDF="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MCLX}
 USE_XORG=	x11
 CONFIGURE_ARGS+=--with-clx=yes
-PLIST_SUB+=	CLX=""
 .else
 CONFIGURE_ARGS+=--with-clx=no
-PLIST_SUB+=	CLX="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSOCKETS}
 CONFIGURE_ARGS+=--with-tcp=yes
-PLIST_SUB+=	SOCKETS=""
 .else
 CONFIGURE_ARGS+=--with-tcp=no
-PLIST_SUB+=	SOCKETS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MDFFI}
 CONFIGURE_ARGS+=--with-dffi=system
-LIB_DEPENDS+=	ffi:${PORTSDIR}/devel/libffi
+LIB_DEPENDS+=	libffi.so:${PORTSDIR}/devel/libffi
 .else
 CONFIGURE_ARGS+=--with-dffi=no
 .endif
 
 .if ${PORT_OPTIONS:MTHREADS}
 CONFIGURE_ARGS+=--enable-threads=yes
-LDFLAGS+=	${PTHREAD_LIBS}
-LIB_DEPENDS+=	gc-threaded:${PORTSDIR}/devel/boehm-gc-threaded
-PLIST_SUB+=	THREADS=""
+LDFLAGS+=	-lpthread
+LIB_DEPENDS+=	libgc-threaded.so:${PORTSDIR}/devel/boehm-gc-threaded
 .else
 CONFIGURE_ARGS+=--enable-threads=no
-LIB_DEPENDS+=	gc:${PORTSDIR}/devel/boehm-gc
-PLIST_SUB+=	THREADS="@comment "
+LIB_DEPENDS+=	libgc.so:${PORTSDIR}/devel/boehm-gc
 .endif
 
 .if ${PORT_OPTIONS:MTHREADS}
 post-patch:
-	@${REINPLACE_CMD} -e 's|-lgc|-lgc-threaded|' \
- 		-e 's|-lpthread|${PTHREAD_LIBS}|' ${WRKSRC}/src/configure
+	@${REINPLACE_CMD} -e 's|-lgc|-lgc-threaded|' ${WRKSRC}/src/configure
 .endif
+
+post-install:
+	${RMDIR} ${STAGEDIR}${PREFIX}/include/ecl/gc/private
 
 .include <bsd.port.post.mk>

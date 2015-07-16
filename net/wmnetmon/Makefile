@@ -8,7 +8,7 @@ CATEGORIES=	net windowmaker
 MASTER_SITES=	http://www.linuks.mine.nu/dockapps/
 
 MAINTAINER=	xride@FreeBSD.org
-COMMENT=	A host availability monitor intended for the WindowMaker dock
+COMMENT=	Host availability monitor intended for the WindowMaker dock
 
 USE_XORG=	xpm
 GNU_CONFIGURE=	yes
@@ -16,7 +16,6 @@ GNU_CONFIGURE=	yes
 BINMODE=	4755
 
 PLIST_FILES=	bin/wmnetmon share/examples/wmnetmon/wmnetmonrc
-PLIST_DIRS=	share/examples/wmnetmon
 
 OPTIONS_DEFINE=	EXAMPLES
 

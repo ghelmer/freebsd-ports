@@ -6,9 +6,8 @@ PORTVERSION=	2.92.0
 PORTREVISION=	2
 CATEGORIES=	multimedia graphics
 MASTER_SITES=	ftp://ftp.nstu.ru/pub/mirrors/xanim.va.pubnix.com/ \
-		${MASTER_SITE_LOCAL} \
+		LOCAL/dinoex \
 		ftp://ftp.nstu.ru/pub/mirrors/xanim.va.pubnix.com/dlls/
-MASTER_SITE_SUBDIR=	dinoex
 DISTNAME=	xanim2920
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:main ${EXTRA_FILES}
 
@@ -50,7 +49,6 @@ PLIST_FILES+=	lib/X11/xanim/cvid.readme lib/X11/xanim/cyuv.readme \
 		lib/X11/xanim/vid_iv32_2.1_freebsdELFx86.xa \
 		lib/X11/xanim/vid_iv41_1.1_freebsdELFx86.xa \
 		lib/X11/xanim/vid_iv50_1.0_freebsdELFx86.xa
-PLIST_DIRS+=	lib/X11/xanim
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DLLDIR}

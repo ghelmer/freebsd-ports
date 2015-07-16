@@ -3,7 +3,7 @@
 
 PORTNAME=	courier
 PORTVERSION=	0.65.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF
 
@@ -11,7 +11,7 @@ MAINTAINER=	bsd@dino.sk
 COMMENT=	Courier SMTP IMAP POP3 HTTP mail server suite
 
 BUILD_DEPENDS=	courierauthconfig:${PORTSDIR}/security/courier-authlib-base
-LIB_DEPENDS=	pcre:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 RUN_DEPENDS=	courierauthconfig:${PORTSDIR}/security/courier-authlib-base \
 		${LOCALBASE}/share/sysconftool/sysconftool:${PORTSDIR}/devel/sysconftool \
 		${LOCALBASE}/etc/mime.types:${PORTSDIR}/misc/mime-support \
@@ -26,10 +26,6 @@ CONFLICTS=	courier-imap-2.* couriermlm-0.* \
 		smail-3.* sqwebmail-3.* \
 		zmailer-2.*
 
-.if !defined(BATCH) && !defined(PACKAGE_BUILDING)
-IS_INTERACTIVE=	yes
-.endif
-
 #
 # User-serviceable variables
 #
@@ -40,10 +36,13 @@ IS_INTERACTIVE=	yes
 # set MAILDROPDEFAULT to what you'd like the $DEFAULT in maildrop to be
 #     recomended values are: /var/mail, ./Mailbox or ./Maildir
 #
+
 IMAGEURL?=	/webmail
 CACHEOWN?=	pop
 MAILDROPDEFAULT?=./Maildir
+
 # End of user-serviceable variables
+
 MAILOWN=	courier
 MAILGRP=	courier
 MAILUID=	465
@@ -57,17 +56,12 @@ CALENDIR=	/var/spool/calendar
 MIMETYPES=	${LOCALBASE}/etc/mime.types
 WITH_TRANSPORT=	local esmtp dsn
 
-USE_AUTOTOOLS=	libtool aclocal automake
+USES=		fam gettext gmake libtool perl5 pkgconfig tar:bzip2
 USE_OPENSSL=	yes
 USE_SUBMAKE=	yes
-USES=		fam gettext gmake perl5 pkgconfig tar:bzip2
-
 USE_RC_SUBR=	courier
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-MAKE_ENV:=	${CONFIGURE_ENV}
-
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-root-check \
 		--with-db=db \
 		--enable-syslog=1 --enable-use-flock \
@@ -92,8 +86,9 @@ CONFIGURE_ARGS=	--disable-root-check \
 		--with-transport='${WITH_TRANSPORT}' \
 		--with-default-maildrop=${MAILDROPDEFAULT} \
 		--with-paranoid-smtpext \
-		--enable-workarounds-for-imap-client-bugs \
-		--cache-file=${WRKDIR}/courier.cache
+		--enable-workarounds-for-imap-client-bugs
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 INSTALL_TARGET=	install-strip install-perms
 
@@ -103,16 +98,17 @@ PLIST_SUB+=	BINOWN="${BINOWN}" BINGRP="${BINGRP}" \
 		CACHEOWN="${CACHEOWN}" CACHEDIR="${CACHEDIR}" \
 		CALENDIR="${CALENDIR}" LOCALSTATEDIR="${LOCALSTATEDIR}"
 SUB_LIST:=	${PLIST_SUB}
-SUB_FILES+=	pkg-install pkg-message crontab sharedindexupdate
+SUB_FILES+=	pkg-message crontab sharedindexupdate
+#SUB_FILES+=	pkg-install pkg-message crontab sharedindexupdate
 
-OPTIONS_DEFINE=	LDAP GNUPG PROCMAIL SENDFAX UUCP IPV6 MAILDROPFLAGS \
-		WEBMAILFLAGS WEBMAILRSENT
-OPTIONS_GROUP=	EXPERIMENTAL
-OPTIONS_GROUP_EXPERIMENTAL=	WEBMAILXFACE
+OPTIONS_DEFINE=	LDAP PROCMAIL SENDFAX UUCP IPV6 MAILDROPFLAGS DOCS
+OPTIONS_GROUP=	WEBMAIL
+#OPTIONS_GROUP=	SYSTEM WEBMAIL
+#OPTIONS_GROUP_SYSTEM=	RCCONF MAILCONF PERIODIC
+OPTIONS_GROUP_WEBMAIL=	GNUPG WEBMAILRSENT WEBMAILFLAGS WEBMAILXFACE
 OPTIONS_RADIO=	ALIASES SPELL
 OPTIONS_RADIO_ALIASES=	SYSTEMALIASES EMPTYALIASES
 OPTIONS_RADIO_SPELL=	ASPELL ISPELL
-
 OPTIONS_DEFAULT=WEBMAILRSENT SYSTEMALIASES
 
 LDAP_DESC=	LDAP-based mail aliasing support
@@ -123,16 +119,18 @@ PROCMAIL_DESC=	Procmail local delivery support
 SENDFAX_DESC=	mgetty+sendfax support
 UUCP_DESC=	UUCP support
 MAILDROPFLAGS_DESC=	maildrop set flags patch
+WEBMAILRSENT_DESC=	enable Autorename Sent folder
 WEBMAILFLAGS_DESC=	webmail show flags patch
 WEBMAILXFACE_DESC=	experimental webmail X-Face patch
-WEBMAILRSENT_DESC=	enable Autorename Sent folder
 SYSTEMALIASES_DESC=	symlink system /etc/aliases
 EMPTYALIASES_DESC=	create empty aliases file
+RCCONF_DESC=	modify rc.conf to enable courier/disable sendmail
+MAILCONF_DESC=	modify mailer.conf to use courier instead of sendmail
+PERIODIC_DESC=	modify/create periodic.conf
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
+
 .include "${.CURDIR}/Makefile.doc"
-.include "${.CURDIR}/Makefile.man"
 .include "${.CURDIR}/Makefile.own"
 
 .if ${PORT_OPTIONS:MLDAP}
@@ -240,6 +238,24 @@ CONFIGURE_ARGS+=--enable-autorenamesent
 CONFIGURE_ARGS+=--disable-autorenamesent
 .endif
 
+.if ${PORT_OPTIONS:MMAILCONF}
+SUB_LIST+=	MAILCONF="y"
+.else
+SUB_LIST+=	MAILCONF="n"
+.endif
+
+.if ${PORT_OPTIONS:MRCCONF}
+SUB_LIST+=	RCCONF="y"
+.else
+SUB_LIST+=	RCCONF="n"
+.endif
+
+.if ${PORT_OPTIONS:MPERIODIC}
+SUB_LIST+=	PERIODIC="y"
+.else
+SUB_LIST+=	PERIODIC="n"
+.endif
+
 pre-everything::
 	@${ECHO_MSG} "===> --------------------------------------------------------"
 	@${ECHO_MSG} "===>	Run 'make config' to (re)configure ${PKGNAME}"
@@ -273,16 +289,8 @@ post-patch:
 		${WRKSRC}/*/*/*/configure
 	@${REINPLACE_CMD} -E -e 's/(root|bin)[[:space:]]*bin/root	wheel/g' \
 		${WRKSRC}/courier/perms.sh.in
-
-pre-configure:
-	@if [ -f "${WRKDIR}/courier.cache" -a -s "${WRKDIR}/courier.cache" ]; then \
-		${RM} -f "${WRKDIR}/courier.cache"; \
-	fi
-	@cp ${LOCALBASE}/share/gettext/po/Makefile.in.in ${WRKSRC}/pcp/po
-	@cp ${LOCALBASE}/share/libtool/config/ltmain.sh ${WRKSRC}
-.for oldlt in . bdbobj cgi courier courier/libs courier/filters courier/filters/perlfilter courier/module.dsn courier/module.esmtp courier/module.local courier/module.uucp gdbmobj gpglib http11 imap ldapaddressbook libhmac liblock maildir maildrop makedat md5 numlib pcp random128 rfc822 rfc1035 rfc2045 sha1 tcpd unicode webmail
-	@cd ${WRKSRC}/${oldlt} && ${SETENV} ${SCRIPTS_ENV} ${SH} /usr/local/bin/aclocal
-.endfor
+	@${REINPLACE_CMD} '/^courieresmtp_LDADD =/s/$$/ -lcourierauth/' \
+		${WRKSRC}/courier/module.esmtp/Makefile.in
 
 post-build:
 	@${PERL} -pi -e 's|^(auth)\s+(required).*|$$1\t\t$$2\tpam_unix.so\ttry_first_pass|g;' \
@@ -303,44 +311,28 @@ post-build:
 	@${LN} -f ${WRKSRC}/webmail/SECURITY.html	${WRKSRC}/webmail/SECURITY.webmail.html
 
 post-install:
-	@${LN} -f ${SYSCONFDIR}/maildrop ${SYSCONFDIR}/maildropfilter
-	@${INSTALL_DATA} /dev/null ${SYSCONFDIR}/locallowercase
-	@${INSTALL_DATA} ${WRKDIR}/crontab ${SYSCONFDIR}/
-	@${INSTALL_SCRIPT} ${WRKDIR}/sharedindexupdate ${DATADIR}/
+	@${LN} -f ${STAGEDIR}${SYSCONFDIR}/maildrop ${STAGEDIR}${SYSCONFDIR}/maildropfilter
+	@${INSTALL_DATA} /dev/null ${STAGEDIR}${SYSCONFDIR}/locallowercase
+	@${INSTALL_DATA} ${WRKDIR}/crontab ${STAGEDIR}${SYSCONFDIR}/
+	@${INSTALL_SCRIPT} ${WRKDIR}/sharedindexupdate ${STAGEDIR}${DATADIR}/
 .for file in ${OWNER0}
-	@-${CHOWN} -Rh ${BINOWN}:${BINGRP} ${PREFIX}/${file}
+	@-${CHOWN} -Rh ${BINOWN}:${BINGRP} ${STAGEDIR}${PREFIX}/${file}
 .endfor
-	@${GREP} '^@exec ' ${TMPPLIST} \
-		| ${SED} -e 's:^@exec ::' -e 's:%D:${PREFIX}:g' \
-		> ${WRKDIR}/.PLIST.exec \
-		&& ${SH} ${WRKDIR}/.PLIST.exec
 .if ${PORT_OPTIONS:MDOCS}
-	@${INSTALL} ${_DOCOWNGRP} -d ${DOCSDIR}/html
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
 .for f in ${DOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor
 .for f in ${HTMLDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${f} ${DOCSDIR}/html
+	@${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/html
 .endfor
-	@${INSTALL_DATA} ${DATADIR}/htmldoc/* ${DOCSDIR}/html
+	@${INSTALL_DATA} ${STAGEDIR}${DATADIR}/htmldoc/* ${STAGEDIR}${DOCSDIR}/html
 .endif
-	@${RM} -rf ${DATADIR}/htmldoc
-	@-${CHOWN} -Rh ${SHAREOWN}:${SHAREGRP} ${DATADIR}
-	@${CHMOD} -R a+r ${DATADIR}/courierwebadmin
-	@${CHMOD} -R a-w ${DATADIR} ${LIBEXECDIR}/courier
-	@${CHMOD} 550 ${LIBEXECDIR}/courier/modules/esmtp/courieresmtp*
-	@${ECHO_MSG}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG}
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-	@${ECHO_MSG} "	To activate Courier in /etc/mail/mailer.conf or to"
-	@${ECHO_MSG} "	replace {sendmail,mailq,newaliases} with Courier"
-	@${ECHO_MSG} "	versions execute the following as root user:"
-	@${ECHO_MSG}
-	@${ECHO_MSG} "PKG_PREFIX=\"${PREFIX}\" ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL"
-	@${ECHO_MSG}
-.else
-	@PKG_PREFIX="${PREFIX}" ${SH} ${PKGINSTALL} ${PKGNAME} POST-INSTALL
-.endif
+	@${RM} -rf ${STAGEDIR}${DATADIR}/htmldoc
+	@-${CHOWN} -Rh ${SHAREOWN}:${SHAREGRP} ${STAGEDIR}${DATADIR}
+	@${CHMOD} -R a+r ${STAGEDIR}${DATADIR}/courierwebadmin
+	@${CHMOD} -R a-w ${STAGEDIR}${DATADIR} ${STAGEDIR}${LIBEXECDIR}/courier
+	@${CHMOD} 550 ${STAGEDIR}${LIBEXECDIR}/courier/modules/esmtp/courieresmtp*
 
 .include <bsd.port.mk>

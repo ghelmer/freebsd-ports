@@ -3,38 +3,36 @@
 
 PORTNAME=	hp2xx
 PORTVERSION=	3.4.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	print x11
-MASTER_SITES=	${MASTER_SITE_GNU}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	GNU
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	A HPGL to vector- and raster formats converter and previewer for X11
+COMMENT=	HPGL to vector and raster formats converter and previewer for X11
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
-		tiff.4:${PORTSDIR}/graphics/tiff
+LICENSE=	GPLv2 # (or later)
 
-WRKSRC=		${WRKDIR}/${DISTNAME}/sources
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
+		libtiff.so:${PORTSDIR}/graphics/tiff
+
+WRKSRC_SUBDIR=	sources
 
 USES=		makeinfo
-MAKE_ENV=	DEFINES="${CPPFLAGS}" ALL_LIBS="${LDFLAGS}" \
-		PREVIEWER="${PREVIEWER}"
-
-MAN1=		hp2xx.1
-INFO=		hp2xx
+MAKE_ENV=	DEFINES="${CPPFLAGS}" ALL_LIBS="${LDFLAGS}"
 
 CPPFLAGS+=	-DUNIX -I${LOCALBASE}/include
 LDFLAGS+=	-lm -L${LOCALBASE}/lib -ltiff -lpng -lz
 
-.if defined(WITHOUT_X11)
-PKGNAMESUFFIX=	-nox11
-PREVIEWER=	no_prev
-.else
-USE_XORG=	x11
-CPPFLAGS+=	-DHAS_UNIX_X11 -I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib -lX11
-PREVIEWER=	to_x11
-.endif
+INFO=		hp2xx
+PLIST_FILES=	bin/hp2xx man/man1/hp2xx.1.gz
 
-NO_STAGE=	yes
+OPTIONS_DEFINE=		X11
+OPTIONS_DEFAULT=	X11
+
+X11_USE=		XORG=x11
+X11_MAKE_ENV=		PREVIEWER=to_x11
+X11_MAKE_ENV_OFF=	PREVIEWER=no_prev
+X11_CPPFLAGS=		-DHAS_UNIX_X11 -I${LOCALBASE}/include
+X11_LDFLAGS=		-L${LOCALBASE}/lib -lX11
+
 .include <bsd.port.mk>

@@ -2,40 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	garcon
-PORTVERSION=	0.2.1
+PORTVERSION=	0.4.0
 CATEGORIES=	sysutils xfce
-MASTER_SITES=	${MASTER_SITE_XFCE}
-MASTER_SITE_SUBDIR=	src/xfce/${PORTNAME}/${PORTVERSION:R}
+MASTER_SITES=	XFCE
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
-COMMENT=	Xfce 4 essential utilities and scripts
+COMMENT=	Freedesktop compliant menu library
+
+# garcon's source code is licensed under GPLv2, while its
+# documentation is under GFDL 1.1.
+LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
-USE_BZIP2=	yes
-USE_GNOME=	glib20 intltool intlhack
-USE_XFCE=	configenv libutil
-USES=		pathfix pkgconfig gmake
+INSTALL_TARGET=	install-strip
+USES=	gmake libtool pathfix pkgconfig gettext-tools xfce tar:bzip2
+USE_GNOME=	glib20 gtk20 intltool intlhack
+USE_XFCE=	libmenu
 
-OPTIONS_DEFINE=		DOCS NLS
+CONFIGURE_ARGS=--without-html-dir
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-CONFIGURE_ARGS+=--enable-nls
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MDOCS}
-CONFIGURE_ARGS+=--with-html-dir=${PREFIX}/share/gtk-doc/html
-PLIST_SUB+=	APIDOCS=""
-.else
-CONFIGURE_ARGS+=--without-html-dir
-PLIST_SUB+=	APIDOCS="@comment "
-.endif
+OPTIONS_DEFINE=		NLS
+NLS_USES=	gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
+OPTIONS_SUB=	yes
 
 .include <bsd.port.mk>

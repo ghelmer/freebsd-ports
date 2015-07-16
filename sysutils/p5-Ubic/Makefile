@@ -3,6 +3,7 @@
 
 PORTNAME=	Ubic
 PORTVERSION=	1.44
+PORTREVISION=	1
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:MMCLERIC
@@ -28,6 +29,7 @@ TEST_DEPENDS=	p5-Test-Class>=0:${PORTSDIR}/devel/p5-Test-Class \
 USES=		perl5
 USE_PERL5=	configure
 REINPLACE_ARGS=	-i ''
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|' \

@@ -2,13 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	lilypond
-PORTVERSION=	2.19.8
+PORTVERSION=	2.19.11
+PORTREVISION=	3
 CATEGORIES=	print audio
 MASTER_SITES=	http://download.linuxaudio.org/lilypond/sources/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	gahr@FreeBSD.org
-COMMENT=	The GNU music typesetter
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	GNU music typesetter
 
 LICENSE=	GPLv3
 
@@ -21,15 +22,17 @@ BUILD_DEPENDS=	pdftexi2dvi:${PORTSDIR}/print/texinfo \
 		help2man:${PORTSDIR}/misc/help2man \
 		pngtopnm:${PORTSDIR}/graphics/netpbm \
 		rsync:${PORTSDIR}/net/rsync \
+		texi2html:${PORTSDIR}/textproc/texi2html \
 		zip:${PORTSDIR}/archivers/zip \
 		${LOCALBASE}/share/ghostscript/fonts/c059033l.pfb:${PORTSDIR}/print/gsfonts
-
 RUN_DEPENDS=	mftrace:${PORTSDIR}/print/mftrace \
-		${LOCALBASE}/lib/X11/fonts/dejavu/DejaVuSans-Bold.ttf:${PORTSDIR}/x11-fonts/dejavu
-
+		${LOCALBASE}/share/fonts/dejavu/DejaVuSans-Bold.ttf:${PORTSDIR}/x11-fonts/dejavu
 LIB_DEPENDS=	libguile.so:${PORTSDIR}/lang/guile \
 		libgmp.so:${PORTSDIR}/math/gmp \
 		libfreetype.so:${PORTSDIR}/print/freetype2
+
+BROKEN_FreeBSD_8=	does not build on FreeBSD < 10.x
+BROKEN_FreeBSD_9=	does not build on FreeBSD < 10.x
 
 INFO=		internals \
 		lilypond-changes \
@@ -44,11 +47,10 @@ INFO=		internals \
 		lilypond-web \
 		music-glossary
 
-USES=		bison:build gettext gmake pkgconfig perl5 compiler:c++11-lib
+USES=		bison:build gettext gmake pkgconfig perl5 compiler:c++11-lib python:-3
 USE_CXXSTD=	c++11
 USE_GHOSTSCRIPT=9
 USE_TEX=	latex
-USE_PYTHON=	-3
 USE_PERL5=	build
 USE_GNOME=	pango
 
@@ -79,6 +81,8 @@ PLIST_SUB+=	NLS="@comment "
 .endif
 
 post-patch:
+	${FIND} ${WRKSRC} -name "*.cc" | ${XARGS} \
+	    ${REINPLACE_CMD} -e 's|isinf[ ]*(|::isinf(|g' -e 's|isnan|::isnan|g'
 	${REINPLACE_CMD} -e 's|<FlexLexer.h>|"/usr/include/FlexLexer.h"|' \
 	    ${WRKSRC}/lily/include/includable-lexer.hh
 .if !${PORT_OPTIONS:MNLS}
@@ -86,6 +90,8 @@ post-patch:
 .endif
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lilypond
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lilypond/${PORTVERSION}/python/midi.so
 	@${LN} -fs ${DATADIR}/${PORTVERSION} ${STAGEDIR}${DATADIR}/current
 
 .include <bsd.port.mk>

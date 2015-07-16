@@ -3,7 +3,7 @@
 
 PORTNAME=	dynamechs
 PORTVERSION=	4.0.p1
-PORTREVISION=	6
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/4.0pre1
@@ -12,9 +12,10 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/.p/pre/}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multibody Dynamic Simulation Library
 
-USES=		gmake perl5 tar:bzip2
+USES=		gmake perl5 shebangfix tar:bzip2
 USE_GL=		glut
 USE_PERL5=	build
+SHEBANG_FILES=	make/*.pl
 MAKE_ENV=	OPENGLINCDIR="${LOCALBASE}/include" \
 		OPENGLLIBDIR="${LOCALBASE}/lib"
 ALL_TARGET=	freebsd

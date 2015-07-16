@@ -4,18 +4,9 @@ if [ "$2" != "POST-DEINSTALL" ]; then
     exit 0
 fi
 
-if [ -d %%DATADIR%% ]; then
-        echo "There are some files (like your world and your server.log)"
-		echo "left in %%DATADIR%%."
-		echo "Use 'rm -rf %%DATADIR%%' to delete them."
-		echo
-fi
-
-if [ -d %%ETCDIR%% ]; then
-        echo "There are some changed config files left in %%ETCDIR%%."
-		echo "Use 'rm -rf %%ETCDIR%%' to delete them."
-		echo
-fi
-
-exit 0
-
+echo
+echo "NOTE: The game world has not been deleted. It is still in"
+echo "/var/db/minecraft-server. If it is no longer required, it will"
+echo "need to be manually deleted."
+echo "Also, you may wish to delete any remaining files in" 
+echo "%%PREFIX%%/minecraft-server and %%ETCDIR%%"

@@ -19,9 +19,9 @@ pre-build-lips:
 		${WRKSRC}/src
 
 post-install-docs-lips:
-	${MKDIR} ${DOCSDIR}/lips
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/lips
 	${INSTALL_DATA} ${WRKSRC}/gdevlips-2.4.0/Gdevlips.htm	\
-		${DOCSDIR}/lips
+		${STAGEDIR}${DOCSDIR}/lips
 
 post-extract: post-extract-lips
 pre-build: pre-build-lips

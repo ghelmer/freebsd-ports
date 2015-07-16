@@ -2,72 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	scipy
-PORTVERSION=	0.14.0
+PORTVERSION=	0.15.1
+PORTREVISION=	1
 CATEGORIES=	science python
 MASTER_SITES=	http://docs.scipy.org/doc/${DISTNAME}/:doc \
 		SF:source
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source \
-		scipy-ref.pdf:doc
+		scipy-ref-${PORTVERSION}.pdf:doc
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	wen@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Scientific tools for Python
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS+=	${PYNUMPY} \
-		${LOCALBASE}/lib/libdjbfft.a:${PORTSDIR}/math/djbfft
-LIB_DEPENDS=	libfftw3.so:${PORTSDIR}/math/fftw3
-RUN_DEPENDS=	${PYNUMPY}	\
-		nosetests:${PORTSDIR}/devel/py-nose
+BUILD_DEPENDS=	${PYNUMPY}
+RUN_DEPENDS=	${PYNUMPY} \
+		swig:${PORTSDIR}/devel/swig13
 
-LATEST_LINK=	py-${PORTNAME}
-OPTIONSFILE=	${PORT_DBDIR}/py-numpy/options
-
-USES=		fortran
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-
-OPTIONS_DEFINE=	ATLAS DOCS SUITESPARSE
-OPTIONS_DEFAULT=SUITESPARSE
-ATLAS_DESC=	Use optimized blas library
-SUITESPARSE_DESC=	Use AMD and UMFPACK in SuiteSparse
-
-PORTDOCS=	scipy-ref.pdf
-
-post-patch:
-	@${GREP} -lR "malloc\.h" ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
-		-e "s@malloc\.h@stdlib.h@"
-
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MATLAS}
-LIB_DEPENDS+=	libatlas.so:${PORTSDIR}/math/atlas
-.if !exists(${LOCALBASE}/lib/libalapack.a)
-IGNORE=		atlas needs to be built with WITH_STATIC for scipy to function properly
-.endif
-.else
-LIB_DEPENDS+=	liblapack.so:${PORTSDIR}/math/lapack \
-		libblas.so:${PORTSDIR}/math/blas
-.endif
-
-.if ${PORT_OPTIONS:MSUITESPARSE}
-BUILD_DEPENDS+=	swig:${PORTSDIR}/devel/swig13
-LIB_DEPENDS+=	libumfpack.so:${PORTSDIR}/math/suitesparse
-.endif
+USES=		fortran python
+USE_PYTHON=	distutils autoplist concurrent
 
 PYDISTUTILS_CONFIGUREARGS+=	--fcompiler=gnu95
 PYDISTUTILS_BUILDARGS+=	--fcompiler=gnu95
 
+LDFLAGS+=	-shared
+
+OPTIONS_DEFINE=	DOCS
+
+PORTDOCS=	scipy-ref-${PORTVERSION}.pdf
+
 post-extract:
-	@${CP} ${DISTDIR}/scipy-ref.pdf ${WRKDIR}
+	@${CP} ${DISTDIR}/scipy-ref-${PORTVERSION}.pdf ${WRKDIR}
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/scipy-ref.pdf ${STAGEDIR}${DOCSDIR}
-.endif
+	${INSTALL_DATA} ${WRKDIR}/scipy-ref-${PORTVERSION}.pdf ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

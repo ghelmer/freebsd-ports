@@ -3,6 +3,7 @@
 
 PORTNAME=	anubis
 PORTVERSION=	4.2
+PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	GNU
 
@@ -22,13 +23,12 @@ GSASL_DESC=	GSASL support (required for databases)
 GDBM_DESC=	GDBM backend
 SOCKS_DESC=	SOCKS proxy support
 
-USES=		charsetfix makeinfo pkgconfig shebangfix
+USES=		autoreconf charsetfix cpe makeinfo pkgconfig shebangfix
 CHARSETFIX_MAKEFILEIN=	gnulib.mk
+CPE_VENDOR=	gnu
 SHEBANG_FILES=	contrib/msg2smtp.pl
 USE_RC_SUBR=	anubis
-USE_AUTOTOOLS=	aclocal autoheader autoconf automake
-ACLOCAL_ARGS=	-I m4 -I gint -I am
-AUTOMAKE_ARGS=	--force --add-missing
+GNU_CONFIGURE=	yes
 
 INFO=		anubis
 PORTEXAMPLES=	1anubisrc 2anubisrc
@@ -91,7 +91,7 @@ _REQUIRE+=	mysql
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=	pgsql
 CONFIGURE_ARGS+=--with-postgres
 _REQUIRE+=	postgresql
 .endif

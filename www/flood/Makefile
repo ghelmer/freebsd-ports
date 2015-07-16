@@ -10,22 +10,22 @@ DISTNAME=	httpd-test_20041105052051
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Profile-driven HTTP load tester
 
-LIB_DEPENDS=	expat.6:${PORTSDIR}/textproc/expat2 \
-		apr-1:${PORTSDIR}/devel/apr1
+LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
+		libapr-1.so:${PORTSDIR}/devel/apr1
 
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-apr=${LOCALBASE}/bin/apr-1-config \
+		--with-apr-util=${LOCALBASE}/bin/apu-1-config
+USES=		autoreconf gmake iconv
 WRKSRC=		${WRKDIR}/httpd-test/flood
-USE_AUTOTOOLS=	autoconf libtool:env
-CONFIGURE_ARGS=	--disable-shared \
-	--with-apr=${LOCALBASE}/bin/apr-1-config \
-	--with-apr-util=${LOCALBASE}/bin/apu-1-config
-LDFLAGS+=	-L${PREFIX}/lib
-USES=		gmake iconv
 
 EX_SCRIPTS=	analyze-relative analyze-relative-ramp
 EX_DATA=	flood.dtd relative-averages-time.awk round-robin-dynamic.xml \
 		round-robin-example.xml round-robin-keepalive.xml \
 		round-robin-relative-reports.xml round-robin-ssl.xml \
 		round-robin-timed.xml round-robin.xml
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/flood ${STAGEDIR}${PREFIX}/bin/flood
@@ -38,11 +38,9 @@ post-install:
 .for f in ${EX_DATA}
 	@${INSTALL_DATA} ${WRKSRC}/examples/$f ${STAGEDIR}${EXAMPLESDIR}
 .endfor
-.if !defined(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/docbook
 	@${INSTALL_DATA} ${WRKSRC}/docs/README ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_DATA} ${WRKSRC}/docs/docbook/[Mf]* ${STAGEDIR}${DOCSDIR}/docbook
-.endif
 
 ANONCVS=	cvs -d :pserver:anoncvs@cvs.apache.org:/home/cvspublic
 

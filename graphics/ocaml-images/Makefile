@@ -3,6 +3,7 @@
 
 PORTNAME=	images
 PORTVERSION=	4.0.1
+PORTREVISION=	4
 PORTEPOCH=	2
 CATEGORIES=	graphics
 MASTER_SITES=	https://bitbucket.org/camlspotter/camlimages/get/
@@ -39,10 +40,10 @@ OPTIONS_DEFAULT=PNG JPEG TIFF XPM GIF FREETYPE GHOSTSCRIPT
 OPTIONS_SUB=	yes
 
 PNG_CONFIGURE_WITH=	png
-PNG_LIB_DEPENDS=	libpng15.so:${PORTSDIR}/graphics/png
+PNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 
 JPEG_CONFIGURE_WITH=	jpeg
-JPEG_LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
+JPEG_USES=		jpeg
 
 TIFF_CONFIGURE_WITH=	tiff
 TIFF_LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff

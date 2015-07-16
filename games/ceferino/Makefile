@@ -3,12 +3,14 @@
 
 PORTNAME=	ceferino
 PORTVERSION=	0.97.8
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	http://www.losersjuegos.com.ar/_media/juegos/ceferino/descargas/
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Game similar to Super Pang
+
+LICENSE=	GPLv2
 
 USE_SDL=	sdl mixer image
 GNU_CONFIGURE=	yes
@@ -18,19 +20,17 @@ LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD}
 
 CEFEDIRS=	ima music levels sounds
 
+PORTDOCS=	AUTHORS ChangeLog README
 OPTIONS_DEFINE=	NLS DOCS
+OPTIONS_SUB=	yes
 
-NO_STAGE=	yes
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=	gettext
+
+DESKTOP_ENTRIES="Don Ceferino Hazaña" "" "${PORTNAME}" \
+		"${PORTNAME}" "Game;ArcadeGame;" ""
+
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=	gettext
-PLIST_SUB+=	NLS=""
-FLAG_NLS=	true
-.else
-CONFIGURE_ARGS+=	--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
 
 post-extract:
 	@${REINPLACE_CMD} -e 's/-lSDL /`sdl-config --libs`/g' ${WRKSRC}/configure
@@ -40,22 +40,21 @@ post-configure:
 
 do-install:
 	@cd ${WRKSRC}/src && \
-		${INSTALL_PROGRAM} ceferino ceferinoeditor ceferinosetup ${PREFIX}/bin
+		${INSTALL_PROGRAM} ceferino ceferinoeditor ceferinosetup ${STAGEDIR}${PREFIX}/bin
 	@cd ${WRKSRC}/data && \
-		${FIND} ${CEFEDIRS} -type d -exec ${MKDIR} "${DATADIR}/{}" \; && \
-		${FIND} -E ${CEFEDIRS} -type f -iregex ".*\.(png|jpg|xm|map|wav)" -exec ${INSTALL_DATA} "{}" "${DATADIR}/{}" \;
-.if defined(FLAG_NLS)
+		${FIND} ${CEFEDIRS} -type d -exec ${MKDIR} "${STAGEDIR}${DATADIR}/{}" \; && \
+		${FIND} -E ${CEFEDIRS} -type f -iregex ".*\.(png|jpg|xm|map|wav)" -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DATADIR}/{}" \;
+	${LN} -sf ${DATADIR}/ima/icono.png \
+		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
+
+.if ${PORT_OPTIONS:MNLS}
 .for f in es ca fr
-	${MKDIR} ${PREFIX}/share/locale/${f}/LC_MESSAGES && \
-		${INSTALL_DATA} ${WRKSRC}/po/${f}.gmo ${PREFIX}/share/locale/${f}/LC_MESSAGES/${PORTNAME}.mo
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/locale/${f}/LC_MESSAGES && \
+		${INSTALL_DATA} ${WRKSRC}/po/${f}.gmo ${STAGEDIR}${PREFIX}/share/locale/${f}/LC_MESSAGES/${PORTNAME}.mo
 .endfor
 .endif
 
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	@cd ${WRKSRC} && \
-		${INSTALL_DATA} AUTHORS ChangeLog README ${DOCSDIR}
-.endif
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -2,19 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	engine
-PORTVERSION=	4.0.11
-PORTREVISION=	1
+PORTVERSION=	4.0.12
 PORTEPOCH=	2
 CATEGORIES=	print
 MASTER_SITES=	http://www.openprinting.org/download/foomatic/ \
-		${MASTER_SITE_GOOGLE_CODE} \
-		${MASTER_SITE_LOCAL:S,$,acm/foomatic/,}
+		GOOGLE_CODE \
+		LOCAL/acm/foomatic
 PKGNAMEPREFIX=	foomatic-db-
 DISTNAME=	${PKGNAMEPREFIX}${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	foomatic
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Foomatic database engine
+
+LICENSE=	GPLv2
 
 LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 
@@ -38,7 +39,7 @@ post-patch:
 
 post-install:
 .for file in foomatic-combo-xml foomatic-perl-data
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${file}
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${file}
 .endfor
 
 .include <bsd.port.mk>

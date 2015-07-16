@@ -3,14 +3,14 @@
 
 PORTNAME=	foobillard
 PORTVERSION=	3.0a
-PORTREVISION=	8
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://foobillard.sunsite.dk/dnl/
 
 MAINTAINER=	thomas@bsdunix.ch
 COMMENT=	Free OpenGL billiards game
 
-LIB_DEPENDS=	png15:${PORTSDIR}/graphics/png \
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
 		libfreetype.so:${PORTSDIR}/print/freetype2
 
 OPTIONS_DEFINE=	SDL NVIDIA_BUMPREF

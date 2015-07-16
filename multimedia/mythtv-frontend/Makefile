@@ -3,10 +3,9 @@
 
 PORTNAME=	mythtv-frontend
 PORTVERSION=	0.27.0.20140121
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	http://people.freebsd.org/~decke/distfiles/
-DISTNAME=	mythtv-${PORTVERSION}
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	MythTV is a homebrew PVR project
@@ -23,14 +22,13 @@ CONFLICTS=	mythtv-[0-9]*
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
 GH_PROJECT=	mythtv
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	5a5e1cd
+GH_TAGNAME=	5a5e1cd
 
-WRKSRC=		${WRKDIR}/${GH_ACCOUNT}-${GH_PROJECT}-${GH_COMMIT}/${GH_PROJECT}
+WRKSRC_SUBDIR=	${GH_PROJECT}
 
 ONLY_FOR_ARCHS=	i386 amd64
 NOPRECIOUSMAKEVARS=	# don't override $(ARCH) in ffmpeg makefiles
-USES=		gmake pkgconfig
+USES=		gmake libtool pkgconfig
 USE_QT4=	gui sql network script linguist_build l10n sql-mysql_run \
 		moc_build qmake_build rcc_build uic_build
 QT_NONSTANDARD=	yes

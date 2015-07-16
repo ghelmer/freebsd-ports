@@ -1,21 +1,6 @@
 # Created by: Nagy, Attila <bra@fsn.hu>
 # $FreeBSD$
 
-PORTNAME=	dovecot
-PORTVERSION=	2.2.13
-PORTREVISION=	3
-CATEGORIES=	mail ipv6
-MASTER_SITES=	http://www.dovecot.org/releases/${PORTVERSION:R}/
-PKGNAMESUFFIX=	2
-
-MAINTAINER=	adamw@FreeBSD.org
-COMMENT=	Secure and compact IMAP and POP3 servers
-
-LICENSE=	LGPL21 MIT
-LICENSE_COMB=	dual
-
-CONFLICTS=	dovecot-1.[0-9]*
-
 ######################################################################
 # Anytime PORTVERSION changes please bump PORTREVISION of            #
 # mail/dovecot2-pigeonhole and also mail/dovecot2-antispam-plugin.   #
@@ -27,16 +12,29 @@ CONFLICTS=	dovecot-1.[0-9]*
 # port before updating this one.                                     #
 ######################################################################
 
-USES=		iconv libtool
+PORTNAME=	dovecot
+PORTVERSION=	2.2.18
+CATEGORIES=	mail ipv6
+MASTER_SITES=	http://www.dovecot.org/releases/${PORTVERSION:R}/
+PKGNAMESUFFIX=	2
+
+MAINTAINER=	adamw@FreeBSD.org
+COMMENT=	Secure, fast and powerful IMAP and POP3 server
+
+LICENSE=	LGPL21 MIT
+LICENSE_COMB=	dual
+
+CONFLICTS=	dovecot-1.[0-9]*
+
+USES=		cpe iconv libtool
 USE_RC_SUBR=	dovecot
+USE_OPENSSL=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var \
 		--with-statedir=/var/db/dovecot \
-		--without-shadow
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+		--without-shadow \
+		--with-docs
 
 USE_LDCONFIG=	${PREFIX}/lib/dovecot
 INSTALL_TARGET=	install-strip
@@ -44,50 +42,87 @@ INSTALL_TARGET=	install-strip
 USERS=		dovecot dovenull
 GROUPS=		${USERS}
 
-# Default requirement for dovecot rc script
-_REQUIRE=	LOGIN
-
-OPTIONS_DEFINE=	KQUEUE SSL GSSAPI VPOPMAIL LDAP LUCENE PGSQL MYSQL SQLITE \
-		SOLR DOCS EXAMPLES LIBWRAP
-OPTIONS_DEFAULT=KQUEUE SSL
+OPTIONS_DEFINE=	GC KQUEUE LIBWRAP LZ4 SSL VPOPMAIL DOCS EXAMPLES
+OPTIONS_DEFAULT=KQUEUE SSL GSSAPI_NONE
 OPTIONS_SUB=	yes
 
+OPTIONS_GROUP=		DB FTS
+OPTIONS_GROUP_DB=	CDB LDAP MYSQL PGSQL SQLITE
+OPTIONS_GROUP_FTS=	ICU LUCENE SOLR TEXTCAT
+
+OPTIONS_SINGLE=		GSSAPI
+OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
+
+GC_DESC=	Garbage collection with boehm-gc
 KQUEUE_DESC=	kqueue(2) support
+LZ4_DESC=	LZ4 compression support
 VPOPMAIL_DESC=	vpopmail support
+
+DB_DESC=	Database support
+CDB_DESC=	CDB database support
+
+FTS_DESC=	Full text search plugins
+ICU_DESC=	Use libicu for FTS unicode normalization
 LUCENE_DESC=	CLucene FTS support
 SOLR_DESC=	Solr FTS support
+TEXTCAT_DESC=	Libtextcat FTS support
 
-DOCS_CONFIGURE_WITH=	docs
+GSSAPI_NONE_DESC=	Build without GSSAPI support
+GSSAPI_BASE_DESC=	Use GSSAPI from base
+GSSAPI_HEIMDAL_DESC=	Use Heimdal GSSAPI from security/heimdal
+GSSAPI_MIT_DESC=	Use MIT GSSAPI from security/krb5
 
-GSSAPI_CONFIGURE_WITH=	gssapi
-GSSAPI_LDFLAGS=		-lgssapi_krb5
+CDB_CONFIGURE_WITH=	cdb
+CDB_LIB_DEPENDS=	libcdb.so:${PORTSDIR}/databases/tinycdb
 
-KQUEUE_CONFIGURE_OFF=	--with-ioloop=poll
-KQUEUE_CONFIGURE_ON=	--with-ioloop=kqueue
+GC_CONFIGURE_WITH=	gc
+GC_LIB_DEPENDS=		libgc.so:${PORTSDIR}/devel/boehm-gc
 
-LDAP_CONFIGURE_WITH=	ldap
+GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
+GSSAPI_BASE_USES=		gssapi
+GSSAPI_BASE_CONFIGURE_ON=	--with-gssapi ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_HEIMDAL_USES=		gssapi:heimdal
+GSSAPI_HEIMDAL_CONFIGURE_ON=	--with-gssapi ${GSSAPI_CONFIGURE_ARGS}
+GSSAPI_MIT_USES=		gssapi:mit
+GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi ${GSSAPI_CONFIGURE_ARGS}
+
+ICU_CONFIGURE_WITH=	icu
+ICU_LIB_DEPENDS=	libicui18n.so:${PORTSDIR}/devel/icu
+ICU_USES=		pkgconfig
+
+KQUEUE_CONFIGURE_OFF=	--with-ioloop=poll --with-notify=none
+KQUEUE_CONFIGURE_ON=	--with-ioloop=kqueue --with-notify=kqueue
+
 LDAP_USE=		OPENLDAP=yes
+LDAP_CONFIGURE_WITH=	ldap
+LDAP_RC_REQUIRE=	slapd
 
 LIBWRAP_CONFIGURE_WITH=	libwrap
 
 LUCENE_CONFIGURE_WITH=	lucene
 LUCENE_LIB_DEPENDS=	libclucene-core.so:${PORTSDIR}/textproc/clucene
 
-MYSQL_CONFIGURE_WITH=	mysql
+LZ4_LIB_DEPENDS=	liblz4.so:${PORTSDIR}/archivers/liblz4
+
 MYSQL_USE=		MYSQL=yes
+MYSQL_CONFIGURE_WITH=	mysql
+MYSQL_RC_REQUIRE=	mysql
 
+PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	pgsql
-PGSQL_USE=		PGSQL=yes
+PGSQL_RC_REQUIRE=	postgresql
 
-SOLR_BUILD_DEPENDS=	curl:${PORTSDIR}/ftp/curl
 SOLR_CONFIGURE_WITH=	solr
+SOLR_BUILD_DEPENDS=	curl:${PORTSDIR}/ftp/curl
 SOLR_LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
-SQLITE_CONFIGURE_WITH=	sqlite
 SQLITE_USE=		SQLITE=3
+SQLITE_CONFIGURE_WITH=	sqlite
 
-SSL_CONFIGURE_OFF=	--without-ssl
-SSL_CONFIGURE_ON=	--with-ssl=openssl
+SSL_CONFIGURE_WITH=	ssl=openssl
+
+TEXTCAT_CONFIGURE_WITH=	textcat
+TEXTCAT_LIB_DEPENDS=	libtextcat.so:${PORTSDIR}/textproc/libtextcat
 
 VPOPMAIL_BUILD_DEPENDS=	${LOCALBASE}/vpopmail/bin/vchkpw:${PORTSDIR}/mail/vpopmail
 VPOPMAIL_CONFIGURE_WITH=vpopmail
@@ -98,21 +133,15 @@ PORTEXAMPLES=	*
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == "arm"
-BROKEN=		Does not build on arm
-.endif
+CPPFLAGS+=	-I${LOCALBASE}/include -I${OPENSSLINC}
+LDFLAGS+=	-L${LOCALBASE}/lib -I${OPENSSLLIB}
 
-.if ${PORT_OPTIONS:MLDAP}
-_REQUIRE+=	slapd
-.endif
+# Default requirement for dovecot rc script
+_REQUIRE=	LOGIN
 
-.if ${PORT_OPTIONS:MPGSQL}
-_REQUIRE+=	postgresql
-.endif
-
-.if ${PORT_OPTIONS:MMYSQL}
-_REQUIRE+=	mysql
-.endif
+.for opt in ${PORT_OPTIONS}
+_REQUIRE+=	${${opt}_RC_REQUIRE}
+.endfor
 
 SUB_LIST+=	REQUIRE="${_REQUIRE}"
 SUB_FILES+=	pkg-message
@@ -121,11 +150,17 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,/etc/dovecot,${PREFIX}/etc/dovecot,g; \
 		s,sysconfdir=/etc,sysconfdir=${PREFIX}/etc,g' \
 		${WRKSRC}/doc/example-config/*.conf ${WRKSRC}/doc/example-config/conf.d/*
+	@${REINPLACE_CMD} -e '/^LIBS =/s/$$/ @LTLIBICONV@/' \
+		${WRKSRC}/src/lib-mail/Makefile.in
+	# Install the sample config files into ETCDIR/example-config/
+	@${REINPLACE_CMD} -e '/^exampledir =/s|\$$(docdir)|${ETCDIR}|' \
+		${WRKSRC}/doc/example-config/Makefile.in \
+		${WRKSRC}/doc/example-config/conf.d/Makefile.in
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/dovecot-openssl.cnf ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_SCRIPT} ${WRKSRC}/doc/mkcert.sh ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR} ${STAGEDIR}${DOCSDIR}
+	${MV} ${STAGEDIR}${DOCSDIR}/dovecot-openssl.cnf ${STAGEDIR}${EXAMPLESDIR}
+	${MV} ${STAGEDIR}${DOCSDIR}/mkcert.sh ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

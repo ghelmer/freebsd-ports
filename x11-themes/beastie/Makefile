@@ -6,9 +6,8 @@ PORTNAME=	beastie
 PORTVERSION=	06.05.03
 PORTREVISION=	5
 CATEGORIES=	x11-themes
-MASTER_SITES=	${MASTER_SITE_LOCAL} \
+MASTER_SITES=	LOCAL/ahze \
 		http://people.freebsd.org/~ahze/distfiles/
-MASTER_SITE_SUBDIR=	ahze
 DISTNAME=	Beastie-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -23,7 +22,6 @@ NO_BUILD=	yes
 THEME_FILES=	README index.theme gtk-2.0/gtkrc
 THEME_DIR=	share/themes/Beastie/
 PLIST_FILES=	${THEME_FILES:S|^|${THEME_DIR}|}
-PLIST_DIRS=	${THEME_DIR}/gtk-2.0 ${THEME_DIR}
 
 .include <bsd.port.pre.mk>
 

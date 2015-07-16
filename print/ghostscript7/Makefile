@@ -3,26 +3,22 @@
 
 PORTNAME=	ghostscript
 PORTVERSION=	7.07
-PORTREVISION=	29
+PORTREVISION=	31
 CATEGORIES=	print
 MASTER_SITES=	SF/ghostscript/gnu-gs/${PORTVERSION}:gs_srcs \
 		ftp://mirror.cs.wisc.edu/pub/mirrors/ghost/gnu/gs${PORTVERSION:S/.//}/:gs_srcs \
-		${MASTER_SITE_PORTS_JP:S/$/:ports_jp,ports_jp_gs/}
-MASTER_SITE_SUBDIR= \
-		ghostscript/:gs_srcs \
-		./:ports_jp
+		PORTS_JP:ports_jp,ports_jp_gs
 PKGNAMESUFFIX=	7
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:gs_srcs
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	doceng@FreeBSD.org
+MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Ghostscript 7.x PostScript interpreter
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	jpeg:${PORTSDIR}/graphics/jpeg \
-		png15:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
 RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/a010013l.pfb:${PORTSDIR}/print/gsfonts
 
 CONFLICTS_INSTALL= \
@@ -32,8 +28,9 @@ CONFLICTS_INSTALL= \
 		ghostscript9-agpl-[0-9]* \
 		ghostscript9-agpl-nox11-[0-9]*
 
-USES=		gmake tar:bzip2
+USES=		gmake jpeg shebangfix tar:bzip2
 USE_LDCONFIG=	yes
+SHEBANG_FILES=	lib/fixmswrd.pl	
 WANT_GNOME=	yes
 # normazile WRKSRC so things like cups-pstoraster may work
 WRKSRC=		${WRKDIR}/${PORTNAME}
@@ -45,30 +42,20 @@ MAKE_ENV=	CFLAGS_STANDARD="${CFLAGS}" \
 		XCFLAGS="${XCFLAGS}" XLDFLAGS="${XLDFLAGS}" \
 		EXTRALIBS="${EXTRALIBS}"
 CPPFLAGS+=	-fPIC -DUPD_SIGNAL=0 -I. -I${WRKSRC}/gimp-print		\
-		-I${LOCALBASE}/include/libpng -I${LOCALBASE}/include	\
-		-I${LOCALBASE}/include/libpng15
+		-I${LOCALBASE}/include
 LDFLAGS+=	${XLDFLAGS}
-XCFLAGS=	${PTHREAD_CFLAGS}
-XLDFLAGS=	-L${LOCALBASE}/lib -L${WRKSRC}/gimp-print ${PTHREAD_LIBS}
+XLDFLAGS=	-lpthread -L${LOCALBASE}/lib -L${WRKSRC}/gimp-print
 PLIST_SUB=	GS_VERSION="${PORTVERSION}"
+
+MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=	X11 DOCS A4SIZE
 OPTIONS_DEFAULT=X11 DOCS A4SIZE
 NO_OPTIONS_SORT=yes
+X11_USE=	GNOME=gtk12
+X11_MAKE_ENV=	GS_SHLIB_VER="${SHLIB_VER}"
 A4SIZE_DESC=	Set A4 (not Letter) as the default paper size
 
-MAN1=		ansi2knr.1 dvipdf.1 font2c.1 gs.1 gslp.1 gsnd.1 pdf2dsc.1 \
-		pdf2ps.1 pdfopt.1 pf2afm.1 pfbtopfa.1 printafm.1 ps2ascii.1 \
-		ps2epsi.1 ps2pdf.1 ps2pdfwr.1 ps2ps.1 wftopfa.1
-MLINKS=		gslp.1 gsbj.1 \
-		gslp.1 gsdj.1 \
-		gslp.1 gsdj500.1 \
-		gslp.1 gslj.1 \
-		ps2pdf.1 ps2pdf12.1 \
-		ps2pdf.1 ps2pdf13.1 \
-		ps2ps.1 eps2eps.1
-
-NO_STAGE=	yes
 post-extract-all:
 	${LN} -sf ${WRKDIR}/${DISTNAME} ${WRKDIR}/${PORTNAME}
 
@@ -76,10 +63,6 @@ post-extract: post-extract-all
 
 .include "Makefile.drivers"
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-USE_GNOME=	gtk12
-.endif
 
 MASTERDIR?=	${.CURDIR}
 .include "${MASTERDIR}/files/Makefile.drivers_post"
@@ -103,7 +86,6 @@ CONTRIB_UPP=	lqx70ch.upp lqx70cl.upp lqx70cm.upp \
 		stc740ih.upp stc740p.upp stc740pl.upp
 
 .if ${PORT_OPTIONS:MX11}
-MAKE_ENV+=	GS_SHLIB_VER="${SHLIB_VER}"
 SHLIB_VER=	1
 PLIST_SUB+=	SHLIB="" X11="" SHLIB_VER="${SHLIB_VER}"
 ALL_TARGET=	so
@@ -118,11 +100,9 @@ PLIST_SUB+=	SHLIB="@comment " X11="@comment "
 
 post-patch:
 	${REINPLACE_CMD} -e 's|^DEVICE_DEVS|#DEVICE_DEVS|g' \
-		${WRKSRC}/src/unix-gcc.mak
-	${REINPLACE_CMD} -e 's|\. de|\.|g' \
-		${WRKSRC}/src/unixinst.mak
+	    ${WRKSRC}/src/unix-gcc.mak
 	${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|g' \
-		${WRKSRC}/lib/gs_res.ps
+	    ${WRKSRC}/lib/gs_res.ps
 
 pre-build-drivers.mak:
 	@${ECHO_CMD} '# automatically generated' > ${WRKSRC}/src/drivers.mak
@@ -152,28 +132,19 @@ pre-build-all:
 pre-build: pre-build-all pre-build-drivers.mak pre-build-contrib_extra.mak
 
 pre-su-install:
-	${MKDIR} ${DATADIR}
-	${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${DATADIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}
 
 post-install-docs:
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 
 post-install:
-	${CHOWN} -R ${SHAREOWN}:${SHAREGRP} ${DATADIR}/${PORTVERSION}
 .if ${PORT_OPTIONS:MX11}
-	${STRIP_CMD} ${PREFIX}/bin/gsc ${PREFIX}/bin/gsx
-	${LN} -sf gsc ${PREFIX}/bin/gs
-.else
-	${STRIP_CMD} ${PREFIX}/bin/gs
+	${LN} -sf gsc ${STAGEDIR}${PREFIX}/bin/gs
 .endif
 	cd ${FILESDIR} \
-		&& ${INSTALL_DATA} ${CONTRIB_UPP} ${DATADIR}/${PORTVERSION}/lib
-	@${ECHO_MSG}
-	@${CAT} ${PKGMESSAGE}
-	@${ECHO_MSG}
+	    && ${INSTALL_DATA} ${CONTRIB_UPP} \
+		${STAGEDIR}${DATADIR}/${PORTVERSION}/lib
 
-.if ${PORT_OPTIONS:MDOCS}
 post-install: post-install-docs
-.endif
 
 .include <bsd.port.mk>

@@ -20,6 +20,8 @@ DOCS_EN=	README.en ext/sdn/README.sdncal20
 DOCS_JA=	README
 EXAMPLES_EN=	ext/calendar/cal*.rb
 
+OPTIONS_DEFINE=	DOCS
+
 post-install:
 	${MKDIR} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}
 .for f in ${EXAMPLES_EN}
@@ -33,4 +35,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/ja/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.2
+BROKEN=		Does not build
+.endif
+
+.include <bsd.port.post.mk>

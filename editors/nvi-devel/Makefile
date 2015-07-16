@@ -3,10 +3,9 @@
 
 PORTNAME=	nvi
 PORTVERSION=	1.81.6
-PORTREVISION=	7
+PORTREVISION=	9
 CATEGORIES=	editors
-MASTER_SITES=	http://garage.linux.student.kuleuven.be/~skimo/nvi/devel/ \
-		http://www.kotnet.org/~skimo/nvi/devel/
+MASTER_SITES=	ftp://ftp.stack.nl/pub/users/johans/nvi/
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Development snapshot of the world-renown nvi editor
@@ -20,7 +19,7 @@ WIDECHAR_DESC=	Enable wide-character support (UTF-8)
 WRKSRC=			${WRKDIR}/${DISTNAME}/build.unix
 GNU_CONFIGURE=		yes
 USE_LDCONFIG=		yes
-USES=			iconv libtool:keepla pkgconfig tar:bzip2
+USES=			iconv libtool pkgconfig tar:bzip2
 USE_BDB=		42+
 CONFIGURE_ARGS+=	--with-db-prefix=${LOCALBASE} \
 			--program-prefix=n

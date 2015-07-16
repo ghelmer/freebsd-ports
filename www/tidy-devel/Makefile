@@ -3,13 +3,12 @@
 
 PORTNAME?=	tidy
 DISTVERSION=	090315-cvs
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
-MASTER_SITES=	${MASTER_SITE_LOCAL}
+MASTER_SITES=	LOCAL/thierry
 #MASTER_SITES=	http://tidy.sourceforge.net/src/%SUBDIR%/	\
 #		http://tidy.sourceforge.net/docs/:docs
 #MASTER_SITE_SUBDIR=	. old
-MASTER_SITE_SUBDIR=	thierry
 PKGNAMESUFFIX?=	-devel
 
 MAINTAINER?=	thierry@FreeBSD.org
@@ -29,9 +28,10 @@ PLIST_SUB=	SHLIB="@comment " NSHLIB=""
 MAKE_ARGS+=	PREFIX=${STAGEDIR}${PREFIX}
 CONFLICTS=	tidy-20000804* tidy-lib-[0-9]*
 .else
-USE_AUTOTOOLS=	automake autoconf libtool
-AUTOMAKE_ARGS+=	-a -c --foreign
+USES+=		autoreconf libtool
 USE_LDCONFIG=	yes
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
 PLIST_SUB=	SHLIB="" NSHLIB="@comment "
 CONFLICTS=	tidy-devel-[0-9]*
 .endif
@@ -39,6 +39,8 @@ CONFLICTS=	tidy-devel-[0-9]*
 DESCR=		${.CURDIR}/pkg-descr
 
 BIN2STRIP=	tidy tab2space
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
@@ -82,28 +84,10 @@ post-patch:
 . endfor
 .endif
 
-patch-autotools-libtool::
-.if defined(WITH_SHLIB)
-	(cd ${WRKSRC}				\
-	&& ${LIBTOOLIZE} --force --copy		\
-	&& ${ACLOCAL}				\
-	&& ${REINPLACE_CMD} -e '/^_LT_AC_SHELL_INIT/d' aclocal.m4)
-	(cd ${PATCH_WRKSRC};			\
-	for ltf in ${LIBTOOLFILES}; do		\
-		${CP} $$ltf $$ltf.tmp;	\
-		${SED} -e "s^\$$ac_aux_dir/ltconfig^${LTCONFIG}^g" \
-			-e "/^ltmain=/!s^\$$ac_aux_dir/ltmain.sh^${LIBTOOLFLAGS} ${LTMAIN}^g" \
-			$$ltf.tmp > $$ltf;	\
-	 done);
-.endif
-
 post-install:
 .for pgm in ${BIN2STRIP}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${pgm}
 .endfor
-.if defined(WITH_SHLIB)
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtidy-0.99.so.0
-.endif
 .if ${PORT_OPTIONS:MDOCS}
 	@${ECHO_MSG} "===>   Installing documentation for ${PKGNAME}"
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -7,7 +7,10 @@ CATEGORIES=	print rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	An extension of Prawn
+COMMENT=	Extension of Prawn
+
+LICENSE=	GPLv2 RUBY
+LICENSE_COMB=	dual
 
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	opal
 PORTVERSION=	3.10.10
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
@@ -14,8 +14,7 @@ LICENSE=	MPL
 
 LIB_DEPENDS=	libpt.so:${PORTSDIR}/devel/ptlib
 
-USE_XZ=	yes
-USES=		gmake pathfix pkgconfig
+USES=		gmake pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
@@ -54,7 +53,7 @@ RTPTEXT_DESC=	RFC4103 Text RTP payload support
 H450_DESC=	H.450 H.323 subset
 H460_DESC=	H.460 H.323 extension for NAT traversal
 H501_DESC=	H.501 H323 mobility extensions
-LID_DESC=	Light-Weight Identity (incl. xJack cards  and voicetronix vpb) support
+LID_DESC=	Light-Weight Identity (incl. xJack cards and voicetronix vpb) support
 UVIDEO_DESC=	RFC4175 uncompressed video RTP payload
 AEC_DESC=	Accoustic echo cancellation
 
@@ -143,7 +142,7 @@ PLIST_SUB+=	THEORA="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MX264} && ${PORT_OPTIONS:MFFMPEG}
-LIB_DEPENDS+=	libx264.so:${PORTSDIR}/multimedia/x264
+LIB_DEPENDS+=	libx264.so:${PORTSDIR}/multimedia/libx264
 CONFIGURE_ARGS+=	--enable-x264
 PLIST_SUB+=	X264=""
 WITH_VIDEO=	yes
@@ -210,9 +209,8 @@ CONFIGURE_ARGS+=	--enable-h281
 CONFIGURE_ARGS+=	--disable-h281
 .endif
 
-# keep version in lib_depend, to see the difference between spandsp-devel and normal
 .if ${PORT_OPTIONS:MFAX}
-LIB_DEPENDS+=	libspandsp.so.2:${PORTSDIR}/comms/spandsp-devel
+LIB_DEPENDS+=		libspandsp.so:${PORTSDIR}/comms/spandsp
 CONFIGURE_ARGS+=	--enable-spandsp --enable-fax --enable-t38
 PLIST_SUB+=	FAX=""
 .else

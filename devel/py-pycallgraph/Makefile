@@ -16,23 +16,18 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS+=	dot:${PORTSDIR}/graphics/graphviz
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-
-.if !defined(NO_INSTALL_MANPAGES)
-MAN1=	pycallgraph.1
-.endif
+USES=		python
+USE_PYTHON=	distutils
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 
-post-install:
-.if !defined(NO_INSTALL_MANPAGES)
-	${INSTALL_MAN} ${WRKSRC}/man/pycallgraph.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-.endif
+OPTIONS_DEFINE=	EXAMPLES
 
-.if !defined(NOPORTEXAMPLES)
+
+post-install:
+	${INSTALL_MAN} ${WRKSRC}/man/pycallgraph.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples/ && ${COPYTREE_BIN} \* ${STAGEDIR}${EXAMPLESDIR})
-.endif
 
 .include <bsd.port.mk>

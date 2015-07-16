@@ -3,11 +3,12 @@
 
 PORTNAME=	symeig
 PORTVERSION=	1.5
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	SF/mdp-toolkit/mdp-toolkit/2.4
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Symmetrical eigenvalue routines for NumPy
 
 LICENSE=	BSD3CLAUSE
@@ -18,10 +19,10 @@ RUN_DEPENDS+=	${PYNUMPY}
 LATEST_LINK=	py-${PORTNAME}
 OPTIONSFILE=	${PORT_DBDIR}/py-numpy/options
 
-USES=		fortran
-USE_PYTHON=	2
-USE_PYDISTUTILS=yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		fortran python:2
+USE_PYTHON=	distutils autoplist
+
+LDFLAGS+=	-shared
 
 OPTIONS_DEFINE=	ATLAS
 ATLAS_DESC=	Use optimized blas library

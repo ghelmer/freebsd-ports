@@ -7,8 +7,8 @@ CATEGORIES=	sysutils
 MASTER_SITES=	http://oss.ezic.com/flog/ \
 		ftp://ftp.nuug.no/pub/anders/distfiles/
 
-MAINTAINER=	anders@FreeBSD.org
-COMMENT=	A small STDIN-to-file logger with support for log rotation
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Small STDIN-to-file logger with support for log rotation
 
 PORTDOCS=	README
 

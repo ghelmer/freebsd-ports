@@ -2,13 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	arduino
-PORTVERSION=	1.0.5
-PORTREVISION=	2
+PORTVERSION=	1.0.6
 PORTEPOCH=	1
 CATEGORIES=	devel java lang
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	http://arduino.cc/download.php?f=/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-linux32
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	leres@ee.lbl.gov
 COMMENT=	Open-source electronics prototyping platform
@@ -18,10 +16,14 @@ RUN_DEPENDS=	${JAVA_HOME}/jre/lib/ext/RXTXcomm.jar:${PORTSDIR}/comms/rxtx \
 		${LOCALBASE}/avr/include/avr/io.h:${PORTSDIR}/devel/avr-libc
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-USES=		dos2unix
+USES=		dos2unix tar:tgz
 DOS2UNIX_REGEX=	.*\(\.\(c|cpp|h|hex|html|ino|lst|txt\)|Makefile\)
 
-USE_JAVA=	1.6+
+USE_JAVA=	yes
+JAVA_OS=	native
+JAVA_VENDOR=	openjdk
+JAVA_RUN=	yes
+
 NO_BUILD=	yes
 USE_LDCONFIG=	${PREFIX}/arduino/lib
 

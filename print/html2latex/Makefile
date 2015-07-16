@@ -4,16 +4,12 @@
 PORTNAME=	html2latex
 PORTVERSION=	0.9c
 CATEGORIES=	print
-# I can't seem to find the original dist site
-MASTER_SITES=	ftp://ftp.interface-business.de/pub/outgoing/
-EXTRACT_SUFX=	.tar.Z
+MASTER_SITES=	LOCAL/joerg
 
 MAINTAINER=	joerg@FreeBSD.org
 COMMENT=	Convert HTML document into LaTeX
 
-MAN1=		html2latex.1
-MANCOMPRESSED=	yes
-PLIST_FILES=	bin/html2latex
+USES=		tar:Z
+PLIST_FILES=	bin/html2latex man/man1/html2latex.1.gz
 
-NO_STAGE=	yes
 .include <bsd.port.mk>

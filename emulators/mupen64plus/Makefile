@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mupen64plus
-PORTVERSION=	2.0
+PORTVERSION=	2.5
+PORTREVISION?=	0
 CATEGORIES=	emulators
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -34,7 +35,6 @@ SUB_FILES=	pkg-message
 
 do-install:	# empty
 
-NO_STAGE=	yes
 post-install:
 	@${CAT} ${PKGMESSAGE}
 

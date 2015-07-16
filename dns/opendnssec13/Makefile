@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	opendnssec
-PORTVERSION=	1.3.17
-PORTREVISION=	1
+PORTVERSION=	1.3.18
 CATEGORIES=	dns
-MASTER_SITES=	http://dist.opendnssec.org/source/
+MASTER_SITES=	http://dist.opendnssec.org/source/ \
+	http://dist.opendnssec.org/source/testing/
 PKGNAMESUFFIX=	13
 
 MAINTAINER=	jaap@NLnetLabs.nl
@@ -17,6 +17,7 @@ BUILD_DEPENDS=	ldns>=1.6.16:${PORTSDIR}/dns/ldns
 LIB_DEPENDS=	libldns.so:${PORTSDIR}/dns/ldns
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--localstatedir="${PREFIX}/var"
 USE_RC_SUBR=	opendnssec
 USE_GNOME=	libxml2
 USES=		perl5
@@ -65,7 +66,7 @@ PLIST_SUB+=	AUDITOR="@comment "
 
 .if ${PORT_OPTIONS:MSOFTHSM}
 CONFIGURE_ARGS+=	--with-softhsm
-CONFIGURE_ARGS+=	--with-pkcs11-softhsm=${LOCALBASE}/lib/libsofthsm.so
+CONFIGURE_ARGS+=	--with-pkcs11-softhsm=${LOCALBASE}/lib/softhsm/libsofthsm.so
 RUN_DEPENDS+=	softhsm>=1.2.0:${PORTSDIR}/security/softhsm
 .endif
 

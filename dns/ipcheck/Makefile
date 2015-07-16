@@ -6,7 +6,6 @@ PORTVERSION=	0.240
 PORTEPOCH=	1
 CATEGORIES=	dns python
 MASTER_SITES=	http://ipcheck.sourceforge.net/releases/
-MASTER_SITE_SUBDIR=	lioux
 DISTNAME=	${PORTNAME}.${PORTVERSION:S/^0.//}
 EXTRACT_SUFX=
 EXTRACT_ONLY=
@@ -16,7 +15,7 @@ COMMENT=	Fully compliant DynDNS.org client for UNIX (supports NIC v2.0)
 
 LICENSE=	GPLv2
 
-USE_PYTHON=	yes
+USES=		python
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 

@@ -2,10 +2,10 @@
 
 PORTNAME=	gr-osmosdr
 PORTVERSION=	20140314
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://contribs.martymac.org/FreeBSD-ports/distfiles/ \
 		LOCAL/martymac
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	GNU Radio OsmoSDR module
@@ -20,9 +20,8 @@ LIB_DEPENDS=	libgnuradio-runtime.so:${PORTSDIR}/comms/gnuradio \
 		libboost_system.so:${PORTSDIR}/devel/boost-libs \
 		libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
-USES=	pkgconfig cmake
+USES=	pkgconfig cmake tar:tgz python
 USE_LDCONFIG=	yes
-USE_PYTHON=	yes
 
 # See lib/CMakeLists.txt to enable more components
 CMAKE_ARGS+=	-DENABLE_DEFAULT:BOOL=OFF \

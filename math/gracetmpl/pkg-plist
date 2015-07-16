@@ -5,6 +5,7 @@ include/gracetmpl.h
 lib/libgracetmpl.a
 %%PYTHON_SITELIBDIR%%/graceTMPL/graceTMPL.so
 %%PYTHON_SITELIBDIR%%/graceTMPL.pth
+%%PYTHON_SITELIBDIR%%/graceTMPL/graceTMPL-0.3.2-py%%PYTHON_VER%%.egg-info
 %%PORTDOCS%%%%DOCSDIR%%/annotated.html
 %%PORTDOCS%%%%DOCSDIR%%/annotations.html
 %%PORTDOCS%%%%DOCSDIR%%/changes.html
@@ -61,6 +62,3 @@ lib/libgracetmpl.a
 %%PORTDOCS%%%%DOCSDIR%%/test05.jpg
 %%PORTDOCS%%%%DOCSDIR%%/tmpl_knowledge.html
 %%PORTDOCS%%%%DOCSDIR%%/todo.html
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm %%PYTHON_SITELIBDIR%%/graceTMPL
-@dirrm %%PYTHON_INCLUDEDIR%%/graceTMPL

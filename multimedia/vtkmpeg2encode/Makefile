@@ -3,6 +3,7 @@
 
 PORTNAME=	vtkmpeg2encode
 PORTVERSION=	${VTK_VERSION}
+PORTREVISION=	1
 CATEGORIES=	multimedia math
 MASTER_SITES=	http://www.vtk.org/files/support/ \
 		http://www.neuro.mcw.edu/Ports/distfiles/VTK5/
@@ -14,7 +15,7 @@ COMMENT=	VTK MPEG2 encoding library
 LICENSE=	MPEG-2
 LICENSE_NAME=	MPEG-2 license
 LICENSE_FILE=	${WRKSRC}/mpeg2enc.h
-LICENSE_PERMS=	${_LICENSE_PERMS_DEFAULT}
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		cmake
 USE_LDCONFIG=	yes
@@ -25,7 +26,6 @@ SUB_FILES=	vtkmpeg2encode.3
 
 MPEGLIB=	libvtkMPEG2Encode
 
-PLIST_DIRS=	include/vtk-${VTK_VERSION:R}
 PLIST_FILES=	lib/${MPEGLIB}.so.${PORTVERSION} \
 		lib/${MPEGLIB}.so.${VTK_VERSION:R} \
 		lib/${MPEGLIB}.so.${VTK_VERSION:R:R} \
@@ -42,7 +42,7 @@ post-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/include/vtk-${VTK_VERSION:R}
-	${INSTALL_DATA} ${WRKSRC}/${MPEGLIB}.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${WRKSRC}/${MPEGLIB}.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib
 	${LN} -s ${MPEGLIB}.so.${PORTVERSION} \
 			${STAGEDIR}${PREFIX}/lib/${MPEGLIB}.so.${VTK_VERSION:R}
 	${LN} -s ${MPEGLIB}.so.${PORTVERSION} \

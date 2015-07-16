@@ -3,24 +3,27 @@
 
 PORTNAME=	trml2pdf
 PORTVERSION=	1.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	print python
 MASTER_SITES=	SF/kraft/${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@caomhin.org
-COMMENT=	Tiny RML2PDF easily creates PDF documents.
+COMMENT=	Tiny RML2PDF easily creates PDF documents
 
-RUN_DEPENDS=	${LOCALBASE}/bin/pildriver.py:${PORTSDIR}/graphics/py-imaging \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow \
 		${PYTHON_PKGNAMEPREFIX}reportlab1>=0:${PORTSDIR}/print/py-reportlab1
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
-USE_BZIP2=	yes
-USE_PYTHON=	yes
+USES=		python shebangfix tar:bzip2
+SHEBANG_FILES=	trml2pdf/trml2pdf.py
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/trml2pdf

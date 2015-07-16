@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	eggdrop
-PORTVERSION=	1.8.0.20140321
+PORTVERSION=	1.8.0.20141008
+PORTREVISION=	2
 CATEGORIES=	irc
 MASTER_SITES=	GH \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/
@@ -14,6 +15,7 @@ COMMENT=	The most popular open source Internet Relay Chat bot
 LICENSE=	GPLv2
 
 USES=		tcl:85+
+USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-tcllib=${LOCALBASE}/lib/libtcl${TCL_SHLIB_VER}.so \
 		--with-tclinc=${LOCALBASE}/include/tcl${TCL_VER}/tcl.h
@@ -21,14 +23,15 @@ CONFIGURE_ARGS+=--with-tcllib=${LOCALBASE}/lib/libtcl${TCL_SHLIB_VER}.so \
 USE_GITHUB=	yes
 GH_ACCOUNT=	eggheads
 GH_PROJECT=	${PORTNAME}-1.8
-GH_COMMIT=	ae3eb8b
-GH_TAGNAME=	${GH_COMMIT}
+GH_TAGNAME=	2bf3950
 
 MAKE_JOBS_UNSAFE=	yes
 
 SUB_FILES=	pkg-message
 
 CONFLICTS=	eggdrop-[0-9]*
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
@@ -116,5 +119,6 @@ do-install:
 	cd ${WRKSRC}/doc/settings && ${RM} -rf CVS \
 		&& ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR}/settings
 .endif
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/eggdrop/*.so
 
 .include <bsd.port.mk>

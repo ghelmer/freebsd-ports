@@ -3,6 +3,7 @@
 
 PORTNAME=	sqlite-ext-miscfuncs
 PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.sourcehosting.net/freebsd/distfiles/ \
 		LOCAL/glarkin
@@ -28,12 +29,13 @@ EXTRACT_CMD=	${CP}
 EXTRACT_BEFORE_ARGS=
 EXTRACT_AFTER_ARGS=	${WRKSRC}/
 
-PLIST_DIRS=	libexec/${DIST_SUBDIR}
-PLIST_FILES=	${PLIST_DIRS}/${LIBFILE}
+PLIST_FILES=	libexec/${DIST_SUBDIR}/${LIBFILE}
 
 PORTDOCS=	README
 
 CFLAGS+=	-I${PREFIX}/include -fPIC -lm -shared
+
+OPTIONS_DEFINE=	DOCS
 
 do-build:
 	@cd ${WRKSRC} && ${CC} ${CFLAGS} ${SRCFILE} -o ${LIBFILE}
@@ -43,9 +45,7 @@ do-install:
 	@${INSTALL_PROGRAM} ${WRKSRC}/${LIBFILE} ${STAGEDIR}${INST_DIR}
 
 post-install:
-.if !defined(NOPORTDOCS)
 	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
 	@${CP} ${WRKDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

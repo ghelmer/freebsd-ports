@@ -3,6 +3,7 @@
 
 PORTNAME=	dvbcut
 PORTVERSION=	0.6.2.a1
+PORTREVISION=	3
 CATEGORIES=	multimedia
 
 MAINTAINER=	se@FreeBSD.org
@@ -13,21 +14,18 @@ LICENSE=	GPLv2
 BUILD_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
 		ffmpeg:${PORTSDIR}/multimedia/ffmpeg \
 		pkg-config:${PORTSDIR}/devel/pkgconf
-LIB_DEPENDS=	a52:${PORTSDIR}/audio/liba52 \
-		ao:${PORTSDIR}/audio/libao \
-		mad:${PORTSDIR}/audio/libmad \
-		avutil:${PORTSDIR}/multimedia/ffmpeg
+LIB_DEPENDS=	liba52.so:${PORTSDIR}/audio/liba52 \
+		libao.so:${PORTSDIR}/audio/libao \
+		libmad.so:${PORTSDIR}/audio/libmad \
+		libavutil.so:${PORTSDIR}/multimedia/ffmpeg
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nextghost
 GH_PROJECT=	dvbcut-qt4
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	81c31ed
+GH_TAGNAME=	81c31ed
 
-WRKSRC=		${WRKDIR}/${GH_ACCOUNT}-${GH_PROJECT}-${GH_COMMIT}
-
-USES=		qmake
+USES=		qmake desktop-file-utils shared-mime-info
 USE_QT4=	gui linguist  moc_build rcc_build uic_build
 INSTALLS_ICONS=	yes
 

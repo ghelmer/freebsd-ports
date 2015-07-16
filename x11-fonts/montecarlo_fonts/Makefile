@@ -3,30 +3,22 @@
 
 PORTNAME=	montecarlo_fonts
 PORTVERSION=	1.0
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://bok.net/MonteCarlo/downloads/ \
 		http://mirror.4bit.ws/
 DISTNAME=	MonteCarlo-PCF
 EXTRACT_SUFX=	.tgz
 
-MAINTAINER=	dhn@FreeBSD.org
-COMMENT=	A monospace font
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Monospace font
 
-RUN_DEPENDS=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir
-
+USES=		fonts
 USE_XORG=	x11
 NO_BUILD=	yes
-FONTDIR=	${PREFIX}/lib/X11/fonts/montecarlo
 
-PLIST_FILES=	lib/X11/fonts/montecarlo/fonts.dir \
-		lib/X11/fonts/montecarlo//MonteCarloBold.pcf \
-		lib/X11/fonts/montecarlo//MonteCarloMedium.pcf
-PLIST_DIRS=	lib/X11/fonts/montecarlo
-
-NO_STAGE=	yes
 do-install:
-	@${MKDIR} ${FONTDIR}
-	@${INSTALL_DATA} ${WRKSRC}/*.pcf ${FONTDIR}
-	@(cd ${FONTDIR}; mkfontdir)
+	@${MKDIR} ${STAGEDIR}${FONTSDIR}
+	@${INSTALL_DATA} ${WRKSRC}/*.pcf ${STAGEDIR}${FONTSDIR}
 
 .include <bsd.port.mk>

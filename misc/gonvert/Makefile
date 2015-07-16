@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gonvert
-PORTVERSION=	0.2.37
+PORTVERSION=	0.2.38
 CATEGORIES=	misc python gnome
 MASTER_SITES=	http://www.unihedron.com/projects/gonvert/downloads/
 
@@ -12,7 +12,7 @@ COMMENT=	Conversion utility that allows conversion between many units
 LICENSE=	GPLv2
 
 USE_GNOME=	pygtk2
-USE_PYTHON=	yes
+USES=		python
 NO_BUILD=	yes
 
 PORTDOCS=	CHANGELOG FAQ README THANKS

@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	qnapi
-PORTVERSION=	0.1.6.r2
+DISTVERSION=	0.1.6-rc2
 PORTREVISION=	1
 CATEGORIES=	polish multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTNAME}/
-DISTNAME=	${PORTNAME}-${PORTVERSION:R}-rc2
 
 MAINTAINER=	pawel@FreeBSD.org
 COMMENT=	Qt4 based subtitle downloader
@@ -17,7 +16,7 @@ RUN_DEPENDS=	7z:${PORTSDIR}/archivers/p7zip
 
 USES=		qmake
 USE_QT4=	corelib gui network xml moc_build uic_build rcc_build
-USE_KDE4=	kdehier
+USE_KDE4=	# dummy
 PLIST_SUB=	KDE4=${KDE4_PREFIX:S|${LOCALBASE}/||}
 QMAKE_ARGS=	KDE4_PREFIX=${KDE4_PREFIX}
 INSTALLS_ICONS=	yes

@@ -3,6 +3,7 @@
 
 PORTNAME=	POE-Component-Daemon
 PORTVERSION=	0.1400
+PORTREVISION=	2
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -16,8 +17,12 @@ LICENSE_COMB=	dual
 BUILD_DEPENDS=	p5-POE>=1:${PORTSDIR}/devel/p5-POE
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USES=		perl5
+USES=		perl5 shebangfix
+SHEBANG_FILES=	eg/forking eg/preforking
 USE_PERL5=	configure
+NO_ARCH=	yes
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 PORTDOCS=	*
 
@@ -29,11 +34,9 @@ post-install:
 		${INSTALL_SCRIPT} $${i} ${STAGEDIR}${EXAMPLESDIR}; \
 	done
 
-.ifndef(NOPORTDOCS)
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	for i in ${WRKSRC}/eg/*.png ${WRKSRC}/eg/*.dot; do \
 		${INSTALL_DATA} $${i} ${STAGEDIR}${DOCSDIR}; \
 	done
-.endif
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	pebble
 PORTVERSION=	2.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www java
 MASTER_SITES=	SF
 
@@ -14,7 +14,8 @@ PATCH_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
 		unzip:${PORTSDIR}/archivers/unzip
 RUN_DEPENDS=	${LOCALBASE}/apache-tomcat-6.0/bin/catalina.sh:${PORTSDIR}/www/tomcat6
 
-USES=		zip:infozip
+USES=		cpe zip:infozip
+CPE_VENDOR=	simon_brown
 
 NO_BUILD=	yes
 
@@ -28,13 +29,14 @@ SUB_FILES=	pebble.properties pkg-message
 
 PKGMESSAGE=	${WRKSRC}/pkg-message
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 PORTDOCS=	configuration.html credits.html images index.html \
 		installation.html license.txt multiblog.html screen.css \
 		screenshots.html security.html upgrading1x.html \
 		upgrading2x.html
-.endif
 PLIST_FILES=	${WEBAPP_SUBDIR}/${PORTNAME}.war
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 PEBBLE_CONTEXT=	WEB-INF/applicationContext-pebble.xml
 
 do-patch:
@@ -43,17 +45,11 @@ do-patch:
 	cd ${WRKSRC} && ${LOCALBASE}/bin/zip -u pebble.war ${PEBBLE_CONTEXT}
 
 do-install:
-	${MKDIR} "${STAGEDIR}${PEBBLE_HOME}"
-	${CHOWN} "www:www" "${STAGEDIR}${PEBBLE_HOME}"
+	@${MKDIR} "${STAGEDIR}${PEBBLE_HOME}"
 	${INSTALL_DATA} ${WRKDIR}/pebble.properties ${STAGEDIR}${PEBBLE_PROPERTIES}.sample
-	${MKDIR} ${STAGEDIR}${WEBAPP_DIR}
+	@${MKDIR} ${STAGEDIR}${WEBAPP_DIR}
 	${INSTALL_DATA} ${WRKSRC}/pebble.war ${STAGEDIR}${WEBAPP_DIR}/${PORTNAME}.war
-.if !defined(NOPORTDOCS)
 	cd ${WRKSRC}/docs && ${FIND} ${PORTDOCS} -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/{} \;
 	cd ${WRKSRC}/docs && ${FIND} ${PORTDOCS} -type f -exec ${INSTALL_DATA} {} ${STAGEDIR}${DOCSDIR}/{} \;
-.endif
-
-post-install:
-	${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

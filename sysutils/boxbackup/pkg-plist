@@ -7,11 +7,19 @@
 %%SERVER%%sbin/bbstored-certs
 %%SERVER%%sbin/bbstored-config
 %%SERVER%%sbin/raidfile-config
-%%CLIENT%%@exec mkdir -p -m 0700 %D/etc/boxbackup/bbackupd
-%%SERVER%%@exec mkdir -p -m 0700 %D/etc/boxbackup/bbstored
-%%CLIENT%%@dirrmtry etc/boxbackup/bbackupd
-%%SERVER%%@dirrmtry etc/boxbackup/bbstored
+%%CLIENT%%man/man5/bbackupd.conf.5.gz
+%%SERVER%%man/man5/bbstored.conf.5.gz
+%%SERVER%%man/man5/raidfile.conf.5.gz
+%%SERVER%%man/man8/bbstored.8.gz
+%%SERVER%%man/man8/bbstoreaccounts.8.gz
+%%SERVER%%man/man8/bbstored-certs.8.gz
+%%SERVER%%man/man8/bbstored-config.8.gz
+%%SERVER%%man/man8/raidfile-config.8.gz
+%%CLIENT%%man/man8/bbackupd.8.gz
+%%CLIENT%%man/man8/bbackupctl.8.gz
+%%CLIENT%%man/man8/bbackupd-config.8.gz
+%%CLIENT%%man/man8/bbackupquery.8.gz
 etc/periodic/monthly/999.boxbackup
-@dirrmtry etc/periodic/monthly
-@dirrmtry etc/periodic
-@dirrmtry etc/boxbackup
+@mode 0077
+%%CLIENT%%@dir etc/boxbackup/bbackupd
+%%SERVER%%@dir etc/boxbackup/bbstored

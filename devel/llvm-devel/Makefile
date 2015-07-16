@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	llvm
-DISTVERSION=	3.5.r${SVN_REV}
+DISTVERSION=	3.7.r${SVN_REV}
 CATEGORIES=	devel lang
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	brooks
+MASTER_SITES=	LOCAL/brooks
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	brooks@FreeBSD.org
@@ -29,7 +28,6 @@ SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 CONFIGURE_ARGS+=	--enable-shared
 MAKE_ARGS+=		REQUIRES_RTTI=1
 LIBNAME=		libLLVM-${DISTVERSION:C/\.r[0-9]*//}svn.so
-LIBNAME_REAL=		libLLVM-${DISTVERSION:C/\.r[0-9]*//}.0svn.so
 
 CONFIGURE_ARGS+=	--enable-bindings=none
 CONFIGURE_ARGS+=	--enable-optimized
@@ -88,10 +86,13 @@ FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
 
 STRIP_LIBS=	BugpointPasses.so \
 		LLVMHello.so \
-		${LIBNAME_REAL}.0 \
+		${LIBNAME}.0 \
 		libLTO.so
 
 .include <bsd.port.options.mk>
+
+# keep in sync with /usr/src/lib/clang/clang.build.mk
+CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}
 
 .if ${PORT_OPTIONS:MASSERTS}
 RELEASE_TYPE=		Release+Asserts
@@ -105,10 +106,10 @@ PORTDATA+=	cmake
 
 .if ${PORT_OPTIONS:MLIT}
 MAN1SRCS+=		lit.1
-USE_PYTHON=		yes
+USES+=			python
 LIT_COMMANDS=		lit llvm-lit FileCheck
 .else
-USE_PYTHON_BUILD=	yes
+USES+=			python:build
 .endif
 
 .if ${PORT_OPTIONS:MMANPAGES}
@@ -128,10 +129,11 @@ NOT_FOR_ARCH=	ia64
 BROKEN=	GCC failing on 8.x
 .endif
 
+SVN?=	svnlite
 .if !defined(SVN_REV)
 .if defined(BOOTSTRAP)
 LANG=		"C"
-SVN_REV!=	svn info http://llvm.org/svn/llvm-project/ | ${GREP} Revision | cut -d' ' -f2
+SVN_REV!=	${SVN} info http://llvm.org/svn/llvm-project/ | ${GREP} Revision | cut -d' ' -f2
 .else
 .include "Makefile.svn_rev"
 .endif
@@ -146,11 +148,9 @@ CONFIGURE_ARGS+=	--with-optimize-option=-O2
 .endif
 
 .if defined(BOOTSTRAP) || defined(SVN_FETCH)
-FETCH_DEPENDS+=	svn:${PORTSDIR}/devel/subversion
-
 do-fetch:
 	${MKDIR} ${WRKDIR}
-	svn export -r ${SVN_REV} \
+	${SVN} export -r ${SVN_REV} \
 	    http://llvm.org/svn/llvm-project/llvm/trunk ${WRKSRC}
 	cd ${WRKDIR}; tar cvfy ${DISTDIR}/${DISTNAME}.tar.bz2 ${DISTNAME}
 	echo "SVN_REV=	${SVN_REV}" > ${MASTERDIR}/Makefile.svn_rev
@@ -191,11 +191,9 @@ post-build:
 .endif
 
 post-install:
-	ln -sf ${LIBNAME_REAL} ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME}
-	${MV} ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME_REAL} \
-	    ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME_REAL}.0
-	${LN} -sf ${LIBNAME_REAL}.0 \
-	    ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME_REAL}
+	${MV} ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME} \
+	    ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME}.0
+	${LN} -sf ${LIBNAME}.0 ${STAGEDIR}${LLVM_PREFIX}/lib/${LIBNAME}
 	${STRIP_CMD} ${STRIP_LIBS:S|^|${STAGEDIR}${LLVM_PREFIX}/lib/|}
 	${INSTALL_SCRIPT} ${WRKDIR}/llvm-wrapper.sh \
 	    ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX}
@@ -271,12 +269,5 @@ build-plist:
 	${FIND} ${STAGEDIR}${DOCSDIR} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%%%DOCSDIR%%|' | \
 	    ${SORT} >> ${PLIST}
-	${FIND} ${STAGEDIR}${LLVM_PREFIX} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${PREFIX}/||' | \
-	    ${SORT} -r | ${SED} -e 's|^|@dirrm |' >> ${PLIST}
-	echo "%%LIT%%@dirrm %%PYTHON_SITELIBDIR%%/lit${LLVM_SUFFIX}" >> ${PLIST}
-	${FIND} ${STAGEDIR}${DOCSDIR} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%@dirrm %%DOCSDIR%%|' | \
-	    ${SORT} -r >> ${PLIST}
 
 .include <bsd.port.post.mk>

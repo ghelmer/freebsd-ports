@@ -3,7 +3,7 @@
 
 PORTNAME=	ubuntu-font
 PORTVERSION=	0.80
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://font.ubuntu.com/download/
 
@@ -15,19 +15,14 @@ COMMENT=	Ubuntu font family
 LICENSE=	UFL
 LICENSE_FILE=	${WRKSRC}/LICENCE.txt
 LICENSE_NAME=	Ubuntu Font License (UFL)
-LICENSE_PERMS=	auto-accept
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	fc-cache:${PORTSDIR}/x11-fonts/fontconfig
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-
-USES=		zip
+USES=		fonts zip
 NO_BUILD=	yes
 
-PLIST_SUB=	FONTSDIR="${FONTSDIR:S|${PREFIX}/||}"
-FONTSDIR=	${PREFIX}/lib/X11/fonts/${PORTNAME}
 SUB_FILES=	pkg-message
-SUB_LIST=	FONTSDIR=${FONTSDIR}
-WRKSRC=		${WRKDIR}/${DISTNAME}
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

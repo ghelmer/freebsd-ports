@@ -3,10 +3,9 @@
 
 PORTNAME=	libmatheval
 PORTVERSION=	1.1.11
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel math
 MASTER_SITES=	GNU
-MASTER_SITE_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Library to evaluate mathematical functions

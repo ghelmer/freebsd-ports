@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	kzip
-DISTVERSION=	20070805
+DISTVERSION=	20150319
 CATEGORIES=	archivers linux
-MASTER_SITES=	http://static.jonof.id.au.nyud.net/dl/kenutils/
+MASTER_SITES=	http://static.jonof.id.au/dl/kenutils/
 DISTNAME=	kzipmix-${DISTVERSION}-linux-static
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,14 +14,13 @@ NO_CDROM=	License does not allow redistribution
 NO_PACKAGE=	${NO_CDROM}
 RESTRICTED=	${NO_CDROM}
 
-ONLY_FOR_ARCHS=	i386
+ONLY_FOR_ARCHS=	amd64 i386
 
 USE_LINUX=	yes
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/kzipmix-static
+WRKSRC_SUBDIR=	i686
 
 FILES=		kzip-static
-
 .for file in ${FILES}
 PLIST_FILES+=	bin/${file:S/-static$//}
 .endfor

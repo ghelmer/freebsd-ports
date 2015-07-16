@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	coq
-PORTVERSION=	8.4.3
-PORTEPOCH=	1
+PORTVERSION=	8.4.6
+PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	http://coq.inria.fr/distrib/V${COQVERSION}/files/ \
 		ftp://ftp.stack.nl/pub/users/johans/coq/
@@ -34,11 +34,14 @@ IDE_DESC=		Include desktop environment (coqide)
 IDE_BUILD_DEPENDS=	lablgtk2:${PORTSDIR}/x11-toolkits/ocaml-lablgtk2
 IDE_RUN_DEPENDS:=	lablgtk2:${PORTSDIR}/x11-toolkits/ocaml-lablgtk2
 IDE_CONFIGURE_OFF=	--coqide no
-DOCS_USE=		TEX=latex:build,dvipsk:build
-DOCS_BUILD_DEPENDS=	hevea:${PORTSDIR}/textproc/hevea \
-	${LOCALBASE}/share/texmf/tex/latex/ucs/utf8x.def:${PORTSDIR}/print/latex-ucs
+DOCS_USE=		TEX=latex:build,dvipsk:build,texmf:build
+DOCS_BUILD_DEPENDS=	hevea:${PORTSDIR}/textproc/hevea
 DOCS_CONFIGURE_OFF=	--with-doc none
 PORTDOCS=		*
+
+# Workaround bsd.ocaml.mk to fix packaging
+add-plist-post:
+	@${DO_NADA}
 
 .include <bsd.port.pre.mk>
 

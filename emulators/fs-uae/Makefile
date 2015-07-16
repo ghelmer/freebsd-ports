@@ -3,7 +3,7 @@
 
 PORTNAME=	fs-uae
 PORTVERSION=	2.4.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	emulators
 MASTER_SITES=	http://fs-uae.net/stable/${PORTVERSION}/
 
@@ -21,6 +21,8 @@ USE_GL=		gl
 USE_GNOME=	glib20
 INSTALLS_ICONS=	yes
 MAKE_ARGS+=	prefix=${PREFIX}
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

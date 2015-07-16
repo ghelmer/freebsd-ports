@@ -2,17 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	Net_DNS2
-PORTVERSION=	1.3.2
+PORTVERSION=	1.4.1
 CATEGORIES=	dns net pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP5 Resolver library used to communicate with a DNS server
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PEAR_AUTOINSTALL=	yes
+USES=		pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

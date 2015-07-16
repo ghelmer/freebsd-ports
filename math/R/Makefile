@@ -3,7 +3,7 @@
 
 PORTNAME?=	R
 PORTVERSION=	3.0.2
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	math lang
 MASTER_SITES=	http://cran.r-project.org/%SUBDIR%/ \
 		ftp://cran.r-project.org/pub/R/%SUBDIR%/ \
@@ -22,8 +22,7 @@ MASTER_SITES=	http://cran.r-project.org/%SUBDIR%/ \
 MASTER_SITE_SUBDIR=	src/base/R-${PORTVERSION:C|\..*||}
 DISTNAME=	R-${PORTVERSION}
 
-PATCH_SITES=		${MASTER_SITE_LOCAL}
-PATCH_SITE_SUBDIR=	bf
+PATCH_SITES=		LOCAL/bf
 PATCHFILES=		R-patched-20131112-r64207.diff.bz2
 
 MAINTAINER=	bf@FreeBSD.org
@@ -37,7 +36,7 @@ CONFIGURE_ENV=		LIBR_LDFLAGS="${LDFLAGS}" OBJC="${CC}" \
 			SED="${LOCALBASE}/bin/gsed" \
 			ac_cv_have_decl_powl=yes ac_cv_have_decl_log1pl=yes
 
-OPTIONS_DEFINE=		MISSING
+OPTIONS_DEFINE=		MISSING DOCS
 
 MISSING_DESC=		use libmissing rather than libquadmath
 
@@ -52,11 +51,10 @@ PLIST_SUB=		RMATH_SOVERSION="${RMATH_SOVERSION}"
 USE_LDCONFIG=		yes
 .else # LIBRMATH_SLAVEPORT
 ALL_TARGET=		all
-INSTALL_TARGET =	install
-CONFIGURE_ARGS =	--enable-memory-profiling rdocdir=${DOCSDIR} \
+INSTALL_TARGET=		install
+CONFIGURE_ARGS=		--enable-memory-profiling rdocdir=${DOCSDIR} \
 			--with-system-bzlib --with-system-zlib
 CONFIGURE_ENV+=		FCFLAGS="${FFLAGS}" \
-			INSTALL_DATA="${INSTALL} ${COPY} ${_SHROWNGRP} -m 644" \
 			R_LD_LIBRARY_PATH="${R_LD_LIBRARY_PATH}" TAR="${TAR}"
 CPPFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
@@ -65,7 +63,7 @@ OPTIONS_DEFINE+=	ATLAS ICU PCRE_PORT THREADS
 
 ATLAS_DESC=		Use ATLAS instead of BLAS/LAPACK
 ICU_DESC=		Use ICU for collation in multibyte locales
-PCRE_PORT_DESC =	Use devel/pcre instead of the bundled PCRE
+PCRE_PORT_DESC=		Use devel/pcre instead of the bundled PCRE
 
 OPTIONS_DEFAULT+=	ICU PCRE_PORT THREADS
 .if !defined(LIBR_SLAVEPORT)
@@ -91,6 +89,10 @@ X11_DESC=		X11() graphics device
 
 OPTIONS_DEFAULT+=	GHOSTSCRIPT INFO_MANUALS JPEG LIBR PANGOCAIRO PNG \
 			TCLTK TIFF X11
+
+OPTIONS_DEFAULT_armv6+=		MISSING
+OPTIONS_DEFAULT_powerpc+=	MISSING
+OPTIONS_DEFAULT_powerpc64+=	MISSING
 
 .endif # !LIBR_SLAVEPORT
 PLIST_SUB=		R_SOVERSION="${R_SOVERSION}" \
@@ -189,6 +191,7 @@ CONFIGURE_ARGS+=	--disable-threads
 .if defined(LIBR_SLAVEPORT)
 
 CONFIGURE_ARGS+=	--disable-BLAS-shlib --without-pic --without-x
+USES+=			readline
 
 .else # LIBR_SLAVEPORT
 
@@ -197,7 +200,7 @@ USE_GHOSTSCRIPT_RUN=	yes
 .endif
 
 .if ${PORT_OPTIONS:MJPEG}
-LIB_DEPENDS+=		libjpeg.so:${PORTSDIR}/graphics/jpeg
+USES+=			jpeg
 CONFIGURE_ARGS+=	--with-jpeglib
 .else
 CONFIGURE_ARGS+=	--without-jpeglib
@@ -224,7 +227,7 @@ PLIST_SUB+=		PANGOCAIRO="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=		libpng15.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=		libpng.so:${PORTSDIR}/graphics/png
 CONFIGURE_ARGS+=	--with-libpng
 .else
 CONFIGURE_ARGS+=	--without-libpng
@@ -312,9 +315,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|(libdir)/pkgconfig|(prefix)/libdata/pkgconfig|g' \
 		${WRKSRC}/src/nmath/standalone/Makefile.in \
 		${WRKSRC}/src/unix/Makefile.in
-	@${REINPLACE_CMD} -e "s|-lpthread|${PTHREAD_LIBS}|g" \
-		${WRKSRC}/configure \
-		${WRKSRC}/src/scripts/javareconf.in
 	@${REINPLACE_CMD} -e "s|/usr/local|${LOCALBASE}|g" \
 		${WRKSRC}/configure \
 		${WRKSRC}/src/library/profile/Rprofile.unix \
@@ -349,7 +349,7 @@ do-build:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/R/lib
-	@${INSTALL_LIB} ${WRKSRC}/src/main/libR.a ${STAGEDIR}${PREFIX}/lib/R/lib
+	@${INSTALL_DATA} ${WRKSRC}/src/main/libR.a ${STAGEDIR}${PREFIX}/lib/R/lib
 
 .else # LIBR_SLAVEPORT
 

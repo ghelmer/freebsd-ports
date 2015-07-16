@@ -16,7 +16,6 @@
     SUBDIR += bluegps
     SUBDIR += bluez-firmware
     SUBDIR += bpl+
-    SUBDIR += callsign
     SUBDIR += cdr_read
     SUBDIR += chirp
     SUBDIR += chu
@@ -25,6 +24,7 @@
     SUBDIR += congruity
     SUBDIR += conserver
     SUBDIR += conserver-com
+    SUBDIR += cqrlog
     SUBDIR += cutecom
     SUBDIR += cwdaemon
     SUBDIR += dabstick-radio
@@ -32,6 +32,8 @@
     SUBDIR += deforaos-phone
     SUBDIR += dfu-programmer
     SUBDIR += dfu-util
+    SUBDIR += dump1090
+    SUBDIR += dump1090_mr
     SUBDIR += ebook2cw
     SUBDIR += ebook2cwgui
     SUBDIR += echolinux
@@ -45,7 +47,6 @@
     SUBDIR += flrig
     SUBDIR += flwrap
     SUBDIR += gammu
-    SUBDIR += gammu-devel
     SUBDIR += ge-x2212
     SUBDIR += geoid
     SUBDIR += gkermit
@@ -75,14 +76,18 @@
     SUBDIR += jsdr
     SUBDIR += kb
     SUBDIR += kermit
+    SUBDIR += klog
     SUBDIR += kremotecontrol
     SUBDIR += libconcord
     SUBDIR += libfec
     SUBDIR += libimobiledevice
     SUBDIR += libirman
     SUBDIR += libmodbus
+    SUBDIR += librs232
     SUBDIR += libticables2
     SUBDIR += libticalcs2
+    SUBDIR += libusbmuxd
+    SUBDIR += linpsk
     SUBDIR += linrad
     SUBDIR += lirc
     SUBDIR += locator
@@ -99,6 +104,7 @@
     SUBDIR += o2sms
     SUBDIR += obexapp
     SUBDIR += openobex
+    SUBDIR += owfs
     SUBDIR += p5-Cisco-UCS
     SUBDIR += p5-Device-Gsm
     SUBDIR += p5-Device-Modem
@@ -131,6 +137,9 @@
     SUBDIR += qpage
     SUBDIR += qrq
     SUBDIR += qsstv
+    SUBDIR += qt5-serialport
+    SUBDIR += qtel
+    SUBDIR += quisk
     SUBDIR += remserial
     SUBDIR += rtl-sdr
     SUBDIR += rubygem-callsign
@@ -144,12 +153,12 @@
     SUBDIR += smstools3
     SUBDIR += soundmodem
     SUBDIR += spandsp
-    SUBDIR += spandsp-devel
     SUBDIR += splat
     SUBDIR += sredird
     SUBDIR += svxlink
     SUBDIR += syncterm
     SUBDIR += tcpser
+    SUBDIR += telldus-core
     SUBDIR += thebridge
     SUBDIR += tilp2
     SUBDIR += tits
@@ -171,6 +180,7 @@
     SUBDIR += wwl
     SUBDIR += wy60
     SUBDIR += xastir
+    SUBDIR += xcwcp
     SUBDIR += xdx
     SUBDIR += xlog
     SUBDIR += xmorse

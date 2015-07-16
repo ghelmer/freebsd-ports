@@ -3,28 +3,25 @@
 
 PORTNAME=	emesene
 PORTVERSION=	1.6.3
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net-im python
 #MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}
-MASTER_SITES=	${MASTER_SITE_LOCAL:S,$,acm/${PORTNAME}/,} \
-		${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	LOCAL/acm/${PORTNAME} \
+		GOOGLE_CODE
 
-MAINTAINER=	acm@FreeBSD.org
-COMMENT=	A MSN Messenger client written in python
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	MSN Messenger client written in python
 
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/dbus/__init__.py:${PORTSDIR}/devel/py-dbus \
 		${PYTHON_SITELIBDIR}/gtk-2.0/pynotify/__init__.py:${PORTSDIR}/devel/py-notify
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 PROJECTHOST=	bsdistfiles
-USE_PYTHON=	yes
-USES=		gettext
-USE_GNOME=	pygtk2 desktopfileutils
+USES=		gettext python
+USE_GNOME=	pygtk2
 USE_GSTREAMER=	python
 INSTALLS_ICONS=	yes
 REINPLACE_ARGS=	-i ""
-
-MAN1=		emesene.1
 
 DESKTOP_ENTRIES="${PORTNAME}" \
 		"${COMMENT}" \
@@ -33,7 +30,6 @@ DESKTOP_ENTRIES="${PORTNAME}" \
 		"Network;InstantMessaging;GTK;" \
 		"false"
 
-NO_STAGE=	yes
 post-extract:
 	@cd ${WRKSRC} && \
 		${RM} -fr GPL LGPL PSF README pygif pyisf docs && \
@@ -56,26 +52,26 @@ do-build:
 
 pre-install:
 	@${RM} -fr ${WRKSRC}/build ${WRKSRC}/libmimic
-.	for DIRE in ast dv fil fo gv ku la nb_NO nds oc zh_HK
-		@${MKDIR} ${PREFIX}/share/locale/${DIRE}/LC_MESSAGES
-.	endfor
+.for DIRE in ast dv fil fo gv ku la nb_NO nds oc zh_HK
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/locale/${DIRE}/LC_MESSAGES
+.endfor
 
 do-install:
-	@${MKDIR} ${DATADIR}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
 
 	cd ${WRKDIR}/po && \
-		${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${PREFIX}/share/locale/{}" \;
+		${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${PREFIX}/share/locale/{}" \;
 	cd ${WRKSRC} && \
-		${FIND} * -type d -exec ${MKDIR} "${DATADIR}/{}" \; && \
-			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${DATADIR}/{}" \;
+		${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${DATADIR}/{}" \; && \
+			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${DATADIR}/{}" \;
 
-	${INSTALL_SCRIPT} ${WRKDIR}/run.sh ${PREFIX}/bin/${PORTNAME}
-	${INSTALL_MAN} ${WRKDIR}/misc/${MAN1} ${PREFIX}/man/man1
-	${INSTALL_DATA} ${WRKDIR}/misc/emesene.svg ${PREFIX}/share/icons/hicolor/scalable/apps
+	${STRIP_CMD} ${STAGEDIR}${DATADIR}/libmimic.so
+	${INSTALL_SCRIPT} ${WRKDIR}/run.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_MAN} ${WRKDIR}/misc/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
+	${INSTALL_DATA} ${WRKDIR}/misc/emesene.svg ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
 	${INSTALL_DATA} ${WRKDIR}/misc/emesene.png ${WRKDIR}/misc/emesene-big.png \
-		${PREFIX}/share/pixmaps
-
-post-install:
-	-@update-desktop-database
+		${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

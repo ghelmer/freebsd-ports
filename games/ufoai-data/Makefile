@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	data
-PORTVERSION=	2.4
+PORTVERSION=	2.5
 CATEGORIES=	games
 MASTER_SITES=	SF/ufoai/UFO_AI%202.x/${PORTVERSION}
 PKGNAMEPREFIX=	ufoai-
@@ -10,7 +10,7 @@ DISTNAME=	${PKGNAMEPREFIX}${PORTVERSION}-${PORTNAME}
 EXTRACT_SUFX=	.tar
 DIST_SUBDIR=	${PKGNAMEPREFIX:S/-//}
 
-MAINTAINER=	acm@FreeBSD.org
+MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	UFO alien invasion data files
 
 # See http://ufoai.org/wiki/License
@@ -36,10 +36,7 @@ post-extract:
 pre-install:
 	@${RM} -f ${PLIST}
 	@cd ${WRKDIR}/base && \
-		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/base/|' >> ${PLIST} && \
-			${FIND} * -type d | ${SORT} -r | ${SED} -e 's|^|@dirrm %%DATADIR%%/base/|' >> ${PLIST}
-	@${ECHO_CMD} "@dirrmtry %%DATADIR%%/base" >> ${PLIST}
-	@${ECHO_CMD} "@dirrmtry %%DATADIR%%" >> ${PLIST}
+		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/base/|' >> ${PLIST}
 
 do-install:
 	cd ${WRKDIR}/base && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${DATADIR}/base

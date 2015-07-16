@@ -4,8 +4,8 @@
 PORTNAME=	tDOM
 PORTVERSION=	0.8.3
 CATEGORIES=	www
-MASTER_SITES=	https://cloud.github.com/downloads/tDOM/tdom/
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	https://cloud.github.com/downloads/tDOM/tdom/ \
+		http://mirrors.rit.edu/zi/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	High performance XML data processing with Tcl (ARGS for OpenACS)
@@ -15,15 +15,13 @@ TDOMBASE=	${PREFIX}/lib/tdom${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 
-USES=		gmake tcl
+USES=		gmake tcl tar:tgz
 
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	../configure
 
 pre-configure:
 	${RM} -f ${WRKSRC}/../generic/domalloc.?
-
-USE_LDCONFIG=	${TDOMBASE}
 
 PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
@@ -43,6 +41,8 @@ CONFIGURE_ARGS+=--enable-threads --disable-tdomalloc \
 		--prefix=${PREFIX} --exec-prefix=${PREFIX}
 
 post-install:
+	chmod 755 ${STAGEDIR}${TDOMBASE}
+	chmod 644 ${STAGEDIR}${TDOMBASE}/*
 .if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/html
 . for FILE in ${DOCS}

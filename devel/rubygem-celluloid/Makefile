@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	celluloid
-PORTVERSION=	0.15.2
+PORTVERSION=	0.16.0
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -11,8 +11,9 @@ COMMENT=	Build concurrent programs out of concurrent objects
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rubygem-timers>=1.1.0:${PORTSDIR}/devel/rubygem-timers
+RUN_DEPENDS=	rubygem-timers>=4.0.0:${PORTSDIR}/devel/rubygem-timers
 
+NO_ARCH=	yes
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes

@@ -14,14 +14,14 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generative software that evolves images/textures/patterns
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		qmake
+USES=		python qmake
 USE_QT4=	corelib gui xml moc_build
-USE_PYTHON=	yes
 QMAKE_ARGS+=	VERSION_NUMBER="${PORTVERSION}"
 QMAKE_SOURCE_PATH=	${WRKSRC}/main.pro
 MAKE_JOBS_UNSAFE=	yes
@@ -36,17 +36,9 @@ DESKTOP_ENTRIES="Evolvotron" "Interactive image generator" "${PORTNAME}" \
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
-.include <bsd.port.options.mk>
-
-.if ${CXX:T:M*clang*} || ${OSVERSION} >= 1000024
 .for i in libevolvotron libfunction
-CXXFLAGS+=	-include ${WRKSRC}/${i}/${i}_precompiled.h \
-		-I${WRKSRC}/${i}
+CXXFLAGS+=	-include ${WRKSRC}/${i}/${i}_precompiled.h
 .endfor
-.else
-QMAKE_ARGS+=	CONFIG+=precompile_header
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -78,4 +70,4 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

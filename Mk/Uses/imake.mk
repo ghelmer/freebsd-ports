@@ -6,24 +6,16 @@
 # Usage:		USES=imake
 # Valid ARGS:		env: do not define any target
 #			notall: do not pass -a to xmkmf
+#			noman: do not add install-man to
+#			INSTALL_TARGET
 #
 # MAINTAINER: x11@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_IMAKE_MK)
 _INCLUDE_USES_IMAKE_MK=	yes
 
-.if defined(imake_ARGS)
-.if ${imake_ARGS} == env
-IMAKE_ENV_ONLY=	yes
-.elif ${imake_ARGS} == notall
-IMAKE_NOTALL=	yes
-.else
-IGNORE=		USES=imake ${imake_ARGS} is not a valid argument
-.endif
-.endif
-
-.if !defined(NO_INSTALL_MANPAGES)
-MANCOMPRESSED?=	yes
+.if ${imake_ARGS:Nnotall:Nenv:Nnoman}
+IGNORE=		USES=imake:${imake_ARGS:S/ /,/g} is not a valid argument
 .endif
 
 BUILD_DEPENDS+=		imake:${PORTSDIR}/devel/imake
@@ -39,17 +31,17 @@ BUILD_DEPENDS+=		tradcpp:${PORTSDIR}/devel/tradcpp
 MAKE_ENV+=		IMAKECPP=${IMAKECPP} IMAKECPPFLAGS="${IMAKECPPFLAGS}"
 CONFIGURE_ENV+=		IMAKECPP=${IMAKECPP} IMAKECPPFLAGS="${IMAKECPPFLAGS}"
 
-.if !defined(IMAKE_NOTALL)
+.if ! ${imake_ARGS:Mnotall}
 XMKMF_ARGS+=		-a
 .endif
 
-.if !defined(IMAKE_ENV_ONLY)
+.if ! ${imake_ARGS:Menv}
 .if !target(do-configure)
 do-configure:
 	@(cd ${CONFIGURE_WRKSRC} && ${SETENV} ${MAKE_ENV} ${XMKMF} ${XMKMF_ARGS})
 .endif
 
-.if !defined(NO_INSTALL_MANPAGES)
+.if ! ${imake_ARGS:Mnoman}
 LATE_INSTALL_ARGS=	install.man
 .endif
 

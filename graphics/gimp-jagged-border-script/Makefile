@@ -3,6 +3,7 @@
 
 PORTNAME=	jagged-border
 PORTVERSION=	0.2009.11.12
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://registry.gimp.org/files/
 PKGNAMEPREFIX=	gimp-
@@ -25,10 +26,6 @@ NO_WRKSUBDIR=	yes
 GIMP_SCRIPTS_DIR?=	share/gimp/scripts
 
 PLIST_FILES=	${GIMP_SCRIPTS_DIR}/${DISTNAME}
-
-# installed dirs
-PLIST_DIRSTRY=	${GIMP_SCRIPTS_DIR} \
-		share/gimp
 
 post-extract:
 	@${CP} ${DISTDIR}/${DISTNAME} ${WRKSRC}

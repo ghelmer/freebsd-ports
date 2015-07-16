@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	Math-Derivative
-PORTVERSION=	0.01
+PORTVERSION=	0.03
 CATEGORIES=	math perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	5u623l20@gmail.com
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Numeric 1st and 2nd order differentiation
 
 LICENSE=	ART10 GPLv1

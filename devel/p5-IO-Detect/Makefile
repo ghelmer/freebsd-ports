@@ -3,6 +3,7 @@
 
 PORTNAME=	IO-Detect
 PORTVERSION=	0.005
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -24,11 +25,4 @@ CONFLICTS_INSTALL=	p5-Scalar-Does-0.[1-9]*
 USE_PERL5=	configure
 USES=		perl5
 
-.include <bsd.port.pre.mk>
-
-.if ${PERL_LEVEL} < 501601
-BUILD_DEPENDS+=	p5-Scalar-List-Utils>=1.24:${PORTSDIR}/lang/p5-Scalar-List-Utils
-RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.24:${PORTSDIR}/lang/p5-Scalar-List-Utils
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	duckmaze
 DISTVERSION=	0.3r34
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games python
 MASTER_SITES=	SF/nemysisfreebsdp/games/${PORTNAME}/
 DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
@@ -11,18 +11,18 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 DIST_SUBDIR=	python
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Game about a duck that is in a maze
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/doc/COPYING.txt
 
 RUN_DEPENDS=	${PYGAME}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/trunk
 
-USES=		shebangfix
+USES=		python shebangfix
 SHEBANG_FILES=	*.py mopelib/mopelib.py
-USE_PYTHON=	yes
 
 PORTDOCS=	index.html style.css
 OPTIONS_DEFINE= DOCS

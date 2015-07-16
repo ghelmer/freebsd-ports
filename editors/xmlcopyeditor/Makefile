@@ -3,7 +3,7 @@
 
 PORTNAME=	xmlcopyeditor
 PORTVERSION=	1.2.0.11
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	editors
 MASTER_SITES=	SF/xml-copy-editor/${PORTNAME}-linux/${PORTVERSION}
 
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libxerces-c.so.3:${PORTSDIR}/textproc/xerces-c3 \
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 CPPFLAGS+=	-I${LOCALBASE}/include \
-		-I${LOCALBASE}/include/libxml2 ${PTHREAD_CFLAGS}
-LDFLAGS+=	-L${LOCALBASE}/lib ${PTHREAD_LIBS} ${ICONV_LIB}
+		-I${LOCALBASE}/include/libxml2
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib ${ICONV_LIB}
 
 .include <bsd.port.mk>

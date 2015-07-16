@@ -2,17 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	XML_Util
-PORTVERSION=	1.2.1
+PORTVERSION=	1.3.0
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR XML utility class
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS:=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+LICENSE=	BSD2CLAUSE
 
-PEAR_AUTOINSTALL=	yes
+USES=		pear
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

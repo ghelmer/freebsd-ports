@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	ragel
-PORTVERSION=	6.8
-PORTREVISION=	1
+PORTVERSION=	6.9
 CATEGORIES=	devel
-MASTER_SITES=	http://www.complang.org/ragel/
+MASTER_SITES=	http://www.colm.net/wp-content/uploads/2014/10/ \
+		http://www.complang.org/ragel/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Compile regular languages into executable C/C++ code
@@ -18,17 +18,8 @@ GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 DOCS_CONFIGURE_ENABLE=	manual
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-USE_TEX=	latex:build
-BUILD_DEPENDS+=	fig2dev:${PORTSDIR}/print/transfig
-.endif
-
-post-patch:
-	@${REINPLACE_CMD} 's/setiosflags/std::&/' \
-		${WRKSRC}/ragel/javacodegen.cpp
+DOCS_USE=		TEX=latex:build
+DOCS_BUILD_DEPENDS=	fig2dev:${PORTSDIR}/print/transfig
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ragel/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

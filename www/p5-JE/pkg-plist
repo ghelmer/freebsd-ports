@@ -31,7 +31,6 @@
 %%SITE_PERL%%/JE/escape.pl
 %%SITE_PERL%%/JE/toperl.pl
 %%SITE_PERL%%/JavaScript/Engine.pm
-%%SITE_PERL%%/%%PERL_ARCH%%/auto/JE/.packlist
 %%PERL5_MAN3%%/JE::Object.3.gz
 %%PERL5_MAN3%%/JE::_FieldHash.3.gz
 %%PERL5_MAN3%%/JE::String.3.gz
@@ -62,9 +61,3 @@
 %%PERL5_MAN3%%/JE::Object::Function.3.gz
 %%PERL5_MAN3%%/JE.3.gz
 %%PERL5_MAN3%%/JE::Destroyer.3.gz
-@dirrmtry %%SITE_PERL%%/JE/Object/Error
-@dirrmtry %%SITE_PERL%%/JE/Object/Number
-@dirrmtry %%SITE_PERL%%/JE/Object
-@dirrmtry %%SITE_PERL%%/JE
-@dirrmtry %%SITE_PERL%%/JavaScript
-@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/JE

@@ -3,6 +3,7 @@
 
 PORTNAME=		Ice
 PORTVERSION=		3.5.1
+PORTREVISION=		7
 CATEGORIES=		devel
 MASTER_SITES=		http://download.zeroc.com/Ice/3.5/
 
@@ -11,8 +12,17 @@ COMMENT=		Modern alternative to object middleware such as CORBA/COM/DCOM/COM+
 
 LICENSE=		GPLv2
 
+SLAVE_PORT?=		no
+
+.if ${SLAVE_PORT} == "no"
 LIB_DEPENDS=		libexpat.so:${PORTSDIR}/textproc/expat2 \
 			libmcpp.so:${PORTSDIR}/devel/mcpp
+USE_OPENSSL=		yes
+.else
+LIB_VRS=		${PORTVERSION:R:S|.||g}
+LIB_DEPENDS+=		libIce.so.${LIB_VRS}:${PORTSDIR}/devel/ice
+PLIST_SUB+=		LIB_VERSION="${PORTVERSION}" LIB_VRS="${LIB_VRS}"
+.endif
 
 OPTIONS_DEFINE?=	DEBUG DEMOS DOCS TESTS
 OPTIONS_DEFAULT?=	DEMOS TESTS
@@ -21,12 +31,14 @@ DEMOS_DESC?=		Build demos
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MTESTS}
-USE_PYTHON_BUILD=	yes
+USES+=			iconv gmake
+
+.if ${PORT_OPTIONS:MTESTS} && ${SLAVE_PORT} == "no"
+USES+=			python:build
 .endif
 
-USES=			iconv gmake
-USE_BDB=		5
+USE_BDB=		yes
+WANT_BDB_VER=		5
 INVALID_BDB_VER=	40 41 42 43 44 46 47 48 6
 USE_LDCONFIG=		yes
 BUILD_WRKSRC?=		${WRKSRC}/cpp
@@ -65,7 +77,7 @@ MAKE_ENV+=		NOICEDOCS=yes
 
 .include <bsd.port.pre.mk>
 
-.if defined(PYTHON_REL) && ${PYTHON_REL} >= 320
+.if defined(PYTHON_REL) && ${PYTHON_REL} >= 3200
 PLIST_SUB+=	PYTHON32=""
 PLIST_SUB+=	PYTHONPRE32="@comment "
 .else
@@ -75,7 +87,7 @@ PLIST_SUB+=	PYTHONPRE32=""
 
 PLIST_SUB+=	PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
-.if ${PREFIX} != ${LOCALBASE} && !defined(NO_STAGE)
+.if ${PREFIX} != ${LOCALBASE}
 PYSITEDIR=	${PREFIX}${PYTHON_SITELIBDIR:S|^${LOCALBASE}||}
 .else
 PYSITEDIR=	${PYTHON_SITELIBDIR}
@@ -123,10 +135,10 @@ post-patch:
 
 .if ${PORT_OPTIONS:MTESTS}
 TEST_CMD=		@cd ${BUILD_WRKSRC} && ${PYTHON_CMD} ./allTests.py
-post-build:
+check regression-test test: build
 	${TEST_CMD}
-regression-test test: build
-	${TEST_CMD}
+
+pre-install: regression-test
 .endif
 
 .include <bsd.port.post.mk>

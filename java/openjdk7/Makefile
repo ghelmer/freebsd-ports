@@ -12,7 +12,7 @@ MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}u${JDK_MIN
 		http://icedtea.classpath.org/download/drops/:jaxws \
 		https://java.net/downloads/jax-ws/JDK7/:jaf \
 		http://icedtea.classpath.org/download/drops/:jaf \
-		${MASTER_SITE_APACHE:S,%SUBDIR%/,ant/binaries/:ant,}
+		APACHE/ant/binaries/:ant
 DISTFILES=	${JDK_SRC_DISTFILE}${EXTRACT_SUFX} \
 		${ANT_DISTFILE}${EXTRACT_SUFX}:ant
 EXTRACT_ONLY=	${JDK_SRC_DISTFILE}${EXTRACT_SUFX} \
@@ -35,8 +35,8 @@ DEBUG_DESC=		Enable extra debugging info
 POLICY_DESC=		Install the Unlimited Strength Policy Files
 TZUPDATE_DESC=		Update the time zone data
 
-PORT_MINOR_VERSION=	76
-PORT_BUILD_NUMBER=	13
+PORT_MINOR_VERSION=	80
+PORT_BUILD_NUMBER=	15
 JDK_MAJOR_VERSION=	7
 JDK_MINOR_VERSION=	40
 JDK_BUILD_NUMBER=	43
@@ -92,7 +92,7 @@ MAKE_ENV+=	LANG="C" \
 		SKIP_DEBUG_BUILD="true" \
 		ZIP_DEBUGINFO_FILES=0 \
 		ENABLE_FULL_DEBUG_SYMBOLS=0 \
-		PTHREAD_LIBS="${PTHREAD_LIBS}" \
+		PTHREAD_LIBS="-lpthread" \
 		MILESTONE="fcs" \
 		JDK_MICRO_VERSION="0_${PORT_MINOR_VERSION}" \
 		BUILD_NUMBER="b${PORT_BUILD_NUMBER}"
@@ -162,8 +162,8 @@ do-install:
 	@${ECHO} "@unexec ${LOCALBASE}/bin/unregistervm ${INSTALLDIR}/bin/java" >> ${TMPPLIST}
 	@${FIND} -s ${STAGEDIR}${INSTALLDIR} -not -type d | ${SORT} | \
 		${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
-	@${FIND} ${STAGEDIR}${INSTALLDIR} -type d | ${SORT} -r | \
-		${SED} -e 's,^${STAGEDIR}${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
+	@${FIND} ${STAGEDIR}${INSTALLDIR} -type d -empty | ${SORT} -r | \
+		${SED} -e 's,^${STAGEDIR}${PREFIX}/,@dir ,' >> ${TMPPLIST}
 	@${ECHO} "@exec ${LOCALBASE}/bin/registervm '${INSTALLDIR}/bin/java # OpenJDK${JDK_MAJOR_VERSION}'" >> ${TMPPLIST}
 
 .include <bsd.port.post.mk>

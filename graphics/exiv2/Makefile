@@ -3,7 +3,7 @@
 
 PORTNAME=	exiv2
 PORTVERSION=	0.24
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.exiv2.org/
@@ -12,12 +12,14 @@ MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Exif, IPTC, and XMP metadata manipulation library and tools
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
 GNU_CONFIGURE=	yes
-USES=		gettext gmake iconv libtool:keepla
+USES=		cpe gettext gmake iconv libtool
 USE_LDCONFIG=	yes
+MAKE_JOBS_UNSAFE=yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

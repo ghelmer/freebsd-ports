@@ -3,6 +3,7 @@
 
 PORTNAME=	KeePassX
 DISTVERSION=	2.0
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	https://www.keepassx.org/dev/attachments/download/69/
 PKGNAMESUFFIX=	-alpha
@@ -11,7 +12,7 @@ DISTNAME=	${PORTNAME:tl}-${DISTVERSION}${PKGNAMESUFFIX}6
 MAINTAINER=	eric@camachat.org
 COMMENT=	Cross Platform Password Manager
 
-LIB_DEPENDS=	gcrypt:${PORTSDIR}/security/libgcrypt
+LIB_DEPENDS=	libgcrypt.so:${PORTSDIR}/security/libgcrypt
 
 CONFLICTS_INSTALL=	keepassx-0.*
 

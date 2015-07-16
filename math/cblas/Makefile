@@ -3,7 +3,7 @@
 
 PORTNAME=	cblas
 PORTVERSION=	1.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	math
 MASTER_SITES=	NL/blas/blast-forum/ LOCAL/bf
 DISTFILES=	cblas.tgz
@@ -11,13 +11,16 @@ DISTFILES=	cblas.tgz
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Reference implementation of the C interface to the legacy Fortran BLAS
 
-LICENSE=	BSD
+LICENSE=	BLAS
+LICENSE_NAME=	BLAS License
+LICENSE_TEXT=	http://www.netlib.org/blas/#_licensing
+LICENSE_PERMS=	auto-accept dist-mirror dist-sell pkg-mirror pkg-sell
 
 USES=		fortran
 
 CONFLICTS_INSTALL=	atlas-[0-9]* atlas-devel-[0-9]*
 
-OPTIONS_DEFINE=	PROFILE SHARED STATIC
+OPTIONS_DEFINE=	PROFILE SHARED STATIC DOCS
 OPTIONS_DEFAULT=	SHARED STATIC
 PROFILE_DESC=	Build profiling libraries
 SHARED_DESC=	Build shared libraries and PIC archives
@@ -28,12 +31,11 @@ PLIST_SUB=	SVERSION="${SVERSION}"
 
 SVERSION=	2
 
-WRKSRC =		${WRKDIR}/CBLAS
-WRKSRC_PROFILE =	${WRKSRC}_PROFILE
+WRKSRC=			${WRKDIR}/CBLAS
+WRKSRC_PROFILE=		${WRKSRC}_PROFILE
 WRKSRC_SHARED=		${WRKSRC}_SHARED
 WRKSRC_STATIC=		${WRKSRC}
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if make(makesum) || ${PORT_OPTIONS:MDOCS}
@@ -119,17 +121,17 @@ test-${o:tl}: build-${o:tl}
 .endif
 
 do-install:
-	@${INSTALL_DATA} ${WRKSRC}/include/*.h ${PREFIX}/include
+	@${INSTALL_DATA} ${WRKSRC}/include/*.h ${STAGEDIR}${PREFIX}/include
 .if ${PORT_OPTIONS:MSTATIC}
-	@${INSTALL_DATA} ${WRKSRC}/lib/libcblas.a ${PREFIX}/lib
+	@${INSTALL_DATA} ${WRKSRC}/lib/libcblas.a ${STAGEDIR}${PREFIX}/lib
 .endif
 .if ${PORT_OPTIONS:MSHARED}
-	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib/libcblas.a ${PREFIX}/lib/libcblas_pic.a
-	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib/libcblas.so.${SVERSION} ${PREFIX}/lib
-	@${LN} -sf libcblas.so.${SVERSION} ${PREFIX}/lib/libcblas.so
+	@${INSTALL_DATA} ${WRKSRC_SHARED}/lib/libcblas.a ${STAGEDIR}${PREFIX}/lib/libcblas_pic.a
+	@${INSTALL_LIB} ${WRKSRC_SHARED}/lib/libcblas.so.${SVERSION} ${STAGEDIR}${PREFIX}/lib
+	@${LN} -sf libcblas.so.${SVERSION} ${STAGEDIR}${PREFIX}/lib/libcblas.so
 .endif
 .if ${PORT_OPTIONS:MPROFILE}
-	@${INSTALL_DATA} ${WRKSRC_PROFILE}/lib/libcblas.a ${PREFIX}/lib/libcblas_p.a
+	@${INSTALL_DATA} ${WRKSRC_PROFILE}/lib/libcblas.a ${STAGEDIR}${PREFIX}/lib/libcblas_p.a
 .endif
 
 .include <bsd.port.mk>

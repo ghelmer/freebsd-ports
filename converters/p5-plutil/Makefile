@@ -4,15 +4,14 @@
 PORTNAME=	plutil
 PORTVERSION=	1.7
 CATEGORIES=	converters perl5
-MASTER_SITES=	CRITICAL
+MASTER_SITES=	LOCAL/ehaupt
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Perl implementation of Mac OS X plutil
 
-USES=		shebangfix perl5
+USES=		shebangfix perl5 tar:xz
 USE_PERL5=	run
-USE_XZ=		yes
 NO_BUILD=	yes
 
 SHEBANG_FILES=	${PORTNAME}.pl

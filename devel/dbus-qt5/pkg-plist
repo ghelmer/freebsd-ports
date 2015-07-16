@@ -1,3 +1,4 @@
+%%QT_INCDIR%%/QtDBus/%%FULLVER%%/QtDBus/private/dbus_minimal_p.h
 %%QT_INCDIR%%/QtDBus/%%FULLVER%%/QtDBus/private/qdbus_symbols_p.h
 %%QT_INCDIR%%/QtDBus/%%FULLVER%%/QtDBus/private/qdbusabstractadaptor_p.h
 %%QT_INCDIR%%/QtDBus/%%FULLVER%%/QtDBus/private/qdbusabstractinterface_p.h
@@ -65,7 +66,6 @@
 %%QT_LIBDIR%%/cmake/Qt5DBus/Qt5DBusConfigExtras.cmake
 %%QT_LIBDIR%%/cmake/Qt5DBus/Qt5DBusConfigVersion.cmake
 %%QT_LIBDIR%%/cmake/Qt5DBus/Qt5DBusMacros.cmake
-%%QT_LIBDIR%%/libQt5DBus.la
 %%QT_LIBDIR%%/libQt5DBus.prl
 %%QT_LIBDIR%%/libQt5DBus.so
 %%QT_LIBDIR%%/libQt5DBus.so.5
@@ -77,14 +77,3 @@
 %%QT_MKSPECDIR%%/modules/qt_lib_dbus.pri
 %%QT_MKSPECDIR%%/modules/qt_lib_dbus_private.pri
 libdata/pkgconfig/Qt5DBus.pc
-@dirrmtry %%QT_MKSPECDIR%%/modules
-@dirrmtry %%QT_MKSPECDIR%%
-@dirrmtry %%QT_BINDIR%%
-@dirrmtry %%QT_ARCHDIR%%
-@dirrm %%QT_LIBDIR%%/cmake/Qt5DBus
-@dirrmtry %%QT_LIBDIR%%/cmake
-@dirrm %%QT_INCDIR%%/QtDBus/%%FULLVER%%/QtDBus/private
-@dirrm %%QT_INCDIR%%/QtDBus/%%FULLVER%%/QtDBus
-@dirrm %%QT_INCDIR%%/QtDBus/%%FULLVER%%
-@dirrm %%QT_INCDIR%%/QtDBus
-@dirrmtry %%QT_INCDIR%%

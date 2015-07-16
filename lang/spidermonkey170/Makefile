@@ -3,9 +3,9 @@
 
 PORTNAME=		spidermonkey170
 PORTVERSION=		17.0.0
+PORTREVISION=		1
 CATEGORIES=		lang
-MASTER_SITES=		${MASTER_SITE_MOZILLA}
-MASTER_SITE_SUBDIR=	js
+MASTER_SITES=		MOZILLA/js
 DISTNAME=		mozjs${PORTVERSION}
 
 MAINTAINER=		kwm@FreeBSD.org
@@ -17,23 +17,26 @@ LIB_DEPENDS=		libnspr4.so:${PORTSDIR}/devel/nspr
 CONFLICTS=		njs-[0-9]*
 
 GNU_CONFIGURE=		yes
-USES=			gmake pathfix perl5
+USES=			gmake pathfix perl5 python:2,build
 USE_PERL5=		build
 USE_LDCONFIG=		yes
-USE_PYTHON_BUILD=	2
 
 WRKSRC=			${WRKDIR}/mozjs${PORTVERSION}/js/src
 
 CONFIGURE_ARGS=		--with-pthreads \
 			--with-system-nspr
 
-OPTIONS_DEFINE=		DEBUG GCZEAL JEMALLOC METHODJIT OPTIMIZE READLINE \
-			THREADSAFE TRACEJIT UTF8 \
+OPTIONS_DEFINE=		DEBUG DTRACE GCZEAL JEMALLOC METHODJIT OPTIMIZE READLINE \
+			THREADSAFE TRACEJIT UTF8
 OPTIONS_DEFAULT=	METHODJIT OPTIMIZE READLINE THREADSAFE TRACEJIT
+OPTIONS_SUB=		yes
 
 DEBUG_DESC=		Enable Debug build
 DEBUG_CONFIGURE_ENABLE=	debug debug-symbols
 DEBUG_CONFIGURE_DISABLE=debug
+DTRACE_DESC=		Build with DTrace probes # move to bsd.options.desc.mk
+DTRACE_CONFIGURE_ENABLE=dtrace profiling
+DTRACE_LIBS=		-lelf
 GCZEAL_DESC=		Enable Zealous garbage collecting
 GCZEAL_CONFIGURE_ENABLE=gczeal
 JEMALLOC_DESC=		Use jemalloc as memory allocator
@@ -44,6 +47,7 @@ OPTIMIZE_DESC=		Enable compiler optimizations
 OPTIMIZE_CONFIGURE_ENABLE=	optimize
 READLINE_DESC=		Link js shell to system readline library
 READLINE_CONFIGURE_ENABLE=	readline
+READLINE_USES=		readline
 THREADSAFE_DESC=	Enable multiple thread support
 THREADSAFE_CONFIGURE_ENABLE=	threadsafe
 TRACEJIT_DESC=		Enable tracing JIT support
@@ -55,6 +59,13 @@ UTF8_CFLAGS=		-DJS_C_STRINGS_ARE_UTF8
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
+.endif
+
+.if ${PORT_OPTIONS:MDTRACE}
+. if ${OSVERSION} < 1000510
+BROKEN=			dtrace -G crashes with C++ object files
+. endif
+STRIP_CMD=	${TRUE}
 .endif
 
 regression-test: build

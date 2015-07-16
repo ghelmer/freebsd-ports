@@ -3,7 +3,7 @@
 
 PORTNAME=	rpy
 PORTVERSION=	1.0.3
-PORTREVISION=	32
+PORTREVISION=	34
 CATEGORIES=	math
 MASTER_SITES=	SF
 
@@ -13,14 +13,13 @@ COMMENT=	Python interface to the R Programming Language
 LICENSE=	GPLv2 LGPL21 MPL
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/numpy:${PORTSDIR}/math/py-numpy \
+BUILD_DEPENDS=	${PYNUMPY} \
 		R:${PORTSDIR}/math/R
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/numpy:${PORTSDIR}/math/py-numpy \
+RUN_DEPENDS=	${PYNUMPY} \
 		R:${PORTSDIR}/math/R
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 LDFLAGS+=	-L${LOCALBASE}/lib/R/modules -L${LOCALBASE}/lib/R/lib
 
 post-patch:
@@ -31,5 +30,8 @@ pre-configure:
 	@(if [ ! -e ${LOCALBASE}/lib/R/lib/libR.so ] ; then \
 	${ECHO_MSG} "==> ${PKGNAME} requires math/R to be built WITH_LIBR" ; \
 	exit 1; fi)
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_rpy3002.so
 
 .include <bsd.port.mk>

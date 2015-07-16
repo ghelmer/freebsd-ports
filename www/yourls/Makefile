@@ -1,43 +1,31 @@
 # Created by: Joe Horn <joehorn@gmail.com>
 # $FreeBSD$
 
-PORTNAME=		yourls
-DISTVERSION=		1.5.1
-CATEGORIES=		www
-MASTER_SITES=		${MASTER_SITE_GOOGLE_CODE}
+PORTNAME=	yourls
+PORTVERSION=	1.7
+CATEGORIES=	www
 
-MAINTAINER=		joehorn@gmail.com
-COMMENT=		Your Own URL Shortener
+MAINTAINER=	ports@FreeBSD.org
+COMMENT=	Your Own URL Shortener
 
-LICENSE=		GPLv3
+LICENSE=	ISCL MIT
+LICENSE_COMB=	multi
 
-WRKSRC=			${WRKDIR}/${PORTNAME}
-EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
+USE_GITHUB=	yes
+GH_ACCOUNT=	${PORTNAME:tu}
+GH_PROJECT=	${PORTNAME:tu}
 
-USES=		zip:infozip
-NO_BUILD=		YES
+NO_BUILD=	yes
 
-USE_PHP=		bcmath curl json mysql pcre xml
+USES=		cpe
+USE_PHP=	bcmath curl json mysql pcre xml
 
-SUB_LIST+=		PKGNAME=${PKGNAME}
-SUB_FILES+=		pkg-message
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+SUB_LIST+=	PKGNAME=${PKGNAME}
+SUB_FILES+=	pkg-message
+PLIST_SUB=	WWWOWN=${WWWOWN} \
+		WWWGRP=${WWWGRP}
 
 do-install:
-	@cd ${WRKSRC} && ${COPYTREE_SHARE} . ${WWWDIR}
-	@${CHOWN} -R ${WWWOWN}:${WWWGRP} ${WWWDIR}
-	@${ECHO_CMD} '@exec ${CHOWN} -R ${WWWOWN}:${WWWGRP} \
-		${WWWDIR:S|^${PREFIX}/|%D/|}' >> ${TMPPLIST}
-	@${FIND} ${WWWDIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 644
-	@${ECHO_CMD} '@exec ${FIND} ${WWWDIR} -type f -print0 | \
-		${XARGS} -0 ${CHMOD} 644' >> ${TMPPLIST}
-	@${FIND} ${WWWDIR} -type d -print0 | ${XARGS} -0 ${CHMOD} 755
-	@${ECHO_CMD} '@exec ${FIND} ${WWWDIR} -type d -print0 | \
-		${XARGS} -0 ${CHMOD} 755' >> ${TMPPLIST}
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR} "! -name \.*")
 
-post-install:
-	@${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

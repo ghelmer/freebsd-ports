@@ -2,25 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	json-c
-PORTVERSION=	0.11
+PORTVERSION=	0.12
+PORTREVISION=	2
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/archive/
+MASTER_SITES=	https://s3.amazonaws.com/json-c_releases/releases/
 
-MAINTAINER=	gno@yahoo-inc.com
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	JSON (JavaScript Object Notation) implementation in C
 
-USE_LDCONFIG=	yes
+LICENSE=	MIT
+
+CONFLICTS_INSTALL=	cocaine-core-[0-9]*
+
 GNU_CONFIGURE=	yes
-USES=		gmake pathfix pkgconfig zip
-USE_GITHUB=	yes
-MAKE_JOBS_UNSAFE=	yes
+INSTALL_TARGET=	install-strip
+USE_AUTOTOOLS=	autoheader
+USE_LDCONFIG=	yes
+USES=		cpe gmake libtool pathfix pkgconfig
 
-GH_ACCOUNT=	${PORTNAME}
-GH_PROJECT=	${PORTNAME}
-GH_TAGNAME=	20130402
+CPE_VENDOR=	json-c_project
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${PORTVERSION}
-
-CONFLICTS=	cocaine-core-[0-9]*
+post-patch:
+	@${REINPLACE_CMD} -e 's| -Werror||g' ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

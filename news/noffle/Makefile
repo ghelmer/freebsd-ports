@@ -3,7 +3,7 @@
 
 PORTNAME=	noffle
 PORTVERSION=	1.1.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	news
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20%28devel%29/${PORTVERSION}
 
@@ -25,6 +25,8 @@ PLIST_SUB+=	SPOOL_DIR=${SPOOL_DIR}
 DOCS=		ChangeLog docs/FAQ INSTALL docs/INTERNALS README \
 		docs/testing.txt docs/noffle.lsm
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 	's|/etc/noffle.conf|${PREFIX}/etc/noffle.conf|g' \
@@ -42,6 +44,12 @@ do-install:
 		${STAGEDIR}${PREFIX}/etc/noffle.conf.sample
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${SPOOL_DIR}/data \
+		${STAGEDIR}${SPOOL_DIR}/lock \
+		${STAGEDIR}${SPOOL_DIR}/outgoing \
+		${STAGEDIR}${SPOOL_DIR}/overview \
+		${STAGEDIR}${SPOOL_DIR}/requested
+
 
 post-install:
 	${SED} -e "s:/usr/local:${PREFIX}:g" ${PKGMESSAGE}

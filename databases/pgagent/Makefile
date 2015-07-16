@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pgagent
-PORTVERSION=	3.3.0
+PORTVERSION=	3.4.0
+PORTREVISION=	0
 CATEGORIES=	databases
-MASTER_SITES=	${MASTER_SITE_PGSQL}
-MASTER_SITE_SUBDIR=	pgadmin3/release/pgagent
+MASTER_SITES=	PGSQL/pgadmin3/release/pgagent
 DISTNAME=	pgAgent-${PORTVERSION}-Source
 
 MAINTAINER=	fjoe@FreeBSD.org

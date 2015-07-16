@@ -3,21 +3,20 @@
 
 PORTNAME=	enchant
 PORTVERSION=	1.6.5
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	textproc devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	py${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	A spellchecking library for Python based on the Enchant library
+COMMENT=	Spellchecking library for Python based on the Enchant library
 
-LIB_DEPENDS=	enchant.1:${PORTSDIR}/textproc/enchant
+LIB_DEPENDS=	libenchant.so:${PORTSDIR}/textproc/enchant
 
-USE_PYTHON=		yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-USE_WX=	2.8
+USES=		python
+USE_PYTHON=	distutils autoplist
+USE_WX=		3.0+
 WX_COMPS=	python:run
 
 LDFLAGS+=	-L${LOCALBASE}/lib

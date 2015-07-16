@@ -1,19 +1,18 @@
-# Created by: roam@FreeBSD.org
+# Created by: Peter Pentchev <roam@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	gecode
-PORTVERSION=	4.2.1
-PORTREVISION=	1
+PORTVERSION=	4.4.0
 CATEGORIES=	devel
 MASTER_SITES=	http://www.gecode.org/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic Constraint Development Environment
 
-LICENSE=	MIT
+LICENSE=	BSL MIT
+LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
-		libmpfr.so:${PORTSDIR}/math/mpfr
+LIB_DEPENDS=	libmpfr.so:${PORTSDIR}/math/mpfr
 
 USES=		bison gmake perl5
 USE_PERL5=	build
@@ -36,14 +35,13 @@ CONFIGURE_ARGS=	--disable-static \
 		--with-mpfr-lib=${LOCALBASE}/lib
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=yes
+PLIST_SUB=	SHLIB_VERSION=41
 
-CFLAGS+=	-I${LOCALBASE}/include/boost
+OPTIONS_DEFINE=	GIST
+OPTIONS_SUB=	yes
 
-OPTIONS_DEFINE=		GIST
-OPTIONS_SUB=		yes
-
-GIST_DESC=		Interactive Search Tool (requires Qt)
-GIST_USE=		QT4=corelib,gui,moc_build,qmake_build
+GIST_DESC=	Interactive Search Tool (requires Qt)
+GIST_USE=	QT4=corelib,gui,moc_build,qmake_build
 GIST_CONFIGURE_ON=	--enable-gist --enable-qt
 GIST_CONFIGURE_OFF=	--disable-gist --disable-qt
 
@@ -55,8 +53,7 @@ CFLAGS+=	-D__USE_ISOC99
 
 post-patch:
 	@${REINPLACE_CMD} -e \
-		'/^ARR/s|^|#| ; \
-		 /^PACKAGE_VERSION_NUMBER/s|^|#| ; \
+		'/^PACKAGE_VERSION_NUMBER/s|^|#| ; \
 		 /_vendor/s| == | = | ; \
 		 /host_os/s| == | = | ; \
 		 /gcc_optimize_flag/s|-O3|| ; \
@@ -64,5 +61,6 @@ post-patch:
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/fzn-gecode
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgecode*.so.[0-9]*.[0-9]*
 
 .include <bsd.port.mk>

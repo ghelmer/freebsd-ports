@@ -92,7 +92,7 @@ index ba0554a..811e3df 100644
 + * to be listed here since grub opens pools in read-only mode.
 + */
 +static const char *spa_feature_names[] = {
-+	"org.illumos:lz4_compress",NULL
++	"org.illumos:lz4_compress","com.delphix:hole_birth",NULL
 +};
 +
 +static int NESTED_FUNC_ATTR
@@ -395,7 +395,7 @@ new file mode 100644
 index 0000000..ff85a77
 --- /dev/null
 +++ grub-core/fs/zfs/zfs_lz4.c
-@@ -0,0 +1,317 @@
+@@ -0,0 +1,318 @@
 +/*
 + * LZ4 - Fast LZ compression algorithm
 + * Header File
@@ -430,6 +430,7 @@ index 0000000..ff85a77
 + * - LZ4 source repository : http://code.google.com/p/lz4/
 + */
 +
++#include <sys/endian.h>
 +#include <grub/err.h>
 +#include <grub/mm.h>
 +#include <grub/misc.h>

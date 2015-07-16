@@ -3,14 +3,15 @@
 
 PORTNAME=	glob2
 PORTVERSION=	0.9.4.4
-PORTREVISION=	9
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	SAVANNAH/${PORTNAME}/${PORTVERSION:R}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Globulation 2, free and innovative strategy game
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3 # or later
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis \
 		libspeex.so:${PORTSDIR}/audio/speex \
@@ -25,15 +26,13 @@ USE_SDL=	image net sdl ttf
 USE_GL=		gl glu
 MAKE_ARGS=	CCFLAGS="${CFLAGS}" \
 		LINKFLAGS="${LDFLAGS}" \
-		LIBPATH="${LIBPATH}" \
 		BINDIR="${STAGEDIR}${PREFIX}/bin" \
 		INSTALLDIR="${STAGEDIR}${PREFIX}/share" \
 		DATADIR="${DATADIR}"
 INSTALLS_ICONS=	yes
 
-CFLAGS+=	${PA2_CFLAGS} -I${LOCALBASE}/include -Wno-return-type
-LDFLAGS+=	${PA2_LDFLAGS} -L${LOCALBASE}/lib ${PTHREAD_LIBS}
-LIBPATH=	${LIBPATH2}${LOCALBASE}/lib
+CFLAGS+=	-I${LOCALBASE}/include -Wno-return-type
+LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
 PORTDOCS=	README
 SUB_FILES=	pkg-message
@@ -41,10 +40,7 @@ SUB_FILES=	pkg-message
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPORTAUDIO}
-LIB_DEPENDS+=	libportaudio.so.2:${PORTSDIR}/audio/portaudio2
-PA2_CFLAGS+=	-I${LOCALBASE}/include/portaudio2
-PA2_LDFLAGS+=	-L${LOCALBASE}/lib/portaudio2
-LIBPATH2=	${LOCALBASE}/lib/portaudio2:
+LIB_DEPENDS+=	libportaudio.so:${PORTSDIR}/audio/portaudio
 MAKE_ARGS+=	--portaudio=true
 .else
 MAKE_ARGS+=	--portaudio=false
@@ -54,9 +50,6 @@ pre-configure:
 	${REINPLACE_CMD} -e \
 		's|"-g"|""|' \
 		${WRKSRC}/SConstruct
-	${REINPLACE_CMD} -e \
-		's|portaudio.h|portaudio2/portaudio.h|' \
-		${WRKSRC}/src/VoiceRecorder.cpp
 	${REINPLACE_CMD} -e \
 		'/^Icon/s|=.*|=${PORTNAME}|' \
 		${WRKSRC}/data/${PORTNAME}.desktop

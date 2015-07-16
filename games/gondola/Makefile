@@ -3,7 +3,7 @@
 
 PORTNAME=	gondola
 PORTVERSION=	1.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	games
 MASTER_SITES=	http://files.arcticpaint.com/gondola/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -16,8 +16,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rabbyt>=0.8.1:${PORTSDIR}/graphics/py-rabbyt
 		${PYTHON_PKGNAMEPREFIX}pyglet>=1.1:${PORTSDIR}/graphics/py-pyglet \
 		avbin>=7:${PORTSDIR}/multimedia/avbin
 
-USES=		zip
-USE_PYTHON=	yes
+USES=		python:run zip
 NO_BUILD=	yes
 
 SUB_FILES=	${PORTNAME}

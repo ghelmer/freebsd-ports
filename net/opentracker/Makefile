@@ -8,11 +8,11 @@ MASTER_SITES=	http://www.bayofrum.net/dist/${PORTNAME}/ \
 		https://www.glenbarber.us/ports/net/${PORTNAME}/
 
 MAINTAINER=	crees@FreeBSD.org
-COMMENT=	A free lightweight bittorrent tracker using libowfat
+COMMENT=	Free lightweight bittorrent tracker using libowfat
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libowfat.a:${PORTSDIR}/devel/libowfat
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 USE_RC_SUBR=	${PORTNAME}
 
 OPTIONS_DEFINE= COMPRESSION_GZIP DEBUG_HTTPERROR FULLSCRAPE RESTRICT_STATS IPV6

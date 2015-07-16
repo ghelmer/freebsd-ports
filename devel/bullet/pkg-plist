@@ -229,29 +229,12 @@ include/bullet/vectormath/sse/vectormath_aos.h
 include/bullet/vectormath/vmInclude.h
 lib/cmake/bullet/BulletConfig.cmake
 lib/cmake/bullet/UseBullet.cmake
-lib/libBulletCollision.a
-lib/libBulletDynamics.a
-lib/libBulletSoftBody.a
-lib/libLinearMath.a
+lib/libBulletCollision.so
+lib/libBulletCollision.so.2.82
+lib/libBulletDynamics.so
+lib/libBulletDynamics.so.2.82
+lib/libBulletSoftBody.so
+lib/libBulletSoftBody.so.2.82
+lib/libLinearMath.so
+lib/libLinearMath.so.2.82
 libdata/pkgconfig/bullet.pc
-@dirrmtry lib/cmake/bullet
-@dirrmtry lib/cmake
-@dirrmtry include/bullet/vectormath/sse
-@dirrmtry include/bullet/vectormath/scalar
-@dirrmtry include/bullet/vectormath
-@dirrmtry include/bullet/LinearMath
-@dirrmtry include/bullet/BulletSoftBody
-@dirrmtry include/bullet/BulletDynamics/Vehicle
-@dirrmtry include/bullet/BulletDynamics/MLCPSolvers
-@dirrmtry include/bullet/BulletDynamics/Featherstone
-@dirrmtry include/bullet/BulletDynamics/Dynamics
-@dirrmtry include/bullet/BulletDynamics/ConstraintSolver
-@dirrmtry include/bullet/BulletDynamics/Character
-@dirrmtry include/bullet/BulletDynamics
-@dirrmtry include/bullet/BulletCollision/NarrowPhaseCollision
-@dirrmtry include/bullet/BulletCollision/Gimpact
-@dirrmtry include/bullet/BulletCollision/CollisionShapes
-@dirrmtry include/bullet/BulletCollision/CollisionDispatch
-@dirrmtry include/bullet/BulletCollision/BroadphaseCollision
-@dirrmtry include/bullet/BulletCollision
-@dirrmtry include/bullet

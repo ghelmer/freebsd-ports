@@ -3,6 +3,7 @@
 
 PORTNAME=	Net-FTPServer
 PORTVERSION=	1.125
+PORTREVISION=	1
 CATEGORIES=	ftp perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -31,8 +32,6 @@ PORTEXAMPLES=	ftpd.conf
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e "s/root,root/root,wheel/" \
 		-e "s,/usr/sbin,${PREFIX}/sbin," \
@@ -43,10 +42,10 @@ post-patch:
 		${WRKSRC}/Makefile.PL
 
 post-install:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/etc/ftpd.conf ${STAGEDIR}${EXAMPLESDIR}
 
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

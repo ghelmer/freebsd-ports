@@ -3,7 +3,7 @@
 
 PORTNAME=	nss_ldap
 PORTVERSION=	1.${NSS_LDAP_VERSION}
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	net
 MASTER_SITES=	http://www.padl.com/download/ \
 		LOCAL/martymac
@@ -16,11 +16,9 @@ LICENSE=	GPLv2
 
 NSS_LDAP_VERSION=265
 
-USES=		gmake perl5
+USES=		autoreconf gmake perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	automake aclocal autoconf autoheader
-AUTOMAKE_ARGS=	--add-missing
 USE_LDCONFIG=	yes
 USE_OPENLDAP=	yes
 
@@ -53,7 +51,7 @@ CFLAGS+="-DHAVE_LOGIN_CLASSES"
 .endif
 
 .if ${PORT_OPTIONS:MSASL}
-WANT_OPENLDAP_SASL	 = YES
+WANT_OPENLDAP_SASL=	 yes
 .endif
 
 post-extract:

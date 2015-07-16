@@ -3,7 +3,7 @@
 
 PORTNAME=	wqy-fonts
 PORTVERSION=	20100803
-PORTREVISION=	2
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	SF/wqy/wqy-bitmapfont/1.0.0-RC1:bitmapfont \
@@ -17,39 +17,33 @@ DISTFILES=	wqy-bitmapsong-pcf-1.0.0-RC1.tar.gz:bitmapfont \
 		wqy-microhei-lite-0.2.0-beta.tar.gz:microheilite \
 		wqy-microhei-0.2.0-beta.tar.gz:microhei
 
-MAINTAINER=	intron@intron.ac
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU GPL-licensed font set covering CJK and other Unicode characters
 
-BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale \
-		fc-cache:${PORTSDIR}/x11-fonts/fontconfig
+BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
 
 USE_XORG=	x11
-USES=		perl5
+USES=		fonts perl5
 USE_PERL5=	build
+NO_WRKSUBDIR=	yes
 
-FONTSDIR=	lib/X11/fonts/wqy
+FONTNAME=	wqy
 CONFDDIR=	etc/fonts/conf.d
 CONFAVAILDIR=	etc/fonts/conf.avail
 
-PLIST_SUB=	FONTSDIR=${FONTSDIR} \
-		CONFDDIR=${CONFDDIR} \
+PLIST_SUB=	CONFDDIR=${CONFDDIR} \
 		CONFAVAILDIR=${CONFAVAILDIR}
 
 SUB_FILES=	pkg-message
-SUB_LIST=	FONTSDIR=${PREFIX}/${FONTSDIR}
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
 
-.if !defined(NOPORTDOCS)
 PORTDOCS=	AUTHORS.bitmap ChangeLog.bitmap README.bitmap COPYING.bitmap \
 		LOGO.png \
 		AUTHORS.zenhei ChangeLog.zenhei README.zenhei \
 		AUTHORS.microheilite README.microheilite ChangeLog.microheilite \
 		AUTHORS.microhei README.microhei ChangeLog.microhei \
 		LICENSE_Apache2.txt LICENSE_GPLv3.txt
-.endif
 
 do-build:
 	${PERL} ${WRKDIR}/wqy-unibit/bdfmerge.pl 0x0--0xFFFF ${WRKDIR}/wqy-unibit/wqy-unibit.bdf > ${WRKDIR}/wqy-unibit/wqy-unibit_cjk.bdf
@@ -69,23 +63,22 @@ do-build:
 	${CP} ${WRKDIR}/wqy-microhei/README.txt ${WRKDIR}/wqy-microhei/README.microhei
 
 do-install:
-	${MKDIR} ${PREFIX}/${FONTSDIR} ${PREFIX}/${CONFDDIR} ${PREFIX}/${CONFAVAILDIR}
+	${MKDIR} ${STAGEDIR}${FONTSDIR} ${STAGEDIR}${PREFIX}/${CONFDDIR} ${STAGEDIR}${PREFIX}/${CONFAVAILDIR}
 # WQY Bitmap Song
-	${INSTALL_DATA} ${WRKDIR}/wqy-bitmapsong/*.pcf ${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKDIR}/wqy-bitmapsong/*.pcf ${STAGEDIR}${FONTSDIR}
 # WQY Bitmap Song
-	${INSTALL_DATA} ${WRKDIR}/wqy-unibit/wqy-unibit.pcf ${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKDIR}/wqy-unibit/wqy-unibit.pcf ${STAGEDIR}${FONTSDIR}
 # WQY TrueType Zenhei
-	${INSTALL_DATA} ${WRKDIR}/wqy-zenhei/wqy-zenhei.ttc ${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKDIR}/wqy-zenhei/wqy-zenhei.ttc ${STAGEDIR}${FONTSDIR}
 # WQY TrueType MicroHei Lite
-	${INSTALL_DATA} ${WRKDIR}/wqy-microhei-lite/wqy-microhei-lite.ttc ${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKDIR}/wqy-microhei-lite/wqy-microhei-lite.ttc ${STAGEDIR}${FONTSDIR}
 # WQY TrueType MicroHei
-	${INSTALL_DATA} ${WRKDIR}/wqy-microhei/wqy-microhei.ttc ${PREFIX}/${FONTSDIR}
+	${INSTALL_DATA} ${WRKDIR}/wqy-microhei/wqy-microhei.ttc ${STAGEDIR}${FONTSDIR}
 
-	${INSTALL_DATA} ${FILESDIR}/85-wqy.conf ${PREFIX}/${CONFAVAILDIR}
-	${LN} -sf ${PREFIX}/${CONFAVAILDIR}/85-wqy.conf ${PREFIX}/${CONFDDIR}/85-wqy.conf
+	${INSTALL_DATA} ${FILESDIR}/85-wqy.conf ${STAGEDIR}${PREFIX}/${CONFAVAILDIR}
+	${LN} -sf ${PREFIX}/${CONFAVAILDIR}/85-wqy.conf ${STAGEDIR}${PREFIX}/${CONFDDIR}/85-wqy.conf
 
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} \
 		${WRKDIR}/wqy-bitmapsong/AUTHORS.bitmap \
 		${WRKDIR}/wqy-bitmapsong/ChangeLog.bitmap \
@@ -103,15 +96,6 @@ do-install:
 		${WRKDIR}/wqy-microhei/README.microhei \
 		${WRKDIR}/wqy-microhei/LICENSE_Apache2.txt \
 		${WRKDIR}/wqy-microhei/LICENSE_GPLv3.txt \
-			${DOCSDIR}
-.endif
+			${STAGEDIR}${DOCSDIR}
 
-post-install:
-	@${RM} -f ${PREFIX}/${FONTSDIR}/fonts.dir
-	@${RM} -f ${PREFIX}/${FONTSDIR}/fonts.scale
-	@command mkfontscale -b ${PREFIX}/${FONTSDIR}
-	@command fc-cache -fv
-
-	${CAT} ${PKGMESSAGE}
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

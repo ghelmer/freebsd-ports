@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pcsc-lite
-PORTVERSION=	1.8.11
-PORTREVISION=	1
+PORTVERSION=	1.8.13
 PORTEPOCH=	2
 CATEGORIES=	devel security
-MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/3991/
+MASTER_SITES=	https://alioth.debian.org/frs/download.php/file/4126/
 
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	Smartcard development library
@@ -15,29 +14,26 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		gmake perl5 pathfix pkgconfig shebangfix tar:bzip2
+INSTALL_TARGET=	install-strip
+USES=		gmake libtool pathfix perl5 pkgconfig shebangfix tar:bzip2
 USE_PERL5=	build
 USE_RC_SUBR=	pcscd
 SHEBANG_FILES=	${WRKSRC}/src/spy/pcsc-spy
 
 USE_LDCONFIG=	yes
-CONFIGURE_ARGS=	--enable-usbdropdir=${PREFIX}/lib/pcsc/drivers/
+CONFIGURE_ARGS=	--enable-usbdropdir=${PREFIX}/lib/pcsc/drivers/ \
+		LIBUSB_CFLAGS=" " LIBUSB_LIBS="-lusb"
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.if ${OSVERSION} < 1000000
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
 FETCH_DEPENDS=	wget:${PORTSDIR}/ftp/wget
 DISABLE_SIZE=	yes
 FETCH_CMD=	${LOCALBASE}/bin/wget -c -nc --no-check-certificate
-.endif
-
-.if !defined(WITHOUT_USB) && ${OSVERSION} >= 800069
-CONFIGURE_ENV+=	LIBUSB_LIBS="-lusb"
-CONFIGURE_ARGS+=--enable-libusb=/usr
-.else
-BROKEN=		FreeBSD 7.x does not ship with a supported libusb
 .endif
 
 post-patch:
@@ -47,16 +43,8 @@ post-patch:
 		s,libusb_strerror(ret),ret," ${WRKSRC}/configure \
 			${WRKSRC}/src/hotplug_libusb.c
 	${REINPLACE_CMD} -e "s,-ldl,," ${WRKSRC}/src/spy/Makefile.in
-.if defined(NOPORTDOCS)
+.if ! ${PORT_OPTIONS:MDOCS}
 	${REINPLACE_CMD} -e '/^install-data-am: / s|install-docDATA||' ${WRKSRC}/doc/Makefile.in
-.endif
-
-pre-everything::
-.if !defined(WITHOUT_USB) && ${OSVERSION} >= 800069
-	@${ECHO_MSG}
-	@${ECHO_MSG} "pcsc-lite has the following option(s):"
-	@${ECHO_MSG} "  WITHOUT_USB=yes            Disable USB support"
-	@${ECHO_MSG}
 .endif
 
 post-install:
@@ -66,10 +54,7 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/doc/example/pcsc_demo.c ${STAGEDIR}${EXAMPLESDIR}
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/pcsc/drivers
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/pcsc/services
-	${TOUCH} ${STAGEDIR}${PREFIX}/lib/pcsc/drivers/.keep_me
-	${TOUCH} ${STAGEDIR}${PREFIX}/lib/pcsc/services/.keep_me
 	@${SED} 's,%%PREFIX%%,${PREFIX},g' < ${FILESDIR}/pkg-message.in > \
 		${WRKDIR}/pkg-message
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libpcsclite.so.1 ${STAGEDIR}${PREFIX}/lib/libpcscspy.so.0
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

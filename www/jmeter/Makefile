@@ -4,8 +4,7 @@
 PORTNAME=	apache-jmeter
 PORTVERSION=	2.11
 CATEGORIES=	www benchmarks java
-MASTER_SITES=	${MASTER_SITE_APACHE}
-MASTER_SITE_SUBDIR=	jmeter/binaries
+MASTER_SITES=	APACHE/jmeter/binaries
 EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	mi@aldan.algebra.com
@@ -54,9 +53,9 @@ EXTRACT_AFTER_ARGS=	--exclude '*.bat' --exclude '*.cmd'	\
 	${RUN_DEPENDS:M*.jar*:C|.*/(.+).jar:.*|--exclude '\1-*.jar'|}	\
 	--exclude 'oro-*.jar'
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 PORTDOCS=	docs printable_docs README LICENSE
-.endif
 
 .include <bsd.port.pre.mk>
 
@@ -72,12 +71,10 @@ do-install:
 	  && ${FIND} ${DATAFILES} -type d -exec ${MKDIR} ${STAGEDIR}/${DATADIR}/{} \;
 	cd ${WRKSRC} \
 	  && ${FIND} ${DATAFILES} -type f -not -name '*.orig' -exec ${INSTALL_DATA} {} ${STAGEDIR}${DATADIR}/{} \;
-.if !defined(NOPORTDOCS)
 	cd ${WRKSRC} \
 	  && ${FIND} ${PORTDOCS} -type d -exec ${MKDIR} ${STAGEDIR}${DOCSDIR}/{} \;
 	cd ${WRKSRC} \
 	  && ${FIND} ${PORTDOCS} -type f -exec ${INSTALL_DATA} {} ${STAGEDIR}${DOCSDIR}/{} \;
-.endif
 	${INSTALL_SCRIPT} ${WRKDIR}/jmeter.sh ${STAGEDIR}${PREFIX}/bin/jmeter
 
 # For some reason, it is not enough for these three to simply be listed in

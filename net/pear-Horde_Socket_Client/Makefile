@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Socket_Client
-PORTVERSION=	1.1.1
+PORTVERSION=	2.0.0
 CATEGORIES=	net www pear
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Socket Client
 
+USES=	horde
 USE_HORDE_RUN=	Horde_Exception
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear-channel-horde/bsd.horde.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

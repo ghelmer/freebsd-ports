@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libmsiecf
-DISTVERSION=	alpha-20140323
-PORTREVISION=	1
+DISTVERSION=	alpha-20150314
 CATEGORIES=	devel
-MASTER_SITES=	https://googledrive.com/host/0B3fBvzttpiiSVm1MNkw5cU1mUG8/ \
+MASTER_SITES=	https://github.com/libyal/libmsiecf/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
 
 MAINTAINER=	antoine@FreeBSD.org
@@ -14,9 +13,8 @@ COMMENT=	Library and tools to access the MSIE index.dat files
 LICENSE=	LGPL3
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} ${ICONV_CONFIGURE_ARG}
-USES=		gettext iconv libtool:keepla pathfix
-USE_PYTHON=	2
+CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE}
+USES=		gettext libtool pathfix python
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:E}

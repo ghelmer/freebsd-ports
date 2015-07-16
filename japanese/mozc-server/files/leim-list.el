@@ -13,8 +13,8 @@
 ;;   documentation and/or other materials provided with the distribution.
 ;;
 
-(autoload 'mozc-mode "mozc.el" "Activate Mozc." t)
-(autoload 'mozc-leim-activate "mozc.el" "Activate Mozc." t)
+(autoload 'mozc-mode "mozc" "Activate Mozc." t)
+(autoload 'mozc-leim-activate "mozc" "Activate Mozc." t)
 
 (defcustom mozc-leim-title "[Mozc]"
   "Mode line string shown when mozc-mode is enabled.
@@ -26,4 +26,4 @@ This indicator is not shown when you don't use LEIM."
 (register-input-method
   "japanese-mozc" "Japanese" #'mozc-leim-activate
   mozc-leim-title
-  "Japanese input method with Mozc/Google Japanese Input.")
+  "Japanese input method with Mozc.")

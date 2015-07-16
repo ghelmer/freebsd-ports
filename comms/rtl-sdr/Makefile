@@ -3,19 +3,17 @@
 
 PORTNAME=	rtl-sdr
 PORTVERSION=	20140210
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://contribs.martymac.org/FreeBSD-ports/distfiles/ \
 		LOCAL/martymac
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Commandline tool that performs SDR with RTL2832-based USB sticks
 
 LICENSE=	GPLv2
 
-USES=		gmake pkgconfig libtool
-USE_AUTOTOOLS=	autoconf:env aclocal:env automake:env libtoolize:env
+USES=		autoreconf gmake pkgconfig libtool tar:tgz
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -24,7 +22,9 @@ USE_LDCONFIG=	yes
 
 DOCSDIR=	${PREFIX}/share/doc/librtlsdr
 
-.include <bsd.port.pre.mk>
+OPTIONS_DEFINE=	DOCS
+
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	doxygen:${PORTSDIR}/devel/doxygen
@@ -38,7 +38,4 @@ post-patch:
 	@${REINPLACE_CMD} 's|^pkgconfigdir =.*|pkgconfigdir = ${PREFIX}/libdata/pkgconfig|' \
 		${WRKSRC}/Makefile.am
 
-pre-configure:
-	@(cd ${WRKSRC} && ${AUTORECONF} -fi)
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

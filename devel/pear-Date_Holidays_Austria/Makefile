@@ -1,17 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	Date_Holidays_Austria
-PORTVERSION=	0.1.4
+PORTVERSION=	0.1.6
 CATEGORIES=	devel www pear
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Driver based class to calculate holidays in Austria
+
+LICENSE=	PHP301
 
 BUILD_DEPENDS=	${PEARDIR}/Date/Holidays.php:${PORTSDIR}/devel/pear-Date_Holidays
 RUN_DEPENDS=	${PEARDIR}/Date/Holidays.php:${PORTSDIR}/devel/pear-Date_Holidays
 
-PEAR_AUTOINSTALL=	yes
+USES=		pear
+NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

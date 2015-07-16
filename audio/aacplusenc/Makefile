@@ -3,6 +3,7 @@
 
 PORTNAME=	aacplusenc
 PORTVERSION=	0.17.5
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://ppa.launchpad.net/teknoraver/ppa/ubuntu/pool/main/a/aacplusenc/
 DISTFILES=	${DISTNAME:S,-,_,}${EXTRACT_SUFX}
@@ -12,6 +13,10 @@ COMMENT=	AacPlus v2 command-line encoder
 
 USES=		gmake
 
+OPTIONS_DEFINE=	FFTW3
+OPTIONS_DEFAULT=	FFTW3
+FFTW3_DESC=	Use FFTW3 library for performance
+
 RESTRICTED=	unclear legal status, probably need licenses from 3GPP, Via Licensing and Coding Technologies
 
 CONFLICTS=	libaacplus-[0-9]*
@@ -19,13 +24,10 @@ CONFLICTS=	libaacplus-[0-9]*
 PLIST_FILES=	bin/aacplusenc
 MAKE_ARGS+=	INSTDIR=${STAGEDIR}${PREFIX}
 
-.if defined(WITHOUT_FFTW3)
-MAKE_ARGS+=	NOFFTW3=1
-.else
-LIB_DEPENDS+=	libfftw3f.so:${PORTSDIR}/math/fftw3-float \
-		libfftw3.so:${PORTSDIR}/math/fftw3
-CFLAGS+=	-I${LOCALBASE}/include
-.endif
+FFTW3_MAKE_ARGS_OFF=	NOFFTW3=1
+FFTW3_LIB_DEPENDS=	libfftw3f.so:${PORTSDIR}/math/fftw3-float \
+			libfftw3.so:${PORTSDIR}/math/fftw3
+FFTW3_CFLAGS=	-I${LOCALBASE}/include
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

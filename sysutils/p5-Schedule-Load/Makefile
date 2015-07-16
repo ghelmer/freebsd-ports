@@ -3,6 +3,7 @@
 
 PORTNAME=	Schedule-Load
 PORTVERSION=	3.064
+PORTREVISION=	1
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -23,11 +24,11 @@ MAKE_JOBS_UNSAFE=	yes
 USES=		perl5
 USE_PERL5=	configure
 
+OPTIONS_DEFINE=	EXAMPLES
+
 post-install:
-.ifndef(NOPORTEXAMPLES)
 	@${ECHO_MSG} "===>   Installing examples for ${PKGNAME}"
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/init.d
 	${INSTALL_SCRIPT} ${WRKSRC}/init.d/* ${STAGEDIR}${EXAMPLESDIR}/init.d
-.endif
 
 .include <bsd.port.mk>

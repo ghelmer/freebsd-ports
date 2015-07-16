@@ -3,6 +3,7 @@
 
 PORTNAME=	dictem
 PORTVERSION=	1.0.4
+PORTREVISION=	2
 CATEGORIES=	textproc net elisp
 MASTER_SITES=	SF/dictem/dictem/dictem-${PORTVERSION}
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
@@ -22,10 +23,11 @@ SRC_EL=		dictem.el dictem-lingvo-dsl.el dictem-elisp.el
 PLIST_FILES+=	${LISPDIR}/${f} \
 		${LISPDIR}/${f:S/.el$/.elc/}
 .endfor
-PLIST_DIRS+=	${LISPDIR}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 PORTDOCS+=	README AUTHORS NEWS COPYING TODO
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

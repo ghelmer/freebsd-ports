@@ -5,15 +5,1209 @@ they are unavoidable.
 You should get into the habit of checking this file for changes each time
 you update your ports collection, before attempting any port upgrades.
 
+20150628:
+  AFFECTS: users of www/varnish, www/pecl-varnish,
+  www/varnish-libvmod-header, www/varnish-nagios
+  AUTHOR: feld@FreeBSD.org
+
+  Varnish 3.x has reached End of Life status and has been removed from
+  the ports tree. If you were using www/varnish we urge you to to update
+  to www/varnish4. The upgrade guide can be found here:
+
+  https://www.varnish-cache.org/docs/trunk/whats-new/upgrade-4.0.html
+  
+  www/varnish-libvmod-header and www/varnish-nagios have been updated to
+  versions that work with Varnish 4.x. You should not lose access to
+  this software.
+
+  www/pecl-varnish was updated to the latest release which has added
+  support for Varnish 4.x. Please note that it appears some
+  functionality has been lost. This is unfortunate but out of our
+  control. Details can be found here:
+
+  http://pecl.php.net/package-changelog.php?package=varnish
+
+  If for some reason you need www/varnish to exist in your ports tree
+  for a bit longer you may consider instead following the 2015Q2 branch.
+  Do note however that Varnish 3.x will not be receiving updates or
+  security patches from upstream.
+
+20150624:
+  AFFECTS: users of devel/p5-Test-Tester and devel/p5-Test-use-ok
+  AUTHOR: adamw@FreeBSD.org
+
+  The Test::Tester and Test::use::ok modules have been rolled into
+  devel/p5-Test-Simple, and are included in perl 5.22. The p5-Test-Tester
+  and p5-Test-use-ok modules will be removed in one month.
+
+  If you use either of those ports and have perl-5.22 installed:
+
+      pkg delete p5-Test-Tester p5-Test-use-ok
+
+  If you use either of those ports and have perl-5.20 or lower installed:
+
+      portmaster -o devel/p5-Test-Simple p5-Test-Tester
+      portmaster -o devel/p5-Test-Simple p5-Test-use-ok
+
+20150615:
+  AFFECTS: users of security/libressl
+  AUTHOR: brnrd@FreeBSD.org 
+
+  After upgrading libressl, manually update all packages that depend on
+  this library since its version has changed. Normally, you can obtain the 
+  list of dependent software by running the following command:
+
+  pkg query -e '%n = libressl' %ro
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20150614:
+  AFFECTS: users of audio/libmusicbrainz5
+  AUTHOR: jhale@FreeBSD.org
+
+  libmusicbrainz5 has been updated to 5.1.0.  Please rebuild all ports that
+  depend on it.  PORTREVISIONS have been bumped on dependent ports.
+
+  If you use portmaster:
+        portmaster -w -r libmusicbrainz5
+  If you use portupgrade:
+        portupgrade -fr audio/libmusicbrainz5
+
+20150613:
+  AFFECTS: users of multimedia/avidemux26-*
+  AUTHOR: riggs@FreeBSD.org
+
+  avidemux26 has been renamed to avidemux
+  If you are using binary pkg, 'pkg upgrade' will do the right thing.
+  Users of portmaster/portupgrade have to take a manual step:
+  Portmaster users:
+      portmaster -o multimedia/avidemux multimedia/avidemux26
+  Portupgrade users:
+      portupgrade -o multimedia/avidemux multimedia/avidemux26
+
+20150610:
+  AFFECTS: users of databases/postgresql84-server
+  AUTHOR: girgen@FreeBSD.org
+
+  PostgreSQL-8.4 EOL was reached in July 2014. To upgrade to a later version of
+  choice, you need to do a dump+restore of the database.
+  Please follow the instructions at:
+
+     http://www.postgresql.org/docs/8.4/static/install-upgrading.html
+
+20150527:
+  AFFECTS: users of sysutils/xfce4-power-manager
+  AUTHOR: olivierd@FreeBSD.org
+
+  Before upgrading, you must stop xfce4-power-manager daemon:
+
+    xfce4-power-manager --quit
+
+20150519:
+  AFFECTS: users of sysutils/webmin and sysutils/usermin
+  AUTHOR: olgeni@FreeBSD.org
+
+  After upgrading to Perl 5.20 the /usr/bin/perl link will no longer
+  be available. You will have to check your perl-path files and
+  change the path of the Perl interpreter to "/usr/local/bin/perl":
+
+    /usr/local/etc/webmin/perl-path
+    /usr/local/etc/usermin/perl-path
+
+20150513:
+  AFFECTS: users of lang/perl5*
+  AUTHOR: mat@FreeBSD.org
+
+  The default Perl version has been switched to Perl 5.20.  If you are using
+  binary packages to upgrade your system, you do not have anything to do, pkg
+  upgrade will do the right thing.  For the other people, assuming you are
+  migrating from 5.18 to 5.20, do:
+
+  Portupgrade users:
+	portupgrade -o lang/perl5.20 -f lang/perl5.18
+
+	portupgrade -f `pkg shlib -R libperl.so.5.18|tail +2`
+
+  Portmaster users:
+	portmaster -o lang/perl5.20 lang/perl5.18
+
+	portmaster -f `pkg shlib -R libperl.so.5.18|tail +2`
+
+  NOTE:
+    Perl has been removed from base more than ten years ago, so it was way past
+    time for the /usr/bin/perl symlink to be removed from the port.  If for
+    some strange reason, you still need it, you will have to create it
+    manually.
+
+  IMPORTANT:
+    In case you have not updated your system in a while, and specifically,
+    followed the 20141126 instructions regarding the new Perl layout, you
+    should follow those more extensive instructions rather than the
+    conservative presented here.
+
+20150510:
+  AFFECTS: users of mail/postfix mail/postfix-current
+  AUTHOR: ohauer@FreeBSD.org
+
+  The following OPTIONS where renamed to match the default used in most all other ports
+  - SASL2 -> SASL
+  - OPENLDAP -> LDAP
+
+  If any of the old OPTIONS was enabled before, please re-run "make config".
+
+20150508:
+  AFFECTS: users of www/iojs
+  AUTHOR: linpct@gmail.com
+
+  iojs has been updated to 2.0.0. The binary modules may need to be
+  rebuilt due to V8 version ABI change.
+
+20150506:
+  AFFECTS: users of net/asterisk13 with PJSIP (default on) and SRTP (default off) options enabled
+  AUTHOR: madpilot@FreeBSD.org
+
+  This applies ONLY TO USERS COMPILING FROM PORTS:
+  To avoid dependency problems, you must remove the pjsip port
+  before upgrading asterisk13.
+
+    # pkg delete pjsip
+    # portmaster -a
+
+  These steps are unnecessary for those using binary packages.
+
+  Please see the 20150323 entry for background about this problem.
+
+20150501:
+  AFFECTS: users of graphics/qgis
+  AUTHOR: brd@FreeBSD.org
+
+  Following OPTIONS have been renamed in 2.8.1_1 to match upstream:
+
+  - MAPSERVER to SERVER
+
+20150427:
+  AFFECTS: users of mail/opensmtpd
+  AUTHOR: ashish@FreeBSD.org
+
+  Following OPTIONS are being removed in 5.4.5p1:
+
+  - LDAP
+  - SQLITE
+  - MYSQL
+  - PGSQL
+  - REDIS 
+ 
+  They are disabled/removed in upstream since 5.4.4p1, but did not get removed
+  from port.
+
+20150420:
+  AFFECTS: users of devel/icu
+  AUTHOR: bapt@FreeBSD.org
+
+  icu has been updated to 55.1. Please rebuild all ports that depends on it
+
+  If you use portmaster:
+        portmaster -w -r icu
+  If you use portupgrade:
+        portupgrade -fr devel/icu
+
+20150419
+  AFFECTS: Users of emulators/wine-devel
+  AUTHOR: gerald@FreeBSD.org
+
+
+  The COMPHOLIO option in emulators/wine-devel has been renamed to
+  STAGING to align with the upstream evolution of that project.
+
+20150417:
+  AFFECTS: Users of audio/bcg729
+  AUTHOR: tijl@FreeBSD.org
+
+  The Mediastreamer plugin included in this package has been separated into
+  a new port audio/msbcg729.
+
+20150409:
+  AFFECTS: User of security/sguil
+  AUTHOR: feld@FreeBSD.org
+
+  security/sguil was erroneously provisioned a UID that conflicted with
+  the dns/dnscrypt-proxy port. A new UID and GID of 991 has been issued.
+
+  Existing users will be able to upgrade the sguil packages without
+  issue. The existing UID will continue to be used. If you do a clean
+  install of security/sguil on a new server and migrate files or
+  intentionally delete the sguil user and group and reinstall you may
+  run into permissions issues.
+
+  Examples include the /var/run/sguild and /usr/local/etc/sguild directories.
+
+20150406:
+  AFFECTS: User of emulators/xen emulators/xl and sysutils/xen-tools
+  AUTHOR: bapt@FreeBSD.org
+
+  sysutils/xen-tools has been renamed sysutils/xen-guest-tools
+  emulators/xl has been renamed sysutils/xen-tools
+  emulators/xen has been renamed emulators/xen-kernel
+  A new emulators/xen has been introduced, it is a metaport that depends on
+  emulators/xen-kernel and sysutils/xen-tools
+
+20150403:
+  AFFECTS: Users of irc/rbot
+  AUTHOR: bdrewery@FreeBSD.org
+
+  Ruby Bot now has a new upstream maintainer.  The project has been updated
+  to work with Ruby 2.0+.  Some migration is needed to move away from
+  BDB regristry files.  The guide for that is at
+  https://github.com/ruby-rbot/rbot/wiki/MigrationGuide
+
+  rbotdb can be used to backup a BDB database and then restore it to a working
+  format for the new rbot. Update your conf.yaml after with 'core.db: tc'
+  once converted.
+
+20150331:
+AUTHOR: ohauer@FreeBSD.org
+
+  Subversion modules are no longer activated in httpd.conf!
+  To activate the subversion apache modules a dedicated file
+  will be installed as modules.d/220_subversion.conf
+
+20150324:
+  AFFECTS: Users of dns/bind9*
+  AUTHOR: mat@FreeBSD.org
+
+  This is only for FreeBSD 10.0+.
+
+  BIND auto chroot has been added back to the named rc script.  As enabling it
+  by default would most certainly break people's setup, it is not.  To enable
+  it, and chroot it in /var/named, add the following line to your rc.conf file:
+
+  named_chrootdir="/var/named"
+
+  On first launch, the rc script will move the /usr/local/etc/namedb directory
+  into the chroot, and create a symlink to it.
+
+  Note that, if you're running from within a jail, you need to have a
+  /var/named/dev devfs created beforehand, with the null and random devices.
+
+20150323:
+  AFFECTS: Users of net/asterisk* and net/pjsip ports
+  AUTHOR: madpilot@FreeBSD.org
+
+  Due to conflicts between base OpenSSL and ports provided OpenSSL
+  library, which is required by net/libsrtp, the srtp support has
+  to be removed from the default asterisk13 port configuration,
+  otherwise a not working binary would be generated.
+
+  To get SRTP support working in the asterisk ports make sure all
+  dependencies are linked against the same SSL library implementation
+  to avoid runtime conflicts. On 10.1 everything will work fine
+  unless ports SSL libraries are explicitly installed. On older OS
+  versions(10.0 and earlier) you will need to compile all ports
+  with WITH_OPENSSL_PORT=yes.
+
+  To get working SRTP support in asterisk13 with the pjsip backend
+  it is also needed to enable the EXTSRTP option in the pjsip port.
+
+  If the CURL option is enabled also make sure the ftp/curl port
+  is using a GSSAPI implementation linking to the same SSL
+  implementation the other ports are using (BASE or NONE if you're
+  using base OpenSSL, GSSAPI_HEIMDAL GSSAPI_MIT otherwise). If an
+  incompatible option is being used the curl module will cause
+  asterisk to fail on startup due to mixing calls to OpenSSL from
+  base and from ports.
+
+20150322:
+  AFFECTS: Users of security/openssh-portable
+  AUTHOR: bdrewery@FreeBSD.org
+
+  The port now uses VersionAddendum for the port version string. Setting
+  the value to "none" in your sshd_config and restarting openssh will allow
+  removing the version from the banner.
+
+20150321:
+  AFFECTS: Users of x11-servers/xorg-server and other X servers
+  AUTHOR: bapt@FreeBSD.org
+
+  All fonts ports have been modified to respect XDG and install in
+  share/fonts
+
+  The Xorg servers now are looking there by default
+
+  If you experience font related issues, view the output of
+
+  # fc-list
+
+  If the list appears incomplete or has fonts still pointing to
+  /usr/local/lib/X11/fonts you may forcibly update the font cache:
+
+  # fc-cache -fs
+
+20150317:
+  AFFECTS: users of editors/openoffice-4 and editors/openoffice-devel
+  AUTHOR: truckman@FreeBSD.org
+
+  Contrary to what is stated in pkg-message, openoffice-4 and
+  openoffice-devel have stored user settings in ~/.openoffice.org-devel/4
+  since r325370 (2013-08-25). This update expects user settings to reside
+  in the more standard ~/.openoffice.org/4.
+
+  To preserve your user settings, rename or copy them from
+  ~/.openoffice.org-devel/4 to ~/.openoffice.org/4. when installing this
+  update to apache-openoffice-4.1.1_7 or
+  apache-openoffice-devel-4.2.1652526_2,3.
+
+20150313:
+  AFFECTS: users of net/serviio
+  AUTHOR: netchild@FreeBSD.org
+
+  The Java Polling Watch Service used in Serviio 1.5.1 is fixed. If you
+  unchecked "Keep library automatically updated" with 1.5 (as recommended
+  in the 20150206 entry) you can enable it again.
+
+20150309:
+  AFFECTS: users of net-mgmt/netdisco
+  AUTHOR: dgeo@centrale-marseille.fr
+
+  netdisco version has been upgraded to netdisco2
+
+  After upgrading, you will need to review all your configuration, as
+  this new version won't read old config files.
+  You'll be able to keep your data though netdisco-deploy command
+
+20150305:
+  AFFECTS: users of x11-wm/xfce4 and multimedia/xfce4-parole
+  AUTHOR: olivierd@FreeBSD.org
+
+  Xfce 4.12 has been imported. Please use the following instructions to
+  upgrade.
+
+  For package users:
+  # pkg upgrade
+
+  For ports users:
+  # portmaster -a
+  # portmaster x11-wm/xfce4
+
+  GStreamer 1.0 is enabled by default in Parole media player.
+
+  Xfce 4.12 now depends of Adwaita icon theme. If you are upgrading from
+  Xfce 4.10 you probably still have the Tango or GNOME theme selected.
+  Open the Settings Manager and select Appearance. Inside dialog box switch
+  to the Icons tag and select the "Adwaita" entry in the list.
+
+20150304:
+  AFFECTS: users of security/libressl
+  AUTHOR: vsevolod@highsecure.ru
+
+  After upgrading of libressl you should manually update all packages that
+  depending on this library since its version has been changed. Normally,
+  you could obtain the list of dependent software by running the following
+  command:
+
+  pkg query -e '%n = libressl' %ro
+
+  Then you should rebuild all ports depending on libressl to avoid dangling
+  shared library dependencies.
+
+20150301:
+  AFFECTS: users of lang/ruby20
+  AUTHOR: swills@FreeBSD.org
+
+  The default ruby version has been updated from 2.0 to 2.1.
+
+  If you compile your own ports you may keep 2.0 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep ruby 2.0 as default version
+  #
+  DEFAULT_VERSIONS+=ruby=2.0
+
+  If you wish to update to the new default version, you need to first stop any
+  software that uses ruby. Then, you will need to follow these steps, depending
+  upon how you manage your system.
+
+  If you use pkgng, simply upgrade:
+  # pkg upgrade -f
+
+  If you use portmaster, install new ruby, then rebuild all ports that depend
+  on ruby:
+  # portmaster -o lang/ruby21 lang/ruby20
+  # portmaster -R -r ruby-2.1
+
+  If you use portupgrade, install new ruby, then rebuild all ports that depend
+  on ruby:
+
+  # pkg delete -f ruby portupgrade
+  # make -C /usr/ports/ports-mgmt/portupgrade install clean
+  # pkg set -o lang/ruby20:lang/ruby21
+  # portupgrade -x ruby-2.1.\* -fr lang/ruby21
+
+20150227:
+  AFFECTS: Users of games/trigger
+  AUTHOR: makc@FreeBSD.org
+
+  games/trigger has been split and renamed to games/trigger-rally
+  and games/trigger-data ports. Deinstall previous version
+  before upgrading.
+
+20150224:
+  AFFECTS: Users of devel/qt4-linguist
+  AUTHOR: makc@FreeBSD.org
+
+  Linguist tools have been moved from qt4-linguist port to new
+  devel/qt4-linguisttools port. Deinstall qt4-linguist before
+  upgrading.
+
+20150224:
+  AFFECTS: Users of lang/ruby19
+
+  lang/ruby19 has reached its end-of-life and has been removed.  The
+  default version has been 2.0 for a while.  Other available versions
+  are Ruby 2.1 and Ruby 2.2.
+
+  Users who have DEFAULT_VERSIONS=ruby=1.9 in their /etc/make.conf are
+  encouraged to remove it or change it to an available version.
+
+20150224:
+  AFFECTS: Users of net-p2p/bitcoin (cli utilities)
+
+  The bitcoin-cli and bitcoin-tx utilities have been re-packaged into
+  a separate port. If you require these programs, or use the bitcoin-cli
+  program to access the daemon or the GUI, install net-p2p/bitcoin-utils
+  to reinstall them.
+
+20150220:
+  AFFECTS: users of PHP
+
+  The default PHP version has been updated from 5.4 to 5.6.
+
+  If you use binary packages you should make a list of php packages
+  before running 'pkg upgrade':
+
+  # pkg info php5\* > ~/installed-php-ports-list
+
+  After the upgrade, check with such list if all your php extensions
+  are still installed, and reinstall them if needed.
+
+20150213:
+  AFFECTS: users who upgraded from FreeBSD 7.x or older with "make world" but never ran "make delete-old"
+  AUTHOR: antoine@FreeBSD.org
+
+  Dependency registration has been reworked.
+  If you encounter the following error,  you may have stale magic files
+  for file(1):
+
+    ===>   bar-x depends on shared library: libfoo.so - not found
+
+  You can remove the stale /usr/share/misc/magic.mime{,.mgc} files
+  manually or run "make delete-old" in ${SRCDIR}.
+
+20150207:
+  AFFECTS: users of mail/opensmtpd-devel
+  AUTHOR: ashish@FreeBSD.org
+
+  MYSQL, PGSQL, LDAP, and REDIS options are removed from port, as
+  they're moved upstream to a separate project, which is yet to
+  release snapshots. If you need those options, then please install
+  "mail/opensmtpd" port instead. To do that:
+
+  If using portupgrade:
+  # portupgrade -o mail/opensmtpd mail/opensmtpd-devel
+
+  If using portmaster:
+  # portmaster -o mail/opensmtpd mail/opensmtpd-devel
+
+20150206:
+  AFFECTS: users of net/serviio
+  AUTHOR: netchild@FreeBSD.org
+
+  The java dependency changed from java 7 (java/openjdk7 if you haven't
+  installed another java 7 implementation) to java 8 (e.g. java/openjdk8).
+  If serviio is the only reason that java 7 is installed, you can delete
+  java 7 after the update to serviio 1.5.0.
+
+  The Java Polling Watch Service used in Serviio 1.5 aggressively searches
+  for file system updates. Until the Serviio poller is re-enabled in 1.5.1,
+  consider unchecking "Keep library automatically updated" if you have a
+  large media collection or are concerned about CPU/disk usage.
+
+20150204:
+  AFFECTS: users of databases/mysql55-(server|client)
+  AUTHOR: ale@FreeBSD.org
+
+  The default MySQL version has been updated from 5.5 to 5.6.
+
+  If you compile your own ports you may keep 5.5 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep MySQL 5.5 as default version
+  #
+  DEFAULT_VERSIONS+=mysql= 5.5 
+
+  If you wish to update to the new default version, you need to first stop any
+  running server instance. Then, you will need to follow these steps, depending
+  on installed packages.
+
+  # pkg set -o databases/mysql55-client:databases/mysql56-client
+  # pkg set -o databases/mysql55-server:databases/mysql56-server
+  # pkg upgrade
+
+20150118:
+  AFFECTS: users of www/thttpd
+  AUTHOR: danfe@FreeBSD.org
+
+  thttpd was updated to version 2.26, which brings several user-noticeable
+  changes to the port:
+
+    - Default WWW root was changed from ${PREFIX}/www/data to more expected
+      (and standard) ${WWWDIR} (${PREFIX}/www/thttpd), be sure to check and
+      adjust your thttpd configuration file and/or web layout accordingly;
+    - Default CGI pattern was changed to "/cgi-bin/*"; this goes better in
+      line with default installation;
+    - Default data MIME type was changed to "application/octet-stream";
+    - thttpd's own htpasswd(1) program, which was previously installed as
+      thttpdpasswd(1) to avoid conflict with other webservers, is now being
+      renamed to thtpasswd(1); this not just makes it shorter, but is more
+      consistent with popular GNU/Linux distributions;
+    - Index pages for directories are not generated by default from now on
+      for security reasons; an option (INDEXES) is provided to turn them
+      back on if they are wanted;
+    - IPREAL option (to respect (pass on) "X-Forwarded-For" header) is now
+      turned on by default: it is often required when thttpd is used as a
+      CGI server behind nginx (http://wiki.nginx.org/ThttpdCGI).
+
+20150113:
+  AFFECTS: users of www/pecl-http
+  AUTHOR: vanilla@FreeBSD.org
+
+  The pecl-http has been upgraded to version 2.1.4, and the new version is
+  not compatible with the old one.  If you need the "old" 1.7.6, you can
+  find it in www/pecl-http1.
+
+20150111:
+  AFFECTS: users of lang/python3
+  AUTHOR: demon@FreeBSD.org
+
+  The default version of python3 has changed from 3.3 to 3.4.
+  If you wish to stick with older version, add "python3=3.3" to your
+  DEFAULT_VERSIONS variable in /etc/make.conf.  To upgrade:
+
+  If using portupgrade:
+  # portupgrade -o lang/python34 lang/python33
+
+  If using portmaster:
+  # portmaster -o lang/python34 lang/python33
+
+20150109:
+  AFFECTS: users of audio/speex
+  AUTHOR: tijl@FreeBSD.org
+
+  The audio/speex port has been updated to 1.2rc2 and one of the libraries
+  it installed has been split off into a new port audio/speexdsp.  Before
+  you can update audio/speex you must first delete the old package using
+  "pkg del -f speex".
+
+20150101:
+  AFFECTS: users of net/unison and net/unison-nox11
+  AUTHOR: madpilot@FreeBSD.org
+
+  Unison has been upgraded to version 2.48, which uses a different wire
+  protocol than 2.40 did.  In order to support synchronization with
+  other computers where Unison is still at version 2.40, a new port
+  net/unison240 has been created.  It provides unison240 and if that is
+  GTK2-enabled, also unison240-text.  This unison240 port can be
+  installed in parallel with the existing net/unison port.
+
+20141230:
+  AFFECTS: users of deskutils/xpad
+  AUTHOR: jgh@FreeBSD.org
+
+  deskutils/xpad has been moved to deskutils/xpad3, since 4.x has been around
+  for a while.
+
+  Should you wish to stick with legacy branch at this time;
+
+  # portmaster -o deskutils/xpad deskutils/xpad3
+
+20141225:
+  AFFECTS: users of graphics/png
+  AUTHOR: antoine@FreeBSD.org
+
+  The PNG library has been updated to version 1.6.16.  Please rebuild all
+  ports that depend on it.
+
+  If you use portmaster:
+        portmaster -r png
+  If you use portupgrade:
+        portupgrade -fr graphics/png
+
+20141224:
+  AFFECTS: users of lang/neon29
+  AUTHOR: ohauer@FreeBSD.org
+
+  The port www/neon29 was renamed to www/neon and updated to version 0.30.1
+
+  If you use pkg, simply upgrade:
+
+	# pkg upgrade
+
+  If you use portmaster, rebuild ports that depend on neon:
+
+	# portmaster -o www/neon www/neon29
+	# portmaster -R -r neon
+
+20141219:
+  AFFECTS: users of x11/xorg and all xorg ports
+  AUTHOR: dumbbell@FreeBSD.org
+
+  The X.Org server (x11-servers/xorg-server) is updated to 1.14. All
+  ports which provide X.Org drivers must be updated simultaneously, i.e.
+  x11-drivers/xf86-*, emulators/virtualbox-ose-additions, net/tigervnc,
+  etc.
+
+  The input device autodetection backend is switched from HAL to devd.
+  If you configure your keyboard layout through HAL .fdi files, you need
+  to migrate this configuration to plain X.Org configuration files.
+
+  Up-to-date instructions and a description of the changes brought by
+  this update are detailed in a blog post:
+
+  http://blogs.freebsdish.org/graphics/2014/11/19/xserver-1-14-update-ready/
+
+20141219:
+  AFFECTS: users of net-mgmt/xymon-server
+  AUTHOR: feld@FreeBSD.org
+
+  Xymon has been updated to 4.3.18. A major change is the replacement of
+  the individual cgi shell scripts with symlinks to a cgi program written
+  in C. This is to mitigate shellshock on Linux systems where the
+  /bin/sh -> /bin/bash. FreeBSD users were not exposed except in the
+  most unusual and unsupported circumstances. However, this is an
+  important update for security. This change could break your
+  configuration as Henrik describes here:
+
+  > NOTE: Replacing the shell script wrappers means that the cgioptions.cfg
+  > file is no longer processed as a shell script. The new wrapper works
+  > fine with the default version of cgioptions.cfg, but it you have
+  > modified it in a way that it relies on being processed by a shell, then
+  > it will break.
+
+20141219:
+  AFFECTS: users of audio/abcde
+  AUTHOR: gblach@FreeBSD.org
+
+  In audio/abcde dependency has been changed from audio/py-eyed3-06
+  to audio/py-eyed3. Before updating audio/abcde to 2.6 you must manually
+  deinstall audio/py-eyed-06:
+
+	# pkg delete -f py\*-eyed3-06
+
+20141218:
+  AFFECTS: users of security/openssh-portable
+  AUTHOR: bdrewery@FreeBSD.org
+
+  OpenSSH 6.7 disables some insecure ciphers by default, such as arcfour
+  and blowfish. You may have clients using these over LAN where security is
+  considered less important for the connection. For these cases you may need
+  to update your Ciphers entry in your sshd_config to enable them again.
+
+  See http://mgalgs.github.io/2014/10/22/enable-arcfour-and-other-fast-ciphers-on-recent-versions-of-openssh.html
+
+20141217:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  Perl now links all .so it builds with libperl.so, it makes upgrading from one
+  Perl major version to another way easier.  For binary package users, it means
+  pkg upgrade will detect the libperl.so.x.yy change, and reinstall the
+  affected packages.  For users using ports, it will save rebuild time as it's
+  easier to detect what ports really need to be rebuilt.
+
+  Ports users are encouraged to rebuild ports that install files in SITE_ARCH.
+  If using Perl 5.18, run:
+
+  With portupgrade:
+
+    portupgrade -f `find /usr/local/lib/perl5/site_perl/mach/5.18 -name '*.so'|xargs pkg which -qo|sort -u`
+
+  With portmaster:
+
+    portmaster `find /usr/local/lib/perl5/site_perl/mach/5.18 -name '*.so'|xargs pkg which -qo|sort -u`
+
+20141216:
+  AFFECTS: users of security/openssh-portable, security/openssh-portable66
+  AUTHOR: bdrewery@FreeBSD.org
+
+  All patches have been fixed for version 6.7. It is no longer required to use
+  the security/openssh-portable66 port.
+
+  The LPK option was removed from security/openssh-portable as it has been
+  deprecated since May 2013. Use AuthorizedKeysCommand as a replacement.
+
+20141215:
+  AFFECTS: users of comms/spandsp-devel
+  AUTHOR: pawel@FreeBSD.org
+
+  comms/spandsp has been upgraded to version 0.0.6
+  comms/spandsp-devel is now deprecated and set for removal, all ports using
+  it were converted to use newer comms/spandsp. Before upgrade you must
+  remove comms/spandsp-devel so that ports can pick up new dependency:
+
+	# pkg delete -f spandsp-devel
+
+20141215:
+  AFFECTS: users of emulators/linux_base-f10 and emulators/linux_base-c6
+  AUTHOR: sbruno@freebsd.org
+
+  The CentOS ports are now the default for stable/10 (after revision 275807).
+  See UPDATING entry 20141209 for details on migration of systems.
+
+20141214:
+  AFFECTS: users of TeXLive
+  AUTHOR: hrs@FreeBSD.org
+
+  Several scripts in print/texlive-base have been moved to
+  devel/tex-kpathsea.  Upgrading them can fail because texlive-base
+  depends on tex-kpathsea, and the new tex-kpathsea tries to install
+  files which were installed by the old texlive-base.  The following
+  error message indicates this situation:
+
+    pkg-static: tex-kpathsea-6.2.0_1 conflicts with texlive-base-20140525_3 (installs files into the same place).  Problematic file: /usr/local/bin/kpsewhere
+
+  To solve this problem, remove both of tex-kpathsea and texlive-base first
+  and install the new versions:
+
+	# pkg delete -f tex-kpathsea texlive-base
+
+20141209:
+  AFFECTS: users of emulators/linux_base-f10 and emulators/linux_base-c6
+  AUTHOR: xmj@freebsd.org
+
+  The CentOS ports infrastructure has replaced Fedora 10 as default.
+
+  1. Please delete all remaining f10 ports/packages:
+
+     # pkg delete -f linux_base-f10 linux-f10-\*
+
+  2. Persistently update the Linux kernel version in /etc/sysctl.conf:
+
+     compat.linux.osrelease=2.6.18
+
+    This step is necessary on all FreeBSD versions, apart from 11.0-CURRENT
+    (after revision 271982).
+
+  3. Reinstall all software depending on Linux emulation.
+     As an example, reinstall linux-firefox:
+
+     # portmaster -r linux-firefox
+       or
+     # portupgrade -f www/linux-firefox
+       or
+     # pkg install linux-firefox
+
+  If difficulties are encountered, please follow the UPDATING entry 20140922
+  but skip step 2 (OVERRIDE_LINUX_BASE_PORT and OVERRIDE_LINUX_NONBASE_PORTS
+  in /etc/make.conf). In case these steps do not fix the issues, please submit
+  an issue report in Bugzilla and send an email to FreeBSD's emulation@ mailing
+  list.
+
+  Users who need to continue using Fedora 10 base and userland should do the
+  following instead:
+
+  1. Add these lines to /etc/make.conf:
+
+      OVERRIDE_LINUX_BASE_PORT=f10
+      OVERRIDE_LINUX_NONBASE_PORTS=f10
+
+  2. Downgrade the Linux kernel version in /etc/sysctl.conf on FreeBSD versions
+     newer than and including 11.0-CURRENT (after revision 271982).
+
+       compat.linux.osrelease=2.6.16
+
+  This is all that is needed to continue using an existing Fedora 10 Linux base
+  and userland.
+
+
+20141208:
+  AFFECTS: users of ports-mgmt/poudriere, ports-mgmt/poudriere-devel
+  AUTHOR: bdrewery@FreeBSD.org
+
+  8.4 jails created with Poudriere 3.1, or poudriere-devel-3.0.99.20141117
+  should be recreated with 'jail -d' and 'jail -c'. This fixes pkg(8)
+  crashes.
+
+20141208:
+  AFFECTS: users of databases/postgresql??-(server|client)
+  AUTHOR: marino@FreeBSD.org
+
+  PostgreSQL version 9.3 is now the default. To upgrade from a version
+  lower than 9.3, follow the instructions on the PostgreSQL.org website.
+  http://www.postgresql.org/docs/9.3/interactive/upgrading.html
+  Please note that the pg_upgrade program is installed by the
+  databases/postgresql93-contrib port
+
+  When using binary packages, if you only use the client port, you can
+  issue the following command to follow the default version:
+
+  # pkg set -o databases/postgresql92-client:databases/postgresql93-client
+
+20141205:
+  AFFECTS: users of polish/kadu
+  AUTHOR: pawel@FreeBSD.org
+
+  Before running kadu 1.x for the first time upstream developers
+  advise to backup your ~/.kadu directory.
+
+20141203:
+  AFFECTS: users of ports-mgmt/poudriere
+  AUTHOR: bdrewery@FreeBSD.org
+
+  Poudriere has been updated to 3.1.0. See the release notes at
+  https://github.com/freebsd/poudriere/wiki/release_notes_31 for
+  information on changed features and required setup.
+
+20141130:
+  AFFECTS: users of devel/gettext (close to everyone)
+  AUTHOR: tijl@FreeBSD.org
+
+  The devel/gettext port has been split up in devel/gettext-runtime, a
+  lightweight package containing runtime libraries, and devel/gettext-tools,
+  a package containing developer tools.  The devel/gettext port still exists
+  as a metaport.
+
+  You must first delete the existing installation of gettext and then
+  reinstall it.  This will break sudo, so you *must* do this in a root
+  shell (sudo -i) if you use sudo.
+
+  # pkg delete -f gettext
+  # portmaster devel/gettext
+
+  Or for portupgrade users:
+
+  # pkg delete -f gettext
+  # portinstall devel/gettext
+
+  Or for binary users:
+
+  # pkg delete -f gettext
+  # pkg upgrade
+
+20141127:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  There was a nasty bug introduced in the update below, it was introduced in
+  SVN revision 373476 and corrected in 373485.  If you get errors looking like
+  this one:
+
+  ===>   Registering installation for p5-Params-Util-1.07_1 as automatic
+  pkg-static: lstat(/usr/ports/devel/p5-Params-Util/work/stage/usr/local/./usr/local/lib/perl5/site_perl/mach/5.16/auto/Params/Util/.packlist): No such file or directory
+  *** [fake-pkg] Error code 74
+
+  You will have to wipe your ports tree clean.  If using portsnap, with:
+
+	portsnap extract
+
+  If using subversion:
+
+	svn revert -R
+
+20141127:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  The .packlist files are back, if you upgraded all your p5- ports yesterday
+  and need them, you will need to reinstall them again, see yesterday's update
+  for instructions.
+
+20141126:
+  AFFECTS: users of multimedia/x264
+  AUTHOR: xmj@FreeBSD.org
+
+  With the recent split of multimedia/x264 in library and binary and library
+  components, if an application that uses libx264 is updated before x264 itself,
+  multimedia/libx264 will conflict with the existing x264 package. Delete
+  this package before continuing any update that depends on it:
+
+	# pkg delete -f x264
+
+  Install the updated x264 and/or upgrade the other applications that
+  depend on libx264, such as ffmpeg.
+
+20141126:
+  AFFECTS: users of lang/perl5.*
+  AUTHOR: mat@FreeBSD.org
+
+  The directories where Perl modules are installed has changed.  All
+  affected ports' PORTREVISION have been bumped, so upgrading should
+  be as painless as possible.  The old directories have been kept in
+  the default Perl @INC to make it even more painless.
+
+  The default Perl has been switched to lang/perl5.18.  These examples
+  are for switching from lang/perl5.16, if you are running a different
+  version, replace lang/perl5.16 with the origin of the Perl you have
+  installed.
+
+  Binary package users:
+
+    # pkg upgrade -f
+
+  Portupgrade users:
+    0) Fix pkgdb.db (for safety):
+        pkgdb -Ff
+
+    1) Reinstall new version of Perl (5.18):
+        portupgrade -o lang/perl5.18 -f lang/perl5.16
+
+    2) Reinstall everything that depends on Perl:
+        portupgrade -fr lang/perl5.18
+
+  Portmaster users:
+        portmaster -o lang/perl5.18 lang/perl5.16
+
+        Conservative:
+        portmaster p5-
+
+        Comprehensive (but perhaps overkill):
+        portmaster -r perl5-
+
+  Note: If the "perl5-" glob matches more than one port you will need to specify
+        the name of the installed Perl package explicitly.  You can get its name
+        by running: pkg info perl5
+
+20141125:
+  AFFECTS: users of EFL libraries
+  AUTHOR: gblach@FreeBSD.org
+
+  EFL libraries has been merged into one port. Before installing devel/efl
+  you must deinstall old EFL libraries:
+
+  # pkg delete -f eina eet evas evas-\* ecore\* eio efreet embryo edje \
+      ethumb emotion
+  # make -C /usr/ports/devel/efl install clean
+
+20141125:
+  AFFECTS: users of x11-wm/e17-module*
+  AUTHOR: gblach@FreeBSD.org
+
+  Enlightenment has been updated to 0.19.1. Some of e-modules can't be build
+  with updated Enlightenment, these modules has been marked as broken.
+  E-modules which work with new Enlightenment has been renamed to
+  x11-wm/e-module-*. To update these modules you must call the following
+  commands (substituting the name of module in place *):
+
+  # portmaster -o x11-wm/e-module-* x11-wm/e17-module-*
+  # portmaster -o x11-wm/e-modules x11-wm/e17-modules
+  or
+  # portupgrade -fo x11-wm/e-module-* x11-wm/e17-module-*
+  # portupgrade -fo x11-wm/e-modules x11-wm/e17-modules
+
+20141123:
+  AFFECTS: users of security/heimdal
+  AUTHOR: hrs@FreeBSD.org
+
+  The header and library files have been moved from PREFIX/{include,lib} to
+  PREFIX/{include,lib}/heimdal at r373047 to fix a library dependency
+  confusion when software attempts to link a Heimdal library in base and
+  an external library in LOCALBASE/lib at the same time.
+
+  All of packages which depend on security/heimdal have to be recompiled
+  and reinstalled because of this library location change.
+
+20141119:
+  AFFECTS: users of x11/gnome2, graphics/clutter and lang/vala
+  AUTHOR: kwm@FreeBSD.org
+
+  GNOME 3.14 was imported. Because this is a big change some manual help is
+  needed. Please use the following instructions to update.
+
+  Make a list of the installed ports:
+  # pkg info > ~/installed-ports-list
+
+  Delete the old and conflicting packages:
+  # pkg delete clutter gnome-utils gnome-panel gnome-keyring vala-vapigen \
+      guile gcalctool gnome-media libgnomekbd gnome-themes at-spi
+  # pkg delete gnome-screensaver gnome-applets bug-buddy \
+      evolution-exchange evolution-webcal gnome-system-tools \
+      seahorse-plugins gnome-control-center
+
+  For package users the following lines will be enough:
+  # pkg upgrade
+  # pkg install gnome3
+
+  For ports users should do the following:
+  # portmaster -a
+  # portmaster x11/gnome3
+
+  After these steps, check with the list we made earlier if your favorite
+  ports are still installed, and reinstall them if needed.
+
+20141117:
+  AFFECTS: users of security/openssh-portable
+  AUTHOR: bdrewery@FreeBSD.org
+
+  Most of the optional patches for OpenSSH do not apply to the 6.7 update yet.
+  The 6.6 version has been copied to security/openssh-portable66 if you require
+  the use of one of the optional ports.
+
+20141109:
+  AFFECTS: users of multimedia/mediabrowser
+  AUTHOR: woodsb02@gmail.com
+
+  The default MediaBrowser database/configuration/logs/media metadata
+  storage directory has moved from /usr/local/mediabrowser to
+  /var/db/mediabrowser. Users are advised either to move the contents of
+  the old directory to the new location, or to add a mediabrowser_data_dir
+  entry to /etc/rc.conf.
+
+20141029:
+  AFFECTS: users of devel/libvirt
+  AUTHOR: jgh@FreeBSD.org
+
+  Application state and resource information has been changed from older
+  path of /usr/local/var to /var. Users are advised to copy over contents
+  of old var directory to new location if they wish to preserve resources
+  from the old setup.
+
+20141019:
+  AFFECTS: users of x11/kde4-runtime
+  AUTHOR: kde@FreeBSD.org
+
+  KDE SC ports have been updated to 4.14.2. Several files have been
+  moved between packages, therefore the following action is required
+  before running any pkg/port upgrade utility:
+
+	# pkg delete -f kde-runtime-4\*
+
+20141008:
+  AFFECTS: users of lang/ruby19
+  AUTHOR: swills@FreeBSD.org
+
+  The default ruby version has been updated from 1.9 to 2.0.
+
+  If you compile your own ports you may keep 1.9 as the default version by
+  adding the following lines to your /etc/make.conf file:
+
+  #
+  # Keep ruby 1.9 as default version
+  #
+  DEFAULT_VERSIONS+=ruby=1.9
+
+  If you wish to update to the new default version, you need to first stop any
+  software that uses ruby. Then, you will need to follow these steps, depending
+  upon how you manage your system.
+
+  If you use pkgng, simply upgrade:
+  # pkg upgrade
+
+  If you use portmaster, install new ruby, then rebuild all ports that depend
+  on ruby:
+  # portmaster -o lang/ruby20 lang/ruby19
+  # portmaster -R -r ruby-2.0
+
+  If you use portupgrade, install new ruby, then rebuild all ports that depend
+  on ruby:
+
+  # pkg delete -f ruby ruby-iconv portupgrade
+  # make -C /usr/ports/ports-mgmt/portupgrade install clean
+  # pkg set -o lang/ruby19:lang/ruby20
+  # portupgrade -x ruby-2.0.\* -fr lang/ruby20
+
+20141003:
+  AFFECTS: xorg users
+  AUTHOR: bapt@FreeBSD.org
+
+  The WITH_NEW_XORG setting has been activated by default on all versions
+  of FreeBSD, which allows us to have packages for xorg 1.12 and kde4.
+
+  Please be aware that on systems that only support syscons
+  switching virtual terminals or exiting X
+  results in a black screen or the last image of their desktop
+  (like a screenshot) being presented.  Commands can still be typed blindly.
+
+  Most, if not all, systems should be using vt(4) and this can be enabled
+  by setting kern.vty=vt in /boot/loader.conf and reboot to activate.
+
+20141001:
+  AFFECTS: xorg users
+  AUTHOR: bapt@FreeBSD.org
+
+  The WITH_NEW_XORG setting has been activated by default on FreeBSD 10.0
+  and above, which allows us to have packages for xorg 1.12 and kde4.
+
+  Please be aware that on systems that only support syscons
+  switching virtual terminals or exiting X
+  results in a black screen or the last image of their desktop
+  (like a screenshot) being presented.  Commands can still be typed blindly.
+
+  Most, if not all, systems should be using vt(4) and this can be enabled
+  by setting kern.vty=vt in /boot/loader.conf and reboot to activate.
+
+20140930:
+  AFFECTS: users of mail/maildrop
+  AUTHOR: madpilot@FreeBSD.org
+
+  Due to the way pkg works please note that the configuration
+  variables MAILDROP_SUID and MAILDROP_SGID, despite keeping their
+  old names, are now required to contain a valid username and
+  groupname existing on the system in which the package will be
+  installed, while in the past numeric uids and gids worked fine.
+
+  Wrong values will cause pkg to skip installing the setuid binaries
+  on the system.
+
+  Please check your configuration.
+
+20140929:
+  AFFECTS: users of comms/usbmuxd
+  AUTHOR: avilla@FreeBSD.org
+
+  libusbmuxd.so was split from comms/usbmuxd into comms/libusbmuxd.
+  Remove usbmuxd before upgrading to avoid conflicts:
+
+	# pkg delete -f usbmuxd
+
+  If you need the daemon usbmuxd(1), you can reinstall the package
+  after the upgrade.
+
+20140928:
+  AFFECTS: users of deskutils/calibre
+  AUTHOR: madpilot@FreeBSD.org
+
+  The dependency on graphics/py-imaging in calibre has been changed
+  to using the graphics/py-pillow port.
+
+  Due to this change automatic updating of the port will not work
+  correctly.
+
+  It is suggested to remove calibre and py-imaging from the system
+  and then reinstall calibre again using binary packages or ports.
+
+20140927:
+  AFFECTS: users of net/foreman-proxy
+  AUTHOR: mm@FreeBSD.org
+
+  In version 1.6 Foreman Smart Proxy splits its configuration into multiple
+  ruby files located in PREFIX/etc/foreman-proxy/settings.d.
+  The configuration of each service (dhcp, dhs, bmc, etc.) has been moved
+  into a dedicated file.
+
+  You can use a bundled script to convert your old settings to new settings:
+  PREFIX/share/foreman/extra/migrate_settings.rb
+
 20140926:
   AFFECTS: users of shells/bash
   AUTHOR: bdrewery@FreeBSD.org
 
   Bash supports a feature of exporting functions in the environment with
-  export -f.  Running bash with exported functioned in the environment will
-  then import those functions into the environment.  This resulted in
-  security issues CVE-2014-6271 and CVE-2014-7169, commonly known as
-  "shellshock".
+  export -f.  Running bash with exported functions in the environment will
+  then import those functions into the environment of the script being ran.
+  This resulted in security issues CVE-2014-6271 and CVE-2014-7169, commonly
+  known as "shellshock".  It also can result in poorly written scripts being
+  tricked into running arbitrary commands.
 
   To fully mitigate against this sort of attack we have applied a non-upstream
   patch to disable this functionality by default.  You can execute bash
@@ -29,7 +1223,7 @@ you update your ports collection, before attempting any port upgrades.
   turned on by default to make such functionality available to users
   of binary packages.
 
-  Some care should be taken before upgrading by people not using lua
+  Some care should be taken before upgrading by people not using Lua
   to avoid the sample extensions.lua file from being loaded on reload
   after updating the asterisk port/pkg.
 
@@ -37,9 +1231,9 @@ you update your ports collection, before attempting any port upgrades.
   to disable the option before updating.
 
   People using binary packages(or not wanting to disable the LUA
-  option in the port) not using the lua functionality should add:
+  option in the port) not using the Lua functionality should add:
 
-  noload => pbx_lua.so 
+	noload => pbx_lua.so
 
   to the PREFIX/etc/asterisk/modules.conf file, if using the
   autoload=yes option in that same file. People not autoloading
@@ -55,30 +1249,34 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of emulators/linux_base-f10 and emulators/linux_base-c6
   AUTHOR: xmj@FreeBSD.org
 
-  The complete drop-in replacement linux-c6 port infrastructure is in ports 
-  and will shortly replace the current linux-f10- ports as default.
+  The complete drop-in replacement linux-c6 port infrastructure is in
+  ports and will shortly replace the current linux-f10- ports as default.
 
-  To switch to the linux-c6 infrastructure you should:
+  To switch to the linux-c6 infrastructure:
 
-  0. Backup all your vital information!
-  1. Remove the current linux base port and all linux-f10- ports.
-  2. Add the following lines to /etc/make.conf:
+  0. Back up all your vital information!
+  1. Remove the current linux base port and all linux-f10- ports:
+       # pkg delete -f linux_base-f10 linux-f10-\*
+  2. Add these lines to /etc/make.conf:
        OVERRIDE_LINUX_BASE_PORT=c6
        OVERRIDE_LINUX_NONBASE_PORTS=c6
-  3. Make sure no linux application is running.
-  4. Set appropriate sysctl (compat.linux.osrelease=2.6.18).
+  3. Make sure no Linux application is running.
+  4. Update the Linux kernel version in /etc/sysctl.conf:
+       compat.linux.osrelease=2.6.18
+     Make it take effect immediately:
+       # sysctl compat.linux.osrelease=2.6.18
   5. Install emulators/linux-c6.
 
-  That should be enough in most circumstances. If you experience difficulties,
-  please be sure to expand step 1 to:
+  These steps are usually sufficient. If there are difficulties, expand
+  step 1 to:
 
-  1a. Remove all ports which depend on linux base port.
-  1b. Remove linux base port.
-  1c. Clean /compat/linux/ directory.
+  1a. Remove all ports which depend on the linux base port.
+  1b. Remove the linux base port.
+  1c. Clean the /compat/linux/ directory.
 
-  Should you encounter any other difficulties not fixed by these extended
-  steps, please submit an issue report in Bugzilla and send an email to FreeBSD's
-  emulation@ mailing list.
+  If there are any other difficulties not fixed by these extended steps,
+  please submit an issue report in Bugzilla and send an email to
+  FreeBSD's emulation@ mailing list.
 
 20140909:
   AFFECTS: users seeing build errors about missing *.la files
@@ -101,9 +1299,9 @@ you update your ports collection, before attempting any port upgrades.
   (Replace libfoo\.la with the *.la file that is missing.)
 
   This command will print a list of *.la files that refer to the missing *.la
-  file and what package they belong to.  First, where it says "not found in the
-  datatbase", remove the *.la file.  After removing all such files, where it
-  says "installed by package X", rebuild X.  Eventually the list printed by
+  file and what package they belong to.  First, where it says "not found in
+  the database", remove the *.la file.  After removing all such files, where
+  it says "installed by package X", rebuild X.  Eventually the list printed by
   that command will be empty and the build error should be gone.
 
 20140826:
@@ -139,7 +1337,7 @@ you update your ports collection, before attempting any port upgrades.
   a drop-in replacement for libjpeg.so. The drop-in replacement has been
   split off into graphics/jpeg-turbo; libjpeg-turbo now installs only
   libturbojpeg.so.
-  
+
   If you were using the libjpeg.so from graphics/libjpeg-turbo, you
   should install graphics/jpeg-turbo AFTER upgrading the libjpeg-turbo
   port.
@@ -195,36 +1393,92 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of graphics/ilmbase and graphics/OpenEXR
   AUTHOR: mandree@FreeBSD.org
 
-  libgcrypt has been updated to 1.6.1 and all shared libraries versions have
-  been bumped. So you need to rebuild all applications that depend on
-  libgcrypt.
+  The OpenEXR and ilmbase (Industrial Light and Magic) shared object
+  names have changed.  You must rebuild all packages that require either
+  of these libraries, by using one of these commands:
 
-  # portmaster -r libgcrypt
+  # portmaster -r ilmbase -r OpenEXR
     or
-  # portupgrade -fr security/libgcrypt
+  # portupgrade -fr graphics/ilmbase graphics/OpenEXR
+
+  The PORTREVISIONs of all ports that require ilmbase and/or OpenEXR
+  have been bumped.
+
+20140810:
+  AFFECTS: users of lang/ghc and */hs-*
+  AUTHOR: haskell@FreeBSD.org
+
+  The Glorious Glasgow Haskell Compiler has been updated to version
+  7.8.3 and Haskell Platform to 2014.2.0.0.  Hence it is recommended to
+  rebuild or reinstall all the dependent ports and the lang/ghc port
+  itself by one of the following commands:
+
+  # portmaster -w -r ghc
     or
-  # pkg install -fR security/libgcrypt
+  # portupgrade -fr lang/ghc
+
+  If you use pkg(8) then it is just safer to remove all the GHC-dependent
+  packages along with GHC and reinstall everything from scratch.
+  Something alone these lines may work:
+
+  # pkg query "%ro" > ghc-pkgs.txt
+  # pkg delete -y lang/ghc
+  # pkg install -y `cat ghc-pkgs.txt | grep -Ev "/hs-(haskeline|terminfo|transformers|xhtml)"
+
+20140803:
+  AFFECTS: users of security/p5-openxpki
+  AUTHOR: wg@FreeBSD.org
+
+  The following ports have been integrated into security/p5-openxpki:
+    security/p5-openxpki-client
+    security/p5-openxpki-client-scep
+    security/p5-openxpki-deployment
+
+  Before update make sure to remove the old packages:
+
+  # pkg remove security/p5-openxpki-client
+  # pkg remove security/p5-openxpki-client-scep
+  # pkg remove security/p5-openxpki-deployment
+
+20140802:
+  AFFECTS: users of astro/stellarium
+  AUTHOR: danfe@FreeBSD.org
+
+  Stellarium was updated to version 0.13.0.  It's a new major release, and
+  it is based on Qt version 5 now.  For those who are not comfortable with
+  upgrading to the new Qt, previous Stellarium version (0.12.4) was copied
+  over to `astro/stellarium-qt4' port.
+
+20140731:
+  AFFECTS: users of www/ajaxplorer
+  AUTHOR: madpilot@FreeBSD.org
+
+  The ajaxplorer project was renamed to pydio.
+
+  Due to this update some manual steps will need to be performed
+  after updating the port.
+
+  IMPORTANT: Perform a backup of the ajaxplorer installation and
+  the databases backing it(if you're using that feature).
+
+  First manually remove the ajaxplorer port and install www/pydio
+  afterwards.
+
+  Further steps will be available in the pkg-message, which can
+  be shown with these commands:
+
+	# pkg info -D pydio
+
+  Please also read the upgrading notes at:
+
+	http://pyd.io/pydio-core-5.2.0#Upgrading
 
 20140728:
   AFFECTS: users of net/GeoIP
   AUTHOR: adamw@FreeBSD.org
 
   GeoIP no longer ships with the GeoIP database. To continue using GeoIP,
-  you MUST fetch it first by running geoipupdate.sh.
-
-20140728:
-  AFFECTS: users of security/libtasn1 and any port that depends on it
-  AUTHOR: novel@FreeBSD.org
-
-  libtasn1 has been updated to 4.0 and all shared libraries versions have
-  been bumped. So you need to rebuild all applications that depend on
-  libtasn1.
-
-  # portmaster -r libtasn1
-    or
-  # portupgrade -fr security/libtasn1
-    or
-  # pkg install -fR security/libtasn1
+  you MUST fetch the database after upgrading by running geoipupdate.sh.
 
 20140727:
   AFFECTS: users of comms/qpage
@@ -261,7 +1515,8 @@ you update your ports collection, before attempting any port upgrades.
   All applications that used libevent1 must be rebuilt.
 
   Please remove libevent1 before upgrading, by running:
-  	pkg delete -f libevent
+
+	pkg delete -f libevent
 
 20140723:
   AFFECTS: users of security/scanlogd
@@ -271,8 +1526,8 @@ you update your ports collection, before attempting any port upgrades.
   scanlogd user and group must be removed before updating to not conflict
   with the one created by the port:
 
-    pw userdel scanlogd
-    pw groupdel scanlogd
+	pw userdel scanlogd
+	pw groupdel scanlogd
 
 20140723:
   AFFECTS: users of TeX
@@ -285,9 +1540,9 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of mail/exim
   AUTHOR: vsevolod@FreeBSD.org
 
-  The behaviour of expansion of arguments to math comparison functions (<, <=,
-  =, =>, >) was unexpected, expanding the values twice. Please update your
-  configuration if you have relied on such an expansion.
+  The behaviour of expansion of arguments to math comparison functions (<,
+  <=, =, =>, >) was unexpected, expanding the values twice. Please update
+  your configuration if you have relied on such an expansion.
 
 20140722:
   AFFECTS: users of multimedia/mediainfo
@@ -296,7 +1551,7 @@ you update your ports collection, before attempting any port upgrades.
   mediainfo has been split into 3 ports: libzen, libmediainfo and mediainfo.
   Please uninstall mediainfo before you update this port.
 
-20140722
+20140722:
   AFFECTS: users of games/bsdgames
   AUTHOR: adamw@FreeBSD.org
 
@@ -306,7 +1561,7 @@ you update your ports collection, before attempting any port upgrades.
 
 20140714:
   AFFECTS: users of databases/db6
-  AUTHOR:  mandree@FreeBSD.org
+  AUTHOR: mandree@FreeBSD.org
 
   Oracle Berkeley DB 6 has been upgraded to version 6.1.19.  Since the
   previous 6.0 version, the log file format has changed in 6.1.
@@ -368,7 +1623,7 @@ you update your ports collection, before attempting any port upgrades.
   AUTHOR: robak@FreeBSD.org
 
   The lang/rust port was updated to 0.11 and is now only working on FreeBSD
-  versions 10 and 11 - the 9.x support has been removed by upstream.
+  versions 10 and 11 -- the 9.x support has been removed by upstream.
 
 20140709:
   AFFECTS: users of security/pam-pgsql
@@ -522,16 +1777,14 @@ you update your ports collection, before attempting any port upgrades.
         portmaster -w -r icu
   If you use portupgrade:
         portupgrade -fr devel/icu
-  If you use pkgng with binary packages:
-        pkg install -fR devel/icu
 
 20140610:
   AFFECTS: users of www/firefox, www/seamonkey, mail/thunderbird, www/libxul
   AUTHOR: gecko@FreeBSD.org
 
   Gecko ports were switched to use more system libraries. Some of them
-  must be built with certain options unset (default).
-  - audio/soundtouch has to be installed with INTEGER_SAMPLES option disabled
+  must be built with certain options unset (default).  `audio/soundtouch'
+  has to be installed with INTEGER_SAMPLES option disabled.
 
 20140604:
   AFFECTS: users of dns/dnscrypt-proxy
@@ -606,7 +1859,7 @@ you update your ports collection, before attempting any port upgrades.
 20140526:
   AFFECTS: users of lang/lua
 
-  lang/lua has been relaced by lang/lua51
+  lang/lua has been replaced by lang/lua51.
 
   For port builds system please follow the following instructions:
 
@@ -968,8 +2221,6 @@ you update your ports collection, before attempting any port upgrades.
   # portmaster -r apr
     or
   # portupgrade -r devel/apr1
-    or
-  # pkg install -fR devel/apr1
 
 20140318:
   AFFECTS: users of net/openldap24-server
@@ -1351,7 +2602,8 @@ you update your ports collection, before attempting any port upgrades.
 
   The default path for overview files has changed.
   Rebuild your overview files after the update with:
-  su - news /usr/local/libexec/cnews/nov/initov
+
+	su - news /usr/local/libexec/cnews/nov/initov
 
 20131217:
   AFFECTS: users of databases/ruby-bdb or ports-mgmt/portupgrade and databases/db5 or databases/db6
@@ -3538,9 +4790,10 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of net/activemq
   AUTHOR: tj@FreeBSD.org
 
-  After reinstalling the port if you wish to use the datastore used before
-  or have any undelivered persistent messages add the following to rc.conf
-    activemq_data=/usr/local/activemq
+  After reinstalling the port, if you wish to use the datastore used before
+  or have any undelivered persistent messages add the following to rc.conf:
+
+	activemq_data=/usr/local/activemq
 
 20121022:
   AFFECTS: users of net/samba36
@@ -3601,14 +4854,6 @@ you update your ports collection, before attempting any port upgrades.
 
   # pkg_delete -f seamonkey-enigmail-1.4.3 thunderbird-esr-enigmail-1.4.3 \
     thunderbird-enigmail-1.4.3
-
-20121010:
-  AFFECTS: users of www/firefox and www/seamonkey
-  AUTHOR: gecko@FreeBSD.org
-
-  When using Firefox or SeaMonkey compiled with ALSA option ON it may
-  crash on assert in alsa_refill_stream as described in ports/170473.
-  To workaround enable BUFSZ_P2 in audio/alsa-plugins or use PULSEAUDIO.
 
 20121010:
   AFFECTS: users of CURRENT (OSVERSION >= 1000017)
@@ -4306,8 +5551,9 @@ you update your ports collection, before attempting any port upgrades.
   AFFECTS: users of graphics/gdal
   AUTHOR: sunpoet@FreeBSD.org
 
-  Language bindings (Perl, PHP, Python and Ruby) have been moved to separate
+  Language bindings (Perl, PHP, Python, and Ruby) were moved to separate
   ports. Please install them if required. The new ports are:
+
     Perl binding:   graphics/p5-Geo-GDAL
     PHP binding:    graphics/php-gdal
     Python binding: graphics/py-gdal
@@ -10659,5 +11905,7 @@ or
   The default installation is now configured for running bitlbee as user
   'nobody' by default.  Make sure any existing configuration files are
   readable by that user.
+
+
 
 $FreeBSD$

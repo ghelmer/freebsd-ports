@@ -3,9 +3,10 @@
 
 PORTNAME=	io
 PORTVERSION=	2013.12.04
+PORTREVISION=	3
 CATEGORIES=	lang
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small prototype-based programming language
 
 LICENSE=	BSD3CLAUSE
@@ -16,8 +17,7 @@ OPTIONS_GROUP=	ADDONS
 USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	stevedekorte
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	23afbcc
+GH_TAGNAME=	23afbcc
 MAKE_JOBS_UNSAFE=yes
 
 USE_LDCONFIG=	yes

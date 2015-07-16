@@ -3,7 +3,7 @@
 
 PORTNAME=	faac
 PORTVERSION=	1.28
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-src/${PORTNAME}-${PORTVERSION}
 
@@ -14,11 +14,9 @@ LIB_DEPENDS=	libmp4v2.so:${PORTSDIR}/multimedia/mp4v2
 
 RESTRICTED=	Distribution in binary form is prohibited
 
-USES=		dos2unix gmake
-USE_BZIP2=	yes
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf libtool
-ACLOCAL_ARGS=	-I . -I ${LOCALBASE}/share/aclocal
-AUTOMAKE_ARGS=	--add-missing
+USES=		autoreconf dos2unix gmake libtool tar:bzip2
+INSTALL_TARGET=	install-strip
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-mp4v2
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -28,8 +26,5 @@ post-patch:
 	@${ECHO_CMD} "" >> ${WRKSRC}/libfaac/psych.h
 	@${REINPLACE_CMD} -e 's|<mp4\.h>|<mp4v2/mp4v2.h>|g' \
 		${WRKSRC}/frontend/main.c \
-
-pre-configure:
-	@cd ${WRKSRC}; ${SETENV} ${AUTOTOOLS_ENV} ${LIBTOOLIZE} --automake
 
 .include <bsd.port.mk>

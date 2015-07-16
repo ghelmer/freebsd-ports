@@ -1,26 +1,24 @@
 # $FreeBSD$
 
 PORTNAME=	cbsd
-PORTVERSION=	10.0.5
+PORTVERSION=	10.1.4
+DISTVERSIONPREFIX=	v
 PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.bsdstore.ru/downloads/ \
-		GH
 
 MAINTAINER=	olevole@olevole.ru
-COMMENT=	Yet another FreeBSD Jail Management Utility
+COMMENT=	Yet another FreeBSD Jail and Bhyve Management Utility
 
 LICENSE=	BSD2CLAUSE
 
 RUN_DEPENDS=	rsync:${PORTSDIR}/net/rsync \
 		sudo:${PORTSDIR}/security/sudo \
 		sqlite3:${PORTSDIR}/databases/sqlite3
-LIB_DEPENDS=	libssh2.so:${PORTSDIR}/security/libssh2
+LIB_DEPENDS=	libssh2.so:${PORTSDIR}/security/libssh2 \
+		libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	olevole
-GH_PROJECT=	cbsd
-GH_COMMIT=	01f481c
 
 USE_RC_SUBR=	cbsdd cbsdrsyncd
 
@@ -34,18 +32,22 @@ CBSD_HOME?=	${PREFIX}/cbsd
 USERS=	${PORTNAME}
 GROUPS=	${PORTNAME}
 
-.if ${OSVERSION} < 901000
-IGNORE=	does not work on FreeBSD < 9.1
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000000
+IGNORE=	does not support FreeBSD versions < 10.0
 .endif
 
-.if ${OSVERSION} < 902001
-RUN_DEPENDS+=	sysrc:${PORTSDIR}/sysutils/sysrc
-.endif
+do-install:
+	@${ECHO} "Installing in ${CBSD_HOME}"
+	${MKDIR} ${STAGEDIR}${CBSD_HOME}
+	${CP} -a ${WRKSRC}/ ${STAGEDIR}${CBSD_HOME}
+	${INSTALL_MAN} ${WRKSRC}/man/cbsd.8 ${STAGEDIR}${PREFIX}/man/man8/cbsd.8
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/cbsdsh/cbsd ${STAGEDIR}${PREFIX}/bin
 
 post-install:
+	${CAT} ${PKGDIR}/pkg-plist-chunk > ${TMPPLIST} ;
 	@${FIND} -s ${STAGEDIR}${CBSD_HOME} -not -type d | ${SORT} | \
 	${SED} -e 's#^${STAGEDIR}${PREFIX}/##' >> ${TMPPLIST}
-	@${FIND} ${STAGEDIR}${CBSD_HOME} -type d | ${SORT} -r | \
-	${SED} -e 's,^${STAGEDIR}${PREFIX}/,@dirrm ,' >> ${TMPPLIST}
+	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/bsdconfig
+	@${LN} -sf ${CBSD_HOME}/share/bsdconfig/cbsd ${STAGEDIR}${PREFIX}/libexec/bsdconfig/cbsd
 
 .include <bsd.port.post.mk>

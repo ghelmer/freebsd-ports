@@ -5,8 +5,7 @@ PORTNAME=	data
 DISTVERSION=	1.32b-3
 PORTREVISION=	2
 CATEGORIES=	games
-MASTER_SITES=	${MASTER_SITE_IDSOFTWARE}
-MASTER_SITE_SUBDIR=	quake3/linux
+MASTER_SITES=	IDSOFTWARE/quake3/linux
 PKGNAMEPREFIX=	${Q3PKGNAMEPREFIX}
 DISTNAME=	linuxq3apoint-${DISTVERSION}.x86
 EXTRACT_SUFX=	.run
@@ -17,6 +16,7 @@ COMMENT=	Quake III Arena data files
 DATADIR=	${Q3DIR}
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
+NO_ARCH=	yes
 
 SUB_FILES=	pkg-message
 
@@ -32,8 +32,8 @@ TEAMARENA_DESC=		Install Quake III Team Arena data files
 do-extract:
 	@${RM} -rf ${WRKDIR}
 	@${MKDIR} ${WRKDIR}
-	@cd ${WRKDIR} && ${TAIL} +356 \
-		${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} | ${TAR} xzf -
+	@${TAIL} +356 ${_DISTDIR}/${DISTNAME}${EXTRACT_SUFX} | \
+		${TAR} xzf - -C ${WRKDIR}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

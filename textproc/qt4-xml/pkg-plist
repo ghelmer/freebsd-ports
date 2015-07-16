@@ -48,7 +48,6 @@
 %%QT_INCDIR%%/QtXml/qdom.h
 %%QT_INCDIR%%/QtXml/qxml.h
 %%QT_INCDIR%%/QtXml/qxmlstream.h
-%%QT_LIBDIR%%/libQtXml.la
 %%QT_LIBDIR%%/libQtXml.prl
 %%QT_LIBDIR%%/libQtXml.so
 %%QT_LIBDIR%%/libQtXml.so.4
@@ -56,7 +55,3 @@
 %%QT_LIBDIR%%/libQtXml.so.%%FULLVER%%
 %%DEBUG%%%%QT_LIBDIR%%/libQtXml.so.%%FULLVER%%.debug
 libdata/pkgconfig/QtXml.pc
-@dirrmtry %%QT_LIBDIR%%
-@dirrm %%QT_INCDIR%%/QtXml
-@dirrmtry %%QT_INCDIR%%/Qt
-@dirrmtry %%QT_INCDIR%%

@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	xcb-util
-PORTVERSION=	0.3.9
-PORTREVISION=	3
+PORTVERSION=	0.4.0
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://xcb.freedesktop.org/dist/
 
 MAINTAINER=	garga@FreeBSD.org
-COMMENT=	A module with libxcb/libX11 extension/replacement libraries
+COMMENT=	Module with libxcb/libX11 extension/replacement libraries
 
 XORG_CAT=	lib
 USES=		gmake tar:bzip2

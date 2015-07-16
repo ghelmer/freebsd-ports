@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	portupgrade
-PORTVERSION=	2.4.12
-PORTREVISION=	1
+PORTVERSION=	2.4.14
+PORTREVISION=	0
 PORTEPOCH=	2
 CATEGORIES=	ports-mgmt
-MASTER_SITES=	SF/portupgrade/pkgtools/dist/ \
+MASTER_SITES=	LOCAL/bdrewery/pkgtools/ \
 		http://mirror.shatow.net/freebsd/pkgtools/ \
-		LOCAL/bdrewery/pkgtools/
+		GH
 DISTNAME=	pkgtools-${PORTVERSION}
 
 MAINTAINER=	bdrewery@FreeBSD.org
@@ -19,6 +19,9 @@ LICENSE=	BSD3CLAUSE
 OPTIONS_DEFINE=	DOCS
 
 CONFLICTS_INSTALL=	portupgrade-devel-*
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	freebsd
 
 DIST_SUBDIR=	${PORTNAME}
 USES=		tar:bzip2 uidfix
@@ -39,11 +42,8 @@ INSTALL_TARGET=		install
 INSTALL_TARGET+=	install-doc
 .endif
 
-# Reported that ruby-bdb is BROKEN with 2.0
-.if ${RUBY_VER} != 2.0 && ${RUBY_VER} != 2.1
 # For PKG_DBDRIVER={bdb_btree,bdb_hash}
 RUN_DEPENDS+=	${RUBY_SITEARCHLIBDIR}/bdb.so:${PORTSDIR}/databases/ruby-bdb
-.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/compat/pkg

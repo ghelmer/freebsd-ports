@@ -3,12 +3,12 @@
 
 PORTNAME=	pcre
 PORTVERSION=	8.37
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION} \
-		ftp://ftp.csx.cam.ac.uk/pub/software/programming/%SUBDIR%/ \
-		ftp://ftp.fu-berlin.de/unix/misc/%SUBDIR%/ \
-		ftp://ftp.tin.org/pub/libs/%SUBDIR%/
-MASTER_SITE_SUBDIR=${PORTNAME}
+		ftp://ftp.csx.cam.ac.uk/pub/software/programming/${PORTNAME}/ \
+		ftp://ftp.fu-berlin.de/unix/misc/${PORTNAME}/ \
+		ftp://ftp.tin.org/pub/libs/${PORTNAME}/
 
 MAINTAINER=	bf@FreeBSD.org
 COMMENT=	Perl Compatible Regular Expressions library
@@ -17,17 +17,21 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
 GNU_CONFIGURE=	yes
-USES=		libtool:oldver pathfix readline tar:bzip2
+USES=		libtool pathfix tar:bzip2
 USE_LDCONFIG=	yes
 CONFIGURE_ARGS=	--enable-utf --enable-unicode-properties \
-		--enable-pcre8 --enable-pcre16 --enable-pcre32 \
-		--enable-pcretest-libedit
+		--enable-pcre8 --enable-pcre16 --enable-pcre32
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=		STACK_RECURSION
+OPTIONS_DEFINE=		DOCS LIBEDIT READLINE STACK_RECURSION
 OPTIONS_DEFAULT=	STACK_RECURSION
 
 STACK_RECURSION_DESC=	Use the stack for recursion during matching
+
+LIBEDIT_CONFIGURE_ENABLE=	pcretest-libedit
+
+READLINE_USES=			readline
+READLINE_CONFIGURE_ENABLE=	pcretest-libreadline
 
 .include <bsd.port.options.mk>
 
@@ -45,6 +49,11 @@ PORTDOCS=	*
 # prone to segfaults from stack exhaustion when matching certain patterns
 .if !${PORT_OPTIONS:MSTACK_RECURSION}
 CONFIGURE_ARGS+=	--disable-stack-for-recursion
+.endif
+
+# libedit
+.if ${PORT_OPTIONS:MLIBEDIT}
+CFLAGS+=	-I /usr/include/edit
 .endif
 
 # Optional knobs that accept positive integer parameters (see pcrebuild(3)):
@@ -95,6 +104,9 @@ CORELIMIT?=	/usr/bin/limits -Sc 0
 .endif
 TESTLOGS?=	RunGrepTest RunTest pcre_jit_test pcre_scanner_unittest \
 		pcre_stringpiece_unittest pcrecpp_unittest
+
+post-stage:
+	${LN} -s libpcre.so.1 ${STAGEDIR}${PREFIX}/lib/libpcre.so.3
 
 check regression-test test: build
 	@cd ${WRKSRC} ; \

@@ -11,14 +11,12 @@ COMMENT=	Convert XBase / FoxPro tables to PostgreSQL
 
 LICENSE=	GPLv3
 
-USE_XZ=		yes
-USES=		gmake
+USES=		gmake tar:xz
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/pgdbf \
 		%%DOCSDIR%%/README \
 		man/man1/pgdbf.1.gz
-PLIST_DIRS=	%%DOCSDIR%%
 
 .include <bsd.port.pre.mk>
 

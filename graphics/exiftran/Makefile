@@ -11,12 +11,12 @@ MASTER_SITES=	http://www.kraxel.org/releases/fbida/
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	Command line utility to transform jpeg files
 
-LIB_DEPENDS=	exif.12:${PORTSDIR}/graphics/libexif \
-		jpeg:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS=	libexif.so:${PORTSDIR}/graphics/libexif
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USES=		jpeg uidfix
 MAKE_ARGS+=	WRKSRC=${WRKSRC} BINDIR=${PREFIX}/bin MANDIR=${MANPREFIX}/man
 
 PLIST_FILES=	bin/exiftran bin/thumbnail.cgi \

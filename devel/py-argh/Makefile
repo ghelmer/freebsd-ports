@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	argh
-PORTVERSION=	0.23.0
-PORTREVISION=	1
+PORTVERSION=	0.26.1
+PORTREVISION=	0
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +12,7 @@ COMMENT=	Simple (Python) argparse wrapper
 
 LICENSE=	LGPL3
 
-# Python3 ready (installation tested)
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

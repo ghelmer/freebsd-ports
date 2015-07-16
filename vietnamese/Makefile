@@ -17,12 +17,8 @@
     SUBDIR += vn7to8
     SUBDIR += vnconvert
     SUBDIR += vnless
-    SUBDIR += vnlpr
     SUBDIR += vnpstext
     SUBDIR += vnroff
-    SUBDIR += vntex
-    SUBDIR += vnxfonts
     SUBDIR += x-unikey
-    SUBDIR += xvnkb
 
 .include <bsd.port.subdir.mk>

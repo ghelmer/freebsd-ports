@@ -6,8 +6,7 @@ PORTVERSION=	${SNAPSHOT}
 PORTREVISION=	${MAIN_PR}
 CATEGORIES=	lang
 MASTER_SITES=	http://downloads.dragonlace.net/src/:boot \
-		LOCAL/marino:boot ${MASTER_SITE_GCC}
-MASTER_SITE_SUBDIR=	${MS_SUBDIR}
+		LOCAL/marino:boot GCC/${MS_SUBDIR}
 DISTFILES=	${IDENTIFICATION}.tar.bz2
 
 MAINTAINER=	marino@FreeBSD.org
@@ -56,9 +55,6 @@ BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.freebsd.100B.tar.bz2
 .  endif
 .endif
 .if ${OPSYS} == DragonFly
-.  if ${OSREL:S/.//} < 37
-MODERN_BINUTILS=	yes
-.  endif
 BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.dragonfly.36A.tar.bz2
 .endif
 
@@ -139,7 +135,7 @@ APPLY_DIFFS+=	gcc-testsuite
 .endif
 
 .if ${PORT_OPTIONS:MNLS} && !${PORT_OPTIONS:MBOOTSTRAP}
-USES+=	gettext:build
+USES+=		gettext-tools
 EXTRA_CONFIG+=	--enable-nls
 .else
 EXTRA_CONFIG+=	--disable-nls
@@ -218,6 +214,11 @@ post-extract:
 	  ${WRKSRC}/gcc/config/dragonfly.h \
 	  ${WRKSRC}/gcc/config/i386/freebsd64.h \
 	  ${WRKSRC}/gcc/config/i386/freebsd.h
+.if defined(MODERN_BINUTILS)
+	# Use dwarf4-compatible addr2line (affects FreeBSD only)
+	${REINPLACE_CMD} -e 's|/usr/bin/addr2line|${PREFIX}/bin/addr2line|g' \
+	  ${WRKSRC}/gcc/ada/traceback_symbolic.c
+.endif
 
 do-configure:
 	${MKDIR} ${BUILDDIR}
@@ -268,20 +269,13 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/gnatdroid.exp \
 		${STAGEDIR}${PREFIX}/share/dejagnu/baseboards
 
-post-install:
-	cd ${STAGEDIR}${PKG_PREFIX}; ${FIND} * -type d -empty | \
-	   ${SORT} -dr | ${XARGS} ${RMDIR}
-	cd ${STAGEDIR}${PREFIX}; ${FIND} ${PORTNAME} share \
-	   \( -type f -or -type l \) | ${SORT} | \
-	   ${SED} -e 's/\/man\/man[1578]\/.*[1578]$$/&.gz/' >> ${TMPPLIST}
-	cd ${STAGEDIR}${PREFIX}; ${FIND} ${PORTNAME} -type d | ${SORT} -r | \
-	   ${SED} -e 's/^/@dirrm /g' >> ${TMPPLIST}
-	cd ${STAGEDIR}${PREFIX}; ${FIND} share -type d | ${SORT} -r | \
-	   ${SED} -e 's/\(.*\)/@unexec rmdir %D\/\1 2>\/dev\/null || true/g' \
-	   >> ${TMPPLIST}
-
-.if ${PORT_OPTIONS:MBOOTSTRAP}
 post-stage:
+	(cd ${STAGEDIR}${PKG_PREFIX}; ${FIND} * -type d -empty | \
+		${SORT} -dr | ${XARGS} ${RMDIR})
+	(cd ${STAGEDIR}${PREFIX}; ${FIND} ${PORTNAME} share \
+		\( -type f -or -type l \) | ${SORT} | ${SED} \
+		-e 's/\/man\/man[1578]\/.*[1578]$$/&.gz/' >> ${TMPPLIST})
+.if ${PORT_OPTIONS:MBOOTSTRAP}
 	${MKDIR} ${NEWBSDIR}
 	${CP} -a ${STAGEDIR}${PKG_PREFIX}/bin ${NEWBSDIR}/
 	${CP} -a ${STAGEDIR}${PKG_PREFIX}/lib ${NEWBSDIR}/

@@ -3,14 +3,15 @@
 
 PORTNAME=	flowd
 PORTVERSION=	0.9.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net-mgmt ipv6
 MASTER_SITES=	GOOGLE_CODE \
 		http://www2.mindrot.org/files/flowd/
 
-MAINTAINER=	jmohacsi@bsd.hu
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small, fast, and secure NetFlow collector
 
+OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	PERL PYTHON
 OPTIONS_DEFAULT=PERL
 
@@ -21,30 +22,21 @@ USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--localstatedir=/var
 USE_RC_SUBR=	flowd
-MAN8=		flowd.8 flowd-reader.8
-MAN5=		flowd.conf.5
 PORTDOCS=	README INSTALL
 FLOWD_USER=	_flowd
 USERS=		${FLOWD_USER}
 GROUPS=		${FLOWD_USER}
 
-NO_STAGE=	yes
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPERL}
 USES+=		perl5
-PLIST_SUB+=	PERL=""
-MAN3=		Flowd.3
-.else
-PLIST_SUB+=	PERL="@comment "
+USE_PERL5+=	build run
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
-PLIST_SUB+=	PYTHON=""
-INSTALLS_EGGINFO=	yes
-.else
-PLIST_SUB+=	PYTHON="@comment "
+USES+=		python
+PLIST_SUB+=	PYTHON_VER=${PYTHON_VER}
 .endif
 
 post-patch:
@@ -54,29 +46,32 @@ post-patch:
 		${WRKSRC}/tools/flowinsert.pl \
 		${WRKSRC}/tools/wormsuspects.pl
 
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${DOCSDIR}
-.endif
-
+post-build:
 .if ${PORT_OPTIONS:MPERL}
-	cd ${WRKSRC}/Flowd-perl && \
-	${PERL} Makefile.PL INSTALLSITEMAN3DIR=${MAN3PREFIX}/man/man3 PREFIX=${PREFIX} && \
-	${MAKE_CMD} && \
-	${MAKE_CMD} install;
-	-@${RM} -f ${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod
+	(cd ${WRKSRC}/Flowd-perl && ${PERL} Makefile.PL \
+		INSTALLSITEMAN3DIR=${PERL5_MAN3} \
+		DESTDIR=${STAGEDIR} PREFIX=${PREFIX} && \
+		${MAKE_CMD})
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-	cd ${WRKSRC} && \
-	${PYTHON_CMD} setup.py build && \
-	${PYTHON_CMD} setup.py install
+	( cd ${WRKSRC} && ${PYTHON_CMD} setup.py build )
 .endif
 
-.if ${PORT_OPTIONS:MEXAMPLES}
-	${MKDIR} ${EXAMPLESDIR}
-	@( cd ${WRKSRC}/tools && ${COPYTREE_SHARE} \* ${EXAMPLESDIR}/ )
+pre-install:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	( cd ${WRKSRC}/tools && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR} )
+
+.if ${PORT_OPTIONS:MPERL}
+	( cd ${WRKSRC}/Flowd-perl && ${MAKE_CMD} install )
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Flowd/Flowd.so
+.endif
+
+.if ${PORT_OPTIONS:MPYTHON}
+	( cd ${WRKSRC} && ${PYTHON_CMD} setup.py install --root "${STAGEDIR}" )
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/flowd.so
 .endif
 
 .include <bsd.port.mk>

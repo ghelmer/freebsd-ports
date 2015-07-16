@@ -3,12 +3,11 @@
 
 PORTNAME=	wdm
 PORTVERSION=	1.28
-PORTREVISION=	12
+PORTREVISION=	15
 CATEGORIES=	x11 windowmaker
 MASTER_SITES=	http://voins.program.ru/wdm/:wdm \
 		http://wolfram.schneider.org/bsd/gif/bsd/:pic_large \
-		${MASTER_SITE_LOCAL:S/$/:pic_small/}
-MASTER_SITE_SUBDIR=	tg/:pic_small
+		LOCAL/tg:pic_small
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:wdm \
 		beastie.xpm:pic_small \
 		daemon1-HQ-1280x960.jpg:pic_large
@@ -26,7 +25,7 @@ OPTIONS_DEFINE=	PAM
 OPTIONS_DEFAULT=	PAM
 OPTIONS_SUB=	yes
 
-USES=		tar:bzip2
+USES=		gettext tar:bzip2
 USE_XORG=	x11 xmu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	DEF_SERVER="${DEF_SERVER}" XRDB_PATH="${XRDB_PATH}"
@@ -43,7 +42,7 @@ CONFIGURE_ARGS=	--with-logdir=/var/log \
 		--with-wmlist=wmaker:afterstep:blackbox:ctwm:enlightenment:fvwm:fvwm2:fvwm95:olvwm:qvwm:tvtwm
 
 CPPFLAGS+=	-I${LOCALBASE}/include -DCSRG_BASED -DHAS_SETUSERCONTEXT
-LDFLAGS+=	-L${LOCALBASE}/lib -lintl
+LIBS+=		-L${LOCALBASE}/lib
 
 DEF_SERVER?=	${LOCALBASE}/bin/X
 XRDB_PATH?=	${LOCALBASE}/bin/xrdb
@@ -72,8 +71,8 @@ post-patch:
 		's|/etc/X11/wdm|${WDMDIR}|g' ${WRKSRC}/doc/wdmLogin.man
 
 post-install:
-	@${MV} ${STAGEDIR}${WDMDIR}/wdm-config ${STAGEDIR}${WDMDIR}/wdm-config.dist
-	@${MV} ${STAGEDIR}${WDMDIR}/Xsetup_0 ${STAGEDIR}${WDMDIR}/Xsetup_0.dist
+	@${MV} ${STAGEDIR}${WDMDIR}/wdm-config ${STAGEDIR}${WDMDIR}/wdm-config.sample
+	@${MV} ${STAGEDIR}${WDMDIR}/Xsetup_0 ${STAGEDIR}${WDMDIR}/Xsetup_0.sample
 .for file in beastie.xpm daemon1-HQ-1280x960.jpg
 	@${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${file} ${STAGEDIR}${WDMDIR}/pixmaps
 .endfor

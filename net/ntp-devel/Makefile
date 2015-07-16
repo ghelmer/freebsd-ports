@@ -2,56 +2,46 @@
 # $FreeBSD$
 
 PORTNAME=	ntp
-PORTVERSION=	4.2.7p445
+PORTVERSION=	4.3.48
 CATEGORIES=	net ipv6
-PKGNAMESUFFIX=	-devel
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-dev/ \
-		ftp://ftp.archive.de.uu.net/pub/unix/ntp/ntp4/ntp-dev/ \
-		ftp://ftp.netlab.is.tsukuba.ac.jp/pub/network/ntp/ntp4/ntp-dev/
-DISTNAME=	${PORTNAME}-dev-${PORTVERSION:S/.r/-rc/}
+		http://archive.ntp.org/ntp4/ntp-dev/
+PKGNAMESUFFIX=	-devel
+DISTNAME=	${PORTNAME}-dev-${PORTVERSION:S/P/p/:S/r/-RC/:S/b/-beta/}
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The Network Time Protocol Distribution
 
-GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	automake
-AUTOMAKE_ARGS=	--add-missing
-USES=		pathfix perl5 shebangfix libtool
-LIB_DEPENDS=	libevent-2.0.so:${PORTSDIR}/devel/libevent2
+CONFLICTS=	ntp-[0-9].* ntp-rc-*
 
-NTP_SHEBANG_FILES=	sbin/ntp-wait sbin/ntptrace
+GNU_CONFIGURE=	yes
+OPTIONS_SUB=	yes
+USES=		cpe pathfix shebangfix libtool pkgconfig
+LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+
+SHEBANG_FILES=	scripts/ntptrace/ntptrace.in \
+		scripts/ntp-wait/ntp-wait.in
+perl_OLD_CMD=	@PATH_PERL@
 
 .include "Makefile.inc"
 
-.include <bsd.port.options.mk>
+PERL_UTILS_USES=	perl5
+
+SSL_USE=		OPENSSL=yes
+SSL_CONFIGURE_OFF=	--without-crypto
+
+IPV6_CONFIGURE_ENABLE=	ipv6
+
+NTP_SIGND_CONFIGURE_ENABLE=	ntp-signd
+
+NTPSNMPD_LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+NTPSNMPD_CONFIGURE_OFF=	--without-ntpsnmpd
+
+.include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MSSL}
-USE_OPENSSL=		yes
 CONFIGURE_ARGS+=	--with-openssl-incdir=${OPENSSLINC} \
 			--with-openssl-libdir=${OPENSSLLIB}
-PLIST_SUB+=		SSL=""
-.else
-CONFIGURE_ARGS+=	--without-crypto
-PLIST_SUB+=		SSL="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MIPV6}
-CONFIGURE_ARGS+=	--enable-ipv6
-.endif
-
-.if ${PORT_OPTIONS:MNTP_SIGND}
-CONFIGURE_ARGS+=	--enable-ntp-signd
-.endif
-
-.if ${PORT_OPTIONS:MNTPSNMPD}
-PLIST_FILES+=		sbin/ntpsnmpd
-PLIST_SUB+=		NTPSNMPD=""
-BUILD_DEPENDS+=		${LOCALBASE}/include/net-snmp/net-snmp-config.h:${PORTSDIR}/net-mgmt/net-snmp
-LIB_DEPENDS=		libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
-RUN_DEPENDS+=		${LOCALBASE}/include/net-snmp/net-snmp-config.h:${PORTSDIR}/net-mgmt/net-snmp
-.else
-CONFIGURE_ARGS+=	--without-ntpsnmpd
-PLIST_SUB+=		NTPSNMPD="@comment "
 .endif
 
 .for D in ${NTP_DRIVERS}
@@ -60,37 +50,17 @@ CONFIGURE_ARGS+=	--enable-${D}
 .endif
 .endfor
 
-.if ${PORT_OPTIONS:MMX4200}
-BROKEN=		Fails to compile when MX4200 is enabled.
-.endif
- 
-.include <bsd.port.pre.mk>
-
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}4
-
-pre-everything::
-	@${ECHO}
-	@${ECHO} If you wish to build this port with SNMP support, please make
-	@${ECHO} sure that the net-mgmt/net-snmp port is installed before
-	@${ECHO} building and installing this port.
-	@${ECHO}
-
-AUTOTOOLSFILES=	aclocal.m4
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|1.11.1|%%AUTOMAKE_APIVER%%|g' \
-			  ${WRKSRC}/aclocal.m4
+# XXX Temporary hack. Remember to remove this next commit.
+post-extract:
+	@/usr/bin/touch ${WRKSRC}/scripts/build/checkHtmlFileDates
+	@${CHMOD} +x ${WRKSRC}/scripts/build/checkHtmlFileDates
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@${INSTALL_DATA} ${WRKSRC}/conf/* ${STAGEDIR}${EXAMPLESDIR}
-.if ${PORT_OPTIONS:MDOCS}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${FIND} ${WRKSRC}/html -type f | ${XARGS} ${CHMOD} ${SHAREMODE}
 	@cd ${WRKSRC}/html && ${FIND} . -print | \
 		${CPIO} -pdu -R ${SHAREOWN}:${SHAREGRP} --quiet ${STAGEDIR}${DOCSDIR}
-.endif
-	@cd ${STAGEDIR}${PREFIX}; \
-		${ECHO_CMD} ${NTP_SHEBANG_FILES} | ${XARGS} ${SED} -i '' ${_SHEBANG_REINPLACE_ARGS}
 
 .include <bsd.port.post.mk>

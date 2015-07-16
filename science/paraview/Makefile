@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	paraview
-PORTVERSION=	4.1.0
-PORTREVISION=	3
+PORTVERSION=	4.3.1
+PORTREVISION=	1
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.paraview.org/files/v${VERMAJORMINOR}/
 DISTNAME=	ParaView-v${PORTVERSION}-source
@@ -19,7 +19,6 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:${PORTSDIR}/math/py-matplotlib
 LIB_DEPENDS=	libhdf5.so:${PORTSDIR}/science/hdf5 \
 		libpng.so:${PORTSDIR}/graphics/png \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
 		libexpat.so:${PORTSDIR}/textproc/expat2 \
@@ -32,17 +31,19 @@ LIB_DEPENDS=	libhdf5.so:${PORTSDIR}/science/hdf5 \
 RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash	\
 		${PYTHON_SITELIBDIR}/matplotlib/pyplot.py:${PORTSDIR}/math/py-matplotlib
 
+CONFLICTS_BUILD=	protobuf*
+
 USE_QT4=	qmake_build moc_build rcc_build uic_build \
-		linguist_build assistant_run qt3support \
+		linguisttools_build assistant_run qt3support \
 		dbus designer gui help-tools network script \
 		sql svg xml webkit assistantclient clucene \
 		xmlpatterns xmlpatterns-tool help
 USE_GL=		yes
 USE_XORG=	x11 xt xext ice xdmcp xau xcb xfixes xdamage xxf86vm xrender sm
 USE_LDCONFIG=	yes
-USE_PYTHON=	yes
 USE_GSTREAMER=	yes
-USES=		cmake:outsource shebangfix gmake
+USES=		alias desktop-file-utils cmake:outsource execinfo gmake jpeg python shebangfix
+INSTALLS_ICONS=	yes
 
 CMAKE_ARGS+=	-DBUILD_SHARED_LIBS="ON" \
 		-DVTK_USE_SYSTEM_PNG="ON" \
@@ -56,7 +57,8 @@ CMAKE_ARGS+=	-DBUILD_SHARED_LIBS="ON" \
 		-DPARAVIEW_ENABLE_PYTHON:BOOL="ON" \
 		-DPARAVIEW_ENABLE_FFMPEG:BOOL="OFF" \
 		-DBUILD_TESTING:BOOL="OFF" \
-		-DExternalData_OBJECT_STORES="${WRKDIR}/VTK/ExternalData/MD5"
+		-DExternalData_OBJECT_STORES="${WRKDIR}/VTK/ExternalData/MD5" \
+		-DFREETYPE_INCLUDE_DIRS="${LOCALBASE}/include/freetype2"
 MAKE_ENV=	XDG_CONFIG_HOME=${WRKDIR}
 
 SHEBANG_FILES=	Catalyst/catalyze.py VTK/Examples/SearchScript.sh \
@@ -79,7 +81,7 @@ GL2PS_DESC=	Install support conversion OpenGL to PostScript
 #		VTKMPEG2	"Install patented MPEG2 encoder module" Off \
 
 VERMAJORMINOR=	${PORTVERSION:R}
-WRKSRC=		${WRKDIR}/ParaView-v${PORTVERSION}
+WRKSRC=		${WRKDIR}/ParaView-v${PORTVERSION}-source
 
 .include <bsd.port.options.mk>
 
@@ -107,7 +109,7 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|png_set_gray_1_2_4_to_8|png_set_expand_gray_1_2_4_to_8|' \
 		${PATCH_WRKSRC}/VTK/IO/Image/vtkPNGReader.cxx
 	${REINPLACE_CMD} -e 's|/bin/bash|${LOCALBASE}/bin/bash|'	\
-		${PATCH_WRKSRC}/VTK/Testing/Core/vtk_site_history.py
+		${PATCH_WRKSRC}/VTK/Utilities/Maintenance/vtk_site_history.py
 
 post-install:
 .for c2f in ${CMAKE2INST}

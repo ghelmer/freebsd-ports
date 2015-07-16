@@ -4,7 +4,6 @@
     COMMENT = Scientific ports
 
     SUBDIR += 2d-rewriter
-    SUBDIR += 2dhf
     SUBDIR += InsightToolkit
     SUBDIR += R-cran-AMORE
     SUBDIR += R-cran-DCluster
@@ -15,7 +14,6 @@
     SUBDIR += R-cran-epicalc
     SUBDIR += R-cran-snow
     SUBDIR += R-cran-som
-    SUBDIR += abinit
     SUBDIR += afni
     SUBDIR += avogadro
     SUBDIR += bddsolve
@@ -38,14 +36,7 @@
     SUBDIR += dcl
     SUBDIR += devisor
     SUBDIR += dlpoly-classic
-    SUBDIR += dtiquery
     SUBDIR += ecs
-    SUBDIR += elmer-eio
-    SUBDIR += elmer-hutiter
-    SUBDIR += elmer-matc
-    SUBDIR += elmer-meshgen2d
-    SUBDIR += elmergrid
-    SUBDIR += elmerpost
     SUBDIR += epte
     SUBDIR += fastcap
     SUBDIR += fasthenry
@@ -53,14 +44,13 @@
     SUBDIR += fvcom
     SUBDIR += fvcom-mpi
     SUBDIR += fvm
-    SUBDIR += g3data
-    SUBDIR += gamess
     SUBDIR += gchemutils
     SUBDIR += getdp
     SUBDIR += ghemical
     SUBDIR += ghmm
     SUBDIR += gnudatalanguage
     SUBDIR += gramps
+    SUBDIR += grib_api
     SUBDIR += gromacs
     SUBDIR += gsmc
     SUBDIR += gtamsanalyzer
@@ -90,11 +80,11 @@
     SUBDIR += massxpert
     SUBDIR += mbdyn
     SUBDIR += mcstas
+    SUBDIR += mcstas-comps
     SUBDIR += medit
     SUBDIR += meep
     SUBDIR += mei
     SUBDIR += metaf2xml
-    SUBDIR += minc
     SUBDIR += minc2
     SUBDIR += mol2ps
     SUBDIR += mpb
@@ -107,6 +97,7 @@
     SUBDIR += nifticlib
     SUBDIR += openbabel
     SUBDIR += openkim
+    SUBDIR += orthanc
     SUBDIR += p5-Algorithm-SVMLight
     SUBDIR += p5-Chemistry-3DBuilder
     SUBDIR += p5-Chemistry-Bond-Find
@@ -140,9 +131,10 @@
     SUBDIR += paje
     SUBDIR += paraview
     SUBDIR += pnetcdf
-    SUBDIR += psi3
     SUBDIR += psychopy
+    SUBDIR += pulseview
     SUBDIR += py-DendroPy
+    SUBDIR += py-cdo
     SUBDIR += py-coards
     SUBDIR += py-h5py
     SUBDIR += py-hcluster
@@ -155,7 +147,9 @@
     SUBDIR += py-pyaixi
     SUBDIR += py-pydap
     SUBDIR += py-pydicom
+    SUBDIR += py-pysal
     SUBDIR += py-scikit-learn
+    SUBDIR += py-scikit-sparse
     SUBDIR += py-scimath
     SUBDIR += py-scipy
     SUBDIR += py-ws2300
@@ -166,14 +160,17 @@
     SUBDIR += pyteomics.biolccc
     SUBDIR += qcl
     SUBDIR += qtresistors
-    SUBDIR += ruby-dcl
-    SUBDIR += ruby-gphys
-    SUBDIR += ruby-netcdf
     SUBDIR += rubygem-ai4r
-    SUBDIR += rubygem-netcdf
+    SUBDIR += rubygem-cdo
+    SUBDIR += rubygem-ruby-dcl
+    SUBDIR += rubygem-ruby-netcdf
     SUBDIR += sigrok-cli
+    SUBDIR += sigrok-firmware
+    SUBDIR += sigrok-firmware-fx2lafw
+    SUBDIR += sigrok-firmware-utils
     SUBDIR += silo
     SUBDIR += simlib
+    SUBDIR += simsmith
     SUBDIR += step
     SUBDIR += svmlight
     SUBDIR += szip
@@ -182,9 +179,7 @@
     SUBDIR += veusz
     SUBDIR += vmd
     SUBDIR += voro++
-    SUBDIR += x11iraf
     SUBDIR += xfce4-equake-plugin
     SUBDIR += xmakemol
-    SUBDIR += xmds
 
 .include <bsd.port.subdir.mk>

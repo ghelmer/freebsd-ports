@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lftp
-PORTVERSION=	4.5.3
-PORTREVISION=	1
+PORTVERSION=	4.6.3a
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	http://lftp.yar.ru/ftp/ \
 		http://lftp.yar.ru/ftp/old/ \
@@ -21,7 +20,7 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
-USES=		iconv readline shebangfix
+USES=		charsetfix iconv libtool readline shebangfix
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
@@ -50,6 +49,15 @@ OPENSSL_USE=	OPENSSL=yes
 GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
 GNUTLS_USES=	pkgconfig
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MOPENSSL}
+. if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000015
+WITH_OPENSSL_PORT=	yes
+CONFIGURE_ARGS+=	--with-openssl=${OPENSSLBASE}
+. endif
+.endif
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/etc/lftp.conf \

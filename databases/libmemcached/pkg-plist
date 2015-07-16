@@ -98,22 +98,18 @@ include/libmemcachedutil-1.0/pool.h
 include/libmemcachedutil-1.0/util.h
 include/libmemcachedutil-1.0/version.h
 lib/libhashkit.a
-lib/libhashkit.la
 lib/libhashkit.so
 lib/libhashkit.so.2
 lib/libhashkit.so.2.0.0
 lib/libmemcached.a
-lib/libmemcached.la
 lib/libmemcached.so
-lib/libmemcached.so.10
-lib/libmemcached.so.10.0.0
+lib/libmemcached.so.11
+lib/libmemcached.so.11.0.0
 lib/libmemcachedprotocol.a
-lib/libmemcachedprotocol.la
 lib/libmemcachedprotocol.so
 lib/libmemcachedprotocol.so.0
 lib/libmemcachedprotocol.so.0.0.0
 lib/libmemcachedutil.a
-lib/libmemcachedutil.la
 lib/libmemcachedutil.so
 lib/libmemcachedutil.so.2
 lib/libmemcachedutil.so.2.0.0
@@ -124,10 +120,14 @@ man/man1/memcat.1.gz
 man/man1/memcp.1.gz
 man/man1/memdump.1.gz
 man/man1/memerror.1.gz
+man/man1/memexist.1.gz
 man/man1/memflush.1.gz
+man/man1/memparse.1.gz
+man/man1/memping.1.gz
 man/man1/memrm.1.gz
 man/man1/memslap.1.gz
 man/man1/memstat.1.gz
+man/man1/memtouch.1.gz
 man/man3/hashkit_clone.3.gz
 man/man3/hashkit_crc32.3.gz
 man/man3/hashkit_create.3.gz
@@ -231,11 +231,4 @@ man/man3/memcached_touch.3.gz
 man/man3/memcached_touch_by_key.3.gz
 man/man3/memcached_verbosity.3.gz
 man/man3/memcached_version.3.gz
-@dirrm include/libmemcachedutil-1.0
-@dirrm include/libmemcachedprotocol-0.0
-@dirrm include/libmemcached-1.0/types
-@dirrm include/libmemcached-1.0/struct
-@dirrm include/libmemcached-1.0
-@dirrm include/libmemcached
-@dirrm include/libhashkit-1.0
-@dirrm include/libhashkit
+share/aclocal/ax_libmemcached.m4

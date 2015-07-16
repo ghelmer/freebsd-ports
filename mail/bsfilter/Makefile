@@ -5,9 +5,7 @@ PORTNAME=	bsfilter
 PORTVERSION=	1.0.19
 PORTREVISION=	1
 CATEGORIES=	mail ruby
-MASTER_SITES=	SFJP
-MASTER_SITE_SUBDIR=	bsfilter/59804
-EXTRACT_SUFX=	.tgz
+MASTER_SITES=	SFJP/bsfilter/59804
 
 MAINTAINER=	yasu@utahime.org
 COMMENT=	Bayesian spam filter written in Ruby
@@ -18,7 +16,7 @@ RUN_DEPENDS=	${RUBY_PKGNAMEPREFIX}gdbm>=0:${PORTSDIR}/databases/ruby-gdbm
 
 NO_BUILD=	yes
 USE_RUBY=	yes
-USES=		shebangfix
+USES=		shebangfix tar:tgz
 SHEBANG_FILES=	bsfilter/bsfilter
 ruby_OLD_CMD=	/usr/bin/env ruby
 
@@ -33,13 +31,13 @@ RUN_DEPENDS+=	ja-${RUBY_PKGNAMEPREFIX}mecab>=0:${PORTSDIR}/japanese/ruby-mecab
 .endif
 
 do-install:
-	@${INSTALL_SCRIPT} ${WRKSRC}/bsfilter/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${INSTALL_SCRIPT} ${WRKSRC}/bsfilter/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 .for FILE in bsfilter.conf.sample dot-qmail.sample
-	@${INSTALL_DATA} ${FILESDIR}/${FILE} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${FILESDIR}/${FILE} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 .for DIR in mda mua
-	@${CP} -r ${WRKSRC}/${DIR} ${STAGEDIR}${EXAMPLESDIR}/${DIR}
+	cd ${WRKSRC} && ${COPYTREE_SHARE} ${DIR} ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 
 .include <bsd.port.mk>

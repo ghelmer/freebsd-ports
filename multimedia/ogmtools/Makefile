@@ -3,7 +3,7 @@
 
 PORTNAME=	ogmtools
 PORTVERSION=	1.5
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	multimedia audio
 MASTER_SITES=	http://www.bunkus.org/videotools/ogmtools/
 
@@ -12,7 +12,7 @@ COMMENT=	Tools to extract from/get info about/create OGG media streams
 
 LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-ogg-prefix=${LOCALBASE} \
   		--with-vorbis-prefix=${LOCALBASE}

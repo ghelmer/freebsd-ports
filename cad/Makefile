@@ -16,10 +16,12 @@
     SUBDIR += cascade
     SUBDIR += chipvault
     SUBDIR += cider
+    SUBDIR += cura-engine
     SUBDIR += dinotrace
     SUBDIR += dxf2fig
     SUBDIR += electric
     SUBDIR += electric-ng
+    SUBDIR += elmerfem
     SUBDIR += feappv
     SUBDIR += fidocadj
     SUBDIR += findhier
@@ -36,6 +38,7 @@
     SUBDIR += geda-symcheck
     SUBDIR += geda-utils
     SUBDIR += gerbv
+    SUBDIR += ghdl
     SUBDIR += gmsh
     SUBDIR += gmsh-occ
     SUBDIR += gnucap
@@ -74,14 +77,14 @@
     SUBDIR += qelectrotech
     SUBDIR += qfsm
     SUBDIR += qmls
+    SUBDIR += qucs
     SUBDIR += repsnapper
     SUBDIR += sceptre
     SUBDIR += scotch
-    SUBDIR += scv
     SUBDIR += slffea
     SUBDIR += spice
     SUBDIR += sweethome3d
-    SUBDIR += systemc
+    SUBDIR += tkgate
     SUBDIR += tochnog
     SUBDIR += transcalc
     SUBDIR += varkon

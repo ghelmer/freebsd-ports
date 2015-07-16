@@ -3,8 +3,9 @@
 
 PORTNAME=	ibus-table
 PORTVERSION=	1.5.0
+PORTREVISION=	1
 CATEGORIES=	textproc
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	Table based input method framework for IBus
@@ -13,9 +14,8 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3
 LIB_DEPENDS=	libibus-1.0.so:${PORTSDIR}/textproc/ibus
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3
 
-USE_PYTHON=	yes
 USE_GNOME=	pygtk2
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig python
 
 GNU_CONFIGURE=	yes
 

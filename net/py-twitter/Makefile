@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	twitter
-PORTVERSION=	1.1
+PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,12 +14,11 @@ COMMENT=	Python wrapper around the Twitter API
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}httplib2>=0:${PORTSDIR}/www/py-httplib2 \
-		${PYTHON_PKGNAMEPREFIX}oauth2>=0:${PORTSDIR}/net/py-oauth2 \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=0:${PORTSDIR}/www/py-requests \
+		${PYTHON_PKGNAMEPREFIX}requests-oauthlib>=0:${PORTSDIR}/www/py-requests-oauthlib \
 		${PYTHON_PKGNAMEPREFIX}simplejson>=0:${PORTSDIR}/devel/py-simplejson
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	autoplist distutils
 
 .include <bsd.port.mk>

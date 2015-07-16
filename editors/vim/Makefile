@@ -2,64 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	vim
-PORTVERSION=	7.4.${PATCHLEVEL}
-PORTREVISION?=	0
+DISTVERSIONPREFIX=	v
+DISTVERSION=	7-4-752
 CATEGORIES?=	editors
-MASTER_SITES=	VIM:source \
-		${MASTER_SITE_VIM:S|unix|patches/${PORTVERSION:R}|}:patch \
-		LOCAL/sunpoet/${PORTNAME}:source,patch
-DISTFILES=	${PORTNAME}-${PORTVERSION:R}${EXTRACT_SUFX}:source
-DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${PORTNAME}-${PORTVERSION:R}${EXTRACT_SUFX}
-
-PATCH_SITES=	${MASTER_SITE_VIM:S|unix|patches/${PORTVERSION:R}|} \
-		LOCAL/sunpoet/${PORTNAME}
 
 MAINTAINER?=	sunpoet@FreeBSD.org
 COMMENT?=	Improved version of the vi editor
 
-PATCH_DEPENDS=	${LOCALBASE}/bin/gpatch:${PORTSDIR}/devel/patch
-
-OPTIONS_DEFINE=	CSCOPE EXUBERANT_CTAGS LUA NLS PERL PYTHON RUBY TCL XTERM_SAVE
+OPTIONS_DEFINE=	CSCOPE DEFAULT_VIMRC EXUBERANT_CTAGS LUA NLS PERL PYTHON RUBY TCL XTERM_SAVE
 OPTIONS_SINGLE=	UI
 OPTIONS_SINGLE_UI=	ATHENA CONSOLE GNOME GTK2 MOTIF X11
 OPTIONS_SUB=	yes
 ATHENA_DESC=		Athena GUI toolkit
 CSCOPE_DESC=		cscope support
 CONSOLE_DESC=		Console/terminal mode
+DEFAULT_VIMRC_DESC=	Install bundled vimrc as default setting
 EXUBERANT_CTAGS_DESC=	Use exctags instead of ctags
 UI_DESC=		User interface
 XTERM_SAVE_DESC=	Restore xterm screen after exit
 
+PORTSCOUT=	site:https://github.com/vim/vim/releases
+
 ALL_TARGET=	# empty
 MAKE_ARGS+=	CC="${CC}" CONF_ARGS="--prefix=${PREFIX} ${CSCOPE_ARG}" STRIP="${STRIP_CMD}" CONF_OPT_MULTIBYTE=--enable-multibyte CONF_TERM_LIB=--with-tlib=termlib
-PATCH=		${LOCALBASE}/bin/gpatch
-PATCH_DIST_ARGS=--batch --directory ${WRKSRC} --forward --quiet --remove-empty-files ${PATCH_DIST_STRIP}
+MAKE_ARGS+=	VIMRUNTIMEDIR=${PREFIX}/share/vim/${VIM_VER} VIMRCLOC=${ETCDIR}
 REINPLACE_ARGS=	-i ''
-USES=		iconv pkgconfig shebangfix tar:bzip2
+USES=		cpe iconv pkgconfig shebangfix tar:bzip2
 WANT_GNOME=	yes
 
-PATCHLEVEL=	334
-PATCHFILES!=	/usr/bin/jot -s " " -w "%03d" ${PATCHLEVEL} 1 ${PATCHLEVEL}
-#POSTPONED_PATCHES=	064 087 147	# patch files postponed to be applied in post-patch:
-SKIPPED_PATCHES=	208		# patch files skipped
-.for p in ${POSTPONED_PATCHES}
-DISTFILES+=	${PORTVERSION:R}.${p}:patch
-.endfor
-.for p in ${POSTPONED_PATCHES} ${SKIPPED_PATCHES}
-PATCHFILES:=	${PATCHFILES:N${p}}
-.endfor
-PATCHFILES:=	${PATCHFILES:C/^/${PORTVERSION:R}./g}
-
-BUILD_WRKSRC=	${WRKDIR}/${VIM_VER}/src
-CONFIGURE_WRKSRC=	${WRKDIR}/${VIM_VER}/src
-INSTALL_WRKSRC=	${WRKDIR}/${VIM_VER}/src
-WRKSRC=		${WRKDIR}/${VIM_VER}
-
 PLIST_SUB=	VIM_VER=${VIM_VER}
-PORTDATA=	*
+PORTDATA=	${VIM_VER}
 
 VIM_VER=	${PORTNAME}${PORTVERSION:R:S/.//g}
+
+USE_GITHUB=	yes
+
+CPE_VERSION=	${PORTVERSION:R}
 
 SLAVEDIRS=	editors/vim-lite
 
@@ -68,6 +46,7 @@ SHEBANG_FILES=	runtime/tools/efm_perl.pl
 .if defined(LITE)
 PKGNAMESUFFIX+=	-lite
 CONFLICTS_INSTALL=	vim-[0-9]*
+OPTIONS_DEFAULT=DEFAULT_VIMRC
 OPTIONS_EXCLUDE=ATHENA CSCOPE EXUBERANT_CTAGS GNOME GTK2 LUA MOTIF NLS PERL PYTHON RUBY TCL X11 XTERM_SAVE
 OPTIONS_SLAVE=	CONSOLE
 MAKE_ARGS+=	CONF_OPT_GUI="--enable-gui=no --without-x" \
@@ -79,7 +58,7 @@ MAKE_ARGS+=	CONF_OPT_GUI="--enable-gui=no --without-x" \
 PLIST_SUB+=	NON_LITE="@comment "
 .else
 CONFLICTS_INSTALL=	vim-lite-[0-9]*
-OPTIONS_DEFAULT=CSCOPE EXUBERANT_CTAGS GTK2 LUA PERL PYTHON RUBY TCL
+OPTIONS_DEFAULT=CSCOPE DEFAULT_VIMRC EXUBERANT_CTAGS GTK2 LUA PERL PYTHON RUBY TCL
 MAKE_ARGS+=	CONF_OPT_FEAT=--with-features=big \
 		CONF_OPT_INPUT=--enable-xim \
 		CONF_OPT_OUTPUT=--enable-fontset
@@ -105,7 +84,7 @@ NLS_MAKE_ARGS_OFF=	CONF_OPT_NLS=--disable-nls
 NLS_USES=		gettext
 PERL_MAKE_ARGS=		CONF_OPT_PERL=--enable-perlinterp
 PERL_USES=		perl5
-PYTHON_USE=		PYTHON=yes
+PYTHON_USES=		python
 RUBY_MAKE_ARGS=		CONF_OPT_RUBY=--enable-rubyinterp
 RUBY_USE=		RUBY=yes
 TCL_MAKE_ARGS=		CONF_OPT_TCL="--enable-tclinterp --with-tclsh=tclsh${TCL_VER}"
@@ -134,7 +113,7 @@ CTAGS_CMD=	${FIND} . -type f \\| ${XARGS} ctags
 .include <bsd.port.pre.mk>
 
 .if ${PORT_OPTIONS:MPYTHON}
-.if ${PYTHON_REL} < 300
+.if ${PYTHON_REL} < 3000
 MAKE_ARGS+=	CONF_OPT_PYTHON="--enable-pythoninterp --disable-python3interp"
 .else
 MAKE_ARGS+=	CONF_OPT_PYTHON="--enable-python3interp --disable-pythoninterp"
@@ -143,11 +122,10 @@ MAKE_ARGS+=	CONF_OPT_PYTHON="--enable-python3interp --disable-pythoninterp"
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^install_normal: / s|install-icons|# &|; /cd $$(DEST_BIN); ln -s/d' ${WRKSRC}/src/Makefile
-	@${FIND} ${WRKSRC}/runtime/ -name menu\*.vim -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's,ctags -R \\.,${CTAGS_CMD},g'
-.for p in ${POSTPONED_PATCHES}
-	@${ECHO_MSG} "===>   Applying distribution patch ${p}"
-	@${PATCH} ${PATCH_DIST_ARGS} -i ${_DISTDIR}/${PORTVERSION:R}.${p}
-.endfor
+	@${REINPLACE_CMD} -e 's|-liconv|${ICONV_LIB}|g' ${WRKSRC}/src/auto/configure
+	@${FIND} ${WRKSRC}/runtime/ -name menu\*.vim -print0 | ${XARGS} -0 ${REINPLACE_CMD} -e 's,ctags -R \.,${CTAGS_CMD},g'
+	@${ECHO_CMD} '#define SYS_VIMRC_FILE "'${ETCDIR}'/vimrc"' >> ${WRKSRC}/src/feature.h
+	@${ECHO_CMD} '#define SYS_GVIMRC_FILE "'${ETCDIR}'/gvimrc"' >> ${WRKSRC}/src/feature.h
 
 pre-configure:
 	@${CP} ${WRKSRC}/src/config.mk.dist ${WRKSRC}/src/auto/config.mk
@@ -174,11 +152,15 @@ post-install:
 	${TEST} -e ${STAGEDIR}${PREFIX}/bin/${file} || ${LN} -fs vim ${STAGEDIR}${PREFIX}/bin/${file}
 .endfor
 .endif
+.if ${PORT_OPTIONS:MDEFAULT_VIMRC}
+	${MKDIR} ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${FILESDIR}/vimrc ${STAGEDIR}${ETCDIR}/gvimrc.sample
+	${INSTALL_DATA} ${FILESDIR}/vimrc ${STAGEDIR}${ETCDIR}/vimrc.sample
+.endif
 .if !${PORT_OPTIONS:MNLS}
 	${MKDIR} ${STAGEDIR}${DATADIR}/${VIM_VER}/keymap/
 	${INSTALL_DATA} ${WRKSRC}/runtime/keymap/* ${STAGEDIR}${DATADIR}/${VIM_VER}/keymap/
 .endif
 	${INSTALL_DATA} ${FILESDIR}/vietnamese_viscii.vim ${STAGEDIR}${DATADIR}/${VIM_VER}/keymap/
-	${TOUCH} ${STAGEDIR}${DATADIR}/${VIM_VER}/lang/.keepme
 
 .include <bsd.port.post.mk>

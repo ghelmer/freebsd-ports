@@ -10,7 +10,7 @@ DISTNAME=	rubyfilter-${PORTVERSION}
 DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A Ruby library for filtering and delivering email to mailboxes
+COMMENT=	Ruby library for filtering and delivering email to mailboxes
 
 RUN_DEPENDS=	${RUBY_SITELIBDIR}/rmail/parser.rb:${PORTSDIR}/mail/ruby-rmail
 
@@ -19,6 +19,8 @@ USE_RUBY_SETUP=	yes
 RUBY_SETUP=	install.rb
 
 DOCS=		NEWS README THANKS TODO doc
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	${FIND} ${WRKSRC} -name '*~' -delete

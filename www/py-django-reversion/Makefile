@@ -10,14 +10,11 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	xenophon+fbsdports@irtnog.org
 COMMENT=	Provides comprehensive version control facilities to Django apps
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django>=0:${PORTSDIR}/www/py-django
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
+USES=		python
+USE_PYTHON=	distutils
 
 .include <bsd.port.mk>

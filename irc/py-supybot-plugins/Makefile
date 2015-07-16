@@ -9,13 +9,12 @@ MASTER_SITES=	SF/supybot/OldFiles
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Supybot-plugins-${PORTVERSION}
 
-MAINTAINER=	dhn@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Official plugin pack for Supybot
 
 RUN_DEPENDS=	supybot:${PORTSDIR}/irc/py-supybot
 
-USE_PYTHON=	yes
-USE_BZIP2=	yes
+USES=		python tar:bzip2
 
 post-extract:
 # Delete, because it now included in irc/py-supybot

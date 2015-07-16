@@ -12,13 +12,13 @@ COMMENT=	Python logging module
 
 LICENSE=	MIT
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 
-.if !defined(NOPORTDOCS)
+OPTIONS_DEFINE=	DOCS
+
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${CP} -R ${WRKSRC}/doc/* ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

@@ -12,10 +12,11 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}-bin.zip \
 DIST_SUBDIR=	java
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}-bin.zip
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pilot a small space ship
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 
@@ -26,6 +27,9 @@ NO_BUILD=	yes
 
 PORTDOCS=	AUTHORS README.txt
 OPTIONS_DEFINE=	DOCS
+
+# Do not use older versions
+PORTSCOUT=	skipv:1.95
 
 DESKTOP_ENTRIES="MOAGG, Mother of all gravity Games" "" ${PORTNAME} \
 		"${PORTNAME}" "Game;ArcadeGame;" ""

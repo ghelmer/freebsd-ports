@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pcsc-tools
-PORTVERSION=	1.4.22
+PORTVERSION=	1.4.23
 CATEGORIES=	security
 MASTER_SITES=	http://ludovic.rousseau.free.fr/softwares/pcsc-tools/
 
@@ -11,7 +11,7 @@ COMMENT=	Tools to test a PCSC driver, card, or reader
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	pcsclite.1:${PORTSDIR}/devel/pcsc-lite
+LIB_DEPENDS=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
 RUN_DEPENDS=	p5-PCSC-Card>=0:${PORTSDIR}/devel/p5-PCSC-Card \
 		p5-Gtk2>=0:${PORTSDIR}/x11-toolkits/p5-Gtk2
 

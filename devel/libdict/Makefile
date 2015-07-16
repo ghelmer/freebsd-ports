@@ -5,7 +5,7 @@ PORTNAME=	libdict
 PORTVERSION=	0.2.1
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	${MASTER_SITE_LOCAL}
+MASTER_SITES=	LOCAL
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:source treap_insert.pdf:doc \
 		avl_insert.pdf:doc empty.pdf:doc
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
@@ -17,6 +17,8 @@ USES=		gmake
 MAKEFILE=	GNUmakefile
 USE_LDCONFIG=	yes
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 .	for ___f in avl_insert.pdf empty.pdf treap_insert.pdf

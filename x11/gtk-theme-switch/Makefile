@@ -3,7 +3,7 @@
 
 PORTNAME=	gtk-theme-switch
 PORTVERSION=	1.0.1
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	x11
 MASTER_SITES=	http://www.muhri.net/
 PKGNAMESUFFIX=	1
@@ -16,12 +16,8 @@ USES=		gmake
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
 post-install:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${WRKSRC}/readme ${STAGEDIR}${DOCSDIR}/README
-.endif
 
 .include <bsd.port.mk>

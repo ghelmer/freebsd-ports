@@ -2,84 +2,76 @@
 # $FreeBSD$
 
 PORTNAME=	xsystem35
-PORTVERSION=	1.7.2
-PORTREVISION=	15
-CATEGORIES=	emulators
-MASTER_SITES=	http://8ne.sakura.ne.jp:20008/chika/unitbase/xsys35/down/
+DISTVERSION=	1.7.3-pre5
+PORTREVISION=	2
+CATEGORIES=	emulators games
+MASTER_SITES=	DEBIAN
+DISTNAME=	${PORTNAME}_${DISTVERSION}.orig
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	AliceSoft System 3.5/3.6/3.8/3.9 on X Window System
 
 LICENSE=	GPLv2 # (or later)
 
-LIB_DEPENDS=	vorbis:${PORTSDIR}/audio/libvorbis \
-		jpeg:${PORTSDIR}/graphics/jpeg
+LIB_DEPENDS=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
+		libltdl.so:${PORTSDIR}/devel/libltdl \
+		libfreetype.so:${PORTSDIR}/print/freetype2
 
 OPTIONS_DEFINE=	ESOUND DOCS EXAMPLES
+OPTIONS_DEFINE_i386=	MMX
+OPTIONS_SINGLE=	GUI
+OPTIONS_SINGLE_GUI=	GTK1 GTK2
+OPTIONS_DEFAULT=GTK2
+OPTIONS_DEFAULT_i386=	${MACHINE_CPU:tu:MMMX}
 
-USES=		gettext gmake
-USE_GNOME=	gtk12
-USE_AUTOTOOLS=	autoconf libtool
-CONFIGURE_ARGS=	--without-included-gettext \
+ESOUND_USE=	GNOME=esound
+ESOUND_CONFIGURE_ON=--enable-audio=oss,esd --with-default-output=esd
+GTK1_USE=	GNOME=gtk12
+GTK1_CONFIGURE_OFF=--with-glib-prefix=${NONEXISTENT} \
+		--with-gtk-prefix=${NONEXISTENT}
+GTK2_USE=	GNOME=gtk20
+GTK2_USES=	pkgconfig
+MMX_BUILD_DEPENDS=nasm:${PORTSDIR}/devel/nasm
+MMX_CONFIGURE_ENABLE=mmx
+
+EXTRACT_AFTER_ARGS=--exclude libltdl
+USES=		gettext gmake jpeg libtool shebangfix
+SHEBANG_FILES=	contrib/instgame
+USE_XORG=	x11 xext xxf86vm
+GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	X_LIBS="-lX11"
+CONFIGURE_ARGS=	\
 		--with-cachesize=20 \
+		--disable-static \
+		--enable-audio=oss \
+		--with-default-output=oss \
 		--enable-midi=seq,extp,raw \
 		--enable-cdrom=bsd,mp3
-
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
+INSTALL_TARGET=	install-strip
 
 SUB_FILES=	pkg-message
 
+WRKSRC=		${WRKDIR}/${DISTNAME:S/_/-/:S/.orig//}
 DOCSDIR=	${PREFIX}/share/doc/ja/${PORTNAME}
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MESOUND}
-USE_GNOME+=	esound
-CONFIGURE_ARGS+=	--enable-audio=oss,esd --with-default-output=esd
-.else
-CONFIGURE_ARGS+=	--enable-audio=oss --with-default-output=oss
-.endif
-
-#.if ${PORT_OPTIONS:MSDL}
-#USE_SDL=	sdl
-#CONFIGURE_ARGS+=	--enable-sdl
-#CPPFLAGS+=	$$(${SDL_CONFIG} --cflags)
-#LDFLAGS+=	$$(${SDL_CONFIG} --libs)
-#.else
-CONFIGURE_ARGS+=	--disable-sdl
-#.endif
-
-.if ${MACHINE_CPU:Mmmx} && !defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--enable-mmx
-BUILD_DEPENDS+=		nasm:${PORTSDIR}/devel/nasm
-.else
-CONFIGURE_ARGS+=	--disable-mmx
-.endif
-
-post-extract:
-	@${CP} ${WRKSRC}/INSTALL ${WRKSRC}/doc/INSTALL
-
 post-patch:
-	${FIND} ${WRKSRC}/src -type f |\
-		${XARGS} ${GREP} -l '<SDL/SDL' /dev/null |\
-		${XARGS} ${REINPLACE_CMD} -e 's,<SDL/,<,'
-	@${REINPLACE_CMD} -e \
-		's|__COUNTER__|__COUNTER_H__|' ${WRKSRC}/src/counter.h
-
-pre-configure:
-	(cd ${WRKSRC}/libltdl; ${AUTOCONF})
+	@${CP} ${WRKSRC}/INSTALL ${WRKSRC}/doc/INSTALL
+	@${REINPLACE_CMD} -e '/-lxpg4/d' \
+		-e '/INCLTDL=/d; /LTDLINCL=/d' \
+		-e '/LIBLTDL=/s/=.*/="-lltdl"/' \
+		${WRKSRC}/configure
+	@${REINPLACE_CMD} '/^SUBDIRS/s/ libltdl//' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} 's|__COUNTER__|__COUNTER_H__|' ${WRKSRC}/src/counter.h
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/instgame ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc;\
-		${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR})
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/src/xsys35rc.sample ${STAGEDIR}${EXAMPLESDIR}
-	@(cd ${WRKSRC}/contrib; \
-		${INSTALL_DATA} *.* ${STAGEDIR}${EXAMPLESDIR})
-	@(cd ${WRKSRC}/patch; \
-		${INSTALL_DATA} pastel.diff ${STAGEDIR}${EXAMPLESDIR})
+	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC}/contrib && ${COPYTREE_SHARE} \
+		"*.*" ${STAGEDIR}${EXAMPLESDIR})
+	${INSTALL_DATA} ${WRKSRC}/patch/pastel.diff \
+		${WRKSRC}/src/xsys35rc.sample \
+		${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

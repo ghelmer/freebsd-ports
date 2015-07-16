@@ -3,7 +3,7 @@
 
 PORTNAME=	biopython
 PORTVERSION=	1.60
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	biology python
 MASTER_SITES=	http://www.biopython.org/DIST/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,12 +14,13 @@ COMMENT=	Collection of Python modules for bioinformatics
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY}
 
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python:2
+USE_PYTHON=	distutils autoplist
 
-.if !defined(WITHOUT_REPORTLAB)
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}reportlab1>0:${PORTSDIR}/print/py-reportlab1
-.endif
+OPTIONS_DEFINE=	REPORTLAB
+OPTIONS_DEFAULT=	REPORTLAB
+
+REPORTLAB_DESC=	PDF support in Bio.Graphics module
+REPORTLAB_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}reportlab1>0:${PORTSDIR}/print/py-reportlab1
 
 .include <bsd.port.mk>

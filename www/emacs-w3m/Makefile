@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	emacs-w3m
-PORTVERSION=	1.4.533.b.${SNAPDATE}
+PORTVERSION=	1.4.538.b.${SNAPDATE}
+PORTREVISION=	1
 CATEGORIES=	www elisp
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	nobutaka
+MASTER_SITES=	LOCAL/nobutaka
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
-DISTNAME=	${PORTNAME}-1.4.533-${SNAPDATE}
+DISTNAME=	${PORTNAME}-1.4.538-${SNAPDATE}
 
 MAINTAINER=	nobutaka@FreeBSD.org
 COMMENT?=	Simple front-end to w3m for emacs
@@ -15,13 +15,14 @@ COMMENT?=	Simple front-end to w3m for emacs
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_BZIP2=	yes
+USES=		autoreconf tar:bzip2
 USE_EMACS=	yes
 
-SNAPDATE=	20140622
+SNAPDATE=	20150125
 
 MAKE_JOBS_UNSAFE=	yes
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=	--with-emacs=${EMACS_CMD} \
 			--with-lispdir=${PREFIX}/${LISPDIR} \
 			--with-icondir=${PREFIX}/${ICONDIR} \
@@ -32,7 +33,6 @@ ETCDIR?=	${EMACS_LIBDIR_WITH_VER}/etc/w3m
 
 INFO=		emacs-w3m-ja emacs-w3m
 
-USE_AUTOTOOLS=	autoconf213
 ALL_TARGET=	default
 
 PLIST_SUB+=	LISPDIR=${LISPDIR} \
@@ -110,7 +110,8 @@ RUN_DEPENDS+=	${MULE_UCS_ELISP_FILE}:${MULE_UCS_PORT}
 .endif
 .endif
 
-post-extract:
+post-patch:
+	@${MV} ${WRKSRC}/aclocal.m4 ${WRKSRC}/acinclude.m4
 .if defined(EMACS_PACKAGESDIR)
 	@${CP} ${FILESDIR}/_pkg.el ${WRKSRC}
 .endif

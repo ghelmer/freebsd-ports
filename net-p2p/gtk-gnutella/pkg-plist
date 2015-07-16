@@ -1,7 +1,8 @@
 bin/gtk-gnutella
 man/man1/gtk-gnutella.1.gz
+share/appdata/gtk-gnutella.appdata.xml
 share/applications/gtk-gnutella.desktop
-%%DATADIR%%/%%ARCH%%-freebsd/gtk-gnutella.nm
+%%DATADIR%%/%%ARCH%%-%%OPSYS%%/gtk-gnutella.nm
 %%DATADIR%%/bogons.txt
 %%DATADIR%%/el/FAQ
 %%DATADIR%%/en/FAQ
@@ -9,6 +10,7 @@ share/applications/gtk-gnutella.desktop
 %%DATADIR%%/fr/FAQ
 %%DATADIR%%/geo-ip.txt
 %%DATADIR%%/geo-ipv6.txt
+%%DATADIR%%/gwcache.boot
 %%DATADIR%%/hostiles.txt
 %%DATADIR%%/ja/FAQ
 %%DATADIR%%/pixmaps/arrow_down.xpm
@@ -30,6 +32,8 @@ share/applications/gtk-gnutella.desktop
 %%DATADIR%%/pixmaps/firewall_udp.xpm
 %%DATADIR%%/pixmaps/firewall_udp_punchable.xpm
 %%DATADIR%%/pixmaps/freeze.xpm
+%%DATADIR%%/pixmaps/go_back.xpm
+%%DATADIR%%/pixmaps/hungup.xpm
 %%DATADIR%%/pixmaps/icon.16x16.xpm
 %%DATADIR%%/pixmaps/icon.48x48.xpm
 %%DATADIR%%/pixmaps/icon.xpm
@@ -84,13 +88,3 @@ share/applications/gtk-gnutella.desktop
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/gtk-gnutella.mo
 share/pixmaps/gtk-gnutella.png
 share/pixmaps/gtk-gnutella.svg
-%%GUI%%@dirrmtry share/icons/hicolor/512x512/apps
-%%GUI%%@dirrmtry share/icons/hicolor/512x512
-@dirrm %%DATADIR%%/tr
-@dirrm %%DATADIR%%/pixmaps
-@dirrm %%DATADIR%%/ja
-@dirrm %%DATADIR%%/fr
-@dirrm %%DATADIR%%/en
-@dirrm %%DATADIR%%/el
-@dirrm %%DATADIR%%/%%ARCH%%-freebsd
-@dirrm %%DATADIR%%

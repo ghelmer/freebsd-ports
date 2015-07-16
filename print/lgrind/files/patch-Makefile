@@ -1,16 +1,25 @@
---- Makefile.orig	Sat Apr 20 14:54:37 2002
-+++ Makefile	Sat Apr 20 14:55:38 2002
-@@ -2,11 +2,11 @@
+--- Makefile.orig	2001-11-04 11:24:00.000000000 -0500
++++ Makefile	2014-12-16 19:19:03.000000000 -0500
+@@ -4,9 +4,10 @@
  
- # $Id: Makefile,v 1.10 2000/12/27 21:42:37 mike Exp $
- 
--BASEDIR=/usr
-+BASEDIR=/usr/local
+ BASEDIR=/usr
  #DEFSFILE=${HOME}/Work/lgrind/lgrindef
- DEFSFILE=$(BASEDIR)/share/texmf/tex/latex/lgrind/lgrindef
- TEXFILEDIR=$(BASEDIR)/share/texmf/tex/latex/lgrind
+-DEFSFILE=$(BASEDIR)/share/texmf/tex/latex/lgrind/lgrindef
+-TEXFILEDIR=$(BASEDIR)/share/texmf/tex/latex/lgrind
 -DOCDIR=$(BASEDIR)/doc/lgrind
-+DOCDIR=$(BASEDIR)/share/texmf/doc/latex/lgrind
++DEFSFILE=$(BASEDIR)/share/texmf-dist/tex/latex/lgrind/lgrindef
++DEFSFILE_REAL=%%PREFIX%%/share/texmf-dist/tex/latex/lgrind/lgrindef
++TEXFILEDIR=$(BASEDIR)/share/texmf-dist/tex/latex/lgrind
++DOCDIR=$(BASEDIR)/share/texmf-dist/doc/latex/lgrind
  
  INSTALL=install
  SOURCES=lgrind.c lgutil.c regexp.c regexp.h lgrindef.c lgrindef.h retest.c v2lg.c
+@@ -28,7 +29,7 @@
+ 
+ lgrind:
+ 	cd source; \
+-	    make DEFSFILE=$(DEFSFILE) BASEDIR=$(BASEDIR) INSTALL=$(INSTALL) VERSION=$(VERSION)
++	    make DEFSFILE=$(DEFSFILE_REAL) BASEDIR=$(BASEDIR) INSTALL=$(INSTALL) VERSION=$(VERSION)
+ 
+ clean:
+ 	rm -f lgrind.log

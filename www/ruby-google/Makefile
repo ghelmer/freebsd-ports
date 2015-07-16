@@ -10,15 +10,18 @@ DISTNAME=	ruby-${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
-COMMENT=	A Ruby interface to Google's SOAP-driven Web API
+COMMENT=	Ruby interface to Google's SOAP-driven Web API
+
+LICENSE=	GPLv2
 
 USE_RUBY=	yes
-USE_RUBY_FEATURES=	soap
 USE_RUBY_SETUP=	yes
 RUBY_SETUP=	install.rb
 
 DOCS=		CHANGES Changelog README google.html
 EXAMPLES=	examples/*
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${MKDIR} ${STAGEDIR}${RUBY_MODEXAMPLESDIR}
@@ -30,4 +33,10 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${RUBY_MODDOCDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${RUBY_VER} >= 2.2
+BROKEN=         Does not build
+.endif
+
+.include <bsd.port.post.mk>

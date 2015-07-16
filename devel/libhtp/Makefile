@@ -1,32 +1,32 @@
 # $FreeBSD$
 
 PORTNAME=	libhtp
-PORTVERSION=	0.5.9
+PORTVERSION=	0.5.16
 CATEGORIES=	devel
 
 MAINTAINER=	koobs@FreeBSD.org
 COMMENT=	Security-aware parser for the HTTP protocol
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	ironbee
-GH_COMMIT=	f5f3c5c
+GH_ACCOUNT=	OISF
 
-USES=		pkgconfig pathfix iconv
-USE_AUTOTOOLS=	libtool autoheader aclocal
-ACLOCAL_ARGS=	-Im4
+USES=		autoreconf iconv:translit libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 
+GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG}
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib \
-		${ICONV_LIB}
+MAKE_ARGS=	LIBS="-lz ${ICONV_LIB}"
+LDFLAGS+=	-L${LOCALBASE}/lib
 
+PATHFIX_MAKEFILEIN=	Makefile.am
+
+INSTALL_TARGET=		install-strip
 CONFLICTS_INSTALL=	libhtp-suricata-*
 
-pre-configure:
-	@${REINPLACE_CMD} -Ee 's,^(pkgconfigdir = ).*,\1$$(exec_prefix)/libdata/pkgconfig,' ${WRKSRC}/Makefile.am
-	@cd ${WRKSRC} && ${SH} ./autogen.sh
+PLIST_SUB+=	PORTVERSION="${PORTVERSION}"
 
 regression-test: build
 	@cd ${WRKSRC} && ${MAKE} check

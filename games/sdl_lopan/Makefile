@@ -3,7 +3,7 @@
 
 PORTNAME=	sdl_lopan
 PORTVERSION=	10
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://www.linuxmotors.com/sdllopan/downloads/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -12,16 +12,14 @@ DISTFILES=	sdllopan-${DISTVERSION}.tgz \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	sdllopan-${DISTVERSION}.tgz
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mahjong game remake
-
-LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/sdllopan-${PORTVERSION}
 
 USES=		gmake
 USE_SDL=	sdl image mixer
-ALL_TARGET=
+ALL_TARGET=	# empty
 
 PORTDOCS=	Changelog README
 OPTIONS_DEFINE=	DOCS

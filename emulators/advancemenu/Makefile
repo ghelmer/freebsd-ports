@@ -3,6 +3,7 @@
 
 PORTNAME=	advancemenu
 PORTVERSION=	2.7
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF/advancemame/${PORTNAME}/${PORTVERSION}
 
@@ -34,6 +35,8 @@ ASM_BUILD_DEPENDS=	nasm:${PORTSDIR}/devel/nasm
 ASM_CONFIGURE_ENABLE=	asm
 FREETYPE_LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
 FREETYPE_CONFIGURE_ENABLE=	freetype
+
+MAKE_JOBS_UNSAFE=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e \

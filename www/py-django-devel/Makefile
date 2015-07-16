@@ -4,11 +4,8 @@ PORTNAME=	django
 PORTVERSION=	${SNAPSHOTDATE}
 PORTEPOCH=	1
 CATEGORIES=	www python
-MASTER_SITES=	http://people.cs.nctu.edu.tw/~lwhsu/ports/distfiles/
-MASTER_SITE_SUBDIR=	lwhsu/django
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-devel
-DISTNAME=	Django-${SNAPSHOTDATE}
 DIST_SUBDIR=	python
 
 MAINTAINER=	lwhsu@FreeBSD.org
@@ -16,28 +13,26 @@ COMMENT=	High-level Python Web framework
 
 LICENSE=	BSD3CLAUSE
 
-SNAPSHOTDATE=	20140423
+SNAPSHOTDATE=	20150531
 
-USES=		gettext tar:xz
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
-PYDISTUTILS_PKGVERSION=	1.7
+USES=		cpe gettext python
+USE_GITHUB=	yes
+USE_PYTHON=	autoplist distutils
+
+GH_TAGNAME=	c954931
 
 CONFLICTS=	py2[0-9]-django-[0-9]*
+CPE_VENDOR=	djangoproject
 
 DOCSDIR=	${PREFIX}/share/doc/py-django
 
-# bypass infrastructure bug
-OPTIONSFILE=	${PORT_DBDIR}/py-${PORTNAME}-devel/options
 OPTIONS_DEFINE=	FASTCGI HTMLDOCS
 OPTIONS_DEFAULT=SQLITE
 OPTIONS_GROUP=	DATABASE
 OPTIONS_GROUP_DATABASE=	PGSQL MYSQL SQLITE
-HTMLDOCS_DESC=	Install the HTML documentation (requires Sphinx)
+HTMLDOCS_DESC=	Install HTML documentation (requires Sphinx)
 
-PLIST_FILES=	man/man1/django-admin.1.gz \
-		man/man1/gather_profile_stats.1.gz
+PLIST_FILES=	man/man1/django-admin.1.gz
 
 PGSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psycopg2>0:${PORTSDIR}/databases/py-psycopg2
 MYSQL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:${PORTSDIR}/databases/py-MySQLdb

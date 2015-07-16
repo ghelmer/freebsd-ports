@@ -4,7 +4,6 @@
 PKGNAMESUFFIX=	-mysql
 MASTERDIR=	${.CURDIR}/../exim
 
-WITH_MYSQL=	yes
+OPTIONS_SLAVE=	MYSQL
 
-NO_STAGE=	yes
 .include "${MASTERDIR}/Makefile"

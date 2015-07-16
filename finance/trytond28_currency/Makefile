@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	trytond28_currency
-PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTVERSION=	2.8.1
 CATEGORIES=	finance python
-MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_currency/ \
+MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
 DISTNAME=	trytond_currency-${PORTVERSION}
 
@@ -18,8 +17,7 @@ RUN_DEPENDS=	trytond28>=2.8.2:${PORTSDIR}/finance/trytond28
 
 CONFLICTS=	trytond_currency-2.[46].*
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

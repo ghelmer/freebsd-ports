@@ -6,8 +6,7 @@ PORTVERSION=	0.3.3
 DISTVERSIONPREFIX=	2-
 PORTREVISION=	5
 CATEGORIES=	graphics gnome
-MASTER_SITES=	${MASTER_SITE_GNU_ALPHA}
-MASTER_SITE_SUBDIR=	${PORTNAME}
+MASTER_SITES=	GNU_ALPHA
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small-scale painting program for GNOME
@@ -18,7 +17,6 @@ GNU_CONFIGURE=	yes
 LIBS+=		-lm
 
 PLIST_FILES=	bin/gpaint-2 %%DATADIR%%/glade/gpaint.glade
-PLIST_DIRS=	%%DATADIR%%/glade %%DATADIR%%
 
 post-patch:
 	@${REINPLACE_CMD} -e \

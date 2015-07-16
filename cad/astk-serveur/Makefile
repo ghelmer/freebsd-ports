@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	astk
-DISTVERSION=	1.13.3-2
-PORTREVISION=	1
+DISTVERSION=	1.13.5-1
 CATEGORIES=	cad
 .if !defined(CLIENT_SEUL)
 PKGNAMESUFFIX=	-serveur
@@ -11,7 +10,7 @@ PKGNAMESUFFIX=	-serveur
 PKGNAMESUFFIX=	-client
 .endif
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	thierry@FreeBSD.org
 COMMENT?=	Graphical interface for Code_Aster (server side)
 
 LICENSE=	GPLv2
@@ -32,8 +31,7 @@ LICENSE=	GPLv2
 RUN_DEPENDS+=	${SHELL_INSTALL_ASTER}:${PORTSDIR}/shells/${SHIADEP}
 
 .if !defined(CLIENT_SEUL)
-USE_PYTHON=	yes
-USES+=		tk:build gettext
+USES+=		gettext python tk:build
 .else
 USES+=		tk
 .endif
@@ -50,7 +48,7 @@ inst_dir=	${PREFIX}/${LINSTDIR}
 aster_dir=	${LOCALBASE}/aster/${vaster}
 S_SCRIPTS=	bin/as_run bin/parallel_cp asrun/installation.py	\
 		share/codeaster/asrun/data/mpirun_template		\
-		bin/auto_update.cron
+		etc/profile.csh
 S_PYLIBS=	share/codeaster/asrun/examples/alamain.py		\
 		unittest/datafiles/config_serveurs unittest/010_misc.py	\
 		unittest/015_package.py unittest/run_test.py

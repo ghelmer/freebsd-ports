@@ -12,7 +12,7 @@ COMMENT=	HTTP, FTP, and Gopher mirroring tool
 
 LICENSE=	GPLv2
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-locale-dir=${PREFIX}/share/locale \
@@ -22,7 +22,7 @@ CONFIGURE_ARGS=	--with-locale-dir=${PREFIX}/share/locale \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	DANTE GTK2 NLS
+OPTIONS_DEFINE=	DANTE GTK2 NLS DOCS
 DANTE_DESC=	Enable SOCKS proxy support
 OPTIONS_DEFAULT=	GTK2
 OPTIONS_SUB=	yes
@@ -39,10 +39,6 @@ DANTE_CONFIGURE_ON=	--with-socks-includes=${LOCALBASE}/include \
 DANTE_LIB_DEPENDS=	libsocks.so:${PORTSDIR}/net/dante
 
 pre-patch:
-	@${REINPLACE_CMD} -e \
-		's|-pthread -DHAVE_MT|${PTHREAD_CFLAGS} -DHAVE_MT|g ; \
-		 s|-pthread|${PTHREAD_LIBS}|g ; \
-		 s|-lpthreads|${PTHREAD_LIBS}|g' ${WRKSRC}/configure
 	@${FIND}  ${WRKSRC} -name "Makefile.in" | ${XARGS} ${REINPLACE_CMD} -e \
 		's|$$(datadir)/icons|$$(pkgdatadir)/icons|g'
 

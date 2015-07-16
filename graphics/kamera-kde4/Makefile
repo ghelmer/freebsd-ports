@@ -11,7 +11,7 @@ COMMENT=	Digital camera manager for KDE 4
 
 LIB_DEPENDS=	libgphoto2.so:${PORTSDIR}/graphics/libgphoto2
 
-USE_KDE4=	kdehier kdelibs kdeprefix automoc4
+USE_KDE4=	kdelibs kdeprefix automoc4
 USES=		cmake:outsource tar:xz
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 

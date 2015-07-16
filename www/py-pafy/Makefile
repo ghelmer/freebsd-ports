@@ -2,23 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	pafy
-PORTVERSION=	0.3.41
+PORTVERSION=	0.3.74
 #PORTREVISION=	0
 CATEGORIES=	www
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-DISTNAME=	Pafy-${PORTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Python API for YouTube
 
 LICENSE=	GPLv3
 
-# This port installs the following files in shared dirs
-# PLIST_FILES=	bin/ytdl
-PYDISTUTILS_AUTOPLIST=	yes
+USES=	python
+USE_PYTHON=	autoplist distutils
 
-USE_PYDISTUTILS=	yes
-USE_PYTHON=	yes
+WRKSRC=	${WRKDIR}/${DISTFILES:R:R}
 
 .include <bsd.port.mk>

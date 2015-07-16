@@ -3,7 +3,7 @@
 
 PORTNAME=	rezound
 DISTVERSION=	0.12.3beta
-PORTREVISION=	19
+PORTREVISION=	22
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/ReZound/${DISTVERSION}
 
@@ -12,12 +12,15 @@ COMMENT=	Graphical audio file editor
 
 LICENSE=	GPLv2
 
+BROKEN=		Fails to configure with gcc, fails to link with clang
+
 LIB_DEPENDS=	libFOX-1.4.so:${PORTSDIR}/x11-toolkits/fox14
 
 USES=		bison
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-lX11
 CONFIGURE_ARGS=	--disable-alsa
 MAKE_JOBS_UNSAFE=	yes
 CONFIGURE_ENV=	ac_cv_path_RESWRAP=${LOCALBASE}/bin/fox-1.4/reswrap
@@ -46,6 +49,8 @@ LADSPA_CONFIGURE_OFF=	--disable-ladspa
 LAME_RUN_DEPENDS=	lame:${PORTSDIR}/audio/lame
 CDRDAO_RUN_DEPENDS=	cdrdao:${PORTSDIR}/sysutils/cdrdao
 
+EXTRA_PATCHES=		${FILESDIR}/050_all_portaudio19.patch:-p1
+
 .include <bsd.port.options.mk>
 
 # NLS support is broken as of recent versions of libstdc++; rezound dies at
@@ -56,6 +61,10 @@ PLIST_SUB+=	NLS=""
 .else
 CONFIGURE_ARGS+=	--disable-nls
 PLIST_SUB+=	NLS="@comment "
+.endif
+
+.if ${PORT_OPTIONS:MPORTAUDIO}
+LIBS+=	-lportaudio
 .endif
 
 post-patch: .SILENT
@@ -96,6 +105,11 @@ post-patch: .SILENT
 	${REINPLACE_CMD} -e '/AUTHORS/d; /COPYING/d' ${WRKSRC}/Makefile.in
 .else
 	${REINPLACE_CMD} -e 's/ install-pkgdocDATA$$//' ${WRKSRC}/Makefile.in
+.endif
+
+.if ${PORT_OPTIONS:MPORTAUDIO}
+post-configure:
+	${ECHO_CMD} "#define ENABLE_PORTAUDIO_V19 1" >> ${WRKSRC}/config/config.h
 .endif
 
 .include <bsd.port.mk>

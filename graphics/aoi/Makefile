@@ -3,7 +3,7 @@
 
 PORTNAME=	aoi
 PORTVERSION=	3.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics java
 MASTER_SITES=	SF/${PORTNAME}/ArtOfIllusion/${PORTVERSION} \
 		SF/${PORTNAME}/ArtOfIllusion-manual/${PORTVERSION}:docs
@@ -16,7 +16,6 @@ COMMENT=	Open source Java written 3D modelling and rendering studio
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libjogl.so:${PORTSDIR}/graphics/jogl
-RUN_DEPENDS=	java:${PORTSDIR}/java/javavmwrapper
 
 USES=		dos2unix zip
 DOS2UNIX_FILES=	../AoI_Manual/*.html

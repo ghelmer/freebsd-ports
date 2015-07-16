@@ -3,6 +3,7 @@
 
 PORTNAME=	metalog
 PORTVERSION=	3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}
@@ -11,11 +12,11 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern syslogd replacement with PCRE support
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
-USES=		pkgconfig
-USE_XZ=		yes
+USES=		pkgconfig tar:xz
 USE_RC_SUBR=	${PORTNAME}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc

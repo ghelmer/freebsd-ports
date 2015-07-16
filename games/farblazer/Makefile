@@ -3,7 +3,7 @@
 
 PORTNAME=	farblazer
 PORTVERSION=	0.7
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://www.pygame.org/gamelets/games/ \
 		SF/nemysisfreebsdp/${CATEGORIES}/:icons
@@ -11,14 +11,14 @@ DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Originally based of StarBlazer on the Apple ][
 
 LICENSE=	LGPL21
 
 RUN_DEPENDS=	${PYGAME}
 
-USE_PYTHON=	yes
+USES=		python
 
 PORTDOCS=	README.txt THANKS.txt
 OPTIONS_DEFINE=	DOCS

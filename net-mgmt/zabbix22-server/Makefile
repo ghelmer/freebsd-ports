@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zabbix22
-PORTVERSION=	2.2.4
-PORTREVISION=	1
+PORTVERSION=	2.2.9
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/zabbix/ZABBIX%20Latest%20Stable/${PORTVERSION}
 PKGNAMESUFFIX?=	-server
@@ -78,7 +77,7 @@ FPING_DESC=	Build/install fping for ping checks
 IPMI_DESC=	Support for IPMI checks
 JABBER_DESC=	Support for Jabber media type
 LDAP_DESC=	Support for LDAP server checks
-NMAP_DESC=	Build/install nmap for o/s detection
+NMAP_DESC=	Build/install Nmap for OS detection
 SSH_DESC=	Support for SSH-based checks
 ODBC_DESC=	Support for database checks via ODBC
 JAVAGW_DESC=	Support for Java gateway
@@ -96,7 +95,7 @@ PGSQL_USES=	pgsql
 
 SQLITE_CONFIGURE_WITH=	sqlite3
 SQLITE_USE=	SQLITE=3
- 
+
 ORACLE_CONFIGURE_WITH=	oracle
 
 CURL_CONFIGURE_WITH=	libcurl
@@ -165,6 +164,6 @@ post-install:
 	cd ${WRKSRC}/upgrades/ && ${COPYTREE_SHARE} dbpatches ${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/upgrades/
 	cd ${WRKSRC}/database/ && ${COPYTREE_SHARE} "ibm_db2 mysql oracle postgresql sqlite3" ${STAGEDIR}${DATADIR}/${ZABBIX_BUILD}/database/
 .endif
-.endif # if ${ZABBIX_BUILD} != "frontend"
+.endif
 
 .include <bsd.port.mk>

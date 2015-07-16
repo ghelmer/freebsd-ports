@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	remotebox
-PORTVERSION=	1.7
+PORTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://remotebox.knobgoblin.org.uk/downloads/
 DISTNAME=	RemoteBox-${PORTVERSION}
@@ -19,14 +20,11 @@ RUN_DEPENDS=	p5-Gtk2>=0:${PORTSDIR}/x11-toolkits/p5-Gtk2 \
 LICENSE_FILE_GPLv2=	${WRKSRC}/docs/COPYING
 
 NO_BUILD=	yes
-USE_BZIP2=	yes
+USES=		shebangfix tar:bzip2
+SHEBANG_FILES=	remotebox
 INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=	DOCS
-
-WRKSRC=		${WRKDIR}/${DISTNAME}
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|docs/remotebox|share/doc/remotebox/remotebox|'  ${WRKSRC}/remotebox
@@ -50,10 +48,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/share/applications
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${WRKSRC}/docs/remotebox.pdf ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${WRKSRC}/docs/changelog.txt ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

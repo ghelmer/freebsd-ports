@@ -8,8 +8,7 @@ CATEGORIES?=	misc graphics
 MASTER_SITES=	ftp://ftp.gimp.org/pub/%SUBDIR%/ \
 		http://gimp.mirrors.hoobly.com/%SUBDIR%/ \
 		http://ftp.gwdg.de/pub/misc/grafik/gimp/%SUBDIR%/ \
-		http://www.mirrorservice.org/sites/ftp.gimp.org/pub/%SUBDIR%/ \
-		${MASTER_SITE_RINGSERVER:S,%SUBDIR%,graphics/%SUBDIR%,}
+		http://www.mirrorservice.org/sites/ftp.gimp.org/pub/%SUBDIR%/
 MASTER_SITE_SUBDIR=	gimp/help
 PKGNAMEPREFIX?=	${DOCLANG}-
 PKGNAMESUFFIX=	-html
@@ -22,10 +21,9 @@ LICENSE=	GFDL
 BUILD_DEPENDS=	${PYTHON_SITELIBDIR}/libxml2mod.so:${PORTSDIR}/textproc/py-libxml2 \
 		${LOCALBASE}/share/xsl/docbook/xhtml/chunk.xsl:${PORTSDIR}/textproc/docbook-xsl
 
-USES=		gettext:build gmake perl5 pkgconfig shebangfix tar:bzip2
+USES=		gettext-tools gmake perl5 pkgconfig python shebangfix tar:bzip2
 USE_GNOME=	libxslt:build
 USE_PERL5=	build
-USE_PYTHON=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--without-gimp
 CONFIGURE_ENV=	ALL_LINGUAS=${DOCLANG}

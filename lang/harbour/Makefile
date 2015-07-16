@@ -8,14 +8,14 @@ CATEGORIES=	lang
 MASTER_SITES=	SF/${PORTNAME}-project/source/${PORTVERSION}
 
 MAINTAINER=	m.tsatsenko@gmail.com
-COMMENT=	An open source Clipper-compatible compiler
+COMMENT=	Open source Clipper-compatible compiler
 
 LIB_DEPENDS=	libslang.so:${PORTSDIR}/devel/libslang2\
 		libpcre.so:${PORTSDIR}/devel/pcre
 BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-OPTIONS_DEFINE=	MYSQL SQLITE FIREBIRD PGSQL
+OPTIONS_DEFINE=	MYSQL SQLITE FIREBIRD PGSQL DOCS
 
 NOT_FOR_ARCHS=	sparc64
 NOT_FOR_ARCHS_REASON=	does not compile on sparc64: assertion failed
@@ -119,7 +119,7 @@ MAKE_ENV+=	HB_WITH_MYSQL=no
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	yes
+USES+=		pgsql
 MAKE_ENV+=	HB_WITH_PGSQL=nolocal
 .else
 MAKE_ENV+=	HB_WITH_PGSQL=no

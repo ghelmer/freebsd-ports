@@ -7,10 +7,11 @@ PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://miwibox.org/distfiles/
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PEAR framework for PHP
 
-USES=		tar:bzip2
+USES=		cpe tar:bzip2
+CPE_VENDOR=	php
 NO_BUILD=	yes
 
 WANT_PHP_CLI=	yes

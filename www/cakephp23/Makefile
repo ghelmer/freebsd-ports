@@ -6,17 +6,13 @@ PORTVERSION=	2.3.6
 CATEGORIES=	www
 
 MAINTAINER=	pphillips@experts-exchange.com
-COMMENT=	A framework for developing PHP web applications
+COMMENT=	Framework for developing PHP web applications
 
 LICENSE=	MIT
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	${PORTNAME}
-GH_COMMIT=	b81c198
 
 PORTDOCS=	README.md
-
-SLAVE_PORT_MODULES=	REWRITE
 
 CONFLICTS=	cakephp-1?-* cakephp-2[12]-.*
 
@@ -24,7 +20,7 @@ NO_BUILD=	yes
 USES=		gettext
 USE_PHP=	ctype session
 WANT_PHP_WEB=	yes
-DEFAULT_VERSIONS=	php=5
+DEFAULT_VERSIONS+=	php=5
 
 CAKE_CONF_FILES=	\
 		app/Config/acl.php \

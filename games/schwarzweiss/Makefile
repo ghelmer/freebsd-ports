@@ -3,32 +3,30 @@
 
 PORTNAME=	schwarzweiss
 PORTVERSION=	20110806
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games python
 MASTER_SITES=	SF/nemysisfreebsdp/games/:icons
-DISTFILES=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${PORTNAME}.png:icons
 DIST_SUBDIR=	python
-EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tank game for 2 players
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3 # or later
+LICENSE_FILE=	${WRKSRC}/gpl.txt
 
 RUN_DEPENDS=	${PYGAME}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	horstjens
-GH_PROJECT=	schwarzweiss
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	d95263f
+GH_TAGNAME=	d95263f
 
-USES=		shebangfix
+USES=		python:2 shebangfix
 SHEBANG_FILES=	schwarzweiss_start.py data/*.py
-python_OLD_CMD?=	/usr/bin/env python 
-python_CMD?=		${PYTHON_CMD}
-USE_PYTHON=	2
+python_OLD_CMD=	/usr/bin/env python
+python_CMD?=	${PYTHON_CMD}
 
 PORTDOCS=	readme.txt
 OPTIONS_DEFINE=	DOCS

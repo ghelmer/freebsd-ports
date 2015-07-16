@@ -1,7 +1,5 @@
 bin/analog
-@unexec [ -f %D/etc/analog.cfg ] && cmp -s %D/etc/analog.cfg %D/etc/analog.cfg-dist && rm -f %D/etc/analog.cfg
-etc/analog.cfg-dist
-@exec if [ ! -f %D/etc/analog.cfg ] ; then cp -p %D/%F %B/analog.cfg; fi
+@sample etc/analog.cfg.sample
 %%DATADIR%%/lang/README.txt
 %%DATADIR%%/lang/am.lng
 %%DATADIR%%/lang/amdom.tab
@@ -388,11 +386,3 @@ etc/analog.cfg-dist
 %%IMGDIR%%/sq9.png
 %%IMGDIR%%/sqg.png
 man/man1/analog.1.gz
-@dirrmtry %%IMGDIR%%
-@dirrmtry www/data
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%/css/jreeves
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%/css
-%%PORTEXAMPLES%%@dirrm %%EXAMPLESDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
-@dirrm %%DATADIR%%/lang
-@dirrm %%DATADIR%%

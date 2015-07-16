@@ -3,7 +3,7 @@
 
 PORTNAME=	aterm
 PORTVERSION=	1.0.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	x11
 MASTER_SITES=	SF
 
@@ -41,8 +41,8 @@ BSDEL_CONFIGURE_OFF=	--disable-backspace-key --disable-delete-key
 BSDEL_CONFIGURE_ON=	--enable-backspace-key --enable-delete-key
 MOUSE_CONFIGURE_ENABLE=	mousewheel
 BGIMG_LIB_DEPENDS=	libAfterImage.so:${PORTSDIR}/graphics/libafterimage \
-			libpng15.so:${PORTSDIR}/graphics/png \
-			libjpeg.so:${PORTSDIR}/graphics/jpeg
+			libpng.so:${PORTSDIR}/graphics/png
+BGIMG_USES=		jpeg
 BGIMG_CONFIGURE_ON=	--with-afterimage-config --with-png --with-jpeg
 BGIMG_CONFIGURE_OFF=	--without-afterimage-config --with-png=no --with-jpeg=no
 KANJI_CONFIGURE_ENABLE=	kanji

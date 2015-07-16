@@ -10,9 +10,12 @@ DISTNAME=	gku100
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	File transfer utility using the kermit protocol
 
+BROKEN=		Unfetchable
 NO_WRKSUBDIR=	yes
 
 ALL_TARGET=	posix
+
+OPTIONS_DEFINE=	DOCS
 
 post-extract:
 	cd ${WRKSRC} && ${MV} makefile Makefile

@@ -8,7 +8,6 @@ MASTER_SITES=	SF/pivot-weblog/PivotX \
 		http://pivotx.net/files/ \
 		http://pivotx.net/files/archived/
 DISTNAME=	pivotx_${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	fumifumi@abacustech.jp
 COMMENT=	Software to help you maintain dynamic sites such as weblogs
@@ -29,7 +28,7 @@ PHPDOM_DESC=	Use PHP:DOM instead of SimpleXML
 
 WANT_PHP_WEB=	yes
 USE_PHP=	session gettext xml tokenizer gd pcre
-USES+=		gettext
+USES+=		cpe gettext tar:tgz
 
 .if ${PORT_OPTIONS:MPHPDOM}
 USE_PHP+=	dom
@@ -89,7 +88,6 @@ do-install:
 	@${MKDIR} '${STAGEDIR}${WWWDIR}'
 	@cd '${WRKSRC}' && ${COPYTREE_SHARE} . '${STAGEDIR}${WWWDIR}'
 .for DIR in ${WRITABLEDIRS}
-	@${CHOWN} -R '${WWWOWN}:${WWWGRP}' '${STAGEDIR}${WWWDIR}/${DIR}'
 	@${FIND} '${STAGEDIR}${WWWDIR}/${DIR}' -type d -print0 | ${XARGS} -0 ${CHMOD} u=rwx,go=rx
 	@${FIND} '${STAGEDIR}${WWWDIR}/${DIR}' -type f -print0 | ${XARGS} -0 ${CHMOD} u=rw,go=r
 .endfor

@@ -3,14 +3,13 @@
 
 PORTNAME=	wmnet
 PORTVERSION=	1.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net windowmaker
 MASTER_SITES=	ftp://ftp.enteract.com/users/rneswold/ \
-		${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	novel
+		LOCAL/novel
 
 MAINTAINER=	novel@FreeBSD.org
-COMMENT=	A network bandwidth monitor intended for the WindowMaker dock
+COMMENT=	Network bandwidth monitor intended for the WindowMaker dock
 
 USE_XORG=	xpm
 

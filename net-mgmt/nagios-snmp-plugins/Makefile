@@ -10,15 +10,17 @@ MASTER_SITES=	http://www.softwareforge.de/releases/${PORTNAME}/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Additional SNMP plugins for Nagios
 
-LIB_DEPENDS=	netsnmp.30:${PORTSDIR}/net-mgmt/net-snmp
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=			gmake perl5
-GNU_CONFIGURE=		yes
-USE_AUTOTOOLS=	automake14 autoheader autoconf
+LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+
+GNU_CONFIGURE=	yes
+USES=		autoreconf gmake perl5
+OPTIONS_DEFINE=	DOCS
 
 NAGIOS_PLUGIN_DIR=	${PREFIX}/libexec/nagios
 
-AUTOMAKE_ARGS=		--add-missing
 CONFIGURE_ARGS=	--sbindir=${PREFIX}/share/nagios/cgi-bin \
 		--libexecdir=${NAGIOS_PLUGIN_DIR} \
 		--datadir=${PREFIX}/share/nagios \
@@ -30,25 +32,11 @@ CONFIGURE_ENV=	LOCALBASE=${LOCALBASE}
 # Workaround configure.in lameness.
 CPPFLAGS+=	`net-snmp-config --cflags`
 
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-pre-configure:
-	@(cd ${CONFIGURE_WRKSRC} && ${SETENV} ${AUTOMAKE_ENV} ${ACLOCAL} \
-		--acdir=${ACLOCAL_DIR})
-	@(cd ${CONFIGURE_WRKSRC} && ${SETENV} ${AUTOMAKE_ENV} ${AUTOHEADER})
-	@(cd ${CONFIGURE_WRKSRC} && ${SETENV} ${AUTOMAKE_ENV} ${AUTOMAKE} \
-		${AUTOMAKE_ARGS})
-	@(cd ${CONFIGURE_WRKSRC} && ${SETENV} ${AUTOMAKE_ENV} ${AUTOCONF} \
-		${AUTOCONF_ARGS})
-
 do-install:
-	${MKDIR} ${NAGIOS_PLUGIN_DIR}
-	${INSTALL_PROGRAM} ${WRKSRC}/check_snmp_disk ${NAGIOS_PLUGIN_DIR}
-	${INSTALL_PROGRAM} ${WRKSRC}/check_snmp_proc ${NAGIOS_PLUGIN_DIR}
-.if !defined(NOPORTDOCS)
-	${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${DOCSDIR}
-.endif
+	${MKDIR} ${STAGEDIR}${NAGIOS_PLUGIN_DIR}
+	${INSTALL_PROGRAM} ${WRKSRC}/check_snmp_disk ${STAGEDIR}${NAGIOS_PLUGIN_DIR}
+	${INSTALL_PROGRAM} ${WRKSRC}/check_snmp_proc ${STAGEDIR}${NAGIOS_PLUGIN_DIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

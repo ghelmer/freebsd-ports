@@ -2,7 +2,7 @@
 
 PORTNAME=	vncreflector
 PORTVERSION=	1.2.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	SF/vnc-reflector/vnc-reflector/${PORTVERSION}
 DISTNAME=	vnc_reflector-${PORTVERSION}
@@ -10,8 +10,7 @@ DISTNAME=	vnc_reflector-${PORTVERSION}
 MAINTAINER=	paul@it.ca
 COMMENT=	Multi-client VNC proxy server
 
-LIB_DEPENDS+=	libjpeg.so:${PORTSDIR}/graphics/jpeg
-
+USES=		jpeg
 USE_RC_SUBR=	vncreflector
 
 ALL_TARGET=	default
@@ -20,12 +19,12 @@ WRKSRC=		${WRKDIR}/vnc_reflector
 OPTIONS_DEFINE=	DOCS
 
 post-patch:
-	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|; \
+		s|gcc|${CC}|' ${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} -m0750 ${STAGEDIR}${PREFIX}/etc/${PORTNAME}
-	@${CHOWN} root:wheel ${STAGEDIR}${PREFIX}/etc/${PORTNAME}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

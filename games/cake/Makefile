@@ -3,7 +3,7 @@
 
 PORTNAME=	cake
 PORTVERSION=	2005.12.26
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
 MASTER_SITES=	http://freebsd.nsu.ru/distfiles/
 DISTNAME=	${PORTNAME}_src_${PORTVERSION:S/.//g}
@@ -13,9 +13,7 @@ COMMENT=	Quake3 map viewer (and powerful 3D game engine)
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libjpeg.so:${PORTSDIR}/graphics/jpeg
-
-USES=		gmake zip
+USES=		gmake jpeg zip
 USE_GL=		glut
 USE_XORG=	x11 xext xmu xt xi sm ice
 

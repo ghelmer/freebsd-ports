@@ -3,6 +3,7 @@
 
 PORTNAME=	luascript
 PORTVERSION=	1.8.1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 PKGNAMEPREFIX=	verlihub-plugins-
 MASTER_SITES=	SF/verlihub/VH_Lua/${DISTVERSION}
@@ -22,11 +23,11 @@ LDFLAGS+=	-L${LUA_LIBDIR}
 PLIST_FILES=	share/verlihub/scripts/ptokax.lua.inc \
 		share/verlihub/scripts/ptokaxtest.lua \
 		share/verlihub/scripts/script.lua
-PLIST_DIRS=	share/verlihub/scripts
 
 OPTIONS_DEFINE=	SOCKET
 SOCKET_DESC=	Build with LuaSocket support
 
+.include "../verlihub-plugins/Makefile.plugins"
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSOCKET}
@@ -43,11 +44,6 @@ post-patch::
 .endif
 	@${REINPLACE_CMD} -e 's|llua5\.1|llua-${LUA_VER}|g' \
 		${WRKSRC}/configure
-
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/net-p2p/verlihub-plugins/Makefile.plugins"
-
-post-patch::
 	@${REINPLACE_CMD} -e 's|for libpath in /|for libpath in ${PREFIX} /|g' ${WRKSRC}/config_lua
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

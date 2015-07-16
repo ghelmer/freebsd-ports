@@ -1,10 +1,9 @@
 # Created by: Jim Mock <jim@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/net-im/libpurple/Makefile,v 1.32 2010/05/10 04:21:19 marcus Exp $
 
 PORTNAME?=	libpurple
-PORTVERSION=	2.10.9
-PORTREVISION?=	6
+PORTVERSION=	2.10.11
+PORTREVISION?=	0
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
 DISTNAME=	pidgin-${PORTVERSION}
@@ -12,8 +11,8 @@ DISTNAME=	pidgin-${PORTVERSION}
 MAINTAINER?=	marcus@FreeBSD.org
 COMMENT?=	Backend library for the Pidgin multi-protocol messaging client
 
-USES=		gmake libtool pathfix pkgconfig tar:bzip2
-USE_GNOME?=	gnomeprefix intlhack glib20 libxml2
+USES=		cpe gettext gmake libtool pathfix pkgconfig tar:bzip2
+USE_GNOME?=	gnomeprefix intltool glib20 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS?=--disable-gtkui \
 		--disable-consoleui \
@@ -27,10 +26,9 @@ INSTALL_TARGET=	install-strip
 .if !defined(PIDGIN_SLAVE)
 # Pidgin slave ports that require the following functionality, must explicitly
 # set these macros themselves.
-USES+=		gettext iconv
+USES+=		iconv python
 USE_LDCONFIG=	yes
 WANT_GNOME=	yes
-USE_PYTHON=	yes
 
 .if defined(PACKAGE_BUILDING)
 .undef WITHOUT_GNOME
@@ -40,6 +38,8 @@ WITH_GNOME=	yes
 .endif
 
 PRPL_MODULES=
+
+CPE_VENDOR=	pidgin
 
 OPTIONS_DEFINE=	BONJOUR DBUS GNUTLS NSS SASL GSTREAMER VV IDN PERL TCLTK \
 		SAMETIME SILC GG IRC JABBER MSN MYSPACE NOVELL OSCAR QQ \
@@ -317,12 +317,17 @@ pre-everything::
 
 post-patch:
 	@${REINPLACE_CMD} \
-		-e 's|-lpthread|${PTHREAD_LIBS:S/"//g}|g' \
-		-e 's|-lsilc -lsilcclient ${PTHREAD_LIBS} $$LIBDL|-lsilc -lsilcclient ${PTHREAD_LIBS} ${ICONV_LIB}|' \
-			${WRKSRC}/configure
+		-e 's|-lpthread $$LIBDL|-lpthread ${ICONV_LIB}|' \
+		${WRKSRC}/configure
 .if defined(PIDGIN_SLAVE)
 	@${FIND} ${BUILD_WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
 		's|$$(top_builddir)/libpurple/libpurple.la|-lpurple|'
+.endif
+
+.if !defined(PIDGIN_SLAVE) && ${PORT_OPTIONS:MPERL}
+post-stage:
+	@${SED} -i '' -e 's|^${STAGEDIR}||g' \
+		${STAGEDIR}${PREFIX}/lib/purple-2/perl/auto/Purple/.packlist
 .endif
 
 .include <bsd.port.post.mk>

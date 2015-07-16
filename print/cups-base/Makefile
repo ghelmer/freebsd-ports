@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cups
-PORTVERSION=	1.7.2
+PORTVERSION=	2.0.3
 DISTVERSIONSUFFIX=	-source
 #PORTREVISION=	defined further
 CATEGORIES=	print
@@ -15,11 +15,15 @@ COMMENT=	Common UNIX Printing System: ${COMMENT2}
 
 LICENSE=	GPLv2
 
+LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
+		libgcrypt.so:${PORTSDIR}/security/libgcrypt
+
 CONFLICTS=	LPRng-[0-9]*
 
 UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
 
-USES+=		gmake pkgconfig tar:bzip2
+USES+=		cpe gmake iconv pkgconfig tar:bzip2
+CPE_VENDOR=	apple
 DESTDIRNAME=	DSTROOT
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -36,7 +40,7 @@ CONFIGURE_ARGS+=	--localstatedir=/var			\
 			--with-domainsocket=${CUPS_SOCKET}	\
 			--with-cachedir=${CUPS_CACHEDIR}	\
 			--with-pam-module="unix"		\
-			--enable-ssl
+			--enable-gnutls
 
 CUPS_CACHEDIR?=	/var/db/cups
 CUPS_SPOOLDIR=	/var/spool/cups
@@ -50,27 +54,35 @@ GROUPS=	cups
 USERS=		cups
 
 # UNIQUENAME must be set before bsd.port.pre.mk so OPTIONSFILE can be included
+OPTIONS_SUB=		yes
 .if defined(CUPS_CLIENT)
 PORTREVISION=	2
 LICENSE=	LGPL21
 CUPS_SUFFIX=	-client
-OPTIONS_DEFINE=	GNUTLS
+OPTIONS_RADIO=		ZEROCONF
+OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
+OPTIONS_DEFAULT+=	MDNSRESPONDER
 .elif defined(CUPS_IMAGE)
-PORTREVISION=	1
+PORTREVISION=	2
 CUPS_SUFFIX=	-image
 LICENSE=	LGPL21
-OPTIONS_DEFINE=	GNUTLS
 .else
-PORTREVISION=	2
+PORTREVISION=	3
 CUPS_SUFFIX=	-base
-OPTIONS_DEFINE=	GNUTLS LIBPAPER PHP PYTHON PAM DBUS LIBUSB XDG_OPEN AVAHI MDNSRESPONDER ICONS
-OPTIONS_DEFAULT=	LIBPAPER MDNSRESPONDER ICONS
-NO_OPTIONS_SORT=	yes
+# No DOCS option.  Files are needed by web interface.
+OPTIONS_DEFINE=		DBUS ICONS LIBPAPER LIBUSB PAM XDG_OPEN
+OPTIONS_GROUP=		WEB
+OPTIONS_GROUP_WEB=	JAVA PERL PHP PYTHON
+OPTIONS_RADIO=		ZEROCONF
+OPTIONS_RADIO_ZEROCONF=	AVAHI MDNSRESPONDER
+OPTIONS_DEFAULT+=	LIBPAPER MDNSRESPONDER ICONS
 .endif
 
 ICONS_DESC=		Desktop icons
 LIBUSB_DESC=		USB support
+WEB_DESC=		Interpreters for web interfaces
 XDG_OPEN_DESC=		Build with XDG_OPEN as browser
+ZEROCONF_DESC=		Zeroconf support
 
 .include <bsd.port.options.mk>
 
@@ -78,18 +90,17 @@ XDG_OPEN_DESC=		Build with XDG_OPEN as browser
 COMMENT2=	Library cups
 INSTALL_WRKSRC=	${WRKSRC}/cups
 PLIST=		${MASTERDIR}/pkg-plist.client
-USES+=		iconv
 LIBS+=		${ICONV_LIB}
 USE_LDCONFIG=	yes
 PKGMESSAGE=	${NONEXISTENT}
 DESCR=		${MASTERDIR}/pkg-descr.client
 .elif defined(CUPS_IMAGE)
 LIB_DEPENDS+=	libcups.so:${PORTSDIR}/${PKGCATEGORY}/cups-client \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 # force build if old cups is installed.
 BUILD_DEPENDS+=	cups-client${PKGNAMESUFFIX2}>=${PORTVERSION}:${PORTSDIR}/${PKGCATEGORY}/cups-client
+USES+=		jpeg
 COMMENT2=	Library cupsimage
 INSTALL_WRKSRC=	${WRKSRC}/filter
 PLIST=		${MASTERDIR}/pkg-plist.image
@@ -105,9 +116,7 @@ BUILD_DEPENDS+=	cups-image${PKGNAMESUFFIX2}>=${PORTVERSION}:${PORTSDIR}/${PKGCAT
 COMMENT2=	Server
 USE_RC_SUBR=	cupsd
 PLIST_SUB+=	CACHEDIR="${CUPS_CACHEDIR}"
-.if ${ARCH} == "ia64"
-BROKEN=		stack-protector not supported on ia64
-.endif
+BROKEN_ia64=	stack-protector not supported on ia64
 .endif
 
 .if defined(CUPS_OVERWRITE_BASE)
@@ -118,95 +127,96 @@ PLIST_SUB+=		OVERWRITE="@comment "
 CONFIGURE_ARGS+=	--with-printcap=${PREFIX}/etc/printcap
 .endif
 
-.if ${PORT_OPTIONS:MGNUTLS}
-CONFIGURE_ARGS+=	--disable-openssl --enable-gnutls
-LIB_DEPENDS+=		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-			libgnutls.so:${PORTSDIR}/security/gnutls
-.else
-CONFIGURE_ARGS+=	--disable-gnutls --enable-openssl
-WITH_OPENSSL_HACK7=	yes
-.include "${PORTSDIR}/Mk/bsd.openssl.mk"
-.endif
+# Don't use CONFIGURE_ARGS+=--without-* to disable web interpreters because it
+# will set the path of the interpreter to "no" and set it's existence to TRUE.
+.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE)
+. if ${PORT_OPTIONS:MJAVA}
+CONFIGURE_ARGS+=	--with-java=${JAVA}
+USE_JAVA=		yes
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MPHP}
-CONFIGURE_ARGS+=	--with-php
+. if ${PORT_OPTIONS:MPERL}
+CONFIGURE_ARGS+=	--with-perl=${PERL}
+USES+=			perl5
+. endif
+
+. if ${PORT_OPTIONS:MPHP}
+CONFIGURE_ARGS+=	--with-php=${LOCALBASE}/bin/php-cgi
 USE_PHP=		yes
 USE_PHP_BUILD=		yes
-PLIST_SUB+=		PHP=""
-.else
-CONFIGURE_ARGS+=	--without-php
-PLIST_SUB+=		PHP="@comment "
-.endif
+WANT_PHP_CGI=		yes
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MPYTHON}
-CONFIGURE_ARGS+=	--with-python
-USE_PYTHON=		yes
-.include "${PORTSDIR}/Mk/bsd.python.mk"
-.endif
+. if ${PORT_OPTIONS:MPYTHON}
+CONFIGURE_ARGS+=	--with-python=${PYTHON_CMD}
+USES+=			python
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MLIBPAPER}
+. if ${PORT_OPTIONS:MLIBPAPER}
 CONFIGURE_ARGS+=	--enable-libpaper
 LIB_DEPENDS+=		libpaper.so:${PORTSDIR}/print/libpaper
-.endif
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MMDNSRESPONDER}
-.if ${PORT_OPTIONS:MAVAHI}
-IGNORE=			You must select one and only one option to build for Zeroconf
-.endif
-LIB_DEPENDS+=		libdns_sd.so:${PORTSDIR}/net/mDNSResponder
-CONFIGURE_ARGS+=	--with-dnssd-includes=${LOCALBASE}/include
-PLIST_SUB+=		MDNSRESPONDER="" DNSSD="@comment "
-.elif !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MAVAHI}
-CONFIGURE_ARGS+=	--enable-avahi
-LIB_DEPENDS+=		libavahi-client.so:${PORTSDIR}/net/avahi-app
-PLIST_SUB+=		MDNSRESPONDER="@comment " DNSSD=""
-.else
-CONFIGURE_ARGS+=	--disable-dnssd
-CONFIGURE_ARGS+=	--disable-avahi
-PLIST_SUB+=		MDNSRESPONDER="@comment " DNSSD="@comment "
-.endif
-
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MPAM}
+. if ${PORT_OPTIONS:MPAM}
 CONFIGURE_ARGS+=	--enable-pam
-PLIST_SUB+=		WITH_PAMD=""
-.else
+. else
 CONFIGURE_ARGS+=	--disable-pam
-PLIST_SUB+=		WITH_PAMD="@comment "
-.endif
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MDBUS}
+. if ${PORT_OPTIONS:MDBUS}
 LIB_DEPENDS+=		libdbus-1.so:${PORTSDIR}/devel/dbus
 CONFIGURE_ARGS+=	--enable-dbus
-PLIST_SUB+=		WITH_DBUS=""
-.else
+. else
 CONFIGURE_ARGS+=	--disable-dbus
-PLIST_SUB+=		WITH_DBUS="@comment "
-.endif
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MXDG_OPEN}
+. if ${PORT_OPTIONS:MXDG_OPEN}
 RUN_DEPENDS+=		xdg-open:${PORTSDIR}/devel/xdg-utils
-.endif
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MLIBUSB}
+. if ${PORT_OPTIONS:MLIBUSB}
 CONFIGURE_ARGS+=	--enable-libusb
-.else
+PLIST_SUB+=		LIBUSB=""
+. else
 CONFIGURE_ARGS+=	--disable-libusb
-.endif
+PLIST_SUB+=		LIBUSB="@comment "
+. endif
 
-.if !defined(CUPS_CLIENT) && !defined(CUPS_IMAGE) && ${PORT_OPTIONS:MICONS}
+. if ${PORT_OPTIONS:MICONS}
 INSTALLS_ICONS=	yes
 CONFIGURE_ARGS+=	--with-icondir=${PREFIX}/share/icons
-PLIST_SUB+=		WITH_ICONS=""
-.else
-PLIST_SUB+=		WITH_ICONS="@comment "
+. endif
+
+SUB_FILES+=	ulpt-cupsd.conf ulpt-cupsd.sh
+.endif
+
+.if !defined(CUPS_IMAGE)
+. if ${PORT_OPTIONS:MMDNSRESPONDER}
+LIB_DEPENDS+=		libdns_sd.so:${PORTSDIR}/net/mDNSResponder
+CONFIGURE_ARGS+=	--enable-dnssd
+CONFIGURE_ARGS+=	--with-dnssd-includes=${LOCALBASE}/include
+CONFIGURE_ARGS+=	--disable-avahi
+SUB_LIST+=		ZEROCONF="mdnsd"
+. elif ${PORT_OPTIONS:MAVAHI}
+CONFIGURE_ARGS+=	--enable-avahi
+CONFIGURE_ARGS+=	--disable-dnssd
+LIB_DEPENDS+=		libavahi-client.so:${PORTSDIR}/net/avahi-app
+SUB_LIST+=		ZEROCONF="avahi_daemon"
+. else
+CONFIGURE_ARGS+=	--disable-dnssd
+CONFIGURE_ARGS+=	--disable-avahi
+SUB_LIST+=		ZEROCONF=""
+. endif
 .endif
 
 .if ${OSVERSION} < 1000036 && ${ARCH} == i386
 LIBS+=		-lssp_nonshared
 .endif
 
-.if ! defined(CUPS_CLIENT) && ! defined(CUPS_IMAGE)
-SUB_FILES+=	ulpt-cupsd.conf ulpt-cupsd.sh
+.include <bsd.port.pre.mk>
+
+.if empty(ICONV_LIB)
+CONFIGURE_ENV+=	ac_cv_search_libiconv_open=no
 .endif
 
 post-patch:
@@ -222,10 +232,16 @@ post-patch:
 .endif
 	@${REINPLACE_CMD} -e '/SILENT/d' ${WRKSRC}/Makedefs.in
 	@${REINPLACE_CMD} -e 's|/etc/cups|${LOCALBASE}/etc/cups|g' ${WRKSRC}/man/*.man*
-	@${REINPLACE_CMD} -e 's|-lpthreads.*;|${PTHREAD_LIBS};|g' \
-		-e 's|/private/etc/pam.d|${LOCALBASE}/etc/pam.d|' \
+	@${REINPLACE_CMD} -e 's|/private/etc/pam.d|${LOCALBASE}/etc/pam.d|' \
 		-e 's|-D_LARGEFILE64_SOURCE||g' \
 		${WRKSRC}/${CONFIGURE_SCRIPT}
+	@${REINPLACE_CMD} -e 's|\.default|.sample|'\
+		${WRKSRC}/cgi-bin/admin.c\
+		${WRKSRC}/CHANGES-1.3.txt\
+		${WRKSRC}/conf/Makefile\
+		${WRKSRC}/packaging/cups.list.in\
+		${WRKSRC}/packaging/cups.spec\
+		${WRKSRC}/packaging/cups.spec.in
 .if defined(CUPS_CLIENT)
 	@${REINPLACE_CMD} \
 		-e 's|cups test|cups|' \
@@ -251,9 +267,6 @@ post-patch:
 		-e 's|cups-config.$$.MAN1EXT. ||' \
 		${WRKSRC}/man/Makefile
 .endif
-.if ! ${PORT_OPTIONS:MLIBUSB}
-	@${REINPLACE_CMD} -e 's|xyes -o $$uname != Darwin||' ${WRKSRC}/configure
-.endif
 
 post-configure:
 .if defined(CUPS_CLIENT)
@@ -267,6 +280,7 @@ post-configure:
 .else
 	@${REINPLACE_CMD} \
 		-e 's|filter backend|backend|' \
+		-e 's|/etc/pam.d|${LOCALBASE}/etc/pam.d|'\
 		${WRKSRC}/Makedefs
 .endif
 
@@ -282,19 +296,15 @@ pre-build:
 .endif
 
 post-install:
+	${CHMOD} u+w ${STAGEDIR}${PREFIX}/lib/*.so.*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so.*
+	${CHMOD} u-w ${STAGEDIR}${PREFIX}/lib/*.so.*
 .if defined(CUPS_CLIENT)
 	${INSTALL_SCRIPT} ${WRKSRC}/cups-config ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/cups/libcups.a ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_MAN} ${WRKSRC}/man/cups-config.man ${STAGEDIR}${PREFIX}/man/man1/cups-config.1
 .elif defined(CUPS_IMAGE)
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupsimage.so.2
 .else
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupscgi.so.1
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupsppdc.so.1
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libcupsmime.so.1
-.if  ${PORT_OPTIONS:MGHOSTSCRIPT} || ${PORT_OPTIONS:MXPDF}
-	${INSTALL_PROGRAM} ${WRKSRC}/filter/pdftops  ${STAGEDIR}${PREFIX}/libexec/cups/filter/
-.endif
 	${LN} -sf lpr ${STAGEDIR}${PREFIX}/bin/lpr-cups
 	${MKDIR} ${STAGEDIR}${ETCDIR}/
 .for f in cupsd.conf mime.convs mime.types snmp.conf
@@ -307,4 +317,4 @@ post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/ulpt-cupsd.sh ${STAGEDIR}${PREFIX}/sbin/
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

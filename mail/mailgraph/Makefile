@@ -3,20 +3,20 @@
 
 PORTNAME=	mailgraph
 PORTVERSION=	1.14
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	mail
 MASTER_SITES=	http://mailgraph.schweikert.ch/pub/ \
 		http://mailgraph.schweikert.ch/pub/old/
 
-MAINTAINER=	rafan@FreeBSD.org
-COMMENT=	A RRDtool frontend for Postfix statistics
+MAINTAINER=	dgeo@centrale-marseille.fr
+COMMENT=	RRDtool frontend for Postfix statistics
 
 RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool	\
 		p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
 
 NO_BUILD=	yes
 USES=		perl5 shebangfix
-SHEBANG_FILES=	mailgraph.pl
+SHEBANG_FILES=	mailgraph.pl mailgraph.cgi
 
 CGIDIR?=	${PREFIX}/www/cgi-bin
 DATADIR?=	/var/db/mailgraph
@@ -25,13 +25,13 @@ MAILGRAPH_USER?=	${WWWOWN}
 MAILGRAPH_GROUP?=	${WWWGRP}
 
 USE_RC_SUBR=	${PORTNAME}
-SUB_LIST+=	MAILGRAPH_USER=${MAILGRAPH_USER} MAILGRAPH_GROUP=${MAILGRAPH_GROUP}
+SUB_LIST+=	MAILGRAPH_USER=${MAILGRAPH_USER} MAILGRAPH_GROUP=${MAILGRAPH_GROUP} PERL=${PERL}
 PLIST_SUB=	CGIDIR=${CGIDIR:S,${PREFIX}/,,} WWWROOT=${WWWROOT:S,${PREFIX}/,,}
 
+OPTIONS_DEFINE=	DOCS
+
 DOCS=		README CHANGES
-.if !defined(NOPORTDOCS)
 PORTDOCS=	${DOCS}
-.endif
 
 pre-everything::
 	@${ECHO_MSG} ""
@@ -52,11 +52,9 @@ do-install:
 	@${INSTALL_SCRIPT} ${WRKSRC}/mailgraph.pl ${STAGEDIR}${PREFIX}/sbin
 	@${INSTALL_SCRIPT} ${WRKSRC}/mailgraph.cgi ${STAGEDIR}${CGIDIR}
 	@${INSTALL_DATA} ${WRKSRC}/mailgraph.css ${STAGEDIR}${WWWROOT}/mailgraph
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	for f in ${DOCS}; do \
 	  ${INSTALL_DATA} ${WRKSRC}/$$f ${STAGEDIR}${DOCSDIR}; \
 	done
-.endif
 
 .include <bsd.port.mk>

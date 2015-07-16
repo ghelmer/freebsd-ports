@@ -1,61 +1,47 @@
+# Created by: Gustau Perez i Querol <gustau.perez@gmail.com>
 # $FreeBSD$
-#   $MCom: ports/deskutils/gnote/Makefile,v 1.14 2010/11/15 16:21:49 kwm Exp $
+#   $MCom: ports/trunk/deskutils/gnote/Makefile 19997 2014-10-19 18:15:03Z gusi $
 
 PORTNAME=	gnote
-PORTVERSION=	0.7.6
-PORTREVISION=	6
+PORTVERSION=	3.14.2
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Port of Tomboy to C++, note taking application
+COMMENT=	C++ version of Tomboy, note taking application
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgtkmm-2.4.so:${PORTSDIR}/x11-toolkits/gtkmm24 \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libgtkspell.so:${PORTSDIR}/textproc/gtkspell \
+BUILD_DEPENDS=	itstool:${PORTSDIR}/textproc/itstool
+LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre \
+		libgtkspell3-3.so:${PORTSDIR}/textproc/gtkspell3 \
 		libboost_filesystem.so:${PORTSDIR}/devel/boost-libs \
+		libsecret-1.so:${PORTSDIR}/security/libsecret \
 		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
 
-USE_XZ=		yes
-USE_GNOME=	gnomehack gnomeprefix gconf2 gtk20 intltool libxml2 libxslt \
-		ltverhack gnomepanel
-USES=		gettext gmake pkgconfig
-INSTALLS_OMF=	yes
-GCONF_SCHEMAS=	gnote.schemas
-USE_AUTOTOOLS=	libtool
+USE_GNOME=	gnomeprefix gtk30 gtkmm30 intltool \
+		libxml2 libxslt
+USES=		desktop-file-utils gettext gmake libtool \
+		pathfix pkgconfig tar:xz
 INSTALLS_ICONS=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	PANELAPPLET_SERVER_DIR="${PREFIX}/libdata/bonobo/servers"
+USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-CONFIGURE_ARGS=	--disable-dbus
-DOCS=		AUTHORS ChangeLog NEWS README TODO
-MAN1=		gnote.1
+CONFIGURE_ARGS=	--with-dbus-service-dir=${PREFIX}/share/dbus-1/services
+INSTALL_TARGET=	install-strip
 
-.if !defined(WITHOUT_APPLET)
-LIB_DEPENDS+=	libpanelappletmm-2.6.so:${PORTSDIR}/x11-toolkits/libpanelappletmm
-CONFIGURE_ARGS+=--enable-applet
-PLIST_SUB+=	APPLET=""
-.else
-CONFIGURE_ARGS+=--disable-applet
-PLIST_SUB+=	APPLET="@comment "
-.endif
+GLIB_SCHEMAS=	org.gnome.gnote.gschema.xml
+
+DOCS=		AUTHORS ChangeLog NEWS README TODO
 
 PLIST_SUB+=	VERSION=${PORTVERSION}
 
-post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/include/boost|${LOCALBASE}/include/boost|g' \
-		${WRKSRC}/configure
-
-.ifndef (NOPORTDOCS)
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${DOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

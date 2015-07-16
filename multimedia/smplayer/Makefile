@@ -2,33 +2,39 @@
 # $FreeBSD$
 
 PORTNAME=	smplayer
-DISTVERSION=	14.3.0
+DISTVERSION=	14.9.0
+PORTREVISION=	1
 CATEGORIES=	multimedia audio kde
 MASTER_SITES=	SF/${PORTNAME}/SMPlayer/${PORTVERSION}
 
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Complete front-end based on Qt4 for mplayer
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 # or later
+LICENSE_FILE=	${WRKSRC}/Copying.txt
 
 RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
 		smplayer-skins>=0:${PORTSDIR}/multimedia/smplayer-skins \
 		smplayer-themes>=0:${PORTSDIR}/multimedia/smplayer-themes
 
-USE_QT4=	gui network script xml moc_build rcc_build uic_build \
+USE_QT4=	gui dbus network script xml moc_build rcc_build uic_build \
 		uic3_build porting_build linguist_build
 
 ALL_TARGET=	src/smplayer
 CONFIGURE_WRKSRC=	${WRKSRC}/src
 MAKE_ARGS+=	PREFIX=${PREFIX} DESTDIR=${STAGEDIR}
 
-USES=		desktop-file-utils dos2unix gmake qmake tar:bzip2
+USES=		cpe desktop-file-utils dos2unix gmake qmake tar:bzip2
+CPE_VENDOR=	ricardo_villalba
 DOS2UNIX_REGEX=	.*.[^p][^n][^g]$
 INSTALLS_ICONS=	yes
 
 PORTDOCS=	Changelog Not_so_obvious_things.txt Readme.txt \
 		Release_notes.txt Watching_TV.txt
 OPTIONS_DEFINE=	DOCS DEBUG
+
+# Do not use unstable versions
+PORTSCOUT=	site:http://sourceforge.net/projects/smplayer/files/SMPlayer/
 
 SUB_FILES=	pkg-message
 

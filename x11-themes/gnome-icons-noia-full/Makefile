@@ -9,8 +9,7 @@ PORTNAME=	noia-full
 PORTVERSION=	20041102
 PORTREVISION=	2
 CATEGORIES=	x11-themes gnome
-MASTER_SITES=	GNOME
-MASTER_SITE_SUBDIR=	teams/art.gnome.org/archive/themes/icon
+MASTER_SITES=	GNOME/teams/art.gnome.org/archive/themes/icon
 DISTNAME=	ICON-Noia
 
 MAINTAINER=	ports@FreeBSD.org
@@ -18,7 +17,7 @@ COMMENT=	Noia Icons for Gnome
 
 RESTRICTED=	${REASON}
 
-USE_BZIP2=	yes
+USES=	tar:bzip2
 WRKSRC=		"${WRKDIR}/Noia"
 
 .include "${.CURDIR}/../gnome-icons/bsd.gnome-icons.mk"

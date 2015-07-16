@@ -3,7 +3,7 @@
 
 PORTNAME=	openvpn-auth-radius
 PORTVERSION=	2.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	http://www.nongnu.org/radiusplugin/ \
 		http://svn-cache.ipcopaddons.org/
@@ -24,6 +24,8 @@ WRKSRC=		${WRKDIR}/radiusplugin
 PORTDOCS=	README
 PORTEXAMPLES=	radiusplugin.cnf
 PLIST_FILES=	lib/radiusplugin.so
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.pre.mk>
 

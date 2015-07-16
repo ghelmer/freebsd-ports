@@ -3,7 +3,7 @@
 
 PORTNAME=	kwooty
 PORTVERSION=	0.8.3
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net kde
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -14,9 +14,9 @@ RUN_DEPENDS=	${LOCALBASE}/bin/unrar:${PORTSDIR}/archivers/unrar \
 		${LOCALBASE}/bin/par2:${PORTSDIR}/archivers/par2cmdline \
 		${LOCALBASE}/bin/7z:${PORTSDIR}/archivers/p7zip
 
-USE_KDE4=	kdelibs kdehier kdeprefix automoc4 workspace
+USE_KDE4=	kdelibs kdeprefix automoc4 workspace
 USE_QT4=	qmake_build moc_build rcc_build uic_build
-USES=		cmake
+USES=		cmake gettext
 USE_LDCONFIG=	yes
 
 post-patch:

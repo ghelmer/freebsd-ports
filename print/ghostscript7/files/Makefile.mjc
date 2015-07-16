@@ -18,9 +18,9 @@ pre-build-mjc:
 		${WRKSRC}/mjc/mjvtbl.c ${WRKSRC}/src
 
 post-install-docs-mjc:
-	${MKDIR} ${DOCSDIR}/mjc
+	${MKDIR} ${STAGEDIR}${DOCSDIR}/mjc
 	cd ${WRKSRC}/mjc && ${INSTALL_DATA} MJ700V2C.FAQ README.mjc	\
-		README.mje README.noz cpem.doc ${DOCSDIR}/mjc
+		README.mje README.noz cpem.doc ${STAGEDIR}${DOCSDIR}/mjc
 
 post-extract: post-extract-mjc
 pre-build: pre-build-mjc

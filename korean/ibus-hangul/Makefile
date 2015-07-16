@@ -2,6 +2,7 @@
 
 PORTNAME=	ibus-hangul
 PORTVERSION=	1.4.2
+PORTREVISION=	2
 CATEGORIES=	korean
 MASTER_SITES=	GOOGLE_CODE
 
@@ -16,11 +17,11 @@ LIB_DEPENDS=	libhangul.so:${PORTSDIR}/korean/libhangul \
 PROJECTHOST=	ibus
 
 GNU_CONFIGURE=	yes
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 INSTALLS_ICONS=	yes
-USE_AUTOTOOLS=	libtool
-USE_GNOME=	intltool pygobject3
-USE_PYTHON=	yes
-USES=		gmake pathfix pkgconfig
+USES=		gmake libtool pkgconfig python
+USE_GNOME=	intlhack pygobject3
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	NLS

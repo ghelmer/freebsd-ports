@@ -3,11 +3,12 @@
 
 PORTNAME=	srilm
 PORTVERSION=	1.5.12
+PORTREVISION=	1
 CATEGORIES=	textproc
 DISTNAME=	srilm
 EXTRACT_SUFX?=	.tgz
 
-MAINTAINER=	clsung@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Toolkit for building and applying statistical language models
 
 LIB_DEPENDS=	libtcl84.so:${PORTSDIR}/lang/tcl84
@@ -15,7 +16,6 @@ LIB_DEPENDS=	libtcl84.so:${PORTSDIR}/lang/tcl84
 DOWNLOAD_URL?=	http://www.speech.sri.com/projects/srilm/download.html
 
 USES=		gmake
-USE_GCC=	yes
 MAKE_ENV+=	SRILM=${WRKSRC}
 ALL_TARGET=	World
 ONLY_FOR_ARCHS=	i386 amd64
@@ -87,8 +87,5 @@ do-install:
 		${INSTALL_MAN} *.5 ${STAGEDIR}${MAN5PREFIX}/man/man5 && \
 	cd ${WRKSRC}/bin && \
 		${INSTALL_SCRIPT} ${SCRIPTS} ${STAGEDIR}${EXAMPLESDIR}
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.post.mk>

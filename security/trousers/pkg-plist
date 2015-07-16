@@ -25,9 +25,9 @@ include/tss/tss_structs.h
 include/tss/tss_typedef.h
 %%TDDL%%lib/libtddl.a
 lib/libtspi.a
-lib/libtspi.la
 lib/libtspi.so
-lib/libtspi.so.3
+lib/libtspi.so.1
+lib/libtspi.so.1.2.0
 sbin/tcsd
 man/man3/Tspi_ChangeAuth.3.gz
 man/man3/Tspi_ChangeAuthAsym.3.gz
@@ -125,12 +125,7 @@ man/man8/tcsd.8.gz
 @mode 0600
 etc/tcsd.conf.dist
 @exec [ -f %D/etc/tcsd.conf ] || cp -p %D/etc/tcsd.conf.dist %D/etc/tcsd.conf
-@mode 0700
-@dirrmtry var/lib/tpm
 @owner
 @group
 @mode
-@dirrmtry var/lib
-@dirrmtry var
-@dirrm include/tss
-@dirrm include/trousers
+@dir(_tss,_tss,0700) var/lib/tpm

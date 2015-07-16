@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	lgeneral
-PORTVERSION=	1.2.3
+PORTVERSION=	1.2.6
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME} \
 		SF/${PORTNAME}/${PORTNAME}-data:data
@@ -14,58 +15,37 @@ COMMENT=	Turn-based strategy engine inspired by Panzer General
 
 LICENSE=	GPLv2
 
-CONFLICTS=	lgeneral-data-[0-9]*
-
-OPTIONS_DEFINE=	SOUND NLS DOCS
-OPTIONS_DEFAULT=	SOUND
-SOUND_DESC=	Enable sound support
-
-USE_SDL=	sdl
 USES=		gmake
-GNU_CONFIGURE=	yes
 USE_CSTD=	gnu89
+USE_SDL=	sdl
+GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-MAN1=		lgc-pg.1
-MAN6=		lgeneral.6
+BROKEN_powerpc=	Does not install on ${ARCH}
+BROKEN_sparc64=	Does not install on ${ARCH}
 
-NO_STAGE=	yes
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=		DOCS NLS SOUND
+OPTIONS_DEFAULT=	SOUND
+OPTIONS_SUB=		yes
 
-.if ${PORT_OPTIONS:MSOUND}
-USE_SDL+=	mixer
-.else
-CONFIGURE_ARGS+=--disable-sound
-.endif
-
-.if ${PORT_OPTIONS:MNLS}
-USES+=		gettext
-PLIST_SUB+=	NLS=""
-.else
-CONFIGURE_ENV+=	am_cv_func_iconv=no
-CONFIGURE_ARGS+=--disable-nls
-PLIST_SUB+=	NLS="@comment "
-.endif
-
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == "ia64" || ${ARCH} == "powerpc" || ${ARCH} == "sparc64"
-BROKEN=		Does not install on ia64, powerpc, or sparc64
-.endif
+NLS_USES=		gettext
+NLS_CONFIGURE_ENABLE=	nls
+NLS_CONFIGURE_ENV_OFF=	am_cv_func_iconv=no
+SOUND_USE=		sdl=mixer
+SOUND_CONFIGURE_OFF=	--disable-sound
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/icons|/pixmaps|' ${WRKSRC}/Makefile.in
+	@${REINPLACE_CMD} -e 's|/icons.*|/pixmaps|' ${WRKSRC}/Makefile.in
 
 post-install:
-	@${PREFIX}/bin/lgc-pg -s ${WRKDIR}/pg-data -d ${DATADIR}
-	@${FIND} ${DATADIR} | ${XARGS} ${CHOWN} ${SHAREOWN}:${SHAREGRP}
-	@${FIND} ${DATADIR} -type d | ${XARGS} ${CHMOD} a+rx
-	@${FIND} ${DATADIR} -type f | ${XARGS} ${CHMOD} ${SHAREMODE}
-.if ${PORT_OPTIONS:MDOCS}
-	@${MKDIR} ${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README.* ${DOCSDIR}
-.endif
+.for i in flags terrain units
+	@${MKDIR} ${STAGEDIR}${DATADIR}/gfx/${i}
+.endfor
+	(${STAGEDIR}${PREFIX}/bin/lgc-pg -s ${WRKDIR}/pg-data \
+		-d ${STAGEDIR}${DATADIR})
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} README.* ${STAGEDIR}${DOCSDIR})
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -3,7 +3,6 @@
 PORTNAME=	mod_wsgi
 PORTVERSION=	3.5
 CATEGORIES=	www python
-MASTER_SITES=	http://github.com/GrahamDumpleton/${PORTNAME}/archive/${PORTVERSION}.tar.gz?dummy=/
 PKGNAMEPREFIX=	${APACHE_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	3
 
@@ -18,7 +17,9 @@ CONFLICTS_INSTALL=${PKGNAMEPREFIX}mod_wsgi2.* mod_wsgi2.* \
 PROJECTHOST=	modwsgi
 
 USE_APACHE=	22+
-USE_PYTHON=	yes
+USES=		python
+USE_GITHUB=	yes
+GH_ACCOUNT=	GrahamDumpleton
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-apxs="${APXS}" --with-python="${PYTHON_CMD}"

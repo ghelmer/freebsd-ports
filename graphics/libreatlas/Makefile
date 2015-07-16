@@ -3,7 +3,7 @@
 
 PORTNAME=	libreatlas
 PORTVERSION=	1.0.0a
-PORTREVISION=	11
+PORTREVISION=	19
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://www.gaia-gis.it/gaia-sins/
 
@@ -20,10 +20,9 @@ LIB_DEPENDS=	libmspack.so:${PORTSDIR}/archivers/libmspack \
 		libcairo.so:${PORTSDIR}/graphics/cairo \
 		libgeos.so:${PORTSDIR}/graphics/geos \
 		libjbig.so:${PORTSDIR}/graphics/jbigkit \
-		libjpeg.so:${PORTSDIR}/graphics/jpeg \
 		libgeotiff.so:${PORTSDIR}/graphics/libgeotiff \
 		librasterlite.so:${PORTSDIR}/graphics/librasterlite \
-		libpng15.so:${PORTSDIR}/graphics/png \
+		libpng.so:${PORTSDIR}/graphics/png \
 		libproj.so:${PORTSDIR}/graphics/proj \
 		libtiff.so:${PORTSDIR}/graphics/tiff \
 		libfreetype.so:${PORTSDIR}/print/freetype2 \
@@ -32,7 +31,7 @@ LIB_DEPENDS=	libmspack.so:${PORTSDIR}/archivers/libmspack \
 		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig gettext gmake iconv
+USES=		gettext gmake iconv jpeg pkgconfig
 USE_XORG=	ice pixman sm x11 xau xcb xcomposite xcursor xdamage xdmcp xext \
 		xfixes xi xinerama xrandr xrender xxf86vm
 USE_GNOME=	atk gdkpixbuf2 glib20 gtk20 pango

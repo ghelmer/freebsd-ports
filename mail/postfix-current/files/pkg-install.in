@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#	$FreeBSD: /tmp/pcvs/ports/mail/postfix-current/files/pkg-install.in,v 1.4 2011-12-21 22:45:17 sahil Exp $
+#	$FreeBSD$
 #
 
 # If the POSTFIX_DEFAULT_MTA environment variable is set to YES, it
@@ -10,6 +10,7 @@
 PREFIX=${PKG_PREFIX:=%%PREFIX%%}
 ETCDIR=${ETCDIR:=%%ETCDIR%%}
 DAEMONDIR=${DAEMONDIR:=%%DAEMONDIR%%}
+META_DIRECTORY=${META_DIRECTORY:=%%META_DIRECTORY%%}
 READMEDIR=${READMEDIR:=%%READMEDIR%%}
 BATCH=${BATCH:=no}
 POSTFIX_DEFAULT_MTA=${POSTFIX_DEFAULT_MTA:=no}
@@ -57,23 +58,12 @@ yesno() {
 }
 
 if [ "$2" = "POST-INSTALL" ]; then
-	SAMPLES="main.cf master.cf" 
-	for file in $SAMPLES
-	do
-		if [ ! -f ${ETCDIR}/$file ]; then
-                	cp ${DAEMONDIR}/$file ${ETCDIR}/
-		fi
-	done
-
-        cmp ${DAEMONDIR}/main.cf ${ETCDIR}/main.cf >/dev/null 2>&1 \
-	 && POSTARG="set-permissions" \
-	 || POSTARG="upgrade-package"
-
 	/bin/sh ${DAEMONDIR}/post-install tempdir=/tmp \
 	 daemon_directory=${DAEMONDIR} \
+ 	 meta_directory=${META_DIRECTORY} \
 	 html_directory=${READMEDIR} \
 	 readme_directory=${READMEDIR} \
-	 ${POSTARG}
+	 upgrade-package
 fi
 
 if [ "$2" = "POST-INSTALL" -a -z "${PACKAGE_BUILDING}" -a -f "${MC}" ]; then

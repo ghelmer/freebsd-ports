@@ -7,6 +7,8 @@ lib/libgsoapck++.a
 lib/libgsoapck.a
 lib/libgsoapssl++.a
 lib/libgsoapssl.a
+lib/gsoap/dom.c
+lib/gsoap/dom.cpp
 lib/gsoap/stdsoap2.c
 lib/gsoap/stdsoap2.cpp
 libdata/pkgconfig/gsoap++.pc
@@ -15,6 +17,7 @@ libdata/pkgconfig/gsoapck++.pc
 libdata/pkgconfig/gsoapck.pc
 libdata/pkgconfig/gsoapssl++.pc
 libdata/pkgconfig/gsoapssl.pc
+%%DATADIR%%/WS/LEGAL.txt
 %%DATADIR%%/WS/README.txt
 %%DATADIR%%/WS/WS-Addressing.xsd
 %%DATADIR%%/WS/WS-Addressing03.xsd
@@ -37,6 +40,11 @@ libdata/pkgconfig/gsoapssl.pc
 %%DATADIR%%/WS/enumeration.xsd
 %%DATADIR%%/WS/reference-1.1.xsd
 %%DATADIR%%/WS/typemap.dat
+%%DATADIR%%/WS/ws-bpel_abstract_common_base.xsd
+%%DATADIR%%/WS/ws-bpel_executable.xsd
+%%DATADIR%%/WS/ws-bpel_plnktype.xsd
+%%DATADIR%%/WS/ws-bpel_serviceref.xsd
+%%DATADIR%%/WS/ws-bpel_varprop.xsd
 %%DATADIR%%/WS/ws-reliability-1.1.xsd
 %%DATADIR%%/WS/wsse.xsd
 %%DATADIR%%/WS/wsu.xsd
@@ -66,6 +74,7 @@ libdata/pkgconfig/gsoapssl.pc
 %%DATADIR%%/import/dom.h
 %%DATADIR%%/import/ds.h
 %%DATADIR%%/import/ds2.h
+%%DATADIR%%/import/plnk.h
 %%DATADIR%%/import/ref.h
 %%DATADIR%%/import/ser.h
 %%DATADIR%%/import/soap12.h
@@ -75,6 +84,7 @@ libdata/pkgconfig/gsoapssl.pc
 %%DATADIR%%/import/stllist.h
 %%DATADIR%%/import/stlset.h
 %%DATADIR%%/import/stlvector.h
+%%DATADIR%%/import/vprop.h
 %%DATADIR%%/import/wsa.h
 %%DATADIR%%/import/wsa3.h
 %%DATADIR%%/import/wsa4.h
@@ -83,6 +93,7 @@ libdata/pkgconfig/gsoapssl.pc
 %%DATADIR%%/import/wsc2.h
 %%DATADIR%%/import/wsdd.h
 %%DATADIR%%/import/wsdd10.h
+%%DATADIR%%/import/wsdd5.h
 %%DATADIR%%/import/wsdx.h
 %%DATADIR%%/import/wsp.h
 %%DATADIR%%/import/wsrm.h
@@ -151,13 +162,8 @@ libdata/pkgconfig/gsoapssl.pc
 %%DATADIR%%/plugin/wsrmapi.h
 %%DATADIR%%/plugin/wsse2api.c
 %%DATADIR%%/plugin/wsse2api.h
+%%DATADIR%%/plugin/wsseapi-lite.c
+%%DATADIR%%/plugin/wsseapi-lite.h
 %%DATADIR%%/plugin/wsseapi.c
 %%DATADIR%%/plugin/wsseapi.cpp
 %%DATADIR%%/plugin/wsseapi.h
-@dirrm lib/gsoap
-@dirrm %%DATADIR%%/plugin
-@dirrm %%DATADIR%%/import
-@dirrm %%DATADIR%%/extras
-@dirrm %%DATADIR%%/custom
-@dirrm %%DATADIR%%/WS
-@dirrm %%DATADIR%%

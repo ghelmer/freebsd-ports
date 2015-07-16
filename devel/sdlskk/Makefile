@@ -3,6 +3,7 @@
 
 PORTNAME=	sdlskk
 PORTVERSION=	0.5
+PORTREVISION=	4
 CATEGORIES=	devel graphics ruby
 MASTER_SITES=	http://www.kmc.gr.jp/~ohai/sdlskk/
 DIST_SUBDIR=	ruby
@@ -12,23 +13,23 @@ COMMENT=	SKK like library for input Japanese, based on SDL
 
 LICENSE=	LGPL21
 
-USES=		iconv
-USE_SDL=	image ttf sdl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--with-pic
+USES=		iconv libtool
+USE_SDL=	image ttf sdl
 USE_LDCONFIG=   yes
 
 PLIST_FILES=	include/SDL/sdlskk.h \
 		lib/libSDLSKK.a \
-		lib/libSDLSKK.la \
-		lib/libSDLSKK.so.2.0
-PLIST_DIRSTRY=	include/SDL
+		lib/libSDLSKK.so \
+		lib/libSDLSKK.so.2 \
+		lib/libSDLSKK.so.2.0.0
 
 PORTDOCS=	AUTHORS NEWS README README.ja
 
 OPTIONS_DEFINE= DOCS
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libSDLSKK.so
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

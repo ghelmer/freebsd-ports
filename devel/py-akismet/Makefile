@@ -12,19 +12,18 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	jacob@whotookspaz.org
 COMMENT=	Python interface to the Akismet API
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USES=		zip
-USE_PYTHON=	yes
-USE_PYDISTUTILS=yes
+USES=		python zip
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	akismet
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
+OPTIONS_DEFINE=	DOCS
+
 post-install:
-.if !defined(NOPORTDOCS)
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@(cd ${WRKSRC}/docs/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
-.endif
 
 .include <bsd.port.mk>

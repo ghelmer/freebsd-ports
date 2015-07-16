@@ -13,10 +13,12 @@ COMMENT=	NNTP package for offline news caching and reading
 
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 
-USE_XZ=		yes
+USES=		tar:xz
 GNU_CONFIGURE=	yes
 
 CONFLICTS=	newsx-1* s-news-0*
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 

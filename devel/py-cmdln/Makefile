@@ -5,7 +5,7 @@ PORTNAME=	cmdln
 PORTVERSION=	1.1.2
 PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
@@ -13,9 +13,8 @@ COMMENT=	Python module for easily building good multi-command scripts
 
 LICENSE=	MIT
 
-USES=		zip
-USE_PYTHON=	2
-USE_PYDISTUTILS=	yes
+USES=		python:2 zip
+USE_PYTHON=	distutils
 
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}

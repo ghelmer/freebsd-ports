@@ -11,6 +11,8 @@ MASTER_SITES=	http://www.cduce.org/download/ \
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Efficient XML centric functional programming language
 
+BROKEN=		Fails to build
+
 LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 BUILD_DEPENDS=	${SITELIBDIR}/ulex/ulexing.a:${PORTSDIR}/devel/ocaml-ulex \
 		${SITELIBDIR}/pcre/pcre.a:${PORTSDIR}/devel/ocaml-pcre \
@@ -20,7 +22,7 @@ USE_OCAML=		true
 USE_OCAML_FINDLIB=	true
 USE_OCAML_LDCONFIG=	true
 
-OPTIONS_DEFINE=		OCURL MLIFACE
+OPTIONS_DEFINE=		OCURL MLIFACE DOCS
 OPTIONS_DEFAULT=	MLIFACE PXP
 OPTIONS_SINGLE=		XML
 OPTIONS_SINGLE_XML=	EXPAT PXP

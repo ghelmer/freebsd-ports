@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freeradius
-DISTVERSION=	3.0.3
-PORTREVISION=	5
+DISTVERSION=	3.0.8
 CATEGORIES=	net
 MASTER_SITES=	ftp://ftp.freeradius.org/pub/freeradius/%SUBDIR%/ \
 		ftp://ftp.ntua.gr/pub/net/radius/freeradius/%SUBDIR%/ \
@@ -38,14 +37,14 @@ MAKE_ARGS+=	HOME=/dev/null
 CPPFLAGS+=	-I${LOCALBASE}/include
 CFLAGS+=	${CPPFLAGS}
 LDFLAGS+=	-L${LOCALBASE}/lib
-MAKE_JOBS_SAFE=	yes
 
 PLIST_SUB=	PORTVERSION=${DISTVERSION} LIBVER=0${PORTVERSION:C/\./0/g}
 
+OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	USER KERBEROS HEIMDAL HEIMDAL_PORT LDAP MYSQL \
 		PGSQL UNIXODBC FIREBIRD REDIS PYTHON RUBY \
 		EXPERIMENTAL UDPFROMTO DEVELOPER EDIR PERL REST \
-		FREETDS IDN SSL_PORT
+		FREETDS IDN SSL_PORT DOCS SQLITE3
 OPTIONS_DEFAULT=USER PERL
 
 USER_DESC=		Run as user freeradius, group freeradius
@@ -59,6 +58,9 @@ DEVELOPER_DESC=		Enable developer options
 EDIR_DESC=		Enable eDirectory support (implies LDAP)
 REST_DESC=		Enable RESTful API support
 SSL_PORT_DESC=		Use OpenSSL from the ports collection
+
+SQLITE3_CONFIGURE_WITH=rlm_sql_sqlite
+SQLITE3_LIB_DEPENDS=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
 
 .include <bsd.port.options.mk>
 
@@ -89,7 +91,7 @@ LIB_DEPENDS+=	libkrb5.so:${PORTSDIR}/security/heimdal
 .endif
 CONFIGURE_ARGS+=--enable-heimdal-krb5 --enable-pthread-support
 .else
-LIB_DEPENDS+=	libkrb5.so:${PORTSDIR}/security/krb5
+LIB_DEPENDS+=	libkrb5support.so:${PORTSDIR}/security/krb5
 .endif
 CONFIGURE_ARGS+=--with-rlm_krb5
 .if ${PORT_OPTIONS:MHEIMDAL} && empty(PORT_OPTIONS:MHEIMDAL_PORT)
@@ -136,7 +138,7 @@ PLIST_SUB+=	MYSQL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-USE_PGSQL=	YES
+USES+=		pgsql
 CONFIGURE_ARGS+=--with-rlm_sql_postgresql
 PLIST_SUB+=	PGSQL=""
 _REQUIRE+=	postgresql
@@ -178,7 +180,7 @@ PLIST_SUB+=	RLMPERL="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USE_PYTHON=	yes
+USES+=		python
 CONFIGURE_ARGS+=--with-rlm_python \
 		--with-rlm-python-lib-dir=${PYTHON_LIBDIR} \
 		--with-rlm-python-include-dir=${PYTHON_INCLUDEDIR}
@@ -218,8 +220,7 @@ EXPM=		yes
 .endif
 
 .if ${PORT_OPTIONS:MREST}
-IGNORE=		requires devel/json-c to be updated to 0.11 to build with RESTful support
-LIB_DEPENDS+=	libjson.so:${PORTSDIR}/devel/json-c \
+LIB_DEPENDS+=	libjson-c.so:${PORTSDIR}/devel/json-c \
     		libcurl.so:${PORTSDIR}/ftp/curl
 CONFIGURE_ARGS+=--with-rlm_rest \
 		--with-libcurl=${LOCALBASE} \
@@ -237,7 +238,7 @@ EXPM=		yes
 .endif
 
 .if ${PORT_OPTIONS:MFREETDS}
-LIB_DEPENDS+=	libtds.so:${PORTSDIR}/databases/freetds
+LIB_DEPENDS+=	libct.so:${PORTSDIR}/databases/freetds
 CONFIGURE_ARGS+=--with-rlm_freetds
 PLIST_SUB+=	RLMFREETDS=""
 .else
@@ -294,10 +295,6 @@ WITH_OPENSSL_PORT=yes
 # if we're installing, place sample configs into ${EXAMPLESDIR}
 MAKE_ARGS+=	raddbdir="${EXAMPLESDIR}/raddb" R=${STAGEDIR}
 
-.if ${ARCH} == "sparc64" && ${OSVERSION} < 700000
-BROKEN=		Does not build on sparc64-6
-.endif
-
 FREERADIUS_LIBDIR=	lib/freeradius-${PORTVERSION}
 PLIST_SUB+=	LIBDIR="${FREERADIUS_LIBDIR}"
 USE_LDCONFIG=	${PREFIX}/${FREERADIUS_LIBDIR}
@@ -327,11 +324,11 @@ CONFIGURE_ARGS+=--with-logdir=${LOGDIR} \
 		--without-rlm_opendirectory \
 		--without-rlm_sql_db2 \
 		--without-rlm_sql_iodbc \
-		--without-rlm_sql_sqlite \
 		--without-rlm_sql_sybase \
 		--without-rlm_yubikey \
 		--without-rlm_sql_oracle \
 		--without-rlm_securid \
+		--without-rlm_cache_memcached \
 		--with-vmps \
 		--with-collectdclient-lib-dir=/dev/null
 

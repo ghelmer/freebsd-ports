@@ -3,11 +3,10 @@
 
 PORTNAME=	gdcm
 PORTVERSION=	${GDCM_MAJOR}.${GDCM_MINOR}.${GDCM_PATCH}
-PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/gdcm/gdcm%202.x/GDCM%20${PORTVERSION}
 
-MAINTAINER=	gahr@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Grassroots DICOM library
 
 LICENSE=	BSD3CLAUSE
@@ -33,13 +32,13 @@ VTK6_CMAKE_ON=		-DGDCM_USE_VTK:BOOL=YES \
 # Change this when updating the port
 GDCM_MAJOR=	2
 GDCM_MINOR=	4
-GDCM_PATCH=	2
+GDCM_PATCH=	4
 
 # Change this whenever VTK is updated
 VTK5_VERSION=	5.10
 VTK6_VERSION=	6.1
 
-USES=		cmake:outsource tar:bzip2
+USES=		alias cmake:outsource tar:bzip2
 USE_OPENSSL=	yes
 USE_LDCONFIG=	${PREFIX}/lib
 CFLAGS+=	-I${LOCALBASE}/include

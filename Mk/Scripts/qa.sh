@@ -23,18 +23,27 @@ shebangonefile() {
 
 	f="$@"
 	rc=0
+
+	# blacklist of files which are not intended to be runnable
+	case "${f##*/}" in
+	*.pm|*.pod|*.txt)
+		return 0
+		;;
+	esac
+
 	interp=$(sed -n -e '1s/^#![[:space:]]*\([^[:space:]]*\).*/\1/p;2q' "$f")
 	case "$interp" in
 	"") ;;
-	/usr/bin/env) ;;
+	${LINUXBASE}/*) ;;
 	${LOCALBASE}/*) ;;
 	${PREFIX}/*) ;;
-	/usr/bin/awk) ;;
-	/usr/bin/sed) ;;
-	/usr/bin/nawk) ;;
 	/bin/csh) ;;
 	/bin/sh) ;;
 	/bin/tcsh) ;;
+	/usr/bin/awk) ;;
+	/usr/bin/env) ;;
+	/usr/bin/nawk) ;;
+	/usr/bin/sed) ;;
 	*)
 		err "'${interp}' is an invalid shebang you need USES=shebangfix for '${f#${STAGEDIR}${PREFIX}/}'"
 		rc=1
@@ -56,7 +65,8 @@ shebang() {
 	# Use heredoc to avoid losing rc from find|while subshell
 	done <<-EOF
 	$(find ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/sbin \
-	    ${STAGEDIR}${PREFIX}/libexec -type f -perm +111 2>/dev/null)
+	    ${STAGEDIR}${PREFIX}/libexec ${STAGEDIR}${PREFIX}/www \
+	    -type f -perm +111 2>/dev/null)
 	EOF
 
 	# Split stat(1) result into 2 lines and read each line separately to
@@ -76,8 +86,8 @@ shebang() {
 	# Use heredoc to avoid losing rc from find|while subshell
 	done <<-EOF
 	$(find ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/sbin \
-	    ${STAGEDIR}${PREFIX}/libexec -type l \
-	    -exec stat -f "%N${LF}%Y" {} + 2>/dev/null)
+	    ${STAGEDIR}${PREFIX}/libexec ${STAGEDIR}${PREFIX}/www \
+	    -type l -exec stat -f "%N${LF}%Y" {} + 2>/dev/null)
 	EOF
 
 	return ${rc}
@@ -121,12 +131,14 @@ paths() {
 			*/lib/ruby/gems/*/Makefile) continue ;;
 			*/lib/ruby/gems/*/Makefile.html) continue ;;
 			*/lib/ruby/gems/*/mkmf.log) continue ;;
+			*/share/texmf-var/web2c/*/*.fmt) continue ;;
+			*/share/texmf-var/web2c/*/*.log) continue ;;
 		esac
 		err "'${f#${STAGEDIR}${PREFIX}/}' is referring to ${STAGEDIR}"
 		rc=1
 	# Use heredoc to avoid losing rc from find|while subshell
 	done <<-EOF
-	$(find ${STAGEDIR} -type f -exec grep -l "${STAGEDIR}" {} +)
+	$(find ${TMPPLIST} ${STAGEDIR} -type f -exec grep -l "${STAGEDIR}" {} +)
 	EOF
 
 	return ${rc}
@@ -139,12 +151,12 @@ stripped() {
 	# Split file and result into 2 lines and read separately to ensure
 	# files with spaces are kept intact.
 	find ${STAGEDIR} -type f \
-	    -exec /usr/bin/file -nNF "${LF}" {} + |
+	    -exec /usr/bin/file --exclude ascii -nNF "${LF}" {} + |
 	    while read f; do
 		    read output
 		case "${output}" in
-			ELF\ *\ executable,\ *FreeBSD*,\ not\ stripped*|ELF\ *\ shared\ object,\ *FreeBSD*,\ not\ stripped*)
-				warn "'${f#${STAGEDIR}${PREFIX}/}' is not stripped consider using \${STRIP_CMD}"
+			*ELF\ *\ executable,\ *FreeBSD*,\ not\ stripped*|*ELF\ *\ shared\ object,\ *FreeBSD*,\ not\ stripped*)
+				warn "'${f#${STAGEDIR}${PREFIX}/}' is not stripped consider trying INSTALL_TARGET=install-strip or using \${STRIP_CMD}"
 				;;
 		esac
 	done
@@ -194,16 +206,71 @@ suidfiles() {
 
 libtool() {
 	if [ -z "${USESLIBTOOL}" ]; then
-		find ${STAGEDIR} -type f -name '*.la' | while read f; do
+		find ${STAGEDIR} -name '*.la' | while read f; do
 			grep -q 'libtool library' "${f}" &&
-				warn ".la libraries found, port needs USES=libtool" &&
-				return 0 || true
+				err ".la libraries found, port needs USES=libtool" &&
+				return 1 || true
 		done
 		# The return above continues here.
 	fi
 }
 
-checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo suidfiles libtool"
+libperl() {
+	local has_some_libperl_so files found
+	if [ -n "${SITE_ARCH_REL}" -a -d "${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}" ]; then
+		has_some_libperl_so=0
+		files=0
+		while read f; do
+			# No results presents a blank line from heredoc.
+			[ -z "${f}" ] && continue
+			files=$((files+1))
+			found=`readelf -d $f | awk "BEGIN {libperl=1; rpath=10; runpath=100}
+				/NEEDED.*${LIBPERL}/  { libperl = 0 }
+				/RPATH.*perl.*CORE/   { rpath   = 0 }
+				/RUNPATH.*perl.*CORE/ { runpath = 0 }
+				END {print libperl+rpath+runpath}
+				"`
+			# FIXME When 8.4 goes out of commission, replace the ;;
+			# with ;& in the case below.  Also, change the logic on
+			# detecting if there was a file with libperl.so
+			if [ "$found" -ne "0" ]; then
+				case "$found" in
+					*1)
+						warn "${f} is not linked with ${LIBPERL}, not respecting lddlflags?"
+						;; #;&
+					*1?)
+						has_some_libperl_so=1
+						warn "${f} does not have a rpath to ${LIBPERL}, not respecting lddlflags?"
+						;; #;&
+					1??)
+						has_some_libperl_so=1
+						warn "${f} does not have a runpath to ${LIBPERL}, not respecting lddlflags?"
+						;; #;&
+				esac
+			else
+				has_some_libperl_so=1
+			fi
+		# Use heredoc to avoid losing rc from find|while subshell
+		done <<-EOT
+		$(find ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL} -name '*.so')
+		EOT
+
+		if [ $files -gt 0 -a $has_some_libperl_so -eq 0 ]; then
+			err "None of the .so in ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL} are linked with ${LIBPERL}, see above for the full list."
+			return 1
+		else
+			return 0
+		fi
+	fi
+}
+
+prefixvar() {
+	if test -d ${STAGEDIR}${PREFIX}/var; then
+		warn "port uses ${PREFIX}/var instead of /var"
+	fi
+}
+
+checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo suidfiles libtool libperl prefixvar"
 
 ret=0
 cd ${STAGEDIR}

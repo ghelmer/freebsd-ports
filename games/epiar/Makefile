@@ -3,10 +3,10 @@
 
 PORTNAME=	epiar
 PORTVERSION=	0.5.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	games
 
-MAINTAINER=	games@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Space trading/exploring sim with RPG elements
 
 LICENSE=	GPLv2 CCbyNCSA3
@@ -23,15 +23,11 @@ LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
 USE_GITHUB=	yes
 GH_ACCOUNT=	knowknowledge
 GH_PROJECT=	Epiar
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	44046e3
+GH_TAGNAME=	44046e3
 
-USES=		gmake pkgconfig
+USES=		autoreconf gmake pkgconfig
 USE_SDL=	image mixer sdl
 USE_GL=		glu
-USE_AUTOTOOLS=	aclocal autoheader automake autoconf
-AUTOMAKE_ARGS=	--add-missing
-ACLOCAL_ARGS=
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	AUTHORS ChangeLog README

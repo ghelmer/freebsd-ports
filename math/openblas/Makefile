@@ -2,30 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	openblas
-PORTVERSION=	0.2.8
-PORTREVISION=	3
+PORTVERSION=	0.2.14
+PORTEPOCH=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	math
-MASTER_SITES=	https://codeload.github.com/${GH_ACCOUNT}/${GH_PROJECT}/legacy.tar.gz/${GH_TAGNAME}?dummy=/:${PORTNAME} \
-		NL:lapack_tmg
-MASTER_SITE_SUBDIR=	lapack/timing/:lapack_tmg
-DISTFILES=	${PORTNAME}-${PORTVERSION}${EXTRACT_SUFX}:${PORTNAME} \
+MASTER_SITES=	GH NL/lapack/timing/:lapack_tmg
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		large.tgz:lapack_tmg timing.tgz:lapack_tmg
 
 MAINTAINER=	phd_kimberlite@yahoo.co.jp
 COMMENT=	Optimized BLAS library based on GotoBLAS2
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 DIST_SUBDIR=	openblas
+USE_GITHUB=	yes
 GH_ACCOUNT=	xianyi
 GH_PROJECT=	OpenBLAS
-GH_TAGNAME=	${GH_COMMIT}
-GH_COMMIT=	835293c
 LARGE_FILE=	large.tgz
 TIMING_FILE=	timing.tgz
 
 USES=		fortran gmake perl5
-USE_GCC=	yes
 USE_LDCONFIG=	yes
 USE_PERL5=	build
 
@@ -35,14 +32,13 @@ OPENBLAS_SVER=	0
 OPENBLAS_FILES=	${OPENBLAS_LIBS:S|$|.so|} ${OPENBLAS_LIBS:S|$|.so.${OPENBLAS_SVER}|} ${OPENBLAS_LIBS:S|$|.a|}
 PLIST_FILES=	${OPENBLAS_FILES:S|^|lib/|}
 
-WRKSRC=		${WRKDIR}/${GH_ACCOUNT}-${GH_PROJECT}-${GH_TAGNAME}
-
-OPTIONS_DEFINE=		DYNAMIC_ARCH INTERFACE64 OPENMP AVX
+OPTIONS_DEFINE=		DYNAMIC_ARCH INTERFACE64 OPENMP AVX AVX2
 
 DYNAMIC_ARCH_DESC=	Support multiple CPU types on i386 and amd64
 INTERFACE64_DESC=	Use 8 byte integers on 64-bit architectures
 OPENMP_DESC=		Use OpenMP for threading
 AVX_DESC=		Support Advanced Vector Extensions (AVX)
+AVX2_DESC=		Support Advanced Vector Extensions 2 (AVX2)
 
 .if defined(PACKAGE_BUILDING)
 OPTIONS_DEFAULT=	DYNAMIC_ARCH
@@ -55,6 +51,7 @@ BUILDFLAGS+=	TARGET=${TARGET_CPU_ARCH}
 .endif
 
 MAXTHREADS?=	8
+BUILDFLAGS_THREAD+=	NUM_THREADS=${MAXTHREADS} USE_THREAD=1
 
 .if ${ARCH:M*64} == ""
 BUILDFLAGS+=	BINARY32=1
@@ -75,16 +72,21 @@ BUILDFLAGS+=	INTERFACE64=1
 .endif
 
 .if ${PORT_OPTIONS:MOPENMP}
-BUILDFLAGS+=	USE_OPENMP=1
+USES+=		compiler:openmp
+BUILDFLAGS_THREAD+=	USE_OPENMP=1
 .endif
 
 .if ${PORT_OPTIONS:MQUAD_PRECISION}
-BROKEN =	QUAD_PRECISION is broken; please disable this option
+BROKEN=		QUAD_PRECISION is broken; please disable this option
 BUILDFLAGS+=	QUAD_PRECISION=1
 .endif
 
 .if ! ${PORT_OPTIONS:MAVX}
 BUILDFLAGS+=	NO_AVX=1
+.endif
+
+.if ! ${PORT_OPTIONS:MAVX2}
+BUILDFLAGS+=	NO_AVX2=1
 .endif
 
 post-extract:
@@ -116,11 +118,11 @@ post-patch:
 		${WRKSRC}/lapack-netlib/lapacke/utils/Makefile \
 		${WRKSRC}/reference/Makefile
 	${REINPLACE_CMD} -e "s+(ARCH)+(ARCH_)+" \
+	-e 's+%%LDFLAGS%%+${LDFLAGS}+' \
 	-e 's+%%LOCALBASE%%+${LOCALBASE}+' \
 	-e 's+%%FIND%%+${FIND}+' \
 	-e 's+%%XARGS%%+${XARGS}+' \
 	-e 's+%%REINPLACE_CMD%%+${REINPLACE_CMD}+' \
-	-e 's+%%_GCC_RUNTIME%%+${_GCC_RUNTIME}+' \
 	-e 's+$$(CROSS_SUFFIX)+${LOCALBASE}/bin/+' \
 		${WRKSRC}/Makefile.system
 .if ${PORT_OPTIONS:MOPENMP}
@@ -135,8 +137,8 @@ do-build:
 	${CP} ${WRKSRC}/libopenblas-${OPENBLAS_SUFX}.a ${WRKDIR}/lib/libopenblas.a
 	${CP} ${WRKSRC}/libopenblas-${OPENBLAS_SUFX}.so ${WRKDIR}/lib/libopenblas.so.${OPENBLAS_SVER}
 	cd ${WRKSRC} ; ${MAKE_CMD} ${MAKE_ARGS} clean
-	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} NUM_THREADS=${MAXTHREADS} \
-	USE_THREAD=1 ${MAKE_CMD} ${MAKE_ARGS}
+	cd ${WRKSRC} ; ${SETENV} ${BUILDFLAGS} ${BUILDFLAGS_THREAD} \
+	${MAKE_CMD} ${MAKE_ARGS}
 	${CP} ${WRKSRC}/libopenblasp-${OPENBLAS_SUFX}.a ${WRKDIR}/lib/libopenblasp.a
 	${CP} ${WRKSRC}/libopenblasp-${OPENBLAS_SUFX}.so ${WRKDIR}/lib/libopenblasp.so.${OPENBLAS_SVER}
 .if !${PORT_OPTIONS:MDEBUG}
@@ -145,9 +147,9 @@ do-build:
 
 BENCHMARK_MAXTHREADS?=	${MAXTHREADS}
 .if ${PORT_OPTIONS:MOPENMP}
-BENCHMARK_THREADS_FLAG =	OMP_NUM_THREADS=${BENCHMARK_MAXTHREADS}
+BENCHMARK_THREADS_FLAG=		OMP_NUM_THREADS=${BENCHMARK_MAXTHREADS}
 .else
-BENCHMARK_THREADS_FLAG =	OPENBLAS_NUM_THREADS=${BENCHMARK_MAXTHREADS}
+BENCHMARK_THREADS_FLAG=		OPENBLAS_NUM_THREADS=${BENCHMARK_MAXTHREADS}
 .endif
 
 benchmark: build
@@ -164,5 +166,9 @@ do-install:
 	for i in ${OPENBLAS_LIBS:S|$|.so|}; do \
 		${LN} -sf $$i.${OPENBLAS_SVER} $$i ; \
 	done
+
+post-stage:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopenblas.so.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libopenblasp.so.0
 
 .include <bsd.port.mk>

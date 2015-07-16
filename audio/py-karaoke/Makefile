@@ -3,7 +3,7 @@
 
 PORTNAME=	karaoke
 PORTVERSION=	0.7.5
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	audio python
 MASTER_SITES=	SF/py${PORTNAME}/py${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,15 +21,13 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game \
 		dejavu>0:${PORTSDIR}/x11-fonts/dejavu \
 		${PYNUMPY}
 
-USES=		desktop-file-utils iconv zip
+USES=		desktop-file-utils iconv python:2 zip
 USE_SDL=	sdl
 USE_XORG=	x11 xau xcb xdmcp
-USE_WX=		2.6+
+USE_WX=		3.0+
 WX_COMPS=	python:lib
 
-USE_PYTHON=		2
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_PKGNAME=	py${PORTNAME}
+USE_PYTHON=	distutils autoplist
 
 DATADIR=	${PREFIX}/share/py${PORTNAME}
 
@@ -54,7 +52,7 @@ post-patch:
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/fonts
 .for i in DejaVuSans.ttf DejaVuSansCondensed-Bold.ttf DejaVuSansCondensed.ttf
-	@${LN} -sf ${LOCALBASE}/lib/X11/fonts/dejavu/${i} \
+	@${LN} -sf ${LOCALBASE}/share/fonts/dejavu/${i} \
 		${STAGEDIR}${DATADIR}/fonts
 .endfor
 	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/_pycdgAux.so

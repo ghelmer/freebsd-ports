@@ -6,7 +6,6 @@ lib/libpure.so.8.0
 lib/pure/array.pure
 lib/pure/avltrees.pure
 lib/pure/dict.pure
-lib/pure/docs
 lib/pure/enum.pure
 lib/pure/faustui.pure
 lib/pure/getopt.pure
@@ -39,7 +38,3 @@ man/man1/pure.1.gz
 %%ETC%%%%DATADIR%%/etc/pure.ssh
 %%ETC%%%%DATADIR%%/etc/pure.vim
 %%ETC%%%%DATADIR%%/etc/pure.xml
-%%ETC%%@dirrm %%DATADIR%%/etc
-%%ETC%%@dirrm %%DATADIR%%
-@dirrm lib/pure
-@dirrm include/pure

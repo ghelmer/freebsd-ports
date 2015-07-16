@@ -3,32 +3,29 @@
 
 PORTNAME=	lirc
 PORTVERSION=	0.9.0
-PORTREVISION=	4
+PORTREVISION=	7
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	SF/${PORTNAME}/LIRC/${PORTVERSION}
-DISTNAME=	${PORTNAME}-${PORTVERSION:S/p1/-pre1/}
 
 MAINTAINER=	nox@FreeBSD.org
 COMMENT=	Linux Infrared Remote Control
 
 BUILD_DEPENDS=	v4l_compat>=1.0.20110603:${PORTSDIR}/multimedia/v4l_compat
 
-USE_AUTOTOOLS=	libtool automake autoheader aclocal autoconf
-USES=		gmake tar:bzip2
-ACLOCAL_ARGS=	-I "${ACLOCAL_DIR}" -I ${LOCALBASE}/share/aclocal
+INSTALL_TARGET=	install-strip
+USES=		alias autoreconf gmake libtool python tar:bzip2
 USE_XORG=	sm x11
-USE_PYTHON=	yes
 USE_CSTD=	gnu89
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
-CONFIGURE_ARGS=		--enable-sandboxed --with-devdir=/var/run/lirc \
-			--sysconfdir=${PREFIX}/etc
-CPPFLAGS+=		-I${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--enable-sandboxed --with-devdir=/var/run/lirc \
+		--sysconfdir=${PREFIX}/etc
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE=	MINIMAL DEBUG UARTLIRC
+OPTIONS_DEFINE=	MINIMAL DEBUG UARTLIRC DOCS EXAMPLES
 
 MINIMAL_DESC=	Build with minmal dependencies
 UARTLIRC_DESC=	Install serial LIRC driver
@@ -48,8 +45,8 @@ PLIST_SUB+=	SMODE2="@comment "
 .endif
 
 .if empty(PORT_OPTIONS:MMINIMAL)
-BUILD_DEPENDS+=		${LOCALBASE}/lib/libirman.a:${PORTSDIR}/comms/libirman
-LIB_DEPENDS+=		libftdi.so:${PORTSDIR}/devel/libftdi
+LIB_DEPENDS+=		libftdi.so:${PORTSDIR}/devel/libftdi \
+			libirman.so:${PORTSDIR}/comms/libirman
 CONFIGURE_ARGS+=	--with-driver=userspace
 .else
 CONFIGURE_ARGS+=	--with-driver=dvico
@@ -63,10 +60,11 @@ CONFIGURE_ARGS+=	--enable-debug
 RUN_DEPENDS+=		uartlirc>=0.3:${PORTSDIR}/comms/uartlirc
 .endif
 
-# XXX: work around an issue with automake-1.13 erroring out on a
-#      non-existent m4 directory before libtoolize creates it
-pre-configure::
-	@${MKDIR} ${WRKSRC}/m4
+post-patch:
+	@${REINPLACE_CMD} \
+		-e 's/`$${LIBUSB_CONFIG} --libs`/-lusb/' \
+		-e 's/`$${LIBUSB_CONFIG} --cflags`//' \
+		${WRKSRC}/configure.ac
 
 post-install:
 .if ${PORT_OPTIONS:MDOCS}

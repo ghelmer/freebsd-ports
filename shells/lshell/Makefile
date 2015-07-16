@@ -2,27 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	lshell
-PORTVERSION=	0.9.15.1
+PORTVERSION=	0.9.16
+PORTREVISION=	1
 CATEGORIES=	shells
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.9.15/
+MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Shell environment to limited sets of commands to user's
+COMMENT=	Shell environment to limited sets of commands to users
 
-USE_PYDISTUTILS=	yes
-USE_PYTHON=	yes
+LICENSE=	GPLv3 # (or later)
 
-PORTDOCS=	CHANGES COPYING README
+USES=		python
+USE_PYTHON=	distutils
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc|${PREFIX}/etc|g; \
-		s|share/man|${MANPREFIX}/man|g; 45d' ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} -e \
+		"s|(.*lshell.conf.*),|| ; \
+		 s|/etc|etc| ; \
+		 s|share/man|man| ; \
+		 s|'COPYING',||" ${WRKSRC}/setup.py
 
 post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for docs in ${PORTDOCS}
-	${INSTALL_DATA} ${WRKSRC}/${docs} ${STAGEDIR}${DOCSDIR}
-.endfor
-	${INSTALL_DATA} ${WRKSRC}/etc/${PORTNAME}.conf ${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample
+	(cd ${WRKSRC}/etc && ${INSTALL_DATA} ${PORTNAME}.conf \
+		${STAGEDIR}${PREFIX}/etc/${PORTNAME}.conf.sample)
 
 .include <bsd.port.mk>

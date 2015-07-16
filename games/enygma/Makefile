@@ -8,10 +8,13 @@ MASTER_SITES=	http://www.chiark.greenend.org.uk/~sgtatham/enigma/
 DISTNAME=	enigma-${DISTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	gennerate@zonnet.nl
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Text-based puzzle game
 
-GNU_CONFIGURE=	yes
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENCE
 
-NO_STAGE=	yes
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--localstatedir=/var/games
+
 .include <bsd.port.mk>

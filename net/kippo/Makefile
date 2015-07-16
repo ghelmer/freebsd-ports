@@ -4,7 +4,7 @@
 PORTNAME=	kippo
 PORTVERSION=	0.8
 CATEGORIES=	net
-MASTER_SITES=	${MASTER_SITE_GOOGLE_CODE}
+MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Medium interaction ssh honeypot
@@ -15,8 +15,7 @@ BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pycrypto>0:${PORTSDIR}/security/py-pycrypt
 		${PYTHON_PKGNAMEPREFIX}zope.interface>0:${PORTSDIR}/devel/py-zope.interface
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-USE_PYTHON=	yes
-USES=		twisted:run,conch,web
+USES=		python twisted:run,conch,web
 NO_BUILD=	yes
 
 USE_RC_SUBR=	kippo
@@ -36,8 +35,5 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}/${d}
 	@(cd ${WRKSRC}/${d}/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${DATADIR}/${d})
 .endfor
-
-post-install:
-	@${CAT} ${PKGMESSAGE}
 
 .include <bsd.port.mk>

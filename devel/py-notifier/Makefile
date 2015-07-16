@@ -13,18 +13,18 @@ COMMENT=	Generic notifier/event scheduler abstraction
 
 LICENSE=	LGPL20
 
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
+USES=		python
+USE_PYTHON=	distutils
 PYDISTUTILS_PKGNAME=	pynotifier
 
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 
 WRKSRC=		${WRKDIR}/py${PORTNAME}-${PORTVERSION}
 
-.if !defined(NOPORTEXAMPLES)
+OPTIONS_DEFINE=	EXAMPLES
+
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${CP} ${WRKSRC}/examples/*.py ${STAGEDIR}${EXAMPLESDIR}
-.endif
 
 .include <bsd.port.mk>

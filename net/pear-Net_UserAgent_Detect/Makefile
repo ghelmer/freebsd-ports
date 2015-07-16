@@ -9,13 +9,8 @@ CATEGORIES=	net www pear
 MAINTAINER=	joehorn@gmail.com
 COMMENT=	PEAR class that determines the Web browser, version, and platform
 
-LICENSE=	BSD
+LICENSE=	PHP202
 
-BUILD_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
-RUN_DEPENDS=	${PEARDIR}/PEAR.php:${PORTSDIR}/devel/pear
+USES=	pear
 
-PEAR_AUTOINSTALL=	yes
-
-.include <bsd.port.pre.mk>
-.include "${PORTSDIR}/devel/pear/bsd.pear.mk"
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

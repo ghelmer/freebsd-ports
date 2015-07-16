@@ -2,43 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	phpsysinfo
-PORTVERSION=	3.0.10
+PORTVERSION=	3.2.0
 PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	www
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
 
 MAINTAINER=	walt@relnor.com
-COMMENT=	A PHP script for displaying system information
+COMMENT=	PHP script for displaying system information
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
+USE_GITHUB=	yes
+
+USES=		shebangfix
+SHEBANG_FILES=	tools/check.sh
+NO_BUILD=	yes
 USE_PHP=	dom pcre xml simplexml mbstring
 WANT_PHP_WEB=	yes
 
-LATEST_LINK=	phpsysinfo-dev
-
-NO_BUILD=	yes
-WRKSRC=		${WRKDIR}/${PORTNAME}
-
 SUB_FILES=	pkg-message
-
-NO_STAGE=	yes
-.include <bsd.port.pre.mk>
-
-post-install:
-	@if [ ! -f ${WWWDIR}/config.php ]; then \
-		${CP} -p ${WWWDIR}/config.php ${WWWDIR}/config.php.bak ; \
-	fi
+PLIST_SUB=	NOBINMODE="${NOBINMODE}" WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
 
 do-install:
-	${MKDIR} ${WWWDIR}
-	cd ${WRKSRC}; ${FIND} . \
-		| ${CPIO} -pdm -R ${WWWOWN}:${WWWGRP} ${WWWDIR}
-	${CHMOD} -R ${BINMODE} ${WWWDIR}
-	${FIND} ${WWWDIR} ! -type d | ${XARGS} ${CHMOD} ${NOBINMODE}
-	${CP} ${WWWDIR}/config.php.new ${WWWDIR}/config.php
+	${MKDIR} ${STAGEDIR}${WWWDIR}
+	cd ${WRKSRC}; ${FIND} . \! -name .travis.yml \
+		| ${CPIO} -pdm ${STAGEDIR}${WWWDIR}
 
-.if !defined(BATCH)
-	@ ${CAT} ${PKGMESSAGE}
-.endif
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

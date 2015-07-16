@@ -3,17 +3,17 @@
 
 PORTNAME=	fastcgi
 PORTVERSION=	3001.0.2.4
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	www haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Haskell library for writing FastCGI programs
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	cgi>=3000.0.0
 
-LIB_DEPENDS=	fcgi.0:${PORTSDIR}/www/fcgi
+LIB_DEPENDS=	libfcgi.so:${PORTSDIR}/www/fcgi
 
 .include "${.CURDIR}/../../lang/ghc/bsd.cabal.mk"
 .include <bsd.port.mk>

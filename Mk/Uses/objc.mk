@@ -10,7 +10,7 @@
 .if !defined(_INCLUDE_USES_OBJC_MK)
 _INCLUDE_USES_OBJC_MK=	yes
 
-.if defined(objc_ARGS)
+.if !empty(objc_ARGS)
 IGNORE=	USES=objc takes no arguments
 .endif
 
@@ -39,16 +39,16 @@ ALT_COMPILER_TYPE=	gcc
 .endif
 
 # We do always need clang
-.if (${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 33) || ${COMPILER_TYPE} != clang
-.if ${ALT_COMPILER_TYPE} == clang && ${ALT_COMPILER_VERSION} >= 33
+.if (${COMPILER_TYPE} == clang && ${COMPILER_VERSION} < 34) || ${COMPILER_TYPE} != clang
+.if ${ALT_COMPILER_TYPE} == clang && ${ALT_COMPILER_VERSION} >= 34
 CC=	/usr/bin/clang
 CPP=	/usr/bin/clang-cpp
 CXX=	/usr/bin/clang++
 .else
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang33:${PORTSDIR}/lang/clang33
-CPP=	${LOCALBASE}/bin/clang-cpp33
-CC=	${LOCALBASE}/bin/clang33
-CXX=	${LOCALBASE}/bin/clang++33
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:${PORTSDIR}/lang/clang34
+CPP=	${LOCALBASE}/bin/clang-cpp34
+CC=	${LOCALBASE}/bin/clang34
+CXX=	${LOCALBASE}/bin/clang++34
 .if ${OSVERSION} < 900033
 USE_BINUTILS=	yes
 LDFLAGS+=	-B${LOCALBASE}/bin

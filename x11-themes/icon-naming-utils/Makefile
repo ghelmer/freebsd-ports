@@ -6,7 +6,6 @@ PORTVERSION=	0.8.90
 PORTREVISION=	1
 CATEGORIES=	x11-themes
 MASTER_SITES=	GENTOO
-MASTER_SITE_SUBDIR=	distfiles
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utilities of the Tango project

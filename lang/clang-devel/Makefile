@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	clang
-PORTVERSION=	3.5.r${SVN_REV}
+PORTVERSION=	3.7.r${SVN_REV}
 CATEGORIES=	lang devel
-MASTER_SITES=	${MASTER_SITE_LOCAL}
-MASTER_SITE_SUBDIR=	brooks
+MASTER_SITES=	LOCAL/brooks
 PKGNAMESUFFIX=	-devel
 DISTFILES=	${CLANG_SOURCE} \
 		${LLVM_SOURCE}
@@ -14,7 +13,7 @@ MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	C, Objective-C, and C++ compiler
 
 CLANG_NAME=	clang-${PORTVERSION}
-CLANG_RELEASE=	${PORTVERSION:C/\.r[0-9]*//}.0svn
+CLANG_RELEASE=	${PORTVERSION:C/\.r[0-9]*//}svn
 CLANG_SOURCE=	${CLANG_NAME}${EXTRACT_SUFX}
 LLVM_NAME=	llvm-${PORTVERSION}
 LLVM_SOURCE=	${LLVM_NAME}${EXTRACT_SUFX}
@@ -30,11 +29,11 @@ LLVM_SUFFIX=	-devel
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
+PYTHONLIBDIR=	${LLVM_PREFIX}/lib/python
 
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${LLVM_PREFIX}
-USES=		compiler:c++11-lib gmake perl5 tar:bzip2
-USE_PYTHON=	yes
+USES=		compiler:c++11-lib gmake perl5 python tar:bzip2
 
 MAKE_ARGS=	CLANG_TBLGEN=${WRKSRC}/${RELTYPE}/bin/clang-tblgen \
 		LLVMIncDir=${LLVM_PREFIX}/include \
@@ -51,6 +50,8 @@ ASSERTS_DESC=	Enable assertions (thread unsafe)
 CONFIGURE_ARGS+=	--enable-optimized --enable-shared
 # Build some docs manually later
 CONFIGURE_ARGS+=	--disable-docs
+# Don't build bindings, the ocaml ones break
+CONFIGURE_ARGS+=	--enable-bindings=none
 
 PLIST_SUB+=	CLANG_RELEASE=${CLANG_RELEASE}
 
@@ -82,6 +83,9 @@ RELTYPE=		Release
 
 .include <bsd.port.pre.mk>
 
+# keep in sync with /usr/src/lib/clang/clang.build.mk
+CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/armv6hf/armv6/}-portbld-${OPSYS:tl}${OSREL}
+
 .include "${.CURDIR}/../../devel/llvm-devel/Makefile.svn_rev"
 
 .if ${PORT_OPTIONS:MASSERTS}
@@ -96,11 +100,11 @@ pre-fetch:
 .endif
 
 .if defined(BOOTSTRAP) || defined(SVN_FETCH)
-FETCH_DEPENDS+= svn:${PORTSDIR}/devel/subversion
+SVN?=	svnlite
 
 do-fetch:
 	${MKDIR} ${WRKDIR}
-	svn export -r ${SVN_REV} \
+	${SVN} export -r ${SVN_REV} \
 	    http://llvm.org/svn/llvm-project/cfe/trunk ${WRKDIR}/${CLANG_NAME}
 	cd ${WRKDIR}; tar cvfy ${DISTDIR}/${DISTNAME}.tar.bz2 ${DISTNAME}
 .if ${USER} == brooks || ${USER} == bed22
@@ -136,10 +140,11 @@ pre-build:
 	    ${WRKSRC}/${RELTYPE}/lib/
 	${LN} -sf ${LLVM_PREFIX}/lib/libLLVMTableGen.a ${WRKSRC}/${RELTYPE}/lib/
 	${LN} -sf ${LLVM_PREFIX}/lib/libLLVMSupport.a ${WRKSRC}/${RELTYPE}/lib/
-	cd ${WRKSRC}/utils/unittest && ${MAKE_CMD}
+	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/utils/unittest
 
 post-build:
-	@cd ${WRKSRC}/tools/clang/docs/tools && ${MAKE_CMD} man html ps
+	${SETENV} ${MAKE_ENV} \
+		${MAKE_CMD} -C ${WRKSRC}/tools/clang/docs/tools man html ps
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${LLVM_PREFIX}/lib/libclang.so
@@ -157,12 +162,12 @@ post-install:
 	${LN} -f ${STAGEDIR}${PREFIX}/bin/${FIRST_COMMAND}${LLVM_SUFFIX} \
 	    ${STAGEDIR}${PREFIX}/bin/${command}${LLVM_SUFFIX}
 .endfor
-	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
-	${MKDIR} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Resources
+	${MKDIR} ${STAGEDIR}${PYTHONLIBDIR}
+	${MKDIR} ${STAGEDIR}${PYTHONLIBDIR}/Resources
 	${INSTALL_SCRIPT} ${WRKSRC}/tools/clang/tools/scan-view/*.py \
-	    ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
+	    ${STAGEDIR}${PYTHONLIBDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/tools/clang/tools/scan-view/Resources/* \
-	    ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/Resources
+	    ${STAGEDIR}${PYTHONLIBDIR}/Resources
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/tools/clang/tools/scan-build/scanview.css \
 	    ${WRKSRC}/tools/clang/tools/scan-build/sorttable.js \
@@ -176,12 +181,8 @@ PLIST_FILE_LIST=	${COMMANDS:S|^|bin/|} \
 			lib/libclang*
 PLIST_DIR_LIST=		include/clang \
 			include/clang-c \
-			lib/clang
-PLIST_PYFILE_LIST=	ScanView.py \
-			Reporter.py \
-			Resources/* \
-			startfile.py
-PLIST_PYDIR_LIST=	Resources
+			lib/clang \
+			lib/python
 
 build-plist:
 	${RM} -f ${PLIST}
@@ -195,17 +196,5 @@ build-plist:
 	${FIND} ${STAGEDIR}${DOCSDIR} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%%%DOCSDIR%%|' | \
 	    ${SORT} >> ${PLIST}
-	${FIND} ${PLIST_DIR_LIST:S|^|${STAGEDIR}${LLVM_PREFIX}/|} -type d | \
-	    ${SED} -e 's|${STAGEDIR}${PREFIX}/|@dirrm |' | \
-	    ${SORT} -r >> ${PLIST}
-	${FIND} ${STAGEDIR}${DOCSDIR} -type d | ${SORT} -r | \
-	    ${SED} -e 's|${STAGEDIR}${DOCSDIR}|%%PORTDOCS%%@dirrm %%DOCSDIR%%|' \
-	    >> ${PLIST}
-	cd ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} && \
-	    ls ${PLIST_PYFILE_LIST} | ${SORT} | \
-	    ${SED} -e 's|^|%%PYTHON_SITELIBDIR%%/|' >> ${PLIST}
-	cd ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR} && \
-	    ${FIND} ${PLIST_PYDIR_LIST} -type d | ${SORT} -r | \
-	    ${SED} -e 's|^|@dirrm %%PYTHON_SITELIBDIR%%/|' >> ${PLIST}
 
 .include <bsd.port.post.mk>

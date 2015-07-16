@@ -3,11 +3,12 @@
 
 PORTNAME=	Data-Properties
 PORTVERSION=	0.02
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Data::Properties - persistent properties
 
 USES=		perl5

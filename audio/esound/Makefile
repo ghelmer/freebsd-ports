@@ -14,7 +14,7 @@ COMMENT=	Sound library for enlightenment package
 
 LIB_DEPENDS=	libaudiofile.so:${PORTSDIR}/audio/libaudiofile
 
-USES=		libtool:keepla pathfix pkgconfig:both tar:bzip2
+USES=		alias libtool:keepla pathfix pkgconfig:both tar:bzip2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=  yes
 CONFIGURE_ENV=	JW=false
@@ -24,6 +24,7 @@ CONFLICTS=	py*-ro-[0-9]*
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|esdconf_DATA = esd.conf|esdconf_DATA = |g' \
+		-e '/^esd_LDADD =/s/$$/ -lm/' \
 		${WRKSRC}/Makefile.in
 
 post-install:

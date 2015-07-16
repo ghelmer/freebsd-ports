@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	checkers
-PORTVERSION=	0.3.1
-PORTREVISION=	5
+PORTVERSION=	0.3.2
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Check properties on standard classes and data structures
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
 USE_CABAL=	QuickCheck>=2.3 random
 

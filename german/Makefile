@@ -4,8 +4,6 @@
     COMMENT = German support
 
     SUBDIR += BBBike
-    SUBDIR += acroread8
-    SUBDIR += acroread9
     SUBDIR += alt-aspell
     SUBDIR += aspell
     SUBDIR += bsdpaste
@@ -15,6 +13,7 @@
     SUBDIR += ding
     SUBDIR += dtaus
     SUBDIR += eric4
+    SUBDIR += eric6
     SUBDIR += geonext
     SUBDIR += gimp-help
     SUBDIR += hunspell
@@ -23,10 +22,8 @@
     SUBDIR += jdictionary-ger-hun
     SUBDIR += kde4-l10n
     SUBDIR += libreoffice
-    SUBDIR += manpages
     SUBDIR += mediathek
     SUBDIR += mythes
-    SUBDIR += pecl-konto_check
     SUBDIR += phone
     SUBDIR += php_doc
     SUBDIR += schwobifyer

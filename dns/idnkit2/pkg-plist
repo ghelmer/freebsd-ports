@@ -2,12 +2,8 @@ bin/idncheck
 bin/idncmp
 bin/idnconv2
 bin/idnslookup2
-@unexec cmp -s %D/etc/idn2.conf.sample %D/etc/idn2.conf && rm -f %D/etc/idn2.conf || true
-etc/idn2.conf.sample
-@exec [ -f %B/idn2.conf ] || cp -p %D/%F %B/idn2.conf
-@unexec cmp -s %D/etc/idnalias.conf.sample %D/etc/idnalias.conf && rm -f %D/etc/idnalias.conf || true
-etc/idnalias.conf.sample
-@exec [ -f %B/idnalias.conf ] || cp -p %D/%F %B/idnalias.conf
+@sample etc/idn2.conf.sample
+@sample etc/idnalias.conf.sample
 include/idn/api.h
 include/idn/export.h
 include/idn/res.h
@@ -15,18 +11,15 @@ include/idn/resconf.h
 include/idn/result.h
 include/idn/version.h
 lib/libidnkit.a
-lib/libidnkit.la
 lib/libidnkit.so
 lib/libidnkit.so.2
+lib/libidnkit.so.2.0.3
 lib/libidnkitlite.a
-lib/libidnkitlite.la
 lib/libidnkitlite.so
 lib/libidnkitlite.so.2
+lib/libidnkitlite.so.2.0.3
 share/idnkit/map/ja.map
 share/idnkit/map/tr.map
-@dirrm share/idnkit/map
-@dirrm share/idnkit
-@dirrm include/idn
 man/man1/idncheck.1.gz
 man/man1/idncmp.1.gz
 man/man1/idnconv2.1.gz

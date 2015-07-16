@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	xcache
-DISTVERSION=	3.1.0
+DISTVERSION=	3.2.0
 CATEGORIES=	www
 MASTER_SITES=	http://xcache.lighttpd.net/pub/Releases/${DISTVERSION}/
 
 MAINTAINER=	ale@FreeBSD.org
-COMMENT=	A fast and stable php opcode cacher
+COMMENT=	Fast and stable php opcode cacher
 
-LICENSE=	BSD
+LICENSE=	BSD3CLAUSE
 
-USE_BZIP2=	yes
+USES=		tar:bzip2
 USE_PHP=	yes
 USE_PHPIZE=	yes
 
@@ -25,7 +25,6 @@ SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 PLIST_FILES=	lib/php/%%PHP_EXT_DIR%%/xcache.so
-PLIST_DIRSTRY=	lib/php/%%PHP_EXT_DIR%%
 
 PORTEXAMPLES=	*
 

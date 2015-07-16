@@ -3,11 +3,11 @@
 
 PORTNAME=	polygraph
 PORTVERSION=	4.3.2
+PORTREVISION=	1
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://www.web-polygraph.org/downloads/srcs/ \
 		http://people.bsdgroup.de/~as/freebsd/distfiles/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Benchmarking tool for Web proxies
@@ -15,9 +15,11 @@ COMMENT=	Benchmarking tool for Web proxies
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		shebangfix tar:tgz
+SHEBANG_FILES=	tools/*.pl
 USE_GCC=	any
 GNU_CONFIGURE=	yes
-WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 CONFLICTS=	ltrace-0*
 

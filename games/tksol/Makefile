@@ -3,10 +3,9 @@
 
 PORTNAME=	tksol
 PORTVERSION=	1.8.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games tk
 MASTER_SITES=	SUNSITE/games/solitaires
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Version of the card game solitaire
@@ -15,6 +14,8 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	wish8.4:${PORTSDIR}/x11-toolkits/tk84
 
+USES=		shebangfix tar:tgz
+SHEBANG_FILES=	pictures/generate_mini_pictures
 WRKSRC=		${WRKDIR}/${PORTNAME}
 NO_BUILD=	yes
 

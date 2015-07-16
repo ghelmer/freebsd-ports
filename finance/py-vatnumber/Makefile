@@ -2,20 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	vatnumber
-PORTVERSION=	1.1
-PORTREVISION=	1
+PORTVERSION=	1.2
 CATEGORIES=	finance python
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	eric.siroh@gmail.com
+MAINTAINER=	chian.jin@gmail.com
 COMMENT=	Python module to validate VAT numbers
 
 LICENSE=	GPLv3
 
 # Python3 ready
-USE_PYTHON=	yes
-USE_PYDISTUTILS=	yes
-PYDISTUTILS_AUTOPLIST=	yes
+USES=		python
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

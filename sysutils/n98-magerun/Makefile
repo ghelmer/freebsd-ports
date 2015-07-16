@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	n98-magerun
-PORTVERSION=	1.89.2
+PORTVERSION=	1.90.0
 CATEGORIES=	sysutils www
-MASTER_SITES=	GITHUB
 
 MAINTAINER=	melvyn@magemana.nl
 COMMENT=	CLI tool for inspection and control of Magento installations
@@ -14,9 +13,9 @@ USE_MYSQL=	client
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	netz98
-GH_PROJECT=	n98-magerun
-GH_COMMIT=	37b1e5d
 NO_BUILD=	yes
+
+PLIST_FILES=	sbin/n98-magerun
 
 do-install:
 	@${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME}.phar \
