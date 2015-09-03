@@ -137,8 +137,10 @@ MOZ_OPTIONS+=	--enable-jemalloc
 # Standard depends
 _ALL_DEPENDS=	cairo event ffi graphite harfbuzz hunspell icu jpeg nspr nss opus png pixman soundtouch sqlite vorbis vpx
 
+.if ! ${PORT_OPTIONS:MBUNDLED_CAIRO}
 cairo_LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo
 cairo_MOZ_OPTIONS=	--enable-system-cairo
+.endif
 
 event_LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
 event_MOZ_OPTIONS=	--with-system-libevent
@@ -254,8 +256,13 @@ MOZ_OPTIONS+=	--with-system-zlib		\
 		--disable-updater		\
 		--disable-pedantic
 
-# XXX stolen from www/chromium
-MOZ_EXPORT+=	MOZ_GOOGLE_API_KEY=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8
+# API keys from www/chromium 
+# http://www.chromium.org/developers/how-tos/api-keys
+# Note: these are for FreeBSD use ONLY. For your own distribution,
+# please get your own set of keys.
+MOZ_EXPORT+=	MOZ_GOOGLE_API_KEY=AIzaSyBsp9n41JLW8jCokwn7vhoaMejDFRd1mp8 \
+				MOZ_GOOGLE_OAUTH_API_CLIENTID=996322985003.apps.googleusercontent.com \
+				MOZ_GOOGLE_OAUTH_API_KEY=IR1za9-1VK0zZ0f_O8MVFicn
 
 .if ${PORT_OPTIONS:MGTK3}
 MOZ_TOOLKIT=	cairo-gtk3
@@ -378,10 +385,12 @@ STRIP=
 MOZ_OPTIONS+=	--disable-dtrace
 .endif
 
-.if ${PORT_OPTIONS:MLOGGING} || ${PORT_OPTIONS:MDEBUG}
+.if ${MOZILLA_VER:R:R} < 40
+. if ${PORT_OPTIONS:MLOGGING} || ${PORT_OPTIONS:MDEBUG}
 MOZ_OPTIONS+=	--enable-logging
-.else
+. else
 MOZ_OPTIONS+=	--disable-logging
+. endif
 .endif
 
 .if ${PORT_OPTIONS:MPROFILE}
