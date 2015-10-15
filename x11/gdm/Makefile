@@ -157,9 +157,4 @@ post-install:
 	@${SED} -e 's|%%PREFIX%%|${PREFIX}|g' < ${PKGDIR}/pkg-message \
 		| /usr/bin/fmt 75 79 > ${PKGMESSAGE}
 
-# logwtmp lives here.
-.if ${OSVERSION} < 900000
-CONFIGLIBS+=	-lutil
-.endif
-
 .include <bsd.port.mk>
