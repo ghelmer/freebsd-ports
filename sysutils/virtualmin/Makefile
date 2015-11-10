@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualmin
-PORTVERSION=	4.16
+PORTVERSION=	4.19
 PORTEPOCH=	1
 PORTREVISION=	1
 CATEGORIES=	sysutils
@@ -20,7 +20,7 @@ USES=		shebangfix
 SHEBANG_FILES=	*.cgi
 NO_ARCH=	yes
 NO_BUILD=	yes
-PORTSCOUT=	skipv:4.152,1.432
+PORTSCOUT=	skipv:4.132,4.152
 WRKSRC=		${WRKDIR}/virtual-server
 
 post-extract:

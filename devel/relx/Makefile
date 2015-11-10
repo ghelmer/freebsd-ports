@@ -1,14 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=	relx
-PORTVERSION=	3.0.0
-PORTREVISION=	1
-DISTVERSIONPREFIX=v
+PORTVERSION=	3.7.1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-MASTER_SITES+=	http://olgeni.olgeni.com/~olgeni/distfiles/:deps \
-		LOCAL/olgeni:deps
+MASTER_SITES+=	LOCAL/olgeni:deps \
+		http://olgeni.olgeni.com/~olgeni/distfiles/:deps \
+		https://s3.amazonaws.com/s3.hex.pm/tarballs/:hex
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		relx-cache-2.tar.gz:deps
+		relx-cache-9.tar.gz:deps
+EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX} \
+		relx-cache-9.tar.gz
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Sane, simple release creation for Erlang
@@ -16,20 +18,24 @@ COMMENT=	Sane, simple release creation for Erlang
 LICENSE=	APACHE20
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/erl:${PORTSDIR}/lang/erlang \
-		rebar3>=0:${PORTSDIR}/devel/rebar3 \
-		erlang-bbmustache>=0:${PORTSDIR}/devel/erlang-bbmustache \
-		erlang-erlware_commons>=0:${PORTSDIR}/devel/erlang-erlware_commons \
-		erlang-getopt>=0:${PORTSDIR}/devel/erlang-getopt \
-		erlang-providers>=0:${PORTSDIR}/devel/erlang-providers \
-		erlang-jsx>=0:${PORTSDIR}/devel/erlang-jsx \
-		erlang-rebar3_hex>=0:${PORTSDIR}/devel/erlang-rebar3_hex \
-		erlang-ssl_verify_hostname>=0:${PORTSDIR}/devel/erlang-ssl_verify_hostname
+		rebar3>=0:${PORTSDIR}/devel/rebar3
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 PLIST_SUB=	VERSION="${PORTVERSION}"
 
+# Use either erlware or tsloughter, depending on who actually
+# published the package on hex.pm
 USE_GITHUB=	yes
 GH_ACCOUNT=	erlware
+
+REBAR_DEPS=	bbmustache-1.0.3 \
+		erlware_commons-0.16.0 \
+		getopt-0.8.2 \
+		providers-1.4.1
+
+.for _dep in ${REBAR_DEPS}
+DISTFILES+=	${_dep}.tar:hex
+.endfor
 
 # rebar3 insists on downloading dependencies, and some kind of package
 # index into the user's HOME. We need to trick it into behaving by
@@ -37,22 +43,24 @@ GH_ACCOUNT=	erlware
 
 post-extract:
 	@${LN} -s cache ${WRKDIR}/.cache
+.for _dep in ${REBAR_DEPS}
+	@${MKDIR} ${WRKSRC}/_build/default/lib/${_dep:C/-.*//}
+	@${TAR} xOf ${DISTDIR}/${_dep}.tar contents.tar.gz |\
+		${TAR} xfz - -C ${WRKSRC}/_build/default/lib/${_dep:C/-.*//}
+.endfor
 
-pre-build:
-	@${MKDIR} ${WRKSRC}/_build/default/lib
-	@${MKDIR} ${WRKSRC}/_build/default/plugins
-.for lib in bbmustache erlware_commons getopt providers
-	@${LN} -s ${PREFIX}/lib/erlang/lib/$(lib)-* ${WRKSRC}/_build/default/lib/$(lib)
-.endfor
-.for plugin in jsx rebar3_hex ssl_verify_hostname
-	@${LN} -s ${PREFIX}/lib/erlang/lib/$(plugin)-* ${WRKSRC}/_build/default/plugins/$(plugin)
-.endfor
+post-patch:
+	@${REINPLACE_CMD} -i '' -e 's/{ *vsn,.*}/{vsn, "${PORTVERSION}"}/' \
+		${WRKSRC}/src/${PORTNAME}.app.src
 
 do-build:
 	@${RM} ${WRKSRC}/rebar.lock
 	@cd ${WRKSRC} && HOME=${WRKDIR} rebar3 compile
 	@${RM} ${WRKSRC}/rebar.lock
 	@cd ${WRKSRC} && HOME=${WRKDIR} rebar3 escriptize
+
+post-build:
+	@${LN} -s ${WRKSRC}/_build/dev/lib/${PORTNAME}/ebin ${WRKSRC}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -67,5 +75,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/_build/default/lib/relx/ebin/* ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/ebin
 	cd ${WRKSRC}/priv && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/lib/erlang/lib/${PORTNAME}-${PORTVERSION}/priv
 	${INSTALL_SCRIPT} ${WRKSRC}/_build/default/bin/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_DATA} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

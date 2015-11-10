@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	chromium
-PORTVERSION=	44.0.2403.155
+PORTVERSION=	46.0.2490.80
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # default, but needed to get distinfo correct if TEST is on
@@ -141,8 +141,6 @@ PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 DRIVER_MAKE_ARGS=chromedriver
 TEST_DISTFILES=	${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}
 
-BROKEN_FreeBSD_8=	Does not compile, missing locale
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCODECS}
@@ -272,6 +270,13 @@ pre-configure:
 		'third_party/brotli' \
 		'third_party/boringssl' \
 		'third_party/cacheinvalidation' \
+		'third_party/catapult' \
+		'third_party/catapult/tracing' \
+		'third_party/catapult/tracing/third_party' \
+		'third_party/catapult/tracing/third_party/tvcm' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/beautifulsoup' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/rcssmin' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/rjsmin' \
 		'third_party/cld' \
 		'third_party/cros_system_api' \
 		'third_party/dom_distiller_js' \
@@ -296,6 +301,7 @@ pre-configure:
 		'third_party/libsrtp' \
 		'third_party/libvpx' \
 		'third_party/libvpx/source/libvpx/third_party/x86inc' \
+		'third_party/libwebm' \
 		'third_party/libxml/chromium' \
 		'third_party/libXNVCtrl' \
 		'third_party/libyuv' \
@@ -326,10 +332,6 @@ pre-configure:
 		'third_party/sqlite' \
 		'third_party/tcmalloc' \
 		'third_party/tlslite' \
-		'third_party/trace-viewer' \
-		'third_party/trace-viewer/third_party' \
-		'third_party/trace-viewer/third_party/tvcm/third_party' \
-		'third_party/undoview' \
 		'third_party/usrsctp' \
 		'third_party/web-animations-js' \
 		'third_party/webdriver' \
@@ -347,6 +349,10 @@ pre-configure:
 		${GYP_DEFINES:C/^/-D/} || ${FALSE}
 	# allow removal of third_party/adobe
 	${ECHO_CMD} > ${WRKSRC}/flapper_version.h
+	# missing file: file is in -testdata only, but configure stage
+	# will fail if it's not there. do not break TESTS build while
+	# allowing regular build without pulling in -testdata.
+	${TOUCH} ${WRKSRC}/chrome/test/data/webui/i18n_process_css_test.html
 
 do-configure:
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \

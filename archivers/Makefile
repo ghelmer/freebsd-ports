@@ -11,6 +11,7 @@
     SUBDIR += ark
     SUBDIR += atool
     SUBDIR += bicom
+    SUBDIR += brotli
     SUBDIR += bzip
     SUBDIR += bzip2
     SUBDIR += cabextract
@@ -32,6 +33,7 @@
     SUBDIR += freeze
     SUBDIR += gcab
     SUBDIR += gcpio
+    SUBDIR += gnome-autoar
     SUBDIR += grzip
     SUBDIR += gtar
     SUBDIR += gzip
@@ -134,7 +136,8 @@
     SUBDIR += pear-Horde_Compress
     SUBDIR += pear-Horde_Compress_Fast
     SUBDIR += pear-Horde_Pack
-    SUBDIR += pear-PHP_Archiv
+    SUBDIR += pear-PHP_Archive
+    SUBDIR += peazip
     SUBDIR += pecl-lzf
     SUBDIR += pecl-phk
     SUBDIR += pecl-rar
@@ -159,6 +162,7 @@
     SUBDIR += ppmd-7z
     SUBDIR += ppunpack
     SUBDIR += pxz
+    SUBDIR += py-attic
     SUBDIR += py-liblzma
     SUBDIR += py-librtfcomp
     SUBDIR += py-lz4

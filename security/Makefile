@@ -56,6 +56,7 @@
     SUBDIR += chaosreader
     SUBDIR += checkpassword
     SUBDIR += checkpassword-pam
+    SUBDIR += chkrootkit
     SUBDIR += chntpw
     SUBDIR += chroot_safe
     SUBDIR += chrootuid
@@ -110,7 +111,11 @@
     SUBDIR += duo
     SUBDIR += easy-rsa
     SUBDIR += easypg
+    SUBDIR += elixir-comeonin
+    SUBDIR += elixir-jose
     SUBDIR += engine_pkcs11
+    SUBDIR += erlang-jose
+    SUBDIR += erlang-p1tls
     SUBDIR += expiretable
     SUBDIR += f-prot
     SUBDIR += fakebo
@@ -157,6 +162,7 @@
     SUBDIR += go.crypto
     SUBDIR += goptlib
     SUBDIR += gorilla
+    SUBDIR += govpn
     SUBDIR += gpa
     SUBDIR += gpasman
     SUBDIR += gpass
@@ -167,6 +173,7 @@
     SUBDIR += gsasl
     SUBDIR += gsfv
     SUBDIR += gss
+    SUBDIR += gstreamer1-plugins-dtls
     SUBDIR += gtk-knocker
     SUBDIR += gtkpasman
     SUBDIR += gwee
@@ -205,10 +212,12 @@
     SUBDIR += hs-cryptohash
     SUBDIR += hs-cryptohash-conduit
     SUBDIR += hs-cryptohash-cryptoapi
+    SUBDIR += hs-cryptonite
     SUBDIR += hs-digest
     SUBDIR += hs-entropy
     SUBDIR += hs-gnutls
     SUBDIR += hs-monadcryptorandom
+    SUBDIR += hs-nonce
     SUBDIR += hs-pem
     SUBDIR += hs-pureMD5
     SUBDIR += hs-pwstore-fast
@@ -255,7 +264,6 @@
     SUBDIR += kpcli
     SUBDIR += kqoauth
     SUBDIR += krb5
-    SUBDIR += krb5-111
     SUBDIR += krb5-112
     SUBDIR += krb5-appl
     SUBDIR += kripp
@@ -270,6 +278,7 @@
     SUBDIR += libbeid
     SUBDIR += libbf
     SUBDIR += libbzrtp
+    SUBDIR += libcryptui
     SUBDIR += libecc
     SUBDIR += libfprint
     SUBDIR += libgcrypt
@@ -333,6 +342,7 @@
     SUBDIR += masscan
     SUBDIR += massh
     SUBDIR += matrixssl
+    SUBDIR += mbedtls
     SUBDIR += mcrypt
     SUBDIR += md4coll
     SUBDIR += md5coll
@@ -396,6 +406,7 @@
     SUBDIR += openvpn-auth-ldap
     SUBDIR += openvpn-auth-radius
     SUBDIR += openvpn-devel
+    SUBDIR += openvpn-polarssl
     SUBDIR += ophcrack
     SUBDIR += orthrus
     SUBDIR += osiris
@@ -504,6 +515,7 @@
     SUBDIR += p5-Crypt-OpenSSL-X509
     SUBDIR += p5-Crypt-PBKDF2
     SUBDIR += p5-Crypt-PGPSimple
+    SUBDIR += p5-Crypt-PWSafe3
     SUBDIR += p5-Crypt-PassGen
     SUBDIR += p5-Crypt-Passwd-XS
     SUBDIR += p5-Crypt-PasswdMD5
@@ -739,6 +751,7 @@
     SUBDIR += pidgin-otr
     SUBDIR += pinentry
     SUBDIR += pinentry-curses
+    SUBDIR += pinentry-gnome3
     SUBDIR += pinentry-gtk2
     SUBDIR += pinentry-qt4
     SUBDIR += pinentry-tty
@@ -775,6 +788,8 @@
     SUBDIR += py-Products.PluggableAuthService
     SUBDIR += py-RestrictedPython
     SUBDIR += py-SecretStorage
+    SUBDIR += py-acme
+    SUBDIR += py-artifacts
     SUBDIR += py-bcrypt
     SUBDIR += py-borg.localrole
     SUBDIR += py-cerealizer
@@ -828,9 +843,12 @@
     SUBDIR += py-pylibacl
     SUBDIR += py-pyme
     SUBDIR += py-pyptlib
+    SUBDIR += py-pyscard
     SUBDIR += py-pysha3
     SUBDIR += py-python-registry
     SUBDIR += py-rekall
+    SUBDIR += py-rekall-core
+    SUBDIR += py-rekall_gui
     SUBDIR += py-requests-kerberos
     SUBDIR += py-rsa
     SUBDIR += py-service_identity
@@ -903,9 +921,12 @@
     SUBDIR += ruby-hmac
     SUBDIR += ruby-password
     SUBDIR += ruby-tcpwrap
+    SUBDIR += rubygem-attr_encrypted
     SUBDIR += rubygem-bcrypt
     SUBDIR += rubygem-bcrypt-ruby
+    SUBDIR += rubygem-devise-two-factor
     SUBDIR += rubygem-doorkeeper
+    SUBDIR += rubygem-encryptor
     SUBDIR += rubygem-ezcrypto
     SUBDIR += rubygem-gpgr
     SUBDIR += rubygem-gssapi
@@ -916,17 +937,16 @@
     SUBDIR += rubygem-metasploit-payloads
     SUBDIR += rubygem-metasploit_data_models
     SUBDIR += rubygem-net-scp
-    SUBDIR += rubygem-net-scp11
     SUBDIR += rubygem-net-sftp
     SUBDIR += rubygem-net-ssh
     SUBDIR += rubygem-net-ssh-gateway
     SUBDIR += rubygem-net-ssh-multi
-    SUBDIR += rubygem-net-ssh27
     SUBDIR += rubygem-nmap-parser
     SUBDIR += rubygem-omniauth
     SUBDIR += rubygem-omniauth-bitbucket
     SUBDIR += rubygem-omniauth-gitlab
     SUBDIR += rubygem-omniauth-multipassword
+    SUBDIR += rubygem-omniauth-saml
     SUBDIR += rubygem-omniauth-shibboleth
     SUBDIR += rubygem-origami
     SUBDIR += rubygem-pyu-ruby-sasl
@@ -936,6 +956,7 @@
     SUBDIR += rubygem-roauth
     SUBDIR += rubygem-ruby-hmac
     SUBDIR += rubygem-ruby-rc4
+    SUBDIR += rubygem-ruby-saml
     SUBDIR += rubygem-scrypt
     SUBDIR += rubygem-six
     SUBDIR += rubygem-sshkit
@@ -979,6 +1000,7 @@
     SUBDIR += snortreport
     SUBDIR += snortsam
     SUBDIR += snortsnarf
+    SUBDIR += softether
     SUBDIR += softhsm
     SUBDIR += softhsm2
     SUBDIR += spass
@@ -989,13 +1011,13 @@
     SUBDIR += srm
     SUBDIR += ssdeep
     SUBDIR += ssh-copy-id
-    SUBDIR += ssh-gui
     SUBDIR += ssh-multiadd
     SUBDIR += ssh_askpass_gtk2
     SUBDIR += sshblock
     SUBDIR += sshguard
     SUBDIR += sshguard-ipfilter
     SUBDIR += sshguard-ipfw
+    SUBDIR += sshguard-null
     SUBDIR += sshguard-pf
     SUBDIR += sshit
     SUBDIR += sshpass
@@ -1024,6 +1046,7 @@
     SUBDIR += swatch
     SUBDIR += switzerland
     SUBDIR += symbion-sslproxy
+    SUBDIR += tclgpg
     SUBDIR += tclsasl
     SUBDIR += tcpcrypt
     SUBDIR += tinc

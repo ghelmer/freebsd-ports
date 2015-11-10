@@ -13,8 +13,7 @@ LICENSE_COMB=	multi
 BUILD_DEPENDS=	${LOCALBASE}/include/utf8.h:${PORTSDIR}/devel/utf8cpp
 LIB_DEPENDS=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
 		libboost_serialization.so:${PORTSDIR}/devel/boost-libs \
-		libguichan.so:${PORTSDIR}/devel/guichan \
-		libGLEW.so:${PORTSDIR}/graphics/glew
+		libguichan.so:${PORTSDIR}/devel/guichan
 RUN_DEPENDS=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:${PORTSDIR}/x11-fonts/dejavu
 
 USE_GITHUB=	yes
@@ -22,7 +21,7 @@ GH_ACCOUNT=	eglaysher
 GH_TAGNAME=	373a3db # release-${PORTVERSION}
 
 USES=		compiler:c++11-lib pkgconfig scons
-USE_GL=		yes
+USE_GL=		glew glu
 USE_GNOME=	gtk20
 USE_SDL=	image mixer ttf
 EXCLUDE=	GLEW SDL_image SDL_mixer SDL_ttf gmock gtest guichan \
@@ -57,8 +56,6 @@ TEST_BUILD_DEPENDS=googletest>=1.7.0:${PORTSDIR}/devel/googletest \
 		luabind>0:${PORTSDIR}/devel/luabind
 TEST_EXTRA_PATCHES_OFF=${FILESDIR}/extra-patch-disable-test
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@${GREP} -Flr 'utf8cpp/' ${WRKSRC} | ${XARGS} ${REINPLACE_CMD} \
 		-i .bak.utf8cpp -e 's,utf8cpp/,,'
@@ -70,10 +67,8 @@ post-patch:
 		-e 's,truetype/mona,TrueType,' \
 		-e 's,truetype/[^/"]*,TTF,'
 
-pre-install:
-.if ${PORT_OPTIONS:MTEST}
+pre-install-TEST-on:
 	(cd ${WRKSRC} && build/${PORTNAME}_unittests)
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/build/${PORTNAME} \
@@ -87,15 +82,15 @@ do-install:
 		${INSTALL_DATA} -v $$f \
 			${STAGEDIR}${PREFIX}/share/icons/hicolor/$${f%/*}x$${f%/*}/apps; \
 	done)
-.if ${PORT_OPTIONS:MNLS}
+
+post-install-NLS-on:
 	(cd ${WRKSRC}/build/locale && ${COPYTREE_SHARE} \
 		. ${STAGEDIR}${PREFIX}/share/locale)
-.endif
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} \
 		"${PORTDOCS:Nnotes}" ${STAGEDIR}${DOCSDIR})
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \
 		notes ${STAGEDIR}${DOCSDIR})
-.endif
 
 .include <bsd.port.mk>

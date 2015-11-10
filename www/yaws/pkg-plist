@@ -1,5 +1,6 @@
 bin/yaws
 etc/rc.d/yaws
+@sample %%ETCDIR%%/dhparams.pem.sample
 @sample %%ETCDIR%%/yaws-cert.pem.sample
 @sample %%ETCDIR%%/yaws-key.pem.sample
 @sample %%ETCDIR%%/yaws.conf.sample
@@ -275,7 +276,7 @@ man/man5/yaws_soap_lib.5.gz
 %%WWW%%%%WWWDIR%%/shoppingcart/Makefile.in
 %%WWW%%%%WWWDIR%%/shoppingcart/buy.yaws
 %%WWW%%%%WWWDIR%%/shoppingcart/index.yaws
-%%WWW%%%%WWWDIR%%/shoppingcart/junk.jpg
+%%WWW%%%%WWWDIR%%/shoppingcart/junk.png
 %%WWW%%%%WWWDIR%%/shoppingcart/loginpost.yaws
 %%WWW%%%%WWWDIR%%/shoppingcart/logout.yaws
 %%WWW%%%%WWWDIR%%/shoppingcart/shopcart.erl

@@ -23,7 +23,7 @@ LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
 		libxml2.so:${PORTSDIR}/textproc/libxml2
 BUILD_DEPENDS=	bison:${PORTSDIR}/devel/bison
 
-USES=		autoreconf cpe gettext gmake libtool pkgconfig python tar:bzip2 \
+USES=		autoreconf cpe gettext gmake libtool perl5 pkgconfig python tar:bzip2 \
 		shebangfix
 SHEBANG_FILES=	ldirectord/ldirectord.in \
 		lib/plugins/stonith/external/ibmrsa-telnet \
@@ -129,6 +129,8 @@ post-extract:
 	@${CP} -f ${FILESDIR}/heartbeat.in ${WRKSRC}/heartbeat/init.d/
 
 post-patch:
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+		${WRKSRC}/resources/OCF/IPaddr
 .if ${PORT_OPTIONS:MDOCS}
 	@${REINPLACE_CMD} -e 's|^\(docdir.*doc/\).*|\1${PORTNAME}|' \
 		${WRKSRC}/configure.in \

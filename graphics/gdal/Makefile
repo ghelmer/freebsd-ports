@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdal
-PORTVERSION=	1.11.2
-PORTREVISION=	3
+PORTVERSION=	2.0.1
 CATEGORIES=	graphics geography
 MASTER_SITES=	http://download.osgeo.org/gdal/${PORTVERSION}/ \
 		ftp://ftp.remotesensing.org/pub/gdal/${PORTVERSION}/ \
@@ -13,6 +12,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Translator library for raster geospatial data formats
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
 LIB_DEPENDS=	libgeotiff.so:${PORTSDIR}/graphics/libgeotiff \
 		libgif.so:${PORTSDIR}/graphics/giflib \
@@ -20,9 +20,9 @@ LIB_DEPENDS=	libgeotiff.so:${PORTSDIR}/graphics/libgeotiff \
 		libpng.so:${PORTSDIR}/graphics/png \
 		libtiff.so:${PORTSDIR}/graphics/tiff
 
-OPTIONS_DEFINE=	ARMADILLO CFITSIO CURL ECW EXPAT FREEXL GEOS GTA HDF5 ICONV \
-		JASPER KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL PROJ \
-		SQLITE WEBP XERCES
+OPTIONS_DEFINE=	ARMADILLO CFITSIO CURL ECW EXPAT FREEXL GEOS GTA HDF5 JASPER \
+		KML LIBXML2 MYSQL NETCDF ODBC OPENJPEG PCRE PGSQL PROJ SQLITE \
+		WEBP XERCES
 OPTIONS_DEFAULT=JASPER
 OPTIONS_RADIO=	PDF
 OPTIONS_RADIO_PDF=	PODOFO POPPLER
@@ -40,14 +40,17 @@ CONFIGURE_ARGS=	--datadir=${DATADIR} \
 		--with-libz=/usr \
 		--with-png=${LOCALBASE} \
 		--with-threads=yes \
-		--without-libtool
+		--without-libtool \
+		${ICONV_CONFIGURE_ARG}
+CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
+LDFLAGS+=	-L${ICONV_PREFIX}/lib ${ICONV_LIB}
 MAKE_JOBS_UNSAFE=	yes
 MAKEFILE=	GNUmakefile
 USE_LDCONFIG=	yes
-USES=		gmake jpeg tar:xz
+USES=		gmake iconv jpeg tar:xz
 
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
+PLIST_SUB=	MAJOR_VER=${PORTVERSION:R:R} PORTVERSION=${PORTVERSION}
 PORTDATA=	*
 
 SLAVEDIRS=	graphics/p5-Geo-GDAL graphics/php-gdal graphics/py-gdal graphics/ruby-gdal
@@ -62,7 +65,7 @@ CURL_CONFIGURE_OFF=	--with-curl=no
 CURL_CONFIGURE_ON=	--with-curl=${LOCALBASE}/bin/curl-config
 CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
 ECW_CONFIGURE_OFF=	--with-ecw=no
-ECW_CONFIGURE_ON=	--with-ecw=${LOCALBASE}
+ECW_CONFIGURE_ON=	--with-ecw=yes
 ECW_LIB_DEPENDS=	libNCSEcw.so:${PORTSDIR}/graphics/libecwj2
 EXPAT_CONFIGURE_OFF=	--with-expat=no
 EXPAT_CONFIGURE_ON=	--with-expat=${LOCALBASE}
@@ -79,11 +82,6 @@ GTA_LIB_DEPENDS=	libgta.so:${PORTSDIR}/devel/libgta
 HDF5_CONFIGURE_OFF=	--with-hdf5=no
 HDF5_CONFIGURE_ON=	--with-hdf5=${LOCALBASE}
 HDF5_LIB_DEPENDS=	libhdf5.so:${PORTSDIR}/science/hdf5
-ICONV_CONFIGURE_OFF=	--with-libiconv-prefix=no
-ICONV_CONFIGURE_ON=	${ICONV_CONFIGURE_ARG}
-ICONV_CPPFLAGS=		-I${LOCALBASE}/include
-ICONV_LDFLAGS=		-L${ICONV_PREFIX}/lib ${ICONV_LIB}
-ICONV_USES=		iconv
 JASPER_CONFIGURE_OFF=	--with-jasper=no
 JASPER_CONFIGURE_ON=	--with-jasper=${LOCALBASE}
 JASPER_LIB_DEPENDS=	libjasper.so:${PORTSDIR}/graphics/jasper

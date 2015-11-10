@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	yaws
-PORTVERSION=	1.99
-PORTREVISION=	2
+PORTVERSION=	2.0.1
 CATEGORIES=	www devel
 MASTER_SITES=	http://yaws.hyber.org/download/
 
@@ -17,7 +16,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 OPTIONS_SUB=	yes
 PLIST_SUB=	VERSION="${PORTVERSION}"
 
-USES=		autoreconf gmake libtool pathfix
+USES=		autoreconf gmake libtool pathfix shebangfix
+SHEBANG_FILES=	www/cgi-bin/foo.py
 
 OPTIONS_DEFINE=	WWW
 
@@ -49,6 +49,8 @@ post-install:
 .else
 	${RM} -r ${STAGEDIR}${PREFIX}/www
 .endif
+	${MV} ${STAGEDIR}${PREFIX}/etc/yaws/dhparams.pem \
+		${STAGEDIR}${PREFIX}/etc/yaws/dhparams.pem.sample
 	${MV} ${STAGEDIR}${PREFIX}/etc/yaws/yaws-cert.pem \
 		${STAGEDIR}${PREFIX}/etc/yaws/yaws-cert.pem.sample
 	${MV} ${STAGEDIR}${PREFIX}/etc/yaws/yaws-key.pem \

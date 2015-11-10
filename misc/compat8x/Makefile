@@ -8,7 +8,7 @@ MASTER_SITES=	LOCAL/garga/compat
 PKGNAMESUFFIX=	-${ARCH}
 DISTNAME=	${PORTNAME}-${ARCH}-${PORTVERSION}
 
-MAINTAINER=	garga@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convenience package to install the compat8x libraries
 
 LICENSE=	BSD2CLAUSE
@@ -29,7 +29,6 @@ RUN_DEPENDS=	${LOCALBASE}/lib/compat/libstdc++.so.6:${PORTSDIR}/misc/compat9x
 .endif
 
 .if ${ARCH} == amd64
-PLIST_SUB+=	LDCONFIG_LIB32="${LDCONFIG} -32"
 USE_LDCONFIG32=	${TARGET32_DIR}
 .endif
 

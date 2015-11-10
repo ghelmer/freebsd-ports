@@ -10,6 +10,8 @@ MASTER_SITES=	RG
 MAINTAINER=	renchap@cocoa-x.com
 COMMENT=	Unified interface to key/value stores
 
+NO_ARCH=	yes
+
 USES=		shebangfix
 SHEBANG_FILES=	script/install-kyotocabinet \
 		script/kill-travis \
