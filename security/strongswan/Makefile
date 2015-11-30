@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	strongswan
-PORTVERSION=	5.3.3
-PORTREVISION=	1
+PORTVERSION=	5.3.4
 CATEGORIES=	security
 MASTER_SITES=	http://download.strongswan.org/ \
 		http://download2.strongswan.org/
@@ -99,7 +98,7 @@ XAUTH_CONFIGURE_ON=	--enable-xauth-eap --enable-xauth-generic
 BUILTIN_CONFIGURE_ON=	--with-printf-hooks=builtin
 LIBC_CONFIGURE_ON=	--with-printf-hooks=glibc
 VSTR_CONFIGURE_ON=	--with-printf-hooks=vstr
-VSTR_LIB_DEPENDS=	libvstr.so:devel/vstr
+VSTR_LIB_DEPENDS=	libvstr.so:${PORTSDIR}/devel/vstr
 
 .include <bsd.port.options.mk>
 
