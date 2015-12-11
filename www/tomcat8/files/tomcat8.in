@@ -139,9 +139,9 @@ tomcat_prestart()
 	    chown -R "${_tomcat_catalina_user}" \
 		  "${_tomcat_catalina_base}"/logs \
 		  "${_tomcat_catalina_base}"/temp \
-		  "${_tomcat_catalina_base}"/work
-	    chgrp -R `id -g "${_tomcat_catalina_user}"` "${_tomcat_catalina_base}"/conf
-	    chmod -R g+r "${_tomcat_catalina_base}"/conf/
+		  "${_tomcat_catalina_base}"/work \
+		  "${_tomcat_catalina_base}"/conf \
+		  "${_tomcat_catalina_base}"/webapps
 	fi
 }
 
