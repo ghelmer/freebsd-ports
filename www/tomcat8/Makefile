@@ -1,9 +1,6 @@
 # Created by: Alex Dupre <ale@FreeBSD.org>
 # $FreeBSD$
 
-# Local change: build with owner "ph" instead of "www"
-WWWOWN=		1001
-
 PORTNAME=	tomcat
 PORTVERSION=	8.0.24
 CATEGORIES=	www java
