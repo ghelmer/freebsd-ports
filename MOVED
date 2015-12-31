@@ -7891,6 +7891,7 @@ x11/xlogout||2015-09-27|Has expired: Useless cruft from 1989
 net/rubygem-amq-client||2015-10-01|Has expired: Deprecated by Upstream. It is part of net/rubygem-amqp codebase now
 www/joomla31|www/joomla3|2015-11-03|Renamed to match upstream only supporting the latest 3.x release at a time
 textproc/kibana4|textproc/kibana41|2015-11-22|Distinguish from incompatible kibana42
+lang/perl5.16||2015-12-31|Has expired: Unsupported, please upgrade to a more recent version of Perl
 archivers/php5-bz2||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
 archivers/php5-phar||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
 archivers/php5-zip||2016-02-14|PHP 5.4 is End of Life http://php.net/supported-versions.php
