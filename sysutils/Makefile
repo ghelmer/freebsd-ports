@@ -719,6 +719,9 @@
     SUBDIR += php55-posix
     SUBDIR += php56-fileinfo
     SUBDIR += php56-posix
+    SUBDIR += php70-fileinfo
+    SUBDIR += php70-posix
+    SUBDIR += phybs
     SUBDIR += pick
     SUBDIR += pidof
     SUBDIR += pipemeter
