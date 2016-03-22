@@ -28,7 +28,7 @@ CONFLICTS_INSTALL?=	wine-[0-9]* wine-staging-[0-9]* wine-devel-[0-9]* \
 
 EXTRACT_AFTER_ARGS=	-C / --exclude +COMPACT_MANIFEST --exclude +MANIFEST \
 				--exclude +MTREE_DIRS --exclude share/licenses/'*' \
-				--exclude libdata/ldconfig32/${UNIQUENAME} \
+				--exclude libdata/ldconfig32/${PKGNAMEPREFIX}-${PORTNAME} \
 				-s '|/usr/local|${STAGEDIR}${PREFIX}|gs'
 NO_BUILD=	yes
 ONLY_FOR_ARCHS=	i386 amd64
@@ -50,7 +50,7 @@ PORTSCOUT=	limitw:1,even
 # Included for OPSYS and OSVERSION
 .include <bsd.port.pre.mk>
 
-.for osrel in 8 9 10 11
+.for osrel in 9 10 11
 .if ${OSREL:C/\..*//} == ${osrel}
 PLIST_SUB+=	OSREL${osrel}=""
 .else
@@ -58,8 +58,9 @@ PLIST_SUB+=	OSREL${osrel}="@comment "
 .endif
 .endfor
 
-.if ${OPSYS} != FreeBSD || (!(${OSVERSION} < 900000) && !(${OSVERSION} >= 901000 && ${OSVERSION} < 1000000) && !(${OSVERSION} >= 1000510 && ${OSVERSION} < 1100000) && !(${OSVERSION} >= 1100048 && ${OSVERSION} < 1200000))
-IGNORE=		binaries compiled for FreeBSD 8.4+, 9.1+, 10.0+ and -current only
+# This looks like it could be OPSYS != FreeBSD but...
+.if ${OPSYS} != FreeBSD || (!(${OSVERSION} >= 901000 && ${OSVERSION} < 1000000) && !(${OSVERSION} >= 1000510 && ${OSVERSION} < 1100000) && !(${OSVERSION} >= 1100048 && ${OSVERSION} < 1200000))
+IGNORE=		binaries compiled for FreeBSD 9.3, 10.0+ and -current only
 DISTFILES=
 .endif
 

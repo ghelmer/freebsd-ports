@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libxml2
-PORTVERSION=	2.9.2
-PORTREVISION?=	3
+PORTVERSION=	2.9.3
+PORTREVISION?=	0
 CATEGORIES?=	textproc gnome
 MASTER_SITES=	ftp://xmlsoft.org/libxml2/ \
 		http://xmlsoft.org/sources/ \
@@ -22,6 +22,7 @@ USE_LDCONFIG=	yes
 CONFIGURE_ARGS?=--with-iconv=${ICONV_PREFIX} \
 		--with-html-dir=${PREFIX}/share/doc \
 		--with-html-subdir=${PORTNAME} \
+		--without-icu \
 		--with-lzma=/usr \
 		--without-python
 INSTALL_TARGET=	install-strip
@@ -31,10 +32,12 @@ PLIST_SUB+=	LIBVERSION=${PORTVERSION}
 
 .if !defined(MASTERDIR)
 
-OPTIONS_DEFINE= SCHEMA THREADS MEM_DEBUG XMLLINT_HIST THREAD_ALLOC
-OPTIONS_DEFAULT=SCHEMA THREADS
+OPTIONS_DEFINE= SCHEMA VALID THREADS MEM_DEBUG XMLLINT_HIST THREAD_ALLOC
+OPTIONS_DEFAULT=SCHEMA VALID THREADS
 SCHEMA_DESC=	XML schema support
 SCHEMA_CONFIGURE_WITH=	schemas
+VALID_DESC=	Validation support
+VALID_CONFIGURE_OFF=	--without-valid
 THREADS_DESC=	Threads support
 THREADS_CONFIGURE_WITH=	threads
 MEM_DEBUG_DESC= Memory debugging (DEVELOPERS ONLY!)

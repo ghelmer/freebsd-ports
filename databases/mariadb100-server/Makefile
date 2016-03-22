@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME?=	mariadb
-PORTVERSION=	10.0.21
+PORTVERSION=	10.0.22
 CATEGORIES=	databases ipv6
 MASTER_SITES=	http://ftp.osuosl.org/pub/${SITESDIR}/ \
 		http://mirrors.supportex.net/${SITESDIR}/ \
@@ -23,7 +23,7 @@ PKGMESSAGE=	${WRKDIR}/pkg-message
 
 UNIQUENAME=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 SLAVEDIRS=	databases/mariadb100-client
-USES=		bison:build cmake execinfo gmake shebangfix cpe
+USES=		bison:build cmake cpe execinfo gmake shebangfix
 USE_LDCONFIG=	${PREFIX}/lib/mysql ${PREFIX}/lib/mysql/plugin
 SHEBANG_FILES=	scripts/*.sh
 SITESDIR=	mariadb/mariadb-${PORTVERSION}/source
@@ -91,8 +91,9 @@ USES+=		readline
 .else
 # MySQL-Server part
 
-CONFLICTS_INSTALL=	mysql*-server-* \
-			mariadb[0-9][0-9]-server-* \
+CONFLICTS_INSTALL=	mariadb5*-server-* \
+			mariadb10[1-9]-server-* \
+			mysql*-server-* \
 			percona*-server-*
 
 USE_MYSQL=	yes

@@ -1,9 +1,9 @@
---- device/usb/usb_service_impl.cc.orig	2015-07-15 16:30:04.000000000 -0400
-+++ device/usb/usb_service_impl.cc	2015-07-22 20:14:21.946835000 -0400
-@@ -17,7 +17,11 @@
- #include "base/thread_task_runner_handle.h"
- #include "components/device_event_log/device_event_log.h"
+--- device/usb/usb_service_impl.cc.orig	2015-10-21 18:00:38.000000000 -0400
++++ device/usb/usb_service_impl.cc	2015-10-23 12:39:46.908676000 -0400
+@@ -20,7 +20,11 @@
+ #include "device/usb/usb_device_handle.h"
  #include "device/usb/usb_error.h"
+ #include "device/usb/webusb_descriptors.h"
 +#if defined(OS_FREEBSD)
 +#include "libusb.h"
 +#else
@@ -12,33 +12,31 @@
  
  #if defined(OS_WIN)
  #include <setupapi.h>
-@@ -294,6 +298,7 @@
-       weak_factory_(this) {
-   base::MessageLoop::current()->AddDestructionObserver(this);
+@@ -541,6 +545,7 @@
+   }
+   context_ = new UsbContext(platform_context);
  
 +#if !defined(OS_FREEBSD)
-   int rv = libusb_hotplug_register_callback(
+   rv = libusb_hotplug_register_callback(
        context_->context(),
        static_cast<libusb_hotplug_event>(LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED |
-@@ -321,14 +326,16 @@
-     }
- #endif  // OS_WIN
+@@ -559,12 +564,15 @@
+     device_observer_.Add(device_monitor);
    }
-+#endif // !OS_FREEBSD
+ #endif  // OS_WIN
++#endif  // OS_FREEBSD
  }
  
  UsbServiceImpl::~UsbServiceImpl() {
-   base::MessageLoop::current()->RemoveDestructionObserver(this);
--
 +#if !defined(OS_FREEBSD)
    if (hotplug_enabled_) {
      libusb_hotplug_deregister_callback(context_->context(), hotplug_handle_);
    }
-+#endif // !OS_FREEBSD
++#endif  // OS_FREEBSD
    for (const auto& map_entry : devices_) {
      map_entry.second->OnDisconnect();
    }
-@@ -566,6 +573,7 @@
+@@ -802,6 +810,7 @@
    device->OnDisconnect();
  }
  
@@ -46,7 +44,7 @@
  // static
  int LIBUSB_CALL UsbServiceImpl::HotplugCallback(libusb_context* context,
                                                  PlatformUsbDevice device,
-@@ -603,6 +611,7 @@
+@@ -839,6 +848,7 @@
  
    return 0;
  }

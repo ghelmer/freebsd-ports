@@ -10,6 +10,8 @@ MASTER_SITES=	RG
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Rapid DSL prototyping in Ruby
 
+NO_ARCH=	yes
+
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes

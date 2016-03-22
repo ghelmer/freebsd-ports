@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	phpMyAdmin
-DISTVERSION=	4.4.10
+DISTVERSION=	4.5.1
 CATEGORIES=	databases www
-MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${DISTVERSION}
+MASTER_SITES=	https://files.phpmyadmin.net/${PORTNAME}/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -18,7 +18,7 @@ CPE_PRODUCT=	${PORTNAME:tl}
 
 NO_BUILD=	yes
 .if !defined(WITHOUT_PHP_DEPENDS)
-IGNORE_WITH_PHP=52
+IGNORE_WITH_PHP=54
 USE_PHP=	ctype session filter mbstring json spl mysqli
 .endif
 
@@ -80,7 +80,6 @@ post-patch:
 	for emptydir in $$( ${FIND} . -type d -empty -print ) ; do \
 	    ${ECHO} "@dir(,,)$${emptydir}"	     >>${PLIST} ; \
 	done ; \
-
 
 do-install:
 	cd ${WRKSRC} ; \

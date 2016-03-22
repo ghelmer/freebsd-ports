@@ -1,5 +1,5 @@
---- compat/compat.h.orig	2015-02-26 17:09:19.142090018 +0300
-+++ compat/compat.h	2015-02-26 17:09:42.440097986 +0300
+--- compat/compat.h.orig	2015-11-01 10:44:25 UTC
++++ compat/compat.h
 @@ -42,17 +42,6 @@
  #endif
  #endif

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	treesheets
-PORTVERSION=	0.0.20150519
+PORTVERSION=	0.0.20150711
 CATEGORIES=	deskutils
 
 MAINTAINER=	lightside@gmx.com
@@ -13,10 +13,12 @@ LICENSE_FILE=	${WRKSRC}/ZLIB_LICENSE.txt
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aardappel
-GH_TAGNAME=	69990a2
+GH_TAGNAME=	3a6be83
 
 BUILD_WRKSRC=	${WRKSRC}/src
 EXTRACT_AFTER_ARGS=	--exclude .gitignore
+PACKAGE_VERSION=	\"${PORTVERSION}\"
+MAKE_ENV=	PACKAGE_VERSION=${PACKAGE_VERSION:Q}
 
 USES=		compiler:c++11-lib
 USE_WX=		3.0+
@@ -35,12 +37,6 @@ DESKTOP_ENTRIES="TreeSheets" "${COMMENT}" \
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 900014
-CXXFLAGS+=	-D__LONG_LONG_SUPPORTED
-.endif
-
 post-patch: .SILENT
 	${REINPLACE_CMD} -e 's|sys->frame->GetPath(L"|(L"${DOCSDIR}/|' \
 		${BUILD_WRKSRC}/document.h
@@ -58,4 +54,4 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/TS/images/icon32.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

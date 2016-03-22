@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	php55
-PORTVERSION=	5.5.28
+PORTVERSION=	5.5.31
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -12,8 +12,6 @@ MAINTAINER=	ale@FreeBSD.org
 COMMENT=	PHP Scripting Language
 
 LICENSE=	PHP301
-
-LATEST_LINK=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 
 USES=		tar:bzip2 cpe
 CPE_PRODUCT=	php
@@ -156,9 +154,6 @@ CONFIGURE_ARGS+=--enable-maintainer-zts
 .endif
 
 .if ${PORT_OPTIONS:MDTRACE}
-.if ${OSVERSION} < 900000
-IGNORE=		cannot be built with DTrace support on FreeBSD < 9.x
-.endif
 CONFIGURE_ARGS+=--enable-dtrace
 PLIST_SUB+=	DTRACE=""
 .else

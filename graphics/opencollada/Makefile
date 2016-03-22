@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	opencollada
-PORTVERSION=	1.2.2.20140528
-PORTREVISION=	2
+PORTVERSION=	1.2.2.20150519
 CATEGORIES=	graphics devel
 
 MAINTAINER=	mva@FreeBSD.org
@@ -15,13 +14,15 @@ LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	OpenCOLLADA
-GH_TAGNAME=	345a2a7
+GH_TAGNAME=	a59a438
 
 USE_GNOME=	libxml2
 USE_LDCONFIG=	${PREFIX}/lib/opencollada
 USES=		cmake:outsource compiler iconv pkgconfig
 CFLAGS+=	-I/${LOCALBASE}/include
 CMAKE_ARGS+=	-DUSE_SHARED:BOOL=ON -DUSE_STATIC:BOOL=OFF
+
+BROKEN_sparc64=	cannot build: runaway process
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|$${OPENCOLLADA_INST_LIBRARY}/cmake|${PREFIX}/share/cmake/Modules|' \

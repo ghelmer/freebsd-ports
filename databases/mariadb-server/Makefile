@@ -20,8 +20,6 @@ COMMENT=	Database server - drop-in replacement for MySQL
 
 LICENSE=	GPLv2
 
-UNIQUENAME=	${PORTNAME}${PKGNAMESUFFIX}
-
 CONFLICTS?=	mariadb5[4-9]-server-* \
 		mariadb1[0-9][0-9]-server-* \
 		mysql*-server-* \
@@ -88,7 +86,7 @@ OPTIONS_DEFAULT+=	ARIADB ARCHIVE BLACKHOLE SPHINX FEDX XTRADB HANDLERSOCKET
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} > 900000 && ${PORT_OPTIONS:MSTATIC}
+.if ${PORT_OPTIONS:MSTATIC}
 BROKEN=	WITH_STATIC is not functional on 9-current
 .endif
 

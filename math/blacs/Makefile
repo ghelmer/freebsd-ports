@@ -3,7 +3,7 @@
 
 PORTNAME=	blacs
 PORTVERSION=	1.7
-PORTREVISION=	25
+PORTREVISION=	26
 CATEGORIES=	math
 MASTER_SITES=	NETLIB/blacs
 DISTNAME=	BLACS
@@ -20,10 +20,6 @@ USES=		fortran gmake
 USE_LDCONFIG=	yes
 
 .include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 900000
-BROKEN=		does not build on 8.x
-.endif
 
 .if ! ${PORT_OPTIONS:MDOCS}
 DISTFILES+=	blacs_install.ps f77blacsqref.ps lawn94.ps \

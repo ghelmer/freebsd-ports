@@ -4,6 +4,7 @@
 
 PORTNAME=	gthumb
 PORTVERSION=	3.4.0
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome3
@@ -19,7 +20,7 @@ RUN_DEPENDS=	gsettings-desktop-schemas>0:${PORTSDIR}/devel/gsettings-desktop-sch
 
 USES=		bison compiler:c++11-lib desktop-file-utils gettext gmake \
 		libtool pathfix pkgconfig tar:xz
-USE_GNOME=	gtk30 librsvg2
+USE_GNOME=	gtk30 intltool librsvg2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules \
 		--disable-libchamplain \

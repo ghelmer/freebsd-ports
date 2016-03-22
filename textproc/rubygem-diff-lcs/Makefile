@@ -13,12 +13,14 @@ COMMENT=	LCS-based diff library for ruby
 LICENSE=	ART20 GPLv2 GPLv3 MIT
 LICENSE_COMB=	dual
 
-USES=		shebangfix
-ruby_OLD_CMD=	ruby
-SHEBANG_FILES=	bin/htmldiff bin/ldiff
+NO_ARCH=	yes
+
 USE_RUBY=	yes
 USE_RUBYGEMS=	yes
 RUBYGEM_AUTOPLIST=	yes
+USES=		shebangfix
+ruby_OLD_CMD=	ruby
+SHEBANG_FILES=	bin/htmldiff bin/ldiff
 
 PLIST_FILES=	bin/htmldiff bin/ldiff
 

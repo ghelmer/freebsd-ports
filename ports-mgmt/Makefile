@@ -10,6 +10,7 @@
     SUBDIR += distilator
     SUBDIR += fastest_sites
     SUBDIR += fbsdmon
+    SUBDIR += freebsd-bugzilla-cli
     SUBDIR += genpatch
     SUBDIR += genplist
     SUBDIR += hs-porte
@@ -18,6 +19,7 @@
     SUBDIR += lsknobs
     SUBDIR += managepkg
     SUBDIR += mkreadmes
+    SUBDIR += octopkg
     SUBDIR += p5-FreeBSD-Portindex
     SUBDIR += p5-FreeBSD-Ports
     SUBDIR += p5-FreeBSD-Ports-INDEXhash
@@ -64,7 +66,6 @@
     SUBDIR += symports
     SUBDIR += tinderbox
     SUBDIR += tinderbox-devel
-    SUBDIR += vulnerability-test-port
     SUBDIR += wanted-ports
     SUBDIR += xps
 

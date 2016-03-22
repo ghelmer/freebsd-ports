@@ -1,6 +1,6 @@
---- src/DiskIO/Mmapped/MmappedFile.cc.orig	2015-04-15 10:39:56.146312000 +0300
-+++ src/DiskIO/Mmapped/MmappedFile.cc	2015-04-15 10:40:53.487834000 +0300
-@@ -235,7 +235,7 @@
+--- src/DiskIO/Mmapped/MmappedFile.cc.orig	2015-11-01 10:44:25 UTC
++++ src/DiskIO/Mmapped/MmappedFile.cc
+@@ -235,7 +235,7 @@ Mmapping::map()
      static const int pageSize = getpagesize();
      delta = offset % pageSize;
  

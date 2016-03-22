@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	notmuch
-PORTVERSION=	0.19
+PORTVERSION=	0.20.2
 PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://notmuchmail.org/releases/
 
-MAINTAINER=	ross@rosstimson.com
+MAINTAINER=	mp39590@gmail.com
 COMMENT=	Thread-based email index, search, and tagging application
 
 LICENSE=	GPLv3
@@ -39,16 +39,14 @@ USE_EMACS=	yes
 .endif
 
 HAS_CONFIGURE=	yes
-USES=		pkgconfig python:build gmake
+USES=		gmake pkgconfig python:build
 CONFIGURE_ARGS=	--prefix=${PREFIX} --mandir=${MANPREFIX}/man
 USE_LDCONFIG=	yes
 
 MAKE_ENV+=		PYTHONCMD=${PYTHON_CMD}
 
-.include <bsd.port.pre.mk>
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/notmuch
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libnotmuch.so.4.2.0
 
-.if ${OSVERSION} < 900044
-IGNORE=	requires zlib at least 1.2.5
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

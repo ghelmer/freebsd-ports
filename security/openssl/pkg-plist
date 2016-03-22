@@ -98,7 +98,6 @@ lib/libssl.a
 libdata/pkgconfig/libcrypto.pc
 libdata/pkgconfig/libssl.pc
 libdata/pkgconfig/openssl.pc
-%%SHARED%%@dirrm lib/engines
 man/man1/CA.pl.1.gz
 man/man1/asn1parse.1.gz
 man/man1/c_rehash.1.gz
@@ -420,7 +419,12 @@ man/man3/BN_zero.3.gz
 man/man3/BUF_MEM_free.3.gz
 man/man3/BUF_MEM_grow.3.gz
 man/man3/BUF_MEM_new.3.gz
+man/man3/BUF_MEM_new_ex.3.gz
+man/man3/BUF_memdup.3.gz
 man/man3/BUF_strdup.3.gz
+man/man3/BUF_strlcat.3.gz
+man/man3/BUF_strlcpy.3.gz
+man/man3/BUF_strndup.3.gz
 man/man3/CMS_ReceiptRequest_create0.3.gz
 man/man3/CMS_ReceiptRequest_get0_values.3.gz
 man/man3/CMS_RecipientInfo_decrypt.3.gz
@@ -842,6 +846,7 @@ man/man3/EVP_SealInit.3.gz
 man/man3/EVP_SealUpdate.3.gz
 man/man3/EVP_SignFinal.3.gz
 man/man3/EVP_SignInit.3.gz
+man/man3/EVP_SignInit_ex.3.gz
 man/man3/EVP_SignUpdate.3.gz
 man/man3/EVP_VerifyFinal.3.gz
 man/man3/EVP_VerifyInit.3.gz
@@ -1144,17 +1149,19 @@ man/man3/SSL_CTX_add1_chain_cert.3.gz
 man/man3/SSL_CTX_add_client_CA.3.gz
 man/man3/SSL_CTX_add_client_custom_ext.3.gz
 man/man3/SSL_CTX_add_extra_chain_cert.3.gz
-man/man3/SSL_CTX_add_session.3.gz
 man/man3/SSL_CTX_add_server_custom_ext.3.gz
+man/man3/SSL_CTX_add_session.3.gz
 man/man3/SSL_CTX_build_cert_chain.3.gz
 man/man3/SSL_CTX_callback_ctrl.3.gz
 man/man3/SSL_CTX_check_private_key.3.gz
 man/man3/SSL_CTX_clear_chain_certs.3.gz
+man/man3/SSL_CTX_clear_extra_chain_certs.3.gz
 man/man3/SSL_CTX_clear_options.3.gz
 man/man3/SSL_CTX_ctrl.3.gz
 man/man3/SSL_CTX_flush_sessions.3.gz
 man/man3/SSL_CTX_free.3.gz
 man/man3/SSL_CTX_get0_chain_certs.3.gz
+man/man3/SSL_CTX_get0_param.3.gz
 man/man3/SSL_CTX_get_cert_store.3.gz
 man/man3/SSL_CTX_get_client_CA_list.3.gz
 man/man3/SSL_CTX_get_client_cert_cb.3.gz
@@ -1205,6 +1212,7 @@ man/man3/SSL_CTX_set1_chain.3.gz
 man/man3/SSL_CTX_set1_chain_cert_store.3.gz
 man/man3/SSL_CTX_set1_curves.3.gz
 man/man3/SSL_CTX_set1_curves_list.3.gz
+man/man3/SSL_CTX_set1_param.3.gz
 man/man3/SSL_CTX_set1_verify_cert_store.3.gz
 man/man3/SSL_CTX_set_cert_cb.3.gz
 man/man3/SSL_CTX_set_cert_store.3.gz
@@ -1234,6 +1242,8 @@ man/man3/SSL_CTX_set_session_cache_mode.3.gz
 man/man3/SSL_CTX_set_session_id_context.3.gz
 man/man3/SSL_CTX_set_ssl_version.3.gz
 man/man3/SSL_CTX_set_timeout.3.gz
+man/man3/SSL_CTX_set_tlsext_status_arg.3.gz
+man/man3/SSL_CTX_set_tlsext_status_cb.3.gz
 man/man3/SSL_CTX_set_tlsext_ticket_key_cb.3.gz
 man/man3/SSL_CTX_set_tmp_dh.3.gz
 man/man3/SSL_CTX_set_tmp_dh_callback.3.gz
@@ -1273,6 +1283,7 @@ man/man3/SSL_alert_type_string.3.gz
 man/man3/SSL_alert_type_string_long.3.gz
 man/man3/SSL_build_cert_chain.3.gz
 man/man3/SSL_callback_ctrl.3.gz
+man/man3/SSL_check_chain.3.gz
 man/man3/SSL_check_private_key.3.gz
 man/man3/SSL_clear.3.gz
 man/man3/SSL_clear_chain_certs.3.gz
@@ -1283,6 +1294,7 @@ man/man3/SSL_do_handshake.3.gz
 man/man3/SSL_flush_sessions.3.gz
 man/man3/SSL_free.3.gz
 man/man3/SSL_get0_chain_certs.3.gz
+man/man3/SSL_get0_param.3.gz
 man/man3/SSL_get1_curves.3.gz
 man/man3/SSL_get_SSL_CTX.3.gz
 man/man3/SSL_get_accept_state.3.gz
@@ -1317,6 +1329,7 @@ man/man3/SSL_get_session.3.gz
 man/man3/SSL_get_shared_curve.3.gz
 man/man3/SSL_get_shutdown.3.gz
 man/man3/SSL_get_ssl_method.3.gz
+man/man3/SSL_get_tlsext_status_ocsp_resp.3.gz
 man/man3/SSL_get_verify_callback.3.gz
 man/man3/SSL_get_verify_depth.3.gz
 man/man3/SSL_get_verify_mode.3.gz
@@ -1342,6 +1355,7 @@ man/man3/SSL_set1_chain.3.gz
 man/man3/SSL_set1_chain_cert_store.3.gz
 man/man3/SSL_set1_curves.3.gz
 man/man3/SSL_set1_curves_list.3.gz
+man/man3/SSL_set1_param.3.gz
 man/man3/SSL_set1_verify_cert_store.3.gz
 man/man3/SSL_set_bio.3.gz
 man/man3/SSL_set_cert_cb.3.gz
@@ -1366,6 +1380,8 @@ man/man3/SSL_set_session.3.gz
 man/man3/SSL_set_session_id_context.3.gz
 man/man3/SSL_set_shutdown.3.gz
 man/man3/SSL_set_ssl_method.3.gz
+man/man3/SSL_set_tlsext_status_ocsp_resp.3.gz
+man/man3/SSL_set_tlsext_status_type.3.gz
 man/man3/SSL_set_tmp_dh.3.gz
 man/man3/SSL_set_tmp_dh_callback.3.gz
 man/man3/SSL_set_tmp_rsa.3.gz
@@ -1529,8 +1545,8 @@ man/man3/d2i_DHparams.3.gz
 man/man3/d2i_DSAPrivateKey.3.gz
 man/man3/d2i_DSAPublicKey.3.gz
 man/man3/d2i_DSA_PUBKEY.3.gz
-man/man3/d2i_DSAparams.3.gz
 man/man3/d2i_DSA_SIG.3.gz
+man/man3/d2i_DSAparams.3.gz
 man/man3/d2i_ECDSA_SIG.3.gz
 man/man3/d2i_ECPKParameters.3.gz
 man/man3/d2i_ECPKParameters_bio.3.gz
@@ -1571,8 +1587,8 @@ man/man3/err.3.gz
 man/man3/evp.3.gz
 man/man3/hmac.3.gz
 man/man3/i2d_ASN1_OBJECT.3.gz
-man/man3/i2d_CMS_bio_stream.3.gz
 man/man3/i2d_CMS_ContentInfo.3.gz
+man/man3/i2d_CMS_bio_stream.3.gz
 man/man3/i2d_DHparams.3.gz
 man/man3/i2d_DSAPrivateKey.3.gz
 man/man3/i2d_DSAPublicKey.3.gz
@@ -1646,9 +1662,5 @@ man/man7/des_modes.7.gz
 %%OPENSSLDIR%%/misc/tsget
 %%OPENSSLDIR%%/openssl.cnf.sample
 %%PORTDOCS%%%%DOCSDIR%%/openssl.txt
-@dirrm include/openssl
-@dirrmtry %%OPENSSLDIR%%/certs
-@dirrm %%OPENSSLDIR%%/misc
-@dirrmtry %%OPENSSLDIR%%/private
-@dirrm %%OPENSSLDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
+@dir %%OPENSSLDIR%%/private
+@dir %%OPENSSLDIR%%/certs

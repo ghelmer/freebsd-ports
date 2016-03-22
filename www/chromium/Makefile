@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	chromium
-PORTVERSION=	44.0.2403.155
+PORTVERSION=	47.0.2526.80
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # default, but needed to get distinfo correct if TEST is on
@@ -22,7 +22,9 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/gperf:${PORTSDIR}/devel/gperf \
 		${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat \
 		${LOCALBASE}/share/usbids/usb.ids:${PORTSDIR}/misc/usbids \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:${PORTSDIR}/devel/py-Jinja2 \
-		${PYTHON_PKGNAMEPREFIX}ply>0:${PORTSDIR}/devel/py-ply
+		${PYTHON_PKGNAMEPREFIX}ply>0:${PORTSDIR}/devel/py-ply \
+		${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:${PORTSDIR}/www/py-beautifulsoup \
+		${PYTHON_PKGNAMEPREFIX}html5lib>0:${PORTSDIR}/www/py-html5lib
 
 LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
 		libdbus-1.so:${PORTSDIR}/devel/dbus \
@@ -141,8 +143,6 @@ PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
 DRIVER_MAKE_ARGS=chromedriver
 TEST_DISTFILES=	${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}
 
-BROKEN_FreeBSD_8=	Does not compile, missing locale
-
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCODECS}
@@ -244,6 +244,9 @@ post-patch:
 		${WRKSRC}/base/base.gyp
 
 pre-configure:
+.if ! ${PORT_OPTIONS:MTEST}
+	${ECHO_CMD} > ${WRKSRC}/chrome/test/data/webui/i18n_process_css_test.html
+.endif
 	# phajdan-jr: list of things *not* to remove, so maybe the script
 	#             should be called "keep_bundled_libraries.py"
 	cd ${WRKSRC} && ${PYTHON_CMD} \
@@ -294,10 +297,13 @@ pre-configure:
 		'third_party/libjingle' \
 		'third_party/libphonenumber' \
 		'third_party/libsrtp' \
-		'third_party/libvpx' \
-		'third_party/libvpx/source/libvpx/third_party/x86inc' \
+		'third_party/libvpx_new' \
+		'third_party/libvpx_new/source/libvpx/third_party/x86inc' \
 		'third_party/libxml/chromium' \
 		'third_party/libXNVCtrl' \
+		'third_party/libwebm' \
+		'third_party/libwebm/source' \
+		'third_party/libwebm/source/common' \
 		'third_party/libyuv' \
 		'third_party/lss' \
 		'third_party/lzma_sdk' \
@@ -326,10 +332,13 @@ pre-configure:
 		'third_party/sqlite' \
 		'third_party/tcmalloc' \
 		'third_party/tlslite' \
-		'third_party/trace-viewer' \
-		'third_party/trace-viewer/third_party' \
-		'third_party/trace-viewer/third_party/tvcm/third_party' \
-		'third_party/undoview' \
+		'third_party/catapult' \
+		'third_party/catapult/tracing' \
+		'third_party/catapult/tracing/third_party' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/rcssmin' \
+		'third_party/catapult/tracing/third_party/tvcm/third_party/rjsmin' \
+		'third_party/catapult/tracing/third_party/tvcm/tvcm' \
 		'third_party/usrsctp' \
 		'third_party/web-animations-js' \
 		'third_party/webdriver' \

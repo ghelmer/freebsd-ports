@@ -253,7 +253,7 @@ man/man8/charon-cmd.8.gz
 %%GCM%%lib/ipsec/plugins/libstrongswan-gcm.a
 %%GCM%%lib/ipsec/plugins/libstrongswan-gcm.la
 %%GCM%%lib/ipsec/plugins/libstrongswan-gcm.so
-%%GCM%%%%ETCDIR%%.d/charon/gcm.conf.sample
+%%GCM%%@sample %%ETCDIR%%.d/charon/gcm.conf.sample
 %%IKEv1%%lib/ipsec/plugins/libstrongswan-xauth-generic.a
 %%IKEv1%%lib/ipsec/plugins/libstrongswan-xauth-generic.la
 %%IKEv1%%lib/ipsec/plugins/libstrongswan-xauth-generic.so
@@ -315,6 +315,7 @@ man/man8/charon-cmd.8.gz
 %%TESTVECTOR%%@sample %%ETCDIR%%.d/charon/test-vectors.conf.sample
 %%PKI%%bin/pki
 %%PKI%%man/man1/pki---acert.1.gz
+%%PKI%%man/man1/pki---dn.1.gz
 %%PKI%%man/man1/pki---gen.1.gz
 %%PKI%%man/man1/pki---issue.1.gz
 %%PKI%%man/man1/pki---keyid.1.gz

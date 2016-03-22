@@ -17,6 +17,8 @@ NO_WRKSUBDIR=	yes
 SUB_FILES=	closure-compiler
 SUB_LIST=	JAVA="${JAVA}"
 USE_JAVA=	yes
+JAVA_VERSION=	1.8
+JAVA_VENDOR=	openjdk
 
 PLIST_FILES=	bin/closure-compiler \
 		%%DATADIR%%/compiler.jar
