@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	pcre
-PORTVERSION=	8.37
-PORTREVISION=	4
+PORTVERSION=	8.38
+PORTREVISION=	0
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION} \
 		ftp://ftp.csx.cam.ac.uk/pub/software/programming/${PORTNAME}/ \
@@ -23,8 +23,10 @@ CONFIGURE_ARGS=	--enable-utf --enable-unicode-properties \
 		--enable-pcre8 --enable-pcre16 --enable-pcre32
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=		DOCS LIBEDIT READLINE STACK_RECURSION
+OPTIONS_DEFINE=		DOCS STACK_RECURSION
 OPTIONS_DEFAULT=	STACK_RECURSION
+OPTIONS_RADIO=	CLI
+OPTIONS_RADIO_CLI=	LIBEDIT READLINE
 
 STACK_RECURSION_DESC=	Use the stack for recursion during matching
 
