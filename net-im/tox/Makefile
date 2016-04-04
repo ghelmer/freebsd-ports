@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	toxcore
-PORTVERSION=	0.150616
+PORTVERSION=	0.151112
+PORTREVISION=	1
 CATEGORIES=	net-im net-p2p
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -17,7 +18,7 @@ LIB_DEPENDS=	libvpx.so:${PORTSDIR}/multimedia/libvpx		\
 USE_GITHUB=	yes
 GH_ACCOUNT=	irungentoo
 GH_PROJECT=	${PORTNAME}
-GH_TAGNAME=	836daa9
+GH_TAGNAME=	22634a4
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-tests
@@ -57,8 +58,15 @@ PID_DIR=	/var/run/tox-bootstrapd
 PKGMESSAGE=	${PKGDIR}/pkg-message.daemon
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/configure.ac
+pre-everything::
+.if ${PORT_OPTIONS:MNACL}
+	@${ECHO_CMD}
+	@${ECHO_CMD} "Warning: building toxcore against NaCl is not supported by some clients (e.g. qTox)!"
+	@${ECHO_CMD}
+.endif
+
+pre-configure:
+	${REINPLACE_CMD} 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/configure.ac
 
 post-install:
 .if ${PORT_OPTIONS:MDAEMON}

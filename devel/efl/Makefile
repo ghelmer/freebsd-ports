@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	efl
-PORTVERSION=	1.15.1
+PORTVERSION=	1.16.0
+PORTREVISION=	2
 CATEGORIES=	devel enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/libs/${PORTNAME}/
 
