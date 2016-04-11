@@ -271,10 +271,15 @@ post-patch-PTHREAD-off:
 	${REINPLACE_CMD} -e 's|%%PTHREAD_LIBS%%||g;' \
 		${WRKSRC}/hints/freebsd.sh
 
-.if ${CC} == /nxb-bin/usr/bin/cc
 post-build:
+	@${REINPLACE_CMD} -e '/^lddlflags/s|-L${WRKSRC} ||' \
+		${WRKSRC}/lib/Config_heavy.pl
+.if ${CC} == /nxb-bin/usr/bin/cc
 	@${REINPLACE_CMD} -e 's=/nxb-bin==' \
 		${WRKSRC}/lib/Config.pm ${WRKSRC}/lib/Config_heavy.pl
+# Restore Config.pm's timestamp so that Perl's build system does not think it
+# needs to rebuild everything.
+	@${TOUCH} -r ${WRKSRC}/lib/Config.pm.bak ${WRKSRC}/lib/Config.pm
 .endif
 
 post-install:
