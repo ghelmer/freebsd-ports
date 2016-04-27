@@ -2,7 +2,6 @@
 
 PORTNAME=	squid
 PORTVERSION=	3.5.15
-PORTREVISION=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
 		http://www2.us.squid-cache.org/Versions/v3/${PORTVERSION:R}/ \
