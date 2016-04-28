@@ -13,7 +13,6 @@ COMMENT=	GNU Smalltalk
 BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
 		gawk:${PORTSDIR}/lang/gawk
 LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
 		libcairo.so:${PORTSDIR}/graphics/cairo
 
 OPTIONS_DEFINE=	TK PGSQL SDL
@@ -24,9 +23,9 @@ TK_CONFIGURE_WITH=tcl=${LOCALBASE}/lib/tcl8.4 tk=${LOCALBASE}/lib/tk8.4
 PGSQL_USES=	pgsql
 SDL_USE=	SDL=image,mixer,sdl,sound,ttf
 
-USES=		gmake iconv libtool makeinfo pkgconfig shebangfix tar:xz
+USES=		execinfo gmake iconv libtool localbase makeinfo pkgconfig \
+		shebangfix sqlite tar:xz
 USE_GNOME=	pango
-USE_SQLITE=	yes
 USE_XORG=	ice xi xmu
 USE_GL=		gl glut
 GNU_CONFIGURE=	yes
@@ -46,9 +45,6 @@ PLIST_SUB=	VERSION="${PORTVERSION}"
 PORTDATA=	*
 
 INFO=		gst gst-base gst-libs
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 BROKEN_sparc64=	Fails to install on sparc64
 

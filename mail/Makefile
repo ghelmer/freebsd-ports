@@ -460,9 +460,9 @@
     SUBDIR += pflogsumm
     SUBDIR += pfqueue
     SUBDIR += pgpsendmail
-    SUBDIR += php5-imap
     SUBDIR += php55-imap
     SUBDIR += php56-imap
+    SUBDIR += php70-imap
     SUBDIR += phplist
     SUBDIR += phpmailer
     SUBDIR += phpmailer2
@@ -571,6 +571,7 @@
     SUBDIR += roundcube-umich
     SUBDIR += roundcube-veximaccountadmin
     SUBDIR += rspamd
+    SUBDIR += rspamd-devel
     SUBDIR += rss2email2
     SUBDIR += rss2email3
     SUBDIR += ruby-rfilter
