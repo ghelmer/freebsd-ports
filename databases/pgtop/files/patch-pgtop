@@ -1,5 +1,5 @@
---- pgtop.orig	2009-12-12 22:59:39.014936884 +0900
-+++ pgtop	2009-12-12 22:59:47.966070360 +0900
+--- pgtop.orig	2008-07-29 15:07:45.000000000 -0500
++++ pgtop	2016-06-24 08:59:21.388519000 -0500
 @@ -149,7 +149,7 @@
      "idle|i"              => \$config{idle},
      "resolve|r"           => \$config{resolve},
@@ -9,3 +9,22 @@
  );
  
  ## User may have put the port with the host.
+@@ -896,15 +896,15 @@
+     my $proc_cmd = <<SQL;
+ 
+ SELECT datname         AS "db",
+-       procpid         AS "Id",
++       pid             AS "Id",
+        usename         AS "User",
+        (
+-         CASE current_query
++         CASE query
+          WHEN '<IDLE>' THEN 'Sleep'
+          ELSE 'Query'
+          END
+        )               AS "Command",
+-       current_query   AS "Info",
++       query           AS "Info",
+        'local'         AS "Host"
+   FROM pg_stat_activity
+ SQL
