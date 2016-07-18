@@ -1,0 +1,12 @@
+Index: ares_expand_name.c
+===================================================================
+--- ares_expand_name.c	(revision 8903)
++++ ares_expand_name.c	(revision 8904)
+@@ -63,6 +63,7 @@
+   if (!*s)
+     return ARES_ENOMEM;
+   q = *s;
++  *q = '\0';	/* Initialize for zero-length name. */
+ 
+   /* No error-checking necessary; it was all done by name_length(). */
+   p = encoded;
