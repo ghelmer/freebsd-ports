@@ -268,10 +268,6 @@ post-patch-PORTREVISION-on:
 		${WRKSRC}/version
 .endif
 
-post-patch-PORTREVISION-on:
-	@${REINPLACE_CMD} -e '/EXTENSIONS/s#=$$#=_${PORTREVISION}#' \
-		${WRKSRC}/version
-
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/arm

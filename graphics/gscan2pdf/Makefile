@@ -64,5 +64,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's|$$sharedir/man|$$prefixdir/man| ; \
 		 s|1p|1|' ${WRKSRC}/Makefile.PL
+	@${REINPLACE_CMD} -e \
+		's|/usr/share|${PREFIX}/share|g' ${WRKSRC}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

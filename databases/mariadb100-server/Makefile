@@ -26,7 +26,6 @@ BROKEN_powerpc64=	Does not build
 SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
-UNIQUENAME=	${PKGNAMEPREFIX}${PORTNAME}${PKGNAMESUFFIX}
 SLAVEDIRS=	databases/mariadb100-client
 USES=		bison:build cmake compiler:c++11-lib cpe execinfo gmake shebangfix
 USE_LDCONFIG=	${PREFIX}/lib/mysql ${PREFIX}/lib/mysql/plugin

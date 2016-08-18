@@ -42,8 +42,4 @@ post-install:
 	@${REINPLACE_CMD} -e 's,===,==,' ${STAGEDIR}${PREFIX}/bin/leo \
 		${STAGEDIR}${PREFIX}/bin/leoc
 
-post-install:
-	@${REINPLACE_CMD} -e 's,===,==,' ${STAGEDIR}${PREFIX}/bin/leo \
-		${STAGEDIR}${PREFIX}/bin/leoc
-
 .include <bsd.port.mk>

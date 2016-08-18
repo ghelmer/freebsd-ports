@@ -141,13 +141,4 @@ post-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
 .endfor
 
-	${MV} ${STAGEDIR}${PREFIX}/share/misc/terminfo.db \
-		${STAGEDIR}${PREFIX}/share/misc/terminfo.db.default
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for f in ${DOCS}
-	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
-.endfor
-
 .include <bsd.port.mk>
