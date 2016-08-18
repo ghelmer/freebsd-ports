@@ -4,7 +4,9 @@
  
  # Configure compiler to use in further tests
  
- # Parse command-line arguments
+-cc="$bytecc -O $bytecclinkopts"
++cc="$bytecc $bytecclinkopts"
+ export cc cclibs verbose
  
  # Check C compiler
 @@ -688,9 +688,9 @@ if test $with_sharedlibs = "yes"; then

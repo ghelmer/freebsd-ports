@@ -140,4 +140,4 @@ do-install:
 			${FIND} * -type f -exec ${INSTALL_DATA} "{}" "${STAGEDIR}${PREFIX}/${DATADIR}/base/i18n/{}" \;
 	${LN} -s ${PREFIX}/${DATADIR}/base ${STAGEDIR}${UFO_DIR}/base
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>
