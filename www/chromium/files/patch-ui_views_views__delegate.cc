@@ -9,12 +9,3 @@
  gfx::ImageSkia* ViewsDelegate::GetDefaultWindowIcon() const {
    return nullptr;
  }
-@@ -91,7 +91,7 @@
-   return program.BaseName().AsUTF8Unsafe();
- }
- 
--#if defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if defined(OS_LINUX) && !defined(OS_CHROMEOS) || defined(OS_BSD)
- scoped_refptr<base::TaskRunner>
-     ViewsDelegate::GetTaskRunnerForAuraLinuxAccessibilityInit() {
-   return nullptr;

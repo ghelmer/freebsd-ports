@@ -9,6 +9,6 @@
 +        '../build/linux/system.gyp:pangocairo',
 +      ],
 +    }],
-     [ 'OS == "ios"', {
+     [ 'OS == "android" and '
+       'enable_basic_printing==0 and enable_print_preview==0', {
        'sources!': [
-         'ext/platform_canvas.cc',

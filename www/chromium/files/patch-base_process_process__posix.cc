@@ -56,7 +56,6 @@
 @@ -256,12 +266,16 @@ Process Process::DeprecatedGetProcessFro
    return Process(handle);
  }
- #endif  // !defined(OS_LINUX)
  
 -#if !defined(OS_LINUX)
 +#if !defined(OS_LINUX) && !defined(OS_FREEBSD)

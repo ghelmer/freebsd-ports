@@ -263,9 +263,6 @@ post-patch:
 		${WRKSRC}/base/base.gyp
 
 pre-configure:
-.if ! ${PORT_OPTIONS:MTEST}
-	${ECHO_CMD} > ${WRKSRC}/chrome/test/data/webui/i18n_process_css_test.html
-.endif
 	# phajdan-jr: list of things *not* to remove, so maybe the script
 	#             should be called "keep_bundled_libraries.py"
 	cd ${WRKSRC} && ${PYTHON_CMD} \
@@ -312,7 +309,7 @@ pre-configure:
 		'third_party/google_input_tools' \
 		'third_party/google_input_tools/third_party/closure_library' \
 		'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
-		'third_party/hunspell_new' \
+		'third_party/hunspell' \
 		'third_party/iccjpeg' \
 		'third_party/icu/icu.isolate' \
 		'third_party/jinja2' \
@@ -328,9 +325,6 @@ pre-configure:
 		'third_party/libwebm' \
 		'third_party/libxml/chromium' \
 		'third_party/libXNVCtrl' \
-		'third_party/libwebm' \
-		'third_party/libwebm/source' \
-		'third_party/libwebm/source/common' \
 		'third_party/libyuv' \
 		'third_party/lss' \
 		'third_party/lzma_sdk' \
