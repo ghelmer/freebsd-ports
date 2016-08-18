@@ -21,11 +21,12 @@ HSCOLOUR_CMD?=	${LOCALBASE}/bin/HsColour
 GHC_VERSION?=	7.10.2
 LLVM_VERSION=	35
 
+HSCOLOUR_VERSION=	1.23
+
 HSCOLOUR_DESC?=	Colorize generated documentation by HsColour
 DYNAMIC_DESC?=	Add support for dynamic linking
 PROFILE_DESC?=	Add support for profiling
 LLVM_DESC?=	Use the LLVM backend for code generation
-GCC_DESC=		Build with GCC (from ports)
 PCLANG_DESC=		Build with Clang from ports
 BCLANG_DESC=		Build with Clang from base
 

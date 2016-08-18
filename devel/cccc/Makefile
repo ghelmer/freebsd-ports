@@ -3,14 +3,14 @@
 
 PORTNAME=	cccc
 PORTVERSION=	3.1.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel textproc www
 MASTER_SITES=	SF
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	luca.pizzamiglio@gmail.com
 COMMENT=	C and C++ Code Counter
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
 USES=		gmake
 MAKEFILE=	makefile
@@ -20,6 +20,10 @@ MAKE_JOBS_UNSAFE=	yes
 PORTDOCS=	readme.txt changes.txt
 PLIST_FILES=	bin/cccc
 
+OPTIONS_DEFINE=	DOCS DEBUG
+
+DEBUG_MAKE_ENV=	DEBUG="true"
+
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^all/s|install|| ; \
@@ -28,7 +32,8 @@ post-patch:
 		 s|"make|"$$(MAKE)|' ${WRKSRC}/makefile
 	@${REINPLACE_CMD} -e \
 		's|^CCC=|CCC?=| ; \
-		 s|^LD=|LD?=|' ${WRKSRC}/cccc/posixgcc.mak
+		s|^CFLAGS=|CFLAGS+=| ; \
+		s|^LD=|LD?=|' ${WRKSRC}/cccc/posixgcc.mak
 	@${REINPLACE_CMD} -e \
 		's| make| $$(MAKE)|' ${WRKSRC}/pccts/makefile
 .for i in antlr dlg
@@ -38,10 +43,12 @@ post-patch:
 .endfor
 
 do-install:
-	(cd ${WRKSRC}/cccc && ${INSTALL_PROGRAM} cccc ${STAGEDIR}${PREFIX}/bin)
+	${INSTALL_PROGRAM} ${WRKSRC}/cccc/cccc ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} ${STAGEDIR}${DOCSDIR})
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

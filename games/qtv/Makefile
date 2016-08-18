@@ -10,6 +10,10 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}_sources
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	MVD demo data streaming proxy over TCP/IP for QuakeWorld servers
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 ALL_TARGET=	${PORTNAME}
 MAKE_ARGS=	CC="${CC}"
 WRKSRC=		${WRKDIR}/${PORTNAME}_${PORTVERSION}

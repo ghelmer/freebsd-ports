@@ -3,7 +3,7 @@
 
 PORTNAME=	pcb
 PORTVERSION=	20140316
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -12,10 +12,10 @@ COMMENT=	X11 interactive printed circuit board layout system
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
-		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext
-RUN_DEPENDS=	m4>=1.4.11:${PORTSDIR}/devel/m4 \
-		${LOCALBASE}/libdata/pkgconfig/dbus-1.pc:${PORTSDIR}/devel/dbus
+LIB_DEPENDS=	libgd.so:graphics/gd \
+		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext
+RUN_DEPENDS=	m4>=1.4.11:devel/m4 \
+		${LOCALBASE}/libdata/pkgconfig/dbus-1.pc:devel/dbus
 BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 CONFLICTS=	gts-[0-9]*
@@ -37,7 +37,7 @@ PORTDOCS=	\
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SINGLE=	GUI
 OPTIONS_SINGLE_GUI=MOTIF GTK NONE
-OPTIONS_DEFAULT=DOCS GTK
+OPTIONS_DEFAULT=GTK
 DOCS_CONFIGURE_ENABLE=	doc
 DOCS_CONFIGURE_ON=	--docdir=${DOCSDIR}
 NLS_CONFIGURE_ENABLE=	nls

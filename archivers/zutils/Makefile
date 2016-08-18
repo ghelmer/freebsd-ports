@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zutils
-PORTVERSION=	1.4
+PORTVERSION=	1.5
 CATEGORIES=	archivers
 MASTER_SITES=	SAVANNAH/zutils
 EXTRACT_SUFX=	.tar.lz
@@ -12,7 +12,7 @@ COMMENT=	Utilities for searching in bzip2, gzip, lzip, and xz archives
 
 LICENSE=	GPLv2
 
-EXTRACT_DEPENDS=	lzip:${PORTSDIR}/archivers/lzip
+EXTRACT_DEPENDS=	lzip:archivers/lzip
 
 INFO=		zutils
 

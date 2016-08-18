@@ -3,14 +3,15 @@
 
 PORTNAME=	libmediaart
 PORTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	multimedia devel
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Library for handling media art
 
-BUILD_DEPENDS=	gtkdoc-check:${PORTSDIR}/textproc/gtk-doc \
-		vala>=0:${PORTSDIR}/lang/vala
+BUILD_DEPENDS=	gtkdoc-check:textproc/gtk-doc \
+		vala>=0:lang/vala
 
 USES=		gmake libtool pathfix pkgconfig tar:xz
 USE_GNOME=	gdkpixbuf2 glib20 introspection

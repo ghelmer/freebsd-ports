@@ -12,10 +12,10 @@ COMMENT=	Jukebox, tagger and music collection manager
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libtag.so:${PORTSDIR}/audio/taglib
+LIB_DEPENDS=	libtag.so:audio/taglib
 
 USES=		cmake:outsource tar:xz
-USE_KDE4=	automoc4 kdelibs kdeprefix
+USE_KDE4=	automoc4 kdelibs
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 
 CMAKE_ARGS=	-DWITH_TunePimp:BOOL=OFF

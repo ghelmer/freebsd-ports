@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	uget
-PORTVERSION=	2.0.2
+PORTVERSION=	2.0.8
 CATEGORIES=	net
 MASTER_SITES=	SF/urlget/${PORTNAME}%20%28stable%29/${PORTVERSION}
 
@@ -12,11 +12,11 @@ COMMENT=	Download manager application
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	curl-config:${PORTSDIR}/ftp/curl
-LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify \
-	libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-	libgnutls.so:${PORTSDIR}/security/gnutls
-RUN_DEPENDS=	aria2c:${PORTSDIR}/www/aria2
+BUILD_DEPENDS=	curl-config:ftp/curl
+LIB_DEPENDS=	libnotify.so:devel/libnotify \
+	libgcrypt.so:security/libgcrypt \
+	libgnutls.so:security/gnutls
+RUN_DEPENDS=	aria2c:www/aria2
 
 USES=	compiler:c11 gettext-tools gmake pkgconfig
 GNU_CONFIGURE=	yes
@@ -29,10 +29,11 @@ CFLAGS+=	-Wno-typedef-redefinition
 
 CONFIGURE_ARGS=--enable-appindicator=no \
 	--disable-pwmd \
+	--enable-unix-socket \
 	--with-gnutls=yes
 
 OPTIONS_DEFINE=	GSTREAMER NLS
-OPTIONS_DEFAULT=	GSTREAMER NLS
+OPTIONS_DEFAULT=	GSTREAMER
 GSTREAMER_USE=	gstreamer1=yes
 GSTREAMER_CONFIGURE_ENABLE=	gstreamer
 NLS_USES=	gettext-runtime

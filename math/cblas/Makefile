@@ -8,7 +8,7 @@ CATEGORIES=	math
 MASTER_SITES=	NL/blas/blast-forum/ LOCAL/bf
 DISTFILES=	cblas.tgz
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Reference implementation of the C interface to the legacy Fortran BLAS
 
 LICENSE=	BLAS
@@ -103,7 +103,7 @@ post-build:
 
 .if defined(MAINTAINER_MODE) || defined(PACKAGE_BUILDING)
 BLAS?=			-L${LOCALBASE}/lib -lblas
-BUILD_DEPENDS +=	${LOCALBASE}/lib/libblas.so:${PORTSDIR}/math/blas
+BUILD_DEPENDS +=	${LOCALBASE}/lib/libblas.so:math/blas
 MAKE_ENV+=		BLLIB="${BLAS}"
 
 check regression-test test: ${TESTS}

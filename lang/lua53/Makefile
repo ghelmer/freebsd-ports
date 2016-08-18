@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lua
-PORTVERSION=	5.3.1
+PORTVERSION=	5.3.2
 PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://www.lua.org/ftp/
@@ -58,9 +58,7 @@ SUB_LIST=	version=${PORTVERSION} \
 		libdir=${LUA_LIBDIR} \
 		soname=lua-${LUA_VER}
 
-CFLAGS_aarch64=	-fPIC
-CFLAGS_amd64=	-fPIC
-CFLAGS_powerpc=	-fPIC
+CFLAGS+=	-fPIC
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,rand *(,random(,g' \

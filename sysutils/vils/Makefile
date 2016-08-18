@@ -13,14 +13,14 @@ COMMENT=	Use your favorite editor to rename files
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	zsh:${PORTSDIR}/shells/zsh
+RUN_DEPENDS=	zsh:shells/zsh
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 EXTRACT_CMD=	${CP}
 EXTRACT_BEFORE_ARGS=	-f
-EXTRACT_AFTER_ARGS=	${WRKDIR}
+EXTRACT_AFTER_ARGS=	${WRKSRC}
 
 USES=		shebangfix
 SHEBANG_FILES=	vils

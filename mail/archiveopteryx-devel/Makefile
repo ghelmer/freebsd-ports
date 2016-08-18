@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	archiveopteryx
-PORTVERSION=	3.2.99.20140730
-PORTREVISION=	1
+PORTVERSION=	3.2.99.20160129
+PORTREVISION=	0
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -12,18 +12,20 @@ COMMENT=	Advanced PostgreSQL-based IMAP/POP server
 
 LICENSE=	MIT
 
-BUILD_DEPENDS=	jam:${PORTSDIR}/devel/jam
+BROKEN_powerpc64=	Does not build
+
+BUILD_DEPENDS=	jam:devel/jam
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aox
 GH_PROJECT=	aox
-GH_TAGNAME=	39bdb8b
+GH_TAGNAME=	e10c73a
 
 USES=		perl5 tar:bzip2 pgsql:9.1+
 USE_OPENSSL=	yes
 USE_PERL5=	build
 
-PORTDOCS=	COPYING README bsd.txt
+PORTDOCS=	COPYING README license.txt
 
 SUB_FILES=	pkg-message
 

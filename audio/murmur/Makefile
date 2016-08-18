@@ -2,24 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	murmur
-PORTVERSION=	1.2.8
+PORTVERSION=	1.2.10
 PORTREVISION=	1
 CATEGORIES=	audio net
-MASTER_SITES=	SF/mumble/Mumble/${PORTVERSION}
-DISTNAME=	mumble-${PORTVERSION}
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Murmur is the server component of Mumble
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${LOCALBASE}/include/boost/function.hpp:${PORTSDIR}/devel/boost-libs
-LIB_DEPENDS=	libprotobuf.so:${PORTSDIR}/devel/protobuf
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/function.hpp:devel/boost-libs
+LIB_DEPENDS=	libprotobuf.so:devel/protobuf
 
 USERS=		murmur
 GROUPS=		murmur
-USES=		compiler qmake
+USES=		compiler:c++11-lang qmake pkgconfig
 USE_QT4=	moc_build corelib network xml sql sql-sqlite3_run
+
+USE_OPENSSL=	YES
+
+USE_GITHUB=	YES
+GH_ACCOUNT=	mumble-voip
+GH_PROJECT=	mumble
 
 CONFIG=		no-client
 QMAKE_ARGS=	"CONFIG+=${CONFIG}"
@@ -35,7 +39,7 @@ BONJOUR_DESC=	Bonjour Support
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MICE}
-LIB_DEPENDS+=	libIce.so:${PORTSDIR}/devel/ice
+LIB_DEPENDS+=	libIce.so:devel/ice
 .else
 CONFIG+=	no-ice
 .endif
@@ -47,7 +51,7 @@ CONFIG+=	no-dbus
 .endif
 
 .if ${PORT_OPTIONS:MBONJOUR}
-LIB_DEPENDS+=	libdns_sd.so:${PORTSDIR}/net/mDNSResponder
+LIB_DEPENDS+=	libdns_sd.so:net/mDNSResponder
 .else
 CONFIG+=	no-bonjour
 .endif
@@ -56,6 +60,10 @@ CONFIG+=	no-bonjour
 # PCH is broken on GCC
 .if ${COMPILER_TYPE} == gcc
 CONFIG+=	no-pch
+.endif
+
+.if ${OSVERSION} < 1000510
+EXTRA_PATCHES=	${FILESDIR}/FreeBSD9-patch-src_SSL.cpp
 .endif
 
 post-patch:

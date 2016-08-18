@@ -17,7 +17,6 @@ WRKSRC_SUBDIR=	ta2as
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mefistotelis
-GH_TAGNAME=	3f4825a
 
 PORTDOCS=	*
 PLIST_FILES=	bin/${PORTNAME}
@@ -37,6 +36,8 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.txt ${STAGEDIR}${DOCSDIR}
 

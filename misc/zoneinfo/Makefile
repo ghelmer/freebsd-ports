@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	zoneinfo
-DISTVERSION=	2015f
+DISTVERSION=	2016f
 CATEGORIES=	misc
 MASTER_SITES=	ftp://ftp.iana.org/tz/releases/ \
 		ftp://munnari.oz.au/pub/
@@ -11,8 +11,9 @@ DISTNAME=	tzdata${DISTVERSION}
 MAINTAINER=	edwin@mavetju.org
 COMMENT=	Updated timezone definitions
 
-WRKSRC=		${WRKDIR}
+NO_WRKSUBDIR=	yes
 PREFIX=		/usr
+NO_ARCH=	yes
 
 TZFILES=	africa antarctica asia australasia etcetera europe \
 		factory northamerica southamerica systemv
@@ -51,20 +52,13 @@ do-install:
 	${CP} -R -p ${WRKSRC}/zoneinfo/ ${STAGEDIR}${PREFIX}/share/zoneinfo
 	${INSTALL_DATA} ${WRKSRC}/zone.tab ${STAGEDIR}${PREFIX}/share/zoneinfo
 
-post-install:
-	@if [ -f /var/db/zoneinfo -a -O /var/db/zoneinfo -a \
-	     -G /var/db/zoneinfo -a \
-	     -f /usr/share/zoneinfo/$$(cat /var/db/zoneinfo) ]; then \
-		tzsetup -r; \
-		echo "/etc/localtime is updated."; \
-	else \
-		${CAT} ${PKGMESSAGE}; \
-	fi
-
 test-patches:
 .for M in ${MISSING}
 	make clean
 	NOMISSING=1 EXTRA_PATCHES=${FILESDIR}/patchremove-${M} make patch
 .endfor
+
+test-pkgplist:
+	for f in $$(find work/stage/usr/share/zoneinfo/ | sed -e 's,work/stage/usr/share/zoneinfo/,,' ); do if [ $$(grep -c $$f pkg-plist) -eq 0 ]; then echo $$f; fi ; done
 
 .include <bsd.port.post.mk>

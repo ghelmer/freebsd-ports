@@ -13,7 +13,7 @@
 ######################################################################
 
 PORTNAME=	dovecot
-PORTVERSION=	2.2.18
+PORTVERSION=	2.2.24
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://www.dovecot.org/releases/${PORTVERSION:R}/
 PKGNAMESUFFIX=	2
@@ -42,7 +42,7 @@ INSTALL_TARGET=	install-strip
 USERS=		dovecot dovenull
 GROUPS=		${USERS}
 
-OPTIONS_DEFINE=	GC KQUEUE LIBWRAP LZ4 SSL VPOPMAIL DOCS EXAMPLES
+OPTIONS_DEFINE=	KQUEUE LIBWRAP LZ4 SSL VPOPMAIL DOCS EXAMPLES
 OPTIONS_DEFAULT=KQUEUE SSL GSSAPI_NONE
 OPTIONS_SUB=	yes
 
@@ -53,7 +53,6 @@ OPTIONS_GROUP_FTS=	ICU LUCENE SOLR TEXTCAT
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
 
-GC_DESC=	Garbage collection with boehm-gc
 KQUEUE_DESC=	kqueue(2) support
 LZ4_DESC=	LZ4 compression support
 VPOPMAIL_DESC=	vpopmail support
@@ -73,10 +72,7 @@ GSSAPI_HEIMDAL_DESC=	Use Heimdal GSSAPI from security/heimdal
 GSSAPI_MIT_DESC=	Use MIT GSSAPI from security/krb5
 
 CDB_CONFIGURE_WITH=	cdb
-CDB_LIB_DEPENDS=	libcdb.so:${PORTSDIR}/databases/tinycdb
-
-GC_CONFIGURE_WITH=	gc
-GC_LIB_DEPENDS=		libgc.so:${PORTSDIR}/devel/boehm-gc
+CDB_LIB_DEPENDS=	libcdb.so:databases/tinycdb
 
 GSSAPI_NONE_CONFIGURE_ON=	--without-gssapi
 GSSAPI_BASE_USES=		gssapi
@@ -87,7 +83,7 @@ GSSAPI_MIT_USES=		gssapi:mit
 GSSAPI_MIT_CONFIGURE_ON=	--with-gssapi ${GSSAPI_CONFIGURE_ARGS}
 
 ICU_CONFIGURE_WITH=	icu
-ICU_LIB_DEPENDS=	libicui18n.so:${PORTSDIR}/devel/icu
+ICU_LIB_DEPENDS=	libicui18n.so:devel/icu
 ICU_USES=		pkgconfig
 
 KQUEUE_CONFIGURE_OFF=	--with-ioloop=poll --with-notify=none
@@ -99,29 +95,29 @@ LDAP_CONFIGURE_WITH=	ldap
 LIBWRAP_CONFIGURE_WITH=	libwrap
 
 LUCENE_CONFIGURE_WITH=	lucene
-LUCENE_LIB_DEPENDS=	libclucene-core.so:${PORTSDIR}/textproc/clucene
+LUCENE_LIB_DEPENDS=	libclucene-core.so:textproc/clucene
 
-LZ4_LIB_DEPENDS=	liblz4.so:${PORTSDIR}/archivers/liblz4
+LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
 
-MYSQL_USE=		MYSQL=yes
+MYSQL_USES=		mysql
 MYSQL_CONFIGURE_WITH=	mysql
 
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	pgsql
 
 SOLR_CONFIGURE_WITH=	solr
-SOLR_BUILD_DEPENDS=	curl:${PORTSDIR}/ftp/curl
-SOLR_LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
+SOLR_BUILD_DEPENDS=	curl:ftp/curl
+SOLR_LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-SQLITE_USE=		SQLITE=3
+SQLITE_USES=		sqlite:3
 SQLITE_CONFIGURE_WITH=	sqlite
 
 SSL_CONFIGURE_WITH=	ssl=openssl
 
 TEXTCAT_CONFIGURE_WITH=	textcat
-TEXTCAT_LIB_DEPENDS=	libtextcat.so:${PORTSDIR}/textproc/libtextcat
+TEXTCAT_LIB_DEPENDS=	libtextcat.so:textproc/libtextcat
 
-VPOPMAIL_BUILD_DEPENDS=	${LOCALBASE}/vpopmail/bin/vchkpw:${PORTSDIR}/mail/vpopmail
+VPOPMAIL_BUILD_DEPENDS=	${LOCALBASE}/vpopmail/bin/vchkpw:mail/vpopmail
 VPOPMAIL_CONFIGURE_WITH=vpopmail
 
 DOCS=		AUTHORS COPYING COPYING.LGPL COPYING.MIT INSTALL NEWS TODO README
@@ -153,11 +149,16 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^exampledir =/s|\$$(docdir)|${ETCDIR}|' \
 		${WRKSRC}/doc/example-config/Makefile.in \
 		${WRKSRC}/doc/example-config/conf.d/Makefile.in
+	@${REINPLACE_CMD} -e '/^[^#]/s|/usr|${LOCALBASE}|' \
+		${WRKSRC}/src/plugins/fts/decode2text.sh
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR} ${STAGEDIR}${DOCSDIR}
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
+
+post-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${MV} ${STAGEDIR}${DOCSDIR}/dovecot-openssl.cnf ${STAGEDIR}${EXAMPLESDIR}
 	${MV} ${STAGEDIR}${DOCSDIR}/mkcert.sh ${STAGEDIR}${EXAMPLESDIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>

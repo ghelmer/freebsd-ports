@@ -3,16 +3,19 @@
 
 PORTNAME=	hylafax
 PORTVERSION=	6.0.6
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	comms
 MASTER_SITES=	ftp://ftp.hylafax.org/source/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fax software
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/afm/Courier:${PORTSDIR}/print/afm
-LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff \
-		libjbig.so:${PORTSDIR}/graphics/jbigkit
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYRIGHT
+
+BUILD_DEPENDS=	${LOCALBASE}/lib/afm/Courier:print/afm
+LIB_DEPENDS=	libtiff.so:graphics/tiff \
+		libjbig.so:graphics/jbigkit
 
 MAKE_JOBS_UNSAFE=	yes
 HAS_CONFIGURE=	yes
@@ -36,7 +39,7 @@ SUB_FILES=	pkg-message
 USE_RC_SUBR=	hylafax
 
 OPTIONS_DEFINE=	PAM NLS GAWK DOCS
-OPTIONS_DEFAULT=PAM NLS
+OPTIONS_DEFAULT=PAM
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 GAWK_DESC=	Use gawk for scripts
@@ -44,8 +47,8 @@ GAWK_DESC=	Use gawk for scripts
 PAM_CONFIGURE_OFF=	--disable-pam
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
-GAWK_BUILD_DEPENDS=	gawk:${PORTSDIR}/lang/gawk
-GAWK_RUN_DEPENDS=	gawk:${PORTSDIR}/lang/gawk
+GAWK_BUILD_DEPENDS=	gawk:lang/gawk
+GAWK_RUN_DEPENDS=	gawk:lang/gawk
 GAWK_CONFIGURE_ON=	--with-AWK="${LOCALBASE}/bin/gawk"
 DOCS_CONFIGURE_ON=	--with-HTML=yes
 
@@ -90,7 +93,7 @@ pre-install:
 		${STAGEDIR}${HYLAFAX_SPOOL}/info \
 		${STAGEDIR}${HYLAFAX_SPOOL}/log
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 

@@ -11,10 +11,10 @@ DISTNAME=	mc-${PORTVERSION:S/.p9/-pre9/}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight Midnight Commander clone
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	gawk:${PORTSDIR}/lang/gawk
+RUN_DEPENDS=	gawk:lang/gawk
 
 CONFLICTS=	mc-4.7*
 
@@ -48,7 +48,7 @@ post-patch:
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/mcserv
 .for i in a arfs audio cpio deb esp ftplist hp48 iso lha lslR mailfs patchfs rar rpm trpm uarj uha zip zoo
-	${CHMOD} 755 ${STAGEDIR}${PREFIX}/share/mc/extfs/${i} 
+	${CHMOD} 755 ${STAGEDIR}${PREFIX}/share/mc/extfs/${i}
 .endfor
 
 .include <bsd.port.mk>

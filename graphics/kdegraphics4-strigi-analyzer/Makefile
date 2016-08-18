@@ -9,9 +9,9 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Strigi analyzers for various graphics file formats
 
-LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	libtiff.so:graphics/tiff
 
-USE_KDE4=	kdelibs kdeprefix automoc4 strigi
+USE_KDE4=	kdelibs automoc4 strigi
 USES=		cmake:outsource tar:xz
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 

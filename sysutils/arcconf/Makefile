@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	arcconf
-DISTVERSION=	v1_7_21229
+DISTVERSION=	v1_8_21375
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.adaptec.com/raid/storage_manager/
@@ -28,14 +28,24 @@ DIST_OSVER=	9
 
 .if ${OPSYS} != FreeBSD
 IGNORE=		installs incompatible binaries for FreeBSD
+.elif ${OSVERSION} < 1000000
+DIST_OSVER=	9
+.else
+DIST_OSVER=	10
+.endif
+
+.if ${OPSYS} != FreeBSD
+IGNORE=		installs incompatible binaries for FreeBSD
 .endif
 
 .if ${ARCH} == amd64
 DIST_EXT=	_x64
+.elif ${ARCH} == i386
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
+# use the 9 i386 version for 10 i386
+DIST_OSVER=	9
+RUN_DEPENDS+=	${LOCALBASE}/lib/compat/libstdc++.so.6:misc/compat9x
 .endif
-
-.if ! exists(/usr/lib/libstdc++.so.6)
-RUN_DEPENDS+=	${LOCALBASE}/lib/compat/libstdc++.so.6:${PORTSDIR}/misc/compat9x
 .endif
 
 NO_BUILD=	yes

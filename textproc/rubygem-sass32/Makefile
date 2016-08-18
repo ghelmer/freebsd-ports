@@ -11,13 +11,12 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Sass is an extension of CSS3
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
+
+PORTSCOUT=	limit:^3\.2\.
 
 NO_ARCH=	yes
-
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
-
-PORTSCOUT=	ignore
+USES=		gem
 
 .include <bsd.port.mk>

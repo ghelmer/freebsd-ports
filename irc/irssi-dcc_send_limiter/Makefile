@@ -17,8 +17,8 @@ PATCHFILES=	${DISTFILES}.diff
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Irssi plugin to limit the transmit speed of DCC sends
 
-BUILD_DEPENDS=	irssi:${PORTSDIR}/irc/irssi
-RUN_DEPENDS=	irssi:${PORTSDIR}/irc/irssi
+BUILD_DEPENDS=	irssi:irc/irssi
+RUN_DEPENDS=	irssi:irc/irssi
 
 USES=		pkgconfig
 USE_GNOME=	glib20
@@ -29,12 +29,12 @@ PLIST_FILES=	lib/irssi/modules/lib/${DISTNAME}.so
 CFLAGS+=	-shared -fPIC -I${LOCALBASE}/include/irssi -I${LOCALBASE}/include/irssi/src -I${LOCALBASE}/include/irssi/src/core -I${LOCALBASE}/include/irssi/src/irc/core -I${LOCALBASE}/include/irssi/src/irc/dcc `pkg-config --cflags glib-2.0`
 
 do-extract:
-	@${RM} -rf ${WRKDIR}
-	@${MKDIR} ${WRKDIR}
-	@${CP} ${DISTDIR}/${DISTFILES} ${WRKDIR}
+	@${RM} -rf ${WRKSRC}
+	@${MKDIR} ${WRKSRC}
+	@${CP} ${DISTDIR}/${DISTFILES} ${WRKSRC}
 
 do-build:
-	${CC} ${CFLAGS} -o ${WRKDIR}/${DISTNAME}.so ${WRKDIR}/${DISTFILES}
+	${CC} ${CFLAGS} -o ${WRKSRC}/${DISTNAME}.so ${WRKSRC}/${DISTFILES}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/irssi/modules/lib

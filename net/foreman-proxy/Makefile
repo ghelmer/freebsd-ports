@@ -2,20 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	foreman-proxy
-PORTVERSION=	1.9.1
+PORTVERSION=	1.10.0
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.theforeman.org/foreman-proxy/
 
-MAINTAINER=	mmoll@FreeBSD.org
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Foreman Proxy Agent
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	rubygem-bundler_ext>=0.4:${PORTSDIR}/sysutils/rubygem-bundler_ext \
-		rubygem-json>=1.8.1:${PORTSDIR}/devel/rubygem-json \
-		rubygem-rack16>=1.4:${PORTSDIR}/www/rubygem-rack16 \
-		rubygem-sinatra>=1.4.3:${PORTSDIR}/www/rubygem-sinatra \
-		${LOCALBASE}/bin/wget:${PORTSDIR}/ftp/wget
+RUN_DEPENDS=	rubygem-bundler_ext>=0.4:sysutils/rubygem-bundler_ext \
+		rubygem-json>=1.8.1:devel/rubygem-json \
+		rubygem-rack16>=1.4:www/rubygem-rack16 \
+		rubygem-sinatra>=1.4.3:www/rubygem-sinatra \
+		${LOCALBASE}/bin/wget:ftp/wget
 
 OPTIONS_DEFINE=	BMC PUPPET
 BMC_DESC=	Depend on rubyipmi for BMC support
@@ -43,9 +43,9 @@ SUB_LIST=	RUBY="${RUBY}" \
 
 PLIST_SUB=	${SUB_LIST} MKDIR="${MKDIR}"
 
-BMC_RUN_DEPENDS=	rubygem-rubyipmi>=0.10.0:${PORTSDIR}/sysutils/rubygem-rubyipmi
-PUPPET_RUN_DEPENDS=	puppet:${PORTSDIR}/sysutils/puppet \
-			rubygem-ruby-augeas>=0.5:${PORTSDIR}/textproc/rubygem-ruby-augeas
+BMC_RUN_DEPENDS=	rubygem-rubyipmi>=0.10.0:sysutils/rubygem-rubyipmi
+PUPPET_RUN_DEPENDS=	puppet:sysutils/puppet \
+			rubygem-ruby-augeas>=0.5:textproc/rubygem-ruby-augeas
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -59,7 +59,7 @@ post-patch:
 	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" \
 		-e "s|%%LOCALBASE%%|${LOCALBASE}|g" \
 		${WRKSRC}/config/settings.d/*.yml.example \
-		${WRKSRC}/lib/proxy/http_downloads.rb
+		${WRKSRC}/lib/proxy/http_download.rb
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/foreman-proxy/settings.d
@@ -79,7 +79,8 @@ do-install:
 	${CP} -r ${WRKSRC}/extra/migrations ${STAGEDIR}${DATADIR}/extra
 	${INSTALL_DATA} ${WRKSRC}/config/settings.yml.example \
 		${STAGEDIR}${PREFIX}/etc/foreman-proxy/settings.yml.sample
-.for cfg in bmc dhcp dns facts puppet puppetca realm templates tftp
+.for cfg in bmc dhcp dns dns_dnscmd dns_nsupdate_gss dns_nsupdate dns_virsh \
+	facts puppet puppetca realm templates tftp
 	${INSTALL_DATA} ${WRKSRC}/config/settings.d/${cfg}.yml.example \
 		${STAGEDIR}${PREFIX}/etc/foreman-proxy/settings.d/${cfg}.yml.sample
 .endfor

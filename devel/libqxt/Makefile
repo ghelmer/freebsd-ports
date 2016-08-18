@@ -11,7 +11,11 @@ DISTNAME=	v${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extension library for Qt
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	bash:shells/bash
 
 USE_BDB=	44+
 USES=		tar:bzip2
@@ -35,14 +39,14 @@ COMMIT=		dadc327c2a6a
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${COMMIT}
 
 PLIST_SUB+=	SHVER_1=${PORTVERSION} \
-    		SHVER_2=${PORTVERSION:R} \
+		SHVER_2=${PORTVERSION:R} \
 		SHVER_3=${PORTVERSION:R:R}
 
 OPTIONS_DEFAULT=	AVAHI
 OPTIONS_SINGLE=		ZEROCONF
 OPTIONS_SINGLE_ZEROCONF=	AVAHI MDNSRESPONDER
-AVAHI_LIB_DEPENDS=	libdns_sd.so:${PORTSDIR}/net/avahi-libdns
-MDNSRESPONDER_LIB_DEPENDS=	libdns_sd.so:${PORTSDIR}/net/mDNSResponder
+AVAHI_LIB_DEPENDS=	libdns_sd.so:net/avahi-libdns
+MDNSRESPONDER_LIB_DEPENDS=	libdns_sd.so:net/mDNSResponder
 
 STRIP_FILES=	lib/qxt/lib*.so.${PORTVERSION} \
 		${QT_PLUGINDIR_REL}/designer/libQxtDesignerPlugins.so

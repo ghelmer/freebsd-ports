@@ -2,11 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gpsbabel
-PORTVERSION=	1.5.2
-PORTREVISION=	1
+DISTVERSIONPREFIX=	${PORTNAME}_
+DISTVERSION=	1_5_3
 CATEGORIES=	astro geography
-MASTER_SITES=	https://secure.ohos.nl/downloads/ \
-		LOCAL/glebius
 
 MAINTAINER=	dev2@heesakkers.info
 COMMENT=	GPS file translating tool
@@ -14,11 +12,17 @@ COMMENT=	GPS file translating tool
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+# Unbundle libminizip
+LIB_DEPENDS=	libminizip.so:archivers/minizip
+
+USE_GITHUB=	yes
+
 CONFLICTS=	gpsbabel14-[0-9]*
 
 USE_QT4=	corelib qmake_build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-zlib=system
+USES=		localbase
 
 OPTIONS_DEFINE=	GUI
 OPTIONS_SUB=	GUI
@@ -26,21 +30,18 @@ OPTIONS_SUB=	GUI
 GUI_ALL_TARGET=	gui
 GUI_USE=	QT4=gui,xml,network,webkit
 GUI_USE+=	QT4=linguisttools_build,moc_build,rcc_build,uic_build
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MGUI}
-MAKE_JOBS_UNSAFE=	yes
-.endif
+GUI_VARS=	MAKE_JOBS_UNSAFE=yes
 
 post-patch:
 	@${REINPLACE_CMD} '/langPath_ = / \
 		s|QApplication::applicationDirPath()|"${DATADIR}"|' \
 			${WRKSRC}/gui/mainwindow.cc
+	@${RM} -rf ${WRKSRC}/zlib/contrib/minizip
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gpsbabel ${STAGEDIR}${PREFIX}/bin/
-.if ${PORT_OPTIONS:MGUI}
+
+do-install-GUI-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/gui/objects/gpsbabelfe-bin \
 		${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${WRKSRC}/gui/gpsbabel.desktop \
@@ -49,6 +50,5 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/gui/*.qm ${STAGEDIR}${DATADIR}/translations/
 	${INSTALL_DATA} ${WRKSRC}/gui/images/appicon.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/gpsbabel.png
-.endif
 
 .include <bsd.port.mk>

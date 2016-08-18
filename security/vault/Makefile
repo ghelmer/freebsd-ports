@@ -1,15 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=	vault
-PORTVERSION=	0.2.0
-PORTREVISION=	1
+PORTVERSION=	0.5.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Tool for securely accessing secrets
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:${PORTSDIR}/lang/go
+LICENSE=	MPL
+
+BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hashicorp
@@ -23,13 +24,14 @@ GROUPS=		vault
 
 PLIST_FILES=	bin/${PORTNAME}
 
-post-extract:
-	@${MV} ${WRKSRC}/Godeps/_workspace/src ${WRKSRC}
+post-patch:
+	@${MV} ${WRKSRC}/vendor ${WRKSRC}/src
 	@${MKDIR} ${WRKSRC}/src/github.com/${GH_ACCOUNT}/${PORTNAME}
 	@cd ${WRKSRC} ; \
-	${MV} .gitignore .travis.yml CHANGELOG.md LICENSE Makefile README.md \
-	api audit builtin cli command helper http logical main.go main_test.go \
-	make.bat physical scripts shamir terraform test vault website \
+	${MV} .gitignore .travis.yml CHANGELOG.md CONTRIBUTING.md Godeps \
+	LICENSE Makefile README.md api audit builtin cli command helper http \
+	logical main.go main_test.go make.bat physical scripts shamir terraform \
+	vault version website \
 	src/github.com/${GH_ACCOUNT}/${PORTNAME}
 
 do-build:

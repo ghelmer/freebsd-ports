@@ -13,9 +13,8 @@ COMMENT=	PHP templating engine
 
 CONFLICTS=	php5-blitz-0.6*
 
-USE_PHP=	yes
-USE_PHP_BUILD=	yes
-USE_PHPEXT=	yes
+USES=		php:ext
 PHP_MODNAME=	blitz
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

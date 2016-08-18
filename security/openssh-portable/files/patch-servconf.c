@@ -1,4 +1,4 @@
---- servconf.c.orig	2015-08-17 20:37:29.913831000 -0700
+--- servconf.c.orig	2015-08-17 20:37:29.913831000 UTC
 +++ servconf.c	2015-08-17 20:37:29.950132000 -0700
 @@ -57,6 +57,7 @@
  #include "auth.h"
@@ -38,12 +38,3 @@
  	if (options->kbd_interactive_authentication == -1)
  		options->kbd_interactive_authentication = 0;
  	if (options->challenge_response_authentication == -1)
-@@ -412,7 +417,7 @@ fill_default_server_options(ServerOption
- 
- 	/* Turn privilege separation on by default */
- 	if (use_privsep == -1)
--		use_privsep = PRIVSEP_NOSANDBOX;
-+		use_privsep = PRIVSEP_ON;
- 
- #define CLEAR_ON_NONE(v) \
- 	do { \

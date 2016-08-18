@@ -3,7 +3,7 @@
 
 PORTNAME=	fdmf
 DISTVERSION=	0.0.9s
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	http://w140.com/audio/
 
@@ -11,14 +11,15 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Find similar music by perceptual hashing
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libplot.so:${PORTSDIR}/graphics/plotutils \
-		libfftw3.so:${PORTSDIR}/math/fftw3
-RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
-		mpg123:${PORTSDIR}/audio/mpg123 \
-		ogg123:${PORTSDIR}/audio/vorbis-tools \
-		p5-GDBM>=0:${PORTSDIR}/databases/p5-GDBM
+LIB_DEPENDS=	libgdbm.so:databases/gdbm \
+		libfftw3.so:math/fftw3
+RUN_DEPENDS=	mplayer:multimedia/mplayer \
+		mpg123:audio/mpg123 \
+		ogg123:audio/vorbis-tools \
+		p5-GDBM>=0:databases/p5-GDBM \
+		spline:graphics/plotutils
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	${SCRS}
@@ -37,6 +38,8 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${BINS:S,^,${WRKSRC}/,} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${SCRS:S,^,${WRKSRC}/,} ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

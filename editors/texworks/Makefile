@@ -3,6 +3,8 @@
 
 PORTNAME=	texworks
 PORTVERSION=	0.4.6
+PORTREVISION=	1
+DISTVERSIONPREFIX=	release-
 CATEGORIES=	editors
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -10,13 +12,12 @@ COMMENT=	Simple TeX front-end program
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	hunspell:${PORTSDIR}/textproc/hunspell
-LIB_DEPENDS=	libpoppler-qt4.so:${PORTSDIR}/graphics/poppler-qt4
+BUILD_DEPENDS=	hunspell:textproc/hunspell
+LIB_DEPENDS=	libpoppler-qt4.so:graphics/poppler-qt4
 
 USES=		pkgconfig qmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	TeXworks
-GH_TAGNAME=	release-${PORTVERSION}
 USE_QT4=	gui corelib rcc_build moc_build uic_build \
 		dbus xml scripttools designer_build
 QMAKE_ARGS=	INSTALL_PREFIX=${PREFIX} \
@@ -44,7 +45,6 @@ PLIST_DIRS=	lib/texworks
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS LUA PYTHON
-OPTIONS_DEFAULT=DOCS
 LUA_USES=	lua:51
 LUA_PLIST_FILES=lib/texworks/libTWLuaPlugin.so
 PYTHON_USES=	python:3

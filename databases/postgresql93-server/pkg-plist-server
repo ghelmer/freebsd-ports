@@ -372,6 +372,7 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Bahrain
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Baku
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Bangkok
+%%TZDATA%%%%DATADIR%%/timezone/Asia/Barnaul
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Beirut
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Bishkek
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Brunei
@@ -443,6 +444,7 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Thimbu
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Thimphu
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Tokyo
+%%TZDATA%%%%DATADIR%%/timezone/Asia/Tomsk
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Ujung_Pandang
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Ulaanbaatar
 %%TZDATA%%%%DATADIR%%/timezone/Asia/Ulan_Bator
@@ -548,6 +550,7 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/Etc/Zulu
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Amsterdam
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Andorra
+%%TZDATA%%%%DATADIR%%/timezone/Europe/Astrakhan
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Athens
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Belfast
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Belgrade
@@ -568,6 +571,7 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Jersey
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Kaliningrad
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Kiev
+%%TZDATA%%%%DATADIR%%/timezone/Europe/Kirov
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Lisbon
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Ljubljana
 %%TZDATA%%%%DATADIR%%/timezone/Europe/London
@@ -595,6 +599,7 @@ lib/libpgcommon.a
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Tallinn
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Tirane
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Tiraspol
+%%TZDATA%%%%DATADIR%%/timezone/Europe/Ulyanovsk
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Uzhgorod
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Vaduz
 %%TZDATA%%%%DATADIR%%/timezone/Europe/Vatican

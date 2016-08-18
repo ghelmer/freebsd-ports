@@ -6,9 +6,10 @@ PORTVERSION=	1.1.1
 CATEGORIES=	games
 MASTER_SITES=	http://diaspora.fs2downloads.com/ \
 		http://www.freespacemods.net/e107_files/downloads/:freespacemods \
-		http://copy.com/8wo3AQnYu0bj/:copy
+		http://ftp.internat.freebsd.org/pub/FreeBSD/distfiles/:intfiles \
+		http://ftp.tw.freebsd.org/distfiles/:twfiles
 DISTFILES=	Diaspora_R1_Linux.tar.lzma:freespacemods,DEFAULT \
-		Diaspora_R1_Patch_1.1.tar.lzma:copy \
+		Diaspora_R1_Patch_1.1.tar.lzma:intfiles,twfiles \
 		Diaspora_R1_Patch_1.1.1.tar.lzma
 
 MAINTAINER=	lightside@gmx.com
@@ -24,11 +25,11 @@ LICENSE_FILE_GPLv2=	${WRKDIR_DIASPORA}/wxlauncher/GPLv2.txt
 LICENSE_PERMS_CCBYNCSAv3=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 LICENSE_PERMS_VOLITION=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
-LIB_DEPENDS+=	libjansson.so:${PORTSDIR}/devel/jansson \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libogg.so:${PORTSDIR}/audio/libogg \
-		libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
-		libtheora.so:${PORTSDIR}/multimedia/libtheora
+LIB_DEPENDS+=	libjansson.so:devel/jansson \
+		libpng.so:graphics/png \
+		libogg.so:audio/libogg \
+		libvorbisfile.so:audio/libvorbis \
+		libtheora.so:multimedia/libtheora
 
 USES=	autoreconf jpeg lua:51 openal pkgconfig tar:lzma
 USE_GL=	yes
@@ -49,8 +50,6 @@ DESKTOP_ENTRIES=	"Diaspora" "${COMMENT}" \
 	"${PORTNAME}" "fs2_open_${PORTNAME}" \
 	"Game;Simulation;" false
 
-MANUAL_PACKAGE_BUILD=	very large distfile set (~1.8 GB)
-
 OPTIONS_DEFINE=	DOCS INCJOYBTNS SPEECH WXLAUNCHER
 OPTIONS_DEFAULT=	SPEECH WXLAUNCHER
 INCJOYBTNS_DESC=	Increase a number of joystick buttons from 32 to 98
@@ -58,7 +57,7 @@ INCJOYBTNS_EXTRA_PATCHES=	${FILESDIR}/extra-patch-increase_joy_buttons_fixed.pat
 SPEECH_DESC=	Text to speech
 SPEECH_CONFIGURE_ENABLE=	speech
 WXLAUNCHER_DESC=	Use wxlauncher to manage application profile
-WXLAUNCHER_RUN_DEPENDS=	wxlauncher:${PORTSDIR}/games/wxlauncher
+WXLAUNCHER_RUN_DEPENDS=	wxlauncher:games/wxlauncher
 
 .include <bsd.port.options.mk>
 

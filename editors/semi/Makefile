@@ -43,7 +43,6 @@ MAKE_ARGS+=	PREFIX="${STAGEDIR}${LOCALBASE}" \
 		VERSION_SPECIFIC_LISPDIR="${STAGEDIR}${SEMI_VERSION_SPECIFIC_LISPDIR}"
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=	DOCS
 
 .include <bsd.port.pre.mk>
 .include <bsd.port.options.mk>
@@ -58,8 +57,8 @@ DEPPORT_SUFFIX=	-${EMACS_PORT_NAME}
 PLIST=		${PKGDIR}/pkg-plist.emacs20
 .endif
 # depends on flim
-BUILD_DEPENDS+=	${LOCALBASE}/share/flim/${FLIM_COOKIE}:${PORTSDIR}/editors/flim${DEPPORT_SUFFIX}
-RUN_DEPENDS+=	${LOCALBASE}/share/flim/${FLIM_COOKIE}:${PORTSDIR}/editors/flim${DEPPORT_SUFFIX}
+BUILD_DEPENDS+=	${LOCALBASE}/share/flim/${FLIM_COOKIE}:editors/flim${DEPPORT_SUFFIX}
+RUN_DEPENDS+=	${LOCALBASE}/share/flim/${FLIM_COOKIE}:editors/flim${DEPPORT_SUFFIX}
 .else
 .BEGIN:
 	@${ECHO} "Error: Bad port."
@@ -69,7 +68,7 @@ RUN_DEPENDS+=	${LOCALBASE}/share/flim/${FLIM_COOKIE}:${PORTSDIR}/editors/flim${D
 
 .if !defined(BUILD_INFO_BY_EMACS) || (${BUILD_INFO_BY_EMACS} == "NO")
 # info files JIS to EUC
-BUILD_DEPENDS+=	nkf:${PORTSDIR}/japanese/nkf
+BUILD_DEPENDS+=	nkf:japanese/nkf
 .endif
 
 MAKEINFO=		makeinfo --no-split --no-validate

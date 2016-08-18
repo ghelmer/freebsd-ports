@@ -12,6 +12,10 @@ DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Community initiative extensions to XSLT
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 USES=		zip
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

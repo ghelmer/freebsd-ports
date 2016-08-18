@@ -10,11 +10,11 @@ MASTER_SITES=	http://www.highprogrammer.com/alan/perl/
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Commandline tool for getting status of torrent
 
-RUN_DEPENDS=	p5-libwww>=0:${PORTSDIR}/www/p5-libwww \
-		p5-Digest-SHA1>=0:${PORTSDIR}/security/p5-Digest-SHA1
+RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww \
+		p5-Digest-SHA1>=0:security/p5-Digest-SHA1
 
 NO_BUILD=	yes
-USES=		shebangfix perl5
+USES=		dos2unix shebangfix perl5
 SHEBANG_FILES=	torrentsniff
 
 do-install:

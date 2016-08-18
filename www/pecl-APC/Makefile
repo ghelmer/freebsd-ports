@@ -16,6 +16,9 @@ COMMENT=	Alternative PHP Cache
 
 LICENSE=	PHP301
 
+DEPRECATED=	Unmaintained by upstream and not work for PHP 5.5+
+EXPIRATION_DATE=2016-03-15
+
 OPTIONS_DEFINE=	DOCS FILEHITS IPC SEMAPHORES SPINLOCKS
 FILEHITS_DESC=	Per request cache info
 IPC_DESC=	IPC shm memory support (default: mmap)
@@ -24,13 +27,11 @@ SPINLOCKS_DESC=	Spinlocks (experimental)
 
 CFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS=	--enable-apc
-IGNORE_WITH_PHP=55 56
+IGNORE_WITH_PHP=55 56 70
 PHP_MODNAME=	${PORTNAME:tl}
 PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message
-USE_PHP=	yes
-USE_PHPEXT=	yes
-USES=		tar:tgz
+USES=		php:ext tar:tgz
 
 PORTDOCS=	CHANGELOG INSTALL NOTICE apc.php
 
@@ -39,7 +40,7 @@ IPC_CONFIGURE_ARGS=	--disable-apc-mmap
 SEMAPHORES_CONFIGURE_ARGS=	--enable-apc-sem
 SPINLOCKS_CONFIGURE_ARGS=	--enable-apc-spinlocks
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
 

@@ -9,18 +9,18 @@ CATEGORIES=	converters geography
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Convert OSM XML data to PostgreSQL database
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj \
-		libgeos.so:${PORTSDIR}/graphics/geos \
-		libprotobuf-c.so:${PORTSDIR}/devel/protobuf-c \
-		libboost_thread.so:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	libproj.so:graphics/proj \
+		libgeos.so:graphics/geos \
+		libprotobuf-c.so:devel/protobuf-c \
+		libboost_thread.so:devel/boost-libs
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openstreetmap
 
-USES=		autoreconf gmake libtool lua pgsql tar:bzip2
+USES=		autoreconf gmake libtool lua pgsql
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	LUA="${LUA_CMD}" \
 		LUA_INCLUDE="-I${LUA_INCDIR}" \
@@ -43,7 +43,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|AC_MSG_WARN|AC_MSG_ERROR|' ${WRKSRC}/configure.ac
 	@${REINPLACE_CMD} -e 's|-lstdc++||' ${WRKSRC}/Makefile.am
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/

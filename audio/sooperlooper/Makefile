@@ -3,7 +3,7 @@
 
 PORTNAME=	sooperlooper
 PORTVERSION=	1.7.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	http://essej.net/sooperlooper/
 
@@ -12,16 +12,16 @@ COMMENT=	Live audio looping sampler
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	ladspa>0:${PORTSDIR}/audio/ladspa
-LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack \
-		liblo.so:${PORTSDIR}/audio/liblo \
-		libsamplerate.so:${PORTSDIR}/audio/libsamplerate \
-		libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
-		libsndfile.so:${PORTSDIR}/audio/libsndfile \
-		librubberband.so:${PORTSDIR}/audio/rubberband \
-		libvamp-sdk.so:${PORTSDIR}/audio/vamp-plugin-sdk \
-		libfftw3.so:${PORTSDIR}/math/fftw3
-RUN_DEPENDS=	ladspa>0:${PORTSDIR}/audio/ladspa
+BUILD_DEPENDS=	ladspa>0:audio/ladspa
+LIB_DEPENDS=	libjack.so:audio/jack \
+		liblo.so:audio/liblo \
+		libsamplerate.so:audio/libsamplerate \
+		libsigc-2.0.so:devel/libsigc++20 \
+		libsndfile.so:audio/libsndfile \
+		librubberband.so:audio/rubberband \
+		libvamp-sdk.so:audio/vamp-plugin-sdk \
+		libfftw3.so:math/fftw3
+RUN_DEPENDS=	ladspa>0:audio/ladspa
 
 USES=		gmake ncurses pkgconfig
 USE_GNOME=	libxml2
@@ -36,16 +36,15 @@ OPTIONS_DEFINE=		ALSA WXGTK
 OPTIONS_DEFAULT=	WXGTK
 OPTIONS_SUB=		yes
 
-ALSA_LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib
+ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CONFIGURE_ENV_OFF=	ac_cv_header_alsa_asoundlib_h=no
-WXGTK_USE=		WX=2.8
+WXGTK_USE=		WX=3.0
 WXGTK_CONFIGURE_ON=	--with-wxconfig-path=${WX_CONFIG}
 WXGTK_CONFIGURE_OFF=	--without-gui
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MWXGTK}
-WX_UNICODE=	yes
 DESKTOP_ENTRIES="SooperLooper" "" "${DATADIR}/sl_logo.xpm" "slgui" \
 		"AudioVideo;Audio;Player;GTK;" ""
 .endif

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	slime
-PORTVERSION=	2.13
+PORTVERSION=	2.15
 DISTVERSIONPREFIX=v
 CATEGORIES=	editors elisp
 
@@ -14,7 +14,7 @@ LICENSE_NAME=	${LICENSE:S/_/ /}
 LICENSE_TEXT=	The license: ${_LICENSE} (${_LICENSE_NAME}) is standard, please read from the web.
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	texinfo>=5.2:${PORTSDIR}/print/texinfo
+BUILD_DEPENDS=	texinfo>=5.2:print/texinfo
 
 USES=		gmake
 USE_EMACS=	yes
@@ -41,7 +41,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/contrib/test
 	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/lib
 	@${MKDIR} ${STAGEDIR}${SLIME_LISPDIR}/swank
-	cd ${WRKSRC} && ${INSTALL_DATA} *.asd *.elc *.el *.lisp ${STAGEDIR}${SLIME_LISPDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} *.asd *.el *.lisp ${STAGEDIR}${SLIME_LISPDIR}
 	cd ${WRKSRC}/lib && ${INSTALL_DATA} *.el ${STAGEDIR}${SLIME_LISPDIR}/lib
 	cd ${WRKSRC}/contrib && ${INSTALL_DATA} \
 		*.el *.lisp *.ss *.scm *.sml \
@@ -51,10 +51,12 @@ do-install:
 	cd ${WRKSRC}/swank && ${INSTALL_DATA} *.lisp \
 		${STAGEDIR}${SLIME_LISPDIR}/swank
 	${INSTALL_DATA} ${WRKSRC}/ChangeLog ${STAGEDIR}${SLIME_LISPDIR}
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/doc/slime.info \
 		${STAGEDIR}${PREFIX}/${INFO_PATH}
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${INSTALL_WRKSRC}/contrib/README.md \
 		${STAGEDIR}${DOCSDIR}/README-contrib.md
 	(cd ${INSTALL_WRKSRC}/doc && ${INSTALL_DATA} slime-refcard.pdf \

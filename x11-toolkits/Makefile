@@ -5,6 +5,7 @@
 
     SUBDIR += SoXt
     SUBDIR += Xaw3d
+    SUBDIR += Xmt
     SUBDIR += attica
     SUBDIR += bakery
     SUBDIR += blt
@@ -33,9 +34,9 @@
     SUBDIR += gnustep-gui
     SUBDIR += granite
     SUBDIR += gstreamer-plugins-pango
+    SUBDIR += gstreamer1-plugins-gtksink
     SUBDIR += gstreamer1-plugins-pango
     SUBDIR += gtk-sharp-beans
-    SUBDIR += gtk-sharp10
     SUBDIR += gtk-sharp20
     SUBDIR += gtk-sharp30
     SUBDIR += gtk12
@@ -117,11 +118,15 @@
     SUBDIR += movingmotif
     SUBDIR += mowitz
     SUBDIR += mygui
+    SUBDIR += mygui-dummy
+    SUBDIR += mygui-ogre
+    SUBDIR += mygui-opengl
     SUBDIR += neXtaw
     SUBDIR += nucleo
     SUBDIR += ocaml-lablgtk2
     SUBDIR += ocaml-labltk
     SUBDIR += open-motif
+    SUBDIR += osm-gps-map
     SUBDIR += otk
     SUBDIR += p5-Alien-wxWidgets
     SUBDIR += p5-Glade2
@@ -143,6 +148,7 @@
     SUBDIR += p5-Gtk2-PathButtonBar
     SUBDIR += p5-Gtk2-TrayIcon
     SUBDIR += p5-Gtk2-Unique
+    SUBDIR += p5-Gtk3
     SUBDIR += p5-Pango
     SUBDIR += p5-Prima
     SUBDIR += p5-Tk
@@ -191,6 +197,8 @@
     SUBDIR += py-kivy
     SUBDIR += py-kiwi
     SUBDIR += py-qt4-gui
+    SUBDIR += py-qt5-gui
+    SUBDIR += py-qt5-widgets
     SUBDIR += py-sexy
     SUBDIR += py-tkinter
     SUBDIR += py-tktreectrl
@@ -203,14 +211,19 @@
     SUBDIR += py-wxPython28-common
     SUBDIR += py-wxPython30
     SUBDIR += py-xlib
+    SUBDIR += py33-tkinter
+    SUBDIR += py34-tkinter
+    SUBDIR += py35-tkinter
     SUBDIR += pypy-tkinter
     SUBDIR += qt4-declarative
     SUBDIR += qt4-gui
     SUBDIR += qt4pas
+    SUBDIR += qt5-canvas3d
     SUBDIR += qt5-declarative
     SUBDIR += qt5-gui
     SUBDIR += qt5-quick
     SUBDIR += qt5-quickcontrols
+    SUBDIR += qt5-uiplugin
     SUBDIR += qt5-widgets
     SUBDIR += qtada
     SUBDIR += qwt5
@@ -226,6 +239,7 @@
     SUBDIR += rubygem-pango
     SUBDIR += rubygem-poppler
     SUBDIR += rubygem-vte
+    SUBDIR += rubygem-vte3
     SUBDIR += scintilla
     SUBDIR += sdl_pango
     SUBDIR += shared-desktop-ontologies

@@ -12,17 +12,15 @@ COMMENT=	Educative games for children
 LICENSE=	GPLv3 # only
 LICENSE_FILE=	${WRKSRC}/gpl-3.0.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy>0:${PORTSDIR}/databases/py-sqlalchemy \
-		${PYTHON_PKGNAMEPREFIX}game>0:${PORTSDIR}/devel/py-game
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlalchemy07>0:databases/py-sqlalchemy07 \
+		${PYTHON_PKGNAMEPREFIX}game>0:devel/py-game
 
 NO_BUILD=	yes
 
 USES=		gettext shebangfix tar:tgz python:2
 USE_GNOME=	pygtk2
 
-python_OLD_CMD=	/usr/bin/env python
-python_CMD=	${SETENV} python2
 SHEBANG_FILES=	childsplay.py
 .for i in buttons funcs text dialogs gtk_widgets base
 SHEBANG_FILES+=	SPWidgets/$i.py

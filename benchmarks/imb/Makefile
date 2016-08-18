@@ -16,7 +16,6 @@ COMMENT=	Intel MPI Benchmark
 WRKSRC=		${WRKDIR}/IMB_3.0/src/
 USES=		dos2unix gmake
 MAKEFILE=	make_mpich
-ALL_TARGET=	all
 # Intel hardcodes -O3 in make_mpich.  Replacing it with system defaults
 # would make it impossible to compare benchmark results with other systems.
 # By putting it here we make it easier for somebody to change it, if they
@@ -32,20 +31,22 @@ OPTIONS_DEFINE=	CHECK_RESULTS DOCS OPENMPI
 CHECK_RESULTS_DESC=	Check results (not valid as real benchmark data)
 CHECK_RESULTS_CFLAGS=	-DCHECK
 
-OPENMPI_BUILD_DEPENDS=	${LOCALBASE}/mpi/openmpi/lib/libmpi.so:${PORTSDIR}/net/openmpi
-OPENMPI_RUN_DEPENDS=	${LOCALBASE}/mpi/openmpi/bin/mpirun:${PORTSDIR}/net/openmpi
+OPENMPI_BUILD_DEPENDS=	${LOCALBASE}/mpi/openmpi/lib/libmpi.so:net/openmpi
+OPENMPI_RUN_DEPENDS=	${LOCALBASE}/mpi/openmpi/bin/mpirun:net/openmpi
 OPENMPI_MAKE_ENV=	MPI_HOME=${LOCALBASE}/mpi/openmpi
-OPENMPI_BUILD_DEPENDS_OFF=	${LOCALBASE}/bin/mpicc:${PORTSDIR}/net/mpich2
-OPENMPI_RUN_DEPENDS_OFF=	${LOCALBASE}/bin/mpirun:${PORTSDIR}/net/mpich2
+OPENMPI_BUILD_DEPENDS_OFF=	${LOCALBASE}/bin/mpicc:net/mpich2
+OPENMPI_RUN_DEPENDS_OFF=	${LOCALBASE}/bin/mpirun:net/mpich2
 OPENMPI_MAKE_ENV_OFF=	MPI_HOME=${LOCALBASE}
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKDIR}/IMB_3.0/doc/IMB_ug-3.0.pdf ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKDIR}/IMB_3.0/license/license.txt ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKDIR}/IMB_3.0/license/use-of-trademark-license.txt \
-		${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_PROGRAM} IMB-EXT IMB-IO IMB-MPI1 \
 		${STAGEDIR}${PREFIX}/bin)
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/IMB_3.0/doc/IMB_ug-3.0.pdf ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/IMB_3.0/license/license.txt ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKDIR}/IMB_3.0/license/use-of-trademark-license.txt \
+		${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

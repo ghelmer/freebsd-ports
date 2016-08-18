@@ -1,2 +1,3 @@
-SHA256 (requests-oauthlib-0.4.2.tar.gz) = 9e0223b89518edac61a97b56ff78f271056ce08c8a17c6b644aef244fac83f23
-SIZE (requests-oauthlib-0.4.2.tar.gz) = 53341
+TIMESTAMP = 1464883001
+SHA256 (requests-oauthlib-0.6.1.tar.gz) = 905306080ec0cc6b3c65c8101f471fccfdb9994c16dd116524fd3fc0790d46d7
+SIZE (requests-oauthlib-0.6.1.tar.gz) = 76512

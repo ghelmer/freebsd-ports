@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gigalomania
-PORTVERSION=	0.27
-PORTREVISION=	1
+PORTVERSION=	0.28
 CATEGORIES=	games
-MASTER_SITES=	https://launchpadlibrarian.net/180606846/	
+MASTER_SITES=	https://launchpad.net/gigalomania/trunk/${PORTVERSION}/+download/
 DISTNAME=	${PORTNAME}src
 
 MAINTAINER=	pawel@FreeBSD.org
@@ -27,7 +26,7 @@ post-patch:
 	@${FIND} ${WRKSRC} -exec ${GREP} -q "__linux" {} \; \
 		-exec ${REINPLACE_CMD} 's|__linux|__${OPSYS}__|' {} \;
 	@${REINPLACE_CMD} 's|/opt/gigalomania/||g' \
-		${WRKSRC}/gigalomania.desktop 
+		${WRKSRC}/gigalomania.desktop
 	@${REINPLACE_CMD} 's|/usr/share|${LOCALBASE}/share|g' \
 		${WRKSRC}/game.cpp \
 		${WRKSRC}/gamestate.cpp
@@ -41,6 +40,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}64.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/readme.html ${STAGEDIR}${DOCSDIR}
 

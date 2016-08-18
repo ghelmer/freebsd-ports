@@ -18,16 +18,16 @@ COMMENT=	Internet communicator supporting Gadu-Gadu and Jabber/XMPP
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		pl-libgadu>=1.12.1:${PORTSDIR}/polish/libgadu
-LIB_DEPENDS=	libmpdclient.so:${PORTSDIR}/audio/libmpdclient \
-		libsndfile.so:${PORTSDIR}/audio/libsndfile \
-		libinjeqt.so:${PORTSDIR}/devel/injeqt \
-		libqca-qt5.so:${PORTSDIR}/devel/qca-qt5 \
-		libidn.so:${PORTSDIR}/dns/libidn \
-		libgadu.so:${PORTSDIR}/polish/libgadu \
-		libotr.so:${PORTSDIR}/security/libotr \
-		libenchant.so:${PORTSDIR}/textproc/enchant
+BUILD_DEPENDS=	bash:shells/bash \
+		pl-libgadu>=1.12.1:polish/libgadu
+LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient \
+		libsndfile.so:audio/libsndfile \
+		libinjeqt.so:devel/injeqt \
+		libqca-qt5.so:devel/qca-qt5 \
+		libidn.so:dns/libidn \
+		libgadu.so:polish/libgadu \
+		libotr.so.5:security/libotr \
+		libenchant.so:textproc/enchant
 # TODO ntrack and ntrack-qt (needs porting) ?
 # TODO separate ports for plugins and themes (possible starting with 0.10)
 
@@ -53,10 +53,7 @@ GG_EMOTS_DESC=	GG-compatible emoticons
 GG_EMOTS_DISTFILES=	${GG6_EMOTS_DISTFILE}:additions \
 			${GG7_EMOTS_DISTFILE}:additions
 
-.include <bsd.port.options.mk>
-
-post-install:
-.if ${PORT_OPTIONS:MGG_EMOTS}
+post-install-GG_EMOTS-on:
 	@${MKDIR} ${WRKSRC}/varia/themes/emoticons
 	@cd ${WRKSRC}/varia/themes/emoticons && \
 	${TAR} -zxf ${_DISTDIR}/${GG6_EMOTS_DISTFILE} && \
@@ -64,6 +61,5 @@ post-install:
 	cd gg6_compatible && ${TAR} -zxf ${_DISTDIR}/${GG7_EMOTS_DISTFILE}
 	@cd ${WRKSRC}/varia/themes/emoticons && \
 	${COPYTREE_SHARE} gg6_compatible ${STAGEDIR}${DATADIR}/themes/emoticons
-.endif
 
 .include <bsd.port.mk>

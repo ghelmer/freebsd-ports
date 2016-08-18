@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	2
 CATEGORIES=	audio lang
 PKGNAMESUFFIX=	-oggvorbis
 
@@ -19,7 +18,7 @@ LIBOGG_DESC=	Install ogg library
 LIBVORBIS_DESC=	Install vorbis library
 OPTIONS_DEFAULT=	LIBOGG LIBVORBIS
 
-LIBOGG_LIB_DEPENDS=	libogg.so:${PORTSDIR}/audio/libogg
-LIBVORBIS_LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+LIBOGG_LIB_DEPENDS=	libogg.so:audio/libogg
+LIBVORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 
 .include "${MASTERDIR}/Makefile"

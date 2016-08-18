@@ -24,16 +24,13 @@
     SUBDIR += cdlabelgen
     SUBDIR += cloudprint
     SUBDIR += cups
-    SUBDIR += cups-base
     SUBDIR += cups-bjnp
-    SUBDIR += cups-client
     SUBDIR += cups-cloud-print
+    SUBDIR += cups-connector
     SUBDIR += cups-filters
     SUBDIR += cups-fxlinuxprint
-    SUBDIR += cups-image
     SUBDIR += cups-pdf
     SUBDIR += cups-pk-helper
-    SUBDIR += cups-pstoraster
     SUBDIR += cups-smb-backend
     SUBDIR += deforaos-pdfviewer
     SUBDIR += detex
@@ -144,6 +141,7 @@
     SUBDIR += musixtex
     SUBDIR += muttprint
     SUBDIR += nenscript
+    SUBDIR += okc321
     SUBDIR += openprinting
     SUBDIR += p5-Font-FreeType
     SUBDIR += p5-Net-CUPS
@@ -184,6 +182,7 @@
     SUBDIR += pkipplib
     SUBDIR += pkpgcounter
     SUBDIR += pmw
+    SUBDIR += pnm2ppa
     SUBDIR += poster
     SUBDIR += ps2eps
     SUBDIR += pscal
@@ -191,12 +190,14 @@
     SUBDIR += pslib
     SUBDIR += pstotext
     SUBDIR += psutils
-    SUBDIR += py-cups
     SUBDIR += py-fonttools
+    SUBDIR += py-fpdf
     SUBDIR += py-pdf
     SUBDIR += py-pollyreports
     SUBDIR += py-preppy
+    SUBDIR += py-pycups
     SUBDIR += py-pyscript
+    SUBDIR += py-qt5-printsupport
     SUBDIR += py-relatorio
     SUBDIR += py-reportlab
     SUBDIR += py-reportlab1
@@ -225,6 +226,7 @@
     SUBDIR += rubygem-prawn-security
     SUBDIR += rubygem-prawn-svg
     SUBDIR += rubygem-rbpdf
+    SUBDIR += rubygem-rbpdf-font
     SUBDIR += rubygem-ttfunk
     SUBDIR += scribus
     SUBDIR += sgf2tex

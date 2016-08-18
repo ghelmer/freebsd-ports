@@ -3,7 +3,7 @@
 
 PORTNAME=	http-analyze
 PORTVERSION=	2.4.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	ftp://ftp.rent-a-guru.de/pub/
 DIST_SUBDIR=	${PORTNAME}
@@ -15,7 +15,7 @@ PATCHFILES=	patch04.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast Log-Analyzer for web servers
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION:R}
 

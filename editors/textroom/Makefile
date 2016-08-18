@@ -12,9 +12,9 @@ COMMENT=	Full screen text editor
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libhunspell-1.3.so:${PORTSDIR}/textproc/hunspell \
-		libxml++-2.6.so:${PORTSDIR}/textproc/libxml++26
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libhunspell-1.3.so:textproc/hunspell \
+		libxml++-2.6.so:textproc/libxml++26
 
 USES=		desktop-file-utils pkgconfig qmake
 USE_GL=		gl
@@ -23,7 +23,7 @@ USE_QT4=	moc_build rcc_build uic_build \
 		corelib gui opengl qt3support svg xml
 
 post-patch:
-.for i in getaword.cpp optionsdialog.cpp textroom.cpp 
+.for i in getaword.cpp optionsdialog.cpp textroom.cpp
 	@${REINPLACE_CMD} -e \
 		's|/usr/share|${PREFIX}/share|' ${WRKSRC}/application/src/${i}
 .endfor

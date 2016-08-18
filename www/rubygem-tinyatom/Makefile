@@ -11,14 +11,13 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Small and easy to use ruby Atom feed generator
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	rubygem-builder32>=0:${PORTSDIR}/devel/rubygem-builder32 \
-		rubygem-public_suffix>=0:${PORTSDIR}/dns/rubygem-public_suffix
+RUN_DEPENDS=	rubygem-builder32>=0:devel/rubygem-builder32 \
+		rubygem-public_suffix>=0:dns/rubygem-public_suffix
 
 NO_ARCH=	yes
-
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

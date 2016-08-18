@@ -1,21 +1,20 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	fastcluster
-PORTVERSION=	1.1.13
-PORTREVISION=	2
+PORTVERSION=	1.1.20
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	xmj@chaot.net
+MAINTAINER=	johannes@perceivon.net
 COMMENT=	Python functions for hierarchical clustering
 
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	${PYNUMPY}
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}scipy>0:${PORTSDIR}/science/py-scipy
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy
 
 PORTDOCS=	CITATION.txt \
 		INSTALL.txt \

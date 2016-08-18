@@ -6,10 +6,10 @@ PORTVERSION=	20100129s
 CATEGORIES=	multimedia
 MASTER_SITES=	LOCAL/nox
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple zapping tool for the Linux DVB S2 API
 
-BUILD_DEPENDS=  ${LOCALBASE}/include/linux/dvb/frontend.h:${PORTSDIR}/multimedia/v4l_compat
+BUILD_DEPENDS=  ${LOCALBASE}/include/linux/dvb/frontend.h:multimedia/v4l_compat
 
 USES=		gmake tar:bzip2
 PATCH_STRIP=	-p1

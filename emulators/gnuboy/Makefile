@@ -10,9 +10,10 @@ MASTER_SITES=	http://www.sourcefiles.org/Emulators/Videogames/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nintendo GameBoy emulator
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libvga.so:${PORTSDIR}/graphics/svgalib
+LIB_DEPENDS=	libvga.so:graphics/svgalib
 
 USES=		autoreconf compiler
 USE_SDL=	sdl
@@ -38,6 +39,8 @@ do-install:
 .for i in sdlgnuboy sgnuboy xgnuboy
 	(cd ${WRKSRC} && ${INSTALL_PROGRAM} ${i} ${STAGEDIR}${PREFIX}/bin)
 .endfor
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/docs && ${INSTALL_DATA} * ${STAGEDIR}${DOCSDIR})
 

@@ -10,10 +10,10 @@ MASTER_SITES=	http://www.iro.umontreal.ca/~simardr/testu01/:0 \
 DISTFILES=	${PORTNAME}${EXTRACT_SUFX}:0 testu01.pdf:1
 EXTRACT_ONLY=	${PORTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utilities for statistical testing of uniform random number generators
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		gmake zip libtool
 GNU_CONFIGURE=	yes

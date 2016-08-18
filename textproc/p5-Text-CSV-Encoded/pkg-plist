@@ -6,3 +6,4 @@
 %%SITE_PERL%%/Text/CSV/Encoded/Coder/Base.pm
 %%SITE_PERL%%/Text/CSV/Encoded/Coder/Encode.pm
 %%SITE_PERL%%/Text/CSV/Encoded/Coder/EncodeGuess.pm
+%%SITE_PERL%%/Text/CSV/README.pod

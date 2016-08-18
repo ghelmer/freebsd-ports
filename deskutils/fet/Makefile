@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fet
-PORTVERSION=	5.27.5
+PORTVERSION=	5.29.4
 CATEGORIES=	deskutils kde
 MASTER_SITES=	http://lalescu.ro/liviu/fet/download/ \
 		http://lalescu.ro/liviu/fet/download/old/ \
@@ -12,11 +12,11 @@ MASTER_SITES=	http://lalescu.ro/liviu/fet/download/ \
 MAINTAINER=	udvzsolt@gmail.com
 COMMENT=	Free timetabling software
 
-LICENSE=	GPLv2 GPLv3
-LICENSE_COMB=	dual
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		qmake tar:bzip2
-USE_QT4=	gui network xml \
+USE_QT4=	corelib xml \
 		moc_build rcc_build uic_build
 
 PORTEXAMPLES=	*
@@ -33,14 +33,10 @@ ONLYCL_DESC=	Build only command line version (without Qt4 GUI)
 
 OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MONLYCL}
-INSTALL_TARGET=${WRKSRC}/fet-cl
-.else
-INSTALL_TARGET=${WRKSRC}/fet
-QMAKE_PRO=src/src-cl.pro
-.endif
+ONLYCL_INSTALL_TARGET=	${WRKSRC}/fet-cl
+ONLYCL_VARS=	QMAKE_SOURCE_PATH=${WRKSRC}/src/src-cl.pro
+ONLYCL_USE_OFF=	qt4=gui,network
+ONLYCL_INSTALL_TARGET_OFF=	${WRKSRC}/fet
 
 post-patch:
 	${REINPLACE_CMD} -e 's|/usr/share/fet|${DATADIR}|g' \
@@ -50,9 +46,11 @@ do-install:
 	${INSTALL_PROGRAM} ${INSTALL_TARGET} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/fet-cl ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/man/fet*.gz ${STAGEDIR}${MANPREFIX}/man/man1
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} \. ${STAGEDIR}${EXAMPLESDIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/translations
 	cd ${WRKSRC}/translations && ${INSTALL_DATA} *.qm ${STAGEDIR}${DATADIR}/translations
+
+do-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} \. ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

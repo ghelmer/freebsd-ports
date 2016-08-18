@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	chromium
-PORTVERSION=	47.0.2526.80
+PORTVERSION=	52.0.2743.116
 CATEGORIES=	www
 MASTER_SITES=	http://commondatastorage.googleapis.com/chromium-browser-official/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} # default, but needed to get distinfo correct if TEST is on
@@ -13,63 +13,80 @@ COMMENT=	Google web browser based on WebKit
 LICENSE=	BSD3CLAUSE LGPL21 MPL
 LICENSE_COMB=	multi
 
+BROKEN_FreeBSD_9=does not patch
+
 CFLAGS+=	-isystem${LOCALBASE}/include -I${PREFIX}/include/atk-1.0
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/gperf:${PORTSDIR}/devel/gperf \
-		bash:${PORTSDIR}/shells/bash \
-		yasm:${PORTSDIR}/devel/yasm \
-		flock:${PORTSDIR}/sysutils/flock \
-		${LOCALBASE}/include/linux/videodev2.h:${PORTSDIR}/multimedia/v4l_compat \
-		${LOCALBASE}/share/usbids/usb.ids:${PORTSDIR}/misc/usbids \
-		${PYTHON_PKGNAMEPREFIX}Jinja2>0:${PORTSDIR}/devel/py-Jinja2 \
-		${PYTHON_PKGNAMEPREFIX}ply>0:${PORTSDIR}/devel/py-ply \
-		${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:${PORTSDIR}/www/py-beautifulsoup \
-		${PYTHON_PKGNAMEPREFIX}html5lib>0:${PORTSDIR}/www/py-html5lib
+BUILD_DEPENDS=	${LOCALBASE}/bin/gperf:devel/gperf \
+		bash:shells/bash \
+		yasm:devel/yasm \
+		flock:sysutils/flock \
+		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
+		${LOCALBASE}/share/usbids/usb.ids:misc/usbids \
+		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2 \
+		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply \
+		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib
 
-LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo \
-		libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
-		libasound.so:${PORTSDIR}/audio/alsa-lib \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libnss3.so:${PORTSDIR}/security/nss \
-		libFLAC.so:${PORTSDIR}/audio/flac \
-		libgnome-keyring.so:${PORTSDIR}/security/libgnome-keyring \
-		libharfbuzz.so:${PORTSDIR}/print/harfbuzz \
-		libcups.so:${PORTSDIR}/print/cups-client \
-		libevent.so:${PORTSDIR}/devel/libevent2 \
-		libexif.so:${PORTSDIR}/graphics/libexif \
-		libgcrypt.so:${PORTSDIR}/security/libgcrypt \
-		libpci.so:${PORTSDIR}/devel/libpci \
-		libdrm.so:${PORTSDIR}/graphics/libdrm \
-		libicuuc.so:${PORTSDIR}/devel/icu \
-		libjsoncpp.so:${PORTSDIR}/devel/jsoncpp \
-		libnspr4.so:${PORTSDIR}/devel/nspr \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libre2.so:${PORTSDIR}/devel/re2 \
-		libsnappy.so:${PORTSDIR}/archivers/snappy \
-		libspeechd.so:${PORTSDIR}/accessibility/speech-dispatcher \
-		libspeex.so:${PORTSDIR}/audio/speex \
-		libxml2.so:${PORTSDIR}/textproc/libxml2 \
-		libwebp.so:${PORTSDIR}/graphics/webp
+LIB_DEPENDS=	libasound.so:audio/alsa-lib \
+		libcairo.so:graphics/cairo \
+		libcups.so:print/cups \
+		libdbus-1.so:devel/dbus \
+		libdbus-glib-1.so:devel/dbus-glib \
+		libdrm.so:graphics/libdrm \
+		libexpat.so:textproc/expat2 \
+		libFLAC.so:audio/flac \
+		libfreetype.so:print/freetype2 \
+		libgnome-keyring.so:security/libgnome-keyring \
+		libharfbuzz.so:print/harfbuzz \
+		libevent.so:devel/libevent2 \
+		libexif.so:graphics/libexif \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libgcrypt.so:security/libgcrypt \
+		libicuuc.so:devel/icu \
+		libjsoncpp.so:devel/jsoncpp \
+		libnspr4.so:devel/nspr \
+		libnss3.so:security/nss \
+		libpci.so:devel/libpci \
+		libpng.so:graphics/png \
+		libre2.so:devel/re2 \
+		libsnappy.so:archivers/snappy \
+		libspeechd.so:accessibility/speech-dispatcher \
+		libspeex.so:audio/speex \
+		libwebp.so:graphics/webp \
+		libxml2.so:textproc/libxml2
 
-RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:${PORTSDIR}/audio/alsa-plugins \
-		droid-fonts-ttf>0:${PORTSDIR}/x11-fonts/droid-fonts-ttf \
-		xdg-open:${PORTSDIR}/devel/xdg-utils
+RUN_DEPENDS=	${LOCALBASE}/lib/alsa-lib/libasound_module_pcm_oss.so:audio/alsa-plugins \
+		alsa-lib>=1.1.1_1:audio/alsa-lib \
+		droid-fonts-ttf>0:x11-fonts/droid-fonts-ttf \
+		xdg-open:devel/xdg-utils
 
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		bison compiler:c++11-lib cpe desktop-file-utils execinfo jpeg \
+USES=		bison cpe desktop-file-utils execinfo jpeg \
 		ninja perl5 pkgconfig python:2,build shebangfix tar:xz
+# chromium requires a recent compiler (C++11 capable, but clang 3.4 is
+# not able to build chromium. OTOH clang36 on FreeBSD 9.3 cannot build
+# chromium as the libc++ includes are not up to the task. USES flags
+# have to be set before bsd.ports.pre.mk and thereby cannot depend on
+# bsd.ports.pre.mk's variables, so I'm using a hack here.
+.if exists(/usr/lib/libc++.a)
+USES+=	compiler:c++14-lang
+.else
+USES+=	compiler:c++11-lib
+.endif
+
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
 USE_PERL5=	build
-USE_XORG=	scrnsaverproto x11 xproto xscrnsaver xtst
+USE_XORG=	scrnsaverproto x11 xcomposite xcursor xext xdamage xfixes xi \
+		xproto xrandr xrender xscrnsaver xtst
 USE_GNOME=	atk glib20 gtk20 dconf libxslt
 MAKE_ARGS=	-C out/${BUILDTYPE}
 SHEBANG_FILES=	chrome/tools/build/linux/chrome-wrapper
 ALL_TARGET=	chrome
 INSTALLS_ICONS=	yes
 
-#TODO bz@ : if you do undestand the gyp stuff, third_party/widevine/cdm/widevine_cdm.gyp talks about it (plz install libwidevinecdm.so)
+#TODO bz@ : install libwidevinecdm.so (see
+#   third_party/widevine/cdm/widevine_cdm.gyp)
 # See build/common.gypi for all the available variables.
 GYP_DEFINES+=	\
 		clang_use_chrome_plugins=0 \
@@ -85,6 +102,7 @@ GYP_DEFINES+=	\
 		enable_webrtc=1 \
 		werror= \
 		no_gc_sections=1 \
+		OS=freebsd \
 		os_ver=${OSVERSION} \
 		prefix_dir=${LOCALBASE} \
 		python_ver=${PYTHON_VER} \
@@ -139,7 +157,7 @@ OPTIONS_DEFAULT=	CODECS GCONF KERBEROS
 OPTIONS_SUB=	yes
 
 GCONF_USE=	GNOME=gconf2
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio
+PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 DRIVER_MAKE_ARGS=chromedriver
 TEST_DISTFILES=	${PORTNAME}-${DISTVERSION}-testdata${EXTRACT_SUFX}
 
@@ -165,7 +183,7 @@ GYP_DEFINES+=	use_pulseaudio=1
 GYP_DEFINES+=	use_pulseaudio=0
 .endif
 
-.if ! ${MACHINE_CPU:Msse2}
+.if empty(MACHINE_CPU:Msse2)
 GYP_DEFINES+=	disable_sse2=1
 .endif
 
@@ -206,7 +224,8 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-gcc
 CFLAGS+=	-fno-stack-protector # gcc 4.8 cannot find __stack_chk_fail_local
 .else
 GYP_DEFINES+=	clang=1
-CFLAGS+=	-Wno-unknown-warning-option
+CFLAGS+=	-Wno-unknown-warning-option \
+			-D_LIBCPP_TRIVIAL_PAIR_COPY_CTOR=1 # work around base r261801
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-clang
 CONFIGURE_ENV+=	AR=/usr/bin/ar
 .endif
@@ -237,8 +256,8 @@ pre-everything::
 post-patch:
 	@${REINPLACE_CMD} -e "s|/usr/local|${LOCALBASE}|" \
 		${WRKSRC}/crypto/crypto.gyp \
-		${WRKSRC}/v8/tools/gyp/v8.gyp \
-		${WRKSRC}/v8/build/toolchain.gypi
+		${WRKSRC}/v8/src/v8.gyp \
+		${WRKSRC}/v8/gypfiles/toolchain.gypi
 	@${REINPLACE_CMD} -e "s|/usr/local|${PREFIX}|" \
 		${WRKSRC}/chrome/common/chrome_paths.cc \
 		${WRKSRC}/base/base.gyp
@@ -264,7 +283,6 @@ pre-configure:
 		'chrome/third_party/mock4js' \
 		'chrome/third_party/mozilla_security_manager' \
 		'courgette/third_party' \
-		'crypto/third_party/nss' \
 		'net/third_party/mozilla_security_manager' \
 		'net/third_party/nss' \
 		'third_party/WebKit' \
@@ -275,6 +293,14 @@ pre-configure:
 		'third_party/brotli' \
 		'third_party/boringssl' \
 		'third_party/cacheinvalidation' \
+		'third_party/catapult' \
+		'third_party/catapult/third_party/beautifulsoup4' \
+		'third_party/catapult/third_party/py_vulcanize' \
+		'third_party/catapult/third_party/py_vulcanize/py_vulcanize' \
+		'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
+		'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
+		'third_party/catapult/tracing' \
+		'third_party/catapult/tracing/third_party' \
 		'third_party/cld' \
 		'third_party/cros_system_api' \
 		'third_party/dom_distiller_js' \
@@ -297,8 +323,9 @@ pre-configure:
 		'third_party/libjingle' \
 		'third_party/libphonenumber' \
 		'third_party/libsrtp' \
-		'third_party/libvpx_new' \
-		'third_party/libvpx_new/source/libvpx/third_party/x86inc' \
+		'third_party/libvpx' \
+		'third_party/libvpx/source/libvpx/third_party/x86inc' \
+		'third_party/libwebm' \
 		'third_party/libxml/chromium' \
 		'third_party/libXNVCtrl' \
 		'third_party/libwebm' \
@@ -309,10 +336,9 @@ pre-configure:
 		'third_party/lzma_sdk' \
 		'third_party/markupsafe' \
 		'third_party/mesa' \
-		'third_party/mojo' \
 		'third_party/modp_b64' \
 		'third_party/mt19937ar' \
-		'third_party/npapi' \
+		'third_party/openh264' \
 		'third_party/openmax_dl' \
 		'third_party/opus' \
 		'third_party/ots' \
@@ -321,10 +347,11 @@ pre-configure:
 		'third_party/ply' \
 		'third_party/polymer' \
 		'third_party/protobuf' \
+		'third_party/protobuf/third_party' \
+		'third_party/protobuf/third_party/six' \
 		'third_party/pywebsocket' \
 		'third_party/qcms' \
 		'third_party/qunit' \
-		'third_party/readability' \
 		'third_party/sfntly' \
 		'third_party/sinonjs' \
 		'third_party/skia' \
@@ -332,18 +359,12 @@ pre-configure:
 		'third_party/sqlite' \
 		'third_party/tcmalloc' \
 		'third_party/tlslite' \
-		'third_party/catapult' \
-		'third_party/catapult/tracing' \
-		'third_party/catapult/tracing/third_party' \
-		'third_party/catapult/tracing/third_party/tvcm/third_party' \
-		'third_party/catapult/tracing/third_party/tvcm/third_party/rcssmin' \
-		'third_party/catapult/tracing/third_party/tvcm/third_party/rjsmin' \
-		'third_party/catapult/tracing/third_party/tvcm/tvcm' \
 		'third_party/usrsctp' \
 		'third_party/web-animations-js' \
 		'third_party/webdriver' \
 		'third_party/webrtc' \
 		'third_party/widevine' \
+		'third_party/woff2' \
 		'third_party/x86inc' \
 		'third_party/yasm' \
 		'third_party/zlib' \
@@ -356,6 +377,10 @@ pre-configure:
 		${GYP_DEFINES:C/^/-D/} || ${FALSE}
 	# allow removal of third_party/adobe
 	${ECHO_CMD} > ${WRKSRC}/flapper_version.h
+	# missing file: file is in -testdata only, but configure stage
+	# will fail if it's not there. do not break TESTS build while
+	# allowing regular build without pulling in -testdata.
+	${TOUCH} ${WRKSRC}/chrome/test/data/webui/i18n_process_css_test.html
 
 do-configure:
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
@@ -384,7 +409,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/out/${BUILDTYPE}/chrome \
 		${STAGEDIR}${DATADIR}
 	cd ${WRKSRC}/out/${BUILDTYPE} && \
-		${COPYTREE_SHARE} "locales resources" ${STAGEDIR}${DATADIR}
+		${COPYTREE_SHARE} "locales pseudo_locales resources" ${STAGEDIR}${DATADIR}
 	@${MKDIR} ${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKDIR}/chromium-browser.desktop \
 		${STAGEDIR}${DESKTOPDIR}

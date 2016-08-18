@@ -11,7 +11,7 @@ MASTER_SITES=	http://www.kusa.ac.jp/~yukio-m/dbs/software1.1.5/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distributed network benchmarking system
 
-RUN_DEPENDS=	gnuplot:${PORTSDIR}/math/gnuplot
+RUN_DEPENDS=	gnuplot:math/gnuplot
 
 BUILD_WRKSRC=	${WRKSRC}/obj/${OPSYS}
 INSTALL_WRKSRC=	${WRKSRC}/obj/${OPSYS}
@@ -25,10 +25,6 @@ PORTDOCS=	*
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|/usr/local/bin/perl|${PERL}|' ${WRKSRC}/script/dbs_view
 
 pre-build:
 	cd ${WRKSRC}/src; ${MAKE} dir

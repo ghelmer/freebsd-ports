@@ -3,20 +3,24 @@
 
 PORTNAME=	awffull
 PORTVERSION=	3.10.2
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES?=	www
 MASTER_SITES=	http://www.stedee.id.au/files/
 
 MAINTAINER?=	ports@FreeBSD.org
 COMMENT=	AWFFull is a webserver log analysis tool forked from Webalizer
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/share/fonts/bitstream-vera/Vera.ttf:${PORTSDIR}/x11-fonts/bitstream-vera
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libpcre.so:${PORTSDIR}/devel/pcre
+BUILD_DEPENDS=	${LOCALBASE}/share/fonts/bitstream-vera/Vera.ttf:x11-fonts/bitstream-vera
+LIB_DEPENDS=	libgd.so:graphics/gd \
+		libpng.so:graphics/png \
+		libpcre.so:devel/pcre
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 CONFLICTS?=	ja-awffull-[0-9]*
@@ -39,7 +43,7 @@ CONFIGURE_ARGS+=--with-font-default=${FONTDEFAULT} \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-GEOIP_LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 GEOIP_CONFIGURE_ENABLE=	geoip
 
 NLS_CONFIGURE_ENABLE=	nls

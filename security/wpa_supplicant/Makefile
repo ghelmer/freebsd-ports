@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	wpa_supplicant
-PORTVERSION=	2.4
-PORTREVISION=	4
+PORTVERSION=	2.5
+PORTREVISION=	2
 CATEGORIES=	security net
 MASTER_SITES=	http://w1.fi/releases/
 
@@ -14,7 +14,7 @@ USE_OPENSSL=	yes
 BUILD_WRKSRC=	${WRKSRC}/wpa_supplicant
 INSTALL_WRKSRC=	${WRKSRC}/src
 CFLAGS+=	${CPPFLAGS} # USES=readline only augments CPPFLAGS and LDFLAGS
-LDFLAGS=	-lutil
+LDFLAGS+=	-lutil
 
 SUB_FILES=	pkg-message
 PORTDOCS=	README ChangeLog
@@ -91,7 +91,7 @@ TNC_DESC=		Trusted Network Connect
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MSIM} || ${PORT_OPTIONS:MAKA} || ${PORT_OPTIONS:MAKA_PRIME}
-LIB_DEPENDS+=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
+LIB_DEPENDS+=	libpcsclite.so:devel/pcsc-lite
 CFLAGS+=	-I${LOCALBASE}/include/PCSC
 LDFLAGS+=	-L${LOCALBASE}/lib
 .endif

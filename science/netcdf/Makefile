@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	netcdf
-PORTVERSION=	4.3.3.1
-PORTREVISION=	1
+PORTVERSION=	4.4.0
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	http://www.unidata.ucar.edu/downloads/netcdf/ftp/ \
 		ftp://ftp.unidata.ucar.edu/pub/netcdf/ \
@@ -12,7 +12,7 @@ MASTER_SITES=	http://www.unidata.ucar.edu/downloads/netcdf/ftp/ \
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C library for machine-independent, array-oriented data access
 
-LIB_DEPENDS=	libhdf5.so:${PORTSDIR}/science/hdf5
+LIB_DEPENDS=	libhdf5.so:science/hdf5
 
 CONFLICTS_INSTALL=	hdf-4.[0-9]* netcdf-3.[0-9]* netcdf3-3.[0-9]*
 
@@ -22,23 +22,20 @@ DAP_DESC=	Build DAP client and remote testing
 SZIP_DESC=	SZIP support (required if HDF5 was built with SZIP)
 
 CONFIGURE_ARGS=	--enable-netcdf-4
-CPPFLAGS+=	-I${WRKSRC}/include -I${LOCALBASE}/include -fPIC -DPIC
+CPPFLAGS+=	-fPIC -DPIC
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-LIBS+=		-L${LOCALBASE}/lib
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
-USES=		libtool pathfix
+USES=		libtool localbase ncurses pathfix pkgconfig:run
 
-DAP_CONFIGURE_OFF=	--disable-dap
-DAP_CONFIGURE_ON=	--enable-dap
-DAP_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-DOXYGEN_BUILD_DEPENDS=	${LOCALBASE}/bin/doxygen:${PORTSDIR}/devel/doxygen
-DOXYGEN_CONFIGURE_OFF=	--disable-doxygen
-DOXYGEN_CONFIGURE_ON=	--enable-doxygen
+DAP_CONFIGURE_ENABLE=	dap
+DAP_LIB_DEPENDS=	libcurl.so:ftp/curl
+DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
+DOXYGEN_CONFIGURE_ENABLE=	doxygen
 DOXYGEN_IMPLIES=	DOCS
 DOXYGEN_PORTDOCS=	*
-SZIP_LIB_DEPENDS=	libsz.so:${PORTSDIR}/science/szip
+SZIP_LIB_DEPENDS=	libsz.so:science/szip
 SZIP_LIBS=		-lsz
 
 post-patch:

@@ -10,11 +10,9 @@ PORTREVISION=	0
 COMMENT=	GNU gettext development and translation tools
 
 LICENSE=	GPLv3
-LICENSE_FILE=	${WRKSRC}/../COPYING    
+LICENSE_FILE=	${WRKSRC}/../COPYING
 
 .include "${.CURDIR}/../gettext/Makefile.common"
-
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-csharp --disable-java --disable-openmp \
@@ -24,6 +22,8 @@ CONFIGURE_ARGS=	--disable-csharp --disable-java --disable-openmp \
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
+PLIST_SUB=	VERSION=${PORTVERSION:R}
+TEST_TARGET=	check
 USES=		charsetfix cpe gettext-runtime iconv libtool tar:xz
 USE_LDCONFIG=	yes
 WRKSRC_SUBDIR=	gettext-tools
@@ -64,8 +64,5 @@ post-patch:
 # Use libasprintf installed by gettext-runtime.
 	@${REINPLACE_CMD} 's,[^ ]*libasprintf.la,-lasprintf,' \
 		${WRKSRC}/tests/lang-c++
-
-regression-test: build
-	@(cd ${WRKSRC} && ${MAKE_CMD} check)
 
 .include <bsd.port.mk>

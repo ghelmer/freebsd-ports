@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	chibi-scheme
-PORTVERSION=	0.7.2
-PORTREVISION=	1
+PORTVERSION=	0.7.3
 CATEGORIES=	lang
 
-MAINTAINER=	tobias.kortkamp@gmail.com
+MAINTAINER=	t@tobik.me
 COMMENT=	Minimal Scheme implementation for use as a C extension language
 
 LICENSE=	BSD3CLAUSE
@@ -17,7 +16,9 @@ GH_ACCOUNT=	ashinn
 USES=		gmake
 USE_LDCONFIG=	yes
 
-MAKE_ARGS=	MODDIR=${LOCALBASE}/lib/chibi \
+MAKE_ARGS+=	MODDIR=${LOCALBASE}/lib/chibi \
+		MANDIR=${LOCALBASE}/man/man1 \
+		INSTALL_BIN="${INSTALL} -s" \
 		PKGCONFDIR=${LOCALBASE}/libdata/pkgconfig
 
 .include <bsd.port.mk>

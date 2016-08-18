@@ -10,13 +10,14 @@ MASTER_SITES=	http://git.chise.org/elisp/dist/flim/flim-1.14/
 PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
 
 MAINTAINER?=	nobutaka@FreeBSD.org
-COMMENT?=	FLIM, message representation or encoding elisp library for emacs
+COMMENT?=	Message representation or encoding elisp library for emacs
 
 LICENSE=	GPLv2
 
 PORTCLASS?=	master
 
 USES=		cpe makeinfo
+NO_ARCH=	yes
 
 CPE_VENDOR=	gnu
 
@@ -37,7 +38,6 @@ EMACS_MASTERDIR_PKGFILES=YES
 DESCR=		${PKGDIR}/pkg-descr
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=	DOCS
 
 # target name for make build
 ALL_TARGET?=	elc
@@ -60,13 +60,13 @@ PLIST=		${PKGDIR}/pkg-plist.emacs21
 .endif
 # depends on apel (case of xemacs-21.x or later)
 .if defined(EMACS_PACKAGESDIR)
-BUILD_DEPENDS+=	${LOCALBASE}/${EMACS_LIBDIR}/xemacs-packages/lisp/apel/emu.el:${PORTSDIR}/editors/xemacs-packages
-RUN_DEPENDS+=	${LOCALBASE}/${EMACS_LIBDIR}/xemacs-packages/lisp/apel/emu.el:${PORTSDIR}/editors/xemacs-packages
+BUILD_DEPENDS+=	${LOCALBASE}/${EMACS_LIBDIR}/xemacs-packages/lisp/apel/emu.el:editors/xemacs-packages
+RUN_DEPENDS+=	${LOCALBASE}/${EMACS_LIBDIR}/xemacs-packages/lisp/apel/emu.el:editors/xemacs-packages
 MAKE_ARGS+=	PACKAGEDIR="${STAGEDIR}${LOCALBASE}/${EMACS_PACKAGESDIR}"
 .else
 # depends on apel (case of gnu emacsen etc...)
-BUILD_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:${PORTSDIR}/editors/apel${DEPPORT_SUFFIX}
-RUN_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:${PORTSDIR}/editors/apel${DEPPORT_SUFFIX}
+BUILD_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:editors/apel${DEPPORT_SUFFIX}
+RUN_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:editors/apel${DEPPORT_SUFFIX}
 .endif
 .else
 .BEGIN:
@@ -77,7 +77,7 @@ RUN_DEPENDS+=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/emu/emu.el:${PORTSDIR}/
 
 .if !defined(BUILD_INFO_BY_EMACS) || (${BUILD_INFO_BY_EMACS} == "NO")
 # info files JIS to EUC
-BUILD_DEPENDS+=	nkf:${PORTSDIR}/japanese/nkf
+BUILD_DEPENDS+=	nkf:japanese/nkf
 .endif
 
 # makeinfo stuff

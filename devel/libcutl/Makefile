@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libcutl
-PORTVERSION=	1.9.0
+PORTVERSION=	1.10.0
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codesynthesis.com/download/${PORTNAME}/${PORTVERSION:R}/
 
@@ -11,8 +11,10 @@ COMMENT=	C++ utility library with generic and independent components
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
-		libexpat.so:${PORTSDIR}/textproc/expat2
+BROKEN_powerpc64=	Does not build
+
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libexpat.so:textproc/expat2
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

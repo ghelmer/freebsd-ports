@@ -3,7 +3,7 @@
 
 PORTNAME=	tuxpuck
 PORTVERSION=	0.8.2
-PORTREVISION=	22
+PORTREVISION=	23
 CATEGORIES=	games
 MASTER_SITES=	http://www.sourcefiles.org/Games/Sports/Miscellaneous/
 
@@ -12,9 +12,10 @@ COMMENT=	Shufflepuck Cafe Clone
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libvorbis.so:${PORTSDIR}/audio/libvorbis \
-		libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libogg.so:audio/libogg \
+		libvorbis.so:audio/libvorbis \
+		libfreetype.so:print/freetype2
 
 USE_SDL=	sdl
 USES=		gmake jpeg

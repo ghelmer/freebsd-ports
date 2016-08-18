@@ -1,7 +1,7 @@
 # Created by: nox@FreeBSD.org
 # $FreeBSD$
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	sbruno@FreeBSD.org
 COMMENT=	QEMU CPU Emulator github bsd-user branch - static user targets
 PKGNAMESUFFIX=	-user-static
 
@@ -18,6 +18,8 @@ post-install:
 	@${RM} -r ${STAGEDIR}${PREFIX}/bin/qemu-img
 	@${RM} -r ${STAGEDIR}${PREFIX}/bin/qemu-io
 	@${RM} -r ${STAGEDIR}${PREFIX}/bin/qemu-nbd
+	@${RM} -r ${STAGEDIR}${PREFIX}/bin/ivshmem-client
+	@${RM} -r ${STAGEDIR}${PREFIX}/bin/ivshmem-server
 	@${MV} ${STAGEDIR}${PREFIX}/etc/rc.d ${WRKDIR}
 	@${RM} -r ${STAGEDIR}${PREFIX}/etc
 .if exists(/usr/sbin/binmiscctl)

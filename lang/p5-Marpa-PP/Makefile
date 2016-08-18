@@ -15,12 +15,12 @@ COMMENT=	Pure Perl version of Marpa
 
 LICENSE=	LGPL3
 
-BUILD_DEPENDS=	p5-PPI>=1.206:${PORTSDIR}/textproc/p5-PPI \
-		p5-Task-Weaken>=0:${PORTSDIR}/devel/p5-Task-Weaken
+BUILD_DEPENDS=	p5-PPI>=1.206:textproc/p5-PPI \
+		p5-Task-Weaken>=0:devel/p5-Task-Weaken
 RUN_DEPENDS:=	${BUILD_DEPENDS}
-TEST_DEPENDS=	p5-Test-Weaken>=3.004000:${PORTSDIR}/devel/p5-Test-Weaken
+TEST_DEPENDS=	p5-Test-Weaken>=3.004000:devel/p5-Test-Weaken
 
-# PERL_CONFIGURE failed on Perl 5.12.4
+NO_ARCH=	yes
 USE_PERL5=	modbuild
 USES=		perl5
 

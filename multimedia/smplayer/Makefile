@@ -2,22 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	smplayer
-DISTVERSION=	15.9.0
+DISTVERSION=	16.6.0
 CATEGORIES=	multimedia audio kde
 MASTER_SITES=	SF/${PORTNAME}/SMPlayer/${PORTVERSION}
 
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Complete front-end based on Qt4 for mplayer
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/Copying.txt
 
-RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer \
-		smplayer-skins>=0:${PORTSDIR}/multimedia/smplayer-skins \
-		smplayer-themes>=0:${PORTSDIR}/multimedia/smplayer-themes
+RUN_DEPENDS=	mplayer:multimedia/mplayer \
+		smplayer-skins>=0:multimedia/smplayer-skins \
+		smplayer-themes>=0:multimedia/smplayer-themes
 
 USE_QT4=	gui dbus network script xml moc_build rcc_build uic_build \
-		uic3_build porting_build linguist_build
+		uic3_build porting_build linguisttools_build
 
 ALL_TARGET=	src/smplayer
 CONFIGURE_WRKSRC=	${WRKSRC}/src

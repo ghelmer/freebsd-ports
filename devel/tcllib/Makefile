@@ -2,11 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	tcllib
-DISTVERSION=	1_17
+DISTVERSIONPREFIX=	${PORTNAME}_
+DISTVERSION=	1_18
 PORTREVISION=	1
 CATEGORIES=	devel tcl
-MASTER_SITES=	http://aldan.algebra.com/~mi/port-stuff/
-DISTFILES=	tcltk-tcllib-${PORTVERSION}-tcllib_${DISTVERSION}_GH0.tar.gz
 
 MAINTAINER=	tcltk@FreeBSD.org
 COMMENT=	Collection of utility modules for Tcl
@@ -17,14 +16,17 @@ LICENSE_FILE=	${WRKSRC}/license.terms
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE?=DOCS MANPAGES
+OPTIONS_SUB=	yes
 
 WRKSRC=		${WRKDIR}/tcllib-tcllib_${DISTVERSION}
+USE_GITHUB=	yes
+GH_ACCOUNT=	tcltk
 USES+=		tcl
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_tclsh="${TCLSH}"
 MAKE_ENV+=	LANG=C
+TEST_TARGET=	do-test
 PORTDOCS=	*
-REINPLACE_ARGS=	-i'""'
 
 INSTALL_ARGS=	-pkgs -pkg-path ${STAGEDIR}${PREFIX}/lib/tcllib \
 		-apps -app-path ${STAGEDIR}${PREFIX}/bin \
@@ -35,19 +37,17 @@ INSTALL_ARGS=	-pkgs -pkg-path ${STAGEDIR}${PREFIX}/lib/tcllib \
 #
 # Man pages
 #
-.if !empty(${PORT_OPTIONS:MMANPAGES}) && !(defined(ALL_TARGET) && !empty(${ALL_TARGET:Mcritcl}))
+.if ${PORT_OPTIONS:MMANPAGES} && !(defined(ALL_TARGET) && !empty(${ALL_TARGET:Mcritcl}))
 ALL_TARGET+=	nroff-doc
 INSTALL_ARGS+=	-nroff-path ${STAGEDIR}${PREFIX}/man/mann
-PLIST_SUB+=	MAN=""
 .else
 INSTALL_ARGS+=	-no-nroff
-PLIST_SUB+=	MAN="@comment "
 .endif
 
 #
 # HTML documentation
 #
-.if !empty(${PORT_OPTIONS:MDOCS}) && !(defined(ALL_TARGET) && !empty(${ALL_TARGET:Mcritcl}))
+.if ${PORT_OPTIONS:MDOCS} && !(defined(ALL_TARGET) && !empty(${ALL_TARGET:Mcritcl}))
 ALL_TARGET+=	html-doc
 INSTALL_ARGS+=	-html-path ${STAGEDIR}${DOCSDIR}
 .else
@@ -93,6 +93,11 @@ post-patch:
 	for man in `${FIND} . -name "*.n"`; do \
 	    ${MV} $$man `echo $$man | ${SED} -e 's|n$$|tcllib.n|'`; \
 	done
+
+#
+#	remove all .orig files
+#
+	${FIND} ${WRKSRC} -type f -name "*.orig" -delete
 .endif
 
 .if !target(do-install)
@@ -100,7 +105,7 @@ do-install:
 	cd ${WRKSRC} && ${TCLSH} ./installer.tcl ${INSTALL_ARGS}
 .endif
 
-test check regression-test: build
-	cd ${WRKSRC} && ${SETENV} LANG=C LC_ALL=C DISPLAY= ${MAKE} test
+do-test:
+	cd ${WRKSRC} && ${SETENV} LANG=C LC_ALL=en_US.UTF-8 DISPLAY= TZ=utc ${MAKE} test
 
 .include <bsd.port.mk>

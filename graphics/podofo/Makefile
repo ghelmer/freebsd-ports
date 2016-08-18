@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	podofo
-PORTVERSION=	0.9.3
-PORTREVISION=	2
+PORTVERSION=	0.9.4
 CATEGORIES=	graphics print
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF
 
 MAINTAINER=	pawel@FreeBSD.org
 COMMENT=	PDF manipulation library and tools
@@ -13,9 +12,9 @@ COMMENT=	PDF manipulation library and tools
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
 
-LIB_DEPENDS=	libidn.so:${PORTSDIR}/dns/libidn \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
+LIB_DEPENDS=	libidn.so:dns/libidn \
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
 USES=		cmake dos2unix
 CMAKE_ARGS=	-DPODOFO_BUILD_SHARED:BOOL=TRUE \
@@ -38,10 +37,10 @@ JPEG_CMAKE_ON=		-DWANT_LIBJPEG:BOOL=TRUE
 JPEG_USES=		jpeg
 
 PNG_CMAKE_ON=		-DWANT_PNG:BOOL=TRUE
-PNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+PNG_LIB_DEPENDS=	libpng.so:graphics/png
 
 TIFF_CMAKE_ON=		-DWANT_TIFF:BOOL=TRUE
-TIFF_LIB_DEPENDS=	libtiff.so:${PORTSDIR}/graphics/tiff
+TIFF_LIB_DEPENDS=	libtiff.so:graphics/tiff
 
 IMPOSE_USES=		lua:51
 

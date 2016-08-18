@@ -13,14 +13,14 @@ COMMENT=	Multichannel digital audio workstation
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	liblo.so:${PORTSDIR}/audio/liblo \
-		liblrdf.so:${PORTSDIR}/textproc/liblrdf \
-		libjack.so:${PORTSDIR}/audio/jack \
-		libaubio.so:${PORTSDIR}/audio/aubio \
-		libfftw3.so:${PORTSDIR}/math/fftw3 \
-		libfftw3f.so:${PORTSDIR}/math/fftw3-float \
-		libboost_date_time.so:${PORTSDIR}/devel/boost-libs \
-		libgnomecanvasmm-2.6.so:${PORTSDIR}/graphics/libgnomecanvasmm26
+LIB_DEPENDS=	liblo.so:audio/liblo \
+		liblrdf.so:textproc/liblrdf \
+		libjack.so:audio/jack \
+		libaubio.so:audio/aubio \
+		libfftw3.so:math/fftw3 \
+		libfftw3f.so:math/fftw3-float \
+		libboost_date_time.so:devel/boost-libs \
+		libgnomecanvasmm-2.6.so:graphics/libgnomecanvasmm26
 
 USES=		cpe gettext scons pkgconfig tar:bzip2
 MAKE_ARGS+=	SYSLIBS=yes PREFIX=${PREFIX} NLS=yes
@@ -33,11 +33,13 @@ PLIST_SUB=	DISTVERSION=${DISTVERSION}
 OPTIONS_DEFINE=	OPTIMIZED_CFLAGS VST
 VST_DESC=	VST plugins support
 
+BROKEN_powerpc64=	Does not build
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MVST}
 MAKE_ARGS+=	VST=yes
-LIB_DEPENDS+=	libwine.so:${PORTSDIR}/emulators/wine
+LIB_DEPENDS+=	libwine.so:emulators/wine
 PLIST_SUB+=	NO_VST="@comment "
 PLIST_SUB+=	VST=""
 .else
@@ -65,6 +67,8 @@ MAKE_ARGS+=	FPU_OPTIMIZATION=0
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%CFLAGS%%|${CFLAGS}|' ${WRKSRC}/SConstruct
 	@${REINPLACE_CMD} -e 's|alsa_pcm|oss|g' ${WRKSRC}/templates/*.template
+	@${REINPLACE_CMD} -e 's|std::pair<double|std::pair<const double|' \
+		${WRKSRC}/gtk2_ardour/tempo_lines.h
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/ardour2/templates

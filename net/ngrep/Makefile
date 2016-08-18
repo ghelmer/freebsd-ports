@@ -21,7 +21,7 @@ CONFIGURE_ARGS=	--disable-pcap-restart
 MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_DEFINE=		CAPSICUM DOCS IPV6 PCRE PORTS_PCAP
-OPTIONS_DEFAULT=	CAPSICUM IPV6 PCRE
+OPTIONS_DEFAULT=	CAPSICUM PCRE
 
 PCRE_DESC=		Use PCRE instead of GNU regex
 PORTS_PCAP_DESC=	Use ports PCAP instead of system PCAP
@@ -39,7 +39,7 @@ PCRE_CONFIGURE_ENABLE=	pcre
 
 PORTS_PCAP_CONFIGURE_ON=	--with-pcap-includes=${LOCALBASE}/include
 PORTS_PCAP_CONFIGURE_OFF=	--with-pcap-includes=/usr/include
-PORTS_PCAP_BUILD_DEPENDS=	${LOCALBASE}/lib/libpcap.a:${PORTSDIR}/net/libpcap
+PORTS_PCAP_BUILD_DEPENDS=	${LOCALBASE}/lib/libpcap.a:net/libpcap
 
 .include <bsd.port.options.mk>
 

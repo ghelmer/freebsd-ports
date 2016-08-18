@@ -11,11 +11,15 @@ DISTNAME=	exult-20130315-0400
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ultima VII engine
 
-LICENSE=	GPLv2 # or later
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
-RUN_DEPENDS=	timidity:${PORTSDIR}/audio/timidity
+BUILD_DEPENDS=	timidity:audio/timidity
+RUN_DEPENDS=	timidity:audio/timidity
 
 USE_SDL=	sdl mixer
 USE_XORG=	x11

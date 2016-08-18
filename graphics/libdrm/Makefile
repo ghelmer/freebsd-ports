@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libdrm
-PORTVERSION=	2.4.60
+PORTVERSION=	2.4.66
 PORTEPOCH=	1
 CATEGORIES=	graphics x11
 MASTER_SITES=	http://dri.freedesktop.org/libdrm/
@@ -10,8 +10,8 @@ MASTER_SITES=	http://dri.freedesktop.org/libdrm/
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Userspace interface to kernel Direct Rendering Module services
 
-LIB_DEPENDS=	libpciaccess.so:${PORTSDIR}/devel/libpciaccess \
-		libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs
+LIB_DEPENDS=	libpciaccess.so:devel/libpciaccess \
+		libpthread-stubs.so:devel/libpthread-stubs
 
 USES=		libtool pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
@@ -38,7 +38,7 @@ PLIST_SUB+=	KMS="@comment " NOUVEAU="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MMANPAGES}
-BUILD_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl
+BUILD_DEPENDS+=	${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl
 USE_GNOME+=	libxslt:build
 PLIST_SUB+=	MAN=""
 .else
@@ -57,6 +57,12 @@ PLIST_SUB+=	RADEON_DRIVERS=""
 .else
 PLIST_SUB+=	INTEL_DRIVER="@comment "
 PLIST_SUB+=	RADEON_DRIVERS="@comment "
+.endif
+
+# This variable is not for users. So use a non-default name, intended for
+# people working on DRM kernel module development.
+.if !defined(LIBDRM_SKIP_RETURN_PATCH)
+EXTRA_PATCHES+=	${FILESDIR}/extra-xf86drm.c
 .endif
 
 pre-patch:

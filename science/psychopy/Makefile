@@ -2,33 +2,32 @@
 # $FreeBSD$
 
 PORTNAME=	psychopy
-PORTVERSION=	1.82.02
-PORTREVISION=	1
+PORTVERSION=	1.83.04
 CATEGORIES=	science python
-MASTER_SITES=	SF/psychpy/PsychoPy
-DISTNAME=	PsychoPy-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Psychophysics toolkit for Python
 
-LICENSE=	GPLv3 # (or later)
+LICENSE=	GPLv3+
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:${PORTSDIR}/devel/py-lxml \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>=0.90.1:${PORTSDIR}/math/py-matplotlib \
-		${PYTHON_PKGNAMEPREFIX}pyglet>=1.1.2:${PORTSDIR}/graphics/py-pyglet \
-		${PYTHON_PKGNAMEPREFIX}pandas>0:${PORTSDIR}/math/py-pandas \
-		${PYTHON_PKGNAMEPREFIX}scipy>=0.6.0:${PORTSDIR}/science/py-scipy \
-		dejavu>0:${PORTSDIR}/x11-fonts/dejavu \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>=0.90.1:math/py-matplotlib \
+		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas \
+		${PYTHON_PKGNAMEPREFIX}scipy>=0.6.0:science/py-scipy \
+		${PYTHON_PKGNAMEPREFIX}openpyxl>0:textproc/py-openpyxl \
+		dejavu>0:x11-fonts/dejavu \
+		${PYGAME} \
 		${PYNUMPY}
 
 NO_ARCH=	yes
 
-USES=		fortran python zip
+USE_GITHUB=	yes
+
+USES=		fortran python
 USE_PYTHON=	autoplist distutils
 USE_WX=		2.8
 WX_COMPS=	python
-WX_UNICODE=	yes
 
 PLIST_FILES=	bin/psychopy
 
@@ -39,7 +38,19 @@ DESKTOP_ENTRIES="PsychoPy" \
 		"" \
 		""
 
+OPTIONS_DEFINE_i386=	PYGLET
+OPTIONS_DEFAULT_i386=	PYGLET
+
+PYGLET_DESC=		Drawing support via Pyglet
+PYGLET_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyglet>=1.1.2:graphics/py-pyglet
+
 .include <bsd.port.options.mk>
+
+post-patch:
+# https://github.com/psychopy/psychopy/issues/982
+	@${REINPLACE_CMD} -e \
+		's|str(,id_dict)|str(id_dict)|' \
+		${WRKSRC}/psychopy/demos/coder/iohub/elotouchscreen/run.py
 
 post-build:
 	@${ECHO_CMD} -n > ${WRKDIR}/psychopy
@@ -53,12 +64,12 @@ post-build:
 .endif
 	@${ECHO_CMD} \
 		>> ${WRKDIR}/psychopy
-	@${ECHO_CMD} "${PYTHON_CMD} ${LOCALBASE}/bin/psychopyApp.py" \
+	@${ECHO_CMD} "${PYTHON_CMD} ${PREFIX}/bin/psychopyApp.py" \
 		>> ${WRKDIR}/psychopy
 
 post-install:
 	(cd ${WRKDIR} && ${INSTALL_SCRIPT} psychopy \
- 		${STAGEDIR}${PREFIX}/bin)
+		${STAGEDIR}${PREFIX}/bin)
 	@${RM} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/psychopy/app/Resources/DejaVuSerif.ttf
 	@${LN} -sf ${LOCALBASE}/share/fonts/dejavu/DejaVuSerif.ttf \
 		${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/psychopy/app/Resources

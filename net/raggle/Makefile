@@ -10,10 +10,9 @@ MASTER_SITES=	http://www.raggle.org/files/
 MAINTAINER=	jadawin@FreeBSD.org
 COMMENT=	Console RSS aggregator written in Ruby
 
-RUN_DEPENDS=	${RUBY_SITELIBDIR}/ncurses.rb:${PORTSDIR}/devel/ruby-ncurses
+RUN_DEPENDS=	${RUBY_SITELIBDIR}/ncurses.rb:devel/ruby-ncurses
 
 USE_RUBY=	yes
-USE_RUBY_FEATURES=	rexml yaml
 
 NO_BUILD=	yes
 NO_ARCH=	yes

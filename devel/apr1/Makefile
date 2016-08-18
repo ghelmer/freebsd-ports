@@ -3,6 +3,7 @@
 
 PORTNAME=	apr
 PORTVERSION=	${APR_VERSION}.${APU_VERSION}
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/apr
 DISTFILES=	apr-${APR_VERSION}.tar.gz \
@@ -13,7 +14,7 @@ COMMENT=	Apache Portability Library
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
+LIB_DEPENDS=	libexpat.so:textproc/expat2
 
 USES=		iconv pathfix libtool cpe
 USE_LDCONFIG=	yes
@@ -32,7 +33,7 @@ OPTIONS_GROUP_APR=	IPV6 DEVRANDOM
 OPTIONS_GROUP_APU=	BDB GDBM LDAP MYSQL NDBM PGSQL SQLITE FREETDS
 OPTIONS_RADIO=		CRYPTO
 OPTIONS_RADIO_CRYPTO=	SSL NSS
-OPTIONS_DEFAULT=	IPV6 DEVRANDOM BDB GDBM SSL
+OPTIONS_DEFAULT=	DEVRANDOM BDB GDBM SSL
 
 DEVRANDOM_DESC=		Use /dev/random or compatible
 NDBM_DESC=		NDBM support
@@ -40,19 +41,21 @@ NSS_DESC=		NSS crypto driver
 SSL_DESC=		OpenSSL crypto driver
 
 # APR-Util Options
-BDB_USE=		BDB=5+
-FREETDS_LIB_DEPENDS=	libsybdb.so:${PORTSDIR}/databases/freetds
-GDBM_LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm
+BDB_USES=		bdb:5+
+FREETDS_LIB_DEPENDS=	libsybdb.so:databases/freetds
+GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 LDAP_USE=		OPENLDAP=yes
 MYSQL_USE=		MYSQL=yes
-NSS_LIB_DEPENDS=	libnss3.so:${PORTSDIR}/security/nss
+NSS_LIB_DEPENDS=	libnss3.so:security/nss
 PGSQL_USES=		pgsql
-SQLITE_USE=		SQLITE=yes
-SSL_USE=		OPENSSL=yes
+SQLITE_USES=		sqlite
+SSL_USES=		ssl
 
-NO_WRKSUBDIR=	yes
 APR_WRKDIR=	${WRKDIR}/apr-${APR_VERSION}
 APU_WRKDIR=	${WRKDIR}/apr-util-${APU_VERSION}
+WRKSRC=		${APR_WRKDIR}
+PATCH_WRKSRC=	${WRKDIR}
+PATHFIX_WRKSRC=	${WRKDIR}
 
 SHLIB_APR_MAJOR=${APR_VERSION:C/^1/0/}
 SHLIB_APU_MAJOR=${APU_VERSION:C/^1/0/}
@@ -202,7 +205,6 @@ do-install:
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-util-${APU_VERSION}"
 	(cd ${APU_WRKDIR} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${INSTALL_TARGET} ${MAKE_ARGS})
 
-post-install:
 	-${FIND} ${STAGEDIR}${PREFIX}/lib/ -name \*.so | ${XARGS} ${STRIP_CMD}
 
 test: build

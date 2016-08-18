@@ -5,15 +5,15 @@ PORTNAME=	XML_RPC2
 PORTVERSION=	1.1.2
 CATEGORIES=	net devel pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	XML-RPC client/server library
 
 LICENSE=	PHP301
 
-BUILD_DEPENDS=	${PEARDIR}/Cache/Lite.php:${PORTSDIR}/sysutils/pear-Cache_Lite \
-		${PEARDIR}/HTTP/Request2.php:${PORTSDIR}/www/pear-HTTP_Request2
-RUN_DEPENDS=	${PEARDIR}/Cache/Lite.php:${PORTSDIR}/sysutils/pear-Cache_Lite \
-		${PEARDIR}/HTTP/Request2.php:${PORTSDIR}/www/pear-HTTP_Request2
+BUILD_DEPENDS=	${PEARDIR}/Cache/Lite.php:sysutils/pear-Cache_Lite \
+		${PEARDIR}/HTTP/Request2.php:www/pear-HTTP_Request2
+RUN_DEPENDS=	${PEARDIR}/Cache/Lite.php:sysutils/pear-Cache_Lite \
+		${PEARDIR}/HTTP/Request2.php:www/pear-HTTP_Request2
 
 USE_PHP=	curl
 USES=	pear

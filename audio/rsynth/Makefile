@@ -11,11 +11,11 @@ MASTER_SITES=	ftp://svr-ftp.eng.cam.ac.uk/pub/comp.speech/synthesis/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Speech synthesizer
 
-LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libaudio.so:${PORTSDIR}/audio/nas
+LIB_DEPENDS=	libgdbm.so:databases/gdbm \
+		libaudio.so:audio/nas
 
+USES=		autoreconf
 GNU_CONFIGURE=	yes
-USE_AUTOTOOLS=	autoconf
 
 pre-configure:
 	@${CP} ${FILESDIR}/freebsdplay.c ${WRKSRC}/config/freebsdplay.c

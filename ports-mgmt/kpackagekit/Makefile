@@ -13,9 +13,9 @@ COMMENT=	KDE interface for PackageKit
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpackagekit-qt.so:${PORTSDIR}/ports-mgmt/packagekit-qt4
+LIB_DEPENDS=	libpackagekit-qt.so:ports-mgmt/packagekit-qt4
 
-USE_KDE4=	automoc4 kdelibs kdeprefix
+USE_KDE4=	automoc4 kdelibs
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 USES=		cmake gettext pkgconfig tar:bzip2
 LDFLAGS+=	-L${LOCALBASE}/lib

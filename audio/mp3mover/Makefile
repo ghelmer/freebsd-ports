@@ -10,11 +10,12 @@ MASTER_SITES=	SF/mediamover/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rename mp3s and manipulate them
 
-RUN_DEPENDS=	p5-tagged>=0:${PORTSDIR}/audio/p5-tagged
+RUN_DEPENDS=	p5-tagged>=0:audio/p5-tagged
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	mp3mover.pl
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 PLIST_FILES=	bin/mp3mover
 PORTDOCS=	*
@@ -27,6 +28,8 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/sample-.mp3moverrc ${STAGEDIR}${DATADIR}/
 	${INSTALL_DATA} ${WRKSRC}/shellperfect-.mp3moverrc ${STAGEDIR}${DATADIR}/
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/readme ${STAGEDIR}${DOCSDIR}/
 

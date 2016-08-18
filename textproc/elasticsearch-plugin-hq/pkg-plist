@@ -1,6 +1,3 @@
-lib/elasticsearch/plugins/HQ/_site/DEVELOPMENT.md
-lib/elasticsearch/plugins/HQ/_site/LICENSE.md
-lib/elasticsearch/plugins/HQ/_site/README.md
 lib/elasticsearch/plugins/HQ/_site/css/all.min.css
 lib/elasticsearch/plugins/HQ/_site/css/bootstrap-responsive.min.css
 lib/elasticsearch/plugins/HQ/_site/css/bootstrap-select.min.css
@@ -16,7 +13,6 @@ lib/elasticsearch/plugins/HQ/_site/font/fontawesome-webfont.eot
 lib/elasticsearch/plugins/HQ/_site/font/fontawesome-webfont.svg
 lib/elasticsearch/plugins/HQ/_site/font/fontawesome-webfont.ttf
 lib/elasticsearch/plugins/HQ/_site/font/fontawesome-webfont.woff
-lib/elasticsearch/plugins/HQ/_site/gruntfile.js
 lib/elasticsearch/plugins/HQ/_site/images/ajax-loader.gif
 lib/elasticsearch/plugins/HQ/_site/images/big-ajax-loader.gif
 lib/elasticsearch/plugins/HQ/_site/images/gettingstarted1.png
@@ -586,6 +582,10 @@ lib/elasticsearch/plugins/HQ/_site/js/lib/bootstrap/bootstrap.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/bootstrap/bootstrap.min.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/d3/d3.v3.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/d3/d3.v3.min.js
+lib/elasticsearch/plugins/HQ/_site/js/lib/elasticsearch/elasticsearch.jquery.js
+lib/elasticsearch/plugins/HQ/_site/js/lib/elasticsearch/elasticsearch.jquery.min.js
+lib/elasticsearch/plugins/HQ/_site/js/lib/elasticsearch/elasticsearch.js
+lib/elasticsearch/plugins/HQ/_site/js/lib/elasticsearch/elasticsearch.min.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/excanvas/excanvas.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/excanvas/excanvas.min.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/flot/jquery.flot.js
@@ -659,6 +659,7 @@ lib/elasticsearch/plugins/HQ/_site/js/lib/numeraljs/min/numeral.min.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/numeraljs/numeral.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/pnotify/jquery.pnotify.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/pnotify/jquery.pnotify.min.js
+lib/elasticsearch/plugins/HQ/_site/js/lib/pnotify/pnotify.min.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/prettify/prettify.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/prettify/prettify.min.js
 lib/elasticsearch/plugins/HQ/_site/js/lib/underscore/underscore-min.js
@@ -757,5 +758,4 @@ lib/elasticsearch/plugins/HQ/_site/js/view/rest/RESTView.js
 lib/elasticsearch/plugins/HQ/_site/js/view/settings/SettingsView.js
 lib/elasticsearch/plugins/HQ/_site/js/view/snapshot/SnapShotView.js
 lib/elasticsearch/plugins/HQ/_site/js/view/visual/VisualView.js
-lib/elasticsearch/plugins/HQ/_site/package.json
-lib/elasticsearch/plugins/HQ/_site/tpl/index.html
+lib/elasticsearch/plugins/HQ/plugin-descriptor.properties

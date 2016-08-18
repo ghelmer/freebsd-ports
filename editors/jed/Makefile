@@ -14,12 +14,12 @@ COMMENT=	SLang-based text editor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libslang.so:${PORTSDIR}/devel/libslang2
+LIB_DEPENDS=	libslang.so:devel/libslang2
 
 CONFLICTS=	jed-devel-[0-9]*
 
 OPTIONS_DEFINE=	X11 PERMS HOSTLOOKUP DOCS
-OPTIONS_DEFAULT=X11 HOSTLOOKUP DOCS
+OPTIONS_DEFAULT=X11 HOSTLOOKUP
 
 PERMS_DESC=	Respect permissions by Root
 HOSTLOOKUP_DESC=Look-up for hostname

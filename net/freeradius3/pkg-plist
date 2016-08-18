@@ -1,6 +1,7 @@
 @unexec different=0 ; for i in `find %D/%%EXAMPLESDIR%%/raddb/certs/ -type f -print | sed -e 's:^%D/%%EXAMPLESDIR%%/raddb/certs/::g'`; do if ! cmp -hsz %D/%%EXAMPLESDIR%%/raddb/certs/${i} %D/etc/raddb/certs/${i}; then different=1; break; fi; done; if [ ${different} -eq 0 ] && diff -rq --exclude=certs %D/%%EXAMPLESDIR%%/raddb %D/etc/raddb >/dev/null 2>&1; then rm -rf %D/etc/raddb; fi
 @unexec if [ -d %D/etc/raddb ]; then echo "You should remove %D/etc/raddb if you don't need it any more."; fi
 bin/dhcpclient
+bin/map_unit
 bin/rad_counter
 bin/radattr
 bin/radclient
@@ -23,6 +24,7 @@ include/freeradius/conffile.h
 include/freeradius/detail.h
 include/freeradius/event.h
 include/freeradius/features.h
+include/freeradius/freeradius.h
 include/freeradius/hash.h
 include/freeradius/heap.h
 include/freeradius/libradius.h
@@ -39,11 +41,44 @@ include/freeradius/radiusd.h
 include/freeradius/radpaths.h
 include/freeradius/radutmp.h
 include/freeradius/realms.h
+include/freeradius/rfc2865.h
+include/freeradius/rfc2866.h
+include/freeradius/rfc2867.h
+include/freeradius/rfc2868.h
+include/freeradius/rfc2869.h
+include/freeradius/rfc3162.h
+include/freeradius/rfc3576.h
+include/freeradius/rfc3580.h
+include/freeradius/rfc4072.h
+include/freeradius/rfc4372.h
+include/freeradius/rfc4603.h
+include/freeradius/rfc4675.h
+include/freeradius/rfc4679.h
+include/freeradius/rfc4818.h
+include/freeradius/rfc4849.h
+include/freeradius/rfc5090.h
+include/freeradius/rfc5176.h
+include/freeradius/rfc5447.h
+include/freeradius/rfc5580.h
+include/freeradius/rfc5607.h
+include/freeradius/rfc5904.h
+include/freeradius/rfc6519.h
+include/freeradius/rfc6572.h
+include/freeradius/rfc6677.h
+include/freeradius/rfc6911.h
+include/freeradius/rfc6929.h
+include/freeradius/rfc6930.h
+include/freeradius/rfc7055.h
+include/freeradius/rfc7155.h
+include/freeradius/rfc7268.h
+include/freeradius/rfc7499.h
 include/freeradius/sha1.h
 include/freeradius/stats.h
 include/freeradius/sysutmp.h
 include/freeradius/token.h
+include/freeradius/tls.h
 include/freeradius/udpfromto.h
+include/freeradius/vqp.h
 %%LIBDIR%%/libfreeradius-dhcp.a
 %%LIBDIR%%/libfreeradius-dhcp.la
 %%LIBDIR%%/libfreeradius-dhcp.so
@@ -418,6 +453,10 @@ sbin/radmin
 %%PORTDOCS%%%%DOCSDIR%%/rfc/rfc6911.txt
 %%PORTDOCS%%%%DOCSDIR%%/rfc/rfc6929.txt
 %%PORTDOCS%%%%DOCSDIR%%/rfc/rfc6930.txt
+%%PORTDOCS%%%%DOCSDIR%%/rfc/rfc7055.txt
+%%PORTDOCS%%%%DOCSDIR%%/rfc/rfc7268.txt
+%%PORTDOCS%%%%DOCSDIR%%/rfc/rfc7542.txt
+%%PORTDOCS%%%%DOCSDIR%%/rfc/rfc7599.txt
 %%PORTDOCS%%%%DOCSDIR%%/schemas/ldap/edir/freeradius-clients.ldif
 %%PORTDOCS%%%%DOCSDIR%%/schemas/ldap/iplanet/freeradius.ldif
 %%PORTDOCS%%%%DOCSDIR%%/schemas/ldap/iplanet/freeradius.schema
@@ -427,7 +466,10 @@ sbin/radmin
 %%PORTDOCS%%%%DOCSDIR%%/schemas/ldap/openldap/freeradius.schema
 %%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/README
 %%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/radius-mapping.sh
-%%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/radius.conf
+%%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/kibana3-dashboard.json
+%%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/kibana4-dashboard.json
+%%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/log-courier.conf
+%%PORTDOCS%%%%DOCSDIR%%/schemas/logstash/logstash-radius.conf
 %%PORTDOCS%%%%DOCSDIR%%/schemas/sql
 %%PORTDOCS%%%%DOCSDIR%%/vendor/ascend
 %%PORTDOCS%%%%DOCSDIR%%/vendor/bay
@@ -707,6 +749,7 @@ sbin/radmin
 %%DATADIR%%/dictionary.bay
 %%DATADIR%%/dictionary.bintec
 %%DATADIR%%/dictionary.bluecoat
+%%DATADIR%%/dictionary.boingo
 %%DATADIR%%/dictionary.bristol
 %%DATADIR%%/dictionary.broadsoft
 %%DATADIR%%/dictionary.brocade
@@ -754,6 +797,7 @@ sbin/radmin
 %%DATADIR%%/dictionary.garderos
 %%DATADIR%%/dictionary.gemtek
 %%DATADIR%%/dictionary.h3c
+%%DATADIR%%/dictionary.hillstone
 %%DATADIR%%/dictionary.hp
 %%DATADIR%%/dictionary.huawei
 %%DATADIR%%/dictionary.iana
@@ -767,11 +811,13 @@ sbin/radmin
 %%DATADIR%%/dictionary.karlnet
 %%DATADIR%%/dictionary.kineto
 %%DATADIR%%/dictionary.lancom
+%%DATADIR%%/dictionary.lantronix
 %%DATADIR%%/dictionary.livingston
 %%DATADIR%%/dictionary.localweb
 %%DATADIR%%/dictionary.lucent
 %%DATADIR%%/dictionary.manzara
 %%DATADIR%%/dictionary.meinberg
+%%DATADIR%%/dictionary.meraki
 %%DATADIR%%/dictionary.merit
 %%DATADIR%%/dictionary.meru
 %%DATADIR%%/dictionary.microsoft
@@ -877,21 +923,6 @@ sbin/radmin
 %%DATADIR%%/dictionary.zeus
 %%DATADIR%%/dictionary.zte
 %%DATADIR%%/dictionary.zyxel
-@dirrm include/freeradius
-@dirrm %%LIBDIR%%
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/concepts
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/configuration
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/deployment
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/developer
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/modules
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/rfc
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/schemas/ldap/edir
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/schemas/ldap/iplanet
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/schemas/ldap/openldap
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/schemas/ldap
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/schemas
-%%PORTDOCS%%@dirrm %%DOCSDIR%%/vendor
-%%PORTDOCS%%@dirrm %%DOCSDIR%%
 @exec if ! [ -d %D/etc/raddb -o -L %D/etc/raddb ]; then cp -RP %D/%%EXAMPLESDIR%%/raddb %D/etc/raddb; echo '===> Bootstrapping default certificates, please wait...'; %D/etc/raddb/certs/bootstrap >/dev/null 2>&1; fi
 @exec chmod -R g-w,o-rwx %D/etc/raddb
 @exec if [ ! -d /var/log/radacct ]; then mkdir -p /var/log/radacct; chmod -R go= /var/log/radacct; fi

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	elasticsearch
-PORTVERSION=	1.7.1
+PORTVERSION=	1.7.5
 CATEGORIES=	textproc java devel
 MASTER_SITES=	http://download.elasticsearch.org/${PORTNAME}/${PORTNAME}/ \
 		http://mirrors.rit.edu/zi/
@@ -12,7 +12,9 @@ COMMENT=	Full-text search engine for Java
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	java-sigar>=0:${PORTSDIR}/java/sigar
+RUN_DEPENDS=	java-sigar>=0:java/sigar
+
+CONFLICTS=	elasticsearch2-[0-9]*
 
 USES=		cpe
 NO_ARCH=	yes

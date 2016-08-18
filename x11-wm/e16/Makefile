@@ -2,23 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	e16
-PORTVERSION=	1.0.16
+PORTVERSION=	1.0.17
 CATEGORIES=	x11-wm enlightenment
 MASTER_SITES=	SF/enlightenment/${PORTNAME}/${PORTVERSION}/
 
-MAINTAINER=	enlightenment@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Enlightenment DR16 window manager
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libImlib2.so:${PORTSDIR}/graphics/imlib2
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 OPTIONS_DEFINE=		DOCS NLS SOUND
 OPTIONS_SUB=		yes
 SOUND_DESC=		Sound support via pulseaudio/libsndfile
-SOUND_LIB_DEPENDS=	libpulse.so:${PORTSDIR}/audio/pulseaudio \
-    			libsndfile.so:${PORTSDIR}/audio/libsndfile
+SOUND_LIB_DEPENDS=	libpulse.so:audio/pulseaudio \
+			libsndfile.so:audio/libsndfile
 SOUND_CONFIGURE_ON=	--enable-sound \
 			--enable-sound-pulse \
 			--with-sndldr=sndfile

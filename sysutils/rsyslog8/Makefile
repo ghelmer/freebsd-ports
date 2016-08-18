@@ -1,26 +1,25 @@
 # $FreeBSD$
 
 PORTNAME=	rsyslog
-PORTVERSION=	8.11.0
+PORTVERSION=	8.19.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.rsyslog.com/files/download/rsyslog/
 
 MAINTAINER=	brd@FreeBSD.org
 COMMENT=	Syslogd supporting SQL, TCP, and TLS
 
-BUILD_DEPENDS=	libgcrypt-config:${PORTSDIR}/security/libgcrypt \
-		rst2man:${PORTSDIR}/textproc/py-docutils
+BUILD_DEPENDS=	libgcrypt-config:security/libgcrypt \
+		rst2man:textproc/py-docutils
 
-LIB_DEPENDS=	libee.so:${PORTSDIR}/devel/libee \
-		libestr.so:${PORTSDIR}/devel/libestr \
-		libjson-c.so:${PORTSDIR}/devel/json-c \
-		liblogging-stdlog.so:${PORTSDIR}/devel/liblogging \
-		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
+LIB_DEPENDS=	libee.so:devel/libee \
+		libestr.so:devel/libestr \
+		libfastjson.so:devel/libfastjson \
+		liblogging-stdlog.so:devel/liblogging \
+		libuuid.so:misc/e2fsprogs-libuuid
 
 USE_LDCONFIG=	yes
 
 PORTSCOUT=	limit:^8\.
-PKGNAMESUFFIX=	8
 
 OPTIONS_DEFINE=	DBI DOCS GNUTLS GSSAPI MYSQL PGSQL RELP SNMP \
 		NORMALIZE
@@ -36,12 +35,12 @@ NORMALIZE_DESC=	Message normalization module for rsyslog
 
 USES=		libtool pkgconfig autoreconf
 
-DBI_LIB_DEPENDS=	libdbi.so:${PORTSDIR}/databases/libdbi
+DBI_LIB_DEPENDS=	libdbi.so:databases/libdbi
 DBI_CONFIGURE_ENABLE=	libdbi
 DBI_PLIST_FILES=	lib/rsyslog/omlibdbi.so
 
-GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
-			libgcrypt.so:${PORTSDIR}/security/libgcrypt
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls \
+			libgcrypt.so:security/libgcrypt
 GNUTLS_CONFIGURE_ENABLE=gnutls
 GNUTLS_PLIST_FILES=	lib/rsyslog/lmnsd_gtls.so
 
@@ -58,16 +57,16 @@ PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ENABLE=	pgsql
 PGSQL_PLIST_FILES=	lib/rsyslog/ompgsql.so
 
-RELP_LIB_DEPENDS=	librelp.so:${PORTSDIR}/devel/librelp
+RELP_LIB_DEPENDS=	librelp.so:devel/librelp
 RELP_CONFIGURE_ENABLE=	relp
 RELP_PLIST_FILES=	lib/rsyslog/imrelp.so \
 			lib/rsyslog/omrelp.so
 
-SNMP_LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_CONFIGURE_ENABLE=	snmp
 SNMP_PLIST_FILES=	lib/rsyslog/omsnmp.so
 
-NORMALIZE_LIB_DEPENDS=	liblognorm.so:${PORTSDIR}/devel/liblognorm
+NORMALIZE_LIB_DEPENDS=	liblognorm.so:devel/liblognorm
 NORMALIZE_CONFIGURE_ENABLE=	mmnormalize
 NORMALIZE_PLIST_FILES=	lib/rsyslog/mmnormalize.so
 

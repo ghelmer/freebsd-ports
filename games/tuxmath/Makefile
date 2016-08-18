@@ -14,7 +14,11 @@ DISTFILES=	${PORTNAME}_w_fonts-${PORTVERSION}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Educational arcade game starring Tux
 
-LICENSE=	GPLv3 # (or later)
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/COPYING_GPL3
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_w_fonts-${PORTVERSION}

@@ -15,4 +15,8 @@ USE_LDCONFIG=	yes
 
 IGNORE_FreeBSD=		is now contained in the base system
 
-.include <bsd.port.mk>
+.if ${OPSYS} == FreeBSD
+IGNORE=		is now contained in the base system
+.endif
+
+.include <bsd.port.post.mk>

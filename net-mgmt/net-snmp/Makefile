@@ -3,7 +3,7 @@
 
 PORTNAME=	snmp
 PORTVERSION=	5.7.3
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	net-mgmt ipv6
 MASTER_SITES=	SF/net-${PORTNAME}/net-${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	net-
@@ -16,8 +16,8 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 OPTIONS_DEFINE=	IPV6 MFD_REWRITES PERL PERL_EMBEDDED PYTHON DUMMY TKMIB \
-		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL
-OPTIONS_DEFAULT=IPV6 PERL PERL_EMBEDDED DUMMY SMUX
+		MYSQL AX_SOCKONLY UNPRIVILEGED SMUX DOCS JAIL AX_DISABLE_TRAP
+OPTIONS_DEFAULT=PERL PERL_EMBEDDED DUMMY SMUX
 
 MFD_REWRITES_DESC=	Build with 64-bit Interface Counters
 PERL_EMBEDDED_DESC=	Build embedded perl
@@ -25,6 +25,7 @@ DUMMY_DESC=		Enable dummy values as placeholders
 TKMIB_DESC=		Install graphical MIB browser
 #DMALLOC_DESC=		Enable dmalloc debug memory allocator
 AX_SOCKONLY_DESC=	Disable UDP/TCP transports for agentx
+AX_DISABLE_TRAP_DESC=	Disable agentx subagent code in snmptrapd
 UNPRIVILEGED_DESC=	Allow unprivileged users to execute net-snmp
 SMUX_DESC=		Build with SNMP multiplexing (SMUX) support
 JAIL_DESC=		Options for running snmpd within a jail(8)
@@ -37,7 +38,7 @@ GNU_CONFIGURE=	yes
 USE_RC_SUBR=	snmpd snmptrapd
 USE_OPENSSL=	yes
 USE_LDCONFIG=	yes
-USES=		cpe perl5 libtool
+USES=		cpe libtool perl5
 CPE_VENDOR=	net-snmp
 USE_PERL5=	build run
 USE_CSTD=	c99
@@ -69,8 +70,8 @@ CONFIGURE_ARGS+=--with-defaults
 PYDISTUTILS_PKGNAME?=		netsnmp-python
 PYDISTUTILS_PKGVERSION?=	1.0a1
 USES+=		python
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:${PORTSDIR}/devel/py-setuptools${PYTHON_SUFFIX}
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:${PORTSDIR}/devel/py-setuptools${PYTHON_SUFFIX}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:devel/py-setuptools${PYTHON_SUFFIX}
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}setuptools${PYTHON_SUFFIX}>0:devel/py-setuptools${PYTHON_SUFFIX}
 CONFIGURE_ARGS+=--with-python-modules
 CONFIGURE_ENV+=	PYTHONPROG="${PYTHON_CMD}"
 MAKE_ENV+=	PYDISTUTILS_INSTALLARGS="${PYDISTUTILS_INSTALLARGS}" STAGEDIR="${STAGEDIR}"
@@ -87,10 +88,10 @@ CONFIGURE_ARGS+=--with-dummy-values
 .endif
 
 .if ! ${PORT_OPTIONS:MTKMIB}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-local:Makefile.in
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-local_Makefile.in
 PLIST_SUB+=	WITH_TKMIB="@comment "
 .else
-RUN_DEPENDS+=	p5-Tk>=0:${PORTSDIR}/x11-toolkits/p5-Tk
+RUN_DEPENDS+=	p5-Tk>=0:x11-toolkits/p5-Tk
 PLIST_SUB+=	WITH_TKMIB=""
 .endif
 
@@ -112,7 +113,7 @@ PLIST_SUB+=	WITH_PERL="@comment "
 .endif
 
 #.if ${PORT_OPTIONS:MDMALLOC}
-#LIB_DEPENDS+=	libdmalloc.so:${PORTSDIR}/devel/dmalloc
+#LIB_DEPENDS+=	libdmalloc.so:devel/dmalloc
 #CONFIGURE_ARGS+=--with-dmalloc=${LOCALBASE}
 #.else
 #CONFIGURE_ARGS+=--without-dmalloc
@@ -122,6 +123,10 @@ PLIST_SUB+=	WITH_PERL="@comment "
 USE_MYSQL=	yes
 CONFIGURE_ARGS+=--with-mysql
 CONFIGURE_ENV+=	MYSQLCONFIG=${LOCALBASE}/bin/mysql_config
+.endif
+
+.if ${PORT_OPTIONS:MAX_DISABLE_TRAP}
+CONFIGURE_ARGS+=--disable-snmptrapd-subagent
 .endif
 
 .if ${PORT_OPTIONS:MAX_SOCKONLY}
@@ -157,7 +162,7 @@ CFLAGS+=	-D_WANT_IFADDR
 .endif
 
 .if ${OSVERSION} >= 1100062
-CONFIGURE_ARGS+=	--with-out-mib-modules="mibII/ipv6"
+NET_SNMP_WITHOUT_MIB_MODULE_LIST+=	mibII/ipv6
 .endif
 
 .if ${PORT_OPTIONS:MMFD_REWRITES}
@@ -210,7 +215,7 @@ CONFLICTS=	ucd-snmp-4.* net-snmp-5.3.*
 
 .include <bsd.port.pre.mk>
 
-.if defined(WITH_OPENSSL_PORT) || defined(OPENSSL_PORT)
+.if ${SSL_DEFAULT} != base
 LCRYPTO=	-lcrypto
 .else
 LCRYPTO=
@@ -274,12 +279,13 @@ post-build:
 .endif
 
 post-install: strip-files install-config-files install-doc-files
-	@${MKDIR} ${STAGEDIR}/var/agentx
+	@${MKDIR} ${STAGEDIR}/var/agentx ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmp.so.${SHLIB_VERSION} libnetsnmp.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmpagent.so.${SHLIB_VERSION} libnetsnmpagent.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmphelpers.so.${SHLIB_VERSION} libnetsnmphelpers.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmpmibs.so.${SHLIB_VERSION} libnetsnmpmibs.so)
 	@(cd ${STAGEDIR}${PREFIX}/lib && ${LN} -sf libnetsnmptrapd.so.${SHLIB_VERSION} libnetsnmptrapd.so)
+	${INSTALL_DATA} ${FILESDIR}/net-snmp.conf ${STAGEDIR}${PREFIX}/etc/newsyslog.conf.d/
 
 strip-files:
 	(cd ${STAGEDIR}${PREFIX}/bin; ${STRIP_CMD} ${BIN_FILES})

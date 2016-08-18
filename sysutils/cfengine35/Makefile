@@ -9,13 +9,14 @@ MASTER_SITES=	https://s3.amazonaws.com/cfengine.package-repos/tarballs/
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port
+#		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
 
 LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	35
@@ -23,7 +24,7 @@ PKGNAMESUFFIX=	35
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-[234]*
+CONFLICTS=	cfengine-[2346-9]*
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 
@@ -55,12 +56,12 @@ OPTIONS_DEFAULT=TOKYOCABINET
 
 .if ${PORT_OPTIONS:MTOKYOCABINET}
 CONFIGURE_ARGS+=	--with-tokyocabinet=${LOCALBASE}
-LIB_DEPENDS+=	libtokyocabinet.so:${PORTSDIR}/databases/tokyocabinet
+LIB_DEPENDS+=	libtokyocabinet.so:databases/tokyocabinet
 .endif
 
 .if ${PORT_OPTIONS:MQDBM}
 CONFIGURE_ARGS+=	--with-qdbm=${LOCALBASE}
-LIB_DEPENDS+=	libqdbm.so:${PORTSDIR}/databases/qdbm
+LIB_DEPENDS+=	libqdbm.so:databases/qdbm
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
@@ -71,13 +72,13 @@ CONFIGURE_ARGS+=	--with-postgresql=${LOCALBASE}
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=		yes
 CONFIGURE_ARGS+=	--with-mysql=${LOCALBASE}
-LIB_DEPENDS+=		libmysqlclient.so:${PORTSDIR}/${_MYSQL_CLIENT}
+LIB_DEPENDS+=		libmysqlclient.so:${_MYSQL_CLIENT}
 LDFLAGS+=		-L${LOCALBASE}/lib/mysql
 .endif
 
 .if ${PORT_OPTIONS:MLIBVIRT}
 CONFIGURE_ARGS+=	--with-libvirt=${LOCALBASE}
-LIB_DEPENDS+=		libvirt.so:${PORTSDIR}/devel/libvirt
+LIB_DEPENDS+=		libvirt.so:devel/libvirt
 .endif
 
 .include <bsd.port.mk>

@@ -10,8 +10,8 @@ COMMENT=	Apache module that provides the country code of the client IP
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	GeoIP>=1.4.4:${PORTSDIR}/net/GeoIP
-RUN_DEPENDS=	GeoIP>=1.4.4:${PORTSDIR}/net/GeoIP
+BUILD_DEPENDS=	GeoIP>=1.4.4:net/GeoIP
+RUN_DEPENDS=	GeoIP>=1.4.4:net/GeoIP
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	maxmind
@@ -22,8 +22,6 @@ AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 AP_INC+=	${LOCALBASE}/include
 AP_LIB+=	${LOCALBASE}/lib -lGeoIP
-
-WRKSRC=		${WRKDIR}/geoip-api-${PORTNAME}-${PORTVERSION}
 
 SUB_FILES+=	pkg-message
 PORTDOCS=	Changes INSTALL.md README.md README.php

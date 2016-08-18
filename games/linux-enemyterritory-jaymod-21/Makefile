@@ -5,16 +5,13 @@ PORTNAME=	jaymod
 PORTVERSION=	2.1.7
 PORTREVISION=	4
 CATEGORIES=	games linux
-MASTER_SITES=	http://etmod.googlecode.com/files/ \
-		http://www.zenenterprises.biz/bud/jaymod/ \
-		http://bud.zenenterprises.biz/jaymod/ \
-		http://et.lsdfunweb.fr/et/jaymod/
+MASTER_SITES=	https://storage.googleapis.com/google-code-archive-downloads/v1/code.google.com/etmod/
 PKGNAMEPREFIX=	linux-enemyterritory-
 
 MAINTAINER=	bar@FreeBSD.org
 COMMENT=	Jaymod - An Enemy Territory Modification
 
-RUN_DEPENDS=	et:${PORTSDIR}/games/linux-enemyterritory
+RUN_DEPENDS=	et:games/linux-enemyterritory
 
 VERSTR=		${PORTVERSION:C/([0-9])\.([0-9])\.([0-9]+)/\1\2\3/}
 PKGNAMESUFFIX=	-${VERSTR}
@@ -22,7 +19,7 @@ PLIST_SUB=	VERSTR="${VERSTR}"
 
 USES=		shebangfix
 SHEBANG_FILES=	linux/convert_shrub
-perl_OLD_CMD=	/bin/env perl
+perl_OLD_CMD=	"/bin/env perl"
 USE_LINUX=	yes
 
 PORTSCOUT=	limit:^2\.1\.7
@@ -37,7 +34,7 @@ CLIENT_PK3=	${PORTNAME}-${PORTVERSION}.pk3
 PLIST_SUB+=	CLIENT_PK3="${CLIENT_PK3}"
 
 OB_VERSTR=	0660
-OMNIBOT_RUN_DEPENDS=	et-omni-bot-${OB_VERSTR}:${PORTSDIR}/games/linux-enemyterritory-omni-bot-${OB_VERSTR}
+OMNIBOT_RUN_DEPENDS=	et-omni-bot-${OB_VERSTR}:games/linux-enemyterritory-omni-bot-${OB_VERSTR}
 
 do-build:
 .for f in et etded

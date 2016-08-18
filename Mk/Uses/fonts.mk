@@ -51,11 +51,11 @@ IGNORE=	USES=fonts - invalid ARGS (${fonts_ARGS})
 .endif
 
 .if !empty(fonts_ARGS:Mfc) || !empty(fonts_ARGS:Mfcfontsdir)
-RUN_DEPENDS+=	fc-cache:${PORTSDIR}/x11-fonts/fontconfig
+RUN_DEPENDS+=	fc-cache:x11-fonts/fontconfig
 .endif
 .if !empty(fonts_ARGS:Mfontsdir) || !empty(fonts_ARGS:Mfcfontsdir)
-RUN_DEPENDS+=	mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
+RUN_DEPENDS+=	mkfontdir:x11-fonts/mkfontdir \
+		mkfontscale:x11-fonts/mkfontscale
 .endif
 
 FONTNAME?=	${PORTNAME}
@@ -64,6 +64,6 @@ FONTSDIR?=	${PREFIX}/share/fonts/${FONTNAME}
 PLIST_FILES+=	"@${fonts_ARGS} ${FONTSDIR}"
 .endif
 SUB_LIST+=	FONTSDIR="${FONTSDIR}"
-PLIST_SUB+=	FONTSDIR="${FONTSDIR}"
+PLIST_SUB+=	FONTSDIR="${FONTSDIR:S,^${PREFIX}/,,}"
 .endif
 

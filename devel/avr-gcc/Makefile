@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	gcc
-PORTVERSION=	4.8.3
-PORTREVISION=	1
+PORTVERSION=	4.9.3
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMEPREFIX=	avr-
@@ -14,13 +13,13 @@ COMMENT=	FSF GCC 4.x for Atmel AVR 8-bit RISC cross-development
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	avr-as:${PORTSDIR}/devel/avr-binutils \
-		avr-ld:${PORTSDIR}/devel/avr-binutils
-LIB_DEPENDS=	libmpfr.so:${PORTSDIR}/math/mpfr \
-		libgmp.so:${PORTSDIR}/math/gmp \
-		libmpc.so:${PORTSDIR}/math/mpc
-RUN_DEPENDS=	avr-as:${PORTSDIR}/devel/avr-binutils \
-		avr-ld:${PORTSDIR}/devel/avr-binutils
+BUILD_DEPENDS=	avr-as:devel/avr-binutils \
+		avr-ld:devel/avr-binutils
+LIB_DEPENDS=	libmpfr.so:math/mpfr \
+		libgmp.so:math/gmp \
+		libmpc.so:math/mpc
+RUN_DEPENDS=	avr-as:devel/avr-binutils \
+		avr-ld:devel/avr-binutils
 
 # DISTVERSION relates to downloads, GCC_VERSION and SUFFIX to names
 # of executables and directories once installed.  A PORTVERSION of
@@ -30,16 +29,10 @@ DISTVERSION=	${PORTVERSION:C/([0-9]+\.[0-9]+).*\.s([0-9]+)/\1-\2/}
 GCC_VERSION=	${PORTVERSION:C/(.+)\.s[0-9]{8}/\1/}
 SUFFIX=		${PORTVERSION:C/([0-9]+).([0-9]+).*/\1\2/}
 
-USES=		bison gettext gmake perl5 tar:bzip2 libtool
+USES=		bison gmake perl5 tar:bzip2 libtool
 USE_PERL5=	build
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
-
-.include <bsd.port.pre.mk>
-
-.if (${ARCH} == "amd64")
-ARCH=		x86_64
-.endif
 
 CONFLICTS=	avr-gcc-devel*
 
@@ -48,6 +41,17 @@ CONFIGURE_ARGS=	--target=avr --disable-libssp --with-gmp=${LOCALBASE} --enable-l
 WITHOUT_CPU_CFLAGS=This is a cross-compiler.
 
 INFO=		cpp gcc gccint cppinternals gccinstall
+
+OPTIONS_DEFINE=	NLS
+OPTIONS_SUB=	yes
+NLS_USES=	gettext
+NLS_CONFIGURE_ENABLE=	nls
+
+.include <bsd.port.pre.mk>
+
+.if (${ARCH} == "amd64")
+ARCH=		x86_64
+.endif
 
 post-configure:
 	${MKDIR} ${WRKSRC}/gcc/include

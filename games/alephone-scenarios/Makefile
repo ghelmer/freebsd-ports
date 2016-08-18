@@ -19,7 +19,7 @@ EXTRACT_ONLY=	#
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free scenarios for the Aleph One engine
 
-RUN_DEPENDS=	alephone:${PORTSDIR}/games/alephone
+RUN_DEPENDS=	alephone:games/alephone
 
 USES=		zip
 NO_BUILD=	yes
@@ -52,7 +52,7 @@ DATADIR!=	cd ${PORTSDIR}/games/alephone && ${MAKE} -V DATADIR
 
 .if ${PORT_OPTIONS:MEMR}
 . if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1000000
-EXTRACT_DEPENDS=gtar:${PORTSDIR}/archivers/gtar
+EXTRACT_DEPENDS=gtar:archivers/gtar
 TAR=		${LOCALBASE}/bin/gtar
 . endif
 EMR_FILE=	emr-3.0-0602.tgz
@@ -140,7 +140,7 @@ post-extract:
 
 pre-install:
 .for f in ${AO_PACKS}
-	@cd ${WRKSRC} && ${SED} -e 's|%%GAMEDIR%%|${f}|' wrapper > alephone-${f}
+	@cd ${WRKDIR} && ${SED} -e 's|%%GAMEDIR%%|${f}|' wrapper > alephone-${f}
 .endfor
 	@cd ${WRKSRC} && \
 		${FIND} . -type d -print0 | ${XARGS} -0 ${CHMOD} 755

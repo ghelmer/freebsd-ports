@@ -2,24 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	netcdf-cxx
-PORTVERSION=	4.2.1
+PORTVERSION=	4.3.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	science
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C++ library for machine-independent, array-oriented data access
 
-LIB_DEPENDS=	libnetcdf.so:${PORTSDIR}/science/netcdf
+LIB_DEPENDS=	libnetcdf.so:science/netcdf
 
 CONFLICTS=	netcdf-3.* netcdf-4.[0-2].*
 
-CPPFLAGS+=	-I${LOCALBASE}/include -fPIC -DPIC
+CPPFLAGS+=	-fPIC -DPIC
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
-USES=		libtool pathfix
+USES=		libtool localbase pathfix
 
 GH_ACCOUNT=	Unidata
 GH_PROJECT=	${PORTNAME}4

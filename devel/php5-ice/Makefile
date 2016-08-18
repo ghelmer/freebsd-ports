@@ -9,9 +9,9 @@ COMMENT=	Ice (Internet Communications Engine) language mapping for PHP
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	mcpp:${PORTSDIR}/devel/mcpp \
-		slice2php:${PORTSDIR}/devel/ice
-LIB_DEPENDS=	libIce.so.${LIB_VRS}:${PORTSDIR}/devel/ice
+BUILD_DEPENDS=	mcpp:devel/mcpp \
+		slice2php:devel/ice
+LIB_DEPENDS=	libIce.so.${LIB_VRS}:devel/ice
 
 OPTIONS_DEFINE=	DEBUG NAMESPACES
 OPTIONS_DEFAULT=
@@ -23,9 +23,8 @@ PLIST=		${.CURDIR}/pkg-plist
 
 MAKE_ARGS+=	PHP_EXT_DIR=${PHP_EXT_DIR} ICE_HOME=${LOCALBASE} \
 		PHP_HOME=${LOCALBASE} OPTIMIZE=yes
-USE_PHP=	yes
-USE_PHP_BUILD=	yes
-IGNORE_WITH_PHP=52
+USES+=	php:build
+IGNORE_WITH_PHP=70
 BUILD_WRKSRC=	${WRKSRC}/php
 INSTALL_WRKSRC=	${WRKSRC}/php
 

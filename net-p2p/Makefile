@@ -34,6 +34,7 @@
     SUBDIR += gnewtellium
     SUBDIR += gnunet
     SUBDIR += gnunet-gtk
+    SUBDIR += go-ethereum
     SUBDIR += gtk-gnutella
     SUBDIR += gtorrentviewer
     SUBDIR += hs-torrent
@@ -77,6 +78,7 @@
     SUBDIR += rtgui
     SUBDIR += rtorrent
     SUBDIR += shx
+    SUBDIR += sonarr
     SUBDIR += squall
     SUBDIR += torrentsniff
     SUBDIR += transmission

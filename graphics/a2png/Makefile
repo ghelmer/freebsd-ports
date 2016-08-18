@@ -3,14 +3,14 @@
 
 PORTNAME=	a2png
 PORTVERSION=	0.1.5
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Converts plain ASCII text into PNG bitmap images
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd
 
 USES=	tar:bzip2
 GNU_CONFIGURE=	yes

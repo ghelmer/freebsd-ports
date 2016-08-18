@@ -1,22 +1,26 @@
 # $FreeBSD$
 
 PORTNAME=	cmake
-PORTVERSION=	3.3.1
+PORTVERSION=	3.5.2
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://www.cmake.org/files/v3.3/
+MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
 PKGNAMESUFFIX=	-gui
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt-based GUI for CMake
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
-BUILD_DEPENDS=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libexpat.so:${PORTSDIR}/textproc/expat2
+BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libexpat.so:textproc/expat2 \
+		libjsoncpp.so:devel/jsoncpp
 
 USE_QT5=	core gui widgets buildtools_build qmake_build
-USES=		cmake:run desktop-file-utils libarchive shared-mime-info
+USES=		cmake:run desktop-file-utils execinfo libarchive \
+		shared-mime-info
 CMAKE_ARGS=	-DBUILD_QtDialog:bool=on \
 		-DBUILD_CursesDialog:BOOL=OFF \
 		-DSPHINX_MAN:BOOL=ON \

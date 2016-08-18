@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	thunderbird
-DISTVERSION=	38.4.0
+DISTVERSION=	45.2.0
 CATEGORIES=	mail news net-im ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/linux-i686/en-US \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build3/linux-i686/en-US

@@ -3,6 +3,7 @@
 
 PORTNAME=	tcltls
 PORTVERSION=	1.6.7
+PORTREVISION=	1
 CATEGORIES=	devel tcl
 MASTER_SITES=	SF/tls/tls/${PORTVERSION}
 DISTNAME=	tls${PORTVERSION}-src
@@ -17,20 +18,16 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 OPTIONS_DEFINE=	DOCS
 
-USES+=		tcl
+USES+=		tcl:tea
 USE_OPENSSL=	yes
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--exec-prefix=${PREFIX} \
-		--with-tcl=${TCL_LIBDIR} \
-		--with-ssl-dir=${OPENSSLBASE}
+CONFIGURE_ARGS+=--with-ssl-dir=${OPENSSLBASE}
 
-TCLPKG=		tls${PORTVERSION}
-WRKSRC=		${WRKDIR}/${TCLPKG}
-PLIST_FILES=	include/tls.h \
-		lib/${TCLPKG}/libtls.so.1 \
-		lib/${TCLPKG}/pkgIndex.tcl \
-		lib/${TCLPKG}/tls.tcl
+WRKSRC=		${WRKDIR}/${TCL_PKG}
+PLIST_FILES=	lib/${TCL_PKG}/libtls.so.1 \
+		lib/${TCL_PKG}/pkgIndex.tcl \
+		lib/${TCL_PKG}/tls.tcl
 PORTDOCS=	*
+INSTALL_TARGET=	install-binaries install-doc
 
 post-patch:
 	${REINPLACE_CMD} -e \

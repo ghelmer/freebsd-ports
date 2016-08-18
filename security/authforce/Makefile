@@ -19,7 +19,7 @@ WRKSRC=		${WRKDIR}/${DISTNAME}
 USE_GITHUB=	yes
 GH_ACCOUNT=	zlandau
 
-USES=		ncurses readline tar:bzip2 
+USES=		ncurses readline tar:bzip2
 GNU_CONFIGURE=	yes
 
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -37,7 +37,7 @@ PLIST_FILES=	bin/authforce \
 
 OPTIONS_DEFINE=		CURL NLS
 
-CURL_LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_WITH=	curl
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls

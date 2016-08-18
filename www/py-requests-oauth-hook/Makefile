@@ -11,10 +11,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	This is an OAuth hook for py-requests
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests1>0:${PORTSDIR}/www/py-requests1 \
-		${PYTHON_PKGNAMEPREFIX}oauth2>0:${PORTSDIR}/net/py-oauth2
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests1>0:www/py-requests1 \
+		${PYTHON_PKGNAMEPREFIX}oauth2>0:net/py-oauth2
 
 USES=		python
 USE_PYTHON=	distutils autoplist

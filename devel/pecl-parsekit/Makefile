@@ -10,14 +10,12 @@ EXTRACT_SUFX=	.tgz
 DIST_SUBDIR=	PECL
 
 MAINTAINER=	dereckson@gmail.com
-COMMENT=	Extension for opcodes runtime analysis 
+COMMENT=	Extension for opcodes runtime analysis
 
 LICENSE=	PHP301
 
-USE_PHP=	yes
-USE_PHP_BUILD=	yes
-USE_PHPEXT=	yes
-IGNORE_WITH_PHP=	53 56
+USES=		php:ext
+IGNORE_WITH_PHP=	56 70
 
 CONFIGURE_ARGS=	--enable-parsekit
 CFLAGS+=	-I${LOCALBASE}/include

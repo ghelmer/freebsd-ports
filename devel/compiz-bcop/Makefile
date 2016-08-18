@@ -4,13 +4,14 @@
 PORTNAME=	compiz-bcop
 PORTVERSION=	0.8.8
 CATEGORIES=	devel x11-wm
-MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/
+MASTER_SITES=	http://releases.compiz.org/${PORTVERSION}/ \
+		http://BSDforge.com/projects/source/devel/compiz-bcop/
 
-MAINTAINER=	freebsd-ports@dan.me.uk
+MAINTAINER=	portmaster@bsdforge.com
 COMMENT=	Code generator for Compiz Fusion Plugins
 
-RUN_DEPENDS=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash \
-		${LOCALBASE}/bin/getopt:${PORTSDIR}/misc/getopt
+RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
+		${LOCALBASE}/bin/getopt:misc/getopt
 
 GNU_CONFIGURE=	yes
 

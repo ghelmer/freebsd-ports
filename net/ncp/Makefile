@@ -9,7 +9,7 @@ MASTER_SITES=	http://dl.fefe.de/ http://dl.mteege.de/fefe/
 MAINTAINER=	matthias@mteege.de
 COMMENT=	Fast file copy tool for LANs
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libowfat.a:${PORTSDIR}/devel/libowfat
+BUILD_DEPENDS=	${LOCALBASE}/lib/libowfat.a:devel/libowfat
 
 USES=		tar:bzip2
 
@@ -17,8 +17,6 @@ PLIST_FILES=	bin/ncp bin/npush bin/npoll man/man1/ncp.1.gz man/man1/npush.1.gz
 
 CFLAGS+=	-I${LOCALBASE}/include/libowfat -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|^CC=gcc|CC=${CC}|' \

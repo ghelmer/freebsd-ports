@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libvirt
-PORTVERSION=	1.2.19
+PORTVERSION=	1.3.5
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/python/ \
 		ftp://libvirt.org/libvirt/python/
@@ -14,15 +14,11 @@ COMMENT=	Python bindings for Libvirt virtualization API
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libvirt.so:${PORTSDIR}/devel/libvirt
+LIB_DEPENDS=	libvirt.so:devel/libvirt
 
 USES=	pkgconfig python shebangfix
 SHEBANG_FILES=	generator.py sanitytest.py setup.py
 USE_PYTHON=	distutils autoplist
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|"python"|"${PYTHON_CMD}"|g' \
-		${WRKSRC}/setup.py
 
 post-install:
 .for lib in libvirtmod libvirtmod_qemu libvirtmod_lxc

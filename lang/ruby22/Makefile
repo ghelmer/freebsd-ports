@@ -15,11 +15,15 @@ COMMENT?=	Object-oriented interpreted scripting language
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
+LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/BSDL
+LICENSE_FILE_RUBY=	${WRKSRC}/COPYING
+
+MAKE_JOBS_UNSAFE=	yes
 
 # Using LIB_DEPENDS finds the libffi from gcc which causes problems
-BUILD_DEPENDS=	libffi>=0:${PORTSDIR}/devel/libffi
-LIB_DEPENDS=	libyaml.so:${PORTSDIR}/textproc/libyaml
-RUN_DEPENDS=	libffi>=0:${PORTSDIR}/devel/libffi
+BUILD_DEPENDS=	libffi>=0:devel/libffi
+LIB_DEPENDS=	libyaml.so:textproc/libyaml
+RUN_DEPENDS=	libffi>=0:devel/libffi
 
 CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--disable-rpath \
@@ -34,16 +38,18 @@ GNU_CONFIGURE=	yes
 # Keep this, else ruby will fail to load libraries dependent of libpthread.
 LIBS+=		-lpthread -L${LOCALBASE}/lib
 MAKE_ENV=	LC_ALL=C
-USE_AUTOTOOLS=	autoconf
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
-USES=		cpe execinfo tar:xz
+USES=		autoreconf cpe execinfo tar:xz
 WRKSRC=		${RUBY_WRKSRC}
 
 RUBY_VER=		2.2
 USE_RUBY=		yes
 RUBY_NO_BUILD_DEPENDS=	yes
 RUBY_NO_RUN_DEPENDS=	yes
+
+NOT_FOR_ARCHS=	ia64
+NOT_FOR_ARCHS_REASON_ia64=	does not build
 
 OPTIONS_DEFINE=		CAPIDOCS DEBUG DOCS EXAMPLES GMP RDOC
 OPTIONS_DEFAULT=	RDOC LIBEDIT
@@ -56,18 +62,17 @@ RDOC_DESC=		Build and install Rdoc indexes
 EDIT_DESC=		Which line editing lib to use
 LIBEDIT_DESC=		Use libedit
 READLINE_DESC=		Use libreadline
-CAPIDOCS_BUILD_DEPENDS=	doxygen>0:${PORTSDIR}/devel/doxygen \
-			dot:${PORTSDIR}/graphics/graphviz
+CAPIDOCS_BUILD_DEPENDS=	doxygen>0:devel/doxygen \
+			dot:graphics/graphviz
 CAPIDOCS_CONFIGURE_ENABLE=	install-capi
 GMP_CONFIGURE_WITH=	gmp
-GMP_LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
-LIBEDIT_BUILD_DEPENDS=	libedit>=0:${PORTSDIR}/devel/libedit
-LIBEDIT_CONFIGURE_ON=	--enable-libedit --with-libedit-prefix=${LOCALBASE}
-LIBEDIT_RUN_DEPENDS=	libedit>=0:${PORTSDIR}/devel/libedit
+GMP_LIB_DEPENDS=	libgmp.so:math/gmp
+LIBEDIT_CONFIGURE_ON=	--enable-libedit --with-libedit-dir=${LOCALBASE}
+LIBEDIT_USES=		libedit
 RDOC_CONFIGURE_ENABLE=	install-rdoc
-READLINE_BUILD_DEPENDS=	readline>=0:${PORTSDIR}/devel/readline
-READLINE_CONFIGURE_ON=	--disable-libedit --with-readline-prefix=${LOCALBASE}
-READLINE_RUN_DEPENDS=	readline>=0:${PORTSDIR}/devel/readline
+READLINE_BUILD_DEPENDS=	readline>=0:devel/readline
+READLINE_CONFIGURE_ON=	--disable-libedit --with-readline-dir=${LOCALBASE}
+READLINE_RUN_DEPENDS=	readline>=0:devel/readline
 
 CPE_VENDOR=	ruby-lang
 CPE_VERSION=	${RUBY_RELVERSION}
@@ -93,12 +98,13 @@ CONFIGURE_ARGS+=	--disable-dtrace
 .endif
 .endif
 
-.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
-CONFIGURE_ARGS+=	--with-setjmp-type=_setjmp
+.if ${ARCH} == "powerpc" || ${ARCH} == "powerpc64"
+USE_GCC=	4.9+
 .endif
 
-.if ${PORT_OPTIONS:MCAPIDOCS}
-MAKE_JOBS_UNSAFE=	yes
+.if ${ARCH} == "armv6" || ${ARCH} == "armv6hf"
+CONFIGURE_ARGS+=	--with-setjmp-type=_setjmp
+CONFIGURE_ENV+=	ac_cv_func__setjmp=yes
 .endif
 
 .if ${RUBY_VER} == ${RUBY_DEFAULT_VER}
@@ -138,20 +144,20 @@ post-patch:
 # Remove modules we don't want
 #
 .for d in win32ole
-	${RM} -rf ${BUILD_WRKSRC}/ext/${d}
+	@${RM} -rf ${BUILD_WRKSRC}/ext/${d}
 .endfor
 # We get rake from ports.
 .for d in bin/rake doc/rake lib/rake test/rake man/rake.1 lib/rake.rb
-	${RM} -rf ${BUILD_WRKSRC}/${d}
+	@${RM} -rf ${BUILD_WRKSRC}/${d}
 .endfor
 # We get the gem executable from ports.
-	${RM} ${BUILD_WRKSRC}/bin/gem
+	@${RM} ${BUILD_WRKSRC}/bin/gem
 
 #
 # Prepare modules we are wanting to build via external ports
 #
 .for d in gdbm tk
-	${MV} ${BUILD_WRKSRC}/ext/${d} ${WRKDIR}/
+	@${MV} ${BUILD_WRKSRC}/ext/${d} ${WRKDIR}/
 .endfor
 
 post-build:
@@ -166,7 +172,7 @@ post-build:
 	@${RB_SET_CONF_VAR} "INSTALL_DATA" "ENV['RB_USER_INSTALL'] ? '${INSTALL} ${COPY} -m ${SHAREMODE}' : '${INSTALL_DATA}'"
 
 post-build-CAPIDOCS-on:
-	${FIND} ${WRKSRC}/doc -type d -empty -delete
+	@${FIND} ${WRKSRC}/doc -type d -empty -delete
 
 pre-install:
 	${MKDIR} ${STAGEDIR}${RUBY_SITEARCHLIBDIR}
@@ -231,9 +237,9 @@ regression-test test:
 
 validate:
 	@${MKDIR} ${WRKSRC}/rubyspec
-	rm -rf ${WRKSRC}/rubyspec/*
+	${RM} -rf ${WRKSRC}/rubyspec/*
 	(cd ${WRKSRC}/rubyspec && git clone git://github.com/rubyspec/rubyspec.git)
 	(cd ${WRKSRC}/rubyspec && git clone git://github.com/rubyspec/mspec.git)
-	(cd ${WRKSRC}/rubyspec/rubyspec && env PATH=${WRKSRC}/rubyspec/mspec/bin:${PATH} mspec -t ${PREFIX}/bin/ruby${RUBY_SUFFIX} .)
+	(cd ${WRKSRC}/rubyspec/rubyspec && ${SETENV} PATH=${WRKSRC}/rubyspec/mspec/bin:${PATH} mspec -t ${PREFIX}/bin/ruby${RUBY_SUFFIX} .)
 
 .include <bsd.port.post.mk>

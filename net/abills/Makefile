@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	abills
-PORTVERSION=	0.55
-PORTREVISION=	1
+PORTVERSION=	0.59
 CATEGORIES=	net
 MASTER_SITES=	SF
 DIST_SUBDIR=	${PORTNAME}
@@ -14,13 +13,14 @@ COMMENT=	Billing system for dialup, VPN, and VoIP management
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	radiusd:${PORTSDIR}/net/freeradius2 \
-		p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql \
-		p5-Digest-MD4>=0:${PORTSDIR}/security/p5-Digest-MD4 \
-		p5-Digest-SHA1>=0:${PORTSDIR}/security/p5-Digest-SHA1 \
-		p5-Crypt-DES>=0:${PORTSDIR}/security/p5-Crypt-DES
+RUN_DEPENDS=	radiusd:net/freeradius2 \
+		p5-DBD-mysql>=0:databases/p5-DBD-mysql \
+		p5-Digest-MD4>=0:security/p5-Digest-MD4 \
+		p5-Digest-SHA1>=0:security/p5-Digest-SHA1 \
+		p5-Crypt-DES>=0:security/p5-Crypt-DES
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
+NO_ARCH=	yes
 NO_BUILD=	yes
 
 USES=		perl5 tar:tgz

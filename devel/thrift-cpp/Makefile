@@ -15,16 +15,15 @@ COMMENT=	C++ interface to Thrift
 
 DISTINFO_FILE=		${.CURDIR}/../thrift/distinfo
 
-LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
-		libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+		libevent.so:devel/libevent2
 
-USES=			autoreconf pkgconfig gmake compiler libtool
+USES=			autoreconf pkgconfig gmake compiler:c++11-lang libtool
 GNU_CONFIGURE=		yes
 USE_LDCONFIG=		yes
 MAKE_JOBS_UNSAFE=	yes
 PLIST_SUB=		PORTVERSION="${THRIFT_PORTVERSION}"
-BUILD_WRKSRC=		${WRKSRC}/lib/cpp
-INSTALL_WRKSRC=		${WRKSRC}/lib/cpp
+USE_OPENSSL=		yes
 
 OPTIONS_DEFINE=		QT4
 QT4_CONFIGURE_WITH=	qt4
@@ -43,9 +42,17 @@ CONFIGURE_ARGS+=	\
 		--without-php \
 		--without-php_extension \
 		--without-python \
-		--without-ruby
+		--without-ruby \
+		--without-go
 
 .include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT} == base && \
+	${OPSYS} == FreeBSD && ${OSVERSION} < 1000015
+# src/thrift/transport/TSSLSocket.cpp:147: error: 'TLSv1_1_method' was not declared in this scope
+# src/thrift/transport/TSSLSocket.cpp:149: error: 'TLSv1_2_method' was not declared in this scope
+BROKEN=		does not build with 9.x base OpenSSL
+.endif
 
 .if ${COMPILER_TYPE} == clang
 USE_CXXSTD=	c++11
@@ -55,12 +62,13 @@ post-patch:
 	@${REINPLACE_CMD} 's,^pkgconfigdir = .*,pkgconfigdir=$${prefix}/libdata/pkgconfig,' ${WRKSRC}/lib/cpp/Makefile.am
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so
 	${LN} -sf libthrift-${PORTVERSION}.so ${STAGEDIR}${PREFIX}/lib/libthrift.so.0
 	${LN} -sf libthriftnb-${PORTVERSION}.so ${STAGEDIR}${PREFIX}/lib/libthriftnb.so.0
 	${LN} -sf libthriftz-${PORTVERSION}.so ${STAGEDIR}${PREFIX}/lib/libthriftz.so.0
-.if ${PORT_OPTIONS:MQT4}
+
+post-install-QT4-on:
 	${LN} -sf libthriftqt-${PORTVERSION}.so ${STAGEDIR}${PREFIX}/lib/libthriftqt.so.0
-.endif
 
 .include "../thrift/bsd.thrift.mk"
 .include <bsd.port.post.mk>

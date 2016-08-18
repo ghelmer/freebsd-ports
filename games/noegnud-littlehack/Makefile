@@ -15,7 +15,11 @@ EXTRACT_ONLY=	${DISTNAME}_linux_src-minimal${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The noeGNUd UI for the LittleHack variation of Nethack
 
-RUN_DEPENDS=	noegnud-data>0:${PORTSDIR}/games/noegnud-data
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	noegnud-data>0:games/noegnud-data
 
 NOEGNUDVERSION=	${PORTNAME}-0.8.0
 USES=		bison tar:bzip2

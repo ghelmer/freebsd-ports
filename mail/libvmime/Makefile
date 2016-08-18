@@ -3,17 +3,17 @@
 
 PORTNAME=	libvmime
 PORTVERSION=	0.9.2.s20140721
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 
-MAINTAINER=	delphij@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	All-in-one Internet mail library
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls \
-		libgsasl.so:${PORTSDIR}/security/gsasl
+LIB_DEPENDS=	libgnutls.so:security/gnutls \
+		libgsasl.so:security/gsasl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	kisli

@@ -29,7 +29,7 @@ DOCFILES=	AUDIT BENCHMARKS BUGS Changelog FAQ INSTALL LICENSE \
 		SIZE SPEED TODO TUNING
 
 OPTIONS_DEFINE=	RC_SCRIPT VSFTPD_SSL DOCS
-OPTIONS_DEFAULT=RC_SCRIPT DOCS
+OPTIONS_DEFAULT=RC_SCRIPT
 RC_SCRIPT_DESC=	install RC_SCRIPT
 
 VSFTPD_SSL_DESC=Include support for SSL
@@ -42,7 +42,7 @@ CONFLICTS=	vsftpd-3* vsftpd${SSL_SUFFIX}${PKGNAMESUFFIX2}-3*
 .if exists(/usr/bin/clang)
 CC=		clang
 .else
-BUILD_DEPENDS+=	clang33:${PORTSDIR}/lang/clang33
+BUILD_DEPENDS+=	clang33:lang/clang33
 CC=		clang33
 .endif
 .endif
@@ -57,7 +57,7 @@ VSFTPD_NO_OPTIMIZED=	-e "s|-O2 ||"
 .endif
 
 .if ${PORT_OPTIONS:MVSFTPD_SSL} && !defined(WITHOUT_SSL)
-.include "${PORTSDIR}/Mk/bsd.openssl.mk"
+USES+=		ssl
 SSL_SUFFIX=	-ssl
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}

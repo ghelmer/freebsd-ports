@@ -9,7 +9,11 @@ MASTER_SITES=	# disappeared
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simplistic reader for SOUP (HDPF) mail and news packets
 
-RUN_DEPENDS=	zip:${PORTSDIR}/archivers/zip
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	zip:archivers/zip
 
 MAKEFILE=	src/Makefile
 

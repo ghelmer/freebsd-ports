@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	parrot
-PORTVERSION=	7.6.0
-PORTREVISION=	1
+PORTVERSION=	8.1.0
 CATEGORIES=	lang
 MASTER_SITES=	ftp://ftp.parrot.org/pub/parrot/releases/supported/${PORTVERSION}/ \
 		LOCAL/sunpoet
@@ -13,11 +12,11 @@ COMMENT=	Parrot - virtual machine for dynamic languages
 
 LICENSE=	ART20
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/flex:${PORTSDIR}/textproc/flex \
-		gm4:${PORTSDIR}/devel/m4 \
-		pcre-config:${PORTSDIR}/devel/pcre
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libicudata.so:${PORTSDIR}/devel/icu
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
+		gm4:devel/m4 \
+		pcre-config:devel/pcre
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libicudata.so:devel/icu
 
 OPTIONS_DEFINE=	DOCS
 
@@ -32,6 +31,7 @@ CONFIGURE_ARGS=	--cc=${CC} --cxx=${CXX} --link=${CXX} \
 		--yacc=${LOCALBASE}/bin/bison
 CONFIGURE_SCRIPT=	Configure.pl
 INSTALL_TARGET=	install-dev
+TEST_TARGET=	test
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 USES=		bison gmake perl5 shebangfix tar:bzip2
@@ -50,6 +50,7 @@ do-configure:
 	(cd ${WRKSRC} && ${PERL} ${CONFIGURE_SCRIPT} ${CONFIGURE_ARGS})
 
 post-install:
+	${RM} ${STAGEDIR}${PREFIX}/lib/inst_libparrot.so.${PORTVERSION}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* \
 		${STAGEDIR}${PREFIX}/lib/libparrot.so.${PORTVERSION} \
 		${STAGEDIR}${PREFIX}/lib/parrot/${PORTVERSION}/dynext/*.so

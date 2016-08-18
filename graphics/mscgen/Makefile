@@ -3,7 +3,7 @@
 
 PORTNAME=	mscgen
 PORTVERSION=	0.20
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.mcternan.me.uk/mscgen/software/ \
 		http://romain.blogreen.org/distfiles/
@@ -19,14 +19,14 @@ OPTIONS_DEFAULT=FREETYPE PNG
 
 .if ${PORT_OPTIONS:MFREETYPE}
 CONFIGURE_ARGS+=--with-freetype
-LIB_DEPENDS+=	libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS+=	libfreetype.so:print/freetype2
 .else
 CONFIGURE_ARGS+=--without-freetype
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
 CONFIGURE_ARGS+=--with-png
-LIB_DEPENDS+=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS+=	libgd.so:graphics/gd
 .else
 CONFIGURE_ARGS+=--without-png
 .endif

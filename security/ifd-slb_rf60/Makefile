@@ -11,7 +11,11 @@ DISTNAME=	${PORTNAME:S/^ifd-//}-drv-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PC/SC Lite driver for the Reflex 62 serial smart card reader
 
-LIB_DEPENDS=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
 USES=		gmake
 CFLAGS+=	-fPIC

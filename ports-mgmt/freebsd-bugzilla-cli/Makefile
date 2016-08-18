@@ -19,7 +19,7 @@ OPTIONS_DEFAULT=	PYBUGZ
 OPTIONS_SUB=	yes
 
 PYBUGZ_DESC=	use devel/pybugz for bugzilla interface
-PYBUGZ_RUN_DEPENDS=	bugz:${PORTSDIR}/devel/pybugz
+PYBUGZ_RUN_DEPENDS=	bugz:devel/pybugz
 
 DATADIR=	${PREFIX}/share/bz
 

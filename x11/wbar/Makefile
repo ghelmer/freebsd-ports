@@ -12,8 +12,8 @@ COMMENT=	Simple and highly customizable quick launch bar
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	intltool-update:${PORTSDIR}/textproc/intltool
-LIB_DEPENDS=	libImlib2.so:${PORTSDIR}/graphics/imlib2
+BUILD_DEPENDS=	intltool-update:textproc/intltool
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 CONFIGURE_ARGS=	--exec-prefix=${PREFIX}
 
@@ -23,7 +23,7 @@ GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	NLS WBARCONFIG
-OPTIONS_DEFAULT=	NLS WBARCONFIG
+OPTIONS_DEFAULT=	WBARCONFIG
 OPTIONS_SUB=	yes
 
 WBARCONFIG_DESC=	Build the GTK+ configuration interface
@@ -33,8 +33,6 @@ NLS_LIBS=	-lintl
 
 WBARCONFIG_CONFIGURE_ENABLE=	wbar-config
 WBARCONFIG_USE=		GNOME=libglade2
-
-WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PLIST_SUB+=	DESKTOPDIR=${DESKTOPDIR:S,${PREFIX}/,,}
 

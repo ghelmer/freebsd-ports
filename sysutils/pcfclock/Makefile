@@ -10,6 +10,10 @@ MASTER_SITES=	http://www-stud.ims.uni-stuttgart.de/~voegelas/pcfclock/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Userland access to the pcfclock device
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 USE_RC_SUBR=	pcfdate
 
 GNU_CONFIGURE=	yes

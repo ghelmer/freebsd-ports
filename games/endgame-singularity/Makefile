@@ -9,10 +9,10 @@ MASTER_SITES=	GOOGLE_CODE
 PKGNAMEPREFIX=	endgame-
 EXTRACT_SUFX=	-src.tar.gz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mokhi64@gmail.com
 COMMENT=	Simulates the life of a true AI
 
-RUN_DEPENDS=	py*-game>=1.8:${PORTSDIR}/devel/py-game \
+RUN_DEPENDS=	py*-game>=1.8:devel/py-game \
 		${PYNUMPY}
 
 USES=		python
@@ -25,7 +25,7 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=	MUSIC DOCS
 OPTIONS_DEFAULT=	MUSIC
 MUSIC_DESC=	Install original music pack
-MUSIC_RUN_DEPENDS=	endgame-singularity-music>=006:${PORTSDIR}/games/endgame-singularity-music
+MUSIC_RUN_DEPENDS=	endgame-singularity-music>=006:games/endgame-singularity-music
 
 post-extract:
 	@${FIND} ${WRKSRC} -name '*.pyc' -delete

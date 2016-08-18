@@ -9,6 +9,9 @@ MASTER_SITES=	http://codeconcepts.com/
 MAINTAINER=	greg@codeconcepts.com
 COMMENT=	Data integrity verifying disk exercising test tool
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 GNU_CONFIGURE=	yes
 USES=		gmake tar:bzip2
 

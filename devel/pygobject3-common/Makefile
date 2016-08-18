@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gobject
-PORTVERSION=	3.16.2
-PORTREVISION?=	0
+PORTVERSION=	3.18.2
+PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	GNOME/sources/pygobject/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMEPREFIX?=	py
@@ -36,8 +36,8 @@ MAKE_ARGS=	PYTHON_VERSION=${PYTHON_VER}
 .if ${SLAVE_PORT} == no
 PORTSCOUT?=	limitw:1,even
 
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:${PORTSDIR}/graphics/py-cairo
-USES+=		python:build
+BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
+USES+=		gnome python:build
 USE_GNOME=	glib20:build introspection:build
 NO_BUILD=	yes
 
@@ -47,23 +47,24 @@ do-install:
 		${STAGEDIR}${PREFIX}/include/pygobject-3.0/pygobject.h
 	${INSTALL_DATA} ${WRKSRC}/pygobject-3.0.pc \
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/pygobject-3.0.pc
-.else 
+.else
 PORTSCOUT=	ignore:1
 
+USES+=		gnome
 USE_GNOME+=	glib20 introspection
-LIB_DEPENDS+=	libffi.so:${PORTSDIR}/devel/libffi
-RUN_DEPENDS+=	pygobject3-common>=0:${PORTSDIR}/devel/pygobject3-common
+LIB_DEPENDS+=	libffi.so:devel/libffi
+RUN_DEPENDS+=	pygobject3-common>=0:devel/pygobject3-common
 
 .if ${SLAVE_PORT} == python2
 USES+=		python:2
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:${PORTSDIR}/graphics/py-cairo
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:${PORTSDIR}/graphics/py-cairo
+BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
+RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
 .endif
 
 .if ${SLAVE_PORT} == python3
 USES+=		python:3
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:${PORTSDIR}/graphics/py3-cairo
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:${PORTSDIR}/graphics/py3-cairo
+BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:graphics/py3-cairo
+RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:graphics/py3-cairo
 PLIST_SUB+=	PYTVER=${PYTHON_VER:S/.//}
 .endif
 
@@ -73,6 +74,13 @@ post-install:
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 3500
+PYOEXTENSION=	pyo
+.else
+PYOEXTENSION=	opt-1.pyc
+.endif
+PLIST_SUB+=	PYOEXTENSION=${PYOEXTENSION}
 
 UNAME_R!=	${UNAME} -r
 UNAME_M!=	${UNAME} -m

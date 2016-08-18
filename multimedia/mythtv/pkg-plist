@@ -10,7 +10,6 @@ bin/mythfrontend
 bin/mythhdhomerun_config
 bin/mythjobqueue
 bin/mythlcdserver
-bin/mythlogserver
 bin/mythmediaserver
 bin/mythmetadatalookup
 bin/mythpreviewgen
@@ -361,6 +360,7 @@ include/mythtv/metadata/globals.h
 include/mythtv/metadata/metadatacommon.h
 include/mythtv/metadata/metadatadownload.h
 include/mythtv/metadata/metadatafactory.h
+include/mythtv/metadata/metadatagrabber.h
 include/mythtv/metadata/metadataimagedownload.h
 include/mythtv/metadata/metadataimagehelper.h
 include/mythtv/metadata/metaio.h
@@ -432,7 +432,6 @@ include/mythtv/mythwidgets.h
 include/mythtv/mythwizard.h
 include/mythtv/netgrabbermanager.h
 include/mythtv/netutils.h
-include/mythtv/nzmqt/nzmqt.hpp
 include/mythtv/oldsettings.h
 include/mythtv/output.h
 include/mythtv/playgroup.h
@@ -490,9 +489,6 @@ include/mythtv/virtualkeyboard_qt.h
 include/mythtv/visual.h
 include/mythtv/volumebase.h
 include/mythtv/xmlparse.h
-include/mythtv/zeromq/zmq.h
-include/mythtv/zeromq/zmq.hpp
-include/mythtv/zeromq/zmq_utils.h
 %%BINDINGS%%%%SITE_PERL%%/IO/Socket/INET/MythTV.pm
 %%BINDINGS%%%%SITE_PERL%%/MythTV.pm
 %%BINDINGS%%%%SITE_PERL%%/MythTV/Channel.pm
@@ -622,10 +618,6 @@ lib/libmythmetadata-0.27.so
 lib/libmythmetadata-0.27.so.0
 lib/libmythmetadata-0.27.so.0.27
 lib/libmythmetadata-0.27.so.0.27.0
-lib/libmythnzmqt.so
-lib/libmythnzmqt.so.0
-lib/libmythnzmqt.so.0.27
-lib/libmythnzmqt.so.0.27.0
 lib/libmythpostproc.so
 lib/libmythpostproc.so.52
 lib/libmythpostproc.so.52.2.100
@@ -659,10 +651,6 @@ lib/libmythupnp-0.27.so
 lib/libmythupnp-0.27.so.0
 lib/libmythupnp-0.27.so.0.27
 lib/libmythupnp-0.27.so.0.27.0
-lib/libmythzmq.a
-lib/libmythzmq.so
-lib/libmythzmq.so.1
-lib/libmythzmq.so.1.0.1
 lib/mythtv/filters/libadjust.so
 lib/mythtv/filters/libbobdeint.so
 lib/mythtv/filters/libcrop.so
@@ -679,7 +667,6 @@ lib/mythtv/filters/libpostprocess.so
 lib/mythtv/filters/libquickdnr.so
 lib/mythtv/filters/libvflip.so
 lib/mythtv/filters/libyadif.so
-libdata/pkgconfig/libmythzmq.pc
 %%DATADIR%%/CDS_scpd.xml
 %%DATADIR%%/CMGR_scpd.xml
 %%DATADIR%%/MFEXML_scpd.xml
@@ -690,8 +677,8 @@ libdata/pkgconfig/libmythzmq.pc
 %%DATADIR%%/bindings/php/MythBackend.php
 %%DATADIR%%/bindings/php/MythBase.php
 %%DATADIR%%/bindings/php/MythFrontend.php
-%%DATADIR%%/bindings/php/MythTVChannel.php
 %%DATADIR%%/bindings/php/MythTV.php
+%%DATADIR%%/bindings/php/MythTVChannel.php
 %%DATADIR%%/bindings/php/MythTVProgram.php
 %%DATADIR%%/bindings/php/MythTVRecording.php
 %%DATADIR%%/bindings/php/MythTVStorageGroup.php
@@ -725,8 +712,8 @@ libdata/pkgconfig/libmythzmq.pc
 %%DATADIR%%/fonts/Tiresias Infofont Bold.ttf
 %%DATADIR%%/fonts/Tiresias Infofont Italic.ttf
 %%DATADIR%%/fonts/Tiresias Infofont.ttf
-%%DATADIR%%/fonts/tiresias_gpl3.txt
 %%DATADIR%%/fonts/texgyrechorus-mediumitalic.otf
+%%DATADIR%%/fonts/tiresias_gpl3.txt
 %%DATADIR%%/hardwareprofile/.gitignore
 %%DATADIR%%/hardwareprofile/MultipartPostHandler.py
 %%DATADIR%%/hardwareprofile/__init__.py
@@ -1091,6 +1078,8 @@ libdata/pkgconfig/libmythzmq.pc
 %%DATADIR%%/internetcontent/vimeo.py
 %%DATADIR%%/internetcontent/youtube.py
 %%DATADIR%%/locales/da_dk.xml
+%%DATADIR%%/locales/de_at.xml
+%%DATADIR%%/locales/de_ch.xml
 %%DATADIR%%/locales/de_de.xml
 %%DATADIR%%/locales/el_gr.xml
 %%DATADIR%%/locales/en_ca.xml
@@ -1755,6 +1744,8 @@ libdata/pkgconfig/libmythzmq.pc
 %%DATADIR%%/themes/default/keyboard/da_ui.xml
 %%DATADIR%%/themes/default/keyboard/de.xml
 %%DATADIR%%/themes/default/keyboard/de_ui.xml
+%%DATADIR%%/themes/default/keyboard/el.xml
+%%DATADIR%%/themes/default/keyboard/el_ui.xml
 %%DATADIR%%/themes/default/keyboard/en_gb.xml
 %%DATADIR%%/themes/default/keyboard/en_gb_ui.xml
 %%DATADIR%%/themes/default/keyboard/en_us.xml

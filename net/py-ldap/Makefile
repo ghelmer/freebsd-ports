@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	ldap
-PORTVERSION=	2.4.21
+PORTVERSION=	2.4.25
 CATEGORIES=	net python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,33 +13,25 @@ COMMENT=	LDAP module for python, for OpenLDAP2
 LICENSE=	PSFL
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asn1-modules>=0:${PORTSDIR}/devel/py-asn1-modules
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1-modules>0:devel/py-pyasn1-modules
 
+CONFLICTS_INSTALL=	py27-pyldap
 USES=		python:2
 USE_PYTHON=	autoplist distutils
-USE_OPENLDAP=		yes
+USE_OPENLDAP=	yes
 WANT_OPENLDAP_VER=	24
-
-REPLACE_ARGS=	-e 's,/opt/openldap-RE24/lib,${LOCALBASE}/lib,' \
-		-e 's,/opt/openldap-RE24/include,${LOCALBASE}/include,' \
-		-e 's,/usr/include/sasl,${LOCALBASE}/include/sasl,' \
-		-e 's,/usr/local,${LOCALBASE},'
 
 OPTIONS_DEFINE=	SASL
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSASL}
-WANT_OPENLDAP_SASL=	yes
-CONFLICTS+=		openldap24-client-2.*
-.endif
+SASL_VARS=	WANT_OPENLDAP_SASL=yes
+SASL_CONFLICTS=	openldap24-client-2.*
 
 do-configure:
-	@${REINPLACE_CMD} ${REPLACE_ARGS} ${WRKSRC}/setup.cfg
-.if ! ${PORT_OPTIONS:MSASL}
+	@${REINPLACE_CMD} -e 's,/usr/local,${LOCALBASE},' ${WRKSRC}/setup.cfg
+
+do-configure-SASL-off:
 	@cd ${WRKSRC} && ${PYTHON_CMD} setup.py -q setopt -c _ldap -s HAVE_TLS -o defines
 	@cd ${WRKSRC} && ${PYTHON_CMD} setup.py -q saveopts
-.endif
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_ldap.so

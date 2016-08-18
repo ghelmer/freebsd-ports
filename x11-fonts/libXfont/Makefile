@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	libXfont
-PORTVERSION=	1.4.9
+PORTVERSION=	1.5.1
 PORTEPOCH=	2
 CATEGORIES=	x11-fonts
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X font library
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 XORG_CAT=	lib
 USE_XORG=	xproto:both xtrans fontsproto:both fontenc

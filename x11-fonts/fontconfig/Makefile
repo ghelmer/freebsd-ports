@@ -1,10 +1,9 @@
 # Created by: Joe Marcus Clarke <marcus@FreeBSD.org>
 # $FreeBSD$
-#   $MCom: ports/trunk/x11-fonts/fontconfig/Makefile 18637 2013-07-27 09:15:21Z kwm $
 
 PORTNAME=	fontconfig
 PORTVERSION=	2.11.1
-PORTREVISION?=	0
+PORTREVISION?=	3
 PORTEPOCH?=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://www.freedesktop.org/software/fontconfig/release/
@@ -16,8 +15,8 @@ USES=		tar:bzip2
 
 .if !defined(REFERENCE_PORT)
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libexpat.so:${PORTSDIR}/textproc/expat2
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libexpat.so:textproc/expat2
 
 USES+=		gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
@@ -32,6 +31,11 @@ CONFIGURE_ARGS=	--with-configdir=${PREFIX}/etc/fonts/conf.d \
 		--with-cache-dir=/var/db/fontconfig \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--disable-docs
+
+# D6155: static linked library linking added to support statically linked
+# 	 applications, e.g. x11/xforward static option
+CONFIGURE_ARGS+= --enable-static
+
 MAKE_ENV=	LC_ALL=C
 PKGINSTALL=	${WRKDIR}/pkg-install
 INSTALL_TARGET=install-strip

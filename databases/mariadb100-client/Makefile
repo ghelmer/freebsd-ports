@@ -13,18 +13,14 @@ FILESDIR=	${.CURDIR}/files
 PATCHDIR=	${.CURDIR}/files
 PLIST=		${.CURDIR}/pkg-plist
 
-CONFLICTS_INSTALL=	mariadb5*-client-* \
-			mariadb10[1-9]-client-* \
-			mysql*-client-* \
-			percona*-client-*
-
 CMAKE_ARGS+=	-DWITHOUT_SERVER=1
 
 USE_LDCONFIG=	${PREFIX}/lib/mysql
 
 CLIENT_ONLY=	yes
 
-post-install:
+post-stage:
 	${RM} ${STAGEDIR}${PREFIX}/share/aclocal/mysql.m4
+	${RM} -rf ${STAGEDIR}${PREFIX}/include/mysql/private
 
 .include "${MASTERDIR}/Makefile"

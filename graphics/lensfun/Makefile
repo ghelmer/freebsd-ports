@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lensfun
-PORTVERSION=	0.3.0
+PORTVERSION=	0.3.2
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
@@ -11,15 +11,16 @@ COMMENT=	Library for fixing lens geometry distortions
 
 LICENSE=	LGPL3
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		cmake pkgconfig tar:bzip2
+USES=		cmake pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 CMAKE_ARGS=	-DBUILD_AUXFUN:BOOL=ON -DINSTALL_HELPER_SCRIPTS:BOOL=OFF
 
-post-patch:
-	@${REINPLACE_CMD} -e '/pkgconfig/s,$${LIBDIR},libdata,' \
-		${WRKSRC}/libs/lensfun/CMakeLists.txt
+OPTIONS_DEFINE=	SIMD
+OPTIONS_DEFAULT=	SIMD
+
+SIMD_CMAKE_OFF=	-DBUILD_FOR_SSE:BOOL=OFF -DBUILD_FOR_SSE2:BOOL=OFF
 
 .include <bsd.port.mk>

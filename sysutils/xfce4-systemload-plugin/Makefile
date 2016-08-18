@@ -13,7 +13,7 @@ COMMENT=	System Load plugin for Xfce4 panel
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libupower-glib.so:${PORTSDIR}/sysutils/upower
+LIB_DEPENDS=	libupower-glib.so:sysutils/upower
 
 SSP_UNSAFE=	yes
 GNU_CONFIGURE=	yes
@@ -23,7 +23,6 @@ USE_GNOME=	gtk20 intltool intlhack
 USE_XFCE=	panel
 
 OPTIONS_DEFINE= NLS
-OPTIONS_DEFAULT=NLS
 OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	MIME_Type
-PORTVERSION=	1.3.5
+PORTVERSION=	1.4.1
 CATEGORIES=	mail www pear
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -16,6 +16,6 @@ PEAR_SYSTEM_COMMAND_DESC=	PEAR::System_Command support
 USES=		pear
 NO_ARCH=	yes
 
-PEAR_SYSTEM_COMMAND_RUN_DEPENDS=	${PEARDIR}/System/Command.php:${PORTSDIR}/devel/pear-System_Command
+PEAR_SYSTEM_COMMAND_RUN_DEPENDS=	${PEARDIR}/System/Command.php:devel/pear-System_Command
 
 .include <bsd.port.mk>

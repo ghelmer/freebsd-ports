@@ -6,7 +6,7 @@ PORTVERSION=	2.8.8.2
 PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
-MASTER_SITES=	http://lynx.isc.org/current/ \
+MASTER_SITES=	http://invisible-mirror.net/archives/lynx/tarballs/ \
 		http://bitrote.org/distfiles/
 DISTNAME=	${PORTNAME}${PORTVERSION:R}rel.${PORTVERSION:E}
 
@@ -17,7 +17,7 @@ LICENSE=	GPLv2
 
 CONFLICTS=	lynx-2.8.[8-9]d*
 
-USES=		cpe shebangfix tar:bzip2
+USES=		cpe ncurses shebangfix tar:bzip2
 SHEBANG_FILES=	samples/mailto-form.pl
 USE_OPENSSL=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}2-8-8

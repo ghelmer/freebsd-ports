@@ -18,13 +18,12 @@ COMMENT=	Newsreader based on the S-Lang library
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libslang.so:${PORTSDIR}/japanese/libslang
+LIB_DEPENDS=	libslang.so:japanese/libslang
 
 CONFLICTS=	slrn-0.*
 
 GNU_CONFIGURE=	yes
 ALL_TARGET=	all slrnpull
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 JDOCSRC=	${WRKDIR}/${PORTNAME}-doc-j0.9.5.6-0
 
 MAKE_JOBS_UNSAFE=	yes

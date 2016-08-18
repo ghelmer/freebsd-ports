@@ -13,7 +13,7 @@ EXTRACT_SUFX=	.gz
 MAINTAINER=	ume@FreeBSD.org
 COMMENT=	X-Face utilities for Emacs 21 (and possibly 22)
 
-RUN_DEPENDS=	uncompface:${PORTSDIR}/mail/faces
+RUN_DEPENDS=	uncompface:mail/faces
 
 USE_EMACS=	yes
 
@@ -28,7 +28,7 @@ PLIST_FILES=	${EMACS_VERSION_SITE_LISPDIR}/${DISTNAME} \
 		${EMACS_VERSION_SITE_LISPDIR}/${DISTNAME}c
 
 do-build:
-	@cd ${WRKDIR} && ${EMACS_CMD} -batch -q -no-site-file -no-init-file \
+	@cd ${WRKSRC} && ${EMACS_CMD} -batch -q -no-site-file -no-init-file \
 		-f batch-byte-compile ${DISTNAME}
 
 do-install:

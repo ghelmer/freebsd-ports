@@ -14,10 +14,10 @@ COMMENT=	Embeds a Perl interpreter in the Apache server
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	p5-BSD-Resource>=0:${PORTSDIR}/devel/p5-BSD-Resource
+BUILD_DEPENDS=	p5-BSD-Resource>=0:devel/p5-BSD-Resource
 RUN_DEPENDS:=	${BUILD_DEPENDS}
-TEST_DEPENDS=	p5-CGI>=4.15:${PORTSDIR}/www/p5-CGI \
-		p5-libwww>=6.13:${PORTSDIR}/www/p5-libwww
+TEST_DEPENDS=	p5-CGI>=4.15:www/p5-CGI \
+		p5-libwww>=6.13:www/p5-libwww
 
 SUB_FILES=	pkg-message ${APMOD_FILE}
 SUB_LIST=	APACHEMODDIR=${APACHEMODDIR}
@@ -32,7 +32,7 @@ PLIST_SUB+=	APMOD_FILE=${APMOD_FILE}
 
 .include <bsd.port.pre.mk>
 
-.if ${PERL_VER} == 5.22
+.if ${PERL_VER} >= 5.22
 BROKEN=		PERL ${PERL_VER} is not supported by upstream,\
 		see http://svn.apache.org/viewvc/perl/modperl/trunk/README?view=markup
 .endif

@@ -2,30 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	harfbuzz
-PORTVERSION=	1.0.1
+PORTVERSION=	1.3.0
 CATEGORIES=	print
 MASTER_SITES=	http://www.freedesktop.org/software/harfbuzz/release/
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	OpenType text shaping engine
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libicudata.so:${PORTSDIR}/devel/icu \
-		libgraphite2.so:${PORTSDIR}/graphics/graphite2
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libicudata.so:devel/icu \
+		libgraphite2.so:graphics/graphite2
 
 USE_LDCONFIG=	yes
 USES=		gmake libtool pathfix pkgconfig tar:bzip2
-USE_GNOME=	cairo glib20
+USE_GNOME=	cairo glib20 introspection:build
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-graphite2
+CONFIGURE_ARGS=	--with-graphite2 --with-gobject=yes
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
-PLIST_SUB+=	LIBVER=0.10000.1
+PLIST_SUB+=	LIBVER=0.10300.0
 
-.include <bsd.port.pre.mk>
+EXTRA_PATCHES+=	${EXTRA_PATCHES_${OPSYS}_${OSREL:R}}
+EXTRA_PATCHES_FreeBSD_9=	${PATCHDIR}/extra-src_hb-open-type-private.hh
 
-.if ${OSVERSION} < 1000024
-EXTRA_PATCHES=	${PATCHDIR}/extra-src_hb-open-type-private.hh
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

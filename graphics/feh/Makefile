@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	feh
-PORTVERSION=	2.13.1
+PORTVERSION=	2.16.1
 CATEGORIES=	graphics
 MASTER_SITES=	http://feh.finalrewind.org/ \
 		LOCAL/uqs
@@ -13,8 +13,9 @@ COMMENT=	Image viewer that utilizes Imlib2
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libImlib2.so:${PORTSDIR}/graphics/imlib2
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libImlib2.so:graphics/imlib2 \
+		libpng16.so:graphics/png
 
 USE_XORG=	x11 xt xinerama
 USES=		cpe desktop-file-utils gmake perl5 shebangfix tar:bzip2

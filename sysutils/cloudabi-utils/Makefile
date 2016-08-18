@@ -2,46 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	cloudabi-utils
-PORTVERSION=	0.5
+PORTVERSION=	0.11
+DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils
-MASTER_SITES=	https://nuxi.nl/distfiles/cloudabi-utils/
 
 MAINTAINER=	ed@FreeBSD.org
 COMMENT=	Utilities for running CloudABI programs
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libyaml.so:${PORTSDIR}/textproc/libyaml
+BUILD_DEPENDS=	${LOCALBASE}/include/cloudabi_types.h:devel/cloudabi
+LIB_DEPENDS=	libyaml.so:textproc/libyaml
 
-ONLY_FOR_ARCHS=	amd64
+USE_GITHUB=	yes
+GH_ACCOUNT=	NuxiNL
+
+ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	CloudABI has not yet been ported to other architectures
 
-USES=		compiler:c11 tar:xz
+USES=		cmake compiler:c11 pkgconfig tar:xz
+USE_LDCONFIG=	yes
 
-PLIST_FILES=	bin/cloudabi-run \
-		libexec/cloudabi-reexec \
-		man/man1/cloudabi-run.1.gz
-
+CMAKE_ARGS=	-DCMAKE_INSTALL_MANDIR=man
 CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
-do-build:
-	@cd ${WRKSRC} && \
-		${SETENV} ${MAKE_ENV} \
-		PREBUILT_ARCH=x86_64 \
-		PREFIX=${PREFIX} \
-		${SH} build
-
-do-install:
-	@cd ${WRKSRC} && \
-		DESTDIR=${STAGEDIR} \
-		PREFIX=${PREFIX} \
-		${SH} install
 
 .include <bsd.port.pre.mk>
 
-.if ${OSVERSION} < 1000100
-IGNORE=		CloudABI will never support this version of FreeBSD
+.if ${OSVERSION} < 1001511
+IGNORE=		requires a recent implementation of Capsicum
 .endif
 
 .include <bsd.port.post.mk>

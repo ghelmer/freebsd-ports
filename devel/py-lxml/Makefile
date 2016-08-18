@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lxml
-PORTVERSION=	3.4.1
-PORTREVISION=	1
+PORTVERSION=	3.6.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,9 +11,10 @@ MAINTAINER=	wg@FreeBSD.org
 COMMENT=	Pythonic binding for the libxml2 and libxslt libraries
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/doc/licenses/BSD.txt
 
-LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2 \
-		libxslt.so:${PORTSDIR}/textproc/libxslt
+LIB_DEPENDS=	libxml2.so:textproc/libxml2 \
+		libxslt.so:textproc/libxslt
 
 USES=		python uniquefiles:dirs
 USE_PYTHON=	autoplist concurrent distutils
@@ -26,7 +26,7 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${DOCS_FILES:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 	@cd ${WRKSRC} && ${COPYTREE_SHARE} doc ${STAGEDIR}${DOCSDIR}

@@ -10,11 +10,11 @@ DISTFILES=	lll_spect.C lll_search.C examples.txt
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LLL-spectral test of linear congruential random number generators
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libntl.a:${PORTSDIR}/math/ntl
-RUN_DEPENDS=	${LOCALBASE}/lib/libntl.a:${PORTSDIR}/math/ntl
+BUILD_DEPENDS=	${LOCALBASE}/lib/libntl.a:math/ntl
+RUN_DEPENDS=	${LOCALBASE}/lib/libntl.a:math/ntl
 
 PLIST_FILES=	bin/lll_spect bin/lll_search
 PORTEXAMPLES=	examples.txt
@@ -27,18 +27,18 @@ OPTIONS_DEFINE=	EXAMPLES
 
 post-extract:
 .for _file in lll_spect lll_search
-	@${CP} ${_DISTDIR}/${_file}.C ${WRKDIR}
+	@${CP} ${_DISTDIR}/${_file}.C ${WRKSRC}
 .endfor
 
 do-build:
 .for _file in lll_spect lll_search
-	${CXX} ${CXXFLAGS} ${CPPFLAGS} -c -o ${WRKDIR}/${_file}.o ${WRKDIR}/${_file}.C
-	${CXX} ${CXXFLAGS} ${LDFLAGS} -o ${WRKDIR}/${_file} ${WRKDIR}/${_file}.o -lntl -lgmp -lm
+	${CXX} ${CXXFLAGS} ${CPPFLAGS} -c -o ${WRKSRC}/${_file}.o ${WRKSRC}/${_file}.C
+	${CXX} ${CXXFLAGS} ${LDFLAGS} -o ${WRKSRC}/${_file} ${WRKSRC}/${_file}.o -lntl -lgmp -lm
 .endfor
 
 do-install:
 .for _file in lll_spect lll_search
-	${INSTALL_PROGRAM} ${WRKDIR}/${_file} ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/${_file} ${STAGEDIR}${PREFIX}/bin
 .endfor
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${_DISTDIR}/examples.txt ${STAGEDIR}${EXAMPLESDIR}

@@ -1,14 +1,14 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
-PORTREVISION=	9
+PORTREVISION=	10
 PKGNAMESUFFIX=	-openmpi
 
 MPIPREFIX=	mpi/openmpi/
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 
-LIB_DEPENDS+=	libmpi.so:${PORTSDIR}/net/openmpi
+LIB_DEPENDS+=	libmpi.so:net/openmpi
 
 MASTERDIR=	${.CURDIR}/../fvcom
 

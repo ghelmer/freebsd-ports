@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tcpflow
-PORTVERSION=	1.4.4
+PORTVERSION=	1.4.5
 CATEGORIES=	net
 MASTER_SITES=	http://www.digitalcorpora.org/downloads/${PORTNAME}/
 
@@ -11,13 +11,16 @@ COMMENT=	Program that captures data transmitted as part of TCP connections
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/include/boost/icl/interval.hpp:${PORTSDIR}/devel/boost-libs
-LIB_DEPENDS=	libcairo.so:${PORTSDIR}/graphics/cairo
+BUILD_DEPENDS=	${LOCALBASE}/include/boost/icl/interval.hpp:devel/boost-libs
+LIB_DEPENDS=	libcairo.so:graphics/cairo
 
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
+CONFIGURE_ENV=	ac_cv_lib_md_MD5=no \
+		ac_cv_header_tre_tre_h=no ac_cv_lib_tre_tre_regcomp=no \
+		ac_cv_header_sqlite3_h=no ac_cv_lib_sqlite3_sqlite3_libversion=no
 CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 PLIST_FILES=	bin/tcpflow man/man1/tcpflow.1.gz
 PORTDOCS=	AUTHORS ChangeLog NEWS README

@@ -10,10 +10,13 @@ MASTER_SITES=	http://www.sourcefiles.org/Home_and_Education/Health/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Medical image viewer
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libglademm-2.4.so:${PORTSDIR}/devel/libglademm24
+LIB_DEPENDS=	libglademm-2.4.so:devel/libglademm24
 
 USES=		desktop-file-utils gettext libtool pkgconfig
 USE_GNOME=	gconfmm26 gtkmm24 intltool

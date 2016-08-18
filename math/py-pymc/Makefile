@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	pymc
-PORTVERSION=	2.3.3
+PORTVERSION=	2.3.6
 PORTEPOCH=	1
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	wenheping@gmail.com
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Markov Chain Monte Carlo Sampling Toolkit
 
 LICENSE=	AFL
@@ -17,13 +17,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>0:${PORTSDIR}/math/py-matplotlib \
-		${PYTHON_PKGNAMEPREFIX}scipy>0:${PORTSDIR}/science/py-scipy
-LIB_DEPENDS=	liblapack.so:${PORTSDIR}/math/lapack \
-		libblas.so:${PORTSDIR}/math/blas
+		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib \
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy
+LIB_DEPENDS=	liblapack.so:math/lapack \
+		libblas.so:math/blas
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>0:${PORTSDIR}/math/py-matplotlib \
-		${PYTHON_PKGNAMEPREFIX}scipy>0:${PORTSDIR}/science/py-scipy
+		${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib \
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy
 
 USES=		python
 USE_PYTHON=	autoplist distutils

@@ -14,7 +14,8 @@ PORTNAME=	ksh93
 PORTVERSION=	${KSHVERSION:S/-//g}
 PORTREVISION=	2
 CATEGORIES=	shells
-MASTER_SITES=	http://www2.research.att.com/~astopen/download/tgz/
+MASTER_SITES=	http://www2.research.att.com/~astopen/download/tgz/ \
+		LOCAL/sunpoet/${PORTNAME}
 DISTFILES=	INIT.${INITVERSION}.tgz ast-ksh.${KSHVERSION}.tgz
 DIST_SUBDIR=	${PORTNAME}
 
@@ -25,7 +26,7 @@ LICENSE=	EPL
 
 OPTIONS_DEFINE=	EXAMPLES STATIC
 
-FETCH_ENV=	HTTP_AUTH='basic:*:I accept www.opensource.org/licenses/cpl:.'
+FETCH_ENV=	HTTP_AUTH=basic:*:I\ accept\ www.opensource.org/licenses/cpl:.
 LDFLAGS+=	-lm
 MAKE_ENV=	CCFLAGS="${CFLAGS}"
 NO_WRKSUBDIR=	yes
@@ -34,6 +35,13 @@ INITVERSION=	2013-05-24
 KSHVERSION=	2012-08-01
 
 STATIC_MAKE_ENV=	LDFLAGS+=-static
+
+.include <bsd.port.pre.mk>
+
+post-patch:
+.if ${OSVERSION} >= 1100093
+	@${REINPLACE_CMD} -e 's|SF_FLAGS|SFIO_FLAGS|g' ${WRKSRC}/src/lib/libast/include/sfio*.h ${WRKSRC}/src/lib/libast/sfio/*.c
+.endif
 
 do-build:
 	@cd ${WRKSRC}/ && ${SETENV} -i ${MAKE_ENV} ${SH} bin/package flat make
@@ -44,8 +52,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	cd ${WRKSRC}/fun/ && ${INSTALL_SCRIPT} dirs popd pushd ${STAGEDIR}${EXAMPLESDIR}/
 
-test: build
-	@cd ${WRKSRC}/src/cmd/ksh93/tests/ && \
-		${SETENV} SHELL=${WRKSRC}/bin/ksh ${WRKSRC}/bin/ksh shtests
+do-test:
+	cd ${WRKSRC}/src/cmd/ksh93/tests/ && ${SETENV} SHELL=${WRKSRC}/bin/ksh ${WRKSRC}/bin/ksh shtests
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

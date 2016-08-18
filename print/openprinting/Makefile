@@ -3,7 +3,7 @@
 
 PORTNAME=	openprinting
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	print net
 MASTER_SITES=	SF/openprinting/papi/1.0%20Beta
 DISTNAME=	papi-${PORTVERSION}_beta
@@ -45,34 +45,34 @@ CONFIGURE_ARGS+=--without-apache
 .endif
 
 .if defined(WITH_PSM_CUPS)
-LIB_DEPENDS+=	libcups.so:${PORTSDIR}/print/cups-client
+LIB_DEPENDS+=	libcups.so:print/cups
 CONFIGURE_ARGS+=--with-cups=${LOCALBASE}
 .else
 CONFIGURE_ARGS+=--without-cups
 .endif
 
 PLIST_FILES+=\
-	include/papi.h \
-	include/ipp.h \
 	include/debug.h \
-	include/http.h \
 	include/http-private.h \
+	include/http.h \
 	include/ipp-listener.h \
-	lib/libpapi-common.so \
-	lib/libpapi-common.so.0 \
-	lib/libpapi-common.so.0.0.0 \
-	lib/libpapi.so \
-	lib/libpapi.so.0 \
-	lib/libpapi.so.0.0.0 \
+	include/ipp.h \
+	include/papi.h \
 	lib/libipp-core.so \
 	lib/libipp-core.so.0 \
 	lib/libipp-core.so.0.0.0 \
 	lib/libipp-listener.so \
 	lib/libipp-listener.so.0 \
 	lib/libipp-listener.so.0.0.0 \
-	libexec/psm-lpd.so \
-	libexec/psm-ipp.so \
+	lib/libpapi-common.so \
+	lib/libpapi-common.so.0 \
+	lib/libpapi-common.so.0.0.0 \
+	lib/libpapi.so \
+	lib/libpapi.so.0 \
+	lib/libpapi.so.0.0.0 \
 	libexec/lpd-port \
+	libexec/psm-ipp.so \
+	libexec/psm-lpd.so \
 	man/man5/psm-ipp.5.gz
 
 .if defined(WITH_PSM_CUPS)
@@ -90,5 +90,10 @@ post-patch:
 	@${REINPLACE_CMD} -e 's/-ldl//' -e 's/-lnsl//' \
 		${WRKSRC}/source/libpapi-cups/Makefile.in \
 		${WRKSRC}/source/libpapi-dynamic/Makefile.in
+
+post-install:
+.for unneeded in bin sbin man/man1 man/mani share
+	@${RM} -rf ${STAGEDIR}${PREFIX}/${unneeded}
+.endfor
 
 .include <bsd.port.mk>

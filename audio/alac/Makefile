@@ -11,6 +11,10 @@ DISTNAME=	${PORTNAME}_decoder-${PORTVERSION}
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Basic decoder for Apple Lossless Audio Codec files (ALAC)
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 WRKSRC=		${WRKDIR}/${PORTNAME}_decoder
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}"
 ALL_TARGET=	alac

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	R
-PORTVERSION=	3.0.2
-PORTREVISION=	7
+PORTVERSION=	3.3.1
 CATEGORIES=	math lang
 MASTER_SITES=	http://cran.r-project.org/%SUBDIR%/ \
 		ftp://cran.r-project.org/pub/R/%SUBDIR%/ \
@@ -20,25 +19,44 @@ MASTER_SITES=	http://cran.r-project.org/%SUBDIR%/ \
 		http://cran.stat.ucla.edu/%SUBDIR%/ \
 		http://probability.ca/cran/%SUBDIR%/
 MASTER_SITE_SUBDIR=	src/base/R-${PORTVERSION:C|\..*||}
-DISTNAME=	R-${PORTVERSION}
 
-PATCH_SITES=		LOCAL/bf
-PATCHFILES=		R-patched-20131112-r64207.diff.bz2
-
-MAINTAINER=	bf@FreeBSD.org
-COMMENT?=	A language for statistical computing and graphics
+MAINTAINER=	ports@FreeBSD.org
+COMMENT?=	Language for statistical computing and graphics
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=		${LOCALBASE}/bin/gsed:${PORTSDIR}/textproc/gsed
+BUILD_DEPENDS=		${LOCALBASE}/bin/gsed:textproc/gsed \
+			texi2dvi:print/texinfo
+LIB_DEPENDS=		libcurl.so:ftp/curl \
+			libpcre.so:devel/pcre
 
 CONFIGURE_ENV=		LIBR_LDFLAGS="${LDFLAGS}" OBJC="${CC}" \
 			SED="${LOCALBASE}/bin/gsed" \
 			ac_cv_have_decl_powl=yes ac_cv_have_decl_log1pl=yes
 
-OPTIONS_DEFINE=		MISSING DOCS
+OPTIONS_DEFINE=		MISSING DOCS LTO OPENMP LONGDOUBLE
 
 MISSING_DESC=		use libmissing rather than libquadmath
+LTO_DESC=		Try to produce faster code through LTO
+LONGDOUBLE_DESC=	Enable use of long double data type
+LTO_CONFIGURE_ENABLE=	lto
+OPENMP_CONFIGURE_ENABLE=	openmp
+LONGDOUBLE_CONFIGURE_ENABLE=	long-double
+
+OPTIONS_SINGLE=		BLAS
+OPTIONS_SINGLE_BLAS=	RBLAS ATLAS OPENBLAS NETLIB
+OPTIONS_DEFAULT=	OPENBLAS
+
+RBLAS_DESC=		Use internal blas implementation
+
+OPENBLAS_USES=		blaslapack:openblas
+NETLIB_USES=		blaslapack:netlib
+ATLAS_USES=		blaslapack:atlas
+RBLAS_CONFIGURE_ON=	--without-blas --without-lapack
+RBLAS_CONFIGURE_OFF=	--with-blas="-L${LOCALBASE}/lib ${BLASLIB}" \
+			--with-lapack="${LAPACKLIB}"
+
+OPTIONS_SUB=		RBLAS
 
 .if defined(LIBRMATH_SLAVEPORT)
 BUILD_WRKSRC=		${WRKSRC}/src/nmath/standalone
@@ -51,26 +69,23 @@ PLIST_SUB=		RMATH_SOVERSION="${RMATH_SOVERSION}"
 USE_LDCONFIG=		yes
 .else # LIBRMATH_SLAVEPORT
 ALL_TARGET=		all
-INSTALL_TARGET=		install
+INSTALL_TARGET=		install-strip
 CONFIGURE_ARGS=		--enable-memory-profiling rdocdir=${DOCSDIR} \
 			--with-system-bzlib --with-system-zlib
 CONFIGURE_ENV+=		FCFLAGS="${FFLAGS}" \
 			R_LD_LIBRARY_PATH="${R_LD_LIBRARY_PATH}" TAR="${TAR}"
-CPPFLAGS+=		-I${LOCALBASE}/include
-LDFLAGS+=		-L${LOCALBASE}/lib
 
-OPTIONS_DEFINE+=	ATLAS ICU PCRE_PORT THREADS
+OPTIONS_DEFINE+=	ICU THREADS
 
-ATLAS_DESC=		Use ATLAS instead of BLAS/LAPACK
 ICU_DESC=		Use ICU for collation in multibyte locales
-PCRE_PORT_DESC=		Use devel/pcre instead of the bundled PCRE
 
-OPTIONS_DEFAULT+=	ICU PCRE_PORT THREADS
+OPTIONS_DEFAULT+=	ICU THREADS
+
 .if !defined(LIBR_SLAVEPORT)
-RUN_DEPENDS+=		${LOCALBASE}/bin/gsed:${PORTSDIR}/textproc/gsed
+RUN_DEPENDS+=		${LOCALBASE}/bin/gsed:textproc/gsed
 USE_LDCONFIG=		${PREFIX}/lib/R/lib
 #now only used to build the R.1 manpage:
-USES+=			makeinfo perl5
+USES+=			perl5
 USE_PERL5=		build
 
 OPTIONS_DEFINE+=	GHOSTSCRIPT INFO_MANUALS JPEG LETTER_PAPER LIBR \
@@ -87,8 +102,8 @@ PNG_DESC=		png() graphics device
 TCLTK_DESC=		tcltk package
 X11_DESC=		X11() graphics device
 
-OPTIONS_DEFAULT+=	GHOSTSCRIPT INFO_MANUALS JPEG LIBR PANGOCAIRO PNG \
-			TCLTK TIFF X11
+OPTIONS_DEFAULT+=	GHOSTSCRIPT INFO_MANUALS JPEG LTO LIBR OPENMP \
+			PANGOCAIRO PNG TCLTK TIFF X11
 
 OPTIONS_DEFAULT_armv6+=		MISSING
 OPTIONS_DEFAULT_powerpc+=	MISSING
@@ -109,8 +124,8 @@ RBLAS_SOVERSION=	2
 RLAPACK_SOVERSION=	4
 RMATH_SOVERSION=	0
 USES+=			fortran
-USE_GCC=		yes
 
+.include "compiler.mk"
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == "sparc64" || ${ARCH} == "powerpc64"
@@ -134,7 +149,7 @@ LDFLAGS+=	-fno-builtin-${_f}
 .for _f in acos asin atan cos cosh exp log pow sin sinh tan tanh
 CONFIGURE_ENV+=		ac_cv_have_decl_c${_f}=yes
 .endfor
-LIB_DEPENDS+=		libmissing.so:${PORTSDIR}/math/libmissing
+LIB_DEPENDS+=		libmissing.so:math/libmissing
 LIBM=			-L${LOCALBASE}/lib -lmissing -lm
 LIBMH=			"missing_math.h"
 .if defined(LIBRMATH_SLAVEPORT)
@@ -146,23 +161,9 @@ LIBMH=			<quadmath.h>
 .endif
 
 .if !defined(LIBRMATH_SLAVEPORT)
-.if ${PORT_OPTIONS:MATLAS}
-LIB_DEPENDS+=		libatlas.so:${PORTSDIR}/math/atlas
-BLAS?=			${LIBM} -lf77blas
-LAPACK?=		${LIBM} -lalapack -lcblas
-.else
-BLAS?=			no
-LAPACK?=		no
-.endif
-CONFIGURE_ARGS+=	--with-blas="${BLAS}" --with-lapack="${LAPACK}"
-.if ${BLAS} == "no" || ${LAPACK} == "no"
-PLIST_SUB+=		LAPACK=""
-.else
-PLIST_SUB+=		LAPACK="@comment "
-.endif
 
 .if ${PORT_OPTIONS:MICU}
-LIB_DEPENDS+=		libicui18n.so:${PORTSDIR}/devel/icu
+LIB_DEPENDS+=		libicui18n.so:devel/icu
 CONFIGURE_ARGS+=	--with-ICU
 .else
 CONFIGURE_ARGS+=	--without-ICU
@@ -174,13 +175,6 @@ PLIST_SUB+=		NLS=""
 .else
 CONFIGURE_ARGS+=	--disable-nls
 PLIST_SUB+=		NLS="@comment "
-.endif
-
-.if ${PORT_OPTIONS:MPCRE_PORT}
-LIB_DEPENDS+=		libpcre.so:${PORTSDIR}/devel/pcre
-CONFIGURE_ARGS+=	--with-system-pcre
-.else
-CONFIGURE_ARGS+=	--without-system-pcre
 .endif
 
 .if ${PORT_OPTIONS:MTHREADS}
@@ -220,7 +214,7 @@ PLIST_SUB+=		LIBR="@comment "
 
 .if ${PORT_OPTIONS:MPANGOCAIRO}
 USES+=			pkgconfig
-USE_GNOME+=		pango
+USE_GNOME+=		pango cairo
 PLIST_SUB+=		PANGOCAIRO=""
 .else
 CONFIGURE_ARGS+=	--without-cairo
@@ -228,7 +222,7 @@ PLIST_SUB+=		PANGOCAIRO="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MPNG}
-LIB_DEPENDS+=		libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=		libpng.so:graphics/png
 CONFIGURE_ARGS+=	--with-libpng
 .else
 CONFIGURE_ARGS+=	--without-libpng
@@ -246,7 +240,7 @@ PLIST_SUB+=		TCLTK="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MTIFF}
-LIB_DEPENDS+=		libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS+=		libtiff.so:graphics/tiff
 CONFIGURE_ARGS+=	--with-libtiff
 .else
 CONFIGURE_ARGS+=	--without-libtiff
@@ -254,7 +248,7 @@ CONFIGURE_ARGS+=	--without-libtiff
 
 .if ${PORT_OPTIONS:MX11}
 CONFIGURE_ARGS+=	--with-x
-USE_XORG=		x11 xmu xt
+USE_XORG=		ice sm x11 xext xmu xscrnsaver xt
 PLIST_SUB+=		X11=""
 .else
 CONFIGURE_ARGS+=	--without-x
@@ -263,12 +257,14 @@ PLIST_SUB+=		X11="@comment "
 
 .if ${PORT_OPTIONS:MINFO_MANUALS} && ${PORT_OPTIONS:MDOCS}
 ALL_TARGET+=	info
+CONFIGURE_ENV+=	INSTALL_INFO="${LOCALBASE}/bin/install-info" \
+		MAKEINFO="${LOCALBASE}/bin/makeinfo"
 INFO=		R-FAQ R-admin R-data R-exts R-intro R-lang
 .endif
 
 .if ${PORT_OPTIONS:MPDF_MANUALS} && ${PORT_OPTIONS:MDOCS}
 USE_TEX=		texlive dvipsk kpathsea pdftex
-BUILD_DEPENDS +=	texi2dvi:${PORTSDIR}/print/texinfo
+#BUILD_DEPENDS +=	texi2dvi:print/texinfo
 ALL_TARGET+=		pdf
 CONFIGURE_ENV +=	INSTALL_INFO="${LOCALBASE}/bin/install-info" \
 			MAKEINFO="${LOCALBASE}/bin/makeinfo"
@@ -290,7 +286,12 @@ post-patch:
 .if !${PORT_OPTIONS:MMISSING}
 .if ${OSVERSION} < 1000016
 	@${REINPLACE_CMD} -e 's/# define EXP expl/# define EXP(x) (long double)expq((__float128)(x))/' \
-		${WRKSRC}/src/nmath/pnchisq.c
+		${WRKSRC}/src/nmath/pnchisq.c\
+		${WRKSRC}/src/nmath/pgamma.c
+	@${REINPLACE_CMD} -e 's/# define LOG logl/# define LOG(x) (long double)logq((__float128)(x))/' \
+		${WRKSRC}/src/nmath/pnchisq.c\
+		${WRKSRC}/src/nmath/pgamma.c
+
 .endif
 .if ${OSVERSION} < 1000034
 	@${REINPLACE_CMD} -Ee 's/(log)(1p)?l\(/(long double)\1\2q((__float128)/' \
@@ -327,7 +328,7 @@ post-patch:
 	${TAR} -czf temptgz --exclude='*/po/*' @$$tarfile ; \
 	${MV} temptgz $$tarfile ; \
 	done)
-	@${REINPLACE_CMD} -e '/ls -d $$(srcdir)\/inst/d' \
+	@${REINPLACE_CMD} -e '/ls -d $$srcdir\/inst/d' \
 		${WRKSRC}/src/library/translations/Makefile.in
 .endif
 
@@ -350,7 +351,7 @@ do-build:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/R/lib
-	@${INSTALL_DATA} ${WRKSRC}/src/main/libR.a ${STAGEDIR}${PREFIX}/lib/R/lib
+	${INSTALL_DATA} ${WRKSRC}/src/main/libR.a ${STAGEDIR}${PREFIX}/lib/R/lib
 
 .else # LIBR_SLAVEPORT
 
@@ -369,8 +370,9 @@ check-all: build
 
 post-install:
 .for L in R Rblas Rlapack
-	@(cd ${STAGEDIR}${PREFIX}/lib/R/lib; if [ -f lib${L}.so ] ; then \
-	${LN} -sf lib${L}.so lib${L}.so.${${L:tu}_SOVERSION} ; fi)
+	@if [ -d ${STAGEDIR}${PREFIX}/lib/R/lib ] ; then \
+	cd ${STAGEDIR}${PREFIX}/lib/R/lib; if [ -f lib${L}.so ] ; then \
+	${LN} -sf lib${L}.so lib${L}.so.${${L:tu}_SOVERSION} ; fi; fi
 .endfor
 .if ${PORT_OPTIONS:MINFO_MANUALS} && ${PORT_OPTIONS:MDOCS}
 	@(cd ${WRKSRC}/doc/manual; \
@@ -379,12 +381,14 @@ post-install:
 	done)
 .endif
 
+	${FIND} ${STAGEDIR}${PREFIX}/lib/ -name "*.so" | ${XARGS} ${STRIP_CMD}
+
 .endif # LIBR_SLAVEPORT
 .else # !LIBRMATH_SLAVEPORT
 do-install:
-	@${INSTALL_DATA} ${WRKSRC}/src/include/Rmath.h ${STAGEDIR}${PREFIX}/include
-	@${INSTALL_DATA} ${BUILD_WRKSRC}/libRmath.a ${STAGEDIR}${PREFIX}/lib
-	@${INSTALL_LIB} ${BUILD_WRKSRC}/libRmath.so \
+	${INSTALL_DATA} ${WRKSRC}/src/include/Rmath.h ${STAGEDIR}${PREFIX}/include
+	${INSTALL_DATA} ${BUILD_WRKSRC}/libRmath.a ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_LIB} ${BUILD_WRKSRC}/libRmath.so \
 	${STAGEDIR}${PREFIX}/lib/libRmath.so.${RMATH_SOVERSION}
 	@(cd ${STAGEDIR}${PREFIX}/lib; ${LN} -sf libRmath.so.${RMATH_SOVERSION} libRmath.so)
 

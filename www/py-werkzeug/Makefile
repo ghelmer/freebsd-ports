@@ -2,31 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	werkzeug
-PORTVERSION=	0.10.4
+PORTVERSION=	0.11.10
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Werkzeug-${DISTVERSION}
 
-MAINTAINER=	moggie@elasticmind.net
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Python utilities collection for building WSGI applications
 
 LICENSE=	BSD3CLAUSE
 
 OPTIONS_DEFINE=	EXAMPLES
 
+NO_ARCH=	yes
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist distutils
 
 EXAMPLESDIR=	${PREFIX}/share/examples/${PYTHON_PKGNAMEPREFIX}${PORTNAME}
 PORTEXAMPLES=	*
 
-.include <bsd.port.options.mk>
-
-post-install:
-.if ${PORT_OPTIONS:MEXAMPLES}
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	(cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
-.endif
 
 .include <bsd.port.mk>

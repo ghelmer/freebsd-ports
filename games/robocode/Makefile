@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	robocode
-PORTVERSION=	1.9.2.2
+PORTVERSION=	1.9.2.5
 CATEGORIES=	games java
 MASTER_SITES=	SF
 DISTFILES=	${PORTNAME}-${DISTVERSION}-setup.jar
@@ -31,7 +31,7 @@ SUB_FILES=	${PORTNAME}-MeleeRumble ${PORTNAME}-RoboRumble \
 		${PORTNAME}-TwinDuel pkg-deinstall pkg-message
 
 do-install:
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}-* \
+	cd ${WRKDIR} && ${INSTALL_SCRIPT} ${SUB_FILES:Mrobocode-*} \
 		${STAGEDIR}${PREFIX}/bin/
 
 .for d in battles compilers javadoc libs license roborumble robots \
@@ -48,7 +48,5 @@ do-install:
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
 	@${MKDIR} ${STAGEDIR}${DATADIR}/config
-	@(cd ${STAGEDIR}${DATADIR} && ${CHMOD} -R 775 config roborumble robots)
-	@${CHMOD} +x ${STAGEDIR}${DATADIR}/*.sh
 
 .include <bsd.port.mk>

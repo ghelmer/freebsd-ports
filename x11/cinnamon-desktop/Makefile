@@ -3,17 +3,18 @@
 
 PORTNAME=	cinnamon-desktop
 PORTVERSION=	2.4.2
+PORTREVISION=	1
 CATEGORIES=	x11 gnome
 DIST_SUBDIR=	gnome3
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Additional UI API for cinnamon
 
-BUILD_DEPENDS=	gnome-autogen.sh:${PORTSDIR}/devel/gnome-common \
-		xkeyboard-config>=0:${PORTSDIR}/x11/xkeyboard-config \
-		libxkbfile>=0:${PORTSDIR}/x11/libxkbfile
-RUN_DEPENDS=	xkeyboard-config>=0:${PORTSDIR}/x11/xkeyboard-config \
-		libxkbfile>=0:${PORTSDIR}/x11/libxkbfile
+BUILD_DEPENDS=	gnome-autogen.sh:devel/gnome-common \
+		xkeyboard-config>=0:x11/xkeyboard-config \
+		libxkbfile>=0:x11/libxkbfile
+RUN_DEPENDS=	xkeyboard-config>=0:x11/xkeyboard-config \
+		libxkbfile>=0:x11/libxkbfile
 
 USE_XORG=	x11 xrandr xext
 USES=		autoreconf gettext gmake libtool pathfix pkgconfig \
@@ -22,6 +23,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	linuxmint
 USE_GNOME=	gnomeprefix gtk30 intlhack introspection:build
 SHEBANG_FILES=	files/usr/bin/cinnamon-desktop-migrate-mediakeys
+python_OLD_CMD=	/usr/bin/python2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 PATHFIX_MAKEFILEIN=	Makefile.am

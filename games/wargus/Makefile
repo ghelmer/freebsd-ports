@@ -10,19 +10,19 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Warcraft 2 mod that allows you to play Warcraft 2 with Stratagus
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	stratagus:${PORTSDIR}/games/stratagus \
-		ffmpeg2theora:${PORTSDIR}/multimedia/ffmpeg2theora \
-		cdparanoia:${PORTSDIR}/audio/cdparanoia
-BUILD_DEPENDS=	stratagus:${PORTSDIR}/games/stratagus
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+RUN_DEPENDS=	stratagus:games/stratagus \
+		ffmpeg2theora:multimedia/ffmpeg2theora \
+		cdparanoia:audio/cdparanoia
+BUILD_DEPENDS=	stratagus:games/stratagus
+LIB_DEPENDS=	libpng.so:graphics/png
 
 USES=		cmake pkgconfig
 CMAKE_ARGS=	-DGAMEDIR:STRING="bin" \
 		-DSHAREDIR:STRING="${DATADIR_REL}"
-USE_X11=	x11
+USE_XORG=	x11
 USE_GNOME=	gtk20
 SUB_FILES=	pkg-message
 

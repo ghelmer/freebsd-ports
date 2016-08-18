@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dogapi
-PORTVERSION=	1.20.0
+PORTVERSION=	1.22.0
 CATEGORIES=	net rubygems
 MASTER_SITES=	RG
 
@@ -10,12 +10,12 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby bindings for Datadog API
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-multi_json>=0:${PORTSDIR}/devel/rubygem-multi_json
+RUN_DEPENDS=	rubygem-multi_json>=0:devel/rubygem-multi_json
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

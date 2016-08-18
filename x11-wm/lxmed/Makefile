@@ -8,12 +8,12 @@ CATEGORIES=	x11-wm java
 MASTER_SITES=	SF/${PORTNAME}/
 DIST_SUBDIR=	java
 
-MAINTAINER=	horia@racoviceanu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LXDE Main Menu Editor
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	gksu:${PORTSDIR}/sysutils/gksu
+RUN_DEPENDS=	gksu:sysutils/gksu
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

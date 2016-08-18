@@ -9,7 +9,7 @@ COMMENT=	Server Density Agent for FreeBSD
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	$(LOCALBASE)/sbin/sysinfo:$(PORTSDIR)/sysutils/sysinfo
+RUN_DEPENDS=	$(LOCALBASE)/sbin/sysinfo:sysutils/sysinfo
 
 USERS=		sd-agent
 GROUPS=		sd-agent
@@ -19,7 +19,6 @@ GH_ACCOUNT=	serverdensity
 
 USES=		python shebangfix
 SHEBANG_FILES=	agent.py
-python_OLD_CMD=	/usr/bin/env python
 
 USE_RC_SUBR=	$(PORTNAME)
 SUB_LIST+=	RCNAME=$(PORTNAME:S/-/_/g)

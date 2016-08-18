@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-lua
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	LUA
 LUA_DESC=	Install lua library
 OPTIONS_DEFAULT=	LUA
 
-LUA_LIB_DEPENDS=	liblua-5.1.so:${PORTSDIR}/lang/lua51
+LUA_LIB_DEPENDS=	liblua-5.1.so:lang/lua51
 
 .include "${MASTERDIR}/Makefile"

@@ -1,7 +1,6 @@
 # Created by: John Merryweather Cooper
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-ibase
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	IBASE
 IBASE_DESC=	Install Interbase/Firebird client
 OPTIONS_DEFAULT=	IBASE
 
-IBASE_USE=	FIREBIRD=yes
+IBASE_USES=	firebird
 
 .include "${MASTERDIR}/Makefile"

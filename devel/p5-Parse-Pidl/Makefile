@@ -2,7 +2,7 @@
 
 PORTNAME=		Parse-Pidl
 PORTVERSION=		${SAMBA4_VERSION}
-PORTREVISION=		1
+PORTREVISION=		0
 PORTEPOCH=		0
 CATEGORIES=		devel perl5
 PKGNAMEPREFIX=		p5-
@@ -12,12 +12,12 @@ COMMENT=		IDL compiler written in Perl
 
 LICENSE=		GPLv3
 
-BUILD_DEPENDS=		p5-Parse-Yapp>=0:${PORTSDIR}/devel/p5-Parse-Yapp
+BUILD_DEPENDS=		p5-Parse-Yapp>=0:devel/p5-Parse-Yapp
 RUN_DEPENDS:=		${BUILD_DEPENDS}
 
 CONFLICTS=
 
-SAMBA4_PORT?=		samba41
+SAMBA4_PORT?=		samba43
 SAMBA4_SUBPORT=		yes
 
 MASTERDIR=		${.CURDIR}/../../net/${SAMBA4_PORT}

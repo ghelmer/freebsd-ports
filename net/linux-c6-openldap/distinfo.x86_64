@@ -1,4 +1,7 @@
-SHA256 (rpm/x86_64/centos/6.6/openldap-2.4.39-8.el6.x86_64.rpm) = f38696f6b963cd702bf77a902a2e5c1297e697b168226156f1a5ae5e24ea070d
-SIZE (rpm/x86_64/centos/6.6/openldap-2.4.39-8.el6.x86_64.rpm) = 286208
-SHA256 (rpm/x86_64/centos/6.6/openldap-2.4.39-8.el6.src.rpm) = 067844ffeb73854d5fbd25760e38f02617a06b54ecbd8c1df4a4066dbb0115f1
-SIZE (rpm/x86_64/centos/6.6/openldap-2.4.39-8.el6.src.rpm) = 5577657
+TIMESTAMP = 1466257427
+SHA256 (rpm/x86_64/centos/6.8/openldap-2.4.40-12.el6.x86_64.rpm) = cb55ba3a030a9bd7c21f0411d3fa25771f58d192b86139fcccef538db907608c
+SIZE (rpm/x86_64/centos/6.8/openldap-2.4.40-12.el6.x86_64.rpm) = 290648
+SHA256 (rpm/x86_64/centos/6.8/openldap-2.4.40-12.el6.i686.rpm) = bb9af0c42eff21b38f3f533d84d4822c1344d077e555c7cfa7fa9184793b5b76
+SIZE (rpm/x86_64/centos/6.8/openldap-2.4.40-12.el6.i686.rpm) = 291788
+SHA256 (rpm/x86_64/centos/6.8/openldap-2.4.40-12.el6.src.rpm) = 9cd02f6ac5b588e57b804db189630088fa197ee0f1cc41f483749d4dccbcc95e
+SIZE (rpm/x86_64/centos/6.8/openldap-2.4.40-12.el6.src.rpm) = 5733071

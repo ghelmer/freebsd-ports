@@ -3,7 +3,7 @@
 
 PORTNAME=		krb5-appl
 PORTVERSION=		1.0.3
-PORTREVISION=		1
+PORTREVISION=		2
 CATEGORIES=		security
 MASTER_SITES=		http://web.mit.edu/kerberos/dist/${PORTNAME}/${PORTVERSION:C/^[0-9]*\.[0-9]*/&X/:C/X\.[0-9]*$//:C/X//}/
 PATCH_SITES=		http://web.mit.edu/kerberos/advisories/
@@ -13,14 +13,13 @@ EXTRACT_SUFX=		.tar
 MAINTAINER=		cy@FreeBSD.org
 COMMENT=		Authentication system developed at MIT, successor to Kerberos IV
 
-BUILD_DEPENDS=		gm4:${PORTSDIR}/devel/m4 \
-			krb5-config:${PORTSDIR}/security/krb5
+BUILD_DEPENDS=		krb5-config:security/krb5
 
 CONFLICTS=		krb4-[0-9]* krb5-1.[0-7].* heimdal-[0-9]* srp-[0-9]*
 
 KERBEROSV_URL=		http://web.mit.edu/kerberos/
 USE_OPENSSL=		yes
-USES=			gmake perl5 gssapi:mit
+USES=			gmake ncurses perl5 gssapi:mit
 USE_PERL5=		build
 USE_LDCONFIG=		yes
 USE_CSTD=		gnu89
@@ -33,7 +32,8 @@ PATCH_DIST_STRIP=	-p1
 OPTIONS_DEFINE=	KRB5_RENAME_FTP KRB5_RENAME_TELNET KRB5_RENAME_RLOGIN KRB5_RENAME_RSH KRB5_RENAME_RCP
 OPTIONS_DEFAULT=	KRB5_PORT
 OPTIONS_SINGLE=		KRB5_VERSION
-OPTIONS_SINGLE_KRB5_VERSION=	KRB5_PORT KRB5_112_PORT
+OPTIONS_SINGLE_KRB5_VERSION=	KRB5_PORT KRB5_112_PORT KRB5_113_PORT \
+			KRB5_114_PORT
 KRB5_RENAME_FTP_DESC=		Rename ftp to kftp
 KRB5_RENAME_TELNET_DESC=	Rename telnet to ktelnet
 KRB5_RENAME_RLOGIN_DESC=	Rename rlogin to krlogin
@@ -41,24 +41,23 @@ KRB5_RENAME_RSH_DESC=		Rename rsh to krsh
 KRB5_RENAME_RCP_DESC=		Rename rcp to krcp
 KRB5_PORT_DESC=			Depend on security/krb5
 KRB5_112_PORT_DESC=		Depend on security/krb5-112
+KRB5_113_PORT_DESC=		Depend on security/krb5-113
+KRB5_114_PORT_DESC=		Depend on security/krb5-114
 
 .include <bsd.port.pre.mk>
 
-.if ${PORT_OPTIONS:MKRB5_PORT}
-LIB_DEPENDS=		libkrb5support.so:${PORTSDIR}/security/krb5
-RUN_DEPENDS=		kinit:${PORTSDIR}/security/krb5
-.elif ${PORT_OPTIONS:MKRB5_112_PORT}
-LIB_DEPENDS=		libkrb5support.so:${PORTSDIR}/security/krb5-112
-RUN_DEPENDS=		kinit:${PORTSDIR}/security/krb5-112
-.else
-BROKEN=			krb5 dependency not selected
-.endif
+KRB5_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5
+KRB5_PORT_RUN_DEPENDS=		kinit:security/krb5
+KRB5_112_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5-112
+KRB5_112_PORT_RUN_DEPENDS=		kinit:security/krb5-112
+KRB5_113_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5-113
+KRB5_113_PORT_RUN_DEPENDS=		kinit:security/krb5-113
+KRB5_114_PORT_LIB_DEPENDS=		libkrb5support.so:security/krb5-114
+KRB5_114_PORT_RUN_DEPENDS=		kinit:security/krb5-113
 
-.if ${PORT_OPTIONS:MKRB5_DOC}
-BUILD_DEPENDS+=		texi2dvi:${PORTSDIR}/print/texinfo \
-			dvips:${PORTSDIR}/print/dvipsk-tetex
-INFO=			krb5-admin krb5-install krb5-user
-.endif
+KRB5_DOC_BUILD_DEPENDS+=	texi2dvi:print/texinfo \
+			dvips:print/dvipsk-tetex
+KRB5_DOC_INFO=			krb5-admin krb5-install krb5-user
 
 .if defined(KRB5_HOME)
 PREFIX=			${KRB5_HOME}

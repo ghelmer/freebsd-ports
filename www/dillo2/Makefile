@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dillo
-PORTVERSION=	3.0.4.1
+PORTVERSION=	3.0.5
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.dillo.org/download/ LOCAL/bf/dillo/ \
 		TEX_CTAN/language/hyph-utf8/tex/generic/hyph-utf8/patterns/txt/:hyphen
@@ -10,13 +10,13 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, small graphical Web browser built upon fltk
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
-RUN_DEPENDS=	wget:${PORTSDIR}/ftp/wget
+LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
+RUN_DEPENDS=	wget:ftp/wget
 
 USES=		gmake iconv pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
@@ -25,7 +25,7 @@ CONFLICTS=	dillo-i18n-[0-9]* \
 		dillo-0*
 
 OPTIONS_DEFINE=		COOKIES HYPHENATION IPV6 SSL THREADS DOCS
-OPTIONS_DEFAULT=	COOKIES HYPHENATION IPV6 SSL THREADS
+OPTIONS_DEFAULT=	COOKIES HYPHENATION SSL THREADS
 
 COOKIES_DESC=		Cookie support
 HYPHENATION_DESC=	Hyphenation file(s) for HYPHENATION_LANGS

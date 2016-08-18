@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	selenium
-PORTVERSION=	2.46.0
+PORTVERSION=	2.53.1
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +11,6 @@ MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	Python bindings for Selenium
 
 LICENSE=	APACHE20
-
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rdflib>=3.1.0:${PORTSDIR}/textproc/py-rdflib
 
 USES=		python
 USE_PYTHON=	distutils autoplist

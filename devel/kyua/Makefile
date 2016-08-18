@@ -3,7 +3,7 @@
 PORTNAME=	kyua
 PORTVERSION=	0.11
 PORTREVISION=	1
-PORTEPOCH=	2
+PORTEPOCH=	3
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/jmmv/kyua/releases/download/${PORTNAME}-${PORTVERSION}/ \
 		LOCAL/jmmv
@@ -13,8 +13,8 @@ COMMENT=	Testing framework for infrastructure software
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	liblutok.so:${PORTSDIR}/devel/lutok
-LIB_DEPENDS+=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS=	liblutok.so:devel/lutok
+LIB_DEPENDS+=	libsqlite3.so:databases/sqlite3
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 CONFLICTS=	kyua-atf-compat-[0-9]* kyua-cli-[0-9]* kyua-testers-[0-9]*
@@ -32,8 +32,8 @@ OPTIONS_DEFAULT=TEST
 
 OPTIONS_SUB=		yes
 TEST_CONFIGURE_WITH=	atf
-TEST_BUILD_DEPENDS=	atf>=0.21:${PORTSDIR}/devel/atf
-TEST_RUN_DEPENDS=	atf>=0.21:${PORTSDIR}/devel/atf
+TEST_BUILD_DEPENDS=	atf>=0.21:devel/atf
+TEST_RUN_DEPENDS=	atf>=0.21:devel/atf
 
 .include <bsd.port.options.mk>
 

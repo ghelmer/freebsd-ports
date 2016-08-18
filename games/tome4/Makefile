@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tome4
-PORTVERSION=	1.3.1
+PORTVERSION=	1.4.8
 CATEGORIES=	games
 MASTER_SITES=	http://te4.org/dl/t-engine/ \
 		SF/lifanov-ports-distfiles/${PORTNAME}/:icons
@@ -13,17 +13,19 @@ EXTRACT_ONLY=	t-engine4-src-${PORTVERSION}${EXTRACT_SUFX}
 MAINTAINER=	lifanov@mail.lifanov.com
 COMMENT=	Epic tactical turn-based roguelike adventure
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	premake4:${PORTSDIR}/devel/premake4
-LIB_DEPENDS=	libvorbisfile.so:${PORTSDIR}/audio/libvorbis
+BUILD_DEPENDS=	premake4:devel/premake4
+LIB_DEPENDS=	libvorbisfile.so:audio/libvorbis \
+		libpng16.so:graphics/png
 
 DESKTOP_ENTRIES="ToME 4" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;RolePlaying;" ""
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 WRKSRC=		${WRKDIR}/t-engine4-src-${PORTVERSION}
-MAKE_ARGS+=	config=release verbose=yes ARCH=""
+MAKE_ARGS+=	config=release verbose=yes ARCH="" CC=${CC}
 USES=		gmake openal:al tar:bzip2
 USE_SDL=	image2 sdl2 ttf2
 USE_GL=		gl glu
@@ -34,7 +36,6 @@ MAKE_JOBS_UNSAFE=yes
 pre-build:
 	@${REINPLACE_CMD} 's|%%LOCALBASE%%|${LOCALBASE}|' ${WRKSRC}/premake4.lua
 	(cd ${WRKSRC} && premake4 gmake)
-	@${REINPLACE_CMD} 's|gcc|${CC}|' ${WRKSRC}/build/*.make
 	@${REINPLACE_CMD} 's|-lpthread|-pthread|' ${WRKSRC}/build/TEngine.make
 
 do-install:

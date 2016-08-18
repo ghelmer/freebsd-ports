@@ -3,7 +3,7 @@
 
 PORTNAME=	fly
 PORTVERSION=	2.0.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	graphics
 MASTER_SITES=	http://fossies.org/unix/www/ \
 		http://martin.gleeson.com/fly/dist/
@@ -11,7 +11,7 @@ MASTER_SITES=	http://fossies.org/unix/www/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple drawing language to generate GIFs on the fly
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd
 
 PORTDOCS=	*
 PORTEXAMPLES=	*

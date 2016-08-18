@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libfm
-PORTREVISION=	1
 PKGNAMESUFFIX=	-extra
 
-MAINTAINER=	horia@racoviceanu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LibFM-Extra library
 
 LICENSE=	LGPL21

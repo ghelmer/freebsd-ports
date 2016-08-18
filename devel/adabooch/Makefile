@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	adabooch
-PORTVERSION=	20130322
+PORTVERSION=	20160321
 PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/booch95/booch95/${PORTVERSION}
@@ -14,7 +14,7 @@ COMMENT=	Ada 95 Booch Components
 LICENSE=	GPLv2 GMGPL
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	gprbuild:${PORTSDIR}/devel/gprbuild
+BUILD_DEPENDS=	gprbuild:devel/gprbuild
 
 USES=		ada gmake tar:bzip2
 HAS_CONFIGURE=	yes
@@ -24,13 +24,9 @@ ALL_TARGET=	libs
 # In other words, adabooch demos requires a separate port to do correctly
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/html/* ${STAGEDIR}${DOCSDIR}/
 	${RM} ${STAGEDIR}${DOCSDIR}/Makefile
-.endif
 
 .include <bsd.port.mk>

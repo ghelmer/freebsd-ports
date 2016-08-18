@@ -11,12 +11,16 @@ DISTNAME=	OCFPCSC1-${PORTVERSION}
 MAINTAINER=	saper@saper.info
 COMMENT=	Open Card Framework to PC/SC bridge
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	IBMOCF
 LICENSE_NAME=	IBM OpenCard Framework
 LICENSE_FILE=	${FILESDIR}/IBMOCF
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
+LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
 USES=		gmake
 USE_JAVA=	yes

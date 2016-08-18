@@ -1,6 +1,6 @@
---- MF3D/mfprimtv.c.orig	2007-12-17 19:30:09.000000000 +0100
-+++ MF3D/mfprimtv.c	2007-12-17 19:30:24.000000000 +0100
-@@ -1000,7 +1000,7 @@
+--- MF3D/mfprimtv.c.orig	2016-01-13 20:09:57 UTC
++++ MF3D/mfprimtv.c
+@@ -1000,7 +1000,7 @@ MF3D_LabelWrite (
    if (result == kMF3DNoErr)
      {
        ++metafile->tocStuff.numReferences;

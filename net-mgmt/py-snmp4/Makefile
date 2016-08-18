@@ -3,6 +3,7 @@
 
 PORTNAME=	snmp4
 PORTVERSION=	4.2.5
+PORTREVISION=	1
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	CHEESESHOP \
 		SF/pysnmp/pysnmp/${PORTVERSION}
@@ -14,8 +15,8 @@ COMMENT=	SNMP framework for Python
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}asn1>=0.1.2:${PORTSDIR}/devel/py-asn1 \
-		${PYTHON_PKGNAMEPREFIX}pycrypto>=2.4.1:${PORTSDIR}/security/py-pycrypto
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyasn1>=0.1.2:devel/py-pyasn1 \
+		${PYTHON_PKGNAMEPREFIX}pycrypto>=2.4.1:security/py-pycrypto
 
 USES=		python
 USE_PYTHON=	distutils autoplist

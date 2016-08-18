@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	ipmitool
-PORTVERSION=	1.8.14
+PORTVERSION=	1.8.17
 PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
-MAINTAINER=	steve.polyack@intermedix.com
+MAINTAINER=	zi@FreeBSD.org
 COMMENT=	CLI to manage IPMI systems
 
 LICENSE=	BSD3CLAUSE
@@ -18,7 +18,8 @@ CPE_VENDOR=	sun
 USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--enable-intf-lan --enable-intf-lanplus \
-		--disable-intf-imb --disable-intf-lipmi --disable-intf-bmc
+		--disable-intf-imb --disable-intf-lipmi --disable-intf-bmc \
+		--disable-intf-usb
 PLIST_FILES=	bin/ipmitool man/man1/ipmitool.1.gz man/man8/ipmievd.8.gz \
 		sbin/ipmievd share/ipmitool/oem_ibm_sel_map \
 		${PERIODIC_DIR}/400.status-ipmi
@@ -45,7 +46,7 @@ CONFIGURE_ARGS+=	--disable-intf-open
 
 DOCS_EXTRA_PATCHES_OFF=	${PATCHDIR}/extra-patch-Makefile.in
 
-FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:${PORTSDIR}/sysutils/freeipmi
+FREEIPMI_LIB_DEPENDS=	libfreeipmi.so:sysutils/freeipmi
 FREEIPMI_CPPFLAGS=	-I${LOCALBASE}/include
 FREEIPMI_LDFLAGS=	-L${LOCALBASE}/lib
 FREEIPMI_CONFIGURE_ENABLE=	intf-free

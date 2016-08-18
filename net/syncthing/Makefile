@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	syncthing
-PORTVERSION=	0.11.23
+PORTVERSION=	0.13.4
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Encrypted file sync tool
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/go:${PORTSDIR}/lang/go
+BUILD_DEPENDS=	${LOCALBASE}/bin/go:lang/go
 
 USE_GITHUB=	yes
 USE_RC_SUBR=	syncthing
@@ -24,8 +24,9 @@ STRIP=		# stripping can break go binaries
 post-patch:
 	@cd ${WRKSRC} ; ${MKDIR} src/github.com/${PORTNAME}/${PORTNAME} ; \
 		${MV} .gitattributes .gitignore .mailmap AUTHORS CONDUCT.md \
-		CONTRIBUTING.md Godeps LICENSE NICKS README.md assets build.go \
-		build.sh cmd etc gui lib man protocol script test \
+		CONTRIBUTING.md ISSUE_TEMPLATE.md LICENSE NICKS \
+		PULL_REQUEST_TEMPLATE.md README.md assets build.go build.sh cmd \
+		debian etc gui lib man script test vendor \
 		src/github.com/${PORTNAME}/${PORTNAME}
 
 do-build:

@@ -9,6 +9,10 @@ MASTER_SITES=	http://www.thuswise.org/sprinkle/pub/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Stomp messaging broker written in Python
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	GPLv3
 
 NO_BUILD=	yes

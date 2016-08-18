@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	squirrelmail
-PORTVERSION=	20150324
-PORTREVISION=	2
+PORTVERSION=	20160216
 CATEGORIES=	mail www
 MASTER_SITES=	LOCAL/adamw/squirrelmail
 DISTNAME=	${PORTNAME}-${PORTVERSION}_0200-SVN.stable
@@ -14,11 +13,13 @@ COMMENT=	Webmail system which accesses mail over IMAP
 
 LICENSE=	GPLv2
 
+BROKEN_powerpc64=	Does not build
+
 # This snapshot tarball contains php 5.4 and 5.5 compatibility
 # patches, but the only guaranteed compatibility is with php 5.3.
 # If you encounter problems, downgrade to php 5.3.
 
-USE_PHP=	session mhash gettext mbstring pcre openssl xml
+USE_PHP=	session hash gettext mbstring pcre openssl xml
 WANT_PHP_WEB=	yes
 
 USES=		cpe gettext perl5 tar:bzip2
@@ -48,11 +49,11 @@ SUB_LIST=	SQUIRRELDIR=${SQUIRRELDIR} SMUSER=${SMUSER} SMGROUP=${SMGROUP}
 
 CONFLICTS=	squirreloutlook-[0-9]*
 
-DATABASE_RUN_DEPENDS=	${LOCALBASE}/share/pear/DB.php:${PORTSDIR}/databases/pear-DB
+DATABASE_RUN_DEPENDS=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB
 LDAP_USE=	PHP=ldap
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|ispell|${LOCALBASE}/bin/ispell|g' \
+	@${REINPLACE_CMD} -e 's|ispell|${LOCALBASE}/bin/aspell|g' \
 		${WRKSRC}/plugins/squirrelspell/sqspell_config.php
 	@${REINPLACE_CMD} -e 's|/usr/bin/fortune|/usr/games/fortune|g' \
 		${WRKSRC}/plugins/fortune/fortune_functions.php

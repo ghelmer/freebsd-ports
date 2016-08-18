@@ -9,13 +9,17 @@ MASTER_SITES=	LOCAL/gblach/enlightenment/
 MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	Enlightenment module to manage disk volumes
 
-BUILD_DEPENDS=	enlightenment:${PORTSDIR}/x11-wm/enlightenment
-RUN_DEPENDS=	enlightenment:${PORTSDIR}/x11-wm/enlightenment
+BUILD_DEPENDS=	enlightenment:x11-wm/enlightenment
+RUN_DEPENDS=	enlightenment:x11-wm/enlightenment
 
 DIST_SUBDIR=	enlightenment
 GNU_CONFIGURE=	yes
 USES=		gmake libtool pkgconfig tar:xz
 INSTALL_TARGET=	install-strip
+
+BROKEN=		Not compatible with Enlightenment 0.20
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 .include "../enlightenment/Makefile.plist"
 

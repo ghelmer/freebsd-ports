@@ -11,7 +11,9 @@ DISTNAME=	Jishyo-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	English to Japanese dictionary for GNUstep
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
+
+PORTSCOUT=	skipv:0.2
 
 USES=		gnustep
 USE_GNUSTEP=	back build

@@ -10,13 +10,12 @@ DISTNAME=	Template_.2.2.3
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	High performance PHP compiling template engine
 
-LICENSE=	LGPL20 # or later
+LICENSE=	LGPL20+
 
 WRKSRC=		${WRKDIR}
 FETCH_ARGS+=	-o ${DISTNAME}.tar.gz
 
-USE_PHP=	yes
-WANT_PHP_WEB=	yes
+USES=		php:web
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes
 

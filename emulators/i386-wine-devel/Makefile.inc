@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-PORTVERSION=	1.7.51
+PORTVERSION=	1.9.13
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	LOCAL/dbn/repos/wine/${DIST_SUBDIR}/${PORTVERSION}
+MASTER_SITES=	LOCAL/dbn/repos/wine/${DIST_SUBDIR}/
 PKGNAMEPREFIX=	i386-
 PKGNAMESUFFIX?=	-devel
 DISTNAME=	${PKGNAME}
@@ -42,8 +42,8 @@ USE_LDCONFIG32=	${PREFIX}/lib32 ${PREFIX}/lib32/wine
 USES=		tar:xz
 BUNDLE_LIBS=	yes
 
-GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine_gecko-2.40-x86.msi:${PORTSDIR}/emulators/wine-gecko-devel
-MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.5.6.msi:${PORTSDIR}/emulators/wine-mono-devel
+GECKO_RUN_DEPENDS=	${DATADIR}/gecko/wine_gecko-2.47-x86.msi:emulators/wine-gecko-devel
+MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.6.3.msi:emulators/wine-mono-devel
 
 # Included for OPSYS and OSVERSION
 .include <bsd.port.pre.mk>
@@ -52,9 +52,13 @@ MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.5.6.msi:${PORTSDIR}/emulators/wine
 .if ${OSREL:C/\..*//} == ${osrel}
 PLIST_SUB+=	OSREL${osrel}=""
 .if ${PKGNAMESUFFIX} == -devel
+PLIST_SUB+=	DEVEL=""
+PLIST_SUB+=	STAGING="@comment "
 PLIST_SUB+=	OSREL${osrel}-DEVEL=""
 PLIST_SUB+=	OSREL${osrel}-STAGING="@comment "
 .else
+PLIST_SUB+=	DEVEL="@comment "
+PLIST_SUB+=	STAGING=""
 PLIST_SUB+=	OSREL${osrel}-DEVEL="@comment "
 PLIST_SUB+=	OSREL${osrel}-STAGING=""
 .endif
@@ -65,7 +69,7 @@ PLIST_SUB+=	OSREL${osrel}-STAGING="@comment "
 .endif
 .endfor
 
-.if ${OPSYS} != FreeBSD || (!(${OSVERSION} < 1000000) && !(${OSVERSION} >= 1001000 && ${OSVERSION} < 1100000) && !(${OSVERSION} >= 1100077 && ${OSVERSION} < 1200000))
+.if ${OPSYS} != FreeBSD || (!(${OSVERSION} < 1000000) && !(${OSVERSION} >= 1001000 && ${OSVERSION} < 1100000) && !(${OSVERSION} >= 1100109 && ${OSVERSION} < 1200000))
 IGNORE=		binaries compiled for FreeBSD 9.3+, 10.1+ and -current only
 DISTFILES=
 .endif
@@ -92,8 +96,8 @@ port-update:
 	${MAKE} pkg-plist.${osrel}${suffix:tu} PLIST=pkg-plist.${osrel}${suffix:tu} OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel} PKGNAMESUFFIX=${suffix}
 .endfor
 .endfor
-	${MV} ${SLAVEDIR}/distinfo~ ${SLAVEDIR}/distinfo
+	${SED} -e '2,$${' -e '/^TIMESTAMP/d' -e '}' distinfo~ > ${SLAVEDIR}/distinfo
 	python ${FILESDIR}/mergeplist.py ${SLAVEDIR}/pkg-plist.* > ${PLIST}
-	${RM} ${SLAVEDIR}/pkg-plist.*
+	${RM} ${SLAVEDIR}/distinfo~ ${SLAVEDIR}/pkg-plist.*
 
 .include <bsd.port.post.mk>

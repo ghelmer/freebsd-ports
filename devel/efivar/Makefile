@@ -5,18 +5,18 @@ PORTNAME=	efivar
 PORTVERSION=	0.15
 CATEGORIES=	devel
 
-MAINTAINER=	trasz@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools and library to manipulate EFI variables
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt
+LIB_DEPENDS=	libpopt.so:devel/popt
 
 USE_GCC=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	rhinstaller
 
-USES=		gmake pkgconfig
+USES=		gmake localbase pkgconfig
 USE_LDCONFIG=	yes
 
 NOT_FOR_ARCHS=	powerpc powerpc64 sparc64

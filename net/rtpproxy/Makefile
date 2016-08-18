@@ -4,6 +4,7 @@
 PORTNAME=	rtpproxy
 PORTVERSION=	2.0.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net
 
 MAINTAINER=	farrokhi@FreeBSD.org
@@ -11,7 +12,7 @@ COMMENT=	High-performance RTP proxy server for the SIP Express Router (SER)
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libgsm.so:${PORTSDIR}/audio/gsm
+LIB_DEPENDS=	libgsm.so:audio/gsm
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sippy

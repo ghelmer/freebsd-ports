@@ -9,14 +9,18 @@ MASTER_SITES=	LOCAL/gblach/enlightenment/
 MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	MPD module for Enlightenment
 
-BUILD_DEPENDS=	enlightenment:${PORTSDIR}/x11-wm/enlightenment
-RUN_DEPENDS=	enlightenment:${PORTSDIR}/x11-wm/enlightenment
-LIB_DEPENDS=	libmpd.so:${PORTSDIR}/audio/libmpd
+BUILD_DEPENDS=	enlightenment:x11-wm/enlightenment
+RUN_DEPENDS=	enlightenment:x11-wm/enlightenment
+LIB_DEPENDS=	libmpd.so:audio/libmpd
 
 DIST_SUBDIR=	enlightenment
 GNU_CONFIGURE=	yes
 USES=		gmake libtool pkgconfig tar:xz
 INSTALL_TARGET=	install-strip
+
+BROKEN=		Not compatible with Enlightenment 0.20
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 .include "../enlightenment/Makefile.plist"
 

@@ -11,9 +11,9 @@ EXTRACT_SUFX=	ga7-src.tgz
 MAINTAINER=	ecrist@secure-computing.net
 COMMENT=	3270 Terminal emulator
 
-BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf \
-		mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
+BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
+		mkfontdir:x11-fonts/mkfontdir \
+		mkfontscale:x11-fonts/mkfontscale
 
 # Conflict due to x3270if
 CONFLICTS=	c3270-*
@@ -23,7 +23,7 @@ USE_XORG=	ice sm x11 xaw xext xmu xt
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-fontdir=${FONTSDIR} \
 		--disable-dbcs \
-		ac_cv_search_libiconv=no
+		ac_cv_search_libiconv=${ICONV_LIB}
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 .if defined(WITHOUT_OPENSSL)

@@ -10,7 +10,7 @@ PKGNAMEPREFIX=	gimp-
 PKGNAMESUFFIX=	-plugin
 DISTNAME=	${PORTNAME}.py
 
-MAINTAINER=	lioux@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GIMP plugin to sharpen by increasing contrast in high frequency space
 
 LICENSE=	EZPERSPECTIVE
@@ -19,11 +19,12 @@ LICENSE_FILE=	${FILESDIR}/LICENSE
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 LICENSE_DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
-RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gimp-2.0.pc:${PORTSDIR}/graphics/gimp-app \
-		${LOCALBASE}/libexec/gimp/2.2/python/gimpfu.py:${PORTSDIR}/graphics/py-gimp
+RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gimp-2.0.pc:graphics/gimp-app \
+		${LOCALBASE}/libexec/gimp/2.2/python/gimpfu.py:graphics/py-gimp
 
 USES=		python:run zip
 NO_BUILD=	yes
+NO_ARCH=	yes
 NO_WRKSUBDIR=	yes
 
 PLUGIN_DIR?=	libexec/gimp/2.2/plug-ins

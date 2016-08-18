@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ghdl
-PORTVERSION=	0.32
-PORTREVISION=	2
+PORTVERSION=	0.33
+PORTREVISION=	1
+DISTVERSIONPREFIX=	v
 CATEGORIES=	cad
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -13,15 +14,13 @@ COMMENT=	GNU VHDL simulator
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libmpfr.so:${PORTSDIR}/math/mpfr \
-		libmpc.so:${PORTSDIR}/math/mpc
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libmpfr.so:math/mpfr \
+		libmpc.so:math/mpc
 
 USES=		ada gmake
 USE_GITHUB=	yes
-GH_ACCOUNT=	hanzer
-GH_PROJECT=	gVHDL
-GH_TAGNAME=	5adb2f6
+GH_ACCOUNT=	tgingold
 
 GNU_CONFIGURE=	yes
 GCCVER=		4.9.2
@@ -31,7 +30,7 @@ BUILDDIR=	${WRKDIR}/build
 GCCSRCDIR=	${WRKDIR}/gcc-${GCCVER}
 CFG_SCRIPT=	${GCCSRCDIR}/configure
 PKG_PREFIX=	${PREFIX}/ghdl
-LINKER_COMMAND=	${LOCALBASE}/gcc-aux/bin/gcc
+LINKER_COMMAND=	${LOCALBASE}/${ADAXX}-aux/bin/gcc
 
 GHDL_ARGS=	--enable-languages="c,vhdl" \
 		--build=${BLD_TARGET} \
@@ -55,6 +54,7 @@ OPTIONS_SINGLE_BACKEND=	GCC LLVM
 
 GCC_DESC=		Code generator is GCC  (mature)
 LLVM_DESC=		Code generator is LLVM (experimental)
+LLVM_USES=		libedit ncurses
 
 .if exists (/sbin/hammer)
 OPTIONS_DEFAULT=	LLVM
@@ -68,9 +68,6 @@ PLIST_SUB=		DRAGONFLY="@comment " FREEBSD=""
 
 .if ${OPSYS} == FreeBSD
 MODERN_BINUTILS=	yes
-.  if ${OSREL:R} == 8 && ${ARCH} == i386
-BROKEN=		get_pc_thunk.cx errors
-.  endif
 .endif
 
 .if ${ARCH:S/amd64/x86_64/} == x86_64
@@ -82,7 +79,7 @@ PLIST_SUB+=	X86_64="@comment "
 .if defined(MODERN_BINUTILS)
 # Apparently gcc 4.9 needs binutils 2.23 or greater to link Ada correctly
 USE_BINUTILS=	yes
-RUN_DEPENDS+=	${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
+RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 AS_COMMAND=	${LOCALBASE}/bin/as
 EXTRA_CONFIG+=	--with-ld=${LOCALBASE}/bin/ld
 .else
@@ -100,14 +97,14 @@ PLIST_SUB+=	GLEX=ghdl/libexec/gcc/${BLD_TARGET}/${GCCVER} \
 		GLIB=ghdl/lib/gcc/${BLD_TARGET}/${GCCVER} \
 		TARGET=${BLD_TARGET}
 .  if ${OPSYS} == DragonFly
-IGNORE=		Not supported by GCC backend
+IGNORE=		not supported by GCC backend
 .  endif
 .endif
 
 .if ${PORT_OPTIONS:MLLVM}
-BUILD_DEPENDS+=	llvm-config${LLVMVER}:${PORTSDIR}/devel/llvm${LLVMVER} \
-		clang++${LLVMVER}:${PORTSDIR}/lang/clang${LLVMVER}
-RUN_DEPENDS+=	llc${LLVMVER}:${PORTSDIR}/devel/llvm${LLVMVER}
+BUILD_DEPENDS+=	llvm-config${LLVMVER}:devel/llvm${LLVMVER} \
+		clang++${LLVMVER}:lang/clang${LLVMVER}
+RUN_DEPENDS+=	llc${LLVMVER}:devel/llvm${LLVMVER}
 PLIST=		${.CURDIR}/llvm-plist
 PLIST_SUB+=	GLIB=ghdl/lib/ghdl/
 .endif
@@ -123,6 +120,7 @@ post-patch:
 		-e 's|(INSTALL_DATA)|(BSD_INSTALL_DATA)|' \
 		${WRKSRC}/configure ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e 's|clang++|clang++${LLVMVER}|' \
+		-e 's|\((LDFLAGS)\)|\1 -L${LOCALBASE}/lib|' \
 		${WRKSRC}/src/ortho/llvm/Makefile
 
 .if ${PORT_OPTIONS:MGCC}

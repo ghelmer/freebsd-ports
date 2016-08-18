@@ -1,15 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	openh264
-PORTVERSION=	1.4.0
+PORTVERSION=	1.5.0
 DISTVERSIONPREFIX=v
-PORTREVISION=	5
 CATEGORIES=	multimedia
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Cisco implementation of H.264 codec
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	cisco
@@ -20,7 +20,8 @@ USE_LDCONFIG=	yes
 ASFLAGS+=	${ASFLAGS_${MACHINE}_${CHOSEN_COMPILER_TYPE}}
 ASFLAGS_arm_clang=	-no-integrated-as
 ASFLAGS_arm64_clang=	-no-integrated-as
-MAKE_ARGS=	OS=freebsd ARCH="${ARCH:S/amd64/x86_64/}" \
+MAKE_ARGS=	PREFIX="${PREFIX}" \
+		OS=bsd ARCH="${ARCH:S/amd64/x86_64/}" \
 		CCASFLAGS='$$(CFLAGS) ${ASFLAGS}' \
 		CFLAGS_OPT="" CFLAGS_DEBUG=""
 ALL_TARGET=	all
@@ -30,11 +31,11 @@ OPTIONS_DEFAULT=PLUGINS
 OPTIONS_SUB=	yes
 
 DEBUG_BUILD_DEPENDS_OFF=	${DEBUG_BUILD_DEPENDS_OFF_${ARCH}}
-DEBUG_BUILD_DEPENDS_OFF_amd64=	nasm:${PORTSDIR}/devel/nasm
-DEBUG_BUILD_DEPENDS_OFF_i386=	nasm:${PORTSDIR}/devel/nasm
+DEBUG_BUILD_DEPENDS_OFF_amd64=	nasm:devel/nasm
+DEBUG_BUILD_DEPENDS_OFF_i386=	nasm:devel/nasm
 DEBUG_MAKE_ARGS=BUILDTYPE=Debug
-PLUGINS_BUILD_DEPENDS=gmp-api>=34.0:${PORTSDIR}/multimedia/gmp-api
-#			gmp-api<36.0:${PORTSDIR}/multimedia/gmp-api
+PLUGINS_BUILD_DEPENDS=gmp-api>=34.0:multimedia/gmp-api
+#			gmp-api<36.0:multimedia/gmp-api
 PLUGINS_CFLAGS=	-I${LOCALBASE}/include/gmp-api
 PLUGINS_MAKE_ARGS=HAVE_GMP_API=Yes
 PLUGINS_ALL_TARGET=plugin
@@ -44,23 +45,21 @@ WEBPLUGIN_FILES=gmp${PORTNAME}.info libgmp${PORTNAME}.so
 SUB_FILES+=	gmp${PORTNAME}.js
 SUB_LIST+=	PORTVERSION=${PORTVERSION} TIMESTAMP="`date +%s`"
 
-TEST_BUILD_DEPENDS=googletest>=1.6.0:${PORTSDIR}/devel/googletest
+TEST_BUILD_DEPENDS=googletest>=1.6.0:devel/googletest
 TEST_CFLAGS=	-I${LOCALBASE}/include
 TEST_MAKE_ARGS=	HAVE_GTEST=Yes
 TEST_ALL_TARGET=test
 
 post-patch:
 	${REINPLACE_CMD} -e '/gtest-targets\.mk/d' \
-		-e '/pkgconfig/s/lib/libdata/' \
+		-e '/pkgconfig/s/$$(LIBDIR_NAME)/libdata/' \
 		${WRKSRC}/Makefile
-	${REINPLACE_CMD} -e 's,@prefix@,${PREFIX},' \
-		${WRKSRC}/${PORTNAME}.pc.in
 
 pre-build:
 	${LN} -sf ${LOCALBASE}/lib/libgtest.so ${WRKSRC}/libgtest.a
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so.0
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib${PORTNAME}.so.1
 
 post-install-PLUGINS-on:
 	${MKDIR} ${STAGEDIR}${WEBPLUGIN_DIR}

@@ -12,9 +12,13 @@ DISTNAME=	miniCHESS-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Window Maker chess dockapp game
 
-LICENSE=	GPLv2 # (or later)
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
-RUN_DEPENDS=	${LOCALBASE}/bin/gnuchess:${PORTSDIR}/games/gnuchess
+LICENSE=	GPLv2+
+
+RUN_DEPENDS=	${LOCALBASE}/bin/gnuchess:games/gnuchess
 
 USE_XORG=	xpm
 

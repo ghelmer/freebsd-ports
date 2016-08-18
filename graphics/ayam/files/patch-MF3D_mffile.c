@@ -1,6 +1,6 @@
---- MF3D/mffile.c.orig	2007-12-17 19:24:47.000000000 +0100
-+++ MF3D/mffile.c	2007-12-17 19:25:03.000000000 +0100
-@@ -102,7 +102,7 @@
+--- MF3D/mffile.c.orig	2016-01-13 20:09:57 UTC
++++ MF3D/mffile.c
+@@ -102,7 +102,7 @@ MF3D_TypeObjWrite (
        /* Add this type to the table */
        ++inMetafilePtr->typeTable.nTypes;
        numTypes = inMetafilePtr->typeTable.nTypes;

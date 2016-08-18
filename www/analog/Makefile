@@ -3,7 +3,7 @@
 
 PORTNAME=	analog
 PORTVERSION=	6.0
-PORTREVISION=	10
+PORTREVISION=	11
 PORTEPOCH=	1
 CATEGORIES=	www
 MASTER_SITES=	http://www.analog.cx/ \
@@ -16,9 +16,10 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast program for analysing WWW logfiles
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/Licence.txt
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
-		libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libgd.so:graphics/gd \
+		libpng.so:graphics/png
 
 USES=		jpeg
 BUILD_WRKSRC=	${WRKSRC}/src
@@ -41,8 +42,12 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/lang/* ${STAGEDIR}${DATADIR}/lang
 	${MKDIR} ${STAGEDIR}${IMGDIR}
 	${INSTALL_DATA} ${WRKSRC}/images/* ${STAGEDIR}${IMGDIR}
+
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/docs/* ${STAGEDIR}${DOCSDIR}
+
+do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/*.cfg ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/anlgform.html ${STAGEDIR}${EXAMPLESDIR}

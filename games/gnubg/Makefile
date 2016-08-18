@@ -13,11 +13,11 @@ COMMENT=	GNU Backgammon
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	bison:${PORTSDIR}/devel/bison
-RUN_DEPENDS=	sqlite3:${PORTSDIR}/databases/sqlite3
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext \
-		libcanberra-gtk.so:${PORTSDIR}/audio/libcanberra
+BUILD_DEPENDS=	bison:devel/bison
+RUN_DEPENDS=	sqlite3:databases/sqlite3
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
+		libcanberra-gtk.so:audio/libcanberra
 
 CONFIGURE_ARGS=	--with-board3d --with-sqlite --with-python=${LOCALBASE}/bin/python
 CONFIGURE_ENV=	ac_cv_path_ARTSC_CONFIG=no ac_cv_path_LIBART_CONFIG=no
@@ -30,7 +30,6 @@ USES=		gmake libtool pathfix shebangfix python pkgconfig compiler:c++11-lang
 USE_GNOME=	glib20
 
 OPTIONS_DEFINE=	NLS DOCS
-OPTIONS_DEFAULT=NLS
 OPTIONS_SUB=	yes
 
 NLS_USES=	gettext

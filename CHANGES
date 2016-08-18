@@ -10,6 +10,185 @@ in the release notes and/or placed into UPDATING.
 
 All ports committers are allowed to commit to this file.
 
+20160628:
+AUTHOR: mat@FreeBSD.org
+
+  USEify USES=php.
+
+  The following variables have been folded into arguments:
+
+  - USE_PHPIZE -> USES=php:phpize
+  - USE_PHPEXT -> USES=php:ext
+  - USE_ZENDEXT -> USES=php:zend
+  - USE_PHP_BUILD -> USES=php:build
+  - WANT_PHP_CLI -> USES=php:cli
+  - WANT_PHP_CGI -> USES=php:cgi
+  - WANT_PHP_MOD -> USES=php:mod
+  - WANT_PHP_WEB -> USES=php:web
+  - WANT_PHP_EMB -> USES=php:embed
+
+20160627:
+AUTHOR: mat@FreeBSD.org
+
+  USE_OPENSSL has been replaced by USES=ssl.
+
+20160625:
+AUTHOR: adamw@FreeBSD.org
+
+  A new ${opt}_CMAKE_BOOL OPTIONS helper has been added. Instead of:
+
+    FOO_CMAKE_ON=	-DWITH_FOO:BOOL=YES -DWITH_BAR:BOOL=YES
+    FOO_CMAKE_OFF=	-DWITH_FOO:BOOL=NO  -DWITH_BAR:BOOL=NO
+
+  you can use this shortcut:
+
+    SOMEOPT_CMAKE_BOOL=	WITH_FOO WITH_BAR
+
+20160525:
+AUTHOR: mat@FreeBSD.org
+
+  A new stage-qa test has been added, it reports all shared libraries
+  dependencies that are not part of the port list of dependencies.  It help
+  finds what is called proxy dependencies.
+
+  A is needed by B, and B is needed by C.  If C also needs A, then it needs to
+  be registered, and this check will tell you to do so.
+
+  Right now, it is only reporting the problems, but if you add
+  PROXYDEPS_FATAL=yes to your environment, it will give an error and will force
+  you to fix the dependencies.
+
+20160525:
+AUTHOR: bapt@FreeBSD.org
+
+  New keyword @xmlcatmgr has been added, to handle the XML and SGML catalog
+  maintainance, in order to improve consistency and correctness of the
+  generation of the catalog.
+  If the catalog file has an extension being '.xml' it will be automatically
+  added to the XML catalog, otherwise it will be added to the SGML catalog
+
+20160512:
+AUTHOR: emaste@FreeBSD.org
+
+  "make makesum" now writes the current timestamp to distinfo when it is run.
+  This is done to support development and prototyping efforts for reproducible
+  package builds, which require some concept of a "last updated" time.
+
+  The TIMESTAMP can currently be ignored for ports that have no distinfo, and
+  for updates done without using "make makesum."
+
+20160428
+AUTHOR: mat@FreeBSD.org
+
+  USE_RUBYGEMS has been replaced by USES=gem.
+
+20160426:
+AUTHOR: mat@FreeBSD.org
+
+  USE_MYSQL and USE_BDB have been replaced by USES=mysql and USES=bdb.
+
+  WANT_BDB_VER=XX should be replaced by USES=bdb:XX.
+
+20160414:
+AUTHOR: mat@FreeBSD.org
+
+  USE_RC_SUBR=yes has not done anything for a long time, it will now give an error.
+
+20160413:
+AUTHOR: jbeich@FreeBSD.org
+
+  Introducing CONFIGURE_OUTSOURCE. It changes HAS_CONFIGURE and GNU_CONFIGURE
+  by invoking configure, build and install stage outside of source tree e.g.,
+
+    $ mkdir ../.build
+    $ cd ../.build
+    $ ${OLDPWD}/configure
+    $ gmake
+    $ gmake install
+
+20160402:
+AUTHOR: bapt@FreeBSD.org
+
+  Adding ${PORTSDIR} in dependency lines is no longer necessary meaning
+
+  RUN_DEPENDS=  foo:${PORTSDIR}/bar/foo
+
+  can now be written
+
+  RUN_DEPENDS=  foo:bar/foo
+
+  if the path after ':' is not absolute the framework will automatically
+  prepend ${PORTSDIR}/
+
+20160301:
+AUTHOR: mat@FreeBSD.org
+
+  Introduce GH_TUPLE.
+
+  GH_TUPLE allows one to put all the GH_{ACCOUNT,PROJECT,TAGNAME} into one
+  variable, in the form of account:project:tagname[:group].  It is helpful when
+  there are many submodules.
+
+20160207:
+AUTHOR: kwm@FreeBSD.org
+
+  The GNOME and MATE framework activation changed. To use the frameworks
+  now either gnome or mate needs to be added USES.
+
+  The usage of USE_GNOME, USE_MATE, INSTALLS_ICONS and for example
+  GLIB_SCHEMAS stays the same.
+
+  Like with USES, the use of USE_GNOME and so after bsd.port.pre.mk
+  is now forbidden.
+
+20160112:
+AUTHOR: amdmi3@FreeBSD.org
+
+  Support has been added for "or later" variants of GNU licenses
+  (e.g. LICENSE=GPLv2+) and for Public Domain (LICENSE=PD).
+
+  Complete list of new LICENSE values:
+
+  AGPLv3+ GPLv1+ GPLv2+ GPLv3+ GPLv3RLE+ LGPL20+ LGPL21+ LGPL3+ PD
+
+20160110:
+AUTHOR: bapt@FreeBSD.org
+
+  USE_FIREBIRD and USE_SQLITE has been replaced by USES=firebird and
+  USES=sqlite
+
+20151105:
+AUTHOR: mat@FreeBSD.org
+
+  Change the meaning of NO_WRKSUBDIR to force a WRKDIR != WRKSRC.
+
+  Right now, NO_WRKSUBDIR means that the extraction does not produce a
+  subdirectory, and that everything goes straight into WRKDIR.  It is
+  problematic, because during the build of a port, quite a few files
+  are created in there, and then, a stage directory, where everything
+  is installed, and then a pkg directory where the package is created,
+  and those often conflict, or get in the way, of the building
+  process.
+
+  With this, NO_WRKSUBDIR will extract the distfiles directly into
+  WRKSRC instead of WRKDIR.  In this case, WRKSRC is artificial and is
+  based on PKGNAME and not DISTNAME, mitigate conflicts with rc files.
+
+20151022:
+AUTHOR: amdmi3@FreeBSD.org
+
+  Improved support for USES=shebangfix
+
+  - We now support multiple values for *_OLD_CMD
+  - We replace more variants by default (/bin/${lang}, /usr/bin/${lang},
+    /usr/bin/env ${lang}).
+  - shebangfix now also supports lua if USES=lua is specified
+  - Pattern matching has been improved: we now only match whole worlds,
+    e.g. "/usr/bin/perl5.005" is no longer erroneously replaced with
+    "${perl_CMD}5.005".
+
+  Note that *_OLD_CMD entries which contain spaces must now be quoted.
+
 20150928:
 AUTHOR: amdmi3@FreeBSD.org
 
@@ -150,10 +329,10 @@ AUTHOR: mat@FreeBSD.org
 
 20150528:
 AUTHOR: mat@FreeBSD.org
-  
+
   USE_GITHUB can now fetch multiple distfiles.  It uses a grouping feature
   similar to MASTER_SITES/PATCH_SITES.
-  
+
   Some helpful variables are provided: WRKSRC_<group> for putting things in the
   right place in post-extract, and DISTNAME_<group>/DISTFILE_<group> for use
   with EXTRACT_ONLY.
@@ -255,7 +434,7 @@ AUTHOR: bapt@FreeBSD.org
 20150326:
 AUTHOR: bdrewery@FreeBSD.org
 
-  PTHREAD_CLFAGS and PTHREAD_LIBS have been removed.  Please see entry
+  PTHREAD_CFLAGS and PTHREAD_LIBS have been removed.  Please see entry
   20130207 for more information.
 
 20150319:

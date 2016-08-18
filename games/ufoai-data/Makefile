@@ -20,9 +20,7 @@ LICENSE_NAME_CCbySA3=	Creative Commons Attribution-ShareAlike 3.0 Unported
 LICENSE_TEXT_CCbySA3=	See http://creativecommons.org/licenses/by-sa/3.0/
 LICENSE_PERMS_CCbySA3=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-EXTRACT_DEPENDS=	${UNZIP_CMD}:${PORTSDIR}/archivers/unzip
-
-MANUAL_PACKAGE_BUILD=	huge (1GiB)
+EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
@@ -32,16 +30,16 @@ DATADIR=	share/${PKGNAMEPREFIX:S/-//}
 PLIST=		${WRKDIR}/pkg-plist
 
 post-extract:
-	@cd ${WRKDIR}/base && \
-		${FIND} * -type f -exec ${UNZIP_CMD} "{}" -d ${WRKDIR}/base \;
-	@${RM} ${WRKDIR}/base/*.pk3
+	@cd ${WRKSRC}/base && \
+		${FIND} * -type f -exec ${UNZIP_CMD} "{}" -d ${WRKSRC}/base \;
+	@${RM} ${WRKSRC}/base/*.pk3
 
 pre-install:
 	@${RM} -f ${PLIST}
-	@cd ${WRKDIR}/base && \
+	@cd ${WRKSRC}/base && \
 		${FIND} * -type f | ${SORT} | ${SED} -e 's|^|%%DATADIR%%/base/|' >> ${PLIST}
 
 do-install:
-	cd ${WRKDIR}/base && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${DATADIR}/base
+	cd ${WRKSRC}/base && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/${DATADIR}/base
 
 .include <bsd.port.mk>

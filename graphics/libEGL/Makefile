@@ -8,10 +8,10 @@ CATEGORIES=	graphics
 
 COMMENT=	OpenEGL library
 
-LIB_DEPENDS+=	libpthread-stubs.so:${PORTSDIR}/devel/libpthread-stubs \
-		libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libdevq.so:${PORTSDIR}/devel/libdevq \
-		libdrm.so:${PORTSDIR}/graphics/libdrm
+LIB_DEPENDS+=	libpthread-stubs.so:devel/libpthread-stubs \
+		libexpat.so:textproc/expat2 \
+		libdevq.so:devel/libdevq \
+		libdrm.so:graphics/libdrm
 
 USE_GL=		gbm
 USE_XORG=	x11 xau xcb xdmcp
@@ -23,8 +23,8 @@ USE_XORG+=	glproto dri2proto xext xdamage xfixes presentproto \
 .include <bsd.port.options.mk>
 .include "${.CURDIR}/../../graphics/libGL/Makefile.common"
 
-MESA_BUILD_WRKSRC=	src/mapi src/gbm src/egl/drivers/dri2 src/egl/main
-MESA_INSTALL_WRKSRC=	src/egl/drivers/dri2 src/egl/main
+MESA_BUILD_WRKSRC=	src/mapi src/gbm src/egl/
+MESA_INSTALL_WRKSRC=	src/egl
 
 .include "${.CURDIR}/../../graphics/libGL/Makefile.targets"
 

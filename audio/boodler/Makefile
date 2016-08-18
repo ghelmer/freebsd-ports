@@ -12,6 +12,7 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Programmable soundscape tool
 
 LICENSE=	LGPL20 # Main program only, sounds have various copyrights
+LICENSE_FILE=	${WRKSRC}/LGPL
 
 RESTRICTED=	Not for commercial use
 RESTRICTED_FILES=	boodler-snd-021902.tar.gz
@@ -34,7 +35,7 @@ OPTIONS_DEFAULT=	OSS
 
 AUDIO_DESC=		Audio backend
 
-ESOUND_LIB_DEPENDS=	libesd.so:${PORTSDIR}/audio/esound
+ESOUND_LIB_DEPENDS=	libesd.so:audio/esound
 ESOUND_CONFIGURE_ON=	--driver esd
 
 FILE_DESC=		Write raw PCM data to a file
@@ -64,6 +65,8 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/boodler.py ${STAGEDIR}${DATADIR}
 	${RM} ${STAGEDIR}${DATADIR}/boodle/cboodle.so
 	${INSTALL_PROGRAM} ${WRKSRC}/boodle/cboodle.so ${STAGEDIR}${DATADIR}/boodle/cboodle.so
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/*.html ${STAGEDIR}${DOCSDIR}
 

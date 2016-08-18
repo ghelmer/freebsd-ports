@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	trafficserver
-PORTVERSION=	5.3.1
-PORTREVISION=	1
+PORTVERSION=	6.1.1
 CATEGORIES=	www
 MASTER_SITES=	APACHE/${PORTNAME}
 
@@ -12,24 +11,22 @@ COMMENT=	Fast, scalable and extensible HTTP proxy server
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libboost_system.so:${PORTSDIR}/devel/boost-libs \
-		libcurl.so:${PORTSDIR}/ftp/curl \
-		libhwloc.so:${PORTSDIR}/devel/hwloc \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libxml2.so:${PORTSDIR}/textproc/libxml2
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libhwloc.so:devel/hwloc \
+		libpcre.so:devel/pcre \
+		libxml2.so:textproc/libxml2
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		cpe execinfo gmake libtool perl5 pkgconfig tar:bzip2 tcl
+USES=		cpe execinfo gmake libtool perl5 pkgconfig sqlite tar:bzip2 tcl
 CPE_VENDOR=	apache
 CPE_PRODUCT=	traffic_server
 USE_PERL5=	build run
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 USE_RC_SUBR=	${PORTNAME}
-USE_SQLITE=	yes
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	amd64
 
 USERS=		${WWWOWN}
 GROUPS=		${WWWGRP}
@@ -43,7 +40,6 @@ CONFIGURE_ARGS=	--with-libxml2=${LOCALBASE} \
 		--with-tcl=${TCL_LIBDIR} \
 		--disable-silent-rules \
 		--enable-cppapi \
-		--enable-luajit \
 		--localstatedir=/var \
 		--with-user=${USERS} \
 		--with-group=${GROUPS}
@@ -63,7 +59,9 @@ SPDY_DESC=	Enable SPDY
 WCCP_CONFIGURE_ENABLE=	wccp
 INTERIM_CONFIGURE_ENABLE=	interim-cache
 SPDY_CONFIGURE_ENABLE=	spdy
-SPDY_LIB_DEPENDS=	libspdylay.so:${PORTSDIR}/www/spdylay
+SPDY_LIB_DEPENDS=	libspdylay.so:www/spdylay
+
+BROKEN_FreeBSD_9=	Trafficserver is only supported on FreeBSD 10.1 or newer
 
 .include <bsd.port.options.mk>
 
@@ -75,11 +73,6 @@ CONFIGURE_ARGS+=	--enable-freelist
 CONFIGURE_ARGS+=	--disable-freelist
 .else
 IGNORE=	no allocation strategy selected
-.endif
-
-.if exists(/usr/bin/clang)
-CC=		clang
-CXX=		clang++
 .endif
 
 .if ! exists(/var/cache)

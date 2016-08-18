@@ -27,11 +27,8 @@ USE_OPENSSL=	yes
 ALL_TARGET=	install
 MAKE_JOBS_UNSAFE=	yes
 
-CPPFLAGS+=	-I${OPENSSLINC}
+CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
-
-post-patch:
-	@${REINPLACE_CMD} -i '' -e 's|/bin/perl|${perl_CMD}|' ${WRKSRC}/bin/WebStone-common.pl
 
 pre-configure:
 	@${RM} -f ${WRKSRC}/src/config.cache

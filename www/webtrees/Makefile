@@ -10,7 +10,6 @@ MASTER_SITES=	http://launchpad.net/${PORTNAME}/${PORTVERSION:C/\.[0-9]*$//}/${PO
 MAINTAINER=	fbsd@opal.com
 COMMENT=	Online genealogy viewer
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 EXTRACT_AFTER_ARGS=	-d ${WRKSRC}
 
 USES=		cpe shebangfix zip:infozip
@@ -31,9 +30,6 @@ do-install:
 		${SED} -ne 's,^${PORTNAME}/,${WWWDIR_REL}/,p' >> ${TMPPLIST}
 	@${ECHO_CMD} \
 		'@exec chown -R ${WWWOWN}:${WWWGRP} %D/${WWWDIR_REL}/data' \
-		>> ${TMPPLIST}
-	@(cd ${WRKSRC}/${PORTNAME}; ${FIND} . -type d) | ${SORT} -r | \
-		${SED} -ne 's,^${PORTNAME}/,@dirrm ${WWWDIR_REL}/,p' \
 		>> ${TMPPLIST}
 
 .include <bsd.port.mk>

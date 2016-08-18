@@ -1,4 +1,4 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	fvcom
@@ -9,13 +9,13 @@ MASTER_SITES=	http://fvcom.smast.umassd.edu/FVCOM/index.html/
 DISTNAME=	sourcecode1
 DIST_SUBDIR=	fvcom
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Unstructured Grid Finite Volume Coastal Ocean Model
 
 # Check netcdf lib for Fortran support!
-LIB_DEPENDS+=	libnetcdff.so:${PORTSDIR}/science/netcdf-fortran \
-		liblapack.so:${PORTSDIR}/math/lapack \
-		libblas.so:${PORTSDIR}/math/lapack
+LIB_DEPENDS+=	libnetcdff.so:science/netcdf-fortran \
+		liblapack.so:math/lapack \
+		libblas.so:math/lapack
 
 USES=		fortran
 USE_GCC=	yes

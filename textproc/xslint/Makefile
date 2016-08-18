@@ -10,7 +10,11 @@ DISTNAME=	${PORTNAME}${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XSL(T) stylesheet checker
 
-RUN_DEPENDS=	p5-XML-DOM>=0:${PORTSDIR}/textproc/p5-XML-DOM
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	p5-XML-DOM>=0:textproc/p5-XML-DOM
 
 USES=		shebangfix perl5 zip
 USE_PERL5=	run

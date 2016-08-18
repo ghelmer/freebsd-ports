@@ -4,26 +4,18 @@
 PORTNAME=	thrift
 PORTVERSION=	${THRIFT_PORTVERSION}
 CATEGORIES=	devel
+MASTER_SITES=	APACHE/thrift/${PORTVERSION}
 PKGNAMEPREFIX=	php5-
-DISTFILES=	# empty
 
 MAINTAINER=	webmaster@kibab.com
 COMMENT=	PHP interface to Thrift
 
-FETCH_DEPENDS+=	${NONEXISTENT}:${PORTSDIR}/devel/thrift:extract
-
-USE_PHP=	yes
-
-USE_PHPIZE=	yes
-USE_PHPEXT=	yes
+USES=		php:ext
 PHP_MODNAME=	thrift_protocol
+IGNORE_WITH_PHP=	70
 
-WRKSRC=		${WRKDIR}/php/src/ext/thrift_protocol
+DISTINFO_FILE=	${.CURDIR}/../thrift/distinfo
+WRKSRC_SUBDIR=	lib/php/src/ext/thrift_protocol
 
-post-extract:
-	${LN} -sfh \
-		`${MAKE} -C ${PORTSDIR}/devel/thrift -V WRKSRC`/lib/php \
-		${WRKDIR}
-
-.include "../thrift/bsd.thrift.mk"
+.include "${.CURDIR}/../thrift/bsd.thrift.mk"
 .include <bsd.port.mk>

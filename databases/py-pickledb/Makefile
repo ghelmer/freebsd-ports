@@ -2,21 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	pickleDB
-PORTVERSION=	0.3
+PORTVERSION=	0.6.2
 CATEGORIES=	databases python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	duchateau.olivier@gmail.com
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Lightweight, fast, and simple key-value store
 
 LICENSE=	BSD3CLAUSE
 
-USES=		python
-USE_PYTHON=	distutils
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>=0:devel/py-simplejson
 
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/pickledb.py \
-		%%PYTHON_SITELIBDIR%%/pickledb.pyc \
-		%%PYTHON_SITELIBDIR%%/pickledb.pyo
+USES=		python
+USE_PYTHON=	autoplist distutils
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

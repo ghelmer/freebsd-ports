@@ -1,12 +1,10 @@
-# Created by: Rodrigo OSORIO <rodrigo@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	omegaT
-DISTVERSION=	3.1.8
-PORTREVISION=	1
+DISTVERSION=	3.1.9
 CATEGORIES=	editors java x11
-MASTER_SITES=	SF/${PORTNAME:tl}/OmegaT%20-%20Standard/OmegaT%20${DISTVERSION}/
-DISTNAME=	OmegaT_${DISTVERSION}_Source
+MASTER_SITES=	SF/${PORTNAME:tl}/OmegaT%20-%20Standard/OmegaT%20${DISTVERSION}%20update%204/
+DISTNAME=	OmegaT_${DISTVERSION}_04_Source
 DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	rodrigo@FreeBSD.org
@@ -39,11 +37,11 @@ DESKTOP_ENTRIES="OmegaT" "Translation memory application" \
 		"omegaT" "Office;WordProcessor;Java;" \
 		false
 post-build:
-	@cd ${WRKDIR} && ${MV} 'dist' ${PORTNAME}
+	@cd ${WRKSRC} && ${MV} 'dist' ${PORTNAME}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}
-	@cd  ${WRKDIR} && ${COPYTREE_BIN} ${PORTNAME} ${STAGEDIR}${JAVASHAREDIR}
+	@cd  ${WRKSRC} && ${COPYTREE_BIN} ${PORTNAME} ${STAGEDIR}${JAVASHAREDIR}
 	${INSTALL_SCRIPT} ${WRKDIR}/omegat.prefs ${STAGEDIR}${JAVASHAREDIR}/${PORTNAME}
 	${INSTALL_SCRIPT} ${WRKDIR}/omegaT.sh ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 

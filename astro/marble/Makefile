@@ -9,9 +9,9 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Virtual globe and world atlas for KDE
 
-LIB_DEPENDS=	libquazip.so:${PORTSDIR}/archivers/quazip
+LIB_DEPENDS=	libquazip.so:archivers/quazip
 
-USE_KDE4=	kdelibs kdeprefix automoc4
+USE_KDE4=	kdelibs automoc4
 USES=		cmake:outsource gmake shared-mime-info tar:xz
 USE_QT4=	corelib dbus declarative designer_build gui network phonon \
 		qtestlib script sql svg webkit xml \
@@ -25,7 +25,7 @@ OPTIONS_DEFAULT=	GPS
 OPTIONS_SUB=	yes
 
 GPS_DESC=	Support for GPS position provider
-GPS_LIB_DEPENDS=	libgps.so:${PORTSDIR}/astro/gpsd
+GPS_LIB_DEPENDS=	libgps.so:astro/gpsd
 GPS_CMAKE_OFF=	-DWITH_libgps:BOOL=FALSE
 
 # pre-configure:

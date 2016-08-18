@@ -2,13 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	citrix_ica
-PORTVERSION=	13.2.0
-PORTREVISION=	3
+PORTVERSION=	13.3.0
+PORTREVISION=	1
 CATEGORIES=	net comms linux
 MASTER_SITES=	#
-DISTNAME=	linuxx86-13.2.0.322243
+DISTNAME=	linuxx86-${PORTVERSION}.344519
 
-MAINTAINER=	ehaupt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Citrix(R) Presentation Server(TM) client
 
 ONLY_FOR_ARCHS=	i386 amd64
@@ -39,7 +39,7 @@ SUB_LIST=	CDIR=${CDIR}
 .include <bsd.port.pre.mk>
 
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX})
-IGNORE=May not be redistributed due to licensing. Please visit http://www.citrix.com/downloads/citrix-receiver/linux/receiver-for-linux-13-2.html accept their license and download ${DISTFILES} into ${DISTDIR}
+IGNORE=May not be redistributed due to licensing. Please visit https://www.citrix.com/downloads/citrix-receiver/linux/ accept their license and download ${DISTFILES} into ${DISTDIR}
 .endif
 
 .if defined(ICA_CERTS)
@@ -62,12 +62,15 @@ pre-fetch:
 .endif
 
 post-patch:
-# linux syscall epoll_create is not yet implemented
-	@${REINPLACE_CMD} -e 's|^ClientAudio=On|ClientAudio=Off|' \
-		${WRKSRC}/linuxx86/linuxx86.cor/nls/*/module.ini
+# - linux syscall epoll_create is not yet implemented
+# - disable Flash redirection as it generates a deadlock in linux_sys_futex
+	@${REINPLACE_CMD} \
+		-e 's|^ClientAudio=On|ClientAudio=Off|' \
+		-e 's|^FlashV2=On|FlashV2=Off|' \
+			${WRKSRC}/linuxx86/linuxx86.cor/nls/*/module.ini
 
 do-install:
-	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${STAGEDIR}${PREFIX}|g' ${WRKDIR}/linuxx86/hinst
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${STAGEDIR}${PREFIX}|g' ${WRKSRC}/linuxx86/hinst
 	@if (test -d "${CDIR}") ; \
 	then \
 		${ECHO} "-----------------------------------------------------------" ; \
@@ -84,8 +87,8 @@ do-install:
 # XXX: This is missing a "${BRANDELF} -t Linux <executables>".
 	${MKDIR} ${STAGEDIR}${CDIR}
 	${MKDIR} ${STAGEDIR}${CDIR}/config
-	cd ${WRKDIR}/linuxx86/linuxx86.cor/ && ${COPYTREE_SHARE} . ${STAGEDIR}${CDIR}
-	${CP} ${WRKDIR}/setupwfc ${STAGEDIR}${CDIR}
+	cd ${WRKSRC}/linuxx86/linuxx86.cor/ && ${COPYTREE_SHARE} . ${STAGEDIR}${CDIR}
+	${CP} ${WRKSRC}/setupwfc ${STAGEDIR}${CDIR}
 
 .if defined(ICA_CERTS)
 	${MKDIR} ${STAGEDIR}${CERTDIR}

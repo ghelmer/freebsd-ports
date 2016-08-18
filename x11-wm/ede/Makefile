@@ -16,17 +16,16 @@ COMMENT=	Equinox Desktop Environment
 LICENSE=	GPLv2 LGPL20
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	doxygen:${PORTSDIR}/devel/doxygen \
-		jam:${PORTSDIR}/devel/jam
-LIB_DEPENDS=	libdbus-1.so:${PORTSDIR}/devel/dbus \
-		libcurl.so:${PORTSDIR}/ftp/curl \
-		libstartup-notification-1.so:${PORTSDIR}/x11/startup-notification \
-		libfltk.so:${PORTSDIR}/x11-toolkits/fltk
+BUILD_DEPENDS=	doxygen:devel/doxygen \
+		jam:devel/jam
+LIB_DEPENDS=	libdbus-1.so:devel/dbus \
+		libcurl.so:ftp/curl \
+		libstartup-notification-1.so:x11/startup-notification \
+		libfltk.so:x11-toolkits/fltk
 
 USES=		fam gettext iconv:translit pathfix pkgconfig python:2 \
 		shared-mime-info shebangfix
 SHEBANG_FILES=	doc/asciidoc/asciidoc.py
-python_OLD_CMD=	/usr/bin/env python
 USE_XORG=	xcomposite xft xinerama xkbfile xpm xrandr
 USE_CSTD=	gnu89
 GNU_CONFIGURE=	yes
@@ -44,7 +43,7 @@ CONFLICTS_INSTALL=	pekwm-[0-9]*
 
 OPTIONS_DEFINE=		HAL
 
-HAL_LIB_DEPENDS=	libhal.so.1:${PORTSDIR}/sysutils/hal
+HAL_LIB_DEPENDS=	libhal.so.1:sysutils/hal
 HAL_CONFIGURE_ENABLE=	hal
 
 EDELIB_NAME=	edelib

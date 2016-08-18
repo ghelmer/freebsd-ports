@@ -11,7 +11,7 @@ COMMENT=	High performance webserver with scalability benchmark tools
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	libowfat>=0.29:${PORTSDIR}/devel/libowfat
+BUILD_DEPENDS=	libowfat>=0.29:devel/libowfat
 
 USES=		gmake tar:bzip2
 USE_OPENSSL=	yes
@@ -35,7 +35,7 @@ PORTEXAMPLES=	run-gatling cgi acc getlinks hcat hitprofile matchiprange \
 
 OPTIONS_DEFINE=	BENCHMARKS SMB TLS ZLIB OPTIMIZED_CFLAGS DOCS EXAMPLES DEBUG
 OPTIONS_SUB=	yes
-OPTIONS_DEFAULT=	BENCHMARKS SMB TLS ZLIB OPTIMIZED_CFLAGS DOCS EXAMPLES
+OPTIONS_DEFAULT=	BENCHMARKS SMB TLS ZLIB OPTIMIZED_CFLAGS
 BENCHMARKS_DESC=	Install some benchmark programs
 TLS_DESC=		Build and install tlsgatling
 ZLIB_DESC=		Compress outgoing data

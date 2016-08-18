@@ -14,15 +14,14 @@ COMMENT=	PHP Accelerator designed mainly for graphic work
 
 LICENSE=	PHP301
 
-USE_PHP=	yes
-USE_PHPEXT=	yes
-USES=		tar:tgz
+USES=		php:ext tar:tgz
 USE_GCC=	any
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.pre.mk>
 
 .if ${OSVERSION} < 1000034
-LIB_DEPENDS+=	libmissing.so:${PORTSDIR}/math/libmissing
+LIB_DEPENDS+=	libmissing.so:math/libmissing
 CONFIGURE_ARGS=	--with-libmissing=${LOCALBASE}
 EXTRA_PATCHES+=	${FILESDIR}/extra-patch-libmissing
 .endif

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	vor
-PORTVERSION=	0.5.5
-PORTREVISION=	7
+PORTVERSION=	0.5.6
 CATEGORIES=	games
 MASTER_SITES=	http://qualdan.com/vor/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -11,10 +10,12 @@ MASTER_SITES=	http://qualdan.com/vor/ \
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Dodge the rocks until you die
 
-USES=		tar:bzip2 gmake
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		gmake pkgconfig tar:bzip2
 USE_SDL=	mixer image sdl
 GNU_CONFIGURE=	yes
-LDFLAGS+=	-lm
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*
@@ -30,8 +31,10 @@ DESKTOP_ENTRIES="Variations on Rockdodger" \
 OPTIONS_DEFINE=	DOCS
 
 post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

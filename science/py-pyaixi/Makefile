@@ -1,13 +1,13 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	pyaixi
-PORTVERSION=	1.0.3
+PORTVERSION=	1.0.4
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	xmj@chaot.net
+MAINTAINER=	johannes@perceivon.net
 COMMENT=	Implementation of the MC-AIXI-CTW AI algorithm
 
 LICENSE=	CCbySA
@@ -28,10 +28,11 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 EXAMPLESDIR=	${PREFIX}/share/examples/py-${PORTNAME}
 DOCSDIR=	${PREFIX}/share/doc/py-${PORTNAME}
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} \
 		${STAGEDIR}${DOCSDIR}
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${PORTEXAMPLES:S|^|${WRKSRC}/conf/|} \
 		${STAGEDIR}${EXAMPLESDIR}

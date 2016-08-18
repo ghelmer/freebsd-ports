@@ -7,16 +7,16 @@ PORTREVISION=	6
 CATEGORIES=	multimedia
 MASTER_SITES=	ftp://ftp.tvdr.de/vdr/Developer/
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video Disk Recorder - development version
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=  v4l_compat>=1.0.20120501:${PORTSDIR}/multimedia/v4l_compat
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:${PORTSDIR}/x11-fonts/fontconfig
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:${PORTSDIR}/x11-fonts/fontconfig \
-		xorg-fonts-truetype>=0:${PORTSDIR}/x11-fonts/xorg-fonts-truetype
+BUILD_DEPENDS=  v4l_compat>=1.0.20120501:multimedia/v4l_compat
+BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:x11-fonts/fontconfig
+RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/fontconfig.pc:x11-fonts/fontconfig \
+		xorg-fonts-truetype>=0:x11-fonts/xorg-fonts-truetype
 
 OPTIONS_DEFINE=		IPTVPATCH TTXPATCH STB0899_SIGNAL DOCS NLS
 IPTVPATCH_DESC=		Stops EIT scans on IPTV channels

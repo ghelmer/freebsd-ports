@@ -10,7 +10,11 @@ MASTER_SITES=	http://www.fifthplanet.net/files/
 MAINTAINER=	edwin@mavetju.org
 COMMENT=	Implementation of the Sudoku game
 
-LIB_DEPENDS=	libFOX-1.6.so:${PORTSDIR}/x11-toolkits/fox16
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LIB_DEPENDS=	libFOX-1.6.so:x11-toolkits/fox16
 
 USES=		tar:bzip2 gmake
 PLIST_FILES=	bin/fxsudoku

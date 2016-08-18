@@ -5,14 +5,13 @@ PORTNAME=	decurs
 PORTVERSION=	0.55.1
 PORTREVISION=	12
 CATEGORIES=	x11
-EXTRACT_SUFX=	_.tar.gz	# prevent clobbering of the original distfile
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple X11 mouse cursor editor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgtkmm-2.0.so:${PORTSDIR}/x11-toolkits/gtkmm20
+LIB_DEPENDS=	libgtkmm-2.0.so:x11-toolkits/gtkmm20
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	danfe

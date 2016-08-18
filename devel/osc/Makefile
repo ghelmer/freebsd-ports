@@ -2,18 +2,18 @@
 # $FreeBSD$
 
 PORTNAME=	osc
-PORTVERSION=	0.151.2
+PORTVERSION=	0.154.0
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Command Line Interface to work with an openSUSE Build Service
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}m2crypto>0:${PORTSDIR}/security/py-m2crypto \
-		${PYTHON_PKGNAMEPREFIX}urlgrabber>0:${PORTSDIR}/www/py-urlgrabber
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urlgrabber>0:${PORTSDIR}/www/py-urlgrabber
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}m2crypto>0:security/py-m2crypto \
+		${PYTHON_PKGNAMEPREFIX}urlgrabber>0:www/py-urlgrabber
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urlgrabber>0:www/py-urlgrabber
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openSUSE
@@ -23,7 +23,6 @@ CPE_PRODUCT=	opensuse_osc
 
 USES=		cpe python
 USE_PYTHON=	distutils
-PYDISTUTILS_PKGVERSION=${PORTVERSION:C/^([0-9]+\.[0-9]+)\.[0-9]+/\1/}
 NO_ARCH=	yes
 
 PORTDOCS=	*
@@ -35,7 +34,7 @@ CA_BUNDLE_DESC=	Install CA Certificates
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCA_BUNDLE}
-RUN_DEPENDS+=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
+RUN_DEPENDS+=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 CA_PATH=	${LOCALBASE}/share/certs/ca-root-nss.crt
 .else
 CA_PATH=	/etc/ssl
@@ -48,7 +47,9 @@ post-patch:
 
 post-install:
 	${LN} -s osc-wrapper.py ${STAGEDIR}${PREFIX}/bin/osc
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC} && ${INSTALL_DATA} AUTHORS README NEWS TODO \
 		${STAGEDIR}${DOCSDIR}
 

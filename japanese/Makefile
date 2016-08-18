@@ -22,6 +22,7 @@
     SUBDIR += bible_names-fpw
     SUBDIR += bookview
     SUBDIR += bugzilla44
+    SUBDIR += bugzilla50
     SUBDIR += calligra-l10n
     SUBDIR += canna-lib
     SUBDIR += canna-server
@@ -87,6 +88,7 @@
     SUBDIR += font-mplus-ipa
     SUBDIR += font-mplus-outline
     SUBDIR += font-naga10
+    SUBDIR += font-nasu
     SUBDIR += font-ricty
     SUBDIR += font-ricty-discord
     SUBDIR += font-sazanami
@@ -160,6 +162,9 @@
     SUBDIR += man-doc
     SUBDIR += mecab
     SUBDIR += mecab-ipadic
+    SUBDIR += mecab-ipadic-eucjp
+    SUBDIR += mecab-ipadic-sjis
+    SUBDIR += mecab-ipadic-utf8
     SUBDIR += mg
     SUBDIR += mh
     SUBDIR += migemo
@@ -186,7 +191,6 @@
     SUBDIR += ngraph-fonts
     SUBDIR += nhocr
     SUBDIR += nkf
-    SUBDIR += ochusha
     SUBDIR += onew
     SUBDIR += p5-Date-Japanese-Era
     SUBDIR += p5-Date-Japanese-Holiday

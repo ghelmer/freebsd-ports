@@ -17,8 +17,8 @@ DISTFILES=	jiskan16-2004-1.bdf.gz jiskan16-2000-1.bdf.gz \
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Japanese jisx0213 fonts
 
-BUILD_DEPENDS=	mkbold:${PORTSDIR}/x11-fonts/mkbold-mkitalic \
-		bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
+BUILD_DEPENDS=	mkbold:x11-fonts/mkbold-mkitalic \
+		bdftopcf:x11-fonts/bdftopcf
 
 USES=		fonts
 FONTNAME=	misc
@@ -26,7 +26,7 @@ NO_ARCH=	yes
 NO_WRKSUBDIR=	yes
 EXTRACT_CMD=	${GZCAT}
 EXTRACT_BEFORE_ARGS=
-EXTRACT_AFTER_ARGS=	> ${WRKDIR}/$${file%.gz}
+EXTRACT_AFTER_ARGS=	> ${WRKSRC}/$${file%.gz}
 MAKE_ENV=	FONTSDIR=${FONTSDIR}
 MAKEFILE=	${FILESDIR}/Makefile
 

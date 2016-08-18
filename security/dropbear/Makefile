@@ -2,15 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	dropbear
-PORTVERSION=	2015.67
+PORTVERSION=	2016.74
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://matt.ucc.asn.au/dropbear/releases/
 
-MAINTAINER=	ak@FreeBSD.org
+MAINTAINER=	pkubaj@anongoth.pl
 COMMENT=	SSH 2 server, designed to be usable in small memory environments
 
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 GNU_CONFIGURE=	yes
-USES=	gmake tar:bzip2
+USES=		cpe gmake tar:bzip2
+CPE_VENDOR=	matt_johnston
+CPE_PRODUCT=	dropbear_ssh_server
 
 USE_RC_SUBR=	${PORTNAME}
 

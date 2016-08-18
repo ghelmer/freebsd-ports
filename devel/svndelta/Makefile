@@ -10,7 +10,10 @@ MASTER_SITES=	http://www.incava.org/pub/svndelta/
 MAINTAINER=	mich@FreeBSD.org
 COMMENT=	Summarizes and manages differences between local files and Subversion
 
-RUN_DEPENDS=	${LOCALBASE}/bin/svn:${PORTSDIR}/devel/subversion
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+RUN_DEPENDS=	${LOCALBASE}/bin/svn:devel/subversion
 
 USE_RUBY=	yes
 NO_BUILD=	yes

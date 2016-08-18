@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	0.95.19
+PORTVERSION=	1.00.1
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/stable/
@@ -12,37 +12,38 @@ COMMENT=	Sybase/Microsoft TDS protocol library
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgcrypt.so:${PORTSDIR}/security/libgcrypt
+LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
-TDS_VER?=	5.0
+TDS_VER?=	7.4
 
-USES=		autoreconf gmake iconv libtool:keepla pkgconfig readline tar:bzip2
+USES=		autoreconf gettext gmake iconv libtool:keepla pkgconfig readline tar:bzip2
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 LIBS+=		-lgcrypt -lpthread
 CONFIGURE_ARGS=	--with-tdsver=${TDS_VER} --sysconfdir=${ETCDIR} \
-	       	--enable-sybase-compat --enable-msdblib
+		--enable-sybase-compat --enable-msdblib
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		DOCS
-OPTIONS_SINGLE=		SSL
+OPTIONS_DEFINE=		DOCS MARS
+OPTIONS_SINGLE=		SSL ODBC
 OPTIONS_SINGLE_SSL=	OPENSSL GNUTLS
-OPTIONS_DEFAULT=	OPENSSL
-OPTIONS_RADIO=		ODBC
-OPTIONS_RADIO_ODBC=	IODBC UNIXODBC
+OPTIONS_DEFAULT=	OPENSSL MARS UNIXODBC
+OPTIONS_SINGLE_ODBC=	IODBC UNIXODBC
 OPENSSL_USE=		OPENSSL=yes
 OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
-GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ON=	--with-gnutls
-IODBC_LIB_DEPENDS=	libiodbc.so:${PORTSDIR}/databases/libiodbc
+IODBC_LIB_DEPENDS=	libiodbc.so:databases/libiodbc
 IODBC_CONFIGURE_ON=	--with-iodbc=${LOCALBASE}
 IODBC_CPPFLAGS=		-I${LOCALBASE}/include/libiodbc
-UNIXODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC
+UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 UNIXODBC_CONFIGURE_ON=	--with-unixodbc=${LOCALBASE}
+MARS_DESC=	Enable MARS code (Experimental)
+MARS_CONFIGURE_ON=	--enable-mars
 
 .include <bsd.port.options.mk>
 

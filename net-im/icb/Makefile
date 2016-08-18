@@ -12,6 +12,10 @@ DISTNAME=	c${PORTNAME}-${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Internet CB - a mostly-defunct chat client
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 USES=		readline tk
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-tclinclude=${TCL_INCLUDEDIR} \

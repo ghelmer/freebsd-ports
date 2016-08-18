@@ -14,13 +14,12 @@ COMMENT=	Perl extension for Consistent Signal Handling
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Time-HiRes>=1.9726:${PORTSDIR}/devel/p5-Time-HiRes
+BUILD_DEPENDS=	p5-Time-HiRes>=1.9726:devel/p5-Time-HiRes
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+TEST_DEPENDS=	p5-Test2>=0:devel/p5-Test2 \
+		p5-Test-Simple>=0:devel/p5-Test-Simple
 
 USES=		perl5
 USE_PERL5=	configure
-
-post-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} test
 
 .include <bsd.port.mk>

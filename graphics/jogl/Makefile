@@ -11,8 +11,8 @@ EXTRACT_SUFX=	-src.zip
 MAINTAINER=	peterj@FreeBSD.org
 COMMENT=	Java bindings for OpenGL
 
-LIB_DEPENDS=	libdrm.so:${PORTSDIR}/graphics/libdrm
-BUILD_DEPENDS=	${JAVALIBDIR}/antlr.jar:${PORTSDIR}/devel/antlr
+LIB_DEPENDS=	libdrm.so:graphics/libdrm
+BUILD_DEPENDS=	${JAVALIBDIR}/antlr.jar:devel/antlr
 
 NO_WRKSUBDIR=	yes
 
@@ -52,12 +52,21 @@ ALL_TARGET+=	javadoc
 
 .include <bsd.port.pre.mk>
 
-.if ${JAVA_PORT_VERSION} == "1.6.0"
+.if ${JAVA_PORT_VERSION:M1.6.*}
 PLIST_SUB+=	JDK6=""
 PLIST_SUB+=	JDK7="@comment "
-.else
+.endif
+.if ${JAVA_PORT_VERSION:M1.7.*}
 PLIST_SUB+=	JDK6="@comment "
 PLIST_SUB+=	JDK7=""
+.endif
+.if ${JAVA_PORT_VERSION:M1.8.*}
+PLIST_SUB+=	JDK6="@comment "
+PLIST_SUB+=	JDK7="@comment "
+.endif
+
+.if ${JAVA_PORT_VERSION:M1.8.*}
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-build.xml
 .endif
 
 post-patch:
@@ -74,17 +83,17 @@ pre-build:
 	${CHMOD} 755 ${BUILD_BINPATH}/gcc
 
 do-install:
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/jogl/doc/userguide/index.html \
-		${STAGEDIR}${DOCSDIR}/UserGuide.html
-	cd ${BUILD_WRKSRC}/../javadoc_public && \
-		${FIND} . -print | ${CPIO} -pdm ${STAGEDIR}${DOCSDIR}
-.endif
 	${INSTALL_DATA} ${WRKSRC}/gluegen/build/obj/libgluegen-rt.so \
 		${WRKSRC}/jogl/build/obj/libjogl.so \
 		${WRKSRC}/jogl/build/obj/libjogl_awt.so ${STAGEDIR}${PREFIX}/lib
 	${INSTALL_DATA} ${WRKSRC}/gluegen/build/gluegen-rt.jar \
 		${WRKSRC}/jogl/build/jogl.jar ${STAGEDIR}${JAVAJARDIR}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/jogl/doc/userguide/index.html \
+		${STAGEDIR}${DOCSDIR}/UserGuide.html
+	cd ${BUILD_WRKSRC}/../javadoc_public && \
+		${FIND} . -print | ${CPIO} -pdm ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

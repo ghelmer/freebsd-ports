@@ -3,7 +3,7 @@
 
 PORTNAME=	vnstat
 PORTVERSION=	1.14
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://humdi.net/vnstat/ \
 		http://mirror.mcx2.org/
@@ -41,7 +41,7 @@ GUI_DESC=	Build with graphics/gd dependency
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MGUI}
-LIB_DEPENDS+=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS+=	libgd.so:graphics/gd
 PLIST_SUB+=	GUI=""
 .else
 ALL_TARGET="vnstat"

@@ -9,13 +9,11 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	GitLab meta gem
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 NO_ARCH=	yes
-
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
-USES=		cpe
+USES=		cpe gem
 
 CPE_PRODUCT=	gitlab
 CPE_VENDOR=	gitlab

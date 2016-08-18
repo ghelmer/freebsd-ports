@@ -22,11 +22,11 @@ PGDOCSDIR?=	${PREFIX}/${PGDOCSREL}
 sgmldir=	${LOCALBASE}/share/sgml
 dbdir=		${sgmldir}/docbook
 
-BUILD_DEPENDS+=	onsgmls:${PORTSDIR}/textproc/opensp			\
-		openjade:${PORTSDIR}/textproc/openjade			\
-		${sgmldir}/iso8879/catalog:${PORTSDIR}/textproc/iso8879	\
-		${dbdir}/dsssl/modular/catalog:${PORTSDIR}/textproc/dsssl-docbook-modular \
-		docbook-sgml>0:${PORTSDIR}/textproc/docbook-sgml
+BUILD_DEPENDS+=	onsgmls:textproc/opensp			\
+		openjade:textproc/openjade			\
+		${sgmldir}/iso8879/catalog:textproc/iso8879	\
+		${dbdir}/dsssl/modular/catalog:textproc/dsssl-docbook-modular \
+		docbook-sgml>0:textproc/docbook-sgml
 
 do-build:
 	${MAKE_CMD} -C ${WRKSRC} html
@@ -40,6 +40,6 @@ post-install:
 	@(cd ${STAGEDIR}${PREFIX} && ${FIND} ${PGDOCSREL} -type f) >> ${TMPPLIST}
 	@(cd ${STAGEDIR}${PREFIX} && ${FIND} ${PGDOCSREL} -type d) | ${SORT} -r | \
 	     ${SED} 's,.*,@unexec rmdir %D/& 2>/dev/null || true,' >>${TMPPLIST}
-	
+
 
 .include "${MASTERDIR}/Makefile"

@@ -15,11 +15,11 @@ LICENSE=	GPLv2
 USES=		perl5 shebangfix tar:tgz
 USE_RC_SUBR=	snmptt
 
-RUN_DEPENDS=	net-snmp>=0:${PORTSDIR}/net-mgmt/net-snmp \
-		p5-Config-IniFiles>=0:${PORTSDIR}/devel/p5-Config-IniFiles \
-		p5-Text-Balanced>=0:${PORTSDIR}/textproc/p5-Text-Balanced \
-		p5-Text-ParseWords>=0:${PORTSDIR}/textproc/p5-Text-ParseWords \
-		p5-Time-HiRes>=0:${PORTSDIR}/devel/p5-Time-HiRes
+RUN_DEPENDS=	net-snmp>=0:net-mgmt/net-snmp \
+		p5-Config-IniFiles>=0:devel/p5-Config-IniFiles \
+		p5-Text-Balanced>=0:textproc/p5-Text-Balanced \
+		p5-Text-ParseWords>=0:textproc/p5-Text-ParseWords \
+		p5-Time-HiRes>=0:devel/p5-Time-HiRes
 
 DOCS=		faqs.html index.html layout1.css snmptt.html \
 		snmpttconvert.html snmpttconvertmib.html
@@ -36,7 +36,7 @@ do-install:
 .for _SCRIPT in ${SCRIPTS}
 	@${INSTALL_SCRIPT} ${WRKSRC}/${_SCRIPT} ${STAGEDIR}${PREFIX}/sbin
 .endfor
-	
+
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/snmp
 	${INSTALL_DATA} ${WRKSRC}/snmptt.ini ${STAGEDIR}${PREFIX}/etc/snmp/snmptt.ini.sample
 	${INSTALL_DATA} ${WRKSRC}/examples/snmptt.conf.generic ${STAGEDIR}${PREFIX}/etc/snmp/snmptt.conf.generic.sample

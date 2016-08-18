@@ -46,9 +46,9 @@ STAGE=		${WRKSRC}/_stage
 WITH_HTTP_PORT?=	80
 WITH_SSL_PORT?=		443
 
-PERL_BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
+PERL_BUILD_DEPENDS=	swig:devel/swig13
 PERL_USES=	perl5
-DOCS_BUILD_DEPENDS=	doxygen:${PORTSDIR}/devel/doxygen
+DOCS_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 OPTIONS_SUB=	yes
 PORTDOCS=	*
@@ -86,7 +86,7 @@ CONFIG_SUB+=	TEST_PERF="\# " \
 _CONFIG_SUB_TEMP=	${CONFIG_SUB:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/}
 
 post-patch:
-	${REINPLACE_CMD} -e '/^CC/s/gcc/${CC}/; /^HOSTCC/s/gcc/${CC}/' \
+	${REINPLACE_CMD} -e '/^CC/s|gcc|${CC}|; /^HOSTCC/s|gcc|${CC}|' \
 		${WRKSRC}/config/Rules.mak
 
 do-configure:

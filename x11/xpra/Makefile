@@ -2,42 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	xpra
-PORTVERSION=	0.15.8
+PORTVERSION=	0.15.10
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	http://xpra.org/src/
 
-MAINTAINER=	jkim@FreeBSD.org
+MAINTAINER=	matthew@reztek.cz
 COMMENT=	Xpra gives you persistent remote applications for X
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	cython:${PORTSDIR}/lang/cython \
-		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/__init__.py:${PORTSDIR}/x11-toolkits/py-gtk2
-RUN_DEPENDS=	py${PYTHON_SUFFIX}-lz4>=0.7.0_1:${PORTSDIR}/archivers/py-lz4 \
-		${PYTHON_SITELIBDIR}/rencode/__init__.py:${PORTSDIR}/converters/py-rencode \
-		${PYTHON_SITELIBDIR}/dbus/__init__.py:${PORTSDIR}/devel/py-dbus \
-		${PYTHON_SITELIBDIR}/OpenGL/__init__.py:${PORTSDIR}/graphics/py-opengl \
-		${PYTHON_SITELIBDIR}/OpenGL_accelerate/__init__.py:${PORTSDIR}/graphics/py-opengl-accelerate \
-		${PYTHON_PKGNAMEPREFIX}pillow>0:${PORTSDIR}/graphics/py-pillow \
-		${PYTHON_SITELIBDIR}/avahi/__init__.py:${PORTSDIR}/net/py-avahi \
-		${PYTHON_SITELIBDIR}/netifaces.so:${PORTSDIR}/net/py-netifaces \
-		${PYTHON_SITELIBDIR}/cups.so:${PORTSDIR}/print/py-cups \
-		ssh-askpass:${PORTSDIR}/security/openssh-askpass \
-		setxkbmap:${PORTSDIR}/x11/setxkbmap \
-		xauth:${PORTSDIR}/x11/xauth \
-		xkbcomp:${PORTSDIR}/x11/xkbcomp \
-		${LOCALBASE}/share/X11/xkb/rules/base:${PORTSDIR}/x11/xkeyboard-config \
-		Xvfb:${PORTSDIR}/x11-servers/xorg-vfbserver \
-		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/__init__.py:${PORTSDIR}/x11-toolkits/py-gtk2 \
-		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/gtkgl/__init__.py:${PORTSDIR}/x11-toolkits/py-gtkglext
+BUILD_DEPENDS=	cython:lang/cython \
+		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/__init__.py:x11-toolkits/py-gtk2
+RUN_DEPENDS=	py${PYTHON_SUFFIX}-lz4>=0.7.0_1:archivers/py-lz4 \
+		${PYTHON_SITELIBDIR}/rencode/__init__.py:converters/py-rencode \
+		${PYTHON_SITELIBDIR}/dbus/__init__.py:devel/py-dbus \
+		${PYTHON_SITELIBDIR}/OpenGL/__init__.py:graphics/py-PyOpenGL \
+		${PYTHON_SITELIBDIR}/OpenGL_accelerate/__init__.py:graphics/py-PyOpenGL-accelerate \
+		${PYTHON_PKGNAMEPREFIX}pillow>0:graphics/py-pillow \
+		${PYTHON_SITELIBDIR}/netifaces.so:net/py-netifaces \
+		ssh-askpass:security/openssh-askpass \
+		setxkbmap:x11/setxkbmap \
+		xauth:x11/xauth \
+		xkbcomp:x11/xkbcomp \
+		${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
+		Xvfb:x11-servers/xorg-vfbserver \
+		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/__init__.py:x11-toolkits/py-gtk2 \
+		${PYTHON_SITELIBDIR}/gtk-2.0/gtk/gtkgl/__init__.py:x11-toolkits/py-gtkglext
 
 USES=		desktop-file-utils pkgconfig python shared-mime-info tar:xz
+USE_GSTREAMER=	good python
 USE_PYTHON=	distutils
 USE_XORG=	x11 xcomposite xdamage xfixes xkbfile xrandr xtst
 PLIST_SUB+=	PORTVERSION=${PORTVERSION} PYTHON_VER=${PYTHON_VER}
 
-OPTIONS_DEFINE=		AVCODEC OPENCL SWSCALE VPX WEBP X264 X265
-OPTIONS_DEFAULT=	AVCODEC SWSCALE VPX WEBP X264 X265
+OPTIONS_DEFINE=		AVAHI AVCODEC CUPS OPENCL SWSCALE VPX WEBP X264 X265
+OPTIONS_DEFAULT=	AVAHI AVCODEC CUPS SWSCALE VPX WEBP X264 X265
 OPTIONS_SUB=		yes
 
 AVCODEC_DESC=	Enable avcodec2 decoder
@@ -48,18 +48,20 @@ WEBP_DESC=	Enable WebP encoder
 X264_DESC=	Enable X264 encoder
 X265_DESC=	Enable X265 encoder
 
+AVAHI_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/avahi/__init__.py:net/py-avahi
 AVCODEC_VARS=		XPRA_OPTIONS+=dec_avcodec2
-OPENCL_LIB_DEPENDS=	libOpenCL.so:${PORTSDIR}/devel/ocl-icd
-OPENCL_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pyopencl/__init__.py:${PORTSDIR}/devel/py-pyopencl
+CUPS_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/cups.so:print/py-pycups
+OPENCL_LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
+OPENCL_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pyopencl/__init__.py:devel/py-pyopencl
 OPENCL_VARS=		XPRA_OPTIONS+=csc_opencl
 SWSCALE_VARS=		XPRA_OPTIONS+=csc_swscale
-VPX_LIB_DEPENDS=	libvpx.so:${PORTSDIR}/multimedia/libvpx
+VPX_LIB_DEPENDS=	libvpx.so:multimedia/libvpx
 VPX_VARS=		XPRA_OPTIONS+=vpx
-WEBP_LIB_DEPENDS=	libwebp.so:${PORTSDIR}/graphics/webp
+WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
 WEBP_VARS=		XPRA_OPTIONS+=webp
-X264_LIB_DEPENDS=	libx264.so:${PORTSDIR}/multimedia/libx264
+X264_LIB_DEPENDS=	libx264.so:multimedia/libx264
 X264_VARS=		XPRA_OPTIONS+=enc_x264
-X265_LIB_DEPENDS=	libx265.so:${PORTSDIR}/multimedia/x265
+X265_LIB_DEPENDS=	libx265.so:multimedia/x265
 X265_VARS=		XPRA_OPTIONS+=enc_x265
 
 PYDISTUTILS_PKGNAME=	xpra_all
@@ -80,7 +82,7 @@ PYDISTUTILS_ARGS+=	--with-${opt}
 .endfor
 
 .if ${PORT_OPTIONS:MAVCODEC} || ${PORT_OPTIONS:MSWSCALE}
-LIB_DEPENDS+=	libavcodec.so:${PORTSDIR}/multimedia/ffmpeg
+LIB_DEPENDS+=	libavcodec.so:multimedia/ffmpeg
 .endif
 
 .include <bsd.port.pre.mk>

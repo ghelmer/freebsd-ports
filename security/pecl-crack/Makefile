@@ -9,19 +9,16 @@ MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	PECL extension to cracklib
 
 LICENSE=	PHP30
 
-LIB_DEPENDS=	libcrack.so:${PORTSDIR}/security/cracklib
+LIB_DEPENDS=	libcrack.so:security/cracklib
 
-USES=		tar:tgz
-USE_PHP=	yes
-USE_PHPIZE=	yes
-USE_PHP_BUILD=	yes
-USE_PHPEXT=	yes
-PHP_MODNAME=	crack
+USES=		php:ext tar:tgz
+IGNORE_WITH_PHP=	70
+
 EXTRACT_AFTER_ARGS=--no-same-permissions --no-same-owner --exclude libcrack
 CONFIGURE_ARGS=	--with-crack=${LOCALBASE}
 CFLAGS+=	-Wno-deprecated

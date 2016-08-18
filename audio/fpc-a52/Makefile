@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	audio lang
 PKGNAMESUFFIX=	-a52
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	LIBA52
 LIBA52_DESC=	Install a52 library
 OPTIONS_DEFAULT=	LIBA52
 
-LIBA52_LIB_DEPENDS=	liba52.so:${PORTSDIR}/audio/liba52
+LIBA52_LIB_DEPENDS=	liba52.so:audio/liba52
 
 .include "${MASTERDIR}/Makefile"

@@ -92,6 +92,8 @@ WARNING+=	"DEFAULT_APACHE_VER is defined, consider using DEFAULT_VERSIONS+=apach
 .endif
 
 DEFAULT_APACHE_VERSION?=	${APACHE_DEFAULT:S/.//}
+# When adding a version, please keep the comment in
+# Mk/bsd.default-versions.mk in sync.
 APACHE_SUPPORTED_VERSION=	24 22 # preferred version first
 
 # Print warnings
@@ -383,11 +385,11 @@ PKGNAMEPREFIX?=	${APACHE_PKGNAMEPREFIX}
 .endif
 
 .if defined(USE_APACHE) || defined(USE_APACHE_BUILD)
-BUILD_DEPENDS+=	${APXS}:${PORTSDIR}/${APACHE_PORT}
+BUILD_DEPENDS+=	${APXS}:${APACHE_PORT}
 .endif
 
 .if defined(USE_APACHE) || defined(USE_APACHE_RUN)
-RUN_DEPENDS+=	${APXS}:${PORTSDIR}/${APACHE_PORT}
+RUN_DEPENDS+=	${APXS}:${APACHE_PORT}
 .endif
 
 PLIST_SUB+=	AP_NAME="${SHORTMODNAME}"
@@ -485,22 +487,21 @@ PLIST_SUB+=	AP_MOD_EN="${AP_MOD_EN}"
 
 .if defined(AP_FAST_BUILD)
 .if !target(ap-gen-plist)
+_USES_build+=	490:ap-gen-plist
 ap-gen-plist:
 .if defined(AP_GENPLIST)
 .	if !exists(${PLIST})
 	@${ECHO} "===>  Generating apache plist"
-	@${ECHO} "@unexec ${SED} -i '' -E '/LoadModule[[:blank:]]+%%AP_NAME%%_module/d' %D/%%APACHEETCDIR%%/httpd.conf" >> ${PLIST}
 	@${ECHO} "%%APACHEMODDIR%%/%%AP_MODULE%%" >> ${PLIST}
-	@${ECHO} "@exec %D/sbin/apxs -e ${AP_MOD_EN} -n %%AP_NAME%% %D/%F" >> ${PLIST}
-	@${ECHO} "@unexec echo \"Don't forget to remove all ${MODULENAME}-related directives in your httpd.conf\"">> ${PLIST}
+	@${ECHO} "@postexec %D/sbin/apxs -e ${AP_MOD_EN} -n %%AP_NAME%% %D/%F" >> ${PLIST}
+	@${ECHO} "@postunexec ${SED} -i '' -E '/LoadModule[[:blank:]]+%%AP_NAME%%_module/d' %D/%%APACHEETCDIR%%/httpd.conf" >> ${PLIST}
+	@${ECHO} "@postunexec echo \"Don't forget to remove all ${MODULENAME}-related directives in your httpd.conf\"">> ${PLIST}
 .	endif
-.else
-	@${DO_NADA}
 .endif
 .endif
 
 .if !target(do-build)
-do-build: ap-gen-plist
+do-build:
 	(cd ${WRKSRC} && ${APXS} -c ${AP_EXTRAS} -o ${MODULENAME}.la ${SRC_FILE})
 .endif
 

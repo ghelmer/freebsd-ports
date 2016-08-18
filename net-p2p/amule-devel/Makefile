@@ -2,29 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	amule
-PORTVERSION=	10834
-PORTREVISION=	6
+PORTVERSION=	10933
+PORTREVISION=	1
 CATEGORIES=	net-p2p
 MASTER_SITES=	http://amule.sourceforge.net/tarballs/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	aMule-SVN-r${PORTVERSION}
 
 MAINTAINER=	bar@FreeBSD.org
-COMMENT=	The all-platform eMule p2p client
+COMMENT=	All-platform eMule p2p client
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libcryptopp.a:${PORTSDIR}/security/cryptopp
+LIB_DEPENDS=	libcryptopp.so:security/cryptopp
 
 CONFLICTS=	amule-[0-9]*
 
-USES=		bison gmake pkgconfig perl5 shebangfix tar:bzip2 \
-		desktop-file-utils
+USES=		bison desktop-file-utils gmake perl5 pkgconfig shebangfix \
+		tar:bzip2
 USE_PERL5=	build
 USE_WX=		2.8
 WX_CONF_ARGS=	absolute
-WX_UNICODE=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-denoise-level=0
@@ -77,14 +76,14 @@ AMULEDAEMON_USE=	RC_SUBR=amuled
 AMULEGUI_CONFIGURE_ON=	--enable-amule-gui
 
 CAS_CONFIGURE_ON=	--enable-cas
-CAS_LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+CAS_LIB_DEPENDS=	libgd.so:graphics/gd
 
 ED2K_CONFIGURE_OFF=	--disable-ed2k
 
 FILEVIEW_CONFIGURE_ON=	--enable-fileview
 
 GEOIP_CONFIGURE_ON=	--enable-geoip
-GEOIP_LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 MMAP_CONFIGURE_ON=	--enable-mmap
 
@@ -97,7 +96,7 @@ PLASMAMULE_CONFIGURE_ENV= \
 			KBUILDSYCOCA=${KDE4_PREFIX}/bin/kbuildsycoca4 \
 			UPDATE_MIME_DATABASE=/usr/bin/true
 
-UPNP_LIB_DEPENDS=	libupnp.so:${PORTSDIR}/devel/upnp
+UPNP_LIB_DEPENDS=	libupnp.so:devel/upnp
 UPNP_CONFIGURE_OFF=	--disable-upnp
 
 WEBSERVER_CONFIGURE_ON=	--enable-webserver

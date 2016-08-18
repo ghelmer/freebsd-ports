@@ -863,6 +863,8 @@
 %%DRUPAL_BASE%%/modules/system/system.updater.inc
 %%DRUPAL_BASE%%/modules/system/tests/cron_queue_test.info
 %%DRUPAL_BASE%%/modules/system/tests/cron_queue_test.module
+%%DRUPAL_BASE%%/modules/system/tests/system_cron_test.info
+%%DRUPAL_BASE%%/modules/system/tests/system_cron_test.module
 %%DRUPAL_BASE%%/modules/system/theme.api.php
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy-term.tpl.php
 %%DRUPAL_BASE%%/modules/taxonomy/taxonomy.admin.inc
@@ -1099,5 +1101,5 @@
 @dir %%DRUPAL_BASE%%/sites/all/libraries
 @dir %%DRUPAL_BASE%%/sites/default/files
 @unexec rm -f %%DRUPAL_BASE%%/files/.htaccess 2> /dev/null || true
-@owner root
-@group wheel
+@owner
+@group

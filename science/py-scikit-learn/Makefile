@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scikit-learn
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17
 CATEGORIES=	science python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Machine learning algorithms for python
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${PYTHON_SITELIBDIR}/scipy/version.py:${PORTSDIR}/science/py-scipy
+		${PYTHON_SITELIBDIR}/scipy/version.py:science/py-scipy
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		fortran python

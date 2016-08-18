@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=		ldb
-PORTVERSION=		1.1.21
-PORTREVISION=		1
+PORTVERSION=		1.1.26
+PORTREVISION=		0
 PORTEPOCH=		0
 CATEGORIES=		databases
 MASTER_SITES=		SAMBA
@@ -32,10 +32,10 @@ CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man \
 OPTIONS_DEFINE=		MANPAGES
 MANPAGES_DESC=		Build and install manpages (requires textproc/docbook-xsl)
 
-BUILD_DEPENDS+=		talloc>=2.1.1:${PORTSDIR}/devel/talloc \
-			tevent>=0.9.22:${PORTSDIR}/devel/tevent \
-			tdb>=1.3.4,1:${PORTSDIR}/databases/tdb \
-			popt>=0:${PORTSDIR}/devel/popt
+BUILD_DEPENDS+=		talloc>=2.1.5:devel/talloc \
+			tevent>=0.9.27:devel/tevent \
+			tdb>=1.3.8,1:databases/tdb \
+			popt>=0:devel/popt
 RUN_DEPENDS:=		${BUILD_DEPENDS}
 
 CONFIGURE_ARGS+=	--bundled-libraries=!talloc,!tevent,!tdb,!popt \
@@ -47,8 +47,8 @@ CONFIGURE_ARGS+=	--bundled-libraries=!talloc,!tevent,!tdb,!popt \
 .if ! ${PORT_OPTIONS:MMANPAGES}
 CONFIGURE_ENV+=		XSLTPROC="true"
 .else
-BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl \
-			xsltproc:${PORTSDIR}/textproc/libxslt
+BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
 .endif
 
 PLIST_FILES=		bin/ldbedit \
@@ -87,6 +87,7 @@ PLIST_FILES+=		include/pyldb.h \
 			lib/libpyldb-util.so \
 			lib/libpyldb-util.so.1 \
 			%%PYTHON_SITELIBDIR%%/ldb.so \
+			%%PYTHON_SITELIBDIR%%/_ldb_text.py \
 			%%PKGCONFIGDIR%%/pyldb-util.pc
 
 LDB_MAN1=		man/man1/ldbadd.1.gz \

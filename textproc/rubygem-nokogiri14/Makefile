@@ -12,11 +12,9 @@ COMMENT=	HTML, XML, SAX, and Reader parser
 LICENSE=	MIT
 
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem pkgconfig
 USE_GNOME=	libxml2 libxslt
-USES=		pkgconfig
-CONFIGURE_ARGS=	--use-system-libraries	
+CONFIGURE_ARGS=	--use-system-libraries
 
 PLIST_FILES=	bin/nokogiri14
 

@@ -9,10 +9,10 @@ MASTER_SITES=	ftp://ftp.cogsci.ed.ac.uk/pub/LTXML/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	PyLTXML-${PORTVERSION}
 
-MAINTAINER=	horia@racoviceanu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python bindings to the LT XML toolkit
 
-BUILD_DEPENDS=	${LOCALBASE}/include/ltxml12/lt-safe.h:${PORTSDIR}/textproc/ltxml
+BUILD_DEPENDS=	${LOCALBASE}/include/ltxml12/lt-safe.h:textproc/ltxml
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		python

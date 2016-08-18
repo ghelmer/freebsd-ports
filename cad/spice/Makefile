@@ -24,7 +24,7 @@ COMMENT=	General-purpose circuit simulation program
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-EXTRACT_DEPENDS=	${LOCALBASE}/bin/unzip:${PORTSDIR}/archivers/unzip
+EXTRACT_DEPENDS=	${LOCALBASE}/bin/unzip:archivers/unzip
 
 WRKSRC=		${WRKDIR}/${PORTNAME}3f5
 MAKEFILE=	${FILESDIR}/Makefile
@@ -40,7 +40,7 @@ PORTEXAMPLES=	bjtnoise.cir bsim1tst.cir bsim2tst.cir diffpair.cir \
 		rtlinv.cir schmitt.cir simplepz.cir
 
 OPTIONS_DEFINE=	DOCS EXAMPLES X11 DEV_BSIM3 DEV_BSIM4 DEV_HISIM2
-OPTIONS_DEFAULT=DOCS EXAMPLES X11
+OPTIONS_DEFAULT=X11
 
 X11_USE=		XORG=x11,xaw,xext,xmu,xt
 X11_CONFIGURE_ENV=	WITH_X11=yes

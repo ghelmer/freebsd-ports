@@ -1,4 +1,5 @@
-SHA256 (rpm/x86_64/centos/6.6/glx-utils-10.1.2-2.el6.x86_64.rpm) = da0ecfd5affb73f01d01fd2c2f89148d3593b82b271b98821682191833ac67d2
-SIZE (rpm/x86_64/centos/6.6/glx-utils-10.1.2-2.el6.x86_64.rpm) = 25712
-SHA256 (rpm/x86_64/centos/6.6/mesa-10.1.2-2.el6.src.rpm) = eecc2fcd5f3478d420a2decb61e201c91c8cfcaf3ae2bf7e6c5b69d342a5d98c
-SIZE (rpm/x86_64/centos/6.6/mesa-10.1.2-2.el6.src.rpm) = 23953214
+TIMESTAMP = 1466257493
+SHA256 (rpm/x86_64/centos/6.8/glx-utils-11.0.7-4.el6.x86_64.rpm) = 69b1dc9e75bf1bec2130bbf10f9ec8039c552d3594c635dcdf9f8cb8cbb10878
+SIZE (rpm/x86_64/centos/6.8/glx-utils-11.0.7-4.el6.x86_64.rpm) = 26552
+SHA256 (rpm/x86_64/centos/6.8/mesa-11.0.7-4.el6.src.rpm) = 9db7bd5036fcc8fa25585cd5625e56d95118092b816ba09867073e310db44b5d
+SIZE (rpm/x86_64/centos/6.8/mesa-11.0.7-4.el6.src.rpm) = 129624873

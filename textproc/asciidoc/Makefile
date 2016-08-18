@@ -3,7 +3,7 @@
 
 PORTNAME=	asciidoc
 PORTVERSION=	8.6.9
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
@@ -12,9 +12,14 @@ COMMENT=	Text document format for writing short documents and man pages
 
 LICENSE=	GPLv2 MIT
 LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
+RUN_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl
+
+NO_ARCH=	yes
 GNU_CONFIGURE=	yes
-USES=		gmake python:2 shebangfix
+USE_GNOME=	libxml2:run libxslt:run
+USES=		gmake gnome python:2 shebangfix
 
 CONF_FILES=	asciidoc.conf docbook45.conf filters/code/code-filter.conf \
 		filters/graphviz/graphviz-filter.conf \
@@ -30,11 +35,10 @@ CONF_FILES=	asciidoc.conf docbook45.conf filters/code/code-filter.conf \
 SHEBANG_FILES=	a2x.py \
 		asciidoc.py \
 		asciidocapi.py \
-		filters/latex/latex2png.py \
+		filters/code/code-filter.py \
 		filters/graphviz/graphviz2png.py \
-		filters/music/music2png.py \
-		filters/code/code-filter.py
-python_OLD_CMD=	/usr/bin/env python
+		filters/latex/latex2png.py \
+		filters/music/music2png.py
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^INSTALL_PROG/ s|INSTALL_PROGRAM|INSTALL_SCRIPT|; s|\.conf|&.sample|' ${WRKSRC}/Makefile.in
@@ -45,10 +49,5 @@ post-patch:
 post-install:
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}/
 	${INSTALL_DATA} ${WRKSRC}/asciidocapi.py ${STAGEDIR}${PYTHON_SITELIBDIR}/
-.for conf_file in ${CONF_FILES}
-	@if [ ! -f ${ETCDIR}/${conf_file} ]; then \
-		${CP} -p ${STAGEDIR}${ETCDIR}/${conf_file}.sample ${STAGEDIR}${ETCDIR}/${conf_file}; \
-	fi
-.endfor
 
 .include <bsd.port.mk>

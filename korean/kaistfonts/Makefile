@@ -16,16 +16,16 @@ COMMENT=	X11 KAIST font(ksc5601.1987-0 encoding) collection
 
 SUB_FILES=	pkg-message
 
-BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
+BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf
 
 USES=		fonts gmake
 NO_WRKSUBDIR=	yes
 MAKE_ENV=	DISTDIR=${DISTDIR} DISTFILES="${DISTFILES}" FONTSDIR="${FONTSDIR}"
 
 do-extract:
-	@${RM} -fr ${WRKDIR} && \
-	${MKDIR} ${WRKDIR} && \
-	cd ${WRKDIR} && \
+	@${RM} -fr ${WRKSRC} && \
+	${MKDIR} ${WRKSRC} && \
+	cd ${WRKSRC} && \
 	for file in ${DISTFILES}; do \
 		${GUNZIP_CMD} -c < ${_DISTDIR}/$$file > `${ECHO_CMD} $$file | ${SED} -e 's/\.Z//' -e 's/\.gz//'`; \
 	done

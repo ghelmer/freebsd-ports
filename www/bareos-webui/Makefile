@@ -2,14 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	bareos-webui
-DISTVERSION=	14.2.1
+DISTVERSIONPREFIX=	Release/
+DISTVERSION=	15.2.2
 PORTREVISION=	0
 CATEGORIES=	www sysutils
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	bareos
-GH_PROJECT=	bareos-webui
-GH_TAGNAME=	c826a4cbd4ff7340fb9b020ca824c9c48bd52948
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	A PHP-Frontend to manage Bareos over the web
@@ -17,11 +13,14 @@ COMMENT=	A PHP-Frontend to manage Bareos over the web
 LICENSE=	AGPLv3 # or later
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	bareos
+GH_PROJECT=	bareos-webui
+
 USES=		tar:tgz
 USE_PHP=	openssl
 NO_BUILD=	yes
 NO_ARCH=	yes
-NO_WRKSUBDIR=	yes
 
 BAREOSWEB_HOME?=${WWWDIR}
 BAREOSWEBUIDIR=	${BAREOSWEB_HOME:S|${PREFIX}/||}
@@ -31,7 +30,7 @@ SUB_LIST=	BAREOSWEBUIDIR=${BAREOSWEBUIDIR}
 
 OPTIONS_DEFINE=		MYSQL PGSQL ZENDFRAMEWORK
 OPTIONS_DEFAULT=	PGSQL
-ZENDFRAMEWORK_DESC=	Install zend framework	
+ZENDFRAMEWORK_DESC=	Install zend framework
 
 .include <bsd.port.options.mk>
 
@@ -44,7 +43,7 @@ USE_PHP+=	pdo_pgsql
 .endif
 
 .if ${PORT_OPTIONS:MZENDFRAMEWORK}
-RUN_DEPENDS=	${LOCALBASE}/share/ZendFramework/bin/classmap_generator.php:${PORTSDIR}/www/zend-framework
+RUN_DEPENDS=	${LOCALBASE}/share/ZendFramework/bin/classmap_generator.php:www/zend-framework
 .endif
 
 post-extract:
@@ -65,7 +64,8 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/composer* ${STAGEDIR}${BAREOSWEB_HOME}
 	${INSTALL_DATA} ${WRKSRC}/phpunit.xml ${STAGEDIR}${BAREOSWEB_HOME}
 	${INSTALL_DATA} ${WRKSRC}/install/directors.ini ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${WRKSRC}/install/bareos/bareos-webui.conf ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/install/bareos/webui-consoles.conf ${STAGEDIR}${ETCDIR}
+	${INSTALL_DATA} ${WRKSRC}/install/bareos/webui-profiles.conf ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/install/apache/bareos-webui.conf ${STAGEDIR}${ETCDIR}/apache-bareos-webui.conf
 
 .include <bsd.port.mk>

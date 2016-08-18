@@ -24,9 +24,7 @@
     SUBDIR += amarok-kde4
     SUBDIR += amb-plugins
     SUBDIR += amp
-    SUBDIR += ampache
     SUBDIR += ample
-    SUBDIR += amrcoder
     SUBDIR += aqualung
     SUBDIR += ardour
     SUBDIR += ario
@@ -37,7 +35,6 @@
     SUBDIR += asunder
     SUBDIR += atunes
     SUBDIR += aubio
-    SUBDIR += audacious-dumb
     SUBDIR += audacity
     SUBDIR += audex
     SUBDIR += audiere
@@ -56,7 +53,6 @@
     SUBDIR += blop
     SUBDIR += boodler
     SUBDIR += bristol
-    SUBDIR += btc
     SUBDIR += calf
     SUBDIR += cam
     SUBDIR += cantata
@@ -77,13 +73,12 @@
     SUBDIR += cmp3
     SUBDIR += cmt
     SUBDIR += cmus
-    SUBDIR += cmus-post.fm
+    SUBDIR += codec2
     SUBDIR += cpige
     SUBDIR += cplay
     SUBDIR += cpp-xmms2
     SUBDIR += creox
     SUBDIR += crip
-    SUBDIR += cripple
     SUBDIR += csound
     SUBDIR += csound6
     SUBDIR += ctronome
@@ -91,24 +86,30 @@
     SUBDIR += cueplayer
     SUBDIR += cuetools
     SUBDIR += cutmp3
-    SUBDIR += cymbaline
     SUBDIR += dagrab
     SUBDIR += darkice
     SUBDIR += dcd
     SUBDIR += deadbeef
-    SUBDIR += deadbeef-mpris-plugin
+    SUBDIR += deadbeef-jack-plugin
+    SUBDIR += deadbeef-mpris2-plugin
+    SUBDIR += deadbeef-musical-spectrum-plugin
+    SUBDIR += deadbeef-playback-status-plugin
+    SUBDIR += deadbeef-quick-search-plugin
+    SUBDIR += deadbeef-vu-meter-plugin
+    SUBDIR += deadbeef-waveform-seekbar-plugin
     SUBDIR += decibel-audio-player
     SUBDIR += deforaos-mixer
     SUBDIR += dekagen
     SUBDIR += denemo
     SUBDIR += dir2ogg
     SUBDIR += discid
+    SUBDIR += dream
     SUBDIR += drumpiler
+    SUBDIR += dsbmixer
     SUBDIR += dssi
     SUBDIR += dtmfdial
     SUBDIR += dumb
     SUBDIR += dumb-allegro
-    SUBDIR += dvda-author
     SUBDIR += easytag
     SUBDIR += eawpats
     SUBDIR += eawplus
@@ -139,6 +140,13 @@
     SUBDIR += festlex-oald
     SUBDIR += festlex-ogi
     SUBDIR += festlex-poslex
+    SUBDIR += festvox-cmu_us_awb_arctic
+    SUBDIR += festvox-cmu_us_bdl_arctic
+    SUBDIR += festvox-cmu_us_clb_arctic
+    SUBDIR += festvox-cmu_us_jmk_arctic
+    SUBDIR += festvox-cmu_us_ksp_arctic
+    SUBDIR += festvox-cmu_us_rms_arctic
+    SUBDIR += festvox-cmu_us_slt_arctic
     SUBDIR += festvox-czech
     SUBDIR += festvox-don
     SUBDIR += festvox-el11
@@ -158,12 +166,12 @@
     SUBDIR += fluidsynth
     SUBDIR += fluidsynth-dssi
     SUBDIR += fmit
+    SUBDIR += forked-daapd
     SUBDIR += fpc-a52
     SUBDIR += fpc-mad
     SUBDIR += fpc-modplug
     SUBDIR += fpc-oggvorbis
     SUBDIR += fpc-openal
-    SUBDIR += fpc-sndfile
     SUBDIR += fplib
     SUBDIR += freealut
     SUBDIR += freedesktop-sound-theme
@@ -207,6 +215,7 @@
     SUBDIR += gnormalize
     SUBDIR += gnuitar
     SUBDIR += gnupod
+    SUBDIR += gnuspeechsa
     SUBDIR += gnustep-cdplayer
     SUBDIR += gogglesmm
     SUBDIR += goobox
@@ -396,6 +405,7 @@
     SUBDIR += libsidplayfp
     SUBDIR += libsmf
     SUBDIR += libsndfile
+    SUBDIR += libsoxr
     SUBDIR += libtremor
     SUBDIR += libumidi
     SUBDIR += libvorbis
@@ -433,7 +443,6 @@
     SUBDIR += linux-f10-openal-soft
     SUBDIR += linux-f10-pulseaudio-libs
     SUBDIR += linux-f10-sdl_mixer
-    SUBDIR += linux-fmodapi
     SUBDIR += linux-genpuid
     SUBDIR += linux-laudio
     SUBDIR += linux-mbrola
@@ -499,7 +508,6 @@
     SUBDIR += mpdas
     SUBDIR += mpdbrowser
     SUBDIR += mpdcon
-    SUBDIR += mpdscribble
     SUBDIR += mpg123
     SUBDIR += mpg123.el
     SUBDIR += mpg321
@@ -512,7 +520,6 @@
     SUBDIR += muse
     SUBDIR += musepack
     SUBDIR += musescore
-    SUBDIR += musica
     SUBDIR += musicbox-tag-editor
     SUBDIR += musiccontrol
     SUBDIR += musicpc
@@ -533,6 +540,7 @@
     SUBDIR += opencore-amr
     SUBDIR += openspc
     SUBDIR += optimfrog
+    SUBDIR += optimfrog-sse2
     SUBDIR += opus
     SUBDIR += opus-tools
     SUBDIR += opusfile
@@ -584,8 +592,8 @@
     SUBDIR += pavucontrol
     SUBDIR += pavumeter
     SUBDIR += pd
+    SUBDIR += pd-cyclone
     SUBDIR += pear-Text_Spell_Audio
-    SUBDIR += pecl-id3
     SUBDIR += penguinsap
     SUBDIR += pianobar
     SUBDIR += picard
@@ -602,7 +610,6 @@
     SUBDIR += pragha
     SUBDIR += puddletag
     SUBDIR += pulseaudio
-    SUBDIR += pure-audio
     SUBDIR += py-al
     SUBDIR += py-ao
     SUBDIR += py-apetag
@@ -610,7 +617,7 @@
     SUBDIR += py-discid
     SUBDIR += py-discogs-client
     SUBDIR += py-eyed3
-    SUBDIR += py-fastaudio
+    SUBDIR += py-fmoo-audiotools
     SUBDIR += py-gmusicapi
     SUBDIR += py-id3
     SUBDIR += py-karaoke
@@ -627,6 +634,7 @@
     SUBDIR += py-pylast
     SUBDIR += py-pyliblo
     SUBDIR += py-shout
+    SUBDIR += py-soundcloud
     SUBDIR += py-speex
     SUBDIR += py-tagpy
     SUBDIR += py-vorbis
@@ -646,7 +654,6 @@
     SUBDIR += rem
     SUBDIR += resid
     SUBDIR += rexima
-    SUBDIR += rezound
     SUBDIR += rhythmbox
     SUBDIR += rio500
     SUBDIR += rioutil
@@ -668,7 +675,6 @@
     SUBDIR += s3mod
     SUBDIR += sbagen
     SUBDIR += schism
-    SUBDIR += scmpc
     SUBDIR += scrobbler
     SUBDIR += sdl2_mixer
     SUBDIR += sdl_mixer
@@ -684,6 +690,7 @@
     SUBDIR += sidplay
     SUBDIR += sidplay2
     SUBDIR += sidplayer
+    SUBDIR += simon
     SUBDIR += simplemod
     SUBDIR += siren
     SUBDIR += skype-call-recorder
@@ -693,7 +700,6 @@
     SUBDIR += snd
     SUBDIR += solfege
     SUBDIR += sonata
-    SUBDIR += sonice
     SUBDIR += sooperlooper
     SUBDIR += sound-juicer
     SUBDIR += soundconverter
@@ -738,7 +744,6 @@
     SUBDIR += tclmidi
     SUBDIR += teamspeak3-server
     SUBDIR += tempest_for_eliza
-    SUBDIR += tepsonic
     SUBDIR += terminatorx
     SUBDIR += thunar-media-tags-plugin
     SUBDIR += timemachine
@@ -777,7 +782,6 @@
     SUBDIR += vorbis-tools
     SUBDIR += vorbisgain
     SUBDIR += vsound
-    SUBDIR += waheela
     SUBDIR += waon
     SUBDIR += wav2cdr
     SUBDIR += wavbreaker
@@ -789,7 +793,6 @@
     SUBDIR += wildmidi
     SUBDIR += wmalbum
     SUBDIR += wmix
-    SUBDIR += wmmp
     SUBDIR += wmrecord
     SUBDIR += wmsmixer
     SUBDIR += workman

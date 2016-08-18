@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=		talloc
-PORTVERSION=		2.1.3
-PORTREVISION=		1
+PORTVERSION=		2.1.6
+PORTREVISION=		0
 PORTEPOCH=		0
 CATEGORIES=		devel
 MASTER_SITES=		SAMBA
@@ -48,8 +48,8 @@ PLIST_FILES+=		include/pytalloc.h \
 .if ! ${PORT_OPTIONS:MMANPAGES}
 CONFIGURE_ENV+=		XSLTPROC="true"
 .else
-BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:${PORTSDIR}/textproc/docbook-xsl \
-			xsltproc:${PORTSDIR}/textproc/libxslt
+BUILD_DEPENDS+=		${LOCALBASE}/share/xsl/docbook/manpages/docbook.xsl:textproc/docbook-xsl \
+			xsltproc:textproc/libxslt
 .endif
 
 PLIST_FILES+=		include/talloc.h \

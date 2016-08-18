@@ -1,6 +1,6 @@
---- util.c.orig	Sun Oct 25 20:55:11 1998
-+++ util.c	Thu Oct 28 23:58:37 2004
-@@ -537,7 +537,7 @@
+--- util.c.orig	1998-10-25 19:55:11 UTC
++++ util.c
+@@ -537,7 +537,7 @@ msgcpy(char *dst, char *src, int n)
  	** Now make sure we didn't chop a word in the middle.
  	*/
  	if (*src && end) {

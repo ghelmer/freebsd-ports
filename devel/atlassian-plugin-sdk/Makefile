@@ -9,10 +9,11 @@ MASTER_SITES=	https://maven.atlassian.com/content/repositories/atlassian-public/
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Atlassian Plugin SDK
 
-RUN_DEPENDS=	mvn:${PORTSDIR}/devel/maven-wrapper
+RUN_DEPENDS=	mvn:devel/maven-wrapper
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.7+
+NO_ARCH=	yes
 
 EXTRACT_AFTER_ARGS=${DISTNAME}/bin ${DISTNAME}/apache-maven*/conf/settings.xml
 
@@ -41,7 +42,7 @@ do-install:
 	${TAR} --strip-components 1 -C ${STAGEDIR}${DATADIR} -xv	\
 	    --no-same-permissions --no-same-owner --exclude maven	\
 	    -f ${DISTDIR}/${DISTFILES} ${DISTNAME}/repository 2>&1 | \
-		${SED} -e 's,^x ,${DATADIR_REL}/,' -e 's,.*/$$,@dirrm &,' | \
+		${SED} -e 's,^x ,${DATADIR_REL}/,' -e 's,.*/$$,@dir &,' | \
 		${SORT} -r >> ${TMPPLIST}
 	${FIND} ${STAGEDIR}${DATADIR}/repository -type f | ${XARGS} ${CHMOD} ${_SHAREMODE}
 

@@ -10,8 +10,12 @@ MASTER_SITES=	http://www.inter7.com/vqregister/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Admin-configurable email user signup CGI
 
-BUILD_DEPENDS=	vpopmail>0:${PORTSDIR}/mail/vpopmail
-RUN_DEPENDS=	vpopmail>0:${PORTSDIR}/mail/vpopmail
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	vpopmail>0:mail/vpopmail
+RUN_DEPENDS=	vpopmail>0:mail/vpopmail
 
 USE_APACHE_RUN=	22+
 VPOPMAIL_DIR?=	${LOCALBASE}/vpopmail

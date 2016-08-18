@@ -14,7 +14,7 @@ PATCHFILES=	nntp-patch-y2k
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	NNTP with NOV support
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libcnews.a:${PORTSDIR}/news/cnews
+BUILD_DEPENDS=	${LOCALBASE}/lib/libcnews.a:news/cnews
 
 NO_WRKSUBDIR=	yes
 PLIST_SUB+=	VARBASE=${VARBASE}
@@ -69,12 +69,12 @@ pre-install:
 post-install:
 	${MKDIR} ${STAGEDIR}${NEWSCTL}
 	${INSTALL_DATA} ${WRKSRC}/overview.fmt ${STAGEDIR}${NEWSCTL}/overview.fmt
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCSFILES1:S=^=${WRKSRC}/=} ${STAGEDIR}${DOCSDIR}/
 .for i in ${DOCSFILES2}
 	${INSTALL_DATA} ${WRKSRC}/${i}/README ${STAGEDIR}${DOCSDIR}/${i}-README
 .endfor
-.endif
 
 .include <bsd.port.mk>

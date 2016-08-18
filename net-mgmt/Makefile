@@ -5,6 +5,7 @@
 
     SUBDIR += 2ping
     SUBDIR += TkTopNetFlows
+    SUBDIR += adcli
     SUBDIR += aggregate
     SUBDIR += aircrack-ng
     SUBDIR += ap-utils
@@ -17,19 +18,21 @@
     SUBDIR += bandwidthd
     SUBDIR += bgpq
     SUBDIR += bgpq3
+    SUBDIR += bgpuma
     SUBDIR += bpft
     SUBDIR += braa
     SUBDIR += bsnmp-jails
     SUBDIR += bsnmp-regex
     SUBDIR += bsnmp-ucd
-    SUBDIR += bsnmptools
     SUBDIR += bwm-ng
     SUBDIR += cacti
     SUBDIR += cacti-spine
     SUBDIR += ccnet
     SUBDIR += cdpd
     SUBDIR += cdpr
+    SUBDIR += cdpsnarf
     SUBDIR += centreon-clib
+    SUBDIR += check_ipmi_sensor
     SUBDIR += check_logfiles
     SUBDIR += check_multi
     SUBDIR += check_mysql_health
@@ -39,12 +42,12 @@
     SUBDIR += ciscoconf
     SUBDIR += clog
     SUBDIR += cnagios
-    SUBDIR += collectd
     SUBDIR += collectd5
     SUBDIR += confregdecode
     SUBDIR += coovachilli
     SUBDIR += cowpatty
     SUBDIR += cricket
+    SUBDIR += crmsh
     SUBDIR += darkstat
     SUBDIR += devmon
     SUBDIR += devmon-templates
@@ -76,6 +79,7 @@
     SUBDIR += icinga-classicweb
     SUBDIR += icinga-core
     SUBDIR += icinga2
+    SUBDIR += icingaweb2
     SUBDIR += icli
     SUBDIR += icmpmonitor
     SUBDIR += icmpquery
@@ -93,7 +97,9 @@
     SUBDIR += irrtoolset
     SUBDIR += isic
     SUBDIR += jnettop
+    SUBDIR += kapacitor
     SUBDIR += kismet
+    SUBDIR += klg
     SUBDIR += lanmap
     SUBDIR += lg
     SUBDIR += librenms
@@ -125,6 +131,7 @@
     SUBDIR += nagios-check_relayd_status
     SUBDIR += nagios-check_smartmon
     SUBDIR += nagios-check_tftp
+    SUBDIR += nagios-check_zpools
     SUBDIR += nagios-geom
     SUBDIR += nagios-openldap-plugins
     SUBDIR += nagios-pf-plugin
@@ -185,11 +192,13 @@
     SUBDIR += ocsinventory-ng
     SUBDIR += omping
     SUBDIR += openlldp
+    SUBDIR += openvmps
     SUBDIR += p0f
     SUBDIR += p0f2
     SUBDIR += p5-AnyEvent-SNMP
     SUBDIR += p5-BigIP-iControl
     SUBDIR += p5-Cflow
+    SUBDIR += p5-Cisco-CopyConfig
     SUBDIR += p5-Cisco-Reconfig
     SUBDIR += p5-Data-Validate-IP
     SUBDIR += p5-FusionInventory-Agent
@@ -266,6 +275,8 @@
     SUBDIR += py-ipcalc
     SUBDIR += py-ipy
     SUBDIR += py-pyang
+    SUBDIR += py-pysmi
+    SUBDIR += py-pyzabbix
     SUBDIR += py-snmp4
     SUBDIR += py-snmp4-apps
     SUBDIR += py-snmp4-mibs
@@ -277,6 +288,7 @@
     SUBDIR += rate
     SUBDIR += rcpd
     SUBDIR += remarp
+    SUBDIR += resource-agents
     SUBDIR += riemann
     SUBDIR += rotorouter
     SUBDIR += routers2
@@ -306,19 +318,21 @@
     SUBDIR += statsd
     SUBDIR += statsite
     SUBDIR += subcalc
+    SUBDIR += super_mediator
     SUBDIR += sx
     SUBDIR += sysmon
     SUBDIR += tcpreplay
     SUBDIR += tcptrack
+    SUBDIR += telegraf
+    SUBDIR += tornova
     SUBDIR += torrus
-    SUBDIR += unifi2
     SUBDIR += unifi3
     SUBDIR += unifi4
+    SUBDIR += unifi5
     SUBDIR += victorops-nagios
     SUBDIR += vidalia
     SUBDIR += virt-viewer
     SUBDIR += wdiag
-    SUBDIR += weathermap
     SUBDIR += weplab
     SUBDIR += whatmask
     SUBDIR += wifimgr
@@ -338,5 +352,9 @@
     SUBDIR += zabbix24-frontend
     SUBDIR += zabbix24-proxy
     SUBDIR += zabbix24-server
+    SUBDIR += zabbix3-agent
+    SUBDIR += zabbix3-frontend
+    SUBDIR += zabbix3-proxy
+    SUBDIR += zabbix3-server
 
 .include <bsd.port.subdir.mk>

@@ -2,23 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	vile
-PORTVERSION=	9.8o
+PORTVERSION=	9.8q
 CATEGORIES=	editors
 MASTER_SITES=	ftp://dickey.his.com/vile/current/ \
 		ftp://invisible-island.net/vile/current/ \
 		http://invisible-mirror.net/archives/vile/current/
 
 PATCH_SITES=	${MASTER_SITES:S,vile/current/,vile/patches/,g}
-PATCHFILES=	# none
+#PATCHFILES=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	VI Like Emacs -- console version
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	reflex:${PORTSDIR}/textproc/reflex
+BUILD_DEPENDS=	reflex:textproc/reflex
 
-USES=		pkgconfig shebangfix tar:tgz
+USES=		ncurses pkgconfig shebangfix tar:tgz
 SHEBANG_FILES=	perl/vileget
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	cf_cv_crypt_works=yes

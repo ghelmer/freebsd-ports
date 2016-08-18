@@ -10,11 +10,11 @@ MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	slaven@rezic.de
 COMMENT=	Route-finder for cyclists in Berlin and Brandenburg
 
-BUILD_DEPENDS=	p5-Inline-C>=0:${PORTSDIR}/devel/p5-Inline-C \
-		p5-CDB_File>=0:${PORTSDIR}/databases/p5-CDB_File
-RUN_DEPENDS=	p5-Tk>=0:${PORTSDIR}/x11-toolkits/p5-Tk \
-		p5-Inline-C>=0:${PORTSDIR}/devel/p5-Inline-C \
-		p5-CDB_File>=0:${PORTSDIR}/databases/p5-CDB_File
+BUILD_DEPENDS=	p5-Inline-C>=0:devel/p5-Inline-C \
+		p5-CDB_File>=0:databases/p5-CDB_File
+RUN_DEPENDS=	p5-Tk>=0:x11-toolkits/p5-Tk \
+		p5-Inline-C>=0:devel/p5-Inline-C \
+		p5-CDB_File>=0:databases/p5-CDB_File
 
 USES=		perl5 shebangfix
 perl_OLD_CMD=	/usr/perl5.8.0/bin/perl5.8.0 perl
@@ -66,8 +66,8 @@ post-patch:
 	@${RM} ${WRKSRC}/tmp/.keep_me
 
 do-build:
-	cd ${WRKSRC}/ext && ${MAKE} PERL=${PERL5} all install
-	cd ${WRKSRC}/ext && ${MAKE} PERL=${PERL5} clean
+	cd ${WRKSRC}/ext && ${MAKE} PERL=${PERL} all install
+	cd ${WRKSRC}/ext && ${MAKE} PERL=${PERL} clean
 	${FIND} ${WRKSRC}/lib -name "*.so" | ${XARGS} ${CHMOD} u+w
 	${FIND} ${WRKSRC}/lib -name "*.so" | ${XARGS} ${STRIP_CMD}
 	${FIND} ${WRKSRC}/lib -name "*.so" | ${XARGS} ${CHMOD} u-w

@@ -2,29 +2,42 @@
 # $FreeBSD$
 
 PORTNAME=	assimp
-PORTVERSION=	3.0
-PORTREVISION=	5
+PORTVERSION=	3.2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	multimedia
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-3.0
-DISTNAME=	${PORTNAME}--${PORTVERSION}.1270-source-only
 
-MAINTAINER=	yuri@tsoft.com
+MAINTAINER=	yuri@rawbw.com
 COMMENT=	Library to import various 3D model formats in a uniform manner
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libboost_filesystem.so:${PORTSDIR}/devel/boost-libs
+BROKEN_powerpc64=	Does not build
 
-USES=		cmake pkgconfig zip
-USE_GCC=	yes	# GCC 4.2 causes compiler warnings
+USES=		cmake pkgconfig
+USE_GITHUB=		yes
 USE_LDCONFIG=	yes
 
 # CMAKE_ARGS instructs cmake to skip runtime path removal during install
-CMAKE_ARGS+=	"-DCMAKE_SKIP_RPATH=ON"
+CMAKE_ARGS+=	-DCMAKE_SKIP_RPATH:BOOL=ON -DASSIMP_BUILD_TESTS:BOOL=OFF
 
-post-patch:
-	@${REINPLACE_CMD} 's|$${LIB_INSTALL_DIR}/pkgconfig|libdata/pkgconfig|' \
+OPTIONS_DEFINE=	BOOST
+OPTIONS_DEFAULT=	BOOST
+BOOST_LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs
+BOOST_CMAKE_ON=	-DASSIMP_ENABLE_BOOST_WORKAROUND:BOOL=OFF
+
+.include <bsd.port.options.mk>
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1000054
+# GCC 4.2 causes compiler warnings
+USE_GCC=	yes
+.endif
+
+post-patch: .SILENT
+	${REINPLACE_CMD} -e '/zzip-zlib-config/d' \
+		${WRKSRC}/cmake-modules/FindZLIB.cmake
+	${REINPLACE_CMD} -e '/working branch$$/,/^)/d ; /minizip/d ; \
+		s|$${ASSIMP_LIB_INSTALL_DIR}/pkgconfig|libdata/pkgconfig|' \
 		${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

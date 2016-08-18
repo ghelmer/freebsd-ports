@@ -3,16 +3,16 @@
 
 PORTNAME=	flpsed
 PORTVERSION=	0.7.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	print
 MASTER_SITES=	http://www.ecademix.com/JohannesHofmann/
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WYSIWYG Postscript annotator
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS+=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk
+LIB_DEPENDS+=	libfltk.so:x11-toolkits/fltk
 
 GNU_CONFIGURE=	yes
 USES=		desktop-file-utils ghostscript:x11 gmake

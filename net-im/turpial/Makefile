@@ -12,23 +12,16 @@ COMMENT=	Twitter client written in Python
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:${PORTSDIR}/devel/py-babel
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}notify>=0.1.1:${PORTSDIR}/devel/py-notify \
-	${PYTHON_PKGNAMEPREFIX}setproctitle>=1.1.7:${PORTSDIR}/devel/py-setproctitle \
-	${PYTHON_PKGNAMEPREFIX}Jinja2>=2.7.1:${PORTSDIR}/devel/py-Jinja2 \
-	${PYTHON_PKGNAMEPREFIX}libturpial>=1.7.0:${PORTSDIR}/net-im/py-libturpial
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}notify>=0.1.1:devel/py-notify \
+	${PYTHON_PKGNAMEPREFIX}setproctitle>=1.1.7:devel/py-setproctitle \
+	${PYTHON_PKGNAMEPREFIX}Jinja2>=2.7.1:devel/py-Jinja2 \
+	${PYTHON_PKGNAMEPREFIX}libturpial>=1.7.0:net-im/py-libturpial
 
-USES=		python:2
+USES=		pyqt:4 python:2
+USE_PYQT=	core_run gui_run network_run phonon_run webkit_run
 USE_PYTHON=	distutils autoplist
 INSTALLS_ICONS=	yes
-
-PYQT4_PORTS=	core gui network phonon webkit
-
-.include "${.CURDIR}/../../devel/py-qt4/bsd.pyqt.mk"
-
-.for component in ${PYQT4_PORTS}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}qt4-${component}>=0:${PORTSDIR}/${${component}_PORT}
-.endfor
 
 LOCALES_DIR=	ca de eo es fr it ja pt_BR pt_PT ru_RU tr
 

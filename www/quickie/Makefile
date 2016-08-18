@@ -13,9 +13,9 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small footprint, fast Wiki engine written in C++
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
-USES=		perl5
+USES=		alias perl5
 USE_PERL5=	build patch
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \

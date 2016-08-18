@@ -2,21 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	viewnior
-PORTVERSION=	1.5
+PORTVERSION=	1.6
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	graphics
-MASTER_SITES=	http://siyanpanayotov.com/project/viewnior/
 
 MAINTAINER=	nemysis@FreeBSD.org
 COMMENT=	Fast and simple image viewer
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libexiv2.so:${PORTSDIR}/graphics/exiv2
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	xsisqox
 GH_PROJECT=	Viewnior
-GH_TAGNAME=	55ebe9b
 
 USES=		autoreconf desktop-file-utils gmake libtool pkgconfig \
 		gettext-tools

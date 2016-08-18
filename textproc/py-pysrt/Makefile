@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pysrt
-PORTVERSION=	1.0.1
+PORTVERSION=	1.1.1
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	SubRip (.srt) subtitle parser and writer
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}chardet>0:${PORTSDIR}/textproc/py-chardet
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}chardet>0:textproc/py-chardet
 
 USES=		python
 USE_PYTHON=	distutils autoplist

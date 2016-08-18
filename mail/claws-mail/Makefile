@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	claws-mail
-CATEGORIES=	mail news ipv6
 PORTREVISION=	1
+CATEGORIES=	mail news ipv6
 
 COMMENT=	Lightweight and featureful GTK+ based e-mail and news client
 
-LIB_DEPENDS=	libetpan.so:${PORTSDIR}/mail/libetpan \
-		libgnutls.so:${PORTSDIR}/security/gnutls \
-		libgcrypt.so:${PORTSDIR}/security/libgcrypt
-RUN_DEPENDS=	mime-support>0:${PORTSDIR}/misc/mime-support
+LIB_DEPENDS=	libetpan.so:mail/libetpan \
+		libgnutls.so:security/gnutls \
+		libgcrypt.so:security/libgcrypt
+RUN_DEPENDS=	mime-support>0:misc/mime-support
 
 USE_GNOME=	gtk20
 USES=		cpe desktop-file-utils execinfo pathfix shebangfix
@@ -24,20 +24,20 @@ OPTIONS_SUB=	yes
 
 COMPFACE_DESC=		X-Face support
 COMPFACE_CONFIGURE_ENABLE=	compface
-COMPFACE_LIB_DEPENDS=	libcompface.so:${PORTSDIR}/mail/faces
+COMPFACE_LIB_DEPENDS=	libcompface.so:mail/faces
 
 DEBUG_CONFIGURE_ON=	--enable-maintainer-mode
 
 ENCHANT_DESC=		Spell checking support
 ENCHANT_CONFIGURE_ENABLE=	enchant
-ENCHANT_LIB_DEPENDS=	libenchant.so:${PORTSDIR}/textproc/enchant
+ENCHANT_LIB_DEPENDS=	libenchant.so:textproc/enchant
 
 IPV6_CONFIGURE_ENABLE=	ipv6
 
 JPILOT_DESC=		JPilot support
 JPILOT_CONFIGURE_ENABLE=	jpilot
-JPILOT_LIB_DEPENDS=	libpisock.so:${PORTSDIR}/palm/pilot-link
-JPILOT_RUN_DEPENDS=	jpilot:${PORTSDIR}/palm/jpilot
+JPILOT_LIB_DEPENDS=	libpisock.so:palm/pilot-link
+JPILOT_RUN_DEPENDS=	jpilot:palm/jpilot
 
 LDAP_CONFIGURE_ENABLE=	ldap
 LDAP_USE=		openldap=yes
@@ -45,17 +45,17 @@ LDAP_USE=		openldap=yes
 MANUAL_DESC=		User manual (many dependencies, including texlive)
 MANUAL_CONFIGURE_ON=	--enable-manual --with-manualdir=${DOCSDIR}/manual
 MANUAL_CONFIGURE_OFF=	--disable-manual
-MANUAL_BUILD_DEPENDS=	docbook-utils>0:${PORTSDIR}/textproc/docbook-utils
+MANUAL_BUILD_DEPENDS=	docbook-utils>0:textproc/docbook-utils
 
 NLS_CONFIGURE_OFF=	--disable-nls
 NLS_USES=		gettext
 
 STARTUP_DESC=		Startup notification support
 STARTUP_CONFIGURE_ENABLE=	startup-notification
-STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:${PORTSDIR}/x11/startup-notification
+STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
 
 THEMES_DESC=		Additional themes
-THEMES_RUN_DEPENDS=	claws-mail-themes>0:${PORTSDIR}/x11-themes/claws-mail-themes
+THEMES_RUN_DEPENDS=	claws-mail-themes>0:x11-themes/claws-mail-themes
 
 .include "Makefile.claws"
 
@@ -66,19 +66,20 @@ post-patch:
 		${WRKSRC}/src/Makefile.in
 
 post-install:
-	(cd ${WRKSRC} && ${INSTALL_DATA} NEWS README TODO ${STAGEDIR}${DOCSDIR})
-	${INSTALL_DATA} ${WRKSRC}/tools/README ${STAGEDIR}${DOCSDIR}/README.tools
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/tools && \
 		${INSTALL_SCRIPT} OOo2claws-mail.pl acroread2claws-mail.pl \
 		calypso_convert.pl convert_mbox.pl eud2gc.py filter_conv.pl \
-		filter_conv_new.pl fix_date.sh freshmeat_search.pl \
-		gif2xface.pl google_msgid.pl google_search.pl \
-		kmail-mailbox2claws-mail.pl kmail2claws-mail.pl \
+		filter_conv_new.pl fix_date.sh gif2xface.pl google_msgid.pl \
+		google_search.pl kmail-mailbox2claws-mail.pl kmail2claws-mail.pl \
 		kmail2claws-mail_v2.pl multiwebsearch.conf multiwebsearch.pl \
 		nautilus2claws-mail.sh outlook2claws-mail.pl tb2claws-mail \
 		tbird2claws.py textviewer.pl textviewer.sh \
 		thunderbird-filters-convertor.pl uudec uuooffice vcard2xml.py \
 		${STAGEDIR}${DATADIR})
+
+post-install-DOCS-on:
+	(cd ${WRKSRC} && ${INSTALL_DATA} NEWS README TODO ${STAGEDIR}${DOCSDIR})
+	${INSTALL_DATA} ${WRKSRC}/tools/README ${STAGEDIR}${DOCSDIR}/README.tools
 
 .include <bsd.port.mk>

@@ -10,6 +10,9 @@ DISTNAME=	common-${PORTVERSION}
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Common subroutines for UCL mbone applications
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 OPTIONS_DEFINE=	IPV6
 
 WRKSRC=		${WRKDIR}/common

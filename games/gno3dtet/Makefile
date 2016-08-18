@@ -10,6 +10,10 @@ MASTER_SITES=	http://eseb.net/ftp/gno3dtet/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNOME version of the classic 3D-ified T*tris
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 

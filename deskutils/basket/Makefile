@@ -12,11 +12,11 @@ COMMENT=	Desktop organization tool
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgpgme.so:${PORTSDIR}/security/gpgme
+LIB_DEPENDS=	libgpgme.so:security/gpgme
 
 USES=		cmake gettext-tools tar:bzip2
 USE_XORG=	xft xpm
-USE_KDE4=	automoc4 kdeprefix pimlibs qimageblitz
+USE_KDE4=	automoc4 pimlibs qimageblitz
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes
 

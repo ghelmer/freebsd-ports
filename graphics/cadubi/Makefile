@@ -2,18 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	cadubi
-PORTVERSION=	1.3
-PORTREVISION=	2
+PORTVERSION=	1.3.1
+DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	graphics editors
-MASTER_SITES=	http://langworth.com/pub/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ASCII drawing utility
 
 LICENSE=	ART10
 
-RUN_DEPENDS=	p5-Term-ReadKey>=0:${PORTSDIR}/devel/p5-Term-ReadKey
+RUN_DEPENDS=	p5-Term-ReadKey>=0:devel/p5-Term-ReadKey
 
+GH_ACCOUNT=	statico
+USE_GITHUB=	yes
 USES=		perl5 shebangfix
 SHEBANG_FILES=	cadubi
 NO_BUILD=	yes
@@ -26,10 +28,8 @@ PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-do-configure:
-	@${REINPLACE_CMD} -e \
-		's|/usr/local/stow/perl-5.8.x/bin/perl|${PERL}|; \
-		s|$$Bin/help|${DATADIR}/help|' \
+post-patch:
+	@${REINPLACE_CMD} -e 's|$$Bin/help|${DATADIR}/help|' \
 		${WRKSRC}/cadubi
 
 do-install:
@@ -40,7 +40,7 @@ do-install:
 .endfor
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/extras/ansi_term_codes.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

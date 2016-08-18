@@ -14,13 +14,15 @@ OPTIONS_DEFINE=	DOCS
 
 LICENSE=	GPLv2
 
-USES=		compiler:nestedfct tar:tgz
+USES=		compiler:nestedfct ncurses tar:tgz
 
 WRKSRC=		${WRKDIR}/funkgold
 MAKE_ARGS=	EXTRA_LDFLAGS="-lpthread"
 
 PORTDOCS=	INSTALL
 PLIST_FILES=	bin/funkgold
+
+BROKEN_powerpc64=	Does not build
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/funkgold ${STAGEDIR}${PREFIX}/bin

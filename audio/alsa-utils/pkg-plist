@@ -1,6 +1,8 @@
 bin/aconnect
+%%BAT%%bin/alsabat
 bin/alsaloop
 bin/alsamixer
+bin/alsatplg
 bin/alsaucm
 bin/amidi
 bin/amixer
@@ -28,9 +30,12 @@ man/man1/aseqdump.1.gz
 man/man1/aseqnet.1.gz
 man/man1/iecset.1.gz
 man/man1/speaker-test.1.gz
+man/man1/alsa-info.sh.1.gz
+%%BAT%%man/man1/alsabat.1.gz
 %%MANPAGES%%man/man7/alsactl_init.7.gz
 man/man8/alsaconf.8.gz
 sbin/alsa-info.sh
+%%BAT%%sbin/alsabat-test.sh
 sbin/alsaconf
 sbin/alsactl
 share/alsa/init/00main

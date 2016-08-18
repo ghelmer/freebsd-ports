@@ -3,6 +3,7 @@
 
 PORTNAME=	libzdb
 PORTVERSION=	3.1
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.tildeslash.com/libzdb/dist/
 
@@ -19,8 +20,10 @@ USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib -pthread
 
-OPTIONS_DEFINE=		MYSQL PGSQL SQLITE SSL
+OPTIONS_DEFINE=		SSL
 OPTIONS_DEFAULT=	MYSQL PGSQL SQLITE SSL
+OPTIONS_MULTI=		DB
+OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
 
 MYSQL_USE=		mysql=yes
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}/bin/mysql_config
@@ -28,7 +31,7 @@ MYSQL_CONFIGURE_OFF=	--without-mysql
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_ON=	--with-postgresql=${LOCALBASE}/bin/pg_config
 PGSQL_CONFIGURE_OFF=	--without-postgresql
-SQLITE_USE=		sqlite=3
+SQLITE_USES=		sqlite
 SQLITE_CONFIGURE_ON=	--with-sqlite=${LOCALBASE}
 SQLITE_CONFIGURE_OFF=	--without-sqlite
 SSL_USE=		openssl=yes

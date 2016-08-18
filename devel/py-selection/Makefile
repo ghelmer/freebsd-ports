@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	selection
-PORTVERSION=	0.0.10
+PORTVERSION=	0.0.11
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,9 +11,9 @@ COMMENT=	API to extract content from HTML & XML documents
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:${PORTSDIR}/devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:${PORTSDIR}/devel/py-lxml \
-		${PYTHON_PKGNAMEPREFIX}weblib>0:${PORTSDIR}/devel/py-weblib
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six \
+		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml \
+		${PYTHON_PKGNAMEPREFIX}weblib>0:devel/py-weblib
 
 NO_ARCH=	yes
 USES=		python

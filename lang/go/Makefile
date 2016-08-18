@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	go
-PORTVERSION=	1.5.1
+PORTVERSION=	1.6.2
 PORTEPOCH=	1
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://golang.org/dl/
 DISTNAME=	go${PORTVERSION}.src
@@ -13,15 +14,14 @@ COMMENT=	Go programming language
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	go14>=1.4:${PORTSDIR}/lang/go14
+BUILD_DEPENDS=	go14>=1.4:lang/go14
 
 USES=		shebangfix
 SHEBANG_LANG=	sh
 SHEBANG_FILES=	${WRKSRC}/src/*.bash \
-		${WRKSRC}/doc/articles/wiki/*.bash \
-		${WRKSRC}/test/bench/shootout/timing.sh
+		${WRKSRC}/doc/articles/wiki/*.bash
 
-sh_OLD_CMD=	${SETENV} bash
+sh_OLD_CMD=	"/usr/bin/env bash"
 sh_CMD=		${SH}
 
 WRKSRC=		${WRKDIR}/go
@@ -59,7 +59,7 @@ do-build:
 do-install:
 	@${CP} -a ${WRKSRC} ${STAGEDIR}${PREFIX}
 .for f in go gofmt
-	@${LN} -sf ${PREFIX}/go/bin/${f} ${STAGEDIR}${PREFIX}/bin/${f}
+	@${LN} -sf ../go/bin/${f} ${STAGEDIR}${PREFIX}/bin/${f}
 .endfor
 
 regression-test: build

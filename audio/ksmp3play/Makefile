@@ -10,10 +10,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}/${PORTVERSION:R}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Curses-based MP3 player
 
-LIB_DEPENDS=	libsmpeg.so:${PORTSDIR}/multimedia/smpeg
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libsmpeg.so:multimedia/smpeg
 
 GNU_CONFIGURE=	yes
-USES=		pathfix
+USES=		ncurses pathfix
 USE_SDL=	sdl
 NO_WRKSUBDIR=	yes
 EXTRACT_AFTER_ARGS=	--exclude CVS
@@ -23,7 +26,10 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-patch:
+	${REINPLACE_CMD} -e 's|-lcurses|-lncurses|' ${WRKSRC}/configure
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 

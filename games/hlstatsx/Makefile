@@ -10,11 +10,16 @@ DISTNAME=	HLstatsX_V${DISTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Real-time player and clan rankings and statistics for HL2 and mods
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 NO_BUILD=	yes
 USE_APACHE_RUN=	22+
 USE_PHP=	gd mysql
 USES=		perl5 zip
 USE_PERL5=	run
+IGNORE_WITH_PHP=	70
 
 SUB_FILES=	pkg-message
 WRKSRC=		${WRKDIR}/${PORTNAME}

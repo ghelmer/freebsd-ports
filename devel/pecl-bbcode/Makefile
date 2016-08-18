@@ -8,17 +8,14 @@ MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	PECL extension which allows quick and efficient BBCode Parsing
 
 LICENSE=	PHP301 BSD3CLAUSE
 LICENSE_COMB=	multi
 
-USES=		tar:tgz
-USE_PHP=	yes
-USE_PHP_BUILD=	yes
-USE_PHPEXT=	yes
-IGNORE_WITH_PHP=5 56
+USES=		php:ext tar:tgz
+IGNORE_WITH_PHP= 56 70
 
 CONFIGURE_ARGS=	--enable-bbcode
 

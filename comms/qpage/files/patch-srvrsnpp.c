@@ -1,6 +1,6 @@
---- srvrsnpp.c.orig	1998-10-25 14:55:05.000000000 -0500
-+++ srvrsnpp.c	2008-10-24 11:00:36.226381386 -0400
-@@ -523,6 +523,7 @@
+--- srvrsnpp.c.orig	2016-01-16 20:44:37 UTC
++++ srvrsnpp.c
+@@ -523,6 +523,7 @@ snpp(PAGE *p)
  	char		*errmsg;
  	char		*a;
  	char		*b;
@@ -8,7 +8,7 @@
  	int		i;
  	int		badarg;
  	int		gotpager;
-@@ -701,7 +702,16 @@
+@@ -701,7 +702,16 @@ snpp(PAGE *p)
  
  				p->created = time(NULL);
  				(void)sprintf(buff, "%d", pagecount++);

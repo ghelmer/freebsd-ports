@@ -11,7 +11,7 @@ COMMENT=	Connection pool server for PostgreSQL
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	rsync:${PORTSDIR}/net/rsync
+RUN_DEPENDS=	rsync:net/rsync
 
 USES=		gmake libtool perl5 pgsql
 WANT_PGSQL=	client
@@ -28,7 +28,7 @@ DOCS=		AUTHORS COPYING ChangeLog INSTALL NEWS README README.euc_jp \
 		doc/tutorial-en.html doc/tutorial-ja.html
 
 OPTIONS_DEFINE+=	DOCS SSL LIBMEMCACHED PAM
-OPTIONS_DEFAULT=	DOCS SSL PAM
+OPTIONS_DEFAULT=	SSL PAM
 
 # Buggy configure: adding eg. --without-pam to CONFIGURE_ARGS causes
 # USE_PAM to be *defined* in config.h Omit the --with-pam or
@@ -36,7 +36,7 @@ OPTIONS_DEFAULT=	DOCS SSL PAM
 # --with-memcached.
 
 LIBMEMCACHED_DESC=		Build with MemCached support
-LIBMEMCACHED_BUILD_DEPENDS=	libmemcached>=1.0:${PORTSDIR}/databases/libmemcached
+LIBMEMCACHED_BUILD_DEPENDS=	libmemcached>=1.0:databases/libmemcached
 LIBMEMCACHED_CONFIGURE_ON=	--with-memcached=${LOCALBASE}/lib/libmemcached
 
 SSL_DESC=		Build with OpenSSL support

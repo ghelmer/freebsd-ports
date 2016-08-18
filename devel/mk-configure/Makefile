@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mk-configure
-PORTVERSION=	0.29.0
+PORTVERSION=	0.29.1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -11,9 +11,9 @@ COMMENT=	Lightweight, easy to use replacement for GNU autotools
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${BMAKE}:${PORTSDIR}/devel/bmake
+BUILD_DEPENDS=	${BMAKE}:devel/bmake
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
-		bmkdep:${PORTSDIR}/devel/bmkdep
+		bmkdep:devel/bmkdep
 
 BMAKE?=		${LOCALBASE}/bin/bmake
 INSTALL_TARGET=	installdirs install install-doc

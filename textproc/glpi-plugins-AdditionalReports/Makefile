@@ -12,7 +12,11 @@ DISTNAME=	glpi-reports-1.3.0
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	This plugin enables additional reports
 
-RUN_DEPENDS=	glpi>=0.72:${PORTSDIR}/www/glpi
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	glpi>=0.72:www/glpi
 
 WRKSRC=		${WRKDIR}/reports
 NO_BUILD=	yes

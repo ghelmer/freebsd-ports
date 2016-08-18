@@ -18,12 +18,14 @@ LICENSE_NAME=	Floodgap Free Software License
 LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-RUN_DEPENDS=	curl:${PORTSDIR}/ftp/curl \
-		p5-TimeDate>=0:${PORTSDIR}/devel/p5-TimeDate
+RUN_DEPENDS=	curl:ftp/curl \
+		p5-TimeDate>=0:devel/p5-TimeDate
 
+NO_ARCH=	yes
 NO_BUILD=	yes
-USES=		perl5
+USES=		perl5 shebangfix
 USE_PERL5=	run
+SHEBANG_FILES=	${PORTVERSION}.txt
 
 OPTIONS_DEFINE=	READLINE RLTTYTTER
 OPTIONS_DEFAULT=READLINE
@@ -32,23 +34,13 @@ RLTTYTTER_DESC=	Use T::R::TTYtter readline driver (beta!)
 
 PLIST_FILES=	bin/${PORTNAME}
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MREADLINE}
-RUN_DEPENDS+=	p5-ReadLine-Perl>=0:${PORTSDIR}/devel/p5-ReadLine-Perl
-.endif
-
-.if ${PORT_OPTIONS:MRLTTYTTER}
-RUN_DEPENDS+=	p5-ReadLine-TTYtter>=1.4:${PORTSDIR}/devel/p5-ReadLine-TTYtter
-.endif
+READLINE_RUN_DEPENDS=	p5-Term-ReadLine-Perl>=0:devel/p5-Term-ReadLine-Perl
+RLTTYTTER_RUN_DEPENDS=	p5-Term-ReadLine-TTYtter>=1.4:devel/p5-Term-ReadLine-TTYtter
 
 do-extract:
 	@${MKDIR} ${WRKSRC}
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/${PORTVERSION}.txt ${WRKSRC}
 	@${CP} ${DISTDIR}/${DIST_SUBDIR}/license.txt ${WRKSRC}
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|^\#!/usr/bin/perl|\#!${PERL}|' ${WRKSRC}/${PORTVERSION}.txt
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTVERSION}.txt ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

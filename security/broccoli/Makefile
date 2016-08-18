@@ -2,19 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	broccoli
-PORTVERSION=	2.3.2
+PORTVERSION=	1.97
+PORTEPOCH=	1
 CATEGORIES=	security
 MASTER_SITES=	http://www.bro.org/downloads/release/
-DISTNAME=	bro-${PORTVERSION}
+DISTNAME=	bro-2.4.1
 
 MAINTAINER=	leres@ee.lbl.gov
 COMMENT=	Bro Client Communications Library
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/bison:${PORTSDIR}/devel/bison \
-		${LOCALBASE}/bin/swig:${PORTSDIR}/devel/swig13
-LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+BUILD_DEPENDS=	${LOCALBASE}/bin/bison:devel/bison \
+		${LOCALBASE}/bin/swig:devel/swig13
+LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 EXTRACT_AFTER_ARGS=	${DISTNAME}/aux/broccoli
 

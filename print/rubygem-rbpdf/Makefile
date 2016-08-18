@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rbpdf
-PORTVERSION=	1.18.6
+PORTVERSION=	1.19.0
 CATEGORIES=	print rubygems
 MASTER_SITES=	RG
 
@@ -12,10 +12,11 @@ COMMENT=	Ruby library for creating ERB enabled PDF templates
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT
 
+RUN_DEPENDS=	rubygem-htmlentities>=4.3.1:textproc/rubygem-htmlentities \
+		rubygem-rbpdf-font>=${PORTVERSION}:print/rubygem-rbpdf-font
+
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
-USES=		dos2unix
+USES=		gem
 
 .include <bsd.port.mk>

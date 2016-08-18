@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xterm
-PORTVERSION=	320
+PORTVERSION=	325
 CATEGORIES=	x11
 MASTER_SITES=	ftp://invisible-island.net/xterm/:src1 \
 		LOCAL/ehaupt:src1 LOCAL/ehaupt:src2
@@ -16,8 +16,8 @@ LICENSE=	MIT
 
 CONFLICTS=	x11iraf-[0-9]*
 
-USES=		tar:tgz
-USE_XORG=	xft
+USES=		ncurses tar:tgz
+USE_XORG=	xft xmu xt x11 xpm ice
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS+=	--with-utempter --enable-narrowproto
@@ -27,7 +27,8 @@ LIBS+=		-L${LOCALBASE}/lib
 
 ICONVERSION=	1
 
-OPTIONS_DEFINE=	WCHAR LUIT DECTERM PCRE DABBREV 256COLOR SIXEL GNOME LOGGING
+OPTIONS_DEFINE=	WCHAR LUIT DECTERM PCRE DABBREV 256COLOR SIXEL GNOME LOGGING \
+		SCRNDUMP REGIS XINERAMA
 OPTIONS_RADIO=	3D
 OPTIONS_RADIO_3D=	XAW3D XAW3DXFT NEXTAW
 
@@ -35,41 +36,46 @@ DABBREV_DESC=	Enable support for dabbrev-expand
 DECTERM_DESC=	Enable DECterm Locator support
 LUIT_DESC=	Use LUIT for locale convertion from/to UTF-8
 SIXEL_DESC=	Enable Sixel graphics support
+REGIS_DESC=	Enable ReGIS graphics support
 WCHAR_DESC=	Enable wide-character support
 256COLOR_DESC=	Enable 256-color support
 LOGGING_DESC=	Enable logging terminal I/O to a file
 XAW3D_DESC=	Link with Xaw 3d library
 XAW3DXFT_DESC=	Link with Xaw 3d xft (extended fonts) library
 NEXTAW_DESC=	Link with neXT Athena library
+SCRNDUMP_DESC=	Enable XHTML and SVG screen dumps
 
 OPTIONS_DEFAULT=WCHAR LUIT 256COLOR
 
 256COLOR_CONFIGURE_ENABLE=	256-color
-LUIT_BUILD_DEPENDS=		luit:${PORTSDIR}/x11/luit
+LUIT_BUILD_DEPENDS=		luit:x11/luit
 LUIT_CONFIGURE_ENABLE=		luit
 WCHAR_CONFIGURE_ENABLE=		wide-chars
+WCHAR_VARS=			PKGMESSAGE="${PKGDIR}/pkg-message.wchar"
 DECTERM_CONFIGURE_ENABLE=	dec-locator
 PCRE_CONFIGURE_WITH=		pcre
-PCRE_LIB_DEPENDS=		libpcre.so:${PORTSDIR}/devel/pcre
+PCRE_LIB_DEPENDS=		libpcre.so:devel/pcre
 DABBREV_CONFIGURE_ENABLE=	dabbrev
 SIXEL_CONFIGURE_ENABLE=		sixel-graphics
+REGIS_CONFIGURE_ENABLE=		regis-graphics
 GNOME_USES=			desktop-file-utils
 LOGGING_CONFIGURE_ENABLE=	logging
+SCRNDUMP_CONFIGURE_ENABLE=	screen-dumps
 XAW3D_CONFIGURE_WITH=		Xaw3d
-XAW3D_LIB_DEPENDS=		libXaw3d.so:${PORTSDIR}/x11-toolkits/Xaw3d
+XAW3D_LIB_DEPENDS=		libXaw3d.so:x11-toolkits/Xaw3d
 XAW3DXFT_CONFIGURE_WITH=	Xaw3dxft
-XAW3DXFT_LIB_DEPENDS=		libXaw3dxft.so:${PORTSDIR}/x11-toolkits/libxaw3dxft
+XAW3DXFT_LIB_DEPENDS=		libXaw3dxft.so:x11-toolkits/libxaw3dxft
 NEXTAW_CONFIGURE_WITH=		neXtaw
-NEXTAW_LIB_DEPENDS=		libneXtaw.so:${PORTSDIR}/x11-toolkits/neXtaw
+NEXTAW_LIB_DEPENDS=		libneXtaw.so:x11-toolkits/neXtaw
+XINERAMA_USE=			XORG=xinerama,xineramaproto
+XINERAMA_CONFIGURE_OFF=		--without-xinerama
+
+LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig
 
 .include <bsd.port.options.mk>
 
 .if ! ${PORT_OPTIONS:MXAW3D} && ! ${PORT_OPTIONS:MXAW3DXFT} && ! ${PORT_OPTIONS:MNEXTAW}
 USE_XORG+=	xaw
-.endif
-
-.if ${OSVERSION} < 900004
-LIB_DEPENDS+=	libutempter.so:${PORTSDIR}/sysutils/libutempter
 .endif
 
 post-extract:
@@ -83,9 +89,5 @@ post-install:
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/xterm.desktop \
 		${STAGEDIR}${PREFIX}/share/applications/
-
-.if ${PORT_OPTIONS:MWCHAR}
-	@${CAT} ${PKGMESSAGE}
-.endif
 
 .include <bsd.port.mk>

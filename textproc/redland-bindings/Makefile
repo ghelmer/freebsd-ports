@@ -15,7 +15,7 @@ COMMENT=	Language bindings for the Redland package
 LICENSE=	APACHE20 GPLv2 GPLv3 LGPL21
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	librdf.so:${PORTSDIR}/textproc/redland
+LIB_DEPENDS=	librdf.so:textproc/redland
 
 GNU_CONFIGURE=	yes
 USES=		pkgconfig
@@ -28,7 +28,7 @@ PERL_CONFIGURE_WITH=	perl
 PERL_USES=		perl5
 PERL_USE=		PERL5=build,run
 PHP_CONFIGURE_WITH=	php
-PHP_USE=		PHP=yes PHP_BUILD=yes
+PHP_USES=		php:build
 PYTHON_CONFIGURE_WITH=	python
 PYTHON_USES=		python
 RUBY_CONFIGURE_WITH=	ruby

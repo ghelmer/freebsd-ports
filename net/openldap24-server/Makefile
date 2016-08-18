@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=		openldap
-DISTVERSION=		2.4.43
+DISTVERSION=		2.4.44
 PORTREVISION=		${OPENLDAP_PORTREVISION}
 CATEGORIES=		net databases
 MASTER_SITES=		ftp://ftp.OpenLDAP.org/pub/OpenLDAP/%SUBDIR%/ \
@@ -59,7 +59,7 @@ BROKEN=			incompatible OpenLDAP version: ${WANT_OPENLDAP_VER}
 PORTREVISION_CLIENT=	0
 PORTREVISION_SERVER=	0
 OPENLDAP_SHLIB_MAJOR=	2
-OPENLDAP_SHLIB_MINOR=	10.6
+OPENLDAP_SHLIB_MINOR=	10.7
 OPENLDAP_MAJOR=		${DISTVERSION:R}
 
 OPTIONS_DEFINE=		DEBUG FETCH GSSAPI
@@ -156,7 +156,7 @@ WANT_OPENLDAP_SASL=	yes
 CONFLICTS=		${PKGNAMEPREFIX}${PORTNAME}-client-2.*
 PKGNAMESUFFIX=		-sasl-server
 .if ${PORT_OPTIONS:MGSSAPI}
-RUN_DEPENDS+=		cyrus-sasl-gssapi>0:${PORTSDIR}/security/cyrus-sasl2-gssapi
+RUN_DEPENDS+=		cyrus-sasl-gssapi>0:security/cyrus-sasl2-gssapi
 .endif
 .else
 CONFLICTS=		${PKGNAMEPREFIX}${PORTNAME}-sasl-client-2.*
@@ -189,12 +189,8 @@ CONFIGURE_ARGS=		--with-threads=posix \
 # XXX FreeBSD does not implement O_DSYNC and fdatasync at this time.
 CFLAGS+=		-DMDB_DSYNC=O_SYNC -Dfdatasync=fsync
 
-.if !${PORT_OPTIONS:MFETCH}
-CONFIGURE_ARGS+=	--without-fetch
-.endif
-
 .if ${PORT_OPTIONS:MSASL}
-LIB_DEPENDS+=		libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
+LIB_DEPENDS+=		libsasl2.so:security/cyrus-sasl2
 CONFIGURE_ARGS+=	--with-cyrus-sasl
 .else
 CONFIGURE_ARGS+=	--without-cyrus-sasl
@@ -223,7 +219,7 @@ USE_RC_SUBR=		slapd
 EXTRA_PATCHES+=		${FILESDIR}/extrapatch-Makefile.in
 
 .if ${PORT_OPTIONS:MMODULES} || ${PORT_OPTIONS:MDYNAMIC_BACKENDS} || ${PORT_OPTIONS:MSLAPI}
-LIB_DEPENDS+=		libltdl.so:${PORTSDIR}/devel/libltdl
+LIB_DEPENDS+=		libltdl.so:devel/libltdl
 CONFIGURE_ARGS+=	--enable-modules
 PLIST_SUB+=		MODULES=""
 .else
@@ -436,7 +432,7 @@ CONFIGURE_ARGS+=	--enable-spasswd
 .if ${PORT_OPTIONS:MODBC}
 CONFIGURE_ARGS+=	--enable-sql=${BACKEND_ENABLE}
 PLIST_SUB+=		BACK_SQL=${BACKEND_PLIST}
-LIB_DEPENDS+=		libodbc.so:${PORTSDIR}/databases/unixODBC
+LIB_DEPENDS+=		libodbc.so:databases/unixODBC
 LDFLAGS+=		-L${LOCALBASE}/lib
 .else
 PLIST_SUB+=		BACK_SQL="@comment "
@@ -471,7 +467,7 @@ PLIST_SUB+=		SLAPI="@comment "
 
 .if ${PORT_OPTIONS:MSLP}
 CONFIGURE_ARGS+=	--enable-slp
-LIB_DEPENDS+=		libslp.so:${PORTSDIR}/net/openslp
+LIB_DEPENDS+=		libslp.so:net/openslp
 .endif
 
 # Include tcp-wrapper support
@@ -507,6 +503,16 @@ PLIST_SUB+=		${SUB_LIST}
 PLIST_SUB+=		SHLIB_MAJOR=${OPENLDAP_SHLIB_MAJOR}
 PLIST_SUB+=		SHLIB_MINOR=${OPENLDAP_SHLIB_MINOR}
 PLIST_SUB+=		OPENLDAP_MAJOR=${OPENLDAP_MAJOR}
+
+.include <bsd.port.pre.mk>
+
+.if !${PORT_OPTIONS:MFETCH}
+CONFIGURE_ARGS+=	--without-fetch
+.else
+. if defined(OPENSSL_INSTALLED) && ${OPENSSL_INSTALLED} != "" || ${SSL_DEFAULT} != base
+BROKEN=	using OpenSSL from ports and OPTION FETCH together is not supported
+. endif
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%LOCALSTATEDIR%/run/|${LDAP_RUN_DIR}/|g' \
@@ -584,4 +590,4 @@ post-install:
 .endif
 .endif # defined(CLIENT_ONLY)
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

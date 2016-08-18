@@ -9,17 +9,15 @@ MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	PECL ESMTP client extension
 
 LICENSE=	PHP30
 
-LIB_DEPENDS=	libesmtp.so:${PORTSDIR}/mail/libesmtp
+LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 
-USES=		tar:tgz
-USE_PHP=	yes
-USE_PHPEXT=	yes
-IGNORE_WITH_PHP=	56
+USES=		php:ext tar:tgz
+IGNORE_WITH_PHP=	56 70
 
 OPTIONS_DEFINE=	RE2C
 OPTIONS_DEFAULT=	RE2C
@@ -28,7 +26,7 @@ RE2C_DESC=	Use re2c to regenerate PHP parsers
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MRE2C}
-BUILD_DEPENDS+=	re2c:${PORTSDIR}/devel/re2c
+BUILD_DEPENDS+=	re2c:devel/re2c
 .endif
 
 post-patch:

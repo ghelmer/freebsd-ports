@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pig
-PORTVERSION=	0.14.0
+PORTVERSION=	0.15.0
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		LOCAL/demon/:ant \
@@ -17,15 +17,17 @@ COMMENT=	Engine for executing data flows in parallel on Hadoop
 
 LICENSE=	APACHE20
 
-BROKEN=		tries to make outbound http connection during build phase breaking tinderbox.  Software itself does not have known issues, remove this BROKEN line and build your own package
+BUILD_DEPENDS=	${LOCALBASE}/bin/ant:devel/apache-ant
+RUN_DEPENDS=	bash:shells/bash \
+		yarn:devel/hadoop2
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/ant:${PORTSDIR}/devel/apache-ant
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		yarn:${PORTSDIR}/devel/hadoop2
+BROKEN=		tries to make outbound http connection during build phase breaking tinderbox.  Software itself does not have known issues, remove this BROKEN line and build your own package
 
 USE_JAVA=	yes
 JAVA_VERSION=	1.7+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
+
+PLIST_SUB=	PORTVERSION="${PORTVERSION}"
 
 post-patch:
 	${REINPLACE_CMD} -e "s#%%WRKDIR%%#${WRKDIR}#" ${WRKSRC}/ivy/ivysettings.xml

@@ -2,20 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	bindgraph
-PORTVERSION=	0.2
-PORTREVISION=	7
+PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://www.linux.it/~md/software/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	RRDtool frontend for BIND statistics
 
-RUN_DEPENDS=	rrdtool>=0:${PORTSDIR}/databases/rrdtool	\
-		p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-NO_BUILD=	yes
+RUN_DEPENDS=	rrdtool>=0:databases/rrdtool	\
+		p5-File-Tail>=0:devel/p5-File-Tail
+
 USES=		perl5 shebangfix tar:tgz
 SHEBANG_FILES=	bindgraph.pl bindgraph.cgi
+NO_BUILD=	yes
+NO_ARCH=	yes
 
 CGIDIR?=	${PREFIX}/www/cgi-bin
 DATADIR?=	/var/db/bindgraph
@@ -28,8 +32,7 @@ PLIST_SUB=	CGIDIR=${CGIDIR:S,${PREFIX}/,,} \
 		BINDGRAPH_USER="${BINDGRAPH_USER}" \
 		BINDGRAPH_GROUP="${BINDGRAPH_GROUP}"
 
-DOCS=		README ChangeLog
-PORTDOCS=	${DOCS}
+PORTDOCS=	README ChangeLog
 
 OPTIONS_DEFINE=	DOCS
 
@@ -46,13 +49,15 @@ post-patch:
 	@${REINPLACE_CMD} -e "s,%%DATADIR%%,${DATADIR}," ${WRKSRC}/bindgraph.cgi
 
 do-install:
-	${MKDIR} ${STAGEDIR}${CGIDIR}
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	@${INSTALL_SCRIPT} ${WRKSRC}/bindgraph.pl ${STAGEDIR}${PREFIX}/sbin/
-	@${INSTALL_SCRIPT} ${WRKSRC}/bindgraph.cgi ${STAGEDIR}${CGIDIR}/
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	for f in ${DOCS}; do \
-	  ${INSTALL_DATA} ${WRKSRC}/$$f ${STAGEDIR}${DOCSDIR}/; \
-	done
+	@${MKDIR} ${STAGEDIR}${CGIDIR}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/bindgraph.pl ${STAGEDIR}${PREFIX}/sbin/
+	${INSTALL_SCRIPT} ${WRKSRC}/bindgraph.cgi ${STAGEDIR}${CGIDIR}/
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for f in ${PORTDOCS}
+	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}/
+.endfor
 
 .include <bsd.port.mk>

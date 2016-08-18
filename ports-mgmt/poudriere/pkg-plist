@@ -21,6 +21,8 @@ libexec/poudriere/tsort
 man/man8/poudriere.8.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/httpd.conf.sample
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/nginx.conf.sample
+%%DATADIR%%/MANIFESTS
+%%DATADIR%%/api.sh
 %%DATADIR%%/awk/dependency_loop.awk
 %%DATADIR%%/awk/humanize.awk
 %%DATADIR%%/awk/json.awk
@@ -28,7 +30,6 @@ man/man8/poudriere.8.gz
 %%DATADIR%%/awk/json_top.awk
 %%DATADIR%%/awk/processonelog2.awk
 %%DATADIR%%/awk/siginfo_buildtime.awk
-%%DATADIR%%/api.sh
 %%DATADIR%%/bulk.sh
 %%DATADIR%%/clean.sh
 %%DATADIR%%/common.sh
@@ -67,10 +68,10 @@ man/man8/poudriere.8.gz
 %%DATADIR%%/html/index.html
 %%DATADIR%%/html/jail.html
 %%DATADIR%%/html/robots.txt
-%%DATADIR%%/include/common.sh.dragonfly
-%%DATADIR%%/include/common.sh.freebsd
 %%DATADIR%%/include/colors.pre.sh
 %%DATADIR%%/include/colors.sh
+%%DATADIR%%/include/common.sh.dragonfly
+%%DATADIR%%/include/common.sh.freebsd
 %%DATADIR%%/include/display.sh
 %%DATADIR%%/include/fs.sh
 %%DATADIR%%/include/hash.sh

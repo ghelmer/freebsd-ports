@@ -12,7 +12,7 @@ COMMENT=	Face detection extension for PHP using OpenCV library
 
 LICENSE=	PHP30
 
-LIB_DEPENDS=	libopencv_objdetect.so:${PORTSDIR}/graphics/opencv
+LIB_DEPENDS=	libopencv_objdetect.so:graphics/opencv
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	infusion
@@ -22,9 +22,7 @@ GH_TAGNAME=	4b1dfe1
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lopencv_core
 
-USE_PHP=	yes
-USE_PHPIZE=	yes
-USE_PHPEXT=	yes
+USES=		php:ext
 
 CONFIGURE_ARGS+=	--with-facedetect
 

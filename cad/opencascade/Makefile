@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	opencascade
-PORTVERSION=	6.8.0
-PORTREVISION=	4
+PORTVERSION=	6.9.1
+PORTREVISION=	1
 CATEGORIES=	cad science
-MASTER_SITES=	http://files.opencascade.com/OCCT/OCC_${PORTVERSION}_release/
+MASTER_SITES=	LOCAL/thierry
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Open CASCADE Technology, 3D modeling & numerical simulation
@@ -15,9 +15,9 @@ LICENSE_NAME=	LGPL21 with exception
 LICENSE_FILE=	${WRKSRC}/OCCT_LGPL_EXCEPTION.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libtbb.so:${PORTSDIR}/devel/tbb		\
-		libvtksys-${VTKVER}.so:${PORTSDIR}/math/vtk6
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+LIB_DEPENDS=	libtbb.so:devel/tbb		\
+		libvtksys-${VTKVER}.so:math/vtk6
+RUN_DEPENDS=	bash:shells/bash
 
 # Check ${WRKSRC}/dox/overview/Overview.md
 # and ${WRKSRC}/dox/dev_guides/building
@@ -29,7 +29,7 @@ SHEBANG_FILES=	adm/templates/env.sh.in adm/templates/draw.sh		\
 		adm/templates/custom.sh.in adm/templates/custom.sh.main	\
 		adm/start.tcl draw.sh xcode.sh env.sh custom.sh.in	\
 		gendoc codeblocks.sh
-VTKVER=		6.1
+VTKVER=		6.2
 
 OPTIONS_DEFINE=	VIS DOCS
 VIS_DESC=	Build Visualizazion module (requires OpenGL, freetype, ftgl and gl2ps)
@@ -62,21 +62,21 @@ VIS_CMAKE_ON=		-DUSE_FREEIMAGE:BOOL=ON -DUSE_GL2PS:BOOL=ON	\
 VIS_CMAKE_OFF=		-DUSE_FREEIMAGE:BOOL=OFF -DUSE_GL2PS:BOOL=OFF	\
 			-DUSE_FREETYPE:BOOL=OFF
 VIS_USE=		GL=glu
-VIS_LIB_DEPENDS=	libftgl.so:${PORTSDIR}/graphics/ftgl		\
-			libfreetype.so:${PORTSDIR}/print/freetype2	\
-			libgl2ps.so:${PORTSDIR}/print/gl2ps		\
-			libfreeimageplus.so:${PORTSDIR}/graphics/freeimage
+VIS_LIB_DEPENDS=	libftgl.so:graphics/ftgl		\
+			libfreetype.so:print/freetype2	\
+			libgl2ps.so:print/gl2ps		\
+			libfreeimageplus.so:graphics/freeimage
 
 VIS_CMAKE_ON=	-D3RDPARTY_FREETYPE_DIR=${LOCALBASE}	\
 		-D3RDPARTY_FREEIMAGE_DIR=${LOCALBASE}	\
 		-D3RDPARTY_GL2PS_DIR=${LOCALBASE}
 
 DOCS_USE=	TEX=latex:build
-DOCS_BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash		\
-			doxygen:${PORTSDIR}/devel/doxygen	\
-			dot:${PORTSDIR}/graphics/graphviz	\
-			inkscape:${PORTSDIR}/graphics/inkscape
-DOCS_RUN_DEPENDS=	${LOCALBASE}/www/MathJax/MathJax.js:${PORTSDIR}/www/mathjax
+DOCS_BUILD_DEPENDS=	bash:shells/bash		\
+			doxygen:devel/doxygen	\
+			dot:graphics/graphviz	\
+			inkscape:graphics/inkscape
+DOCS_RUN_DEPENDS=	${LOCALBASE}/www/MathJax/MathJax.js:www/mathjax
 
 .include <bsd.port.options.mk>
 
@@ -96,6 +96,10 @@ pre-configure:
 	${REINPLACE_CMD} -e 's|tclsh|${TCLSH}|' ${WRKSRC}/gendoc
 .for mod in TKDraw TKViewerTest
 	${REINPLACE_CMD} -e 's|tcl8.6|tcl${TCL_VER:C|\.||}|;s|tk8.6|tk${TK_VER:C|\.||}|'	\
+		${WRKSRC}/adm/cmake/${mod}/CMakeLists.txt
+.endfor
+.for mod in TKIVtk TKIVtkDraw
+	${REINPLACE_CMD} -E 's/(vtk[[:alnum:]]+)\-6.1/\1\-${VTKVER}/'	\
 		${WRKSRC}/adm/cmake/${mod}/CMakeLists.txt
 .endfor
 .for es in env.sh adm/templates/env.sh.in

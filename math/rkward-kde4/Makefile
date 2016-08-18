@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	rkward
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.5
 CATEGORIES=	math
-MASTER_SITES=	SF/${PORTNAME}/Current_Stable_Releases
+MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTVERSION}/src
 PKGNAMESUFFIX=	-kde4
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -12,21 +12,16 @@ COMMENT=	IDE/GUI for the R-project
 
 LICENSE=	GPLv2
 
-DEPRECATED=	Depends on deprecated math/R-cran-car
-EXPIRATION_DATE=	2015-10-31
+BUILD_DEPENDS=	${LOCALBASE}/bin/R:math/R
+LIB_DEPENDS=	libsoprano.so:textproc/soprano
+RUN_DEPENDS=	${LOCALBASE}/bin/R:math/R \
+		${KDE4_PREFIX}/lib/kde4/katepart.so:editors/kate
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R
-RUN_DEPENDS=	${LOCALBASE}/bin/R:${PORTSDIR}/math/R \
-		${KDE4_PREFIX}/lib/kde4/katepart.so:${PORTSDIR}/editors/kate
-
-CONFLICTS=	rkward-0.4.*
-
-USE_QT4=	qmake_build moc_build rcc_build uic_build phonon
-
-USE_KDE4=	kdeprefix automoc4 kdelibs
-USE_PHP=	yes
-WANT_PHP_CLI=	yes
-USES=		cmake gettext fortran
+USE_QT4=	corelib dbus gui qmake_build moc_build network phonon rcc_build	\
+		script svg uic_build webkit xml
+USE_XORG=	x11
+USE_KDE4=	automoc4 kdelibs
+USES=		cmake gettext fortran php:cli shared-mime-info
 INSTALLS_ICONS=	yes
 
 CFLAGS+=	-I${LOCALBASE}/include
@@ -48,12 +43,13 @@ PLIST_SUB+=	NLS=${NLS}
 
 .if ${PORT_OPTIONS:MRECDEP}
 LR_MOD_DIR=	${LOCALBASE}/lib/R/library
-RUN_DEPENDS+=	${LR_MOD_DIR}/R2HTML/INDEX:${PORTSDIR}/textproc/R-cran-R2HTML	\
-		${LR_MOD_DIR}/XML/INDEX:${PORTSDIR}/textproc/R-cran-XML		\
-		${LR_MOD_DIR}/mvtnorm/INDEX:${PORTSDIR}/math/R-cran-mvtnorm	\
-		${LR_MOD_DIR}/outliers/INDEX:${PORTSDIR}/math/R-cran-outliers	\
-		${LR_MOD_DIR}/tseries/INDEX:${PORTSDIR}/finance/R-cran-tseries	\
-		${LR_MOD_DIR}/car/INDEX:${PORTSDIR}/math/R-cran-car
+RUN_DEPENDS+=	${LR_MOD_DIR}/R2HTML/INDEX:textproc/R-cran-R2HTML	\
+		${LR_MOD_DIR}/XML/INDEX:textproc/R-cran-XML		\
+		${LR_MOD_DIR}/gdata/INDEX:devel/R-cran-gdata		\
+		${LR_MOD_DIR}/mvtnorm/INDEX:math/R-cran-mvtnorm		\
+		${LR_MOD_DIR}/outliers/INDEX:math/R-cran-outliers	\
+		${LR_MOD_DIR}/tseries/INDEX:finance/R-cran-tseries	\
+		${LR_MOD_DIR}/car/INDEX:math/R-cran-car
 .endif
 
 pre-configure:

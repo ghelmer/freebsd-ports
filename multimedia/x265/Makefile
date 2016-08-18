@@ -2,27 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	x265
-PORTVERSION=	1.7
+PORTVERSION=	1.9
 CATEGORIES=	multimedia
 MASTER_SITES=	http://bitbucket.org/multicoreware/${PORTNAME}/get/
 DISTNAME=	${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	H.265/High Efficiency Video Coding (HEVC) format
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/../COPYING
 
-BUILD_DEPENDS=	yasm:${PORTSDIR}/devel/yasm
+BUILD_DEPENDS=	yasm:devel/yasm
 
-USES=		tar:bz2 cmake
+USES=		cmake pathfix tar:bz2
 USE_LDCONFIG=	yes
+CMAKE_ARGS=	-DENABLE_TESTS=on -DPLATFORM_LIBS=md
+EXTRACT_AFTER_ARGS+=	--exclude "md5*"
 
-WRKSRC=		${WRKDIR}/multicoreware-${PORTNAME}-8425278def1e/source
+WRKSRC=		${WRKDIR}/multicoreware-${PORTNAME}-1d3b6e448e01/source
 
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|$${LIB_INSTALL_DIR}/pkgconfig|libdata/pkgconfig|' \
-		${WRKSRC}/CMakeLists.txt
+do-test:
+	${WRKSRC}/test/TestBench
 
 .include <bsd.port.mk>

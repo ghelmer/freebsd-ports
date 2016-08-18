@@ -2,28 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	mythtv
-PORTVERSION=	0.27.0.20140121
-PORTREVISION=	7
+PORTVERSION=	0.27.5.20150616
+PORTREVISION=	1
 CATEGORIES=	multimedia
-MASTER_SITES=	http://people.freebsd.org/~decke/distfiles/
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	MythTV is a homebrew PVR project
 
-LIB_DEPENDS=	libmp3lame.so:${PORTSDIR}/audio/lame \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libtag.so:${PORTSDIR}/audio/taglib \
-		libxml2.so:${PORTSDIR}/textproc/libxml2
-BUILD_DEPENDS=	v4l_compat>=1.0.20100321:${PORTSDIR}/multimedia/v4l_compat \
-		yasm:${PORTSDIR}/devel/yasm
-RUN_DEPENDS=	tv_check:${PORTSDIR}/textproc/p5-xmltv \
-		wget:${PORTSDIR}/ftp/wget
+LIB_DEPENDS=	libmp3lame.so:audio/lame \
+		libfreetype.so:print/freetype2 \
+		libtag.so:audio/taglib \
+		libxml2.so:textproc/libxml2
+BUILD_DEPENDS=	v4l_compat>=1.0.20100321:multimedia/v4l_compat \
+		yasm:devel/yasm
+RUN_DEPENDS=	tv_check:textproc/p5-xmltv \
+		wget:ftp/wget
 
 CONFLICTS=	mythtv-frontend-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MythTV
-GH_TAGNAME=	5a5e1cd
+GH_TAGNAME=	ad97d24
 
 WRKSRC_SUBDIR=	${PORTNAME}
 
@@ -36,7 +35,6 @@ SHEBANG_FILES=	programs/scripts/database/mythconverg_backup.pl \
 USE_QT4=	gui sql network script linguist_build l10n sql-mysql_run \
 		moc_build qmake_build rcc_build uic_build imageformats
 QT_NONSTANDARD=	yes
-USE_MYSQL=	yes
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/lib/mythtv/filters
 REINPLACE_ARGS=	-i ""
@@ -52,11 +50,12 @@ MAKE_ENV=	QTDIR="${QT_PREFIX}" \
 CPPFLAGS+=	${QTCPPFLAGS}
 CONFIGURE_ENV+=	QMAKESPEC="${QMAKESPEC}" MOC="${MOC}" \
 		QTDIR="${QT_PREFIX}"
+CONFIGURE_ENV+=	PKG_CONFIG_PATH="${LOCALBASE}/libdata/pkgconfig"
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}" --cxx="${CXX}" --dvb-path="${LOCALBASE}/include" \
 		--libxml2-path="${LOCALBASE}/include/libxml2" --enable-v4l2 --enable-ivtv --enable-xv \
-		--disable-audio-alsa --disable-indev=alsa --disable-outdev=alsa
+		--disable-audio-alsa --disable-indev=alsa --disable-outdev=alsa --disable-mythlogserver
 
 QMAKESPEC?=	${LOCALBASE}/share/qt4/mkspecs/freebsd-g++
 
@@ -65,10 +64,11 @@ OPTIONS_DEFAULT=	BINDINGS OPENGL VDPAU
 OPTIONS_SUB=	BINDINGS
 BINDINGS_DESC=	Perl and Python bindings
 
-LIRC_LIB_DEPENDS=	liblirc_client.so:${PORTSDIR}/comms/lirc
-MYSQL_RUN_DEPENDS=	mysqld_safe:${PORTSDIR}/databases/mysql${MYSQL_VER}-server
+LIRC_LIB_DEPENDS=	liblirc_client.so:comms/lirc
+MYSQL_USES=	mysql:client,server
+MYSQL_USES_OFF=	mysql
 
-VDPAU_LIB_DEPENDS=	libvdpau.so:${PORTSDIR}/multimedia/libvdpau
+VDPAU_LIB_DEPENDS=	libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_ENABLE=	vdpau
 
 OPENGL_CONFIGURE_ENABLE=	opengl-video
@@ -83,24 +83,24 @@ USES+=		python
 PYDISTUTILS_PKGNAME=MythTV
 PYDISTUTILS_PKGVERSION=0.27._1
 
-BUILD_DEPENDS+=	py*-lxml>=0:${PORTSDIR}/devel/py-lxml \
-		${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:${PORTSDIR}/databases/py-MySQLdb \
-		${PYTHON_PKGNAMEPREFIX}urlgrabber>=3.1.0_1:${PORTSDIR}/www/py-urlgrabber \
-		p5-HTTP-Request-Params>=0:${PORTSDIR}/www/p5-HTTP-Request-Params \
-		p5-LWP-UserAgent-Determined>=0:${PORTSDIR}/www/p5-LWP-UserAgent-Determined \
-		p5-Net-UPnP>=0:${PORTSDIR}/multimedia/p5-Net-UPnP \
-		p5-IO-Socket-INET6>=2.51:${PORTSDIR}/net/p5-IO-Socket-INET6 \
-		p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
-		p5-DBD-mysql>0:${PORTSDIR}/databases/p5-DBD-mysql
-RUN_DEPENDS+=	py*-lxml>=0:${PORTSDIR}/devel/py-lxml \
-		${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:${PORTSDIR}/databases/py-MySQLdb \
-		${PYTHON_PKGNAMEPREFIX}urlgrabber>=3.1.0_1:${PORTSDIR}/www/py-urlgrabber \
-		p5-HTTP-Request-Params>=0:${PORTSDIR}/www/p5-HTTP-Request-Params \
-		p5-LWP-UserAgent-Determined>=0:${PORTSDIR}/www/p5-LWP-UserAgent-Determined \
-		p5-Net-UPnP>=0:${PORTSDIR}/multimedia/p5-Net-UPnP \
-		p5-IO-Socket-INET6>=2.51:${PORTSDIR}/net/p5-IO-Socket-INET6 \
-		p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
-		p5-DBD-mysql>0:${PORTSDIR}/databases/p5-DBD-mysql
+BUILD_DEPENDS+=	py*-lxml>=0:devel/py-lxml \
+		${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb \
+		${PYTHON_PKGNAMEPREFIX}urlgrabber>=3.1.0_1:www/py-urlgrabber \
+		p5-HTTP-Request-Params>=0:www/p5-HTTP-Request-Params \
+		p5-LWP-UserAgent-Determined>=0:www/p5-LWP-UserAgent-Determined \
+		p5-Net-UPnP>=0:multimedia/p5-Net-UPnP \
+		p5-IO-Socket-INET6>=2.51:net/p5-IO-Socket-INET6 \
+		p5-DBI>=0:databases/p5-DBI \
+		p5-DBD-mysql>0:databases/p5-DBD-mysql
+RUN_DEPENDS+=	py*-lxml>=0:devel/py-lxml \
+		${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb \
+		${PYTHON_PKGNAMEPREFIX}urlgrabber>=3.1.0_1:www/py-urlgrabber \
+		p5-HTTP-Request-Params>=0:www/p5-HTTP-Request-Params \
+		p5-LWP-UserAgent-Determined>=0:www/p5-LWP-UserAgent-Determined \
+		p5-Net-UPnP>=0:multimedia/p5-Net-UPnP \
+		p5-IO-Socket-INET6>=2.51:net/p5-IO-Socket-INET6 \
+		p5-DBI>=0:databases/p5-DBI \
+		p5-DBD-mysql>0:databases/p5-DBD-mysql
 .else
 CONFIGURE_ARGS+=--without-bindings=perl,python
 .endif

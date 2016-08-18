@@ -4,7 +4,7 @@
 
 PORTNAME=	mircryption
 DISTVERSION=	0.3.3
-PORTREVISION=	4
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	irc security
 MASTER_SITES=	http://mircryption.sourceforge.net/Downloads/
@@ -14,9 +14,10 @@ DISTNAME=	mircryption_xchatsrc
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Free encryption add-on for the popular XChat irc client
 
-RUN_DEPENDS=	xchat:${PORTSDIR}/irc/xchat
+RUN_DEPENDS=	xchat:irc/xchat
 
-USES=		zip dos2unix
+USES=		zip dos2unix shebangfix
+SHEBANG_FILES=	extras/mcps_masterkey_on_start.pl
 ALL_TARGET=	freebsd
 CFLAGS+=	-fPIC
 USE_LDCONFIG=	yes
@@ -40,9 +41,6 @@ post-patch:
 		-e 's|^(LDFLAGS.+)"$$|\1 ${LDFLAGS}"|' \
 		-e 's|^(LOAD).*$$|LOAD=${CXX}|' \
 		${WRKSRC}/${MAKEFILE}
-	${REINPLACE_CMD} -E \
-		-e 's|/usr/bin/perl|${PERL5}|' \
-		${WRKSRC}/extras/mcps_masterkey_on_start.pl
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/xchat/plugins

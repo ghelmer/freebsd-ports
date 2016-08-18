@@ -11,21 +11,25 @@ MASTER_SITES=	ftp://ftp.aerasec.de/pub/linux/postfix/pflogsumm/${PORTNAME}/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Postfix Log Statistics Reporter
 
-LICENSE=	GPLv2 # or later
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
-RUN_DEPENDS=	p5-Date-Calc>=0:${PORTSDIR}/devel/p5-Date-Calc \
-		p5-Net-IP>=0:${PORTSDIR}/net-mgmt/p5-Net-IP \
-		p5-Proc-ProcessTable>=0:${PORTSDIR}/devel/p5-Proc-ProcessTable \
-		p5-Number-Format>=0:${PORTSDIR}/textproc/p5-Number-Format \
-		p5-XML-Dumper>=0:${PORTSDIR}/textproc/p5-XML-Dumper
+LICENSE=	GPLv2+
+
+RUN_DEPENDS=	p5-Date-Calc>=0:devel/p5-Date-Calc \
+		p5-Net-IP>=0:net-mgmt/p5-Net-IP \
+		p5-Proc-ProcessTable>=0:devel/p5-Proc-ProcessTable \
+		p5-Number-Format>=0:textproc/p5-Number-Format \
+		p5-XML-Dumper>=0:textproc/p5-XML-Dumper
 
 NO_BUILD=	yes
-USES=		perl5
-SITE_PERL_INST=	${SITE_PERL:S/${LOCALBASE}/${PREFIX}/}
+USES=		perl5 shebangfix
+SHEBANG_FILES=	*.pl
+SITE_PERL_INST=	${PREFIX}/${SITE_PERL_REL}
 
 post-patch:
 	@${REINPLACE_CMD} \
-		-e 's|/usr/bin/perl.*|${PERL}|' \
 		-e 's|/usr/local/lib/pflogstats|${SITE_PERL_INST}/Pflogstats|' \
 			${WRKSRC}/apachelogiostats.pl \
 			${WRKSRC}/pflogstats.pl \

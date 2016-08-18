@@ -10,24 +10,22 @@ MAINTAINER=	pawel@FreeBSD.org
 COMMENT=	Instant messaging library for Gadu-Gadu protocol
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libprotobuf-c.so:${PORTSDIR}/devel/protobuf-c
+LIB_DEPENDS=	libprotobuf-c.so:devel/protobuf-c
 
 CONFLICTS=	pl-ekg-1.[0-6]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	wojtekka
 
-USES=		autoreconf gmake libtool pathfix pkgconfig tar:bzip2
+USES=		autoreconf gmake libtool localbase pathfix pkgconfig
 PATHFIX_MAKEFILEIN=	Makefile.am
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared --disable-static --with-pthread \
 		--disable-tests --without-gnutls
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PLIST_FILES=	include/libgadu.h \
 		lib/libgadu.so \
@@ -41,12 +39,8 @@ OPTIONS_DEFAULT=OPENSSL
 OPENSSL_CONFIGURE_WITH=	openssl
 OPENSSL_USE=		OPENSSL=yes
 
-.include <bsd.port.pre.mk>
-
-pre-install:
+pre-install-OPENSSL-on:
 # OpenSSL from base system lacks .pc file for pkgconfig
-.if ${PORT_OPTIONS:MOPENSSL}
 	@${REINPLACE_CMD} -e 's|openssl| |g' ${WRKSRC}/pkgconfig/libgadu.pc
-.endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

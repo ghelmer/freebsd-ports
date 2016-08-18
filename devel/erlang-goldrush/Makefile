@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	goldrush
-PORTVERSION=	0.1.7
+PORTVERSION=	0.1.9
 CATEGORIES=	devel
 PKGNAMEPREFIX=	erlang-
 

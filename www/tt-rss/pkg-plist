@@ -2005,8 +2005,8 @@
 %%WWWDIR%%/locale/ca_CA/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/cs_CZ/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/cs_CZ/LC_MESSAGES/messages.po
-%%WWWDIR%%/locale/da_DA/LC_MESSAGES/messages.mo
-%%WWWDIR%%/locale/da_DA/LC_MESSAGES/messages.po
+%%WWWDIR%%/locale/da_DK/LC_MESSAGES/messages.mo
+%%WWWDIR%%/locale/da_DK/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/de_DE/LC_MESSAGES/messages.mo
 %%WWWDIR%%/locale/de_DE/LC_MESSAGES/messages.po
 %%WWWDIR%%/locale/el_GR/LC_MESSAGES/messages.mo
@@ -2064,8 +2064,10 @@
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_explosm.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_gocomics.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_pa.php
+%%WWWDIR%%/plugins/af_comics/filters/af_comics_pvp.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_tfd.php
 %%WWWDIR%%/plugins/af_comics/filters/af_comics_twp.php
+%%WWWDIR%%/plugins/af_comics/filters/af_comics_whomp.php
 %%WWWDIR%%/plugins/af_comics/init.php
 %%WWWDIR%%/plugins/af_fsckportal/init.php
 %%WWWDIR%%/plugins/af_lang_detect/init.php
@@ -2080,23 +2082,12 @@
 %%WWWDIR%%/plugins/af_psql_trgm/init.php
 %%WWWDIR%%/plugins/af_readability/init.php
 %%WWWDIR%%/plugins/af_redditimgur/init.php
-%%WWWDIR%%/plugins/af_sort_bayes/chart_bar.png
-%%WWWDIR%%/plugins/af_sort_bayes/init.js
-%%WWWDIR%%/plugins/af_sort_bayes/init.php
-%%WWWDIR%%/plugins/af_sort_bayes/lib/COPYING
-%%WWWDIR%%/plugins/af_sort_bayes/lib/HISTORY
-%%WWWDIR%%/plugins/af_sort_bayes/lib/README.md
-%%WWWDIR%%/plugins/af_sort_bayes/lib/README.txt
-%%WWWDIR%%/plugins/af_sort_bayes/lib/VERSION
-%%WWWDIR%%/plugins/af_sort_bayes/lib/class.naivebayesian.php
-%%WWWDIR%%/plugins/af_sort_bayes/lib/class.naivebayesian_ngram.php
-%%WWWDIR%%/plugins/af_sort_bayes/lib/class.naivebayesianstorage.php
-%%WWWDIR%%/plugins/af_sort_bayes/thumb_down.png
-%%WWWDIR%%/plugins/af_sort_bayes/thumb_up.png
 %%WWWDIR%%/plugins/af_tumblr_1280/init.php
 %%WWWDIR%%/plugins/af_unburn/init.php
 %%WWWDIR%%/plugins/af_youtube_embed/init.php
 %%WWWDIR%%/plugins/af_zz_imgsetsizes/init.php
+%%WWWDIR%%/plugins/af_zz_noautoplay/init.js
+%%WWWDIR%%/plugins/af_zz_noautoplay/init.php
 %%WWWDIR%%/plugins/auth_internal/init.php
 %%WWWDIR%%/plugins/auth_remote/init.php
 %%WWWDIR%%/plugins/auto_assign_labels/init.php
@@ -2108,8 +2099,6 @@
 %%WWWDIR%%/plugins/embed_original/init.css
 %%WWWDIR%%/plugins/embed_original/init.js
 %%WWWDIR%%/plugins/embed_original/init.php
-%%WWWDIR%%/plugins/googlereaderimport/init.js
-%%WWWDIR%%/plugins/googlereaderimport/init.php
 %%WWWDIR%%/plugins/googlereaderkeys/init.php
 %%WWWDIR%%/plugins/import_export/import_export.js
 %%WWWDIR%%/plugins/import_export/init.php
@@ -2183,7 +2172,10 @@
 %%WWWDIR%%/schema/versions/mysql/125.sql
 %%WWWDIR%%/schema/versions/mysql/126.sql
 %%WWWDIR%%/schema/versions/mysql/127.sql
+%%WWWDIR%%/schema/versions/mysql/128.sql
+%%WWWDIR%%/schema/versions/mysql/129.sql
 %%WWWDIR%%/schema/versions/mysql/13.sql
+%%WWWDIR%%/schema/versions/mysql/130.sql
 %%WWWDIR%%/schema/versions/mysql/14.sql
 %%WWWDIR%%/schema/versions/mysql/15.sql
 %%WWWDIR%%/schema/versions/mysql/16.sql
@@ -2308,7 +2300,10 @@
 %%WWWDIR%%/schema/versions/pgsql/125.sql
 %%WWWDIR%%/schema/versions/pgsql/126.sql
 %%WWWDIR%%/schema/versions/pgsql/127.sql
+%%WWWDIR%%/schema/versions/pgsql/128.sql
+%%WWWDIR%%/schema/versions/pgsql/129.sql
 %%WWWDIR%%/schema/versions/pgsql/13.sql
+%%WWWDIR%%/schema/versions/pgsql/130.sql
 %%WWWDIR%%/schema/versions/pgsql/14.sql
 %%WWWDIR%%/schema/versions/pgsql/15.sql
 %%WWWDIR%%/schema/versions/pgsql/16.sql
@@ -2450,7 +2445,6 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/instances
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/import_export
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/googlereaderkeys
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/googlereaderimport
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/embed_original
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/close_button
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/cache_starred_images
@@ -2462,8 +2456,6 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_youtube_embed
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_unburn
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_tumblr_1280
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_sort_bayes/lib
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_sort_bayes
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_redditimgur
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_readability
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_psql_trgm
@@ -2475,6 +2467,7 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_fsckportal
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_comics/filters
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_comics
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins/af_zz_noautoplay
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins.local
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/plugins
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/lock
@@ -2520,8 +2513,8 @@
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/el_GR
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/de_DE/LC_MESSAGES
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/de_DE
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/da_DA/LC_MESSAGES
-@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/da_DA
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/da_DK/LC_MESSAGES
+@dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/da_DK
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/cs_CZ/LC_MESSAGES
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/cs_CZ
 @dir(%%WWWOWN%%,%%WWWGRP%%,) %%WWWDIR%%/locale/ca_CA/LC_MESSAGES

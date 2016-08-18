@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libassuan
-PORTVERSION=	2.2.1
+PORTVERSION=	2.4.2
 CATEGORIES=	security devel
 MASTER_SITES=	GNUPG/${PORTNAME}
 
@@ -12,7 +12,7 @@ COMMENT=	IPC library used by GnuPG and gpgme
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
 
-LIB_DEPENDS=	libgpg-error.so:${PORTSDIR}/security/libgpg-error
+LIB_DEPENDS=	libgpg-error.so:security/libgpg-error
 
 USES=		libtool tar:bzip2
 USE_LDCONFIG=	yes

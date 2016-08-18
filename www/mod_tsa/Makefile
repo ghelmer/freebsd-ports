@@ -51,9 +51,9 @@ AP_LIB+=	-lpq
 .endif
 
 .if ${PORT_OPTIONS:MFIREBIRD}
-USE_FIREBIRD=	yes
+USE+=			firebird
 CONFIGURE_ARGS+=	--enable-firebird=yes
-SRC_FILE+=	db_firebird.c	
+SRC_FILE+=	db_firebird.c
 AP_LIB+=	-lgds
 .endif
 

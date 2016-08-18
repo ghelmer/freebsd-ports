@@ -9,10 +9,13 @@ MASTER_SITES=	ftp://ftp.insidesystems.net/rsyncmanager/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Flexible rsync resource manager daemon written in ruby
 
-RUN_DEPENDS=	rsync:${PORTSDIR}/net/rsync
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	rsync:net/rsync
 
 USE_RUBY=	yes
-USE_RUBY_FEATURES=	ruby18
 
 NO_BUILD=	yes
 

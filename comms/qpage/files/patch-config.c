@@ -1,6 +1,6 @@
---- config.c.orig	Fri Jan  1 22:14:50 1999
-+++ config.c	Wed May  4 16:28:49 2005
-@@ -1407,7 +1407,6 @@
+--- config.c.orig	1999-01-02 03:14:50 UTC
++++ config.c
+@@ -1407,7 +1407,6 @@ free_pagers(pager_t *list)
  		my_free(list->name);
  		my_free(list->text);
  		my_free(list->pagerid);
@@ -8,5 +8,3 @@
  		free(list);
  	}
  }
-
-

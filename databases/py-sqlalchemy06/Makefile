@@ -10,13 +10,17 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	SQLAlchemy-${DISTVERSION}
 
 MAINTAINER=	nivit@FreeBSD.org
-COMMENT=	Python SQL toolkit and Object Relational Mapper (series 0.6)
+COMMENT=	Python SQL toolkit and Object Relational Mapper 0.6.x
 
 LICENSE=	MIT
 
-# Python3 ready
+DEPRECATED=	Upstream has declared this version EoL: please migrate to databases/py-sqlalchemy10
+EXPIRATION_DATE=	2016-08-20
+
 USES=		python
 USE_PYTHON=	distutils autoplist
+
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy{0[789],10}*
 
 OPTIONS_DEFINE=	CEXTENSIONS DOCS EXAMPLES NOSE
 
@@ -49,27 +53,27 @@ AL_PORTDOCS_SUBDIR=	core dialects orm
 .endif
 
 .if ${PORT_OPTIONS:MMSSQL}
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/pymssql.py:${PORTSDIR}/databases/py-mssql
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/pymssql.py:databases/py-mssql
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL} && ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:${PORTSDIR}/databases/py-MySQLdb
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}MySQLdb>=1.2.2:databases/py-MySQLdb
 .endif
 
 .if ${PORT_OPTIONS:MNOSE}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}nose>=1.0.0:${PORTSDIR}/devel/py-nose
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}nose>=1.0.0:devel/py-nose
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}psycopg2>=2.0.8:${PORTSDIR}/databases/py-psycopg2
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}psycopg2>=2.0.8:databases/py-psycopg2
 .endif
 
 .if ${PORT_OPTIONS:MSQLITE}
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
 .endif
 
 .if ${PORT_OPTIONS:MSYBASE}
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/Sybase.py:${PORTSDIR}/databases/py-sybase
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/Sybase.py:databases/py-sybase
 .endif
 
 post-patch:

@@ -8,16 +8,16 @@ CATEGORIES=	comms audio hamradio
 MASTER_SITES=	http://www.sdr-j.tk/ \
 		LOCAL/nox/
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SDR tools for RTL2832-based USB sticks
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS+=	libqwt.so:${PORTSDIR}/x11-toolkits/qwt5 \
-		libportaudio.so:${PORTSDIR}/audio/portaudio \
-		libsamplerate.so:${PORTSDIR}/audio/libsamplerate \
-		libsndfile.so:${PORTSDIR}/audio/libsndfile \
-		libfftw3.so:${PORTSDIR}/math/fftw3
+LIB_DEPENDS+=	libqwt.so:x11-toolkits/qwt5 \
+		libportaudio.so:audio/portaudio \
+		libsamplerate.so:audio/libsamplerate \
+		libsndfile.so:audio/libsndfile \
+		libfftw3.so:math/fftw3
 
 USES=		tar:tgz
 USE_QT4=	gui qt3support qmake_build moc_build rcc_build uic_build

@@ -2,17 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	libgphoto2
-PORTVERSION=	2.5.8
+PORTVERSION=	2.5.10
 PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	SF/gphoto/libgphoto/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	Universal digital camera control library
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl
+LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		gmake iconv libtool pkgconfig tar:bzip2
 USE_CSTD=	gnu89
@@ -35,16 +35,16 @@ OPTIONS_DEFINE=		DOCS GD JPEG LIBEXIF NLS XML
 OPTIONS_DEFAULT=	GD JPEG LIBEXIF XML
 OPTIONS_SUB=		yes
 
-GD_LIB_DEPENDS=		libgd.so:${PORTSDIR}/graphics/gd
-GD_CONFIGURE_WITH=	gd
+GD_LIB_DEPENDS=		libgd.so:graphics/gd
+GD_CONFIGURE_OFF=	--with-gdlib=no
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_WITH=	jpeg
-LIBEXIF_LIB_DEPENDS=	libexif.so:${PORTSDIR}/graphics/libexif
+LIBEXIF_LIB_DEPENDS=	libexif.so:graphics/libexif
 LIBEXIF_CONFIGURE_OFF=	--with-libexif=no
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 XML_USE=		GNOME=libxml2
-XML_CONFIGURE_WITH=	libxml2
+XML_CONFIGURE_OFF=	--with-libxml-2.0=no
 
 .include <bsd.port.options.mk>
 

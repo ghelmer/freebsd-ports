@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lpc21isp
-PORTVERSION=	1.85
+PORTVERSION=	1.97
 CATEGORIES=	devel
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION:S/.//}
@@ -10,10 +10,9 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/.//}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ISP programmer tool for flashing NXP & Analog Devices ARM7 CPUs
 
-LICENSE=	LGPL3 # (or later)
+LICENSE=	LGPL3+
 
 USES=		gmake
-NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	bin/lpc21isp
 

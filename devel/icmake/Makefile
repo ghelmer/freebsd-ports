@@ -3,7 +3,7 @@
 PORTNAME=	icmake
 PORTVERSION=	7.22.01
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 EXTRACT_SUFX=	.orig.tar.gz
 
@@ -11,9 +11,10 @@ MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Intelligent C-like Maker
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		gsed:${PORTSDIR}/textproc/gsed
+BUILD_DEPENDS=	bash:shells/bash \
+		gsed:textproc/gsed
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 PORTDOCS=	*
@@ -26,8 +27,6 @@ REINPLACE_ARGS=	-I ""
 
 USES=		shebangfix
 SHEBANG_FILES=	icm_bootstrap icm_install icm_prepare scripts/convert
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|sed|gsed|g' \

@@ -1,22 +1,23 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	openvex
 PORTVERSION=	0.5.3
 CATEGORIES=	devel
-MASTER_SITES=	http://acadix.biz/Ports/distfiles/ \
-		http://personalpages.tds.net/~jwbacon/Ports/distfiles/
+MASTER_SITES=	http://acadix.biz/Ports/distfiles/
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Open source firmware for Vex robotics controllers
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	sdcc:${PORTSDIR}/lang/sdcc \
-		gpasm:${PORTSDIR}/devel/gputils
-RUN_DEPENDS=	vexctl:${PORTSDIR}/devel/roboctl \
-		sdcc:${PORTSDIR}/lang/sdcc \
-		gpasm:${PORTSDIR}/devel/gputils
+BROKEN_powerpc64=	Does not build
+
+BUILD_DEPENDS=	sdcc:lang/sdcc \
+		gpasm:devel/gputils
+RUN_DEPENDS=	vexctl:devel/roboctl \
+		sdcc:lang/sdcc \
+		gpasm:devel/gputils
 
 USES+=		tar:xz
 

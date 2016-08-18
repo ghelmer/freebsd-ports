@@ -9,7 +9,7 @@ DISTFILES=	wbpe110.zip zpaqd633.zip zpaq657.zip zpipe.201.zip
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTFILES:M*.zip}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Family of archivers with extremely high compression ratios
 
 LICENSE=	GPLv3 MIT
@@ -17,7 +17,7 @@ LICENSE_COMB=	multi
 
 USES=		dos2unix zip:infozip
 
-EXTRACT_AFTER_ARGS=	-x *.bat *.exe readme.txt -d ${WRKDIR}
+EXTRACT_AFTER_ARGS=	-x *.bat *.exe readme.txt -d ${WRKSRC}
 NO_WRKSUBDIR=	yes
 OPTIONS_DEFINE=	OPENMP DOCS
 SUB_FILES=	pkg-message
@@ -66,7 +66,8 @@ PORTDATA=	${WDATA} ${DDATA} zpsfx
 
 .if ${PORT_OPTIONS:MOPENMP}
 OPENMP_CFLAGS+=	-fopenmp
-USE_GCC=		any
+USE_GCC=	any
+BROKEN=		does not build
 .endif
 
 post-extract:

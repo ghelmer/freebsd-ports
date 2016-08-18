@@ -5,11 +5,12 @@ PORTNAME=	delay
 PORTVERSION=	1.6
 CATEGORIES=	misc
 MASTER_SITES=	http://onegeek.org/~tom/software/delay/dl/ \
-		http://utenti.gufi.org/~gmarco/files/distfiles/ 
+		http://utenti.gufi.org/~gmarco/files/distfiles/
 
 MAINTAINER=	gmarco@gufi.org
 COMMENT=	Delay program with feedback to the user
 
+USES=		ncurses
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/delay man/man1/delay.1.gz

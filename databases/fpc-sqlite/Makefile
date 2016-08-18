@@ -1,7 +1,6 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.rog>
 # $FreeBSD$
 
-PORTREVISION=	2
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-sqlite
 
@@ -17,6 +16,6 @@ EXTRACTUNITDIR=	${WRKUNITDIR}
 OPTIONS_DEFINE=	SQLITE
 OPTIONS_DEFAULT=	SQLITE
 
-SQLITE_USE=	SQLITE=yes
+SQLITE_USES=	sqlite
 
 .include "${MASTERDIR}/Makefile"

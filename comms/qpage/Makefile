@@ -6,12 +6,12 @@ PORTVERSION=	3.3
 PORTREVISION=	8
 CATEGORIES=	comms
 MASTER_SITES=	http://www.qpage.org/download/
-EXTRACT_SUFX=	.tar.Z
+MASTER_SITES=	http://tomiii.com/qpage/qpage.org/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rand@iteris.com
 COMMENT=	SNPP client/server for sending messages to an alphanumeric pager
 
-BROKEN=		Unfetchable
+USES=tar:Z
 USE_RC_SUBR=	qpage
 GNU_CONFIGURE=	yes
 

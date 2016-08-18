@@ -3,6 +3,7 @@
 
 PORTNAME=	apcupsd
 PORTVERSION=	3.14.13
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20-%20Stable/${PORTVERSION}
 
@@ -53,7 +54,7 @@ CLIENT_ONLY_CONFIGURE_ON=	--enable-net \
 				--disable-snmp --disable-test --disable-pcnet
 CGI_CONFIGURE_ENABLE=		cgi
 CGI_CONFIGURE_ON=		--with-cgi-bin=${ETCDIR}/cgi
-CGI_LIB_DEPENDS=		libgd.so:${PORTSDIR}/graphics/gd
+CGI_LIB_DEPENDS=		libgd.so:graphics/gd
 GAPCMON_CONFIGURE_ENABLE=	gapcmon
 GAPCMON_USE=			GNOME=gconf2
 GAPCMON_CONFLICTS=		gapcmon-[0-9]*
@@ -62,7 +63,7 @@ USB_CONFIGURE_ENABLE=		usb
 SNMP_DRV_CONFIGURE_ENABLE=	snmp
 MODBUS_CONFIGURE_ENABLE=	modbus
 SNMP_DRV_OLD_CONFIGURE_ENABLE=	net-snmp
-SNMP_DRV_OLD_LIB_DEPENDS=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+SNMP_DRV_OLD_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 TCP_WRAPPERS_CONFIGURE_WITH=	libwrap=yes
 TEST_DRV_CONFIGURE_ENABLE=	test
 

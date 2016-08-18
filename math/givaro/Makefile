@@ -5,7 +5,7 @@ PORTVERSION=	3.8.0
 CATEGORIES=	math
 MASTER_SITES=	https://forge.imag.fr/frs/download.php/592/ LOCAL/bf
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ library for computer algebra
 
 LICENSE=	CeCILL-Bv1-en.txt
@@ -13,7 +13,7 @@ LICENSE_NAME=	Ce[a] C[nrs] I[nria] L[ogiciel] L[ibre] B license, version 1
 LICENSE_FILE=	${WRKSRC}/Licence_CeCILL-B_V1-en.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libgmp.so.10:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libgmp.so.10:math/gmp
 
 USES=		libtool
 GNU_CONFIGURE=	yes
@@ -26,8 +26,8 @@ OPTIONS_DEFINE=	DOXYGEN
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOXYGEN}
-BUILD_DEPENDS +=	doxygen:${PORTSDIR}/devel/doxygen \
-			dot:${PORTSDIR}/graphics/graphviz
+BUILD_DEPENDS +=	doxygen:devel/doxygen \
+			dot:graphics/graphviz
 CONFIGURE_ARGS+=	--enable-doc --with-docdir=${DOCSDIR}
 PLIST_SUB+=	PORTDOCS=""
 .else

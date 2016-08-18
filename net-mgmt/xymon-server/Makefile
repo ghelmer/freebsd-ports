@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	xymon
-PORTVERSION=	4.3.21
-PORTREVISION=	3
+PORTVERSION=	4.3.27
+PORTREVISION=	1
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	SF/xymon/Xymon/${PORTVERSION}
 PKGNAMESUFFIX=	-server${PKGNAMESUFFIX2}
@@ -13,13 +13,13 @@ COMMENT=	System for monitoring servers and networks
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	rrdtool:${PORTSDIR}/databases/rrdtool
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libpcre.so:${PORTSDIR}/devel/pcre \
-		libcares.so:${PORTSDIR}/dns/c-ares
-RUN_DEPENDS=	rrdtool:${PORTSDIR}/databases/rrdtool \
-		fping:${PORTSDIR}/net/fping \
-		mtr:${PORTSDIR}/net/mtr-nox11
+BUILD_DEPENDS=	rrdtool:databases/rrdtool
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libpcre.so:devel/pcre \
+		libcares.so:dns/c-ares
+RUN_DEPENDS=	rrdtool:databases/rrdtool \
+		fping:net/fping \
+		mtr:net/mtr-nox11
 
 USERS=		xymon
 GROUPS=		xymon
@@ -63,7 +63,7 @@ USE_OPENLDAP=	yes
 
 .if ${PORT_OPTIONS:MNETSNMP}
 MAKE_ENV+=	WITH_NETSNMP=1
-LIB_DEPENDS+=	libnetsnmp.so:${PORTSDIR}/net-mgmt/net-snmp
+LIB_DEPENDS+=	libnetsnmp.so:net-mgmt/net-snmp
 .endif
 
 post-patch:
@@ -79,7 +79,22 @@ do-configure:
 	${CP} ${FILESDIR}/Makefile ${WRKSRC}/
 
 post-install:
-	${MKDIR} ${STAGEDIR}${WWWDIR}/server/etc
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/acks
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/data
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/disabled
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/hist
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/histlogs
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/hostdata
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/logs
+	${MKDIR} ${STAGEDIR}${WWWDIR}/data/rrd
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/download
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/tmp
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/www/html
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/www/notes
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/www/rep
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/www/snap
+	${MKDIR} ${STAGEDIR}${WWWDIR}/server/www/wml
 	${LN} -s ${LOCALBASE}/sbin/fping ${STAGEDIR}${WWWDIR}/server/bin/xymonping
 	${INSTALL_SCRIPT} ${WRKSRC}/build/upgrade430.sh ${STAGEDIR}${WWWDIR}/server/bin/
 	${INSTALL_PROGRAM} ${WRKSRC}/build/renamevars ${STAGEDIR}${WWWDIR}/server/bin/

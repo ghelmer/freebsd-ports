@@ -62,7 +62,7 @@ BOOTSTRAP_COMPILER=	ada-bootstrap.${GARCH}.dragonfly.41.tar.bz2
 .if defined(MODERN_BINUTILS)
 # Apparently gcc 4.9 needs binutils 2.23 or greater to link Ada correctly
 USE_BINUTILS=	yes
-RUN_DEPENDS+=	${LOCALBASE}/bin/as:${PORTSDIR}/devel/binutils
+RUN_DEPENDS+=	${LOCALBASE}/bin/as:devel/binutils
 EXTRA_CONFIG+=	--with-ld=${LOCALBASE}/bin/ld
 EXTRA_CONFIG+=	--with-as=${LOCALBASE}/bin/as
 .else
@@ -126,7 +126,7 @@ LANGS+=		objc
 .endif
 
 .if ${PORT_OPTIONS:MTESTSUITE} && !${PORT_OPTIONS:MBOOTSTRAP}
-BUILD_DEPENDS+=	dejagnu>=1.4:${PORTSDIR}/misc/dejagnu
+BUILD_DEPENDS+=	dejagnu>=1.4:misc/dejagnu
 APPLY_DIFFS+=	ada-testsuite
 APPLY_DIFFS+=	cxx-testsuite
 APPLY_DIFFS+=	gcc-testsuite
@@ -209,13 +209,6 @@ post-extract:
 	# Ensure GNAT tools are built statically
 	${REINPLACE_CMD} -e 's/^GCC_LINK_FLAGS=.*/GCC_LINK_FLAGS=-static/' \
 		${WRKSRC}/gcc/ada/gcc-interface/Makefile.in
-.endif
-.if ${PORT_OPTIONS:MBOOTSTRAP} && ${OPSYS} == FreeBSD
-	# FreeBSD 8 linker doesn't understand --hash-style, so do not
-	# allow the bootstrap to use it.
-	${REINPLACE_CMD} -e 's|" ELF_HASH_STYLE "||' \
-		${WRKSRC}/gcc/config/i386/freebsd64.h \
-		${WRKSRC}/gcc/config/i386/freebsd.h
 .endif
 	# Update LINK_SPEC to add gcc-aux lib runpath in every binary
 	@${ECHO} "Configuring LINK_SPEC runpath"

@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-newt
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	NEWT
 NEWT_DESC=	Install newt library
 OPTIONS_DEFAULT=	NEWT
 
-NEWT_LIB_DEPENDS=	libnewt.so:${PORTSDIR}/devel/newt
+NEWT_LIB_DEPENDS=	libnewt.so:devel/newt
 
 .include "${MASTERDIR}/Makefile"

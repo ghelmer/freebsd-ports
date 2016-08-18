@@ -3,7 +3,7 @@
 PORTREVISION=	0
 CATEGORIES=	multimedia
 
-COMMENT=	Gstreamer x265 plugin
+COMMENT=	GStreamer libx265 based H265 plugin
 
 GST_PLUGIN=	x265
 DIST=		bad

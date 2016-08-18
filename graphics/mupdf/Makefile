@@ -2,28 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	mupdf
-PORTVERSION=	1.7
+PORTVERSION=	1.9a
+DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.mupdf.com/download/
-EXTRACT_SUFX=	-source.tar.gz
+MASTER_SITES=	http://www.mupdf.com/downloads/ \
+		http://www.mupdf.com/downloads/archive/
 
 MAINTAINER=	udvzsolt@gmail.com
 COMMENT=	Lightweight PDF viewer and toolkit
 
 LICENSE=	AGPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=		fails to link with openjpeg 2.1.1
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
+		libjbig2dec.so:graphics/jbig2dec \
+		libopenjp2.so:graphics/openjpeg
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libjbig2dec.so:${PORTSDIR}/graphics/jbig2dec \
-		libopenjp2.so:${PORTSDIR}/graphics/openjpeg
-
+CFLAGS+=	-I${WRKSRC}/include/mupdf -I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 MAKE_ARGS=	build=release prefix=${PREFIX} mandir=${PREFIX}/man verbose=yes
 USES=		cpe compiler:c++11-lang gmake jpeg pkgconfig
-USE_XORG=	x11 xext
+USE_XORG=	x11 xcursor xext xinerama xrandr
+USE_GL=	gl
 
 CPE_VENDOR=	artifex
 
@@ -35,25 +38,22 @@ OPTIONS_DEFAULT=SCROLL
 SCROLL_DESC=	Build with scroll hacks
 JS_DESC=	JavaScript support (V8 engine)
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSCROLL}
-EXTRA_PATCHES+=	${FILESDIR}/scroll_hack-platform__x11__pdfapp.c
-.endif
-
-.if ${PORT_OPTIONS:MJS}
-LIB_DEPENDS+=	libv8.so:${PORTSDIR}/lang/v8
-MAKE_ARGS+=	V8_PRESENT=1 V8LIBS=-lv8
-.endif
+SCROLL_EXTRA_PATCHES=	${FILESDIR}/scroll_hack-platform__x11__pdfapp.c
+JS_LIB_DEPENDS=		libv8.so:lang/v8
+JS_MAKE_ARGS=		V8_PRESENT=1 V8LIBS=-lv8
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/-pipe -O2 //' \
 		-e 's|/usr/local|${LOCALBASE}|' \
 		-e 's/Linux/FreeBSD/' \
 		${WRKSRC}/Makerules
-	@${REINPLACE_CMD} '/^CFLAGS/s|$$| -I${LOCALBASE}/include|' \
-		${WRKSRC}/Makefile
-	@${RM} -r ${WRKSRC}/thirdparty/*
+	@${RM} -r ${WRKSRC}/thirdparty/curl \
+		${WRKSRC}/thirdparty/jbig2dec \
+		${WRKSRC}/thirdparty/freetype \
+		${WRKSRC}/thirdparty/harfbuzz \
+		${WRKSRC}/thirdparty/jpeg \
+		${WRKSRC}/thirdparty/openjpeg \
+		${WRKSRC}/thirdparty/zlib
 
 post-build:
 	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} \
@@ -62,8 +62,10 @@ post-build:
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/build/pic/libmupdf.a \
 		${STAGEDIR}${PREFIX}/lib/libmupdf_pic.a
+	${INSTALL_DATA} ${WRKSRC}/build/pic/libmupdfthird.a \
+		${STAGEDIR}${PREFIX}/lib/libmupdfthird_pic.a
 	${MV} ${STAGEDIR}${PREFIX}/bin/mupdf-x11 ${STAGEDIR}${PREFIX}/bin/mupdf
-.for binary in mudraw mutool mujstest mupdf mupdf-x11-curl
+.for binary in mutool mujstest mupdf mupdf-gl mupdf-x11-curl
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${binary}
 .endfor
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	mod_clamav
 PORTVERSION=	0.23
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	www security
 MASTER_SITES=	http://software.othello.ch/mod_clamav/ \
 		http://www.kommunity.net/download/mod_clamav/
@@ -21,7 +21,7 @@ GNU_CONFIGURE=	yes
 .include <bsd.port.options.mk>
 
 CLAMAV_PORT=	security/clamav
-LIB_DEPENDS+=	libclamav.so:${PORTSDIR}/security/clamav
+LIB_DEPENDS+=	libclamav.so:security/clamav
 
 CONFIGURE_ARGS=	--with-apxs=${APXS} \
 		--libdir=${PREFIX}/lib/apache2

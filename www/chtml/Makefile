@@ -11,9 +11,13 @@ DISTNAME=	chtml
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Chunked HTML templating engine
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	MIT
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/csiod:${PORTSDIR}/lang/siod
+BUILD_DEPENDS=	${LOCALBASE}/bin/csiod:lang/siod
 
 USES=		perl5 tar:tgz
 USE_PERL5=	run

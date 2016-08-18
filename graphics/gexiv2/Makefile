@@ -5,7 +5,7 @@ PORTNAME=	gexiv2
 PORTVERSION=	0.6.1
 PORTREVISION=	5
 CATEGORIES=	graphics
-MASTER_SITES=	http://yorba.org/download/${PORTNAME}/${PORTVERSION:R}/
+MASTER_SITES=	http://pkgs.fedoraproject.org/repo/pkgs/libgexiv2/libgexiv2_0.6.1.tar.xz/5bd2ba92b765a2b3721874ebd2647734/
 DISTNAME=	lib${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,8 +14,8 @@ COMMENT=	GObject-based wrapper around Exiv2 library
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	gm4:${PORTSDIR}/devel/m4
-LIB_DEPENDS=	libexiv2.so:${PORTSDIR}/graphics/exiv2
+BUILD_DEPENDS=	gm4:devel/m4
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2
 
 USES=		gmake libtool:build pkgconfig tar:xz
 USE_GNOME=	glib20 introspection:build

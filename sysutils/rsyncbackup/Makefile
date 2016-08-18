@@ -11,9 +11,9 @@ DISTNAME=	rsyncbackup
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Rsync frontend written in Perl
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 
-RUN_DEPENDS=	rsync:${PORTSDIR}/net/rsync
+RUN_DEPENDS=	rsync:net/rsync
 
 CONFIGSRC=	${WRKSRC}/config
 CONFIGFILES=	backupset.conf config.conf destinations.conf sources.conf
@@ -33,6 +33,8 @@ do-install:
 	${INSTALL_DATA} ${CONFIGSRC}/${configfile} \
 		${STAGEDIR}${ETCDIR}/${configfile}.example
 .endfor
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR})
 

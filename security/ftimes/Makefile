@@ -3,7 +3,7 @@
 
 PORTNAME=		ftimes
 PORTVERSION=		3.11.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=		security sysutils
 MASTER_SITES=		SF
 
@@ -53,7 +53,7 @@ SHEBANG_FILES= \
 			${WRKSRC}/tools/zipmap/zipmap
 
 OPTIONS_DEFINE=		DBM_TOOLS DIG_TOOLS FILE_HOOKS HASHDIG_TOOLS MAP_TOOLS SSL XMAGIC
-OPTIONS_DEFAULT=	DBM_TOOLS DIG_TOOLS FILE_HOOKS HASHDIG_TOOLS MAP_TOOLS SSL XMAGIC
+OPTIONS_DEFAULT=	DBM_TOOLS DIG_TOOLS FILE_HOOKS HASHDIG_TOOLS MAP_TOOLS XMAGIC
 DBM_TOOLS_DESC=		Install DBM tools
 DIG_TOOLS_DESC=		Install dig tools
 FILE_HOOKS_DESC=	Include file hooks support
@@ -61,9 +61,11 @@ HASHDIG_TOOLS_DESC=	Install hashdig tools
 MAP_TOOLS_DESC=		Install map tools
 XMAGIC_DESC=		XMagic support
 
+SSL_USES=	ssl
+
 .include <bsd.port.pre.mk>
 
-LIB_DEPENDS+=		libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS+=		libpcre.so:devel/pcre
 CONFIGURE_ARGS+=	--with-pcre=${LOCALBASE}
 
 STRIP_FILES=		${STAGEDIR}${PREFIX}/bin/ftimes
@@ -80,14 +82,14 @@ PLIST_SUB+=		DBM_TOOLS="@comment "
 .if ${PORT_OPTIONS:MDIG_TOOLS}
 PLIST_SUB+=		DIG_TOOLS=""
 CONFIGURE_ARGS+=	--with-dig-tools
-RUN_DEPENDS+=		p5-Digest-SHA1>=0:${PORTSDIR}/security/p5-Digest-SHA1
+RUN_DEPENDS+=		p5-Digest-SHA1>=0:security/p5-Digest-SHA1
 INSTALL_PERL5_LIBS=	yes
 .else
 PLIST_SUB+=		DIG_TOOLS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MFILE_HOOKS}
-LIB_DEPENDS+=		libklel.so:${PORTSDIR}/devel/libklel
+LIB_DEPENDS+=		libklel.so:devel/libklel
 CONFIGURE_ARGS+=	--enable-file-hooks --with-klel=${LOCALBASE} --with-perl=${LOCALBASE}/bin/perl
 .else
 PLIST_SUB+=		WITH_FILE_HOOKS="@comment "
@@ -110,8 +112,6 @@ PLIST_SUB+=		MAP_TOOLS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSSL}
-# we can't use USE_OPENSSL=yes after including bsd.port.pre.mk
-.include "${PORTSDIR}/Mk/bsd.openssl.mk"
 CONFIGURE_ARGS+=	--with-ssl=${OPENSSLBASE}
 .else
 CONFIGURE_ARGS+=	--without-ssl

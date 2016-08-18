@@ -2,33 +2,31 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.4.50.g20150814
+PORTVERSION=	2.6.50.g20160628
 CATEGORIES=	emulators
 MASTER_SITES=	GH \
-		LOCAL/nox \
 		LOCAL/nox:dtc \
-		http://people.freebsd.org/~nox/tmp/distfiles/ \
 		http://people.freebsd.org/~nox/tmp/distfiles/:dtc
 PKGNAMESUFFIX?=	-sbruno
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		dtc-v1.4.0${EXTRACT_SUFX}:dtc
 DIST_SUBDIR=	qemu/${PORTVERSION}
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	sbruno@FreeBSD.org
 COMMENT?=	QEMU CPU Emulator - github bsd-user branch
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	seanbruno
 GH_PROJECT=	${PORTNAME}-bsd-user
-GH_TAGNAME=	6764363
+GH_TAGNAME=	4c46f61
 HAS_CONFIGURE=	yes
 USES=		gmake pkgconfig bison perl5 python:2,build
 USE_PERL5=	build
-USE_XORG=	pixman
 USE_GNOME+=	glib20
 PATCH_STRIP=	-p1
 MAKE_ENV+=	BSD_MAKE="${MAKE}"
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
+ONLY_FOR_ARCHS=	amd64 powerpc powerpc64 # XXX someone wants to debug sparc64 hosts?
+BROKEN_i386=	aarch64 system target is currently broken for i386 hosts, disable for now while dealing with upstream.
 
 OPTIONS_DEFINE=	SAMBA X11 GTK2 OPENGL GNUTLS SASL JPEG PNG CURL \
 		CDROM_DMA PCAP USBREDIR X86_TARGETS BSD_USER \
@@ -54,6 +52,7 @@ CONFLICTS_INSTALL=	qemu-[0-9]* qemu-devel-*
 .if exists(/usr/sbin/binmiscctl)
 USE_RC_SUBR=	qemu_user_static
 SUB_LIST=	NAME=qemu_user_static
+CONFIGURE_ARGS+=	--disable-tools
 .endif
 .endif
 
@@ -61,7 +60,7 @@ SUB_LIST=	NAME=qemu_user_static
 
 CONFIGURE_ARGS+=	--localstatedir=/var
 CONFIGURE_ARGS+=	--extra-ldflags=-L\"${LOCALBASE}/lib\"
-CONFIGURE_ARGS+=	--disable-smartcard-nss --disable-libssh2
+CONFIGURE_ARGS+=	--disable-libssh2
 PORTDOCS=	docs qemu-doc.html qemu-tech.html qmp-commands.txt
 
 .if defined(QEMU_USER_STATIC)
@@ -120,10 +119,6 @@ PLIST_SUB+=	SOFTMMU=""
 PLIST_SUB+=	STATIC=""
 .endif
 
-#.if ${PORT_OPTIONS:MGNS3}
-#EXTRA_PATCHES+=	${FILESDIR}/hw_e1000_c.patch
-#.endif
-
 WITHOUT_CPU_CFLAGS=yes	#to avoid problems with register allocation
 CFLAGS:=	${CFLAGS:C/-fno-tree-vrp//}
 CONFIGURE_ARGS+=	--prefix=${PREFIX} --cc=${CC} --enable-docs \
@@ -139,6 +134,7 @@ CONFIGURE_ARGS+=	--disable-sdl
 .else
 CONFIGURE_ARGS+=	--enable-sdl
 USE_SDL=	sdl
+USE_XORG=	pixman
 .endif
 
 .if empty(PORT_OPTIONS:MGTK2)
@@ -150,16 +146,14 @@ USES+=		gettext
 PLIST_SUB+=	GTK2=""
 .endif
 
-.if empty(PORT_OPTIONS:MGNUTLS)
-CONFIGURE_ARGS+=	--disable-vnc-tls
-.else
-LIB_DEPENDS+=	libgnutls.so:${PORTSDIR}/security/gnutls
+.if ${PORT_OPTIONS:MGNUTLS}
+LIB_DEPENDS+=	libgnutls.so:security/gnutls
 .endif
 
 .if empty(PORT_OPTIONS:MSASL)
 CONFIGURE_ARGS+=	--disable-vnc-sasl
 .else
-LIB_DEPENDS+=	libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
+LIB_DEPENDS+=	libsasl2.so:security/cyrus-sasl2
 .endif
 
 .if empty(PORT_OPTIONS:MJPEG)
@@ -171,13 +165,13 @@ USES+=		jpeg
 .if empty(PORT_OPTIONS:MPNG)
 CONFIGURE_ARGS+=	--disable-vnc-png
 .else
-LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:graphics/png
 .endif
 
 .if empty(PORT_OPTIONS:MCURL)
 CONFIGURE_ARGS+=	--disable-curl
 .else
-LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=	libcurl.so:ftp/curl
 .endif
 
 .if empty(PORT_OPTIONS:MOPENGL)
@@ -189,8 +183,8 @@ USE_GL=		yes
 .if empty(PORT_OPTIONS:MUSBREDIR)
 CONFIGURE_ARGS+=	--disable-usb-redir
 .else
-BUILD_DEPENDS+=	usbredir>=0.6:${PORTSDIR}/net/usbredir
-RUN_DEPENDS+=	usbredir>=0.6:${PORTSDIR}/net/usbredir
+BUILD_DEPENDS+=	usbredir>=0.6:net/usbredir
+RUN_DEPENDS+=	usbredir>=0.6:net/usbredir
 .endif
 
 .if ${PORT_OPTIONS:MPCAP}
@@ -201,17 +195,17 @@ CONFIGURE_ARGS+=	--disable-pcap
 
 .if ${PORT_OPTIONS:MSTATIC_LINK}
 .if ${PORT_OPTIONS:MGTK2} || ${PORT_OPTIONS:MX11}
-IGNORE=		X11 ui cannot be built static
+IGNORE=		the X11 ui cannot be built static
 .endif
 CONFIGURE_ARGS+=	--static
 .endif
 
 .if ${PORT_OPTIONS:MSAMBA}
-RUN_DEPENDS+=	${LOCALBASE}/sbin/smbd:${PORTSDIR}/net/samba36
+RUN_DEPENDS+=	${LOCALBASE}/sbin/smbd:net/samba36
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	texi2html:${PORTSDIR}/textproc/texi2html
+BUILD_DEPENDS+=	texi2html:textproc/texi2html
 USES+=		makeinfo
 .else
 MAKE_ARGS+=	NOPORTDOCS=1
@@ -234,10 +228,10 @@ MAKE_ARGS+=	ARCH=ppc64
 .endif
 
 .if ${ARCH} == "sparc64"
-CONFIGURE_ARGS+= --sparc_cpu=v9
+CONFIGURE_ARGS+=	--sparc_cpu=v9
 .endif
 
-CONFIGURE_ARGS+= --python=${PYTHON_CMD}
+CONFIGURE_ARGS+=	--python=${PYTHON_CMD}
 
 # -lprocstat actually only _needs_ -lelf after r249666 or r250870 (MFC)
 # but it shouldn't matter much
@@ -282,6 +276,7 @@ post-install:
 	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifup.sample ${STAGEDIR}${PREFIX}/etc
 	${INSTALL_SCRIPT} ${FILESDIR}/qemu-ifdown.sample ${STAGEDIR}${PREFIX}/etc
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/qemu-*
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ivshmem-*
 .endif
 
 .include <bsd.port.mk>

@@ -11,12 +11,10 @@ MASTER_SITES=	http://launchpadlibrarian.net/65203347/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple statistics plugin for bzr
 
-BUILD_DEPENDS=	bzr:${PORTSDIR}/devel/bzr
-RUN_DEPENDS=	bzr:${PORTSDIR}/devel/bzr
+BUILD_DEPENDS=	bzr:devel/bzr
+RUN_DEPENDS=	bzr:devel/bzr
 
 LICENSE=	GPLv2
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 USES=		python
 USE_PYTHON=	distutils autoplist

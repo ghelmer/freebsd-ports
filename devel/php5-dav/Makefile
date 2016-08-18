@@ -14,12 +14,11 @@ COMMENT=	The PHP WebDAV extension
 
 LICENSE=	ISCL
 
-LIB_DEPENDS=	libneon.so:${PORTSDIR}/www/neon
+LIB_DEPENDS=	libneon.so:www/neon
 
-USE_PHP=	yes
-USE_PHPIZE=	yes
-USE_PHPEXT=	yes
-PHP_MODNAME=	dav
+USES=		php:ext
+
+IGNORE_WITH_PHP=	70
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

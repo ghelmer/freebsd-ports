@@ -10,7 +10,11 @@ MASTER_SITES=	ftp://ftp.broadpool.net/pub/siteframe/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Web community content management system in PHP5 and MySQL
 
-RUN_DEPENDS=	${LOCALBASE}/share/smarty/Smarty.class.php:${PORTSDIR}/www/smarty2
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	${LOCALBASE}/share/smarty/Smarty.class.php:www/smarty2
 
 USE_APACHE_RUN=	22+
 USE_PHP=	mysqli simplexml xml session gd
