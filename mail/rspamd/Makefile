@@ -80,12 +80,6 @@ USE_OPENSSL=	yes
  PLIST_SUB+=		REDIRECTOR="@comment "
 .endif
 
-.if ${PORT_OPTIONS:MHIREDIS}
- LIB_DEPENDS+=	libhiredis.so:${PORTSDIR}/databases/hiredis
-.else
- CMAKE_ARGS+=	-DENABLE_HIREDIS=OFF
-.endif
-
 post-stage:
 	${INSTALL} -d \
 		${STAGEDIR}/var/log/rspamd \
