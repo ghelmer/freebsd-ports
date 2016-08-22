@@ -1,6 +1,6 @@
---- src/pam_pgsql_options.c.ORIG	2013-08-26 17:38:07.000000000 -0500
-+++ src/pam_pgsql_options.c	2013-08-26 17:42:40.000000000 -0500
-@@ -18,6 +18,78 @@
+--- src/pam_pgsql_options.c.orig	2014-10-02 07:22:28.000000000 -0500
++++ src/pam_pgsql_options.c	2016-07-13 08:21:26.268354000 -0500
+@@ -19,6 +19,78 @@
  #include "pam_pgsql.h"
  #include "pam_pgsql_options.h"
  
@@ -77,21 +77,21 @@
 +}
 +
  static void
- read_config_file(modopt_t *options)
- {
-@@ -93,7 +165,14 @@
-             	options->sslmode = strdup(val);
+ read_config_file(modopt_t *options) {
  
- 			} else if(!strcmp(buffer, "password")) {
--				options->passwd = strdup(val);
-+				char passwd[strlen(val) + 1];
+@@ -90,7 +162,14 @@
+             } else
+                 options->sslmode = strdup(val);
+         } else if(!strcmp(buffer, "password")) {
+-            options->passwd = strdup(val);
++		char passwd[strlen(val) + 1];
 +
-+				if (val[0] == '$' && val[1] == '$') {
-+					from_base64(val + 2, (u_char *)passwd);
-+				} else {
-+					strlcpy(passwd, val, sizeof(passwd));
-+				}
-+				options->passwd = strdup(passwd);
- 			} else if(!strcmp(buffer, "user_column")) {
- 				options->column_user = strdup(val); 
- 			} else if(!strcmp(buffer, "pwd_column")) {
++		if (val[0] == '$' && val[1] == '$') {
++			from_base64(val + 2, (u_char *)passwd);
++		} else {
++			strlcpy(passwd, val, sizeof(passwd));
++		}
++		options->passwd = strdup(passwd);
+         } else if(!strcmp(buffer, "user_column")) {
+             options->column_user = strdup(val);
+         } else if(!strcmp(buffer, "pwd_column")) {
