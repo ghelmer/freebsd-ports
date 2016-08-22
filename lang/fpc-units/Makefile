@@ -105,12 +105,6 @@ X11_DESC=		Interface to X windows server
 XFORMS_DESC=		Interface to X-Forms
 ZLIB_DESC=		Interface to the zlib compression library
 
-.if !exists(/usr/include/lwres)	# directory only exists on FreeBSD 9
-# On FreeBSD 9, CAIRO is built with GCC which pulls in binutils
-# binutils and BFD conflict, so BFD and CAIRO cannot coexist of F9
-OPTIONS_DEFAULT+=	BFD
-.endif
-
 .include <bsd.port.options.mk>
 
 UNITS_SELECTED=

@@ -12314,11 +12314,13 @@
 +#     3. JSSE cipher (encryption) algorithm name, e.g., AES_128_CBC
 +#     4. JSSE message digest algorithm name, e.g., SHA
 +#
-+# See the specification of "jdk.certpath.disabledAlgorithms" for the
-+# syntax of the disabled algorithm string.
++# See SSL/TLS specifications and "Java Cryptography Architecture Standard
++# Algorithm Name Documentation" for information about the algorithm names.
 +#
 +# Note: This property is currently used by Oracle's JSSE implementation.
 +# It is not guaranteed to be examined and used by other implementations.
++# There is no guarantee the property will continue to exist or be of the
++# same syntax in future releases.
 +#
 +# Example:
 +#   jdk.tls.legacyAlgorithms=DH_anon, DES_CBC, SSL_RSA_WITH_RC4_128_MD5
