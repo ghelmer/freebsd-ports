@@ -17,10 +17,6 @@ BUILD_DEPENDS=	ocamlc:lang/ocaml \
 USE_GITHUB=	yes
 GH_ACCOUNT=	geneanet
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	geneanet
-GH_TAGNAME=	distrib-6-08
-
 HAS_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
 

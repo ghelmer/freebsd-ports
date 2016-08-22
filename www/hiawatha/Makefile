@@ -4,7 +4,7 @@
 PORTNAME=	hiawatha
 PORTVERSION=	10.3
 CATEGORIES=	www
-MASTER_SITES=	https://www.hiawatha-webserver.org/files/hiawatha-9/
+MASTER_SITES=	https://www.hiawatha-webserver.org/files/
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Advanced and secure webserver for Unix

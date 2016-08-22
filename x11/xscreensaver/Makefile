@@ -53,17 +53,11 @@ FIREF_RUN_DEPENDS=		${LOCALBASE}/bin/xscreensaver-hacks/fireflies:x11/fireflies
 NLS_USES=			gettext-runtime
 NLS_CONFIGURE_ENABLE=		nls
 
-NLS_USES=			gettext-runtime
-NLS_CONFIGURE_ENABLE=		nls
-
 XAOS1_DESC=			Add extra port graphics/xaos
 XAOS1_RUN_DEPENDS=		xaos:graphics/xaos
 
 XDALI_DESC=			Add extra port x11-clocks/xdaliclock
 XDALI_RUN_DEPENDS=		xdaliclock:x11-clocks/xdaliclock
-
-XFT_CONFIGURE_WITH=		xft
-XFT_USE=			XORG=xft
 
 XFT_CONFIGURE_WITH=		xft
 XFT_USE=			XORG=xft

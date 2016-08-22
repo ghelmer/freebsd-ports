@@ -3,7 +3,6 @@
 PORTNAME=	virtualmin
 PORTVERSION=	5.05
 PORTEPOCH=	1
-PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://download.webmin.com/download/virtualmin/
 DISTNAME=	virtual-server-${PORTVERSION}.gpl
