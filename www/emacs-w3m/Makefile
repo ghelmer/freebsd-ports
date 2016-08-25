@@ -46,7 +46,7 @@ DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
 DOCSDIR_JA=	${PREFIX}/share/doc/ja/${PORTNAME}
 
 OPTIONS_DEFINE=	DOCS OCTET_VIEWER SHIMBUN
-OPTIONS_DEFAULT=	DOCS OCTET_VIEWER SHIMBUN
+OPTIONS_DEFAULT=	OCTET_VIEWER SHIMBUN
 
 OCTET_VIEWER_DESC=	Octet stream viewer support
 SHIMBUN_DESC=	Build and/or install Shimbun
@@ -63,8 +63,8 @@ SHIMBUN=	""
 .include <bsd.port.pre.mk>
 
 .if ${EMACS_NAME} == "emacs" && ${EMACS_VER:C/\..*//} >= 23
-FLIM_PORT=	${PORTSDIR}/editors/flim
-SEMI_PORT=	${PORTSDIR}/editors/semi
+FLIM_PORT=	editors/flim
+SEMI_PORT=	editors/semi
 INSTALL_TARGET=	install install-icons
 PLIST_SUB+=	EMACS23=""
 .else
@@ -76,31 +76,31 @@ INSTALL_TARGET=	install install-icons
 .endif
 
 .if ${EMACS_NAME} == "emacs" && ${EMACS_VER:C/\..*//} < 22
-MULE_UCS_PORT=	${PORTSDIR}/converters/mule-ucs
+MULE_UCS_PORT=	converters/mule-ucs
 INSTALL_TARGET=	install install-icons
 .endif
 
 FLIM_TRUNK=	1.14
 FLIM_COOKIE=	${LOCALBASE}/share/flim/flim-${EMACS_PORT_NAME}-${FLIM_TRUNK}.FreeBSD-packages
-FLIM_PORT?=	${PORTSDIR}/editors/flim-${EMACS_PORT_NAME}
+FLIM_PORT?=	editors/flim-${EMACS_PORT_NAME}
 
 SEMI_TRUNK=	1.14
 SEMI_COOKIE=	${LOCALBASE}/share/semi/semi-${EMACS_PORT_NAME}-${FLIM_TRUNK}.FreeBSD-packages
-SEMI_PORT?=	${PORTSDIR}/editors/semi-${EMACS_PORT_NAME}
+SEMI_PORT?=	editors/semi-${EMACS_PORT_NAME}
 
-MULE_UCS_PORT?=	${PORTSDIR}/converters/mule-ucs-${EMACS_PORT_NAME}
+MULE_UCS_PORT?=	converters/mule-ucs-${EMACS_PORT_NAME}
 MULE_UCS_ELISP_FILE=	${LOCALBASE}/${EMACS_VERSION_SITE_LISPDIR}/mule-ucs/un-define.el
 
-BUILD_DEPENDS+=	w3m:${PORTSDIR}/www/w3m
-RUN_DEPENDS+=	w3m:${PORTSDIR}/www/w3m
+BUILD_DEPENDS+=	w3m:www/w3m
+RUN_DEPENDS+=	w3m:www/w3m
 .if ${PORT_OPTIONS:MSHIMBUN}
 BUILD_DEPENDS+=	${FLIM_COOKIE}:${FLIM_PORT}
 RUN_DEPENDS+=	${FLIM_COOKIE}:${FLIM_PORT}
 .endif
 .if ${PORT_OPTIONS:MOCTET_VIEWER}
 RUN_DEPENDS+=	${SEMI_COOKIE}:${SEMI_PORT} \
-		wvHtml:${PORTSDIR}/textproc/wv \
-		xlhtml:${PORTSDIR}/textproc/xlhtml
+		wvHtml:textproc/wv \
+		xlhtml:textproc/xlhtml
 PLIST_SUB+=	OCTET_VIEWER=""
 .else
 PLIST_SUB+=	OCTET_VIEWER="@comment "
@@ -115,8 +115,7 @@ post-patch:
 	@${CP} ${FILESDIR}/_pkg.el ${WRKSRC}
 .endif
 
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR_JA}
 .for i in ${DOCS}
@@ -125,6 +124,5 @@ post-install:
 .for i in ${DOCS_JA}
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR_JA}
 .endfor
-.endif
 
 .include <bsd.port.post.mk>

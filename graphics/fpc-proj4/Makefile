@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	3
 CATEGORIES=	graphics lang
 PKGNAMESUFFIX=	-proj4
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	PROJ
 PROJ_DESC=	Install proj library
 OPTIONS_DEFAULT=	PROJ
 
-PROJ_LIB_DEPENDS=	libproj.so:${PORTSDIR}/graphics/proj
+PROJ_LIB_DEPENDS=	libproj.so:graphics/proj
 
 .include "${MASTERDIR}/Makefile"

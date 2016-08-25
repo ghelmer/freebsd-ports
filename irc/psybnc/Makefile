@@ -11,9 +11,13 @@ DISTNAME=	psyBNC-${DISTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Powerful IRC bouncer
 
-LICENSE=	GPLv1 # or later (though COPYING is GPLv2)
+LICENSE=	GPLv1+ # though COPYING is GPLv2
+
+BROKEN_powerpc64=	Does not build
 
 USE_OPENSSL=	yes
+USES=		dos2unix
+DOS2UNIX_GLOB=	*.c *.h
 WRKSRC=		${WRKDIR}/psybnc
 PSYBASE?=	${PREFIX}/psybnc
 MAKE_ARGS=	PSYBASE=${PSYBASE}

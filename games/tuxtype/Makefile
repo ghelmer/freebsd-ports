@@ -13,10 +13,14 @@ DISTFILES=	${PORTNAME}_w_fonts-${PORTVERSION}${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Educational typing tutor starring Tux the Linux Penguin
 
-LICENSE=	GPLv2 # (or later)
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	gsed:${PORTSDIR}/textproc/gsed
+BUILD_DEPENDS=	gsed:textproc/gsed
 
 WRKSRC=		${WRKDIR}/${PORTNAME}_w_fonts-${PORTVERSION}
 

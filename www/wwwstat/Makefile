@@ -14,6 +14,10 @@ PATCHFILES=	patch-2.01.txt
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Webserver logfile analysis package
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	ART10
 
 USE_APACHE_RUN=	22+

@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	smtube
-PORTVERSION=	15.9.0
+PORTVERSION=	16.6.0
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/smtube/SMTube/${PORTVERSION}/
 
 MAINTAINER=	pawel@FreeBSD.org
 COMMENT=	SMPlayer YouTube browser
 
-RUN_DEPENDS=	smplayer:${PORTSDIR}/multimedia/smplayer
+RUN_DEPENDS=	smplayer:multimedia/smplayer
 
 USES=		gmake tar:bzip2
 ALL_TARGET=	#empty
@@ -27,6 +27,6 @@ post-patch:
 		${WRKSRC}/Makefile
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}	
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

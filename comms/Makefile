@@ -10,13 +10,11 @@
     SUBDIR += aprsd
     SUBDIR += atslog
     SUBDIR += bfhist
-    SUBDIR += bforce
     SUBDIR += bforce-kst
     SUBDIR += birda
     SUBDIR += bluegps
     SUBDIR += bluez-firmware
     SUBDIR += bpl+
-    SUBDIR += cdr_read
     SUBDIR += chirp
     SUBDIR += chu
     SUBDIR += comserv
@@ -46,6 +44,7 @@
     SUBDIR += fllog
     SUBDIR += flrig
     SUBDIR += flwrap
+    SUBDIR += freedv
     SUBDIR += gammu
     SUBDIR += ge-x2212
     SUBDIR += geoid
@@ -55,7 +54,6 @@
     SUBDIR += gnokii
     SUBDIR += gnuradio
     SUBDIR += gpredict
-    SUBDIR += gpsk31
     SUBDIR += gqrx
     SUBDIR += gr-osmosdr
     SUBDIR += grig
@@ -80,12 +78,16 @@
     SUBDIR += klog
     SUBDIR += kremotecontrol
     SUBDIR += kvasd
+    SUBDIR += libcodec2
     SUBDIR += libconcord
+    SUBDIR += libfap
     SUBDIR += libfec
     SUBDIR += libimobiledevice
     SUBDIR += libirman
     SUBDIR += libmodbus
     SUBDIR += librs232
+    SUBDIR += libsdr
+    SUBDIR += libsdr-gui
     SUBDIR += libticables2
     SUBDIR += libticalcs2
     SUBDIR += libusbmuxd
@@ -131,15 +133,19 @@
     SUBDIR += pr
     SUBDIR += predict
     SUBDIR += py-bulksms
+    SUBDIR += py-gammu
     SUBDIR += py-libconcord
     SUBDIR += py-libimobiledevice
     SUBDIR += py-lirc
+    SUBDIR += py-qt5-serialport
     SUBDIR += py-serial
     SUBDIR += pyla
     SUBDIR += qico
     SUBDIR += qpage
     SUBDIR += qrq
     SUBDIR += qsstv
+    SUBDIR += qt5-connectivity
+    SUBDIR += qt5-sensors
     SUBDIR += qt5-serialport
     SUBDIR += qtel
     SUBDIR += quisk
@@ -149,6 +155,7 @@
     SUBDIR += rubygem-ruby-termios
     SUBDIR += rxtx
     SUBDIR += scmxx
+    SUBDIR += sdr-wspr
     SUBDIR += ser2net
     SUBDIR += serialoverip
     SUBDIR += seyon
@@ -179,6 +186,7 @@
     SUBDIR += viewfax
     SUBDIR += vrflash
     SUBDIR += wsjt
+    SUBDIR += wsjtx
     SUBDIR += wspr
     SUBDIR += wwl
     SUBDIR += wy60
@@ -190,10 +198,10 @@
     SUBDIR += xnec2c
     SUBDIR += xnecview
     SUBDIR += xwota
+    SUBDIR += yaac
     SUBDIR += yagiuda
     SUBDIR += yaps
     SUBDIR += yfklog
-    SUBDIR += zmtx-zmrx
     SUBDIR += zssh
 
 .include <bsd.port.subdir.mk>

@@ -1,6 +1,21 @@
---- api/api.c.orig	2012-11-28 01:28:06 UTC
+--- api/api.c.orig	2015-08-05 16:53:17 UTC
 +++ api/api.c
-@@ -512,45 +512,47 @@ static int API_env_set(va_list ap)
+@@ -290,6 +290,14 @@ static int API_dev_close(va_list ap)
+ 	if (!err)
+ 		di->state = DEV_STA_CLOSED;
+ 
++	/*
++	 * FreeBSD loader(8) just loaded code to some random location that may
++	 * contain stale icache entries.  Now that the device is closed it's
++	 * about to run that code, so clean the caches.
++	 */
++	flush_dcache_all();
++	invalidate_icache_all();
++
+ 	return err;
+ }
+ 
+@@ -495,45 +503,47 @@ static int API_env_set(va_list ap)
   */
  static int API_env_enum(va_list ap)
  {
@@ -56,7 +71,7 @@
 +		if ((s = strchr(buf, '=')) != NULL)
 +		     *s = 0;
 +		search.key = buf;
-+		if ((i = hsearch_r(search, FIND, &match, &env_htab)) == 0) {
++		if ((i = hsearch_r(search, FIND, &match, &env_htab, 0)) == 0) {
 +			i = API_EINVAL;
 +			goto done;
  		}

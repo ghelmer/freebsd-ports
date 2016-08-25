@@ -17,8 +17,8 @@ COMMENT=	NoiaWarm Icons for Gnome
 
 RESTRICTED=	${REASON}
 
-USES=	tar:bzip2
-WRKSRC=		"${WRKDIR}/NoiaWarm"
+USES=		tar:bzip2
+NO_WRKSUBDIR=	yes
 
 .include "${.CURDIR}/../gnome-icons/bsd.gnome-icons.mk"
 .include <bsd.port.mk>

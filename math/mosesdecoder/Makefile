@@ -10,12 +10,12 @@ CATEGORIES=	math
 MAINTAINER=	demon@FreeBSD.org
 COMMENT=	A statistical machine translation system
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		bjam:${PORTSDIR}/devel/boost-jam
-LIB_DEPENDS=	libboost_thread.so:${PORTSDIR}/devel/boost-libs \
-		libRandLM.so:${PORTSDIR}/textproc/randlm \
-		libirstlm.so:${PORTSDIR}/textproc/irstlm
-RUN_DEPENDS=	lmplz:${PORTSDIR}/textproc/kenlm
+BUILD_DEPENDS=	bash:shells/bash \
+		bjam:devel/boost-jam
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+		libRandLM.so:textproc/randlm \
+		libirstlm.so:textproc/irstlm
+RUN_DEPENDS=	lmplz:textproc/kenlm
 
 BROKEN_FreeBSD_9=	does not link
 
@@ -31,7 +31,7 @@ MAKE_ENV+=	BOOST_BUILD_PATH=${WRKSRC}/jam-files/boost-build
 
 post-patch:
 	@${FIND} ${WRKSRC}/scripts \( -name "*.pl" -o -name "*.perl" -o -name "*.cgi" \) -exec \
-		${REINPLACE_CMD} -i '' -e '1s|${perl_OLD_CMD}|${perl_CMD}|' {} \;
+		${REINPLACE_CMD} -i '' -e '1s|/usr/bin/perl|${perl_CMD}|' {} \;
 
 do-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} bjam --with-boost=${LOCALBASE} --with-irstlm=${LOCALBASE} --with-randlm=${LOCALBASE} --without-tcmalloc --notrace --toolset=${CHOSEN_COMPILER_TYPE} debug-symbols=off ${_MAKE_JOBS}

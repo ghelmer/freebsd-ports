@@ -1,23 +1,23 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	xmltodict
-PORTVERSION=	0.9.0
+PORTVERSION=	0.10.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	xmj@chaot.net
+MAINTAINER=	johannes@perceivon.net
 COMMENT=	XML parser that returns python dictionaries
 
 LICENSE=	MIT
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose:${PORTSDIR}/devel/py-nose
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose:devel/py-nose
 
 USES=		python
 USE_PYTHON=	distutils autoplist
 
-regression-test: build
-	@cd ${WRKSRC} && nosetests
+do-test:
+	@cd ${WRKSRC} && ${LOCALBASE}/bin/nosetests-${PYTHON_VER}
 
 .include <bsd.port.mk>

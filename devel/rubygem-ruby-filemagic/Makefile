@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ruby-filemagic
-PORTVERSION=	0.7.0
+PORTVERSION=	0.7.1
 CATEGORIES=	devel ruby
 MASTER_SITES=	RG
 
@@ -13,7 +13,6 @@ LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	phppgadmin
 PORTVERSION=	5.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases www
 MASTER_SITES=	SF/${PORTNAME}/phpPgAdmin%20%5Bstable%5D/phpPgAdmin-5.1
 DISTNAME=	phpPgAdmin-${PORTVERSION}
@@ -13,18 +13,17 @@ COMMENT=	Web Based Postgres Administration
 
 LICENSE=	GPLv2
 
-USES=		cpe shebangfix tar:bzip2
-SHEBANG_FILES=	lang/synch
-CPE_VENDOR=	phppgadmin_project
+NO_ARCH=	yes
+NO_BUILD=	yes
+USES=		cpe tar:bzip2 shebangfix
 .if !defined(WITHOUT_PHP_DEPENDS)
 USE_PHP=	pgsql pcre session
 .endif
-NO_BUILD=	YES
+
+CPE_VENDOR=	phppgadmin_project
+SHEBANG_FILES=	lang/synch
 PGADMDIR?=	www/phpPgAdmin
 PLIST_SUB+=	PGADMDIR=${PGADMDIR}
-PGADMOLDDIR?=	www/data-dist/phpPgAdmin
-PLIST_SUB+=	PGADMOLDDIR=${PGADMOLDDIR}
-NO_ARCH=	yes
 
 pre-everything::
 	@${ECHO_CMD} "# you can customize the installation directory"

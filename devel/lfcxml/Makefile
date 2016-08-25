@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	lfcxml
-PORTVERSION=	1.1.7
-PORTREVISION=	1
+PORTVERSION=	1.2.4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.lemke-it.com/
 
@@ -11,7 +10,7 @@ COMMENT=	C++ XML library, used for databases/cego
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	liblfcbase.so:${PORTSDIR}/devel/lfcbase
+LIB_DEPENDS=	liblfcbase.so:devel/lfcbase
 
 USES=		libtool
 GNU_CONFIGURE=	yes

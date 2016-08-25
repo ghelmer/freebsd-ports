@@ -2,15 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	cmake
-PORTVERSION=	3.3.1
-PORTREVISION?=	0
+PORTVERSION=	3.5.2
+PORTREVISION?=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://www.cmake.org/files/v3.3/
+MASTER_SITES=	https://www.cmake.org/files/v${PORTVERSION:R}/
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT?=	Cross-platform Makefile generator
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
 USE_KDE4=	# env
 CONFIGURE_ENV=	MAKE=make
@@ -28,12 +29,12 @@ OPTIONS_SUB=	yes
 USES+=		libarchive
 HAS_CONFIGURE=	yes
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libjsoncpp.so:${PORTSDIR}/devel/jsoncpp
-RUN_DEPENDS=	${LOCALBASE}/share/cmake/Modules/CMake.cmake:${PORTSDIR}/devel/cmake-modules
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libexpat.so:textproc/expat2 \
+		libjsoncpp.so:devel/jsoncpp
+RUN_DEPENDS=	${LOCALBASE}/share/cmake/Modules/CMake.cmake:devel/cmake-modules
 
-MANPAGES_BUILD_DEPENDS=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
+MANPAGES_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 MANPAGES_CONFIGURE_ON=	--sphinx-man
 .endif
 
@@ -55,7 +56,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,/opt/kde4,${KDE4_PREFIX},g' \
 		${WRKSRC}/Modules/FindKDE4.cmake
 	@${REINPLACE_CMD} -e 's,/usr/include,${LOCALBASE}/include,' \
-	   	${WRKSRC}/Modules/FindDCMTK.cmake
+		${WRKSRC}/Modules/FindDCMTK.cmake
 	@${FIND} ${WRKSRC} -name "*.bak" -delete -o -name "*.orig" -delete
 
 # cmake-gui(1) is installed by devel/cmake-gui. Remove the man page's source to

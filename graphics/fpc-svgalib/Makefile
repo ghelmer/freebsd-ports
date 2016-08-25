@@ -1,7 +1,6 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	graphics lang
 PKGNAMESUFFIX=	-svgalib
 
@@ -17,6 +16,6 @@ EXTRACTUNITDIR=	${WRKUNITDIR}
 OPTIONS_DEFINE=	SVGA
 SVGA_DESC=	Install svgalib low level console graphics library
 
-SVGA_LIB_DEPENDS=	libvga.so:${PORTSDIR}/graphics/svgalib
+SVGA_LIB_DEPENDS=	libvga.so:graphics/svgalib
 
 .include "${MASTERDIR}/Makefile"

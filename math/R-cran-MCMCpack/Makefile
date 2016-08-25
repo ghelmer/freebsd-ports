@@ -12,10 +12,8 @@ COMMENT=	Markov chain Monte Carlo Package
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	R-cran-coda>0.11.3:${PORTSDIR}/math/R-cran-coda
+RUN_DEPENDS=	R-cran-coda>0.11.3:math/R-cran-coda
 
-# Actually required 4.0 or later.
-USE_GCC=	any
-USES=	cran:auto-plist
+USES=		cran:auto-plist,compiles
 
 .include <bsd.port.mk>

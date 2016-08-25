@@ -5,7 +5,7 @@ PORTNAME=	kpcal
 PORTVERSION=	2.0
 PORTREVISION=	2
 CATEGORIES=	japanese
-MASTER_SITES=	LOCAL/yoichi
+MASTER_SITES=	LOCAL/cy
 
 PATCH_SITES=	http://www.tamaru.kuee.kyoto-u.ac.jp/~tsuchiya/misc/kpcal/
 PATCHFILES=	${PORTNAME}-${PORTVERSION}-20040518.patch

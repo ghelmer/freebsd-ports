@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	freetds
-PORTVERSION=	0.99.307
+PORTVERSION=	1.00.38
 PORTEPOCH=	1
 CATEGORIES=	databases
 MASTER_SITES=	ftp://ftp.freetds.org/pub/freetds/current/
@@ -15,7 +15,7 @@ COMMENT=	Sybase/Microsoft TDS protocol library
 LICENSE=	LGPL20
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-dev.${PORTVERSION}
-TDS_VER?=	7.2
+TDS_VER?=	7.4
 USES=		autoreconf gettext-tools gmake iconv libtool:keepla pkgconfig tar:bzip2
 GNU_GONFIGURE=	yes
 CPPFLAGS+=	"-I${LOCALBASE}/include"
@@ -37,12 +37,12 @@ OPTIONS_RADIO_ODBC=	IODBC UNIXODBC
 ODBCWIDE_DESC=		Enable Wide ODBC Support
 OPENSSL_USE=		OPENSSL=yes
 OPENSSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
-GNUTLS_LIB_DEPENDS=	libgnutls.so:${PORTSDIR}/security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_CONFIGURE_ON=	--with-gnutls
-IODBC_LIB_DEPENDS=	libiodbc.so:${PORTSDIR}/databases/libiodbc
+IODBC_LIB_DEPENDS=	libiodbc.so:databases/libiodbc
 IODBC_CONFIGURE_ON=	--with-iodbc=${LOCALBASE}
 IODBC_CPPFLAGS=		-I${LOCALBASE}/include/libiodbc
-UNIXODBC_LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC
+UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 UNIXODBC_CONFIGURE_ON=	--with-unixodbc=${LOCALBASE}
 ODBCWIDE_CONFIGURE_ON=	--enable-odbc-wide
 

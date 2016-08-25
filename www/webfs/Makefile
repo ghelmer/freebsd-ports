@@ -10,7 +10,7 @@ MASTER_SITES=	http://dl.bytesex.org/releases/webfs/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple http server for static content
 
-RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:${PORTSDIR}/misc/mime-support
+RUN_DEPENDS=	${LOCALBASE}/etc/mime.types:misc/mime-support
 
 WRKSRC=		${WRKDIR}/${DISTNAME:S/_/-/}
 USES=		gmake
@@ -25,14 +25,12 @@ MIMEFILE?=	${LOCALBASE}/etc/mime.types
 
 USE_RC_SUBR=	webfsd
 
-.include <bsd.port.options.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/mime.types|${MIMEFILE}|' ${WRKSRC}/GNUmakefile
 	@${REINPLACE_CMD} -e 's|/etc/mime.types|${MIMEFILE}|' ${WRKSRC}/webfsd.man
-.if empty(PORT_OPTIONS:MOPENSSL)
+
+post-patch-OPENSSL-off:
 	@${REINPLACE_CMD} -e '/^USE_SSL.*:=/s/:=.*/:= no/' ${WRKSRC}/GNUmakefile
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/webfsd ${STAGEDIR}${PREFIX}/sbin

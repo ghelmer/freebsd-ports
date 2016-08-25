@@ -11,6 +11,10 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client-side implementation of the challenge oper system in ircd-ratbox
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 CONFIGURE_WRKSRC=${WRKSRC}/${PORTNAME}
 BUILD_WRKSRC=	${WRKSRC}/${PORTNAME}
 

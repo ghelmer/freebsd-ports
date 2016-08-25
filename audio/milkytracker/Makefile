@@ -15,8 +15,8 @@ LICENSE=	GPLv3
 
 NOT_FOR_ARCH=	powerpc
 
-LIB_DEPENDS+=	libjack.so:${PORTSDIR}/audio/jack \
-		libzzip.so:${PORTSDIR}/devel/zziplib
+LIB_DEPENDS+=	libjack.so:audio/jack \
+		libzzip.so:devel/zziplib
 
 USES=		pkgconfig
 GNU_CONFIGURE=	yes
@@ -32,12 +32,13 @@ ICONS=		carton.ico carton.png
 
 OPTIONS_DEFINE=	DOCS
 
+BROKEN_powerpc64=	Does not build on powerpc64
+
 post-install:
 .for f in ${ICONS}
 	${INSTALL_DATA} ${WRKSRC}/resources/pictures/${f} \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${f:C/carton/milkytracker/}
 .endfor
-	@${MKDIR} ${STAGEDIR}${DESKTOPDIR}
 	${INSTALL_DATA} ${WRKSRC}/resources/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}

@@ -13,13 +13,13 @@ DIST_SUBDIR=	trac
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Redirect users to the login screen on PermissionError
 
-RUN_DEPENDS=	tracd:${PORTSDIR}/www/trac
+RUN_DEPENDS=	tracd:www/trac
 
 FETCH_BEFORE_ARGS=	-o ${DISTFILES}
 REV=			13353
 USES=			python zip:infozip
 USE_PYTHON=		distutils autoplist
 WRKSRC=			${WRKDIR}/${PORTNAME}plugin/tags/${PORTVERSION}
+NO_ARCH=		yes
 
-.include "${.CURDIR}/../../www/trac/plugin.mk"
 .include <bsd.port.mk>

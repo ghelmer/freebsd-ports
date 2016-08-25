@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	glances
-PORTVERSION=	2.4.2
+PORTVERSION=	2.5.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	CLI curses based monitoring tool for GNU/Linux and BSD OS
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=2.1.1:${PORTSDIR}/sysutils/py-psutil
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=2.1.1:sysutils/py-psutil
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes
@@ -23,6 +23,7 @@ GH_ACCOUNT=	nicolargo
 
 USES=		python
 USE_PYTHON=	autoplist distutils
+NO_ARCH=	yes
 
 PLIST_FILES=	%%ETCDIR%%/glances.conf.sample \
 		man/man1/glances.1.gz

@@ -10,7 +10,11 @@ MASTER_SITES=	http://www.linuxnet.com/drivers/readers/files/
 MAINTAINER=	arved@FreeBSD.org
 COMMENT=	IFD Test Suite for PC/SC Lite
 
-LIB_DEPENDS=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
 USES=		gmake
 NOMAN=

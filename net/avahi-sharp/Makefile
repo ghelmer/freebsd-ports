@@ -8,7 +8,7 @@ PKGNAMESUFFIX=	-sharp
 MAINTAINER=	mono@FreeBSD.org
 COMMENT=	Mono bindings for Avahi service discovery
 
-LIB_DEPENDS=	libavahi-core.so:${PORTSDIR}/net/avahi-app
+LIB_DEPENDS=	libavahi-core.so:net/avahi-app
 
 USES=		mono
 MASTERDIR=	${.CURDIR}/../avahi-app
@@ -26,8 +26,5 @@ post-patch:
 		s|@GLIB_DLNAME@|libavahi-glib.so|g' \
 		${BUILD_WRKSRC}/avahi-sharp.dll.config.in
 	@${CP} ${WRKSRC}/avahi-sharp/avahi-sharp.dll.config.in ${WRKSRC}/avahi-sharp/avahi-sharp.dll.config
-
-post-install:
-	@${RMDIR} ${STAGEDIR}${PREFIX}/etc/avahi
 
 .include "${MASTERDIR}/Makefile"

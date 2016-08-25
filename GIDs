@@ -95,12 +95,16 @@ trircd:*:154:
 xorp:*:155:
 monetdb:*:156:
 barman:*:157:
+pootle:*:158:
 nocat:*:159:
+_ypldap:*:160:
+tile38:*:170:
 sfs:*:171:
 agk:*:172:
 polipo:*:173:
 flowtools:*:174:
 twms:*:175:
+mlvpn:*:176:
 gdnsd:*:179:
 rt:*:180:
 nagios:*:181:
@@ -124,6 +128,8 @@ yate:*:204:
 gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
+_dnsdist:*:208:
+gogs:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
@@ -134,6 +140,7 @@ bs:*:220:
 rtpproxy:*:222:
 postgrey:*:225:
 sqlgrey:*:226:
+_hfm:*:227:
 kismet:*:229:
 aprsd:*:240:
 tnc:*:241:
@@ -142,6 +149,7 @@ fcron:*:247:
 _adsuck:*:253:
 _tor:*:256:
 _smtpd:*:257:
+_smtpq:*:258:
 meta1s:*:260:
 meta1q:*:261:
 meta1c:*:262:meta1s
@@ -157,6 +165,7 @@ devmon:*:283:
 vnstat:*:284:
 exaddos:*:285:exaddos
 rancid:*:286:
+ntopng:*:288:
 backuppc:*:300:
 _sphinx:*:312:
 dkfilter:*:325:
@@ -174,6 +183,7 @@ ldap:*:389:
 tiarra:*:398:
 uhub:*:411:
 drweb:*:426:
+varnish:*:429:
 quasselcore:*:442:
 callweaver:*:444:
 ecartis:*:450:
@@ -184,10 +194,12 @@ slurm:*:468:
 consul:*:469:
 serf:*:470:
 vault:*:471:
+nomad:*:472:
 _bbstored:*:505:
 radmind:*:506:
 skkserv:*:507:
 pwhois:*:512:
+davmail:*:521:
 nullmail:*:522:
 freevo:*:523:
 dkimproxy:*:525:
@@ -214,6 +226,7 @@ _xsi:*:600:
 _tss:*:601:
 _pkcs11:*:602:
 freeswitch:*:610:
+ntpa:*:615:
 caldavd:*:639:
 monkeysphere:*:641:
 aox:*:666:
@@ -225,6 +238,7 @@ openxpki:*:777:
 zetacoin:*:780:
 foreman_proxy:*:812:
 puppet:*:814:
+uchiwa:*:815:
 btsync:*:817:
 jenkins:*:818:
 rundeck:*:819:
@@ -238,9 +252,16 @@ munin:*:842:
 dahdi:*:843:asterisk
 subsonic:*:844:
 sogod:*:846:
+domoticz:*:847:
+graylog:*:848:
+guacamole:*:899:
+seafile:*:900:
 fossy:*:901:www
 scanlogd:*:902:
 _ocserv:*:903:
+grafana:*:904:
+artifactory:*:905:
+opentsdb:*:906:
 influxd:*:907:
 riemann:*:908:
 proxy65:*:909:
@@ -326,6 +347,7 @@ rcynic:*:994:
 rpkirtr:*:995:
 tarantool:*:996:
 bareos:*:997:
+_rmilter:*:998:
 ebnetd:*:999:
 nogroup:*:65533:
 nobody:*:65534:

@@ -7,12 +7,12 @@
     SUBDIR += 9box
     SUBDIR += 9menu
     SUBDIR += alltray
+    SUBDIR += altyo
     SUBDIR += antimicro
     SUBDIR += appres
     SUBDIR += apwal
     SUBDIR += arandr
     SUBDIR += aterm
-    SUBDIR += avant-window-navigator
     SUBDIR += babl
     SUBDIR += bbappconf
     SUBDIR += bbdock
@@ -127,6 +127,7 @@
     SUBDIR += kgamma
     SUBDIR += konsole
     SUBDIR += leechcraft
+    SUBDIR += lemonbar
     SUBDIR += libICE
     SUBDIR += libSM
     SUBDIR += libX11
@@ -159,6 +160,7 @@
     SUBDIR += libdmx
     SUBDIR += libdnd
     SUBDIR += libexo
+    SUBDIR += libfakekey
     SUBDIR += libfm
     SUBDIR += libfm-extra
     SUBDIR += libgnome
@@ -211,7 +213,6 @@
     SUBDIR += mxico
     SUBDIR += numlockx
     SUBDIR += nvidia-driver
-    SUBDIR += nvidia-driver-173
     SUBDIR += nvidia-driver-304
     SUBDIR += nvidia-driver-340
     SUBDIR += nvidia-settings
@@ -234,6 +235,7 @@
     SUBDIR += printscreen
     SUBDIR += props
     SUBDIR += py-qt4-opengl
+    SUBDIR += py-qt5-opengl
     SUBDIR += qimageblitz
     SUBDIR += qt4-graphicssystems-opengl
     SUBDIR += qt4-inputmethods
@@ -334,6 +336,7 @@
     SUBDIR += xcb-util-keysyms
     SUBDIR += xcb-util-renderutil
     SUBDIR += xcb-util-wm
+    SUBDIR += xcbautolock
     SUBDIR += xclick
     SUBDIR += xclip
     SUBDIR += xclipboard

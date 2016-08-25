@@ -3,7 +3,7 @@
 
 PORTNAME=	fontforge
 PORTVERSION=	20150824
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -13,20 +13,21 @@ COMMENT=	Type 1/TrueType/OpenType/bitmap font editor
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:${PORTSDIR}/devel/uthash \
-		${LOCALBASE}/bin/gnulib-tool:${PORTSDIR}/devel/gnulib
-LIB_DEPENDS=	libuninameslist.so:${PORTSDIR}/textproc/libuninameslist \
-		libtiff.so:${PORTSDIR}/graphics/tiff \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libgif.so:${PORTSDIR}/graphics/giflib \
-		libspiro.so:${PORTSDIR}/graphics/libspiro \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libltdl.so:${PORTSDIR}/devel/libltdl
+BUILD_DEPENDS=	${LOCALBASE}/include/uthash.h:devel/uthash \
+		${LOCALBASE}/bin/gnulib-tool:devel/gnulib
+LIB_DEPENDS=	libuninameslist.so:textproc/libuninameslist \
+		libtiff.so:graphics/tiff \
+		libpng.so:graphics/png \
+		libgif.so:graphics/giflib \
+		libspiro.so:graphics/libspiro \
+		libfreetype.so:print/freetype2 \
+		libltdl.so:devel/libltdl
 
 USE_GITHUB=	yes
 
 USES=		autoreconf:build desktop-file-utils execinfo gettext gmake iconv \
-		jpeg libtool pkgconfig python shared-mime-info shebangfix
+		jpeg libtool pkgconfig python shared-mime-info shebangfix \
+		compiler
 SHEBANG_FILES=	pycontrib/gdraw/__init__.py \
 		pycontrib/gdraw/gdraw.py
 USE_XORG=	ice x11 xi xkbui
@@ -61,7 +62,7 @@ MASTER_SITES+=	http://savannah.nongnu.org/download/freetype/:freetype \
 		http://www.funet.fi/pub/mirrors/ftp.freetype.org/freetype2/:freetype \
 		http://ftp.sunet.se/pub/text-processing/freetype/freetype2/:freetype \
 		ftp://ftp.freetype.org/freetype/freetype2/:freetype
-FREETYPE_VERSION=	2.6
+FREETYPE_VERSION=	2.6.2
 FREETYPE_SRC=	freetype-${FREETYPE_VERSION}.tar.bz2
 DISTFILES+=	${FREETYPE_SRC:C/$/:freetype/}
 CONFIGURE_ARGS+=	--enable-freetype-debugger=${WRKDIR}/freetype-${FREETYPE_VERSION}
@@ -80,4 +81,14 @@ pre-configure:
 		${LOCALBASE}/bin/gnulib-tool --aux-dir=config --m4-base=m4 --libtool --symlink --import $${gnulib_modules}' ; \
 		export LIBTOOLIZE=true ; ${AUTORECONF} -f -i)
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+# waiting for the llvm bug to fix. http://llvm.org/bugs/show_bug.cgi?id=21903
+.if ${ARCH} == i386 && ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} > 36
+BUILD_DEPENDS+=	clang36:lang/clang36
+CPP=		clang-cpp36
+CC=		clang36
+CXX=		clang++36
+.endif
+
+.include <bsd.port.post.mk>

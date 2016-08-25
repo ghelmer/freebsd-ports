@@ -3,6 +3,7 @@
 
 PORTNAME=	anamnesis
 PORTVERSION=	1.0.4
+PORTREVISION=	1
 CATEGORIES=	deskutils
 MASTER_SITES=	SF
 
@@ -11,9 +12,9 @@ COMMENT=	Clipboard manager that stores all clipboard history
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:${PORTSDIR}/databases/py-sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}gtk2>0:${PORTSDIR}/x11-toolkits/py-gtk2 \
-		${PYTHON_PKGNAMEPREFIX}xdg>0:${PORTSDIR}/devel/py-xdg
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+		${PYTHON_PKGNAMEPREFIX}gtk2>0:x11-toolkits/py-gtk2 \
+		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg
 
 USES=		python
 PORTDOCS=	ChangeLog README
@@ -36,7 +37,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/source/${f}.pyc ${STAGEDIR}${PREFIX}/share/anamnesis
 	${INSTALL_DATA} ${WRKSRC}/source/${f}.pyo ${STAGEDIR}${PREFIX}/share/anamnesis
 .endfor
-	${LN} -sf ${PREFIX}/share/anamnesis/anamnesis.py ${STAGEDIR}${PREFIX}/bin/anamnesis
+	${LN} -sf ../share/anamnesis/anamnesis.py ${STAGEDIR}${PREFIX}/bin/anamnesis
 	${INSTALL_DATA} ${WRKSRC}/anamnesis.cfg ${STAGEDIR}${PREFIX}/etc/anamnesis.cfg.sample
 	${INSTALL_MAN} ${WRKSRC}/man/anamnesis.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 

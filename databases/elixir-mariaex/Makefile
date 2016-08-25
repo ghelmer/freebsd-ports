@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	mariaex
-PORTVERSION=	0.4.3
+PORTVERSION=	0.7.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 PKGNAMEPREFIX=	elixir-
@@ -15,7 +15,9 @@ USES=		elixir
 USE_GITHUB=	yes
 GH_ACCOUNT=	xerions
 
-MIX_BUILD_DEPS=	devel/elixir-decimal
+MIX_BUILD_DEPS=	devel/elixir-connection \
+		devel/elixir-decimal \
+		databases/elixir-db_connection
 MIX_RUN_DEPS:=	${MIX_BUILD_DEPS}
 MIX_REWRITE=	yes
 

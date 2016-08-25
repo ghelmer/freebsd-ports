@@ -10,8 +10,8 @@ EXTRACT_SUFX=	.t.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SKK's dictionary for Canna
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/cannaserver:${PORTSDIR}/japanese/canna-server
-BUILD_DEPENDS=	mkbindic:${PORTSDIR}/japanese/canna-server
+RUN_DEPENDS=	${LOCALBASE}/sbin/cannaserver:japanese/canna-server
+BUILD_DEPENDS=	mkbindic:japanese/canna-server
 
 NO_WRKSUBDIR=	yes
 
@@ -38,7 +38,7 @@ INSTALL_DIC=	${INSTALL} ${COPY} -m 664
 OPTIONS_DEFINE=	DOCS
 
 do-build:
-	cd ${WRKDIR} && mkbindic ${PORTNAME}.t
+	cd ${WRKSRC} && mkbindic ${PORTNAME}.t
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DICDIR}

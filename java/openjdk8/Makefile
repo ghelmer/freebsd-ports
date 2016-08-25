@@ -2,6 +2,7 @@
 
 PORTNAME=	openjdk
 PORTVERSION=	${JDK_MAJOR_VERSION}.${JDK_UPDATE_VERSION}.${JDK_BUILD_NUMBER:S/^0//}
+PORTREVISION=	3
 CATEGORIES=	java devel
 MASTER_SITES=	http://download.java.net/openjdk/jdk${JDK_MAJOR_VERSION}/promoted/b${DIST_BUILD_NUMBER}/:jdk \
 		https://adopt-openjdk.ci.cloudbees.com/job/jtreg/${JTREG_JENKINS_BUILD}/artifact/:jtreg \
@@ -23,22 +24,23 @@ PATCHFILES=	patch-8u05-b13.xz \
 		patch-8u66-b17-1.xz \
 		patch-8u72-b15.xz \
 		patch-8u74-b02.xz \
-		patch-8u77-b03.xz
+		patch-8u77-b03.xz \
+		patch-8u92-b14.xz
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	zip:${PORTSDIR}/archivers/zip \
-		${LOCALBASE}/include/cups/cups.h:${PORTSDIR}/print/cups-client \
-		bash:${PORTSDIR}/shells/bash
-LIB_DEPENDS=	libasound.so:${PORTSDIR}/audio/alsa-lib \
-		libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libgif.so:${PORTSDIR}/graphics/giflib
-RUN_DEPENDS=	javavm:${PORTSDIR}/java/javavmwrapper \
-		dejavu>0:${PORTSDIR}/x11-fonts/dejavu
+BUILD_DEPENDS=	zip:archivers/zip \
+		${LOCALBASE}/include/cups/cups.h:print/cups \
+		bash:shells/bash
+LIB_DEPENDS=	libasound.so:audio/alsa-lib \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libgif.so:graphics/giflib
+RUN_DEPENDS=	javavm:java/javavmwrapper \
+		dejavu>0:x11-fonts/dejavu
 
 USES=		compiler:features dos2unix gmake iconv pkgconfig \
 		shebangfix
@@ -46,10 +48,10 @@ USE_AUTOTOOLS=	autoconf
 USE_XORG=	x11 xext xi xrender xt xtst
 
 .if !exists(/usr/bin/unzip)
-BUILD_DEPENDS+=	${UNZIP_CMD}:${PORTSDIR}/archivers/unzip
+BUILD_DEPENDS+=	${UNZIP_CMD}:archivers/unzip
 .endif
 
-ONLY_FOR_ARCHS=	amd64 armv6 armv6hf i386
+ONLY_FOR_ARCHS=	amd64 armv6 i386
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 DOS2UNIX_FILES= jdk/src/bsd/doc/man/appletviewer.1 \
@@ -193,16 +195,16 @@ JRE_IMAGEDIR=	${JDK_BUILDDIR}/images/j2sdk-image/jre
 .else
 JRE_IMAGEDIR=	${JDK_BUILDDIR}/images/j2re-image
 .endif
-JDK_JVMDIR=	lib/${ARCH:C/armv6.*/arm/}
-JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:C/armv6.*/arm/:S/i386/x86/}
+JDK_JVMDIR=	lib/${ARCH:S/armv6/arm/}
+JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/armv6/arm/:S/i386/x86/}
 INSTALLDIR=	${PREFIX}/${PKGBASE}
 
 NO_CCACHE=		yes
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	8
-JDK_UPDATE_VERSION=	77
-JDK_BUILD_NUMBER=	03
+JDK_UPDATE_VERSION=	92
+JDK_BUILD_NUMBER=	14
 DIST_BUILD_NUMBER=	132
 JTREG_VERSION=		4.1
 JTREG_BUILD_NUMBER=	b08
@@ -237,7 +239,7 @@ POLICY_DESC=		Install the Unlimited Strength Policy Files
 TZUPDATE_DESC=		Update the time zone data
 
 POLICY_CONFIGURE_ENABLE=	unlimited-crypto
-TZUPDATE_RUN_DEPENDS=	java-zoneinfo>0:${PORTSDIR}/java/java-zoneinfo
+TZUPDATE_RUN_DEPENDS=	java-zoneinfo>0:java/java-zoneinfo
 
 JAVAVMS_COMMENT=	OpenJDK${JDK_MAJOR_VERSION}
 
@@ -254,7 +256,7 @@ TEST_DESC=		Run regression tests
 
 DEBUG_VARS=		JDK_BUILD_TYPE=slowdebug
 DEBUGFAST_VARS=		JDK_BUILD_TYPE=fastdebug
-RELEASE_BUILD_DEPENDS_OFF=	${LOCALBASE}/bin/objcopy:${PORTSDIR}/devel/binutils
+RELEASE_BUILD_DEPENDS_OFF=	${LOCALBASE}/bin/objcopy:devel/binutils
 RELEASE_CONFIGURE_ON=	--disable-debug-symbols
 RELEASE_VARS=		JDK_BUILD_TYPE=release
 RELEASE_VARS_OFF=	OBJCOPY=${LOCALBASE}/bin/objcopy
@@ -285,7 +287,7 @@ CONFIGURE_ARGS+=	--with-tools-dir="${TOOLS_DIR:u:S/ /:/g}"
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH:Marmv6*} || ${ARCH} == "i386"
+.if ${ARCH} == "armv6" || ${ARCH} == "i386"
 # XXX We must limit max heap size for 32-bit targets.
 CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs="-Xmx768m"
 MAKE_ENV+=	JAVADOC_CMD_MEM="-Xmx768m"
@@ -305,12 +307,12 @@ EXTRA_PATCHES=	${PATCHDIR}/armv6.patch
 JDK_BUILD_JVM=	server
 .else
 JDK_BUILD_JVM=	zero
-LIB_DEPENDS+=	libffi.so:${PORTSDIR}/devel/libffi
+LIB_DEPENDS+=	libffi.so:devel/libffi
 .endif
 
 BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk8 \
 		${LOCALBASE}/openjdk7
-.if ${ARCH:Marmv6*}
+.if ${ARCH} == "armv6"
 BOOTSTRAP_JDKS+=	${LOCALBASE}/bootstrap-openjdk
 .endif
 
@@ -323,13 +325,13 @@ BOOTSTRAPJDKDIR=	${BJDK}
 
 # if no valid jdk found, set dependency
 .if !defined(BOOTSTRAPJDKDIR)
-.  if ${ARCH:Marmv6*}
+.  if ${ARCH} == "armv6"
 # bootstrap-openjdk is based on openjdk7 and can compile openjdk8
 BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk
-BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:${PORTSDIR}/java/bootstrap-openjdk
+BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk
 .  else
 BOOTSTRAPJDKDIR?=	${LOCALBASE}/openjdk7
-BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:${PORTSDIR}/java/openjdk7
+BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/openjdk7
 .  endif
 .endif
 

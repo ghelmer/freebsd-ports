@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	django-assets
-PORTVERSION=	0.10
-PORTREVISION=	1
+PORTVERSION=	0.11
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +11,12 @@ COMMENT=	Compress and merge CSS and Javascript files
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django>0:${PORTSDIR}/www/py-django \
-		${PYTHON_PKGNAMEPREFIX}webassets>0:${PORTSDIR}/www/py-webassets
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django18>0:www/py-django18 \
+		${PYTHON_PKGNAMEPREFIX}webassets>0:www/py-webassets
 
 USES=		python
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

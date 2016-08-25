@@ -1,2 +1,4 @@
-SHA256 (mpfr-3.1.2/mpfr-3.1.2.tar.xz) = 399d0f47ef6608cc01d29ed1b99c7faff36d9994c45f36f41ba250147100453b
-SIZE (mpfr-3.1.2/mpfr-3.1.2.tar.xz) = 1074388
+SHA256 (mpfr-3.1.4/mpfr-3.1.4.tar.xz) = 761413b16d749c53e2bfd2b1dfaa3b027b0e793e404b90b5fbaeef60af6517f5
+SIZE (mpfr-3.1.4/mpfr-3.1.4.tar.xz) = 1122152
+SHA256 (mpfr-3.1.4/patch01) = 9a03c3f304feaff747d1832f4a0f3653bbd24764df403305add0b76ca6cd6541
+SIZE (mpfr-3.1.4/patch01) = 2028

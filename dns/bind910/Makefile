@@ -2,7 +2,7 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-PORTVERSION=	${ISCVERSION:S/-P/P/}
+PORTVERSION=	${ISCVERSION:S/-P/P/:S/b/.b/}
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
 PORTREVISION=	0
@@ -29,7 +29,7 @@ COMMENT=	BIND DNS suite with updated DNSSEC and DNS64
 LICENSE=	ISCL
 
 # ISC releases things like 9.8.0-P1, which our versioning doesn't like
-ISCVERSION=	9.10.3-P2
+ISCVERSION=	9.10.4-P2
 
 MAKE_JOBS_UNSAFE=	yes
 
@@ -41,7 +41,7 @@ CPE_VERSION=	${ISCVERSION:C/-.*//}
 CPE_UPDATE=	${ISCVERSION:C/.*-//:tl}
 .endif
 
-LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
+LIB_DEPENDS=	libxml2.so:textproc/libxml2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--localstatedir=/var --disable-linux-caps \
@@ -49,6 +49,7 @@ CONFIGURE_ARGS+=	--localstatedir=/var --disable-linux-caps \
 		--with-randomdev=/dev/random \
 		--with-libxml2=${LOCALBASE} \
 		--with-readline=-ledit \
+		--with-dlopen=yes \
 		--sysconfdir=${ETCDIR}
 .if defined(BIND_TOOLS_SLAVE)
 CONFIGURE_ARGS+=	--disable-shared
@@ -61,7 +62,7 @@ CONFLICTS+=	bind9*-9.[456789].* bind9*-sdb-9.[456789].*
 SUB_FILES=	pkg-message
 .endif
 
-OPTIONS_DEFAULT=	IPV6 SSL THREADS SIGCHASE IDN GSSAPI_NONE
+OPTIONS_DEFAULT=	SSL THREADS SIGCHASE IDN GSSAPI_NONE
 OPTIONS_DEFINE=		IDN LARGE_FILE PYTHON START_LATE \
 			FIXED_RRSET SIGCHASE IPV6 THREADS FILTER_AAAA
 OPTIONS_RADIO=	CRYPTO GOSTDEF
@@ -69,7 +70,7 @@ OPTIONS_RADIO_CRYPTO=	SSL NATIVE_PKCS11
 OPTIONS_RADIO_GOSTDEF=	GOST GOST_ASN1
 
 .if !defined(BIND_TOOLS_SLAVE)
-OPTIONS_DEFAULT+=	RRL
+OPTIONS_DEFAULT+=	RRL DLZ_FILESYSTEM
 OPTIONS_DEFINE+=	LINKS RPZ_NSIP RPZ_NSDNAME RRL DOCS NEWSTATS GEOIP \
 			MINCACHE PORTREVISION FETCHLIMIT QUERYTRACE
 OPTIONS_GROUP=		DLZ
@@ -133,7 +134,7 @@ NEWSTATS_CONFIGURE_ENABLE=	newstats
 
 IDN_USES=		iconv
 IDN_CONFIGURE_ON=	--with-idn=${LOCALBASE} ${ICONV_CONFIGURE_BASE}
-IDN_LIB_DEPENDS=	libidnkit.so:${PORTSDIR}/dns/idnkit
+IDN_LIB_DEPENDS=	libidnkit.so:dns/idnkit
 IDN_CONFIGURE_OFF=	--without-idn
 
 LARGE_FILE_CONFIGURE_ENABLE=	largefile
@@ -147,7 +148,7 @@ FILTER_AAAA_CONFIGURE_ENABLE=	filter-aaaa
 NATIVE_PKCS11_CONFIGURE_ENABLE=	native-pkcs11
 
 GEOIP_CONFIGURE_WITH=	geoip
-GEOIP_LIB_DEPENDS=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 GOST_CONFIGURE_ON=	--with-gost
 GOST_ASN1_CONFIGURE_ON=	--with-gost=asn1
@@ -167,10 +168,10 @@ RPZ_NSDNAME_CONFIGURE_ENABLE=	rpz-nsdname
 RRL_CONFIGURE_ENABLE=	rrl
 
 DLZ_MYSQL_CONFIGURE_ON=	--with-dlz-mysql=yes
-DLZ_MYSQL_USE=		mysql=yes
+DLZ_MYSQL_USES=		mysql
 
 DLZ_BDB_CONFIGURE_ON=	--with-dlz-bdb=yes
-DLZ_BDB_USE=		bdb=yes
+DLZ_BDB_USES=		bdb
 
 DLZ_LDAP_CONFIGURE_ON=	--with-dlz-ldap=yes
 DLZ_LDAP_USE=		openldap=yes
@@ -219,21 +220,23 @@ SUB_LIST+=	NOBASE="" BASE="@comment "
 USE_RC_SUBR+=	named
 SUB_FILES+=	named.conf
 .endif # !defined(BIND_TOOLS_SLAVE)
-.if ${PORT_OPTIONS:MGOST} || ${PORT_OPTIONS:MGOST_ASN1}
-WITH_OPENSSL_PORT=yes
-.endif
 .else
 PLIST_SUB+=	NOBASE="@comment " BASE=""
 SUB_LIST+=	NOBASE="@comment " BASE=""
-.if ${PORT_OPTIONS:MSSL}
-WITH_OPENSSL_PORT=	yes
-.endif
 .endif
 
 PKGDEINSTALL=	${PKGINSTALL}
 
 
 PORTDOCS=	*
+
+.include <bsd.port.pre.mk>
+
+.if ( ${PORT_OPTIONS:MGOST} || ${PORT_OPTIONS:MGOST_ASN1} ) && ${SSL_DEFAULT} == base
+BROKEN=	OpenSSL from the base system does not support GOST, add \
+	DEFAULT_VERSIONS+=ssl=openssl to your /etc/make.conf and rebuild everything \
+	that needs SSL.
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|readline/readline.h|editline/readline.h|; \
@@ -265,10 +268,6 @@ post-patch-PORTREVISION-on:
 		${WRKSRC}/version
 .endif
 
-post-patch-PORTREVISION-on:
-	@${REINPLACE_CMD} -e '/EXTENSIONS/s#=$$#=_${PORTREVISION}#' \
-		${WRKSRC}/version
-
 post-install:
 .if ${PORT_OPTIONS:MDOCS}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/arm
@@ -297,4 +296,4 @@ post-install:
 
 .endif	# BIND_TOOLS_SLAVE
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

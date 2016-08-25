@@ -36,17 +36,17 @@ PORTDOCS=	*
 
 .if ${PORT_OPTIONS:MJDOM}
 JARFILES+=	saxon9-jdom.jar
-RUN_DEPENDS+=	${JAVALIBDIR}/jdom.jar:${PORTSDIR}/java/jdom
+RUN_DEPENDS+=	${JAVALIBDIR}/jdom.jar:java/jdom
 .endif
 
 .if ${PORT_OPTIONS:MDOM4J}
 JARFILES+=	saxon9-dom4j.jar
-RUN_DEPENDS+=	${JAVALIBDIR}/dom4j.jar:${PORTSDIR}/textproc/dom4j
+RUN_DEPENDS+=	${JAVALIBDIR}/dom4j.jar:textproc/dom4j
 .endif
 
 .if ${PORT_OPTIONS:MXOM}
 JARFILES+=	saxon9-xom.jar
-RUN_DEPENDS+=	${JAVALIBDIR}/xom.jar:${PORTSDIR}/textproc/xom
+RUN_DEPENDS+=	${JAVALIBDIR}/xom.jar:textproc/xom
 .endif
 
 SUB_FILES=	saxon.sh
@@ -75,14 +75,14 @@ do-install:
 	@${ECHO_MSG} -n ">> Installing scripts in ${PREFIX}/bin..."
 .for scriptfile in saxon saxon-xquery
 	@${ECHO_MSG} -n " ${scriptfile}"
-	${INSTALL_SCRIPT} ${WRKSRC}/saxon.sh ${STAGEDIR}${PREFIX}/bin/${scriptfile}
+	${INSTALL_SCRIPT} ${WRKDIR}/saxon.sh ${STAGEDIR}${PREFIX}/bin/${scriptfile}
 .endfor
 	@${ECHO_MSG} " [ DONE ]"
 
 .if ${PORT_OPTIONS:MDOCS}
 post-install:
 	${FIND} -s ${WRKSRC}/samples -not -type d | \
-		${SED} -ne 's,^${WRKSRC}/samples,${EXAMPLESDIR:S,${PREFIX}/,,},p' >> ${TMPPLIST}
+		${SED} -ne 's|^${WRKSRC}/samples|${EXAMPLESDIR:S,${PREFIX}/,,}|p' >> ${TMPPLIST}
 .endif
 
 .include <bsd.port.mk>

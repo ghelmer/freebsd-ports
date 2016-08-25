@@ -1,26 +1,10 @@
-@unexec cmp -s %D/%%ETCDIR%%/maiad.conf.dist %D/%%ETCDIR%%/maiad.conf && rm -f %D/%%ETCDIR%%/maiad.conf || true
-@exec if [ ! -f %D/%%ETCDIR%%/maiad.conf ] ; then cp -p %D/%%ETCDIR%%/maiad.conf.dist %D/%%ETCDIR%%/maiad.conf; fi
-@unexec cmp -s %D/%%ETCDIR%%/maia.conf.dist %D/%%ETCDIR%%/maia.conf && rm -f %D/%%ETCDIR%%/maia.conf || true
-@exec if [ ! -f %D/%%ETCDIR%%/maia.conf ] ; then cp -p %D/%%ETCDIR%%/maia.conf.dist %D/%%ETCDIR%%/maia.conf; fi
-@unexec cmp -s %D/%%ETCDIR%%/templates/digest.tpl.dist %D/%%ETCDIR%%/templates/digest.tpl && rm -f %D/%%ETCDIR%%/templates/digest.tpl || true
-@exec if [ ! -f %D/%%ETCDIR%%/templates/digest.tpl ] ; then cp -p %D/%%ETCDIR%%/templates/digest.tpl.dist %D/%%ETCDIR%%/templates/digest.tpl; fi
-@unexec cmp -s %D/%%ETCDIR%%/templates/newuser.tpl.dist %D/%%ETCDIR%%/templates/newuser.tpl && rm -f %D/%%ETCDIR%%/templates/newuser.tpl || true
-@exec if [ ! -f %D/%%ETCDIR%%/templates/newuser.tpl ] ; then cp -p %D/%%ETCDIR%%/templates/newuser.tpl.dist %D/%%ETCDIR%%/templates/newuser.tpl; fi
-@unexec cmp -s %D/%%ETCDIR%%/templates/reminder.tpl.dist %D/%%ETCDIR%%/templates/reminder.tpl && rm -f %D/%%ETCDIR%%/templates/reminder.tpl || true
-@exec if [ ! -f %D/%%ETCDIR%%/templates/reminder.tpl ] ; then cp -p %D/%%ETCDIR%%/templates/reminder.tpl.dist %D/%%ETCDIR%%/templates/reminder.tpl; fi
-%%WEBHOST%%@unexec cmp -s %D/www/maia/config.php.dist %D/www/maia/config.php && rm -f %D/www/maia/config.php || true
-%%WEBHOST%%@exec if [ ! -f %D/www/maia/config.php ] ; then cp -p %D/www/maia/config.php.dist %D/www/maia/config.php; fi
-%%WEBHOST%%@exec install -d -o %%WWWOWN%% -g %%WWWGRP%% %D/www/maia/themes/desert_sand/compiled
-%%WEBHOST%%@exec install -d -o %%WWWOWN%% -g %%WWWGRP%% %D/www/maia/themes/dgm/compiled
-%%WEBHOST%%@exec install -d -o %%WWWOWN%% -g %%WWWGRP%% %D/www/maia/themes/ocean_surf/compiled
-%%WEBHOST%%@exec install -d -o %%WWWOWN%% -g %%WWWGRP%% %D/www/maia/web
 @group %%GROUPS%%
-%%ETCDIR%%/maia.conf.dist
-%%ETCDIR%%/maiad.conf.dist
+@sample %%ETCDIR%%/maia.conf.dist %%ETCDIR%%/maia.conf
+@sample %%ETCDIR%%/maiad.conf.dist %%ETCDIR%%/maiad.conf
 @group
-%%ETCDIR%%/templates/digest.tpl.dist
-%%ETCDIR%%/templates/newuser.tpl.dist
-%%ETCDIR%%/templates/reminder.tpl.dist
+@sample %%ETCDIR%%/templates/digest.tpl.dist %%ETCDIR%%/templates/digest.tpl
+@sample %%ETCDIR%%/templates/newuser.tpl.dist %%ETCDIR%%/templates/newuser.tpl
+@sample %%ETCDIR%%/templates/reminder.tpl.dist %%ETCDIR%%/templates/reminder.tpl
 sbin/maiad
 %%PORTDOCS%%%%DOCSDIR%%/LICENSE.txt
 %%PORTDOCS%%%%DOCSDIR%%/README.md
@@ -40,6 +24,8 @@ sbin/maiad
 %%DATADIR%%/scripts/send-quarantine-reminders.pl
 %%DATADIR%%/scripts/stats-snapshot.pl
 @mode
+@owner %%WWWOWN%%
+@group %%WWWGRP%%
 %%WWWDIR%%/admin/configtest.php
 %%WWWDIR%%/admin/dblib.php
 %%WWWDIR%%/admin/internal-init.php
@@ -59,11 +45,7 @@ sbin/maiad
 %%WWWDIR%%/chart_rules.php
 %%WWWDIR%%/chart_stats.php
 %%WWWDIR%%/chart_virus.php
-@mode 640
-@group %%WWWGRP%%
-%%WWWDIR%%/config.php.dist
-@group
-@mode
+@sample(%%WWWOWN%%,%%WWWGRP%%,640) %%WWWDIR%%/config.php.dist %%WWWDIR%%/config.php
 %%WWWDIR%%/confirm.php
 %%WWWDIR%%/constants.php
 %%WWWDIR%%/core.php
@@ -909,7 +891,53 @@ sbin/maiad
 %%WWWDIR%%/ximpersonate.php
 %%WWWDIR%%/xlogin.php
 %%WWWDIR%%/xsettings.php
-@dir %%WWWDIR%%/themes/desert_sand/compiled
-@dir %%WWWDIR%%/themes/dgm/compiled
-@dir %%WWWDIR%%/themes/ocean_surf/compiled
 @dir %%WWWDIR%%/web
+@dir %%WWWDIR%%/themes/ocean_surf/templates/settings
+@dir %%WWWDIR%%/themes/ocean_surf/templates
+@dir %%WWWDIR%%/themes/ocean_surf/javascript
+@dir %%WWWDIR%%/themes/ocean_surf/images
+@dir %%WWWDIR%%/themes/ocean_surf/css/images
+@dir %%WWWDIR%%/themes/ocean_surf/css
+@dir %%WWWDIR%%/themes/ocean_surf/compiled
+@dir %%WWWDIR%%/themes/ocean_surf/code
+@dir %%WWWDIR%%/themes/ocean_surf
+@dir %%WWWDIR%%/themes/dgm/templates
+@dir %%WWWDIR%%/themes/dgm/images
+@dir %%WWWDIR%%/themes/dgm/css
+@dir %%WWWDIR%%/themes/dgm/compiled
+@dir %%WWWDIR%%/themes/dgm/code
+@dir %%WWWDIR%%/themes/dgm
+@dir %%WWWDIR%%/themes/desert_sand/templates/welcome
+@dir %%WWWDIR%%/themes/desert_sand/templates/settings
+@dir %%WWWDIR%%/themes/desert_sand/templates
+@dir %%WWWDIR%%/themes/desert_sand/javascript
+@dir %%WWWDIR%%/themes/desert_sand/images
+@dir %%WWWDIR%%/themes/desert_sand/css/images
+@dir %%WWWDIR%%/themes/desert_sand/css
+@dir %%WWWDIR%%/themes/desert_sand/compiled
+@dir %%WWWDIR%%/themes/desert_sand/code
+@dir %%WWWDIR%%/themes/desert_sand
+@dir %%WWWDIR%%/themes
+@dir %%WWWDIR%%/overlib/mini
+@dir %%WWWDIR%%/overlib
+@dir %%WWWDIR%%/maia_db
+@dir %%WWWDIR%%/locale/sv
+@dir %%WWWDIR%%/locale/ru
+@dir %%WWWDIR%%/locale/pt
+@dir %%WWWDIR%%/locale/no
+@dir %%WWWDIR%%/locale/nl
+@dir %%WWWDIR%%/locale/it
+@dir %%WWWDIR%%/locale/hu
+@dir %%WWWDIR%%/locale/fr
+@dir %%WWWDIR%%/locale/en
+@dir %%WWWDIR%%/locale/de
+@dir %%WWWDIR%%/locale/da
+@dir %%WWWDIR%%/locale/cs
+@dir %%WWWDIR%%/libs/jquery/images
+@dir %%WWWDIR%%/libs/jquery
+@dir %%WWWDIR%%/libs
+@dir %%WWWDIR%%/images
+@dir %%WWWDIR%%/admin
+@dir %%WWWDIR%%
+@owner
+@group

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	qupzilla
-PORTVERSION=	1.8.6
+PORTVERSION=	1.8.9
 CATEGORIES=	www
 MASTER_SITES=	https://github.com/QupZilla/${PORTNAME}/releases/download/v${PORTVERSION}/
 PKGNAMESUFFIX=	-qt4
@@ -12,9 +12,9 @@ COMMENT=	Web browser based on WebKit engine and Qt Framework
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libhunspell-1.3.so:${PORTSDIR}/textproc/hunspell
+LIB_DEPENDS=	libhunspell-1.3.so:textproc/hunspell
 
-CONFLICTS=	${PORTNAME}-qt5*
+CONFLICTS_INSTALL=	${PORTNAME}-qt5*
 
 USES=		desktop-file-utils execinfo pkgconfig qmake tar:xz
 USE_QT4=	corelib gui network script sql webkit xml \
@@ -34,7 +34,7 @@ OPTIONS_SUB=	yes
 DBUS_USE=		QT4=dbus
 DBUS_CONFIGURE_ENV_OFF=	DISABLE_DBUS="true"
 
-GNOMEKEYRING_LIB_DEPENDS=	libgnome-keyring.so:${PORTSDIR}/security/libgnome-keyring
+GNOMEKEYRING_LIB_DEPENDS=	libgnome-keyring.so:security/libgnome-keyring
 GNOMEKEYRING_CONFIGURE_ENV=	GNOME_INTEGRATION="true"
 
 KWALLET_USE=		KDE4=kdelibs

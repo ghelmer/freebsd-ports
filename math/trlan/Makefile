@@ -11,8 +11,10 @@ MASTER_SITES=	https://codeforge.lbl.gov/frs/download.php/210/:1 \
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:1 trlan-ug.pdf:2
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Thick-restart Lanczos method for eigenproblems
+
+BROKEN_powerpc64=	Does not build
 
 USES=		fortran
 USE_LDCONFIG=	yes
@@ -71,8 +73,8 @@ do-install:
 
 .if defined(MAINTAINER_MODE)
 
-BUILD_DEPENDS +=	${LOCALBASE}/lib/libblas.so.2:${PORTSDIR}/math/blas \
-			${LOCALBASE}/lib/liblapack.so.4:${PORTSDIR}/math/lapack
+BUILD_DEPENDS +=	${LOCALBASE}/lib/libblas.so.2:math/blas \
+			${LOCALBASE}/lib/liblapack.so.4:math/lapack
 
 BLAS?=		-L${LOCALBASE}/lib -lblas
 LAPACK?=	-L${LOCALBASE}/lib -llapack

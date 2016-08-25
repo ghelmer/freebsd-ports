@@ -10,7 +10,7 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensible plotting language for producing scientific graphs
 
-LIB_DEPENDS=	libnetcdf.so:${PORTSDIR}/science/netcdf
+LIB_DEPENDS=	libnetcdf.so:science/netcdf
 
 USES=		gmake readline shebangfix makeinfo
 SHEBANG_FILES=	doc/examples/FEM.pl src/gri_merge src/gri_unpage
@@ -38,7 +38,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
-BUILD_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
+BUILD_DEPENDS+=	convert:graphics/ImageMagick
 .endif
 
 post-patch:
@@ -62,7 +62,7 @@ post-install:
 		${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET})
 .else
 	${INSTALL_MAN} ${WRKSRC}/doc/gri-manpage.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/gri.1 
+		${STAGEDIR}${MANPREFIX}/man/man1/gri.1
 	${INSTALL_MAN} ${WRKSRC}/doc/gri_merge.1-skel \
 		${STAGEDIR}${MANPREFIX}/man/man1/gri_merge.1
 	${INSTALL_MAN} ${WRKSRC}/doc/gri_unpage.1-skel \

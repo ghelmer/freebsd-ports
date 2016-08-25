@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gnupg
-PORTVERSION=	1.4.0
+PORTVERSION=	2.0.2
 CATEGORIES=	security python
 MASTER_SITES=	http://www.c-s.li/ports/ \
 		CHEESESHOP
@@ -13,7 +13,7 @@ COMMENT=	Python wrapper for GnuPG
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=0.5.1:${PORTSDIR}/sysutils/py-psutil
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>=0.5.1:sysutils/py-psutil
 
 USES=		python
 USE_PYTHON=	distutils autoplist

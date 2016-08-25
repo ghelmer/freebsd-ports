@@ -14,10 +14,9 @@ COMMENT=	PHP extension which transparently caches PHP functions
 
 LICENSE=	PHP301
 
-USES=		tar:tgz
-USE_PHP=	yes
-USE_PHPEXT=	yes
+USES=		php:ext tar:tgz
 CONFIGURE_ARGS=	--enable-memoize
+IGNORE_WITH_PHP=	70
 
 OPTIONS_DEFINE=	APC MEMCACHED MEMORY
 OPTIONS_DEFAULT=MEMORY
@@ -26,10 +25,10 @@ MEMCACHED_DESC=	Enable memcached storage module
 MEMORY_DESC=	Enable the memoize memory storage module
 
 APC_CONFIGURE_ON=	--enable-memoize-apc
-APC_USE=		PHP=apc
+APC_USE=		PHP=apc:build
 MEMCACHED_CONFIGURE_ON=	--with-memoize-memcached
-MEMCACHED_BUILD_DEPENDS=libmemcached>=0:${PORTSDIR}/databases/libmemcached
-MEMCACHED_RUN_DEPENDS=	libmemcached>=0:${PORTSDIR}/databases/libmemcached
+MEMCACHED_BUILD_DEPENDS=libmemcached>=0:databases/libmemcached
+MEMCACHED_RUN_DEPENDS=	libmemcached>=0:databases/libmemcached
 MEMORY_CONFIGURE_OFF=	--disable-memoize-memory
 
 .include <bsd.port.mk>

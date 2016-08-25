@@ -11,7 +11,7 @@ COMMENT=	Ubiquitous network traffic analysis tool
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libpcap.so:${PORTSDIR}/net/libpcap
+LIB_DEPENDS=	libpcap.so:net/libpcap
 
 GNU_CONFIGURE=	yes
 USES=		gmake
@@ -20,7 +20,7 @@ UNPRIV_USER?=	nobody
 CHROOTDIR?=	/var/run/tcpdump
 
 OPTIONS_DEFINE=	CRYPTO IPV6 SMB SMI USER CHROOT
-OPTIONS_DEFAULT=	CRYPTO IPV6 SMB SMI
+OPTIONS_DEFAULT=	CRYPTO SMB SMI
 
 CRYPTO_DESC=	Support IPSEC and TCPMD5
 # This one is intentionally worded this way because the default
@@ -36,7 +36,7 @@ CRYPTO_CONFIGURE_WITH=	crypto
 IPV6_CONFIGURE_ENABLE=	ipv6
 SMB_CONFIGURE_ENABLE=	smb
 SMI_CONFIGURE_WITH=	smi
-SMI_LIB_DEPENDS=	libsmi.so:${PORTSDIR}/net-mgmt/libsmi
+SMI_LIB_DEPENDS=	libsmi.so:net-mgmt/libsmi
 USER_CONFIGURE_ON=	--with-user=${UNPRIV_USER}
 CHROOT_CONFIGURE_ON=	--with-chroot=${CHROOTDIR}
 

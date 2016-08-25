@@ -17,8 +17,8 @@ COMMENT=	Ghostscript 7.x PostScript interpreter
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
-RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/a010013l.pfb:${PORTSDIR}/print/gsfonts
+LIB_DEPENDS=	libpng.so:graphics/png
+RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/a010013l.pfb:print/gsfonts
 
 CONFLICTS_INSTALL= \
 		gambc-[0-9]* \
@@ -57,7 +57,6 @@ PLIST_SUB=	SHLIB_VER="${PORTVERSION:R}" \
 		GS_VERSION="${PORTVERSION}"
 
 OPTIONS_DEFINE=	DOCS
-OPTIONS_DEFAULT=DOCS
 NO_OPTIONS_SORT=yes
 
 post-extract-all:

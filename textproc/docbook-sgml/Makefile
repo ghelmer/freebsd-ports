@@ -11,8 +11,8 @@ DISTFILES=	${DBFILES:C,.*:(.*),\1.zip:\1,:C,:docbook-([0-9]+).([0-9]+),:db\1\2,}
 MAINTAINER=	doceng@FreeBSD.org
 COMMENT=	DocBook SGML DTD
 
-RUN_DEPENDS=	${LOCALBASE}/${ISOCAT}:${PORTSDIR}/textproc/iso8879 \
-		${LOCALBASE}/${XMLCATMGR}:${PORTSDIR}/textproc/xmlcatmgr
+RUN_DEPENDS=	${LOCALBASE}/${ISOCAT}:textproc/iso8879 \
+		xmlcatmgr:textproc/xmlcatmgr
 
 NO_BUILD=	yes
 
@@ -20,12 +20,10 @@ DBFILES=2.4.1:docbk241	3.0:docbk30	3.1:docbk31 \
 	4.0:docbk40	4.1:docbk41	4.2:docbook-4.2 \
 	4.3:docbook-4.3	4.4:docbook-4.4	4.5:docbook-4.5
 
-XMLCATMGR=	bin/xmlcatmgr
-SGMLCAT=	share/sgml/catalog.ports
 ISOCAT=		share/sgml/iso8879/catalog
 DBKDIR=		share/sgml/docbook
 DBCAT=	${PREFIX}/${DBKDIR}/catalog
-PLIST_SUB=	XMLCATMGR=${XMLCATMGR} SGMLCAT=${SGMLCAT} DBKDIR=${DBKDIR}
+PLIST_SUB=	DBKDIR=${DBKDIR}
 
 do-extract:
 	@${RM} -rf ${WRKDIR}

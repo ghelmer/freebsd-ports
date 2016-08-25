@@ -1,9 +1,9 @@
-# Created by: Johannes Meixner <xmj@chaot.net
+# Created by: Johannes Meixner <johannes@perceivon.net
 # $FreeBSD$
 
 PORTNAME=	sdl
 PORTVERSION=	1.2.14
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel linux
 DISTNAME=	SDL-${PORTVERSION}-${RPMVERSION}
 
@@ -19,7 +19,7 @@ USE_LINUX_APPS=	xorglibs
 INSTALL_SHLIB=	yes
 LINUX_NAME=	SDL
 
-RPMVERSION=	3.el6
+RPMVERSION=	7.el6_7.1
 USE_LDCONFIG=	yes
 
 DOCSDIR=	${PREFIX}/usr/share/doc/${LINUX_NAME}-${PORTVERSION}

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	librep
-PORTVERSION=	0.92.5
+PORTVERSION=	0.92.6
 CATEGORIES=	lang elisp gnome
 MASTER_SITES=	http://download.tuxfamily.org/librep/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -12,14 +12,14 @@ COMMENT=	Emacs Lisp like runtime library
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgdbm.so:${PORTSDIR}/databases/gdbm \
-		libffi.so:${PORTSDIR}/devel/libffi \
-		libgmp.so:${PORTSDIR}/math/gmp
-RUN_DEPENDS=	gtar:${PORTSDIR}/archivers/gtar
+LIB_DEPENDS=	libgdbm.so:databases/gdbm \
+		libffi.so:devel/libffi \
+		libgmp.so:math/gmp
+RUN_DEPENDS=	gtar:archivers/gtar
 
 USE_CSTD=	gnu89
 
-USES=		gettext gmake libtool makeinfo pathfix pkgconfig readline \
+USES=		autoreconf gettext gmake libtool makeinfo pathfix pkgconfig readline \
 		shebangfix tar:xz
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-aclocaldir=${PREFIX}/share/aclocal \

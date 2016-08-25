@@ -16,7 +16,7 @@ LICENSE_COMB=	multi
 LICENSE_DISTFILES=	${WRKSRC}/COPYING \
 	${WRKSRC}/COPYING.LIB
 
-LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
+LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
 
 USES=		desktop-file-utils gmake libtool pathfix gettext-tools perl5 \
 		pkgconfig tar:bzip2
@@ -30,7 +30,7 @@ USE_XORG=	x11 sm
 CONFIGURE_ARGS+=--enable-gio-unix --without-html-dir
 
 OPTIONS_DEFINE=		GTK3 NLS
-OPTIONS_DEFAULT=	GTK3 NLS
+OPTIONS_DEFAULT=	GTK3
 GTK3_USES=	xfce:gtk3
 GTK3_USE=	gnome=gtk30
 GTK3_CONFIGURE_ENABLE=	gtk3

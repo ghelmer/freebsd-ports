@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pg
-PORTVERSION=	0.18.3
+PORTVERSION=	0.18.4
 CATEGORIES=	databases rubygems
 MASTER_SITES=	RG
 
@@ -15,9 +15,7 @@ LICENSE_COMB=	dual
 CONFIGURE_ARGS=	--with-pgsql-include-dir=`${PG_CONFIG} --includedir` \
 		--with-pgsql-lib-dir=`${PG_CONFIG} --libdir`
 PG_CONFIG=	${LOCALBASE}/bin/pg_config
-USES=		pgsql
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem pgsql
 
 .include <bsd.port.mk>

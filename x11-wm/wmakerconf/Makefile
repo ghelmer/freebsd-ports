@@ -12,10 +12,11 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Configuration tool for Window Maker
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libWINGs.so:${PORTSDIR}/x11-wm/windowmaker
-RUN_DEPENDS=	rpm:${PORTSDIR}/archivers/rpm4
+LIB_DEPENDS=	libWINGs.so:x11-wm/windowmaker
+RUN_DEPENDS=	rpm:archivers/rpm4
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -25,6 +26,8 @@ SHEBANG_FILES=	scripts/getfile.pl.in scripts/upgrade.pl.in
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-wmakerdataprefix="${LOCALBASE}/share" \
 		--with-wmakeretcprefix="${LOCALBASE}/share"
+USE_XORG=	x11
+LIBS+=		-L${LOCALBASE}/lib -lX11
 
 post-extract:
 	@${FIND} ${WRKSRC} -name "*.gmo" -delete
@@ -37,7 +40,7 @@ post-patch:
 	@${REINPLACE_CMD} -e '/chmod 0/d' ${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -E '/\/usr\/share/d; \
 			      s|/usr/local|${LOCALBASE}|g ; \
-		 	      s|/usr/X11R6|${LOCALBASE}|g; \
+			      s|/usr/X11R6|${LOCALBASE}|g; \
 			      s|(share/pixmaps.*),|\1|g' \
 		${WRKSRC}/data/WMWmakerconf*
 .for file in data/po/ja.po po/ja.po

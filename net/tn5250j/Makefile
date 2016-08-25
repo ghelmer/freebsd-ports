@@ -11,16 +11,16 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 MAINTAINER=	saper@saper.info
 COMMENT=	5250 terminal emulator for the AS/400 written in Java
 
-BUILD_DEPENDS=	${JAVAJARDIR}/mail.jar:${PORTSDIR}/java/javamail \
-		${JYTHON_JAR}:${PORTSDIR}/lang/jython \
-		${JAVAJARDIR}/jt400.jar:${PORTSDIR}/sysutils/jtopen \
-		${JAVAJARDIR}/itext.jar:${PORTSDIR}/devel/itext \
-		${JAVAJARDIR}/log4j.jar:${PORTSDIR}/devel/log4j
-RUN_DEPENDS=	${JAVAJARDIR}/mail.jar:${PORTSDIR}/java/javamail \
-		${JYTHON_JAR}:${PORTSDIR}/lang/jython \
-		${JAVAJARDIR}/jt400.jar:${PORTSDIR}/sysutils/jtopen \
-		${JAVAJARDIR}/itext.jar:${PORTSDIR}/devel/itext \
-		${JAVAJARDIR}/log4j.jar:${PORTSDIR}/devel/log4j
+BUILD_DEPENDS=	${JAVAJARDIR}/mail.jar:java/javamail \
+		${JYTHON_JAR}:lang/jython \
+		${JAVAJARDIR}/jt400.jar:sysutils/jtopen \
+		${JAVAJARDIR}/itext.jar:devel/itext \
+		${JAVAJARDIR}/log4j.jar:devel/log4j
+RUN_DEPENDS=	${JAVAJARDIR}/mail.jar:java/javamail \
+		${JYTHON_JAR}:lang/jython \
+		${JAVAJARDIR}/jt400.jar:sysutils/jtopen \
+		${JAVAJARDIR}/itext.jar:devel/itext \
+		${JAVAJARDIR}/log4j.jar:devel/log4j
 
 USES=		dos2unix zip
 USE_ANT=	yes
@@ -43,6 +43,12 @@ SUB_LIST=	JYTHON_JAR=${JYTHON_JAR}
 
 OPTIONS_DEFINE=	DOCS
 
+.include <bsd.port.pre.mk>
+
+.if ${JAVA_PORT_VERSION:M1.8.*}
+BROKEN=		Does not build with JDK 1.8
+.endif
+
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/tn5250j ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${WRKSRC}/build/tn5250j.jar ${STAGEDIR}${JAVAJARDIR}
@@ -53,4 +59,4 @@ post-install:
 	${INSTALL_MAN} ${WRKSRC}/src/${d} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

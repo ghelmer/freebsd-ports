@@ -13,11 +13,11 @@ COMMENT=	Open source 3D space simulator
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${DATADIR}/vegastrike.ico:${PORTSDIR}/games/vegastrike-data
-LIB_DEPENDS=	libboost_python.so:${PORTSDIR}/devel/boost-python-libs \
-		libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libvorbis.so:${PORTSDIR}/audio/libvorbis \
-		libogg.so:${PORTSDIR}/audio/libogg
+RUN_DEPENDS=	${DATADIR}/vegastrike.ico:games/vegastrike-data
+LIB_DEPENDS=	libboost_python.so:devel/boost-python-libs \
+		libexpat.so:textproc/expat2 \
+		libvorbis.so:audio/libvorbis \
+		libogg.so:audio/libogg
 
 USES=		dos2unix gmake openal:al pkgconfig python tar:bzip2
 GNU_CONFIGURE=	yes
@@ -38,14 +38,15 @@ CONFIGURE_ARGS=	--disable-cegui --disable-ffmpeg \
 		--with-boost=system \
 		--enable-flags="${CXXFLAGS}"
 
-PLIST_FILES=	bin/vegastrike bin/vssetup bin/vegaserver
+BIN_FILES=	bin/vegastrike bin/vssetup bin/vegaserver
+PLIST_FILES=	${BIN_FILES}
 PORTDOCS=	README
 
 OPTIONS_DEFINE=	MESHER
 MESHER_DESC=	Enable mesher modelling tool
 
 MESHER_PLIST_FILES=	bin/mesher
-MESHER_LIB_DEPENDS=	libOgreMain.so:${PORTSDIR}/graphics/ogre3d
+MESHER_LIB_DEPENDS=	libOgreMain.so:graphics/ogre3d
 MESHER_CONFIGURE_ENABLE=	ogre
 
 post-patch:
@@ -53,7 +54,7 @@ post-patch:
 		${WRKSRC}/configure
 
 do-install:
-	${INSTALL_PROGRAM} ${PLIST_FILES:S|bin|${WRKSRC}|} \
+	${INSTALL_PROGRAM} ${BIN_FILES:S|bin|${WRKSRC}|} \
 		${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}

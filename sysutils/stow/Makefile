@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	stow
-PORTVERSION=	2.2.0
-PORTREVISION=	2
+PORTVERSION=	2.2.2
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -13,7 +12,7 @@ COMMENT=	GNU version of Carnegie Mellon's "Depot" program
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-TEST_DEPENDS=	p5-Test-Output>0:${PORTSDIR}/devel/p5-Test-Output
+TEST_DEPENDS=	p5-Test-Output>0:devel/p5-Test-Output
 
 USES=		gmake perl5 tar:bzip2
 GNU_CONFIGURE=	yes
@@ -25,8 +24,9 @@ OPTIONS_DEFINE=	DOCS
 
 INFO=		stow
 PORTDOCS=	*
+NO_ARCH=	yes
 
-post-install:
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for FILE in ChangeLog README
 	${INSTALL_DATA} ${WRKSRC}/${FILE} ${STAGEDIR}${DOCSDIR}

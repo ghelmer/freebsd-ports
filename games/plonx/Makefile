@@ -9,6 +9,9 @@ MASTER_SITES=	http://bilious.homelinux.org/~paxed/${PORTNAME}/
 MAINTAINER=	clive@darkarts.co.za
 COMMENT=	Small ASCII puzzle game
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 PLIST_FILES=	bin/plonx
 PORTDOCS=	README
 

@@ -10,9 +10,9 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Encryption tool for KDE
 
-RUN_DEPENDS=	gpg2:${PORTSDIR}/security/gnupg
+RUN_DEPENDS=	gpg2:security/gnupg
 
-USE_KDE4=	kdeprefix automoc4 kdelibs pimlibs
+USE_KDE4=	automoc4 kdelibs pimlibs
 USES=		cmake:outsource tar:xz
 USE_QT4=	qmake_build moc_build rcc_build uic_build
 

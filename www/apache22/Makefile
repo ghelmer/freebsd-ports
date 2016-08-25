@@ -2,7 +2,7 @@
 
 PORTNAME=	apache22
 PORTVERSION=	2.2.31
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	APACHE_HTTPD
 DISTNAME=	httpd-${PORTVERSION}
@@ -11,13 +11,16 @@ DIST_SUBDIR=	apache22
 MAINTAINER?=	apache@FreeBSD.org
 COMMENT?=	Version 2.2.x of Apache web server with ${WITH_MPM} MPM.
 
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libapr-1.so:${PORTSDIR}/devel/apr1 \
-		libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libapr-1.so:devel/apr1 \
+		libpcre.so:devel/pcre
 
 CONFLICTS_INSTALL=	caudium14-1.* \
 		apache-*-2.2.* apache22-*-2.2.* \
 		apache-*-2.4.* apache24-*-2.4.*
+
+DEPRECATED=		Upstream propose EoL of apache 2.2.x during the next 12 months
+EXPIRATION_DATE=	2017-07-01
 
 USE_APACHE=	common22
 USES=		autoreconf cpe iconv libtool perl5 tar:bzip2
@@ -48,6 +51,10 @@ WITH_MPM?=		prefork # or worker, event, itk, peruser
 WITH_HTTP_PORT?=	80
 WITH_SSL_PORT?=		443
 
+.if !defined(WITH_DEBUG)
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-server_buildmark.c
+.endif
+
 .include "${APACHEDIR}/Makefile.options"
 
 AUTHNZ_LDAP_CONFIGURE_ON=	--enable-authnz-ldap
@@ -59,7 +66,7 @@ LDAP_CONFIGURE_ON=		--enable-ldap=shared
 SSL_CFLAGS=			-I${OPENSSLINC}
 SSL_CONFIGURE_ON=		--with-ssl=${OPENSSLBASE}
 SSL_LDFLAGS=			-L${OPENSSLLIB}
-SSL_USE=			OPENSSL=yes
+SSL_USES=			ssl
 
 SUEXEC_RSRCLIMIT_EXTRA_PATCHES=	${FILESDIR}/extra-patch-suexec_rsrclimit
 SUEXEC_USERDIR_EXTRA_PATCHES=	${FILESDIR}/extra-patch-suexec_userdir
@@ -188,9 +195,9 @@ post-install:
 # strip returns an error for non binary files, but we have a big mix
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/* 2>/dev/null
 	-${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/apache22/mod_*.so
-.if ${PORT_OPTIONS:MLOG_FORENSIC}
+
+post-install-LOG_FORENSIC-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/support/check_forensic ${STAGEDIR}${PREFIX}/sbin
-.endif
 
 # maintainer only, check for new modules
 modlist: extract

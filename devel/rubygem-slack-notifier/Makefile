@@ -1,8 +1,8 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	slack-notifier
-PORTVERSION=	1.3.1
+PORTVERSION=	1.5.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -12,9 +12,7 @@ COMMENT=	Ruby wrapper for posting to slack webhooks
 LICENSE=	MIT
 
 NO_ARCH=	yes
-
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

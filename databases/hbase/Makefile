@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	hbase
-PORTVERSION=	0.98.9
+PORTVERSION=	1.2.1
+PORTREVISION=	1
 CATEGORIES=	databases java
-MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
-		LOCAL/demon/:maven \
-		http://people.freebsd.org/~demon/:maven
-DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX} FreeBSD-hbase-${PORTVERSION}-maven-repository.tar.gz:maven
+MASTER_SITES=	APACHE/${PORTNAME}/${PORTVERSION} \
+		http://kev009.com/freebsd/:maven
+DISTFILES=	${DISTNAME}-src${EXTRACT_SUFX} FreeBSD-${PORTNAME}-${PORTVERSION}-maven-repository.tar.gz:maven
 DIST_SUBDIR=	hadoop
 
 MAINTAINER=	demon@FreeBSD.org
@@ -15,16 +15,17 @@ COMMENT=	Hadoop database, a distributed, scalable, big data store
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		cmake:${PORTSDIR}/devel/cmake \
-		${LOCALBASE}/share/java/maven3/bin/mvn:${PORTSDIR}/devel/maven3
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		yarn:${PORTSDIR}/devel/hadoop2
+BUILD_DEPENDS=	bash:shells/bash \
+		cmake:devel/cmake \
+		${LOCALBASE}/share/java/maven3/bin/mvn:devel/maven3
+RUN_DEPENDS=	bash:shells/bash \
+		yarn:devel/hadoop2
 
 USES=		cpe
 CPE_VENDOR=	apache
 USE_JAVA=	yes
 JAVA_VERSION=	1.7+
+MAKE_ENV+=	JAVA_HOME=${JAVA_HOME} MAVEN_OPTS="-XX:MaxPermSize=256m"
 
 OPTIONS_DEFINE=	DOCS
 
@@ -52,14 +53,20 @@ PLIST_SUB=	HBASE_USER=${HBASE_USER} \
 		HBASE_RUNDIR=${HBASE_RUNDIR} \
 		PORTVERSION="${PORTVERSION}"
 
+.include <bsd.port.pre.mk>
+
+.if ${JAVA_PORT_VERSION:M1.8.*}
+JDK18_PROFILE=	,build-with-jdk8
+JDK18_SOURCE=	-DcompileSource=1.8
+.endif
+
 post-patch:
 	${REINPLACE_CMD} -e "s#%%ETCDIR%%#${ETCDIR}#" ${WRKSRC}/conf/hbase-env.sh ${WRKSRC}/bin/hbase
 	${RM} ${WRKSRC}/conf/hbase-env.sh.bak ${WRKSRC}/conf/hbase-env.sh.orig
 
 do-build:
-	cd ${WRKSRC} && bash dev-support/generate-hadoopX-poms.sh ${PORTVERSION}-RELEASE ${PORTVERSION}-hadoop2-RELEASE
-	cd ${WRKSRC} && ${LOCALBASE}/share/java/maven3/bin/mvn -Dmaven.repo.local=${WRKDIR}/m2 --offline clean install -Prelease,native -DskipTests
-	cd ${WRKSRC} && ${LOCALBASE}/share/java/maven3/bin/mvn -Dmaven.repo.local=${WRKDIR}/m2 --offline install -DskipTests site assembly:single -Prelease,native
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${LOCALBASE}/share/java/maven3/bin/mvn -Dmaven.repo.local=${WRKDIR}/m2 --offline clean install -Prelease,native${JDK18_PROFILE} -DskipTests ${JDK18_SOURCE}
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${LOCALBASE}/share/java/maven3/bin/mvn -Dmaven.repo.local=${WRKDIR}/m2 --offline install -DskipTests site assembly:single -Prelease,native${JDK18_PROFILE} ${JDK18_SOURCE}
 
 post-build:
 	cd ${WRKSRC}/hbase-assembly/target && ${TAR} xf ${PORTNAME}-${PORTVERSION}-bin.tar.gz
@@ -77,4 +84,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${HBASE_LOGDIR}
 	${MKDIR} ${STAGEDIR}${HBASE_RUNDIR}
 
-.include <bsd.port.mk>
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/hbase/lib/native/libmlockall_agent.so
+
+.include <bsd.port.post.mk>

@@ -10,11 +10,11 @@ DISTNAME=	STonX-0.6.7.6
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	AtariST emulator
 
-BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf \
-		gccmakedep:${PORTSDIR}/devel/gccmakedep \
-		mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale \
-		${LOCALBASE}/share/fonts/misc/10x20-ISO8859-1.pcf.gz:${PORTSDIR}/x11-fonts/font-misc-misc
+BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf \
+		gccmakedep:devel/gccmakedep \
+		mkfontdir:x11-fonts/mkfontdir \
+		mkfontscale:x11-fonts/mkfontscale \
+		${LOCALBASE}/share/fonts/misc/10x20-ISO8859-1.pcf.gz:x11-fonts/font-misc-misc
 
 RESTRICTED=	Contains ROM (C) by Atari
 
@@ -54,14 +54,14 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/data/$f ${STAGEDIR}${FNTDIR}/
 	${GZIP_CMD} ${STAGEDIR}${FNTDIR}/$f
 .endfor
-.if ${PORT_OPTIONS:MDOCS}
+
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S,^,${WRKSRC}/docs/,} ${STAGEDIR}${DOCSDIR}/
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${DATA:S,^,${WRKSRC}/,} ${STAGEDIR}${EXAMPLESDIR}/
-.endif
 
 .if !exists(${DISTDIR}/${TOSIMG})
 IGNORE=	please get a ROM dump from your AtariST and save it as\

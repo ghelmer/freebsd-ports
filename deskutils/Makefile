@@ -4,8 +4,6 @@
     COMMENT = Things that used to be on the desktop before computers were invented
 
     SUBDIR += affiche
-    SUBDIR += akamaru
-    SUBDIR += alacarte
     SUBDIR += anamnesis
     SUBDIR += appwrapper
     SUBDIR += aspostit
@@ -46,7 +44,6 @@
     SUBDIR += etask
     SUBDIR += everygui
     SUBDIR += fbreader
-    SUBDIR += fengoffice
     SUBDIR += fet
     SUBDIR += freemind
     SUBDIR += fusenshi
@@ -75,7 +72,6 @@
     SUBDIR += gnome-search-tool
     SUBDIR += gnome-shell-extension-audio-output-switcher
     SUBDIR += gnome-shell-extension-backslide
-    SUBDIR += gnome-shell-extension-calculator
     SUBDIR += gnome-shell-extension-coverflow
     SUBDIR += gnome-shell-extension-dashtodock
     SUBDIR += gnome-shell-extension-filesmenu
@@ -91,12 +87,12 @@
     SUBDIR += gnome-shell-extra-extensions
     SUBDIR += gnome-sound-recorder
     SUBDIR += gnome-system-log
+    SUBDIR += gnome-todo
     SUBDIR += gnome-tweak-tool
     SUBDIR += gnome-utils
     SUBDIR += gnome-weather
     SUBDIR += gnote
     SUBDIR += gnotime
-    SUBDIR += gnustep-notebook
     SUBDIR += gnustep-wrapper
     SUBDIR += gourmet
     SUBDIR += griffith
@@ -134,11 +130,8 @@
     SUBDIR += kdeplasma-addons
     SUBDIR += kruler
     SUBDIR += ksshaskpass
-    SUBDIR += ladon
     SUBDIR += launchy
     SUBDIR += libgcal
-    SUBDIR += libopensync-plugin-file
-    SUBDIR += libopensync-plugin-sunbird
     SUBDIR += libopensync-plugin-vformat-devel
     SUBDIR += libstreamanalyzer
     SUBDIR += libstreams
@@ -153,7 +146,6 @@
     SUBDIR += menumaker
     SUBDIR += moregroupware
     SUBDIR += mozo
-    SUBDIR += mrundlg
     SUBDIR += multisync
     SUBDIR += multisync-backup
     SUBDIR += multisync-syncml
@@ -196,6 +188,7 @@
     SUBDIR += plasma-applet-yawp
     SUBDIR += plopfolio
     SUBDIR += preferences
+    SUBDIR += puush
     SUBDIR += py-bugwarrior
     SUBDIR += py-khal
     SUBDIR += py-pycarddav
@@ -207,7 +200,6 @@
     SUBDIR += py-vobject
     SUBDIR += pybookreader
     SUBDIR += pypanel
-    SUBDIR += qlabels
     SUBDIR += qorganizer
     SUBDIR += qrfcview
     SUBDIR += qtm
@@ -217,6 +209,7 @@
     SUBDIR += rolo
     SUBDIR += rox-memo
     SUBDIR += rubrica
+    SUBDIR += rubygem-shellplay
     SUBDIR += rubygem-taskjuggler
     SUBDIR += semantik
     SUBDIR += shutter
@@ -225,7 +218,6 @@
     SUBDIR += simplegroupware
     SUBDIR += sliderule
     SUBDIR += spice-gtk
-    SUBDIR += steadyflow
     SUBDIR += strigi
     SUBDIR += strigiclient
     SUBDIR += strigidaemon
@@ -234,6 +226,7 @@
     SUBDIR += superkaramba
     SUBDIR += superswitcher
     SUBDIR += surrealtodo
+    SUBDIR += syncthing-gtk
     SUBDIR += systempreferences
     SUBDIR += tagutils
     SUBDIR += taskcoach
@@ -249,7 +242,6 @@
     SUBDIR += tomboy-plugin-latex
     SUBDIR += tomboy-plugin-reminder
     SUBDIR += tomboy-plugin-todo
-    SUBDIR += tomboy-plugin-wordcount
     SUBDIR += toolboxkit
     SUBDIR += tpb
     SUBDIR += treeline
@@ -264,7 +256,6 @@
     SUBDIR += when
     SUBDIR += wmpinboard
     SUBDIR += wyrd
-    SUBDIR += x-tile
     SUBDIR += x026
     SUBDIR += xcalendar
     SUBDIR += xchm

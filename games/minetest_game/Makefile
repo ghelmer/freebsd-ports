@@ -2,15 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	minetest_game
-PORTVERSION=	0.4.12
+PORTVERSION=	0.4.14
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	The main game for the Minetest game engine
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
 
-RUN_DEPENDS=	minetest:${PORTSDIR}/games/minetest
+RUN_DEPENDS=	minetest:games/minetest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	minetest
@@ -24,9 +24,11 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
+	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC} && ${COPYTREE_SHARE} "game.conf menu mods" ${STAGEDIR}${DATADIR}/
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.txt ${STAGEDIR}${DOCSDIR}/
 
 .include <bsd.port.mk>

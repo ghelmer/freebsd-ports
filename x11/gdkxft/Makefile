@@ -10,10 +10,10 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Anti-aliased font support for gtk+
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libXft.so:${PORTSDIR}/x11-fonts/libXft
+LIB_DEPENDS=	libXft.so:x11-fonts/libXft
 
 USE_GNOME=	gtk12
 USES=		iconv pkgconfig libtool
@@ -35,7 +35,9 @@ post-patch:
 	@${REINPLACE_CMD} 's/<regex\.h>/<gnuregex.h>/' ${WRKSRC}/src/gdkxft.c
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdkxft.so
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libgdkxft.so
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

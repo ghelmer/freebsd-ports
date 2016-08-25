@@ -11,7 +11,10 @@ EXTRACT_SUFX=	-src.tar.gz
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	3-D network tank game that uses OpenGL/Mesa
 
-BUILD_DEPENDS=	libaux>=1.0:${PORTSDIR}/graphics/libaux
+DEPRECATED=	Depends on expiring graphics/libaux
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	libaux>=1.0:graphics/libaux
 
 USES=		gmake
 ALL_TARGET=	linux-mesa-elf

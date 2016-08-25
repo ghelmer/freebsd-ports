@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ming
-PORTVERSION=	0.4.7
+DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	0_4_7
 PORTREVISION=	2
 CATEGORIES=	graphics
 
@@ -14,13 +15,15 @@ LICENSE_COMB=	multi
 LICENSE_FILE_GPLv2=	${WRKSRC}/LICENSE_GPL2
 LICENSE_FILE_LGPL21=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libgif.so:${PORTSDIR}/graphics/giflib \
-		libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libfreetype.so:print/freetype2 \
+		libgif.so:graphics/giflib \
+		libpng.so:graphics/png
 
 CONFLICTS_INSTALL=	ja-ming-[0-9]*
 
 OPTIONS_DEFINE=	DOCS
+
+PORTSCOUT=	limit:^ming-
 
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/ming
 GNU_CONFIGURE=	yes
@@ -35,7 +38,6 @@ PORTDOCS=	*
 USE_GITHUB=	yes
 GH_ACCOUNT=	lib${PORTNAME}
 GH_PROJECT=	lib${PORTNAME}
-GH_TAGNAME=	${PORTNAME}-${PORTVERSION:S|.|_|g}
 
 SHEBANG_FILES=	util/cws2fws
 

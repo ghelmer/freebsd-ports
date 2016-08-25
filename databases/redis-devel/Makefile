@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-DISTVERSION=	3.0.4
+DISTVERSION=	3.2.1
 CATEGORIES=	databases
 MASTER_SITES=	http://download.redis.io/releases/
 PKGNAMESUFFIX=	-devel
@@ -14,14 +14,24 @@ LICENSE=	BSD3CLAUSE
 
 USES=		execinfo
 
-OPTIONS_DEFINE=	TESTS
+OPTIONS_DEFINE=	TESTS TRIB
 OPTIONS_RADIO=	EXTLUA
 OPTIONS_RADIO_EXTLUA=	LUA LUAJIT
+OPTIONS_SUB=	yes
 LUA_DESC=	Use lang/lua instead of builtin lua
 LUAJIT_DESC=	Use lang/luajit instead of builtin lua
 TESTS_DESC=	Install lang/tcl for redis unit tests
+TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
+
+WRKSRC=	${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MTRIB}
+CATEGORIES+=	ruby
+USE_RUBY=	yes
+RUN_DEPENDS=	rubygem-redis>=2.2:databases/rubygem-redis
+.endif
 
 .if ${PORT_OPTIONS:MLUA}
 USES+=		lua:51
@@ -29,7 +39,7 @@ EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.lua
 .endif
 
 .if ${PORT_OPTIONS:MLUAJIT}
-LIB_DEPENDS+=	libluajit-5.1.so:${PORTSDIR}/lang/luajit
+LIB_DEPENDS+=	libluajit-5.1.so:lang/luajit
 EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src-Makefile.luajit
 .endif
 
@@ -49,8 +59,8 @@ CONFLICTS?=	redis-3.*
 
 USES+=		gmake
 MAKE_ENV=	"V=yo"
-USE_RC_SUBR=	redis
-BIN_FILES=	redis-benchmark redis-check-aof redis-check-dump \
+USE_RC_SUBR=	redis sentinel
+BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb \
 		redis-cli redis-sentinel redis-server
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
@@ -86,6 +96,9 @@ post-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${BIN_FILES:C!^!${WRKSRC}/src/!} ${STAGEDIR}${PREFIX}/bin/
+.if ${PORT_OPTIONS:MTRIB}
+	${INSTALL_SCRIPT} ${WRKSRC}/src/redis-trib.rb ${STAGEDIR}${PREFIX}/bin/
+.endif
 	${INSTALL_DATA} ${WRKDIR}/redis.conf ${STAGEDIR}${PREFIX}/etc/redis.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/sentinel.conf ${STAGEDIR}${PREFIX}/etc/sentinel.conf.sample
 	${MKDIR} ${STAGEDIR}${REDIS_LOGDIR} \

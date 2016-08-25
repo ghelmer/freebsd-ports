@@ -49,6 +49,8 @@ PERL5_DEPEND=	${PERL5}
 THIS_IS_OLD_PERL=	yes
 .else
 # end of remove
+# When adding a version, please keep the comment in
+# Mk/bsd.default-versions.mk in sync.
 .include "${PORTSDIR}/Mk/bsd.default-versions.mk"
 .if ${PERL5_DEFAULT} == 5.18
 .include "${PORTSDIR}/lang/perl5.18/version.mk"
@@ -115,8 +117,8 @@ SITE_MAN1_REL?=	${SITE_PERL_REL}/man/man1
 .endif
 SITE_MAN1?=	${PREFIX}/${SITE_MAN1_REL}
 
-PERL5=		${LOCALBASE}/bin/perl${PERL_VERSION}
-PERL=		${LOCALBASE}/bin/perl
+PERL5?=		${LOCALBASE}/bin/perl${PERL_VERSION}
+PERL?=		${LOCALBASE}/bin/perl
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL} ac_cv_path_PERL_PATH=${PERL}
 
 QA_ENV+=	SITE_ARCH_REL=${SITE_ARCH_REL} LIBPERL=libperl.so.${PERL_VER}
@@ -202,13 +204,13 @@ CONFIGURE_ARGS+=--destdir ${STAGEDIR}
 DESTDIRNAME=	--destdir
 .if ${_USE_PERL5:Mmodbuild}
 .if ${PORTNAME} != Module-Build
-BUILD_DEPENDS+=	p5-Module-Build>=0.4206:${PORTSDIR}/devel/p5-Module-Build
+BUILD_DEPENDS+=	p5-Module-Build>=0.4206:devel/p5-Module-Build
 .endif
 CONFIGURE_ARGS+=--create_packlist 1
 .endif
 .if ${_USE_PERL5:Mmodbuildtiny}
 .if ${PORTNAME} != Module-Build-Tiny
-BUILD_DEPENDS+=	p5-Module-Build-Tiny>=0.039:${PORTSDIR}/devel/p5-Module-Build-Tiny
+BUILD_DEPENDS+=	p5-Module-Build-Tiny>=0.039:devel/p5-Module-Build-Tiny
 .endif
 CONFIGURE_ARGS+=--create_packlist 1
 .endif
@@ -228,19 +230,19 @@ CONFIGURE_ENV+=	PERL_MM_USE_DEFAULT="YES"
 .endif # configure
 
 .if ${_USE_PERL5:Mextract}
-EXTRACT_DEPENDS+=	${PERL5_DEPEND}:${PORTSDIR}/lang/${PERL_PORT}
+EXTRACT_DEPENDS+=	${PERL5_DEPEND}:lang/${PERL_PORT}
 .endif
 
 .if ${_USE_PERL5:Mpatch}
-PATCH_DEPENDS+=		${PERL5_DEPEND}:${PORTSDIR}/lang/${PERL_PORT}
+PATCH_DEPENDS+=		${PERL5_DEPEND}:lang/${PERL_PORT}
 .endif
 
 .if ${_USE_PERL5:Mbuild}
-BUILD_DEPENDS+=		${PERL5_DEPEND}:${PORTSDIR}/lang/${PERL_PORT}
+BUILD_DEPENDS+=		${PERL5_DEPEND}:lang/${PERL_PORT}
 .endif
 
 .if ${_USE_PERL5:Mrun}
-RUN_DEPENDS+=		${PERL5_DEPEND}:${PORTSDIR}/lang/${PERL_PORT}
+RUN_DEPENDS+=		${PERL5_DEPEND}:lang/${PERL_PORT}
 .endif
 
 .if ${_USE_PERL5:Mconfigure}
@@ -261,7 +263,7 @@ do-configure:
 	fi
 	@cd ${CONFIGURE_WRKSRC} && \
 		${SETENV} ${CONFIGURE_ENV} \
-		${PERL5} ./${CONFIGURE_SCRIPT} ${CONFIGURE_ARGS}
+		${PERL5} ${CONFIGURE_CMD} ${CONFIGURE_ARGS}
 .if !${_USE_PERL5:Mmodbuild*}
 	@cd ${CONFIGURE_WRKSRC} && \
 		${PERL5} -pi -e 's/ doc_(perl|site|\$$\(INSTALLDIRS\))_install$$//' Makefile
@@ -309,6 +311,11 @@ fix-perl-things:
 # contain it to not leave orphans directories around.
 	@${RM} -f ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH}/perllocal.pod* || :
 	@${RMDIR} -p ${STAGEDIR}${PREFIX}/lib/perl5/${PERL_VER}/${PERL_ARCH} 2>/dev/null || :
+# Starting at ExtUtils::MakeMaker 7.06 and Perl 5.25.1, the base README.pod is
+# no longer manified into a README.3, as the README.pod is installed and can be
+# read with perldoc, remove the README.3 files that may be generated.
+	@[ -d "${STAGEDIR}${SITE_MAN3}" ] && \
+		${FIND} ${STAGEDIR}${SITE_MAN3} -name '*::README.3' -delete || :
 
 .if !target(do-test) && (!empty(USE_PERL5:Mmodbuild*) || !empty(USE_PERL5:Mconfigure))
 TEST_TARGET?=	test

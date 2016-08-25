@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	opensmtpd
-PORTVERSION=	5.7.3
+PORTVERSION=	5.9.2p1
 PORTEPOCH=	1
+PORTREVISION=	1
 CATEGORIES=	mail
 MASTER_SITES=	http://www.opensmtpd.org/archives/ \
 		http://distfiles.pirateparty.in/ashish/
-DISTNAME=	${PORTNAME}-${PORTVERSION}p1
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Security- and simplicity-focused SMTP server from OpenBSD
@@ -15,23 +15,21 @@ COMMENT=	Security- and simplicity-focused SMTP server from OpenBSD
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
-OPTIONS_DEFINE=	CA_BUNDLE LIBASRDEVEL MAILERCONF PAM TABLE_DB
+OPTIONS_DEFINE=	CA_BUNDLE LIBASRDEVEL MAILERCONF PAM SSL_PORT TABLE_DB
 
 OPTIONS_DEFAULT=	CA_BUNDLE PAM TABLE_DB
 
-CA_BUNDLE_DESC=	Install CA bundle for OpenSSL
+CA_BUNDLE_DESC=	Install CA bundle for SSL
 LIBASRDEVEL_DESC=	Use development version of libasr
 MAILERCONF_DESC=	Activate OpenSMTPD in mailer.conf(5)
+SSL_PORT_DESC=		SSL/TLS support via OpenSSL/LibreSSL from port
 TABLE_DB_DESC=		Build table-db plugin (aliases)
 
 USES=		cpe libtool
 USE_OPENSSL=	yes
-WITH_OPENSSL_PORT=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-libevent-dir=${LOCALBASE} --sysconfdir=${PREFIX}/etc/mail/ \
-		--with-mailwrapper --with-ssl-dir=${OPENSSLBASE}
 
 CPE_VENDOR=	openbsd
 
@@ -41,18 +39,39 @@ SUB_FILES=	pkg-install pkg-deinstall pkg-message
 CONFLICTS_INSTALL=	postfix-[0-9]* sendmail-[0-9]* opensmtpd-devel-[0-9]*
 
 USERS=		_smtpd _smtpq
-GROUPS=		_smtpd
+GROUPS=		_smtpd _smtpq
 
 OPTIONS_SUB=	yes
 
-CA_BUNDLE_CONFIGURE_ON=	--with-ca-file=${LOCALBASE}/share/certs/ca-root-nss.crt
-CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:${PORTSDIR}/security/ca_root_nss
+CA_BUNDLE_CONFIGURE_WITH=	path-CAfile=${LOCALBASE}/share/certs/ca-root-nss.crt
+CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
-LIBASRDEVEL_LIB_DEPENDS_OFF=	libasr.so:${PORTSDIR}/dns/libasr
-LIBASRDEVEL_LIB_DEPENDS=	libasr.so:${PORTSDIR}/dns/libasr-devel
+LIBASRDEVEL_LIB_DEPENDS_OFF=	libasr.so:dns/libasr
+LIBASRDEVEL_LIB_DEPENDS=	libasr.so:dns/libasr-devel
 
-PAM_CONFIGURE_ON=	--with-pam --with-pam-service=smtpd
+PAM_CONFIGURE_WITH=	auth-pam=smtpd
+SSL_PORT_VARS=		with_openssl_port=yes
+TABLE_DB_CONFIGURE_WITH=	table-db
 
-TABLE_DB_CONFIGURE_ON=	--enable-table-db
+.include <bsd.port.options.mk>
 
-.include <bsd.port.mk>
+.if ${OPSYS} == FreeBSD && ${OSVERSION} <= 1000015
+WITH_OPENSSL_PORT=	yes
+.endif
+
+.include <bsd.port.pre.mk>
+
+CONFIGURE_ARGS+=	--with-libasr=${LOCALBASE} \
+			--with-libevent=${LOCALBASE} \
+			--with-libssl=${OPENSSLBASE} \
+			--sysconfdir=${PREFIX}/etc/mail/
+
+post-patch:
+	${REINPLACE_CMD} -e '/chmod 2555/d' ${WRKSRC}/mk/smtpctl/Makefile.in
+
+.if ${PORT_OPTIONS:MTABLE_DB}
+post-install:
+	@${LN} -sf ${PREFIX}/sbin/smtpctl ${STAGEDIR}${PREFIX}/libexec/opensmtpd/makemap
+.endif
+
+.include <bsd.port.post.mk>

@@ -14,12 +14,8 @@ COMMENT=	Extension to ease testing of PHP code
 LICENSE=	BSD3CLAUSE
 
 CONFIGURE_ARGS=	--enable-test-helpers
-USE_PHP=	yes
-USE_PHPEXT=	yes
-USE_PHPIZE=	yes
-USES=		tar:tgz
+USES=		php:ext tar:tgz
 SUB_FILES=	pkg-message
-
-PKGMESSAGE=	${WRKDIR}/pkg-message
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	life-preserver
-PORTVERSION=	1438351389
+PORTVERSION=	1441050470
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -10,8 +10,8 @@ COMMENT=	PC-BSD Life Preserver Utility
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	${LOCALBASE}/share/pcbsd/scripts/functions.sh:${PORTSDIR}/sysutils/pcbsd-libsh \
-		stunnel:${PORTSDIR}/security/stunnel
+RUN_DEPENDS=	${LOCALBASE}/share/pcbsd/scripts/functions.sh:sysutils/pcbsd-libsh \
+		stunnel:security/stunnel
 
 WRKSRC_SUBDIR=	src-sh/lpreserver
 USES=		pkgconfig tar:xz
@@ -21,7 +21,7 @@ MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 USE_GITHUB=	yes
 GH_ACCOUNT=	pcbsd
 GH_PROJECT=	pcbsd
-GH_TAGNAME=	2c5a0c
+GH_TAGNAME=	3c4d2b
 
 .include <bsd.port.pre.mk>
 

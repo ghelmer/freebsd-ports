@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gc
-PORTVERSION=	7.4.2
-PORTREVISION=	4
+PORTVERSION=	7.4.4
 CATEGORIES=	devel
 MASTER_SITES=	http://www.hboehm.info/gc/gc_source/
 PKGNAMEPREFIX=	boehm-
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	boehm-
 PKGNAMESUFFIX=	-${GC_VARIANT}
 .endif
 
-MAINTAINER=	cpm@fbsd.es
+MAINTAINER=	cpm@FreeBSD.org
 COMMENT=	Garbage collection and memory leak detection for C and C++
 
 LICENSE=	BDWGC
@@ -19,7 +18,7 @@ LICENSE_NAME=	Boehm-Demers-Weiser Garbage Collector License
 LICENSE_TEXT=	License can be found at http://www.hboehm.info/gc/license.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:${PORTSDIR}/devel/libatomic_ops
+BUILD_DEPENDS=	${LOCALBASE}/lib/libatomic_ops.a:devel/libatomic_ops
 
 GNU_CONFIGURE=	yes
 USES=		cpe libtool pathfix pkgconfig
@@ -41,7 +40,7 @@ PLIST_FILES=	${INSTLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so,} \
 		${INSTLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1,} \
 		${INSTLIBS:S,^,lib/lib,:S,$,-${GC_VARIANT}.so.1.0.3,} \
 		libdata/pkgconfig/bdw-gc-${GC_VARIANT}.pc
-RUN_DEPENDS+=	${LOCALBASE}/include/gc/gc.h:${PORTSDIR}/devel/boehm-gc
+RUN_DEPENDS+=	${LOCALBASE}/include/gc/gc.h:devel/boehm-gc
 . if ${GC_VARIANT} == "redirect"
 CONFIGURE_ARGS+=--disable-threads --enable-redirect-malloc
 . endif
@@ -57,10 +56,6 @@ PORTDOCS=	*
 .endif
 
 NOT_FOR_ARCHS=	ia64
-
-# no rule to get .lo from .S in subdirectory
-pre-build:
-	${LN} -sf ${WRKSRC}/src/sparc_mach_dep.S ${WRKSRC}
 
 .include <bsd.port.options.mk>
 
@@ -91,7 +86,6 @@ post-install:
 		${STAGEDIR}${PREFIX}/libdata/pkgconfig/bdw-gc-${GC_VARIANT}.pc
 
 .else # ! GC_VARIANT
-
 post-patch:
 	@${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|g" ${WRKSRC}/doc/gc.man
 	@${REINPLACE_CMD} \

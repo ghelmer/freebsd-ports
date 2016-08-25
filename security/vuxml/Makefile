@@ -16,36 +16,18 @@ COMMENT=	Vulnerability and eXposure Markup Language DTD
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${XMLCATMGR}:${PORTSDIR}/textproc/xmlcatmgr \
-		${LOCALBASE}/share/xml/dtd/xhtml-modularization/VERSION:${PORTSDIR}/textproc/xhtml-modularization \
-		${LOCALBASE}/share/xml/dtd/xhtml-basic/xhtml-basic10.dtd:${PORTSDIR}/textproc/xhtml-basic
+RUN_DEPENDS=	xmlcatmgr:textproc/xmlcatmgr \
+		${LOCALBASE}/share/xml/dtd/xhtml-modularization/VERSION:textproc/xhtml-modularization \
+		${LOCALBASE}/share/xml/dtd/xhtml-basic/xhtml-basic10.dtd:textproc/xhtml-basic
 
 USES=		python:run
 
-NO_MTREE=	YES
-NO_BUILD=	YES
+NO_MTREE=	yes
+NO_ARCH=	yes
+NO_BUILD=	yes
 WRKSRC=		${WRKDIR}
-PLIST_SUB=	XMLCAT_RM="${XMLCAT_RM}" XMLCAT_ADD="${XMLCAT_ADD}" \
-		SGMLCAT_RM="${SGMLCAT_RM}" SGMLCAT_ADD="${SGMLCAT_ADD}" \
-		dir_DTD="${dir_DTD}"
 
 dir_DTD=	share/xml/dtd/vuxml
-
-XMLCATMGR=	${LOCALBASE}/bin/xmlcatmgr
-SGMLCAT=	${PREFIX}/share/sgml/catalog.ports
-XMLCAT=		${PREFIX}/share/xml/catalog.ports
-
-XMLCAT_ADD=	${XMLCATMGR} -c ${XMLCAT} add nextCatalog \
-		    ${PREFIX}/${dir_DTD}/catalog.xml
-XMLCAT_RM=	${XMLCATMGR} -c ${XMLCAT} remove nextCatalog \
-		    ${PREFIX}/${dir_DTD}/catalog.xml
-SGMLCAT_ADD=	${XMLCATMGR} -sc ${SGMLCAT} add CATALOG \
-		    ${PREFIX}/${dir_DTD}/catalog
-SGMLCAT_RM=	${XMLCATMGR} -sc ${SGMLCAT} remove CATALOG \
-		    ${PREFIX}/${dir_DTD}/catalog
-
-CATALOG_PORTS_SGML=	${PREFIX}/share/sgml/catalog.ports
-CATALOG_PORTS_XML=	${PREFIX}/share/xml/catalog.ports
 
 VUXML_FILE?=	${PKGDIR}/vuln.xml
 

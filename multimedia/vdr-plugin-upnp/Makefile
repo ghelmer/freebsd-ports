@@ -8,13 +8,13 @@ CATEGORIES=	multimedia
 MASTER_SITES=	http://projects.vdr-developer.org/attachments/download/177/
 DISTNAME=	${PORTNAME:S/-plugin-/-/}-${DISTVERSIONPREFIX}${DISTVERSION:S/a/-alpha/}${DISTVERSIONSUFFIX}
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video Disk Recorder - UPnP/DLNA plugin (alpha!)
 
-LIB_DEPENDS+=	libavcodec0.so:${PORTSDIR}/multimedia/ffmpeg0 \
-		libboost_system.so:${PORTSDIR}/devel/boost-libs \
-		libupnp.so:${PORTSDIR}/devel/upnp \
-		libsqlite3.so:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS+=	libavcodec0.so:multimedia/ffmpeg0 \
+		libboost_system.so:devel/boost-libs \
+		libupnp.so:devel/upnp \
+		libsqlite3.so:databases/sqlite3
 
 USES=		tar:tgz
 DIST_SUBDIR=	vdr

@@ -2,7 +2,7 @@
 
 PORTNAME=	google-earth
 PORTVERSION=	6.0.3.2197
-PORTREVISION=	2
+PORTREVISION=	4
 PORTEPOCH=	3
 CATEGORIES=	astro deskutils geography
 MASTER_SITES=	http://dl.google.com/earth/client/advanced/previous/:previous \
@@ -11,10 +11,10 @@ DISTFILES=	GoogleEarthLinux.bin:current
 DIST_SUBDIR=	${PORTNAME}/${PORTVERSION}
 EXTRACT_ONLY=	# none
 
-MAINTAINER=	nox@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Explore, Search, and Discover
 
-EXTRACT_DEPENDS=	unmakeself:${PORTSDIR}/archivers/unmakeself
+EXTRACT_DEPENDS=	unmakeself:archivers/unmakeself
 
 RESTRICTED=	Not really sure about the redistribution terms
 
@@ -23,7 +23,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:C/\..*//g}/
 OPTIONS_DEFINE=	NVIDIA
 
 USE_LINUX=	yes
-USE_LINUX_APPS=	xorglibs curl
+USE_LINUX_APPS=	xorglibs curl nss
 USES=		perl5 shared-mime-info desktop-file-utils
 USE_PERL5=	patch build
 
@@ -31,7 +31,7 @@ USE_PERL5=	patch build
 
 UNMAKESELF=	${LOCALBASE}/bin/unmakeself
 
-NVIDIA_RUN_DEPENDS=	${LINUXBASE}/usr/lib/libGL.so.1:${PORTSDIR}/x11/nvidia-driver
+NVIDIA_RUN_DEPENDS=	${LINUXBASE}/usr/lib/libGL.so.1:x11/nvidia-driver
 NVIDIA_USE_OFF=	LINUX_APPS=dri,libpciaccess
 
 # Fixed by the first post-patch target line?  Also, linprocfs needs to be mounted.
@@ -75,7 +75,7 @@ do-install:
 		${STAGEDIR}${DATADIR}/googleearth.desktop
 	${INSTALL_SCRIPT} ${FILESDIR}/browserwrapper \
 		${STAGEDIR}${DATADIR}/bin/
-	${LN} -sf ${DATADIR}/bin/googleearth \
+	${LN} -sf ../${DATADIR_REL}/bin/googleearth \
 		${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

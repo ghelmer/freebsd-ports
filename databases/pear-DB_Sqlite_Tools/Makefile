@@ -5,13 +5,13 @@ PORTNAME=	DB_Sqlite_Tools
 PORTVERSION=	0.1.7
 CATEGORIES=	databases www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	an object oriented interface to backup Sqlite databases
 
-BUILD_DEPENDS=	${PEARDIR}/DB.php:${PORTSDIR}/databases/pear-DB \
-		${PEARDIR}/Log/null.php:${PORTSDIR}/sysutils/pear-Log
-RUN_DEPENDS=	${PEARDIR}/DB.php:${PORTSDIR}/databases/pear-DB \
-		${PEARDIR}/Log/null.php:${PORTSDIR}/sysutils/pear-Log
+BUILD_DEPENDS=	${PEARDIR}/DB.php:databases/pear-DB \
+		${PEARDIR}/Log/null.php:sysutils/pear-Log
+RUN_DEPENDS=	${PEARDIR}/DB.php:databases/pear-DB \
+		${PEARDIR}/Log/null.php:sysutils/pear-Log
 
 USES=	pear
 

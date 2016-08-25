@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	3proxy
-PORTVERSION=	0.7.1.2
-DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTVERSION=	0.8.6
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	timp87@gmail.com
 COMMENT=	Proxy servers set (support HTTP(S), FTP, SOCKS, POP3, TCP & UDP)
 
 LICENSE=	APACHE20 BSD2CLAUSE GPLv2 GPLv3 LGPL21 LGPL3
@@ -32,7 +31,7 @@ post-build:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/ ${STAGEDIR}${DOCSDIR}/
-	cd ${WRKSRC}/src/ && ${INSTALL_PROGRAM} 3proxy countersutil dighosts ftppr icqpr msnpr mycrypt pop3p httppr smtpp socks tcppm udppm ${STAGEDIR}${PREFIX}/bin/
+	cd ${WRKSRC}/src/ && ${INSTALL_PROGRAM} 3proxy dighosts ftppr icqpr mycrypt pop3p httppr smtpp socks tcppm udppm ${STAGEDIR}${PREFIX}/bin/
 	cd ${WRKSRC}/cfg/ && ${INSTALL_DATA} 3proxy.cfg.sample ${STAGEDIR}${PREFIX}/etc/
 	cd ${WRKSRC}/src/ && ${INSTALL_LIB} PCREPlugin.so StringsPlugin.so TrafficPlugin.so ${STAGEDIR}${PREFIX}/lib/${PORTNAME}/
 	cd ${WRKSRC}/man/ && ${INSTALL_MAN} 3proxy.cfg.3 ${STAGEDIR}${PREFIX}/man/man3/

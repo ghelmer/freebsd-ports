@@ -3,7 +3,7 @@
 
 PORTNAME=	clamassassin
 PORTVERSION=	1.2.4
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	security
 MASTER_SITES=	http://jameslick.com/clamassassin/
 
@@ -12,8 +12,8 @@ COMMENT=	Simple virus filter wrapper for ClamAV
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	sigtool:${PORTSDIR}/security/clamav \
-		formail:${PORTSDIR}/mail/procmail
+BUILD_DEPENDS=	sigtool:security/clamav \
+		formail:mail/procmail
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 PLIST_FILES=	bin/clamassassin

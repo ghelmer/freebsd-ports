@@ -9,8 +9,12 @@ MASTER_SITES=	http://openpgp.nominet.org.uk/downloads/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenPGP SDK
 
-BUILD_DEPENDS=	gpg2:${PORTSDIR}/security/gnupg
-LIB_DEPENDS=	libcunit.so:${PORTSDIR}/devel/cunit
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	gpg2:security/gnupg
+LIB_DEPENDS=	libcunit.so:devel/cunit
 
 USES=		perl5 shebangfix tar:tgz
 SHEBANG_FILES=	configure util/*.pl

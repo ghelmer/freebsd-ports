@@ -2,14 +2,15 @@
 
 PORTNAME=	kactivities
 PORTVERSION=	${KDE4_ACTIVITES_VERSION}
+PORTREVISION=	1
 CATEGORIES=	x11 kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
+MASTER_SITES=	KDE/Attic/${PORTVERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Kactivities library
 
-USE_KDE4=	automoc4 kdelibs kdeprefix soprano nepomuk-core
+USE_KDE4=	automoc4 kdelibs soprano nepomuk-core
 USES=		cmake:outsource compiler:c++11-lib tar:xz
 USE_QT4=	declarative moc_build qmake_build rcc_build uic_build
 USE_LDCONFIG=	yes

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nmap
-DISTVERSION=	6.49BETA5
+DISTVERSION=	7.12
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://nmap.org/dist/ \
 		LOCAL/ohauer
@@ -17,35 +17,26 @@ COMMENT=	Port scanning utility for large networks
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		tar:bzip2 gmake cpe
 GNU_CONFIGURE=	yes
 
+# Note: nmap does no longer build agains custom kernel without IPv6!
 OPTIONS_SUB=	yes
-OPTIONS_DEFINE=	DOCS IPV6 SSL
-OPTIONS_DEFAULT=IPV6 SSL
+OPTIONS_DEFINE=	DOCS SSL
+OPTIONS_DEFAULT=SSL
 
 SSL_USE=		OPENSSL=yes
 SSL_CONFIGURE_ON=	--with-openssl=${OPENSSLBASE}
 SSL_CONFIGURE_OFF=	--without-openssl
 SSL_CFLAGS=		-I${OPENSSLINC}
-
-IPV6_CONFIGURE_OFF=	--with-libpcap=${LOCALBASE}/IPv6
+SSL_VARS=		STRIP_FILES=ncat
 
 .include <bsd.port.options.mk>
 
-# PR: ports/159376  Workaround if OS is build with WITHOUT_INET6
-.if ! ${PORT_OPTIONS:MIPV6}
-LIB_DEPENDS+=		libpcap.so:${PORTSDIR}/net/libpcap
-.endif
-
 DOCS=	CHANGELOG HACKING
-STRIP_FILES=	nmap nping
-
-.if ${PORT_OPTIONS:MSSL}
-STRIP_FILES+=	ncat
-.endif
+STRIP_FILES+=	nmap nping
 
 CONFIGURE_ARGS+=--without-localdirs \
 		--without-zenmap \
@@ -66,6 +57,8 @@ pre-install:
 
 post-install:
 	${STRIP_CMD} ${STRIP_FILES:S|^|${STAGEDIR}${PREFIX}/bin/|}
+
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

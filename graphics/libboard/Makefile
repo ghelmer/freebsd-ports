@@ -5,14 +5,14 @@ PORTNAME=	libboard
 DISTVERSION=	0.9.0
 PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}
+MASTER_SITES=	LOCAL/thierry
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Vector graphics C++ library
 
 LICENSE=	LGPL3
 
-BUILD_DEPENDS=	doxygen:${PORTSDIR}/devel/doxygen
+BUILD_DEPENDS=	doxygen:devel/doxygen
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}

@@ -8,8 +8,8 @@ PKGNAMESUFFIX=	-gtk3
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Gtk+ 3 library to the Avahi mDNS system
 
-LIB_DEPENDS=	libavahi-common.so:${PORTSDIR}/net/avahi-app
-RUN_DEPENDS=	avahi-header>=0.6:${PORTSDIR}/net/avahi-header
+LIB_DEPENDS=	libavahi-common.so:net/avahi-app
+RUN_DEPENDS=	avahi-header>=0.6:net/avahi-header
 
 MASTERDIR=	${.CURDIR}/../avahi-app
 BUILD_WRKSRC=	${WRKSRC}/avahi-ui
@@ -27,8 +27,5 @@ do-build:
 
 do-install:
 	@(cd ${WRKSRC}/avahi-ui; ${MAKE_CMD} ${MAKE_ARGS} install-libLTLIBRARIES)
-
-post-install:
-	@${RMDIR} ${STAGEDIR}${PREFIX}/etc/avahi
 
 .include "${MASTERDIR}/Makefile"

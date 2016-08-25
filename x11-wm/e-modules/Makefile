@@ -3,7 +3,7 @@
 
 PORTNAME=	e17-modules
 PORTVERSION=	20130510
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm enlightenment
 MASTER_SITES=	# Empty
 DISTFILES=	# Empty
@@ -14,8 +14,7 @@ COMMENT=	Meta-port for Enlightenment modules
 NO_BUILD=	yes
 
 MODULES=	alarm cpu deskshow everything-places \
-		everything-websearch forecasts mem mpdule net penguins \
-		places rmb tclock wlan
+		everything-websearch mem rmb wlan
 
 .include "../enlightenment/Makefile.plist"
 
@@ -34,7 +33,7 @@ ${M:tu:S,-,_,g}_DESC=	Install ${M} module
 ${M:tu:S,-,_,g}_PATH=	${M}
 . endif
 . if ${PORT_OPTIONS:M${M:tu:S,-,_,g}}
-RUN_DEPENDS+=	${LOCALBASE}/lib/enlightenment/modules/${${M:tu:S,-,_,g}_PATH}/${ENLIGHTENMENT_ARCH}/module.so:${PORTSDIR}/x11-wm/e-module-${M}
+RUN_DEPENDS+=	${LOCALBASE}/lib/enlightenment/modules/${${M:tu:S,-,_,g}_PATH}/${ENLIGHTENMENT_ARCH}/module.so:x11-wm/e-module-${M}
 . endif
 .endfor
 

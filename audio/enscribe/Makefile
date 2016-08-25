@@ -3,21 +3,22 @@
 
 PORTNAME=	enscribe
 PORTVERSION=	0.1.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	audio graphics
 MASTER_SITES=	http://www.coppercloudmusic.com/enscribe/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Create digital audio watermark images from photographic images
 
-LIB_DEPENDS=	libsndfile.so:${PORTSDIR}/audio/libsndfile \
-		libgd.so:${PORTSDIR}/graphics/gd \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libfreetype.so:${PORTSDIR}/print/freetype2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
+		libgd.so:graphics/gd \
+		libpng.so:graphics/png \
+		libfreetype.so:print/freetype2
 
 USES=		jpeg pkgconfig tar:tgz
-
-LICENSE=	GPLv2
 
 PORTDOCS=	README
 PLIST_FILES=	bin/enscribe
@@ -33,6 +34,8 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/enscribe ${STAGEDIR}${PREFIX}/bin
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 

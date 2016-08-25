@@ -2,58 +2,53 @@
 # $FreeBSD$
 
 PORTNAME=	pip
-PORTVERSION=	7.0.3
+PORTVERSION=	8.0.2
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	nivit@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Tool for installing and managing Python packages
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 # Tests also need bzr, git, otherwise they fail
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:${PORTSDIR}/devel/py-pytest \
-		${PYTHON_PKGNAMEPREFIX}pytest-capturelog>0:${PORTSDIR}/devel/py-pytest-capturelog \
-		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:${PORTSDIR}/devel/py-pytest-timeout \
-		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:${PORTSDIR}/devel/py-pytest-xdist \
-		${PYTHON_PKGNAMEPREFIX}virtualenv>=13.0.0:${PORTSDIR}/devel/py-virtualenv \
-		${PYTHON_PKGNAMEPREFIX}scripttest>=1.3:${PORTSDIR}/devel/py-scripttest \
-		${PYTHON_PKGNAMEPREFIX}mock>0:${PORTSDIR}/devel/py-mock \
-		${PYTHON_PKGNAMEPREFIX}pretend>0:${PORTSDIR}/devel/py-pretend \
-		${PYTHON_PKGNAMEPREFIX}freezegun>0:${PORTSDIR}/devel/py-freezegun \
-		git>0:${PORTSDIR}/devel/git \
-		bzr>0:${PORTSDIR}/devel/bzr
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest \
+		${PYTHON_PKGNAMEPREFIX}pytest-capturelog>0:devel/py-pytest-capturelog \
+		${PYTHON_PKGNAMEPREFIX}pytest-timeout>0:devel/py-pytest-timeout \
+		${PYTHON_PKGNAMEPREFIX}pytest-xdist>0:devel/py-pytest-xdist \
+		${PYTHON_PKGNAMEPREFIX}virtualenv>=1.10:devel/py-virtualenv \
+		${PYTHON_PKGNAMEPREFIX}scripttest>=1.3:devel/py-scripttest \
+		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock \
+		${PYTHON_PKGNAMEPREFIX}pretend>0:devel/py-pretend \
+		${PYTHON_PKGNAMEPREFIX}freezegun>0:devel/py-freezegun \
+		git>0:devel/git \
+		bzr>0:devel/bzr
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_BUILD_DEPENDS=	sphinx-build:${PORTSDIR}/textproc/py-sphinx
-DOCS_MAKE_ENV=		HOME=${WRKDIR}
+DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+DOCS_PORTDOCS=	*
+DOCS_VARS=	PYDISTUTILS_BUILD_TARGET=build_sphinx \
+		PYDISTUTILS_BUILDARGS="-n --all-files --fresh-env"
 
+NO_ARCH=	yes
 USES=		python shebangfix
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
 
 SHEBANG_FILES=	pip/__init__.py
-python_OLD_CMD=	/usr/bin/env python
 
 GH_ACCOUNT=	pypa
 
-.include <bsd.port.options.mk>
+NO_ARCH=	yes
 
-.if ${PORT_OPTIONS:MDOCS}
-DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
-PYDISTUTILS_BUILD_TARGET+=	build_sphinx -n --all-files --fresh-env
-.endif
-
-post-install:
-#	${RM} ${STAGEDIR}${PREFIX}/bin/pip2
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/build/sphinx/html && \
 	${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} "! -name .buildinfo -and ! -name objects.inv")
-.endif
 
-regression-test: build
-	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
+do-test:
+	cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

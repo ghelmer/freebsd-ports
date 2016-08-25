@@ -6,12 +6,12 @@ PORTVERSION=	0.72.6
 CATEGORIES=	sysutils
 MASTER_SITES=	http://dvdisaster.net/downloads/
 
-MAINTAINER=	horia@racoviceanu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CD/DVD error recovery tool
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BUILD_DEPENDS=	bash:shells/bash
 
 MAKEFILE=	GNUmakefile
 
@@ -42,7 +42,7 @@ DOCS_CONFIGURE_ON=	--docdir=${DOCSDIR}
 
 MEMDEBUG_CONFIGURE_ON=	-with-memdebug=yes
 
-EFENCE_LIB_DEPENDS=	libefence.so.0:${PORTSDIR}/devel/ElectricFence
+EFENCE_LIB_DEPENDS=	libefence.so.0:devel/ElectricFence
 EFENCE_CONFIGURE_ON=	-with-efence=yes
 
 NLS_USES=	gettext

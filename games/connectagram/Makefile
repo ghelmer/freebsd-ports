@@ -10,7 +10,7 @@ MASTER_SITES=	http://gottcode.org/connectagram/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Word unscrambling game
 
-LICENSE=	GPLv3 # (or later)
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -27,7 +27,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		's|std::lround|lround|' ${WRKSRC}/src/*.cpp
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} CREDITS ChangeLog NEWS README \
 		${STAGEDIR}${DOCSDIR})

@@ -1,0 +1,68 @@
+--- CMakeLists.txt.orig	2015-12-11 00:00:13 UTC
++++ CMakeLists.txt
+@@ -93,6 +93,13 @@ if (CMAKE_BUILD_TYPE MATCHES "[Dd][Ee][B
+   set (is_debug_build 1)
+ endif ()
+ 
++if (CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
++ set (FREEBSD 1)
++endif()
++
++if (FREEBSD)
++       set (WSJT_INCLUDE_KVASD Off)
++endif ()
+ 
+ #
+ # Options & features
+@@ -153,7 +160,14 @@ set (LIB_DESTINATION lib)
+ set (SHARE_DESTINATION share)
+ set (DOC_DESTINATION doc/${CMAKE_PROJECT_NAME})
+ set (DATA_DESTINATION ${CMAKE_PROJECT_NAME})
+-set (MANPAGE_DESTINATION ${SHARE_DESTINATION})
++if (NOT FREEBSD)
++  message (STATUS "NOT FREEBSD")
++  set (MANPAGE_DESTINATION share)
++else()
++  message (STATUS "FREEBSD")
++  set (MANPAGE_DESTINATION "${CMAKE_INSTALL_PREFIX}" )
++endif()
++message (STATUS MANPAGE_DESTINATION ${MANPAGE_DESTINATION})
+ set (PLUGIN_DESTINATION lib/plugins)
+ set (QT_CONF_DESTINATION bin)
+ 
+@@ -937,7 +951,13 @@ set_target_properties (wsjtx PROPERTIES
+   MACOSX_BUNDLE_GUI_IDENTIFIER "org.k1jt.wsjtx"
+   )
+ 
+-target_link_libraries (wsjtx wsjt_fort wsjt_cxx wsjt_qt ${hamlib_LIBRARIES} ${FFTW3_LIBRARIES} Qt5::Multimedia)
++if(FREEBSD)
++  set (extraLIBS "ltdl" "usb")
++else()
++  set (extraLIBS "")
++endif()
++
++target_link_libraries (wsjtx wsjt_fort wsjt_cxx wsjt_qt ${hamlib_LIBRARIES} ${extraLIBS} ${FFTW3_LIBRARIES} Qt5::Multimedia)
+ qt5_use_modules (wsjtx SerialPort) # not sure why the interface link library syntax above doesn't work
+ 
+ add_resources (message_aggregator_RESOURCES /qss ${message_aggregator_STYLESHEETS})
+@@ -1011,20 +1031,6 @@ else (WSJT_INCLUDE_KVASD)
+   endif (APPLE)
+ endif (WSJT_INCLUDE_KVASD)
+ 
+-install (PROGRAMS
+-  ${RIGCTL_EXE}
+-  DESTINATION ${WSJT_BIN_DESTINATION}
+-  #COMPONENT runtime
+-  RENAME rigctl-wsjtx${CMAKE_EXECUTABLE_SUFFIX}
+-  )
+-
+-install (PROGRAMS
+-  ${RIGCTLD_EXE}
+-  DESTINATION ${WSJT_BIN_DESTINATION}
+-  #COMPONENT runtime
+-  RENAME rigctld-wsjtx${CMAKE_EXECUTABLE_SUFFIX}
+-  )
+-
+ install (FILES
+   README
+   COPYING

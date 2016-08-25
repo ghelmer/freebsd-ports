@@ -1,8 +1,8 @@
-# Created by: Torsten Zühlsdorff <ports@toco-domains.de>
+# Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
 # $FreeBSD$
 
 PORTNAME=	rotp
-PORTVERSION=	2.1.1
+PORTVERSION=	2.1.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -13,8 +13,7 @@ LICENSE=	MIT
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 PLIST_FILES=	bin/rotp
 

@@ -15,6 +15,10 @@ EXTRACT_ONLY=	FTJavaV${PORTVERSION}.zip
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Full Thrust PBEM Client
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/License.txt
 

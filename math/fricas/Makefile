@@ -13,10 +13,14 @@ COMMENT=	Computer algebra system, forked from axiom
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license/LICENSE.AXIOM
 
-BUILD_DEPENDS=	noweb:${PORTSDIR}/devel/noweb \
-		sbcl:${PORTSDIR}/lang/sbcl
+BUILD_DEPENDS=	noweb:devel/noweb \
+		sbcl:lang/sbcl
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+BROKEN=		Does not compile with sbcl-1.3.1
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 
 USE_XORG=	x11 ice sm xpm
 USES=		gettext iconv gmake tar:bzip2

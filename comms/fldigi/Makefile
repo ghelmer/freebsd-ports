@@ -1,28 +1,26 @@
 # $FreeBSD$
 
 PORTNAME=	fldigi
-PORTVERSION=	3.22.13
+PORTVERSION=	3.23.03
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.w1hkj.com/downloads/fldigi/\
-		LOCAL/shurd
+		LOCAL/db
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Digital decoder for psk, cw, psk31, olivia
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	pkg-config:${PORTSDIR}/devel/pkgconf \
-		asciidoc:${PORTSDIR}/textproc/asciidoc\
-		docbook-xsl>=1.0:${PORTSDIR}/textproc/docbook-xsl\
-		xsltproc:${PORTSDIR}/textproc/libxslt
-LIB_DEPENDS=	libexecinfo.so:${PORTSDIR}/devel/libexecinfo \
-		libsamplerate.so:${PORTSDIR}/audio/libsamplerate\
-		libboost_system.so:${PORTSDIR}/devel/boost-libs\
-		libfltk.so:${PORTSDIR}/x11-toolkits/fltk
+BUILD_DEPENDS=	asciidoc:textproc/asciidoc\
+		docbook-xsl>=1.0:textproc/docbook-xsl\
+		xsltproc:textproc/libxslt
+LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate\
+		libboost_system.so:devel/boost-libs\
+		libfltk.so:x11-toolkits/fltk
 
 USE_CXXSTD=	gnu++0x
 GNU_CONFIGURE=	yes
-USES=		compiler:c++11-lib gmake perl5 pkgconfig shebangfix
+USES=		compiler:c++11-lib execinfo gmake perl5 pkgconfig shebangfix
 CONFIGURE_ENV=	FLTK_CONFIG="${LOCALBASE}/bin/fltk-config" \
 		    EXTRA_LIBS="-lexecinfo"
 
@@ -44,25 +42,21 @@ NATIVE_OPT_CONFIGURE_OFF=	--enable-optimizations=none
 FLARQ_CONFIGURE_ENABLE=		flarq
 OSS_CONFIGURE_ENABLE=		oss
 SNDFILE_CONFIGURE_WITH=		sndfile
-SNDFILE_LIB_DEPENDS=		libsndfile.so:${PORTSDIR}/audio/libsndfile
+SNDFILE_LIB_DEPENDS=		libsndfile.so:audio/libsndfile
 PORTAUDIO_CONFIGURE_WITH=	portaudio
-PORTAUDIO_LIB_DEPENDS=		libportaudio.so:${PORTSDIR}/audio/portaudio
+PORTAUDIO_LIB_DEPENDS=		libportaudio.so:audio/portaudio
 PULSEAUDIO_CONFIGURE_WITH=	pulseaudio
-PULSEAUDIO_LIB_DEPENDS=		libpulse.so:${PORTSDIR}/audio/pulseaudio
+PULSEAUDIO_LIB_DEPENDS=		libpulse.so:audio/pulseaudio
 HAMLIB_CONFIGURE_WITH=		hamlib
-HAMLIB_LIB_DEPENDS=		libhamlib.so:${PORTSDIR}/comms/hamlib
+HAMLIB_LIB_DEPENDS=		libhamlib.so:comms/hamlib
 NLS_CONFIGURE_ENABLE=		nls
 NLS_USES=			gettext
 
 BROKEN_sparc64=		Fails to install
-
-PLIST_SUB+=	XMLRPC=""
 # Always need asciidoc for man pages
 CONFIGURE_ARGS+=--with-asciidoc
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|png_infopp_NULL|NULL|' \
-		 ${WRKSRC}/src/widgets/picture.cxx
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
 		${WRKSRC}/Makefile.in
 
@@ -72,7 +66,7 @@ post-configure:
 # force rebuild of man pages
 	${RM} ${WRKSRC}/doc/*.1
 
-post-install:
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/doc/guide.html ${STAGEDIR}${DOCSDIR}

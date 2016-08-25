@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	global
-PORTVERSION=	6.5.1
+PORTVERSION=	6.5.4
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -15,7 +15,8 @@ OPTIONS_DEFINE=	DOCS
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USES=		libtool perl5
+TEST_TARGET=	check
+USES=		libtool ncurses perl5
 
 INFO=		global
 PORTDOCS=	AUTHORS COPYING ChangeLog FAQ INSTALL LICENSE NEWS README THANKS
@@ -26,8 +27,5 @@ post-patch:
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC}/ && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
-
-regression-test test: build
-	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
 .include <bsd.port.mk>

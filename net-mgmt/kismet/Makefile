@@ -12,7 +12,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:1
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	802.11 layer2 wireless network detector, sniffer, and IDS
 
 LICENSE=	GPLv2
@@ -41,7 +41,7 @@ PORTEXAMPLES=	*
 
 .if ${PORT_OPTIONS:MPCRE}
 CONFIGURE_ARGS+=--enable-pcre
-LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS+=	libpcre.so:devel/pcre
 .else
 CONFIGURE_ARGS+=--disable-pcre
 .endif

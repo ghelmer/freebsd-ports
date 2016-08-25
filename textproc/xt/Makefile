@@ -11,8 +11,12 @@ EXTRACT_SUFX=	.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	XSL Transformations (XSLT) implementation in Java
 
-RUN_DEPENDS=	${JAVALIBDIR}/xml-apis.jar:${PORTSDIR}/textproc/xerces-j \
-		${JAVALIBDIR}/xp.jar:${PORTSDIR}/textproc/xp
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	${JAVALIBDIR}/xml-apis.jar:textproc/xerces-j \
+		${JAVALIBDIR}/xp.jar:textproc/xp
 
 USE_JAVA=	YES
 JAVA_VERSION=	1.6+

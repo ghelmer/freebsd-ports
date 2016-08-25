@@ -20,6 +20,7 @@
     SUBDIR += hs-shelly
     SUBDIR += ibsh
     SUBDIR += jailkit
+    SUBDIR += klish
     SUBDIR += ksh93
     SUBDIR += lshell
     SUBDIR += mksh
@@ -44,5 +45,6 @@
     SUBDIR += vshnu
     SUBDIR += wcd
     SUBDIR += zsh
+    SUBDIR += zsh-navigation-tools
 
 .include <bsd.port.subdir.mk>

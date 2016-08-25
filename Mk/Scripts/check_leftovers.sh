@@ -23,6 +23,8 @@
 # The PLIST_SUB feature can be disabled by setting PLIST_SUB_SED=
 # in environment.
 
+[ -n "${DEBUG_MK_SCRIPTS}" -o -n "${DEBUG_MK_SCRIPTS_CHECK_LEFTOVERS}" ] && set -x
+
 origin="$1"
 [ $# -eq 1 ] || { echo "Must supply ORIGIN as parameter" >&2; exit 1; }
 [ -n "${PORTSDIR}" ] || { echo "PORTSDIR must be set" >&2; exit 1; }
@@ -40,6 +42,9 @@ if [ -n "${LOCALBASE}" ]; then
 else
 	LOCALBASE=$(make -C ${portdir} -VLOCALBASE)
 fi
+if [ -z "${CCACHE_DIR}" ]; then
+	CCACHE_DIR=$(make -C ${portdir} -VCCACHE_DIR)
+fi
 homedirs=$(awk -F: -v users=$(make -C ${portdir} -V USERS|sed -e 's, ,|,g;/^$/d;s,^,^(,;s,$,)$,') 'users && $1 ~ users {print $9}' ${PORTSDIR}/UIDs|sort -u|sed -e "s|/usr/local|${PREFIX}|"|tr "\n" " ")
 plistsub_sed=$(make -C ${portdir} -VPLIST_SUB_SED | /bin/sh ${PORTSDIR}/Mk/Scripts/plist_sub_sed_sort.sh)
 tmpplist=$(make -C ${portdir} -VTMPPLIST)
@@ -47,7 +52,7 @@ tmpplist=$(make -C ${portdir} -VTMPPLIST)
 while read modtype path extra; do
 	# Ignore everything from these files/directories
 	case "${path}" in
-		${HOME:-/root}/.ccache/*|/root/.ccache/*|\
+		${CCACHE_DIR}/*|\
 		/compat/linux/proc/*|\
 		/dev/*|\
 		/etc/make.conf.bak|\

@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfmpc
-PORTVERSION=	0.2.2
-PORTREVISION=	6
+PORTVERSION=	0.2.3
 CATEGORIES=	audio xfce
 MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
@@ -13,20 +12,14 @@ COMMENT=	Graphical MPD client focusing on low footprint
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	valac:${PORTSDIR}/lang/vala
-LIB_DEPENDS=	libmpd.so:${PORTSDIR}/audio/libmpd
+BUILD_DEPENDS=	valac:lang/vala
+LIB_DEPENDS=	libmpd.so:audio/libmpd
 
 INSTALLS_ICONS=	yes
-USES=		tar:bzip2 gettext gmake xfce pkgconfig
+USES=		gettext gmake pkgconfig tar:bzip2 xfce
 GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20 intltool intlhack
 USE_XFCE=	libmenu
-
-post-extract:
-	${CP} ${FILESDIR}/config.vapi ${WRKSRC}/src
-
-post-patch:
-	${FIND} ${WRKSRC} -type f -name 'Makefile.in' | \
-		${XARGS} ${REINPLACE_CMD} 's|@VALAC@|${LOCALBASE}/bin/valac|'
+INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

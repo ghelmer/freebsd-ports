@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pipelight
-DISTVERSION=	0.2.8.1
+PORTVERSION=	0.2.8.2
 CATEGORIES=	emulators
 MASTER_SITES=	https://bitbucket.org/mmueller2012/pipelight/get/ \
 		http://repos.fds-team.de/pluginloader/v${DISTVERSION}/:plg
@@ -17,17 +17,17 @@ COMMENT=	Wrapper for using windows plugins in web browsers
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/gpg2:${PORTSDIR}/security/gnupg \
-		${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash
-LIB_DEPENDS=	libxml2.so:${PORTSDIR}/textproc/libxml2
-RUN_DEPENDS=	${LOCALBASE}/bin/bash:${PORTSDIR}/shells/bash \
-		${LOCALBASE}/bin/wget:${PORTSDIR}/ftp/wget \
-		${LOCALBASE}/bin/zenity:${PORTSDIR}/x11/zenity \
-		${LOCALBASE}/bin/cabextract:${PORTSDIR}/archivers/cabextract \
-		${LOCALBASE}/bin/flock:${PORTSDIR}/sysutils/flock \
-		${LOCALBASE}/bin/gpg2:${PORTSDIR}/security/gnupg
+BUILD_DEPENDS=	${LOCALBASE}/bin/gpg2:security/gnupg \
+		${LOCALBASE}/bin/bash:shells/bash
+LIB_DEPENDS=	libxml2.so:textproc/libxml2
+RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash \
+		${LOCALBASE}/bin/wget:ftp/wget \
+		${LOCALBASE}/bin/zenity:x11/zenity \
+		${LOCALBASE}/bin/cabextract:archivers/cabextract \
+		${LOCALBASE}/bin/flock:sysutils/flock \
+		${LOCALBASE}/bin/gpg2:security/gnupg
 
-WRKSRC=		${WRKDIR}/mmueller2012-pipelight-8a1bdc6c254f
+WRKSRC=		${WRKDIR}/mmueller2012-pipelight-792e7a4885a6
 USE_GCC=	yes
 USE_LDCONFIG=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -40,7 +40,6 @@ CONFIGURE_ARGS+=--verbose --wine-path=${LOCALBASE}/bin/wine --win32-prebuilt \
 USE_XORG=	x11
 USES=		compiler:gcc-c++11-lib gmake shebangfix
 MAKE_JOBS_UNSAFE=yes
-bash_OLD_CMD=	/usr/bin/env bash
 SHEBANG_FILES=	configure \
 		share/install-dependency
 
@@ -49,11 +48,11 @@ SUB_FILES=	pipelight-mkufs
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == "i386"
-BUILD_DEPENDS+=	${LOCALBASE}/bin/wine:${PORTSDIR}/emulators/wine-staging
-RUN_DEPENDS+=	${LOCALBASE}/bin/wine:${PORTSDIR}/emulators/wine-staging
+BUILD_DEPENDS+=	${LOCALBASE}/bin/wine:emulators/wine-staging
+RUN_DEPENDS+=	${LOCALBASE}/bin/wine:emulators/wine-staging
 .elif ${ARCH} == "amd64"
-BUILD_DEPENDS+=	${LOCALBASE}/bin/wine:${PORTSDIR}/emulators/i386-wine-staging
-RUN_DEPENDS+=	${LOCALBASE}/bin/wine:${PORTSDIR}/emulators/i386-wine-staging
+BUILD_DEPENDS+=	${LOCALBASE}/bin/wine:emulators/i386-wine-staging
+RUN_DEPENDS+=	${LOCALBASE}/bin/wine:emulators/i386-wine-staging
 .endif
 
 pre-configure:
@@ -67,6 +66,6 @@ post-stage:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/pipelight/libpipelight.so
 
 post-install:
-	@${INSTALL_SCRIPT} ${WRKDIR}/pipelight-mkufs ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_SCRIPT} ${WRKDIR}/pipelight-mkufs ${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.post.mk>

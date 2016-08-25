@@ -68,6 +68,13 @@
 # WITHOUT			- Unset options from the command line
 #
 #
+# These variables are strictly informational (read-only).  They indicate the
+# current state of the selected options; they are space-delimited lists.
+#
+# SELECTED_OPTIONS		- list of options set "on"
+# DESELECTED_OPTIONS		- list of options set "off"
+#
+#
 # The following knobs are there to simplify the handling of OPTIONS in simple
 # cases :
 #
@@ -90,6 +97,13 @@
 #				the CMAKE_ARGS.
 # ${opt}_CMAKE_OFF		When option is disabled, it will add its content to
 #				the CMAKE_ARGS.
+#
+# ${opt}_CMAKE_BOOL		Will add to CMAKE_ARGS:
+#				Option enabled  -D${content}:BOOL=true
+#				Option disabled -D${content}:BOOL=false
+# ${opt}_CMAKE_BOOL_OFF		Will add to CMAKE_ARGS:
+#				Option enabled  -D${content}:BOOL=false
+#				Option disabled -D${content}:BOOL=true
 #
 # ${opt}_QMAKE_ON		When option is enabled, it will add its content to
 #				the QMAKE_ARGS.
@@ -125,7 +139,7 @@
 # EXTRACT_ONLY GH_ACCOUNT GH_PROJECT GH_TAGNAME IGNORE INFO INSTALL_TARGET
 # LDFLAGS LIBS MAKE_ARGS MAKE_ENV PATCHFILES PATCH_SITES PLIST_DIRS
 # PLIST_DIRSTRY PLIST_FILES PLIST_SUB PORTDOCS PORTEXAMPLES SUB_FILES SUB_LIST
-# USES,
+# TEST_TARGET USES,
 # defining ${opt}_${variable} will add its content to the actual variable when
 # the option is enabled.  Defining ${opt}_${variable}_OFF will add its content
 # to the actual variable when the option is disabled.
@@ -149,10 +163,11 @@ OPTIONS_FILE?=	${PORT_DBDIR}/${OPTIONS_NAME}/options
 _OPTIONS_FLAGS=	ALL_TARGET BROKEN CATEGORIES CFLAGS CONFIGURE_ENV CONFLICTS \
 		CONFLICTS_BUILD CONFLICTS_INSTALL CPPFLAGS CXXFLAGS \
 		DESKTOP_ENTRIES DISTFILES EXTRA_PATCHES EXTRACT_ONLY \
-		GH_ACCOUNT GH_PROJECT GH_TAGNAME IGNORE INFO INSTALL_TARGET \
-		LDFLAGS LIBS MAKE_ARGS MAKE_ENV PATCHFILES PATCH_SITES \
-		PLIST_DIRS PLIST_DIRSTRY PLIST_FILES PLIST_SUB PORTDOCS \
-		PORTEXAMPLES SUB_FILES SUB_LIST USES
+		GH_ACCOUNT GH_PROJECT GH_TAGNAME GH_TUPLE IGNORE INFO \
+		INSTALL_TARGET LDFLAGS LIBS MAKE_ARGS MAKE_ENV MASTER_SITES \
+		PATCHFILES PATCH_SITES PLIST_DIRS PLIST_DIRSTRY PLIST_FILES \
+		PLIST_SUB PORTDOCS PORTEXAMPLES SUB_FILES SUB_LIST \
+		TEST_TARGET USES
 _OPTIONS_DEPENDS=	PKG FETCH EXTRACT PATCH BUILD LIB RUN
 
 # The format here is target_family:priority:target-type
@@ -189,6 +204,10 @@ WITHOUT+=			EXAMPLES
 OPTIONS_WARNINGS_UNSET+=	EXAMPLES
 .endif
 
+.if defined(DEVELOPER)
+PORT_OPTIONS+=	TEST
+.endif
+
 PORT_OPTIONS+=	IPV6
 
 # Add per arch options
@@ -201,9 +220,21 @@ OPTIONS_DEFINE+=	${opt}
 # Add per arch defaults
 OPTIONS_DEFAULT+=	${OPTIONS_DEFAULT_${ARCH}}
 
+_ALL_EXCLUDE=	${OPTIONS_EXCLUDE_${ARCH}} ${OPTIONS_EXCLUDE} \
+		${OPTIONS_SLAVE} ${OPTIONS_EXCLUDE_${OPSYS}}
+
+.for opt in ${OPTIONS_DEFINE:O:u}
+.  if !${_ALL_EXCLUDE:M${opt}}
+.    for opt_implied in ${${opt}_IMPLIES}
+.       if ${_ALL_EXCLUDE:M${opt_implied}}
+_ALL_EXCLUDE+=	${opt}
+.       endif
+.    endfor
+.  endif
+.endfor
+
 # Remove options the port maintainer doesn't want
-.for opt in ${OPTIONS_EXCLUDE_${ARCH}} ${OPTIONS_EXCLUDE} ${OPTIONS_SLAVE} \
-	${OPTIONS_EXCLUDE_${OPSYS}}
+.for opt in ${_ALL_EXCLUDE:O:u}
 OPTIONS_DEFAULT:=	${OPTIONS_DEFAULT:N${opt}}
 OPTIONS_DEFINE:=	${OPTIONS_DEFINE:N${opt}}
 PORT_OPTIONS:=		${PORT_OPTIONS:N${opt}}
@@ -447,7 +478,7 @@ ALL_OPTIONS=	${OPTIONS_DEFINE}
 _OPTIONS_${target}?=
 .endfor
 
-.for opt in ${COMPLETE_OPTIONS_LIST} ${OPTIONS_SLAVE} ${OPTIONS_EXCLUDE_${ARCH}} ${OPTIONS_EXCLUDE}
+.for opt in ${COMPLETE_OPTIONS_LIST} ${_ALL_EXCLUDE:O:u}
 # PLIST_SUB
 PLIST_SUB?=
 SUB_LIST?=
@@ -486,14 +517,16 @@ ${_u:tu}=		${${opt}_VARS:M${var}=*:C/[^=]*=//:C/^"(.*)"$$/\1/}
 .      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_ENABLE)
-.      for iopt in ${${opt}_CONFIGURE_ENABLE}
-CONFIGURE_ARGS+=	--enable-${iopt}
-.      endfor
+CONFIGURE_ARGS+=	${${opt}_CONFIGURE_ENABLE:S/^/--enable-/}
 .    endif
 .    if defined(${opt}_CONFIGURE_WITH)
-.      for iopt in ${${opt}_CONFIGURE_WITH}
-CONFIGURE_ARGS+=	--with-${iopt}
-.      endfor
+CONFIGURE_ARGS+=	${${opt}_CONFIGURE_WITH:S/^/--with-/}
+.    endif
+.    if defined(${opt}_CMAKE_BOOL)
+CMAKE_ARGS+=		${${opt}_CMAKE_BOOL:C/.*/-D&:BOOL=true/}
+.    endif
+.    if defined(${opt}_CMAKE_BOOL_OFF)
+CMAKE_ARGS+=		${${opt}_CMAKE_BOOL_OFF:C/.*/-D&:BOOL=false/}
 .    endif
 .    for configure in CONFIGURE CMAKE QMAKE
 .      if defined(${opt}_${configure}_ON)
@@ -534,14 +567,16 @@ ${_u:tu}=		${${opt}_VARS_OFF:M${var}=*:C/[^=]*=//:C/^"(.*)"$$/\1/}
 .      endfor
 .    endif
 .    if defined(${opt}_CONFIGURE_ENABLE)
-.      for iopt in ${${opt}_CONFIGURE_ENABLE}
-CONFIGURE_ARGS+=	--disable-${iopt:C/=.*//}
-.      endfor
+CONFIGURE_ARGS+=	${${opt}_CONFIGURE_ENABLE:S/^/--disable-/:C/=.*//}
 .    endif
 .    if defined(${opt}_CONFIGURE_WITH)
-.      for iopt in ${${opt}_CONFIGURE_WITH}
-CONFIGURE_ARGS+=	--without-${iopt:C/=.*//}
-.      endfor
+CONFIGURE_ARGS+=	${${opt}_CONFIGURE_WITH:S/^/--without-/:C/=.*//}
+.    endif
+.    if defined(${opt}_CMAKE_BOOL)
+CMAKE_ARGS+=		${${opt}_CMAKE_BOOL:C/.*/-D&:BOOL=false/}
+.    endif
+.    if defined(${opt}_CMAKE_BOOL_OFF)
+CMAKE_ARGS+=		${${opt}_CMAKE_BOOL_OFF:C/.*/-D&:BOOL=true/}
 .    endif
 .    for configure in CONFIGURE CMAKE QMAKE
 .      if defined(${opt}_${configure}_OFF)
@@ -565,6 +600,27 @@ _type=		${target:C/.*://}
 _OPTIONS_${_target}:=	${_OPTIONS_${_target}} ${_prio}:${_type}-${_target}-${opt}-off
 .    endfor
 .  endif
+.endfor
+
+.undef (SELECTED_OPTIONS)
+.undef (DESELECTED_OPTIONS)
+.for opt in ${ALL_OPTIONS}
+.  if ${PORT_OPTIONS:M${opt}}
+SELECTED_OPTIONS:=	${opt} ${SELECTED_OPTIONS}
+.  else
+DESELECTED_OPTIONS:=	${opt} ${DESELECTED_OPTIONS}
+.  endif
+.endfor
+.for otype in MULTI GROUP SINGLE RADIO
+.  for m in ${OPTIONS_${otype}}
+.    for opt in ${OPTIONS_${otype}_${m}}
+.      if ${PORT_OPTIONS:M${opt}}
+SELECTED_OPTIONS:=	${opt} ${SELECTED_OPTIONS}
+.      else
+DESELECTED_OPTIONS:=	${opt} ${DESELECTED_OPTIONS}
+.      endif
+.    endfor
+.  endfor
 .endfor
 
 .endif

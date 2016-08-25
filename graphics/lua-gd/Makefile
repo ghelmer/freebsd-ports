@@ -3,7 +3,7 @@
 
 PORTNAME=	lua-gd
 PORTVERSION=	2.0.33r2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	http://files.luaforge.net/releases/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}forLua5.1/
 
@@ -12,7 +12,7 @@ COMMENT=	GD bindings for the Lua programming language
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

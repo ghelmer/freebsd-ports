@@ -2,30 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	mongo-c-driver
-PORTVERSION=	0.7.1
-DISTVERSIONPREFIX=	v
+PORTVERSION=	1.3.5
 CATEGORIES=	devel
-PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	waitman@waitman.net
+MAINTAINER=	ports@bsdserwis.com
 COMMENT=	C Driver for MongoDB
+
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2 \
+		libbson-1.0.so:devel/libbson
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mongodb
 
-USES=		gmake
-
+USES=		cmake pkgconfig
 USE_LDCONFIG=	yes
+LDFLAGS+=	-pthread
 
-PLIST_FILES=	include/mongo.h \
-		include/bson.h \
-		lib/libmongoc.a \
-		lib/libmongoc.so.0.7 \
-		lib/libmongoc.so.0.7.1 \
-		lib/libmongoc.so \
-		lib/libbson.a \
-		lib/libbson.so.0.7.1 \
-		lib/libbson.so.0.7 \
-		lib/libbson.so
+post-stage:
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libmongoc-1.0.so.${PORTVERSION}
 
 .include <bsd.port.mk>

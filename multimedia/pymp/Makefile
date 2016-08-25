@@ -11,8 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lean, flexible frontend to MPlayer written in Python
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	mplayer:${PORTSDIR}/multimedia/mplayer
+RUN_DEPENDS=	mplayer:multimedia/mplayer
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jdolan
@@ -20,14 +21,15 @@ GH_TAGNAME=	bea99d9
 
 USES=		shebangfix python tar:bzip2
 SHEBANG_FILES=	*.py
-python_OLD_CMD=	/usr/bin/env python
 USE_GNOME=	pygtk2
+NO_ARCH=	yes
 
 PORTDOCS=	CHANGELOG README.md
-OPTIONS_DEFINE=	DOCS
 
 DESKTOP_ENTRIES="Pymp" "" "${PORTNAME}" \
 		"${PORTNAME}" "AudioVideo;Player;" ""
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/bin/bash|/bin/sh|; \
@@ -49,6 +51,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

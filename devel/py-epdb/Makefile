@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	epdb
-PORTVERSION=	0.14
+PORTVERSION=	0.15
+DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,6 +14,5 @@ USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 
 GH_ACCOUNT=	sassoftware
-GH_TAGNAME=	${PORTNAME}-${PORTVERSION}
 
 .include <bsd.port.mk>

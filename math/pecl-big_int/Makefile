@@ -8,12 +8,11 @@ MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	Functions for calculations with arbitrary length integers and bitsets
 
-USES=		tar:tgz
-USE_PHP=	yes
-USE_PHPEXT=	yes
+USES=		php:ext tar:tgz
+IGNORE_WITH_PHP=	70
 
 DOCS=		CREDITS INSTALL LICENSE README docs/index.html libbig_int/CREDITS \
 		libbig_int/LICENSE

@@ -1,7 +1,6 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	3
 CATEGORIES=	x11-toolkits lang
 PKGNAMESUFFIX=	-xforms
 
@@ -18,7 +17,6 @@ OPTIONS_DEFINE=	EXAMPLES XFORMS
 XFORMS_DESC=	Install xforms graphical user interface toolkit
 OPTIONS_DEFAULT=	XFORMS
 
-XFORMS_LIB_DEPENDS=	libforms.so:${PORTSDIR}/x11-toolkits/xforms
-HAVE_EXAMPLES=	yes
+XFORMS_LIB_DEPENDS=	libforms.so:x11-toolkits/xforms
 
 .include "${MASTERDIR}/Makefile"

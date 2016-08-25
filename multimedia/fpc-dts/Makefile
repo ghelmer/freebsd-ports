@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	multimedia lang
 PKGNAMESUFFIX=	-dts
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	LIBDCA
 LIBDCA_DESC=	Install dts library
 OPTIONS_DEFAULT=	LIBDCA
 
-LIBDCA_LIB_DEPENDS=	libdca.so:${PORTSDIR}/multimedia/libdca
+LIBDCA_LIB_DEPENDS=	libdca.so:multimedia/libdca
 
 .include "${MASTERDIR}/Makefile"

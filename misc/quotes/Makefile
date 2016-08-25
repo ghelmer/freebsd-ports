@@ -10,6 +10,10 @@ MASTER_SITES=	#
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quote, currency, and Slashdot headline fetcher based on Perl
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 NO_BUILD=	yes
 USES=		shebangfix perl5
 SHEBANG_FILES=	quotes quotesmailer QuExample.pm

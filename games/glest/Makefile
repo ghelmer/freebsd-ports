@@ -9,13 +9,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20source/${PORTVERSION}
 DISTNAME=	${PORTNAME}_source_${PORTVERSION}
 DIST_SUBDIR=	${PORTNAME}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mokhi64@gmail.com
 COMMENT=	Free 3D real-time customizable strategy game
 
-LIB_DEPENDS=	libxerces-c.so:${PORTSDIR}/textproc/xerces-c3 \
-		libvorbis.so:${PORTSDIR}/audio/libvorbis
-BUILD_DEPENDS=	jam:${PORTSDIR}/devel/jam
-RUN_DEPENDS=	${DATADIR}/servers.ini:${PORTSDIR}/games/glest-data
+LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3 \
+		libvorbis.so:audio/libvorbis
+BUILD_DEPENDS=	jam:devel/jam
+RUN_DEPENDS=	${DATADIR}/servers.ini:games/glest-data
 
 USES=		dos2unix openal:al,alut pkgconfig zip lua:51
 USE_AUTOTOOLS=	automake:env autoconf:env

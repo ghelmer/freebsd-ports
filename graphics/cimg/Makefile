@@ -3,7 +3,7 @@
 
 PORTNAME=	cimg
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.4
+DISTVERSION=	1.7.3
 PORTEPOCH=	3
 CATEGORIES=	graphics devel
 
@@ -25,6 +25,7 @@ ONLY_FOR_ARCHS_REASON=	"invokes i386 asm"
 USE_GITHUB=	yes
 GH_ACCOUNT=	dtschump
 GH_PROJECT=	CImg
+GH_TAGNAME=	${DISTVERSIONPREFIX}.${DISTVERSION:S/.//g}
 
 .if !defined(WITHOUT_LAPACK)
 . if defined(WITH_ATLAS)
@@ -41,22 +42,24 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS} || ${PORT_OPTIONS:MEXAMPLES}
-USES+=		gmake
+USES+=		gmake pkgconfig:build
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
 REINPLACE_ARGS=	-i ""
-LIB_DEPENDS+=	libboard.so:${PORTSDIR}/graphics/libboard
+LIB_DEPENDS+=	libboard.so:graphics/libboard
 
 . if !defined(WITH_DEBUG)
-LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png		\
-		libtiff.so:${PORTSDIR}/graphics/tiff		\
-		libIlmImf.so:${PORTSDIR}/graphics/OpenEXR	\
-		libgimp-2.0.so:${PORTSDIR}/graphics/gimp-app	\
-		libfftw3.so:${PORTSDIR}/math/fftw3		\
-		libopencv_legacy.so:${PORTSDIR}/graphics/opencv	\
-		libopencv_core.so:${PORTSDIR}/graphics/opencv-core\
-		libGraphicsMagick.so:${PORTSDIR}/graphics/GraphicsMagick
+LIB_DEPENDS+=	libcurl.so:ftp/curl			\
+		libpng.so:graphics/png			\
+		libtiff.so:graphics/tiff		\
+		libHalf.so:graphics/ilmbase		\
+		libIlmImf.so:graphics/OpenEXR		\
+		libgimp-2.0.so:graphics/gimp-app	\
+		libfftw3.so:math/fftw3			\
+		libopencv_legacy.so:graphics/opencv	\
+		libopencv_core.so:graphics/opencv-core	\
+		libGraphicsMagick.so:graphics/GraphicsMagick
 USES+=		jpeg
 ALL_TARGET=	Mlinux
 . else
@@ -67,10 +70,10 @@ WITHOUT_LAPACK=	yes
 . endif
 
 . if !defined(WITHOUT_MEDCON)
-RUN_DEPENDS+=	medcon:${PORTSDIR}/graphics/xmedcon
+RUN_DEPENDS+=	medcon:graphics/xmedcon
 . endif
 . if !defined(WITHOUT_FFMPEG)
-LIB_DEPENDS+=	libavformat.so:${PORTSDIR}/multimedia/ffmpeg
+LIB_DEPENDS+=	libavformat.so:multimedia/ffmpeg
 . endif
 
 . if !defined(WITHOUT_LAPACK)
@@ -78,6 +81,7 @@ LIB_DEPENDS+=	libavformat.so:${PORTSDIR}/multimedia/ffmpeg
 USES+=	fortran
 . endif
 
+USE_XORG+=	x11 xrandr
 . if defined(WITH_XSHM)
 USE_XORG+=	xext
 . endif

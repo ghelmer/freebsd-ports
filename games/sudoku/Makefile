@@ -10,6 +10,10 @@ EXTRACT_SUFX=	.tbz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Console based Sudoku games
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 USES=		ncurses tar:bzip2
 PLIST_FILES=	bin/sudoku \
 		man/man6/sudoku.6.gz \

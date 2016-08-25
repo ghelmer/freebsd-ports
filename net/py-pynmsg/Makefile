@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pynmsg
-PORTVERSION=	0.3.1
-PORTREVISION=	1
+PORTVERSION=	0.4.0
 CATEGORIES=	net python
 MASTER_SITES=	FARSIGHT LOCAL/truckman/farsight
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,12 +12,11 @@ COMMENT=	Python wrapper for net/nmsg
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-LIB_DEPENDS=	libnmsg.so:${PORTSDIR}/net/nmsg
+LIB_DEPENDS=	libnmsg.so:net/nmsg
 
-USE_PYTHON=	distutils autoplist
-USES=		python shebangfix uniquefiles:dirs
+USE_PYTHON=	autoplist distutils
+USES=		pkgconfig python shebangfix uniquefiles:dirs
 
-python_OLD_CMD=	/usr/bin/env python
 SHEBANG_FILES=	examples/*.py
 
 PORTEXAMPLES=	*

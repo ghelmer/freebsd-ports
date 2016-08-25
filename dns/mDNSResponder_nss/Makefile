@@ -1,10 +1,10 @@
 # $FreeBSD$
 
-PORTNAME=	mDNSResponder_nss
-PORTVERSION=	567
+PORTNAME=	mDNSResponder
+PORTVERSION=	625.41.2
 CATEGORIES=	dns net
 MASTER_SITES=	http://opensource.apple.com/tarballs/mDNSResponder/
-DISTNAME=	${PORTNAME:S/_nss//}-${PORTVERSION}
+PKGNAMESUFFIX=	_nss
 
 MAINTAINER=	mazhe@alkumuna.eu
 COMMENT=	Apple mDNS responder - FreeBSD nsswitch module
@@ -12,7 +12,7 @@ COMMENT=	Apple mDNS responder - FreeBSD nsswitch module
 LICENSE=	APACHE20 BSD3CLAUSE
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	libdns_sd.so:${PORTSDIR}/net/mDNSResponder
+LIB_DEPENDS=	libdns_sd.so:net/mDNSResponder
 
 CONFLICTS_INSTALL=	nss_mdns-[0-9]*
 

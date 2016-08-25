@@ -12,14 +12,14 @@ COMMENT=	Windows HTML Help (.chm) viewer for UNIX
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libchm.so:${PORTSDIR}/misc/chmlib
+LIB_DEPENDS=	libchm.so:misc/chmlib
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes
 NLS_USES=	gettext
 
 GNU_CONFIGURE=	yes
-USE_WX=		2.8+
+USE_WX=		2.8
 WX_UNICODE=	yes
 WX_CONF_ARGS=	absolute
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib

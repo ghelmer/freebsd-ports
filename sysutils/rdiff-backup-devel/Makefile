@@ -3,7 +3,7 @@
 
 PORTNAME=	rdiff-backup
 PORTVERSION=	1.3.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils
 MASTER_SITES=	SAVANNAH \
 		LOCAL/vd/${PORTNAME}${PKGNAMESUFFIX}
@@ -12,10 +12,10 @@ PKGNAMESUFFIX=	-devel
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Local/remote mirroring+incremental backup
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	librsync.so:${PORTSDIR}/net/librsync
+LIB_DEPENDS=	librsync.so:net/librsync1
 
 CONFLICTS=	rdiff-backup-[0-9]*
 

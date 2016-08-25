@@ -7,12 +7,12 @@ PORTREVISION=	1
 CATEGORIES=	net-im
 MASTER_SITES=	SF/tp-sofiasip/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	yuri@tsoft.com
+MAINTAINER=	yuri@rawbw.com
 COMMENT=	SIP (sofia-sip) Connection Manager for Telepathy Framework
 
-LIB_DEPENDS=	libsofia-sip-ua.so:${PORTSDIR}/net/sofia-sip \
-		libtelepathy-glib.so:${PORTSDIR}/net-im/telepathy-glib \
-		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
+LIB_DEPENDS=	libsofia-sip-ua.so:net/sofia-sip \
+		libtelepathy-glib.so:net-im/telepathy-glib \
+		libdbus-glib-1.so:devel/dbus-glib
 
 GNU_CONFIGURE=	yes
 USE_OPENSSL=	yes

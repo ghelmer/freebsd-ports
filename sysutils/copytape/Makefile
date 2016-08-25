@@ -11,13 +11,13 @@ EXTRACT_SUFX=		.Z
 MAINTAINER=		sjroz@verizon.net
 COMMENT=		Program that is used to duplicate magtapes
 
-EXTRACT_DEPENDS=	gunshar:${PORTSDIR}/archivers/sharutils
+EXTRACT_DEPENDS=	gunshar:archivers/sharutils
 
 NO_WRKSUBDIR=		yes
 
 EXTRACT_CMD=		zcat
 EXTRACT_BEFORE_ARGS=
-EXTRACT_AFTER_ARGS=	| gunshar -d ${WRKDIR}
+EXTRACT_AFTER_ARGS=	| gunshar -d ${WRKSRC}
 
 CFLAGS+=	-Wno-return-type
 # XXX upstream puts CFLAGS in CC

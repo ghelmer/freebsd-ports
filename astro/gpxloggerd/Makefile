@@ -10,14 +10,13 @@ GH_ACCOUNT=	glebius
 MAINTAINER=	glebius@FreeBSD.org
 COMMENT=	Daemon that connects to the GPSD daemon and logs GPS traces
 
-LIB_DEPENDS=	libgps.so:${PORTSDIR}/astro/gpsd
+LIB_DEPENDS=	libgps.so:astro/gpsd
 
 USE_RC_SUBR=	${PORTNAME}
 PLIST_FILES=	sbin/${PORTNAME} \
 		man/man8/${PORTNAME}.8.gz
 
 LDFLAGS+=	-lm
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 MAKE_ARGS=	NO_WERROR=yes
 
 do-install:

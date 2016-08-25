@@ -8,11 +8,11 @@ CATEGORIES=	security perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	lippe@FreeBSD.org
+MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Perl extension for PayPal Encrypted Website Payments
 
-RUN_DEPENDS=	p5-Net-SSLeay>=0:${PORTSDIR}/security/p5-Net-SSLeay
-BUILD_DEPENDS=	p5-Net-SSLeay>=0:${PORTSDIR}/security/p5-Net-SSLeay
+RUN_DEPENDS=	p5-Net-SSLeay>=0:security/p5-Net-SSLeay
+BUILD_DEPENDS=	p5-Net-SSLeay>=0:security/p5-Net-SSLeay
 
 USES=		dos2unix perl5
 USE_PERL5=	configure

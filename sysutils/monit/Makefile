@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	monit
-PORTVERSION=	5.14
+PORTVERSION=	5.18
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.mmonit.com/monit/dist/
 
@@ -24,7 +24,7 @@ PLIST_FILES=	bin/monit \
 
 SUB_FILES=	pkg-message
 
-PORTDOCS=	COPYING README
+PORTDOCS=	COPYING README CHANGES
 
 SSL_CONFIGURE_OFF=	--without-ssl
 SSL_USE=		OPENSSL=yes

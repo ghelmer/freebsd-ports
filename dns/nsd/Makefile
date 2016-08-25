@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nsd
-PORTVERSION=	4.1.5
+PORTVERSION=	4.1.11
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://www.nlnetlabs.nl/downloads/nsd/	\
 		ftp://ftp.rhnet.is/pub/nsd/
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CONFLICTS=	nsd-[0-3]* nsd3-[0-9]*
 
-USES=		cpe
+USES=		cpe ssl
 CPE_VENDOR=	nlnetlabs
 
 USE_RC_SUBR=	nsd
@@ -33,6 +33,7 @@ CONFIGURE_ARGS=	--with-libevent=${LOCALBASE} \
 		--with-configdir=${ETCDIR} \
 		--localstatedir=${NSDLSDIR} \
 		--with-dbfile=${NSDDBDIR}/nsd.db \
+		--with-ssl=${OPENSSLBASE} \
 		--with-pidfile=${NSDRUNDIR}/nsd.pid
 
 PLIST_SUB=	NSDUSER=${NSDUSER} \
@@ -43,8 +44,6 @@ PLIST_SUB=	NSDUSER=${NSDUSER} \
 USERS=		${NSDUSER}
 GROUPS=		${NSDGROUP}
 
-USE_OPENSSL=	yes
-
 PORTDOCS=	CREDITS ChangeLog LICENSE NSD-DATABASE NSD-DIFFFILE \
 		NSD-4-features NSD-FOR-BIND-USERS README README.icc RELNOTES \
 		REQUIREMENTS TESTPLAN TODO UPGRADING coding-style \
@@ -52,8 +51,10 @@ PORTDOCS=	CREDITS ChangeLog LICENSE NSD-DATABASE NSD-DIFFFILE \
 
 OPTIONS_DEFINE=		ROOT_SERVER LARGEFILE IPV6 BIND8_STATS CHECKING \
 		MINRESPSIZE NSEC3 MMAP DOCS RRL ZONE_STATS MUNIN_PLUGIN
-OPTIONS_DEFAULT=	LARGEFILE IPV6 NSEC3 MINRESPSIZE RRL
+OPTIONS_DEFAULT=	LARGEFILE NSEC3 MINRESPSIZE RRL
 OPTIONS_SUB=	yes
+
+MUNIN_PLUGIN_IMPLIES=	BIND8_STATS
 
 ROOT_SERVER_DESC=	Configure as a root server
 LARGEFILE_DESC=		Largefile support
@@ -66,11 +67,10 @@ RRL_DESC=		Response Rate Limiting
 ZONE_STATS_DESC=	Separate statistics for each zone
 MUNIN_PLUGIN_DESC=	Install Munin plugin (requires BIND8_STATS)
 
-LIB_DEPENDS+=	libevent.so:${PORTSDIR}/devel/libevent2
+LIB_DEPENDS+=	libevent.so:devel/libevent2
 
 ROOT_SERVER_CONFIGURE_ENABLE=	root-server
 LARGEFILE_CONFIGURE_ENABLE=	largefile
-IPV6_CONFIGURE_ENABLE=		ipv6
 BIND8_STATS_CONFIGURE_ENABLE=	bind8-stats
 CHECKING_CONFIGURE_ENABLE=	checking
 NSEC3_CONFIGURE_ENABLE=		nsec3
@@ -78,32 +78,31 @@ MINRESPSIZE_CONFIGURE_ENABLE=	minimal-responses
 MMAP_CONFIGURE_ENABLE=		mmap
 RRL_CONFIGURE_ENABLE=		ratelimit
 ZONE_STATS_CONFIGURE_ENABLE=	zone-stats
+IPV6_CONFIGURE_ENABLE=		ipv6
 
-.include <bsd.port.options.mk>
-
-post-build:
-.if ${PORT_OPTIONS:MMUNIN_PLUGIN}
+post-build-MUNIN_PLUGIN-on:
 	${REINPLACE_CMD} \
 		-e 's|/usr/local|${LOCALBASE}|g' \
 		-e 's|/usr/local/etc/nsd.conf|${ETCDIR}/nsd.conf|g' \
 		-e 's|/usr/local/var/munin/plugin-state|/var/munin/plugin-state/root|g' \
 		-e '90s|/var/munin/plugin-state/root|$${MUNIN_PLUGSTATE}|' \
 		${WRKSRC}/contrib/nsd_munin_
-.endif
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/nsd.conf.sample \
 		${STAGEDIR}${PREFIX}/etc/nsd/nsd.conf.sample
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/nsd \
 		${STAGEDIR}${PREFIX}/sbin/nsd-checkconf \
 		${STAGEDIR}${PREFIX}/sbin/nsd-checkzone \
 		${STAGEDIR}${PREFIX}/sbin/nsd-control
-.if ${PORT_OPTIONS:MMUNIN_PLUGIN}
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/munin/plugins
+
+post-install-MUNIN_PLUGIN-on:
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/munin/plugins
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/nsd_munin_ \
 		${STAGEDIR}${PREFIX}/share/munin/plugins
-.endif
+
+post-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/doc/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

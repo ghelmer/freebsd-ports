@@ -7,7 +7,7 @@ PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://links.twibright.com/download/ LOCAL/bf
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lynx-like text WWW browser
 
 LICENSE=	GPLv2
@@ -34,16 +34,16 @@ TRANS_DESC=	Hack for background transparency
 UTF8_DESC=	UTF-8 support
 X11_DESC=	X11 graphics support
 
-OPTIONS_DEFAULT=	IPV6 UTF8 X11
+OPTIONS_DEFAULT=	UTF8 X11
 
 PLIST_FILES=	bin/links man/man1/links.1.gz
 
-DIRECTFB_LIB_DEPENDS=	libdirectfb.so:${PORTSDIR}/devel/directfb
+DIRECTFB_LIB_DEPENDS=	libdirectfb.so:devel/directfb
 DIRECTFB_CONFIGURE_WITH=directfb
 
 IPV6_CONFIGURE_WITH=	ipv6
 
-SVGALIB_LIB_DEPENDS=	libvga.so:${PORTSDIR}/graphics/svgalib
+SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_CONFIGURE_WITH=	svgalib
 
 THREADS_CFLAGS=	-DHAVE_PTHREADS
@@ -63,8 +63,8 @@ X11_PLIST_FILES=	share/pixmaps/links.xpm
 CIPHERSTRING?=	HIGH:!SSLv2:!aNULL:!eNULL:@STRENGTH
 
 .if ${PORT_OPTIONS:MDIRECTFB} || ${PORT_OPTIONS:MSVGALIB} || ${PORT_OPTIONS:MX11}
-LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png \
-		libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS+=	libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
 USES+=		jpeg
 CONFIGURE_ARGS+=	--enable-graphics
 .else

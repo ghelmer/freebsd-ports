@@ -13,14 +13,17 @@ PATCH_SITES=	${MASTER_SITES}
 PATCH_DIST_STRIP=	-p1
 PATCHFILES=	dvi2tty-ascii-jtex-patch dvi2tty.c-patch
 
-MAINTAINER=	turutani@scphys.kyoto-u.ac.jp
+MAINTAINER=	TsurutaniNaoki@gmail.com
 COMMENT=	Character-based DVI file previewer
 
-RUN_DEPENDS=	jless:${PORTSDIR}/japanese/less
+RUN_DEPENDS=	jless:japanese/less
 
 PLIST_FILES=	bin/jdvi2tty \
 		bin/jdisdvi \
 		man/man1/jdvi2tty.1.gz
+
+post-patch:
+	${REINPLACE_CMD} -e "s/getline/get_line/g" ${WRKSRC}/dvistuff.c
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/jdvi2tty ${STAGEDIR}${PREFIX}/bin

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ldapscripts
-PORTVERSION=	2.0.6
+PORTVERSION=	2.0.7
 CATEGORIES=	net
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION} \
 		http://contribs.martymac.org/ldapscripts/
@@ -12,13 +12,14 @@ COMMENT=	Scripts to manage posix accounts in an OpenLDAP directory
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	ldapadd:${PORTSDIR}/net/openldap${OPENLDAP_VER}-client \
-		ldapsearch:${PORTSDIR}/net/openldap${OPENLDAP_VER}-client \
-		ldapdelete:${PORTSDIR}/net/openldap${OPENLDAP_VER}-client \
-		ldapmodify:${PORTSDIR}/net/openldap${OPENLDAP_VER}-client \
-		ldapmodrdn:${PORTSDIR}/net/openldap${OPENLDAP_VER}-client \
-		ldappasswd:${PORTSDIR}/net/openldap${OPENLDAP_VER}-client
+RUN_DEPENDS=	ldapadd:net/openldap${OPENLDAP_VER}-client \
+		ldapsearch:net/openldap${OPENLDAP_VER}-client \
+		ldapdelete:net/openldap${OPENLDAP_VER}-client \
+		ldapmodify:net/openldap${OPENLDAP_VER}-client \
+		ldapmodrdn:net/openldap${OPENLDAP_VER}-client \
+		ldappasswd:net/openldap${OPENLDAP_VER}-client
 
+NO_ARCH=	yes
 USE_OPENLDAP=	yes
 USES=		iconv tar:tgz
 LIBDIR=	${PREFIX}/lib/${PORTNAME}

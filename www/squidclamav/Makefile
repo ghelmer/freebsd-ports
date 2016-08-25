@@ -2,30 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	squidclamav
-PORTVERSION=	6.10
-PORTREVISION=	2
+PORTVERSION=	6.14
 CATEGORIES=	www security
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}/
+MASTER_SITES=	SF
 
-MAINTAINER=	mm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Clamav c-icap service and redirector for Squid
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 
-BROKEN=		Not fetchable
+LIB_DEPENDS=	libicapapi.so:www/c-icap
 
-LIB_DEPENDS+=	libicapapi.so:${PORTSDIR}/www/c-icap
-
+USES=		cpe libtool shebangfix
 GNU_CONFIGURE=	yes
-CFLAGS+=	-DHAVE_STRNSTR
-USES=		cpe shebangfix libtool
+CONFIGURE_ARGS=	--enable-shared --enable-static \
+		--sysconfdir="${PREFIX}/etc/c-icap" \
+		--with-c-icap=${LOCALBASE}
 SHEBANG_FILES=	cgi-bin/clwarn.cgi*
-INSTALL_TARGET=	install-strip
 CPE_VENDOR=	darold
+INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS+=	--enable-shared --enable-static \
-			--sysconfdir="${PREFIX}/etc/c-icap" \
-			--with-c-icap=${LOCALBASE}
+CFLAGS+=	-DHAVE_STRNSTR
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|CFGDIR=.*|CFGDIR="${PREFIX}/etc/c-icap"|g' \

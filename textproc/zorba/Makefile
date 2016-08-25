@@ -13,29 +13,23 @@ COMMENT=	General purpose C++ XQuery processor
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libxerces-c.so:${PORTSDIR}/textproc/xerces-c3 \
-		libicudata.so:${PORTSDIR}/devel/icu \
-		libcurl.so:${PORTSDIR}/ftp/curl \
-		libtidy.so:${PORTSDIR}/www/tidy-lib \
-		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid
-RUN_DEPENDS=	fop:${PORTSDIR}/textproc/fop
-
-BROKEN_FreeBSD_8=	does not build due to lack of strtoull
+LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3 \
+		libicudata.so:devel/icu \
+		libcurl.so:ftp/curl \
+		libtidy.so:www/tidy-lib \
+		libuuid.so:misc/e2fsprogs-libuuid
+RUN_DEPENDS=	fop:textproc/fop
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_DEFINE=	PHP PYTHON RUBY JAVA DOCS
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS+=	doxygen:${PORTSDIR}/devel/doxygen
-PHP_CMAKE_ON=		-DWITH_PHP5:BOOL=true
-PHP_CMAKE_OFF=		-DWITH_PHP5:BOOL=false
-PYTHON_CMAKE_ON=	-DWITH_PYTHON:BOOL=true
-PYTHON_CMAKE_OFF=	-DWITH_PYTHON:BOOL=false
-RUBY_CMAKE_ON=		-DWITH_RUBY:BOOL=true
-RUBY_CMAKE_OFF=		-DWITH_RUBY:BOOL=false
-JAVA_CMAKE_ON=		-DWITH_JAVA:BOOL=true
-JAVA_CMAKE_OFF=		-DWITH_JAVA:BOOL=false
+DOCS_BUILD_DEPENDS+=	doxygen:devel/doxygen
+PHP_CMAKE_BOOL=		WITH_PHP5
+PYTHON_CMAKE_BOOL=	WITH_PYTHON
+RUBY_CMAKE_BOOL=	WITH_RUBY
+JAVA_CMAKE_BOOL=	WITH_JAVA
 
 # Both install include/xqc.h
 CONFLICTS=	xqilla-[0-9]*
@@ -47,8 +41,8 @@ USES=		cmake:outsource compiler:c++11-lib execinfo
 CXXFLAGS+=	-I${LOCALBASE}/include -O1 # compiler hangs with -O2 on CURRENT
 LDFLAGS+=	-L${LOCALBASE}/lib
 CMAKE_ARGS=	-DCMAKE_REQUIRED_FLAGS:STRING="-I${LOCALBASE}/include -L${LOCALBASE}/lib" \
-    		-DLOCALBASE:STRING=${LOCALBASE} \
-    		-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+		-DLOCALBASE:STRING=${LOCALBASE} \
+		-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 
@@ -66,7 +60,7 @@ LOC_EXECINFO=	${LOCALBASE}/lib/libexecinfo.so
 
 .if ${PORT_OPTIONS:MPHP}
 USE_PHP=	tokenizer
-USE_PHP_BUILD=	yes
+USES+=		php:build
 WITH_SWIG=	yes
 CMAKE_ARGS+=	-DPHP5_INSTALL_PATH:FILEPATH="lib/php/${PHP_EXT_DIR}"
 PLIST_SUB+=	PHP_EXTLIBDIR="lib/php/${PHP_EXT_DIR}"
@@ -93,7 +87,7 @@ CMAKE_ARGS+=	-DJAVA_LIBDIR:PATH=${JAVALIBDIR}
 .endif
 
 .if defined(WITH_SWIG)
-BUILD_DEPENDS+=	swig2.0:${PORTSDIR}/devel/swig20
+BUILD_DEPENDS+=	swig2.0:devel/swig20
 .endif
 
 post-patch:

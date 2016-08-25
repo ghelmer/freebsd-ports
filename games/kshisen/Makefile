@@ -9,9 +9,9 @@ DIST_SUBDIR=	KDE/${PORTVERSION}
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	${${PORTNAME}_DESC}
 
-LIB_DEPENDS=	libkmahjongglib.so:${PORTSDIR}/games/libkmahjongg
+LIB_DEPENDS=	libkmahjongglib.so:games/libkmahjongg
 
-USE_KDE4=	kdelibs kdeprefix libkdegames automoc4
+USE_KDE4=	kdelibs libkdegames automoc4
 USES=		cmake:outsource tar:xz
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 

@@ -2,19 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	car
-DISTVERSION=	2.0-25
+DISTVERSION=	2.1-2
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	dbn@FreeBSD.org
 COMMENT=	Companion to Applied Regression for R
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2 GPLv3
+LICENSE_COMB=	dual
 
-BROKEN=		Missing dependency
-DEPRECATED=	Broken for more than 6 months
-EXPIRATION_DATE=	2015-10-31
+RUN_DEPENDS=	R-cran-pbkrtest>=0.3.2:math/R-cran-pbkrtest \
+		R-cran-quantreg>0:math/R-cran-quantreg
+TEST_DEPENDS=	R-cran-lmtest>=0.9.26:finance/R-cran-lmtest \
+		R-cran-sandwich>0:math/R-cran-sandwich
 
-USES=	cran:auto-plist
+USES=	cran
 
 .include <bsd.port.mk>

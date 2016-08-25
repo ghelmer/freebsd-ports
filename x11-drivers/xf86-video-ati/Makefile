@@ -2,7 +2,7 @@
 
 PORTNAME=	xf86-video-ati
 PORTVERSION=	7.5.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
@@ -25,7 +25,7 @@ CONFIGURE_ARGS+=--disable-glamor
 .include <bsd.port.options.mk>
 
 .if (${OSVERSION} >= 903000 && ${OSVERSION} < 1000000)
-RUN_DEPENDS+=	drm-kmod>=9:${PORTSDIR}/x11-drivers/drm-kmod
+RUN_DEPENDS+=	drm-kmod>=9:x11-drivers/drm-kmod
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|"radeonkms"|"radeonkms_port"|g' \

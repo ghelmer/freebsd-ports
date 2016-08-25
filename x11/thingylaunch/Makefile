@@ -7,7 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	x11
 MASTER_SITES=	http://gahr.ch/thingylaunch/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gahr@FreeBSD.org
 COMMENT=	Lightweight launcher for X
 
 LICENSE=	MIT BSD2CLAUSE
@@ -31,8 +31,8 @@ USE_XORG+=	x11
 
 .if ${PORT_OPTIONS:MLIBXCB}
 USE_XORG+=	xcb
-LIB_DEPENDS+=	libxcb-icccm.so:${PORTSDIR}/x11/xcb-util-wm \
-    		libxcb-keysyms.so:${PORTSDIR}/x11/xcb-util-keysyms
+LIB_DEPENDS+=	libxcb-icccm.so:x11/xcb-util-wm \
+		libxcb-keysyms.so:x11/xcb-util-keysyms
 CMAKE_ARGS+=	-DUSE_XCB:BOOL=ON
 .endif
 

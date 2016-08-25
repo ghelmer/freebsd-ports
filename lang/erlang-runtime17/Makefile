@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	erlang
-PORTVERSION=	17.5.6.4
+PORTVERSION=	17.5.6.9
+PORTREVISION=	2
 CATEGORIES=	lang parallel java
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg		\
 		http://erlang.stacken.kth.se/download/:erlangorg	\
@@ -19,7 +20,8 @@ PATCH_SITES=	http://olgeni.olgeni.com/~olgeni/distfiles/ \
 PATCHFILES=	patch-otp-17.5.1 patch-otp-17.5.2 patch-otp-17.5.3 \
 		patch-otp-17.5.4 patch-otp-17.5.5 patch-otp-17.5.6 \
 		patch-otp-17.5.6.1 patch-otp-17.5.6.2 patch-otp-17.5.6.3 \
-		patch-otp-17.5.6.4
+		patch-otp-17.5.6.4 patch-otp-17.5.6.5 patch-otp-17.5.6.6 \
+		patch-otp-17.5.6.7 patch-otp-17.5.6.8 patch-otp-17.5.6.9
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Functional programming language from Ericsson
@@ -37,7 +39,6 @@ OPTIONS_DEFINE=	DOCS DTRACE GCC GS HIPE JAVA KQUEUE ODBC OPENSSL SCTP SMP THREAD
 
 DIRTY_DESC=	Enable Dirty schedulers (experimental)
 DTRACE_DESC=	Enable DTrace support
-GCC_DESC=	Use current GCC
 GS_DESC=	Enable GS application (deprecated)
 HIPE_DESC=	Build native HiPE compiler
 KQUEUE_DESC=	Enable Kernel Poll (kqueue) support
@@ -50,7 +51,7 @@ OPTIONS_EXCLUDE_DragonFly=	HIPE SCTP
 
 ERL_RELEASE=	17.5
 
-USES=		gmake perl5
+USES=		gmake ncurses perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -71,7 +72,7 @@ DISTFILES+=	${ERLANG_DOCS}:erlangorg
 
 .if ${OSVERSION} < 1000000
 .if ${ARCH} == "amd64" && ${PORT_OPTIONS:MDTRACE} && ! ${PORT_OPTIONS:MGCC}
-IGNORE=		DTRACE support on amd64 requires GCC option
+IGNORE=		support for DTrace on amd64 requires GCC option
 .endif
 .endif
 
@@ -125,7 +126,7 @@ CONFIGURE_ARGS+=--with-wx-config=${WX_CONFIG}
 
 .if ${PORT_OPTIONS:MODBC}
 CONFIGURE_ARGS+=--with-odbc
-LIB_DEPENDS+=	libodbc.so:${PORTSDIR}/databases/unixODBC
+LIB_DEPENDS+=	libodbc.so:databases/unixODBC
 .else
 CONFIGURE_ARGS+=--without-odbc
 .endif
@@ -189,6 +190,11 @@ pre-configure:
 	echo "disabled by port options" > ${WRKSRC}/lib/wx/SKIP
 .endif
 
+post-configure:
+.if ${PORT_OPTIONS:MODBC}
+	${RM} ${WRKSRC}/lib/odbc/SKIP
+.endif
+
 post-install:
 	for SECTION in 1 3 4 6 7; do \
 		${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_MAN} \
@@ -196,13 +202,12 @@ post-install:
 			"man/man$${SECTION}/*.$${SECTION}" || ${TRUE}; \
 	done
 	${RM} -rf ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/man/cat?
-
 .if ${PORT_OPTIONS:MDOCS}
 	${TAR} --unlink -xzpf ${DISTDIR}/${DIST_SUBDIR}/${ERLANG_DOCS} \
 		-C ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}
 
 	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4.1.3
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4.1.6
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/erts-6.4
 
 	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/inets-5.10.6/* \
@@ -218,7 +223,7 @@ post-install:
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/common_test-1.10
 
 	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9.2.1
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9.2.4
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/diameter-1.9
 
 	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/debugger-4.0.3/* \
@@ -234,12 +239,16 @@ post-install:
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/test_server-3.8
 
 	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0/* \
-		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0.1
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0.1.2
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/ssl-6.0
 
 	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/runtime_tools-1.8.16/* \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/runtime_tools-1.8.16.1
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/runtime_tools-1.8.16
+
+	${MV} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/kernel-3.2/* \
+		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/kernel-3.2.0.1
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/kernel-3.2
 
 	${INSTALL_DATA} ${WRKSRC}/lib/dialyzer/doc/*.txt \
 		${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/lib/dialyzer-*/doc/
@@ -261,11 +270,7 @@ post-install:
 .if ! ${PORT_OPTIONS:MWX}
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/erlang/lib/wx-*
 .endif
-
-	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/${ERLANG_LIB}/* -type d -empty \
-		| ${SORT} \
-		| ${SED} -e 's#^#@dir #g' \
-		> ${TMPPLIST}
+	${FIND} ${STAGEDIR}${PREFIX}/lib/${ERLANG_LIB}/* -type d -empty -delete
 
 	@cd ${STAGEDIR}${PREFIX}; ${FIND} lib/${ERLANG_LIB}/* -type f -o -type l \
 		| ${SORT} \

@@ -14,7 +14,7 @@ COMMENT=	SGI's Open Inventor (TM)
 
 LICENSE=	LGPL21
 
-LIB_DEPENDS=	libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 CONFLICTS=	Coin-[0-9]* SoXt-[0-9]*
 
@@ -41,6 +41,8 @@ SUB_FILES=	pkg-message
 OPTIONS_DEFINE=	DEBUG
 
 DEBUG_MAKE_ENV=	LIBTYPE=debug
+
+LDFLAGS+=	-Wl,--add-needed
 
 post-patch:
 	@${REINPLACE_CMD} 's|/usr\(/include/freetype2\)|${LOCALBASE}\1|' \

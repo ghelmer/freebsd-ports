@@ -2,40 +2,40 @@
 # $FreeBSD$
 
 PORTNAME=	pyfa
-PORTVERSION=	1.13.1
+PORTVERSION=	1.19.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	games python
 
 MAINTAINER=	andrey@bsdnir.info
 COMMENT=	Fitting tool for EVE Online
 
-LICENSE=	GPLv3 # or later
-LICENSE_FILE=	${WRKSRC}/gpl.txt
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:${PORTSDIR}/devel/py-dateutil \
-		${PYTHON_PKGNAMEPREFIX}sqlalchemy>0:${PORTSDIR}/databases/py-sqlalchemy
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil \
+		${PYTHON_PKGNAMEPREFIX}sqlalchemy07>=0.6:databases/py-sqlalchemy07 \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.3.0:www/py-requests
 
 USE_GITHUB=	yes
-GH_ACCOUNT=	DarkFenX
+GH_ACCOUNT=	pyfa-org
 
 USES=		python:2 dos2unix
 DOS2UNIX_GLOB=	*.py
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/Pyfa-${PORTVERSION}
 
 PLIST_FILES=	bin/pyfa
 PORTDATA=	*
 
-USE_WX=		2.8
-WX_COMPS=	python:run
-WX_UNICODE=	yes
+USE_WX=		2.8 3.0
+WX_COMPS=	wx:run python:run
 
 OPTIONS_DEFINE=		DPSGRAPHING
-DPSGRAPHING_DESC=	DPS graphing (requires NumPy and matplotlib. need fix)
+DPSGRAPHING_DESC=	DPS graphing (requires NumPy and matplotlib)
 
-DPSGRAPHING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:${PORTSDIR}/math/py-matplotlib \
-		${PYTHON_PKGNAMEPREFIX}numpy>0:${PORTSDIR}/math/py-numpy \
-		${PYTHON_PKGNAMEPREFIX}more-itertools>0:${PORTSDIR}/devel/py-more-itertools
+DPSGRAPHING_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>=1.5.0:math/py-matplotlib \
+		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy \
+		${PYTHON_PKGNAMEPREFIX}more-itertools>0:devel/py-more-itertools
 
 do-build:
 	@${PYTHON_CMD} -m compileall ${WRKSRC}

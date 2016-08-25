@@ -19,7 +19,6 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 MAKE_JOBS_UNSAFE=	yes
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 CONFIGURE_ENV+=	${MAKE_ENV}
 
 # For C++ support, use devel/thrift-cpp
@@ -43,7 +42,8 @@ CONFIGURE_ARGS+=	\
 		--without-php \
 		--without-php_extension \
 		--without-python \
-		--without-ruby
+		--without-ruby \
+                --without-go
 
 PLIST_FILES=	bin/thrift
 

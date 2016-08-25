@@ -1,18 +1,18 @@
 # $FreeBSD$
 
 PORTNAME=	llvm
-PORTVERSION=	3.8.d20150730
-PORTREVISION=	1
+PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	${LLVM_SUFFIX}
 
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang with support for the CHERI architecture
 
-LLVM_SUFFIX=	-cheri
+BROKEN_powerpc64=	Does not build
+
+LLVM_SUFFIX?=	-cheri
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
-COMMAND_PREFIX=	cheri-unknown-freebsd-
-COMMAND_SUFFIX=
+COMMAND_SUFFIX=	${LLVM_SUFFIX}
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${LLVM_SUFFIX}
 DATADIR=	${PREFIX}/share/${PORTNAME}${LLVM_SUFFIX}
 
@@ -23,23 +23,21 @@ SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
-CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON
+CMAKE_ARGS+=	-DBUILD_SHARED_LIBS=ON \
+		-DLLVM_DEFAULT_TARGET_TRIPLE=cheri-unknown-freebsd
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	CTSRD-CHERI
 GH_TAGNAME=	${LLVM_COMMIT}
 
-LLVM_COMMIT=	6ceec22d782d30aaca11d424cbdfbd25e9f809a2
-CLANG_COMMIT=	27828bc4475a8a424b9f8bd029dce96c381cb661
-LLDB_COMMIT=	7ee5905d0109a13d543a127a9cda7c280c8103c8
+.include "Makefile.snapshot"
 
-OPTIONS_DEFINE=	CLANG DOCS LIT LLDB
-OPTIONS_DEFAULT=	CLANG LIT LLDB
+OPTIONS_DEFINE=	CLANG DOCS LIT
+OPTIONS_DEFAULT=	CLANG LIT
 OPTIONS_SUB=	yes
 
 CLANG_DESC=	Build clang
 CLANG_EXTRA_PATCHES= ${PATCHDIR}/clang-patch-tools_clang_lib_Headers_CMakeLists.txt
-CLANG_CONFLICTS_INSTALL=	clang-devel-3.[1234567]*
 CLANG_GH_PROJECT=	clang:clang
 CLANG_GH_TAGNAME=	${CLANG_COMMIT}:clang
 CLANG_PORTDOCS=		clang
@@ -50,16 +48,18 @@ DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 LIT_DESC=		Install lit and FileCheck test tools
 LLDB_DESC=		Install lldb, the LLVM debugger (ignore on 9.x)
-LLDB_BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
+LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_TAGNAME=	${LLDB_COMMIT}:lldb
 
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS=		sphinx-build:${PORTSDIR}/textproc/py-sphinx
+DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
-LLVM_RELEASE=	${PORTVERSION:C/\.r[0-9]*//}
-PLIST_SUB+=	LLVM_RELEASE=${LLVM_RELEASE}
+LLVM_RELEASE=	${PORTVERSION:C/\.d[0-9]*//}
+PLIST_SUB+=	COMMAND_SUFFIX=${COMMAND_SUFFIX} \
+		LLVM_RELEASE=${LLVM_RELEASE} \
+		LLVM_SUFFIX=${LLVM_SUFFIX}
 
 COMMANDS=	bugpoint \
 		llc \
@@ -84,9 +84,9 @@ COMMANDS=	bugpoint \
 		llvm-rtdyld \
 		llvm-size \
 		llvm-stress \
+		llvm-split \
 		llvm-symbolizer \
 		llvm-tblgen \
-		macho-dump \
 		opt
 FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
 
@@ -129,7 +129,7 @@ USES+=		${_USES_PYTHON}
 MAN1SRCS+=	bugpoint.1 llc.1 lli.1 llvm-ar.1 llvm-as.1 \
 		llvm-bcanalyzer.1 llvm-build.1 llvm-config.1 llvm-cov.1 \
 		llvm-diff.1 llvm-dis.1 llvm-dwarfdump.1 \
-		llvm-extract.1 llvm-link.1 llvm-nm.1 \
+		llvm-extract.1 llvm-lib.1 llvm-link.1 llvm-nm.1 \
 		llvm-profdata.1 llvm-readobj.1 llvm-stress.1 llvm-symbolizer.1 \
 		opt.1 tblgen.1
 
@@ -137,7 +137,7 @@ NOT_FOR_ARCH=	ia64
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} != clang
+.if ${OPSYS} == "FreeBSD" && ${COMPILER_TYPE} != clang
 # Evil hack around gcc48 not providing a usable c++11 environment on 9.x
 PLIST_SUB:=	${PLIST_SUB:NLLDB=*} LLDB="@comment "
 .endif
@@ -146,7 +146,7 @@ post-extract-CLANG-on:
 	${MV} ${WRKSRC_clang} ${PATCH_WRKSRC}/tools/clang
 
 post-extract-LLDB-on:
-.if ${COMPILER_TYPE} == clang
+.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
 	${MV} ${WRKSRC_lldb} ${PATCH_WRKSRC}/tools/lldb
 .endif
 
@@ -178,7 +178,7 @@ post-install-DOCS-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/
 
 post-install-LLDB-on:
-.if ${COMPILER_TYPE} == clang
+.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/lib/python*/site-packages/lib
 .endif
 
@@ -215,20 +215,23 @@ regression-test: ${BUILD_COOKIE}
 build-plist:
 	${RM} -f ${PLIST} ${PLIST}.tmp
 .for command in ${COMMANDS}
-	${ECHO_CMD} bin/${COMMAND_PREFIX}${command}${COMMAND_SUFFIX} >> ${PLIST}.tmp
+	${ECHO_CMD} bin/${COMMAND_PREFIX}${command}%%COMMAND_SUFFIX%% >> ${PLIST}.tmp
 .endfor
 .for command in ${LIT_COMMANDS}
-	${ECHO_CMD} %%LIT%%bin/${COMMAND_PREFIX}${command}${COMMAND_SUFFIX} >> ${PLIST}.tmp
-	${ECHO_CMD} %%LIT%%${LLVM_PREFIX:S|${PREFIX}/||}/bin/${command} >> ${PLIST}.tmp
+	${ECHO_CMD} %%LIT%%bin/${COMMAND_PREFIX}${command}%%COMMAND_SUFFIX%% >> ${PLIST}.tmp
+	${ECHO_CMD} %%LIT%%${LLVM_PREFIX:S|${PREFIX}/||:S|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|}/bin/${command} >> ${PLIST}.tmp
 .endfor
 	${FIND} ${STAGEDIR}${LLVM_PREFIX} -type f -o -type l | \
-	    ${GREP} -v 'lit$$' | ${GREP} -v 'FileCheck$$' | \
+	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
-	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' | \
+	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
+	    -e 's|${LLVM_RELEASE}|%%LLVM_RELEASE%%|' \
+	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
-	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' | \
+	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' \
+	    -e 's|${LLVM_SUFFIX}|%%LLVM_SUFFIX%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
 	awk '{if ($$0 ~ /clang/ && $$0 !~ /omp.h/) {printf "%%%%CLANG%%%%"} if ($$0 ~ /(argdumper|lldb)/) {printf "%%%%LLDB%%%%"} print}' ${PLIST}.tmp >> ${PLIST}
 	${RM} -f ${PLIST}.tmp

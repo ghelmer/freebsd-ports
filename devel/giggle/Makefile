@@ -13,13 +13,12 @@ COMMENT=	GTK+ frontend for git version control system
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	git:${PORTSDIR}/devel/git \
-		p5-XML-Parser>=0:${PORTSDIR}/textproc/p5-XML-Parser \
-		itstool:${PORTSDIR}/textproc/itstool
-RUN_DEPENDS=	git:${PORTSDIR}/devel/git
+BUILD_DEPENDS=	git:devel/git \
+		p5-XML-Parser>=0:textproc/p5-XML-Parser \
+		itstool:textproc/itstool
+RUN_DEPENDS=	git:devel/git
 
 OPTIONS_DEFINE=	NLS
-OPTIONS_DEFAULT=	NLS
 #VTE_DESC=	Terminal Widget
 
 GNU_CONFIGURE=	yes

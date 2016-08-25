@@ -3,6 +3,7 @@
 
     COMMENT = Java language support
 
+    SUBDIR += aparapi
     SUBDIR += avis
     SUBDIR += berkeley-db
     SUBDIR += bluej
@@ -28,6 +29,10 @@
     SUBDIR += hamcrest
     SUBDIR += icedtea-web
     SUBDIR += infobus
+    SUBDIR += intellij
+    SUBDIR += intellij-fsnotifier
+    SUBDIR += intellij-pty4j
+    SUBDIR += intellij-pycharm
     SUBDIR += jad
     SUBDIR += jaf
     SUBDIR += jai
@@ -64,6 +69,7 @@
     SUBDIR += jcalendar
     SUBDIR += jcckit
     SUBDIR += jcommon
+    SUBDIR += jd-gui
     SUBDIR += jdbcpool
     SUBDIR += jdk16-doc
     SUBDIR += jdk7-doc
@@ -85,11 +91,10 @@
     SUBDIR += jtiger
     SUBDIR += jump
     SUBDIR += junit
+    SUBDIR += jxgrabkey
     SUBDIR += langspec
     SUBDIR += linux-oracle-jdk18
     SUBDIR += linux-oracle-jre18
-    SUBDIR += linux-sun-jdk17
-    SUBDIR += linux-sun-jre17
     SUBDIR += mmake
     SUBDIR += mx4j
     SUBDIR += netbeans
@@ -103,9 +108,9 @@
     SUBDIR += openjdk7-jre
     SUBDIR += openjdk8
     SUBDIR += openjdk8-jre
+    SUBDIR += openjfx8-devel
     SUBDIR += phpeclipse
     SUBDIR += proguard
-    SUBDIR += rubygem-rjb
     SUBDIR += sablevm
     SUBDIR += sablevm-classpath
     SUBDIR += servingxml
@@ -116,8 +121,7 @@
     SUBDIR += trove4j
     SUBDIR += veditor
     SUBDIR += visualvm
-    SUBDIR += wildfly80
-    SUBDIR += wildfly81
+    SUBDIR += wildfly100
     SUBDIR += wildfly82
     SUBDIR += wildfly90
     SUBDIR += xdoclet

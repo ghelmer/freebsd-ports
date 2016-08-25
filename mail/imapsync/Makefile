@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	imapsync
-PORTVERSION=	1.644
+PORTVERSION=	1.678
 DISTVERSIONPREFIX=	v
 CATEGORIES=	mail perl5
 MASTER_SITES=	https://codeload.github.com/imapsync/imapsync/tar.gz/imapsync-${PORTVERSION}?dummy=/
@@ -10,16 +10,17 @@ MASTER_SITES=	https://codeload.github.com/imapsync/imapsync/tar.gz/imapsync-${PO
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	IMAP synchronization, copy or migration tool
 
-RUN_DEPENDS=	p5-Mail-IMAPClient>0:${PORTSDIR}/mail/p5-Mail-IMAPClient \
-		p5-Term-ReadKey>0:${PORTSDIR}/devel/p5-Term-ReadKey \
-		p5-IO-Tee>0:${PORTSDIR}/devel/p5-IO-Tee \
-		p5-IO-Socket-SSL>0:${PORTSDIR}/security/p5-IO-Socket-SSL \
-		p5-Unicode-String>0:${PORTSDIR}/converters/p5-Unicode-String \
-		p5-File-Copy-Recursive>0:${PORTSDIR}/devel/p5-File-Copy-Recursive
+RUN_DEPENDS=	p5-Mail-IMAPClient>0:mail/p5-Mail-IMAPClient \
+		p5-Term-ReadKey>0:devel/p5-Term-ReadKey \
+		p5-IO-Tee>0:devel/p5-IO-Tee \
+		p5-IO-Socket-SSL>0:security/p5-IO-Socket-SSL \
+		p5-Unicode-String>0:converters/p5-Unicode-String \
+		p5-File-Copy-Recursive>0:devel/p5-File-Copy-Recursive
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTNAME}-${PORTVERSION}
 
-USES=		cpe perl5 tar:tgz
+USES=		cpe perl5 tar:tgz shebangfix
+SHEBANG_FILES=	${PORTNAME}
 USE_GITHUB=	yes
 GH_ACCOUNT=	imapsync
 
@@ -31,11 +32,6 @@ PORTSCOUT=	limit:^1\.(\d\.){3}
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 
 POD2MAN?=	pod2man
-
-do-patch:
-	${REINPLACE_CMD} \
-		-e 's|/usr/bin/perl|${PERL}|g' \
-		${WRKSRC}/${PORTNAME}
 
 do-install:
 	${POD2MAN} ${WRKSRC}/${PORTNAME} ${WRKSRC}/${PORTNAME}.1

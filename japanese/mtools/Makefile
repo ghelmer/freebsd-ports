@@ -15,6 +15,10 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools for manipulating MSDOS files + support 1232KB , Unicode LFN
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 USES=		gmake makeinfo
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-xdf

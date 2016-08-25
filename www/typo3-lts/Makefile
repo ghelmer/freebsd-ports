@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	typo3
-PORTVERSION=	6.2.15
+PORTVERSION=	6.2.25
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/TYPO3%20Source%20and%20Dummy/TYPO3%20${PORTVERSION}
 PKGNAMESUFFIX=	-lts
@@ -16,7 +16,8 @@ LICENSE_FILE=	${WRKDIR}/${TYPO3SRC}/LICENSE.txt
 PORTSCOUT=	limit:^6\.2\.
 
 USES=		cpe shebangfix
-SHEBANG_FILES=	typo3/sysext/core/Build/Scripts/xlfcheck.sh
+SHEBANG_FILES=	typo3/sysext/core/Build/Scripts/update-static-composer.sh \
+		typo3/sysext/core/Build/Scripts/xlfcheck.sh
 NO_BUILD=	yes
 NO_ARCH=	yes
 USE_PHP=	ctype fileinfo filter hash json mysqli openssl pcre session soap xml
@@ -51,9 +52,9 @@ ZLIB_USE=	PHP=zlib
 
 .if ${PORT_OPTIONS:MIMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
+RUN_DEPENDS+=	convert:graphics/ImageMagick
 .else
-RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick-nox11
+RUN_DEPENDS+=	convert:graphics/ImageMagick-nox11
 .endif
 .endif
 

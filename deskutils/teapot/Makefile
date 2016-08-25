@@ -6,7 +6,7 @@ PORTVERSION=	2.3.0
 CATEGORIES=	deskutils
 MASTER_SITES=	http://www.syntax-k.de/projekte/${PORTNAME}/ \
 		http://www.syntax-k.de/projekte/${PORTNAME}/:docs
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:DEFAULT \
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		${DISTNAME:C/^./T/}-Linux-i386${EXTRACT_SUFX}:docs
 
 MAINTAINER=	ports@FreeBSD.org
@@ -15,7 +15,7 @@ COMMENT=	Full-screen curses based spread sheet program
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake
+USES=		cmake ncurses
 
 # We download the prebuilt binary tarball for Linux in order to avoid
 # having to generate the pdf and html docs from the LyX sourcecode.

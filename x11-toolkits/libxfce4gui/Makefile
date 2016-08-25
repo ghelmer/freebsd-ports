@@ -26,11 +26,11 @@ CONFIGURE_ARGS+=--disable-gladeui --disable-static \
 	--without-html-dir
 
 OPTIONS_DEFINE=		NLS STARTUP
-OPTIONS_DEFAULT=	NLS STARTUP
+OPTIONS_DEFAULT=	STARTUP
 STARTUP_DESC=	Startup notification
 NLS_USES=	gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
-STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:${PORTSDIR}/x11/startup-notification
+STARTUP_LIB_DEPENDS=	libstartup-notification-1.so:x11/startup-notification
 STARTUP_CONFIGURE_ENABLE=	startup-notification
 OPTIONS_SUB=	yes
 

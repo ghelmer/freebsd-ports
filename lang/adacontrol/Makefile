@@ -2,10 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	adacontrol
-PORTVERSION=	1.16r11
+PORTVERSION=	1.17r3
+PORTREVISION=	3
 CATEGORIES=	lang
 MASTER_SITES=	SF/adacontrol
 DISTNAME=	adactl-${PORTVERSION}-src
+DIST_SUBDIR=	adacontrol-01
 
 MAINTAINER=	marino@FreeBSD.org
 COMMENT=	Tool for detecting use or non-use of specific Ada constructs
@@ -13,7 +15,7 @@ COMMENT=	Tool for detecting use or non-use of specific Ada constructs
 LICENSE=	GPLv2 GMGPL
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	asis>=2013:${PORTSDIR}/lang/asis
+BUILD_DEPENDS=	asis>=2013:lang/asis
 
 USES=		ada tar:tgz
 WRKSRC=		${WRKDIR}/adactl-${PORTVERSION}

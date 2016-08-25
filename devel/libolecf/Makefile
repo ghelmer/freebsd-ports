@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libolecf
-DISTVERSION=	alpha-20150630
+DISTVERSION=	alpha-20160423
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libolecf/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -10,7 +10,7 @@ MASTER_SITES=	https://github.com/libyal/libolecf/releases/download/${PORTVERSION
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Library and tools to access the OLE 2 Compound File (OLECF) format
 
-LICENSE=	LGPL3
+LICENSE=	LGPL3+
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE}
@@ -23,7 +23,7 @@ PORTDOCS=	AUTHORS ChangeLog
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

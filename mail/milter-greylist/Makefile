@@ -3,11 +3,10 @@
 
 PORTNAME=	milter-greylist
 PORTVERSION=	4.4.3
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.espci.fr/pub/milter-greylist/ \
 		http://fossies.org/unix/privat/
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	m.tsatsenko@gmail.com
 COMMENT=	Easy-to-use greylist milter for sendmail and postfix
@@ -18,6 +17,8 @@ CONFLICTS=	milter-greylist-devel-[1-9]*.*
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 MAKE_JOBS_UNSAFE=	yes
+
+USES=		tar:tgz
 
 ##
 # Use the following quirks to choose which sendmail to use (ports or system):
@@ -36,38 +37,25 @@ CURL_DESC=		curl support
 P0F_DESC=		P0F support
 POSTFIX_DESC=		Use Postfix instead of Sendmail
 
-P0F_RUN_DEPENDS+=	p0f:${PORTSDIR}/net-mgmt/p0f
-SPF_LIB_DEPENDS+=	libspf2.so:${PORTSDIR}/mail/libspf2
-CURL_LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
-GEOIP_LIB_DEPENDS+=	libGeoIP.so:${PORTSDIR}/net/GeoIP
+P0F_RUN_DEPENDS=	p0f:net-mgmt/p0f
+SPF_LIB_DEPENDS=	libspf2.so:mail/libspf2
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
+GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 POSTFIX_CONFIGURE_ENABLE=	postfix
+POSTFIX_LDFLAGS_OFF=		${SENDMAIL_LDFLAGS}
+POSTFIX_LIBS_OFF=		${SENDMAIL_LDADD}
+
 P0F_CONFIGURE_ENABLE=		p0f306
 
+SPF_CONFIGURE_ON=		--with-libspf2=${LOCALBASE}
+GEOIP_CONFIGURE_ON=		--with-libGeoIP=${LOCALBASE}
+CURL_CONFIGURE_ON=		--with-libcurl=${LOCALBASE}
+LDAP_CONFIGURE_ON=		--with-openldap=${LOCALBASE}
+LDAP_LDFLAGS=			-L${LOCALBASE}/lib
+LDAP_USE=			OPENLDAP=yes
+
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSPF}
-CONFIGURE_ARGS+=	--with-libspf2=${LOCALBASE}
-.endif
-
-.if ${PORT_OPTIONS:MGEOIP}
-CONFIGURE_ARGS+=	--with-libGeoIP=${LOCALBASE}
-.endif
-
-.if ${PORT_OPTIONS:MCURL}
-CONFIGURE_ARGS+=	--with-libcurl=${LOCALBASE}
-.endif
-
-.if ${PORT_OPTIONS:MLDAP}
-# We can't use LDAP_CONFIGURE_WITH because configure script is buggy
-USE_OPENLDAP=yes
-CONFIGURE_ARGS+=	--with-openldap
-.endif
-
-.if ! ${PORT_OPTIONS:MPOSTFIX}
-LDFLAGS+=	${SENDMAIL_LDFLAGS}
-LIBS+=		${SENDMAIL_LDADD}
-.endif
 
 LIBS+=		-lpthread
 
@@ -94,15 +82,14 @@ do-install:
 		${STAGEDIR}${PREFIX}/libexec/
 	${INSTALL_DATA} ${WRKSRC}/greylist.conf \
 		${STAGEDIR}${PREFIX}/etc/mail/greylist.conf.sample
-.if ${PORT_OPTIONS:MDOCS}
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/
-.endif
-.if ${PORT_OPTIONS:MEXAMPLES}
+	@${MKDIR} ${STAGEDIR}/var/milter-greylist
+
+do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/greylist.conf ${STAGEDIR}${EXAMPLESDIR}/
-.endif
-	@${MKDIR} ${STAGEDIR}/var/milter-greylist
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/
 
 .include "${PORTSDIR}/mail/sendmail/bsd.milter.mk"
 

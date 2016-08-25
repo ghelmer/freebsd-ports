@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mma
-PORTVERSION=	15.01
+PORTVERSION=	15.12
 PORTREVISION=	0
 CATEGORIES=	audio
 MASTER_SITES=	http://www.mellowood.ca/${PORTNAME}/
@@ -13,10 +13,12 @@ COMMENT=	Musical MIDI Accompaniment generator
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	aplaymidi:${PORTSDIR}/audio/alsa-utils \
-		timidity:${PORTSDIR}/audio/timidity++
+RUN_DEPENDS=	aplaymidi:audio/alsa-utils \
+		timidity:audio/timidity++
 
 MMABIN=	${PREFIX}/bin/mma
+
+NO_ARCH=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -30,8 +32,6 @@ USES=		python shebangfix
 
 WRKDOC=	${WRKDIR}/${PORTNAME}-pdf-${DISTVERSION:S,a,,}
 WRKSRC=	${WRKDIR}/${PORTNAME}-bin-${DISTVERSION}
-
-python_OLD_CMD=	/usr/bin/env python
 
 DOCS_DISTFILES=	${PORTNAME}-pdf-${DISTVERSION:S,a,,}.tar.gz
 

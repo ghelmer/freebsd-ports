@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	icecast2
-PORTVERSION=	2.4.2
+PORTVERSION=	2.4.3
 PORTEPOCH=	1
 CATEGORIES=	audio net ipv6
 MASTER_SITES=	http://downloads.xiph.org/releases/icecast/:source \
@@ -18,17 +18,17 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Streaming mp3/ogg-vorbis audio server
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libshout.so:${PORTSDIR}/audio/libshout \
-		libspeex.so:${PORTSDIR}/audio/speex \
-		libtheora.so:${PORTSDIR}/multimedia/libtheora \
-		libvorbis.so:${PORTSDIR}/audio/libvorbis \
-		libxslt.so:${PORTSDIR}/textproc/libxslt
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libshout.so:audio/libshout \
+		libspeex.so:audio/speex \
+		libtheora.so:multimedia/libtheora \
+		libvorbis.so:audio/libvorbis \
+		libxslt.so:textproc/libxslt
 
 OPTIONS_DEFINE=	DOCS
 
-CFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ENV=	OGG_PREFIX=${LOCALBASE}
 GNU_CONFIGURE=	yes
 USE_RC_SUBR=	${PORTNAME}

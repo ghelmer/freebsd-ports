@@ -13,7 +13,11 @@ DIST_SUBDIR=	pysycache
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pysycache themes support
 
-RUN_DEPENDS=	pysycache.py:${PORTSDIR}/games/pysycache
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	pysycache.py:games/pysycache
 
 USES=		zip:infozip
 NO_BUILD=	yes

@@ -3,7 +3,7 @@
 
 PORTNAME=	tel
 PORTVERSION=	0.1.7.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}.berlios
 
@@ -16,7 +16,6 @@ NO_ARCH=	yes
 
 USES=		gettext python shebangfix tar:bzip2
 SHEBANG_FILES=	src/tel.py
-python_OLD_CMD=	/usr/bin/env python
 USE_PYTHON=	distutils
 
 post-patch:
@@ -31,6 +30,6 @@ post-patch:
 
 post-install:
 	@${FIND} ${STAGEDIR}${PREFIX}/bin -type l -delete
-	@${LN} -sf ${PREFIX}/lib/tel/tel.py ${STAGEDIR}${PREFIX}/bin/tel
+	@${LN} -sf ../lib/tel/tel.py ${STAGEDIR}${PREFIX}/bin/tel
 
 .include <bsd.port.mk>

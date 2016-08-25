@@ -9,6 +9,9 @@ MASTER_SITES=	http://freebsd.unixfreunde.de/sources/
 MAINTAINER=	mich@FreeBSD.org
 COMMENT=	Nibbles is a simple ncurses-based console game
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 LDFLAGS+=	-L${LOCALBASE}/lib -lncurses
 CFLAGS+=	-Wall
 

@@ -1,2 +1,3 @@
-SHA256 (letsencrypt-letsencrypt-0.0.b1-22260a8_GH0.tar.gz) = 510e19965ff425d6dd46abb988da77bb41df3a9d6532fc71a36c380498c0584d
-SIZE (letsencrypt-letsencrypt-0.0.b1-22260a8_GH0.tar.gz) = 317170
+TIMESTAMP = 1466491084
+SHA256 (acme-0.8.1.tar.gz) = d3ea4acf280bf6253ad7d641cb0970f230a19805acfed809e7a8ddcf62157d9f
+SIZE (acme-0.8.1.tar.gz) = 84610

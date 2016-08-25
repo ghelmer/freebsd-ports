@@ -3,15 +3,15 @@
 
 PORTNAME=	clamcour
 PORTVERSION=	0.3.8
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	security mail
 MASTER_SITES=	http://www.becrux.com/pages/projects/clamcour/
 
 MAINTAINER=	bsd@dino.sk
 COMMENT=	ClamAV courier filter
 
-BUILD_DEPENDS=	courier-config:${PORTSDIR}/mail/courier
-LIB_DEPENDS=	libclamav.so:${PORTSDIR}/security/clamav
+BUILD_DEPENDS=	courier-config:mail/courier
+LIB_DEPENDS=	libclamav.so:security/clamav
 
 GNU_CONFIGURE=	yes
 

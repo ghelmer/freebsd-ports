@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	1
 CATEGORIES=	audio lang
 PKGNAMESUFFIX=	-modplug
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	LIBMODPLUG
 LIBMODPLUG_DESC=	Install modplug library
 OPTIONS_DEFAULT=	LIBMODPLUG
 
-LIBMODPLUG_LIB_DEPENDS=	libmodplug.so:${PORTSDIR}/audio/libmodplug
+LIBMODPLUG_LIB_DEPENDS=	libmodplug.so:audio/libmodplug
 
 .include "${MASTERDIR}/Makefile"

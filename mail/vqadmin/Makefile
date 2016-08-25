@@ -10,8 +10,8 @@ MASTER_SITES=	SF
 MAINTAINER=	oliver@FreeBSD.org
 COMMENT=	CGI-based Virtual Qmail Domains Administrator
 
-BUILD_DEPENDS=	${LOCALBASE}/vpopmail/lib/libvpopmail.a:${PORTSDIR}/mail/vpopmail
-RUN_DEPENDS=	${LOCALBASE}/vpopmail/lib/libvpopmail.a:${PORTSDIR}/mail/vpopmail
+BUILD_DEPENDS=	${LOCALBASE}/vpopmail/lib/libvpopmail.a:mail/vpopmail
+RUN_DEPENDS=	${LOCALBASE}/vpopmail/lib/libvpopmail.a:mail/vpopmail
 
 GNU_CONFIGURE=	YES
 
@@ -24,12 +24,10 @@ CONFIGURE_ARGS=	--enable-cgibindir=${STAGEDIR}${PREFIX}/${CGIBINDIR} \
 		--enable-htmldir=${STAGEDIR}${PREFIX}/${WEBDATADIR} \
 		--enable-qmaildir=${QMAIL_PREFIX}
 
-.include <bsd.port.pre.mk>
-
 PLIST_SUB+=	CGIBINDIR=${CGIBINDIR} WEBDATADIR=${WEBDATADIR}
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|%%LOCALBASE%%|${LOCALBASE}|g" \
 		${WRKSRC}/Makefile.in
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

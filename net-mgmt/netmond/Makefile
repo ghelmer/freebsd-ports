@@ -14,6 +14,10 @@ EXTRACT_ONLY=	${PORTNAME}-2.2-b6${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Netmond - IP network monitoring daemon
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-2.2-b6
 
 USERS=	netmon
@@ -31,7 +35,7 @@ PORTDOCS=	README README.ru CHANGES README.port.eng README.port.ru index.html net
 OPTIONS_DEFINE=	DOCS GD
 OPTIONS_SUB=	yes
 
-GD_LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+GD_LIB_DEPENDS=	libgd.so:graphics/gd
 GD_CONFIGURE_OFF=	--without-ifgraph
 
 DOCS_DISTFILES= ${PORTNAME}-2.2-b6.docs${EXTRACT_SUFX}:docs

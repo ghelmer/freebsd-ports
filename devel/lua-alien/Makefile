@@ -12,7 +12,7 @@ COMMENT=	Lua -> C FFI
 
 LICENSE=	MIT
 
-LIB_DEPENDS=	libffi.so:${PORTSDIR}/devel/libffi
+LIB_DEPENDS=	libffi.so:devel/libffi
 
 WRKSRC=		${WRKDIR}/${DISTNAME}
 
@@ -21,9 +21,6 @@ GH_ACCOUNT=	mascarenhas
 
 USES=		libtool lua shebangfix zip
 SHEBANG_FILES=	src/constants
-SHEBANG_LANG=	lua
-lua_OLD_CMD=	/usr/bin/env lua
-lua_CMD=	${LOCALBASE}/bin/${LUA_CMD}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-silent-rules \
 		--libdir=${LUA_MODLIBDIR} \
@@ -48,12 +45,12 @@ post-patch:
 		's|/usr/lib|${LOCALBASE}/lib| ; \
 		 /luarocks/d' ${WRKSRC}/samples/*.lua
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc && ${INSTALL_DATA} alien.* \
-		${STAGEDIR}${DOCSDIR})
+	${INSTALL_DATA} ${WRKSRC}/doc/alien.* ${STAGEDIR}${DOCSDIR}
+
+post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	(cd ${WRKSRC}/samples && ${INSTALL_DATA} *.lua \
-		${STAGEDIR}${EXAMPLESDIR})
+	${INSTALL_DATA} ${WRKSRC}/samples/*.lua ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

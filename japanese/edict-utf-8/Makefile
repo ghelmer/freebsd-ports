@@ -10,7 +10,7 @@ DISTFILES=	${DICTFILES}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Japanese-English edict UTF-8 dictionaries
 
-EXTRACT_DEPENDS=	${UNZIP_CMD}:${PORTSDIR}/archivers/unzip
+EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 
 USES=		iconv
 CONVERT_CMD=	${ICONV_CMD} -c -f EUC-JP -t UTF-8
@@ -34,8 +34,8 @@ PLIST_SUB= 	OWNER="${SHAREOWN}" GROUP="${SHAREGRP}" MODE="${SHAREMODE}"
 NO_WRKSUBDIR=	yes
 
 do-extract:
-	@${RM} -rf ${WRKDIR}
-	@${MKDIR} ${WRKDIR}
+	@${RM} -rf ${WRKSRC}
+	@${MKDIR} ${WRKSRC}
 	@for file in ${DICTFILES}; do \
 		${ECHO} "Extracting $$file"; \
 		case $$file in \

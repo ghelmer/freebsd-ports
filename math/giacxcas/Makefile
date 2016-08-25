@@ -13,17 +13,21 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Computer algebra system by Bernard Parisse
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		${LOCALBASE}/lib/libntl.a:${PORTSDIR}/math/ntl
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libpari.so:${PORTSDIR}/math/pari \
-		libmpfr.so:${PORTSDIR}/math/mpfr \
-		libgsl.so:${PORTSDIR}/math/gsl \
-		liblapack.so:${PORTSDIR}/math/lapack
+BUILD_DEPENDS=	bash:shells/bash \
+		${LOCALBASE}/lib/libntl.a:math/ntl
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libpng.so:graphics/png \
+		libpari.so:math/pari \
+		libmpfr.so:math/mpfr \
+		libgsl.so:math/gsl \
+		liblapack.so:math/lapack
 
 NO_CDROM=	French documentation is for non-commercial use only
 

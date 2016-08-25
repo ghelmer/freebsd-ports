@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libregf
-DISTVERSION=	alpha-20150704
+DISTVERSION=	alpha-20160424
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libregf/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -10,9 +10,9 @@ MASTER_SITES=	https://github.com/libyal/libregf/releases/download/${PORTVERSION:
 MAINTAINER=	antoine@FreeBSD.org
 COMMENT=	Library and tools to support the Windows NT Registry File format
 
-LICENSE=	LGPL3
+LICENSE=	LGPL3+
 
-LIB_DEPENDS=	libfwsi.so:${PORTSDIR}/devel/libfwsi
+LIB_DEPENDS=	libfwsi.so:devel/libfwsi
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python --with-libintl-prefix=${LOCALBASE} --with-libfwsi=${LOCALBASE}
@@ -25,7 +25,7 @@ PORTDOCS=	AUTHORS ChangeLog
 
 OPTIONS_DEFINE=	DOCS
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

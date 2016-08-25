@@ -15,7 +15,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}\
 MAINTAINER=	fjoe@FreeBSD.org
 COMMENT=	Digium/Asterisk Hardware Device Interface
 
-RUN_DEPENDS=	${LOCALBASE}/sbin/dahdi_cfg:${PORTSDIR}/misc/dahdi
+RUN_DEPENDS=	${LOCALBASE}/sbin/dahdi_cfg:misc/dahdi
 
 DAHDI_VERSION=		2.4.0-rc5
 DAHDI_TOOLS_VERSION=	2.4.0-rc1
@@ -36,7 +36,7 @@ EXTRA_PATCHES=	${WRKDIR}/zaphfc-${ZAPHFC_VERSION}
 PATCH_STRIP=	-p1
 MAKEFILE=	BSDmakefile
 USE_RC_SUBR=	dahdi
-MAKE_ARGS=	ADDITIONAL_DRIVERS="wcb1xxp" NO_FETCH=yes
+MAKE_ARGS=	ADDITIONAL_DRIVERS="wcb1xxp" NO_FETCH=yes DEPEND_MP=
 GROUPS=		dahdi
 
 ONLY_FOR_ARCHS=	i386 amd64 sparc64

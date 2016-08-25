@@ -13,13 +13,15 @@ COMMENT=	Tool to update LDAP entries with a text editor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt
+LIB_DEPENDS=	libpopt.so:devel/popt
 
 USES=		gmake iconv pkgconfig
 USE_OPENLDAP=	yes
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 MAKEFILE=	GNUmakefile
+
+EXTRA_PATCHES=	${FILESDIR}/0010-renamed-getline.patch:-p2
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib

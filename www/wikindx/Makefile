@@ -11,6 +11,10 @@ DISTNAME=	${PORTNAME}${PORTVERSION:S/./_/g}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bibliographic and quotations/notes management system
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 USE_PHP=	session mysql xml ctype
 
 NO_BUILD=	YES

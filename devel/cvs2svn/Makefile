@@ -14,7 +14,7 @@ PATCH_SITES=	LOCAL/ohauer
 MAINTAINER=	ohauer@FreeBSD.org
 COMMENT=	CVS to Subversion Repository Converter
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdbm>0:${PORTSDIR}/databases/py-gdbm
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gdbm>0:databases/py-gdbm
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 # 2.4.0 -> svn r5392
@@ -23,9 +23,6 @@ PATCHREV=	5433
 USES=			shebangfix python:2.7
 USE_PYTHON=		distutils autoplist
 
-SHEBANG_LANG=		python python2
-python2_OLD_CMD=	/usr/bin/env python
-python2_CMD=		${PYTHON_CMD}
 SHEBANG_FILES=		cvs2svn cvs2git cvs2bzr *.py \
 			contrib/* cvs2svn_lib/*.py \
 			svntest/* cvs2svn_rcsparse/*.py
@@ -38,14 +35,14 @@ SUBVERSION_DESC=	Build with subversion support
 GIT_DESC=		Build with git support
 BAZAAR_DESC=		Build with Bazaar support
 
-SUBVERSION_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>=0:${PORTSDIR}/devel/py-subversion
-GIT_RUN_DEPENDS=	${LOCALBASE}/bin/git:${PORTSDIR}/devel/git
-BAZAAR_RUN_DEPENDS=	${LOCALBASE}/bin/bzr:${PORTSDIR}/devel/bzr
+SUBVERSION_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}subversion>=0:devel/py-subversion
+GIT_RUN_DEPENDS=	${LOCALBASE}/bin/git:devel/git
+BAZAAR_RUN_DEPENDS=	${LOCALBASE}/bin/bzr:devel/bzr
 
 .include <bsd.port.options.mk>
 
-.if ${OSVERSION} > 1000000
-RUN_DEPENDS+=	cvs:${PORTSDIR}/devel/cvs
+.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1000000
+RUN_DEPENDS+=	cvs:devel/cvs
 .endif
 
 # documents from ${WRKSRC}/doc

@@ -4,6 +4,7 @@
     COMMENT = X11 fonts and font utilities
 
     SUBDIR += alef
+    SUBDIR += alegreya
     SUBDIR += alegreya-sans
     SUBDIR += alfont
     SUBDIR += andika
@@ -22,7 +23,6 @@
     SUBDIR += charis-compact
     SUBDIR += clearsans
     SUBDIR += code2000
-    SUBDIR += code2001
     SUBDIR += comfortaa-ttf
     SUBDIR += comic-neue
     SUBDIR += consolamono-ttf
@@ -40,7 +40,9 @@
     SUBDIR += encodings
     SUBDIR += fantasque-sans-mono
     SUBDIR += farsifonts
+    SUBDIR += fifteen
     SUBDIR += fira
+    SUBDIR += firacode
     SUBDIR += fntsample
     SUBDIR += font-adobe-100dpi
     SUBDIR += font-adobe-75dpi
@@ -108,6 +110,7 @@
     SUBDIR += intlfonts
     SUBDIR += isabella
     SUBDIR += jmk-x11-fonts
+    SUBDIR += junction
     SUBDIR += junicode
     SUBDIR += kaputa
     SUBDIR += khmeros
@@ -115,6 +118,7 @@
     SUBDIR += lfpfonts-var
     SUBDIR += libFS
     SUBDIR += libXfont
+    SUBDIR += libXfont2
     SUBDIR += libXfontcache
     SUBDIR += libXft
     SUBDIR += liberation-fonts-ttf
@@ -136,6 +140,7 @@
     SUBDIR += moveable-type-fonts
     SUBDIR += nexfontsel
     SUBDIR += noto
+    SUBDIR += noto-lite
     SUBDIR += nucleus
     SUBDIR += p5-Font-AFM
     SUBDIR += p5-Font-TTF
@@ -145,6 +150,7 @@
     SUBDIR += paratype
     SUBDIR += pcf2bdf
     SUBDIR += pingwi
+    SUBDIR += powerline-fonts
     SUBDIR += profont
     SUBDIR += proggy_fonts
     SUBDIR += proggy_fonts-ttf
@@ -159,6 +165,7 @@
     SUBDIR += suxus
     SUBDIR += symbola
     SUBDIR += terminus-font
+    SUBDIR += terminus-ttf
     SUBDIR += tkfont
     SUBDIR += tlwg-ttf
     SUBDIR += tmu

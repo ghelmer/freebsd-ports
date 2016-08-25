@@ -1,4 +1,7 @@
-SHA256 (rpm/i686/centos/6.6/pulseaudio-libs-0.9.21-17.el6.i686.rpm) = 20c213522cd81f57306d53be35e9fbf4894e381288664bb4de7c7b793017f62f
-SIZE (rpm/i686/centos/6.6/pulseaudio-libs-0.9.21-17.el6.i686.rpm) = 464552
-SHA256 (rpm/i686/centos/6.6/pulseaudio-0.9.21-17.el6.src.rpm) = 4b5fe4bf8aaddb5747e01ed3495b01e2aef24f90245c111e49ba52df88f0d33a
-SIZE (rpm/i686/centos/6.6/pulseaudio-0.9.21-17.el6.src.rpm) = 2376513
+TIMESTAMP = 1466256768
+SHA256 (rpm/i686/centos/6.8/pulseaudio-libs-0.9.21-24.el6.i686.rpm) = ebb56fd219094a860dab8c3d703fc6c50d084384083df1fe04a9616d423fd2f9
+SIZE (rpm/i686/centos/6.8/pulseaudio-libs-0.9.21-24.el6.i686.rpm) = 465276
+SHA256 (rpm/i686/centos/6.8/pulseaudio-libs-glib2-0.9.21-24.el6.i686.rpm) = ee0884955f5ab06488b2049b8065fdca2742404e72a74b39387f57b027bdb15a
+SIZE (rpm/i686/centos/6.8/pulseaudio-libs-glib2-0.9.21-24.el6.i686.rpm) = 24252
+SHA256 (rpm/i686/centos/6.8/pulseaudio-0.9.21-24.el6.src.rpm) = 2f389e54669332bdc4676fb2c62520a6f71aa54a153bfbbc5c89f5de9f84834e
+SIZE (rpm/i686/centos/6.8/pulseaudio-0.9.21-24.el6.src.rpm) = 2387179

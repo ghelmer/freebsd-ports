@@ -1,21 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	kea
-PORTVERSION=	0.9.2
+PORTVERSION=	1.0.0
 CATEGORIES=	net ipv6
-MASTER_SITES=	ISC
-MASTER_SITE_SUBDIR=	kea/${PORTVERSION}
+MASTER_SITES=	ISC/kea/${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Alternative DHCP implementation by ISC
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	MPL
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	liblog4cplus.so:${PORTSDIR}/devel/log4cplus \
-		libboost_system.so:${PORTSDIR}/devel/boost-libs
+LIB_DEPENDS=	liblog4cplus.so:devel/log4cplus \
+		libboost_system.so:devel/boost-libs
 
-USES=		libtool python:3.1+ autoreconf
+USES=		libtool python:3.3+ autoreconf
 USE_LDCONFIG=	yes
 USE_OPENSSL=	yes
 USE_RC_SUBR=	${PORTNAME}
@@ -24,15 +23,15 @@ CONFIGURE_ARGS=	--disable-silent-rules \
 		--with-openssl=${OPENSSLBASE} \
 		--with-log4cplus=${LOCALBASE} \
 		--with-boost-include=${LOCALBASE}/include \
+		--with-boost-lib-dir=${LOCALBASE}/lib \
 		--without-werror
 INSTALL_TARGET=	install-strip
 PORTDOCS=	AUTHORS COPYING ChangeLog README \
 		kea-guide.css kea-guide.html kea-guide.txt \
-		kea-messages.html \
+		kea-messages.html kea-logo-100x70.png \
 		examples
 
 OPTIONS_DEFINE=	DOCS MYSQL PGSQL
-OPTIONS_DEFAULT=DOCS
 DOCS_MAKE_ARGS_OFF= \
 		INSTALL_STRIP_PROGRAM="${WRKSRC}/install-sh -c -s" \
 		INSTALL_STRIP_FLAG="-s" \
@@ -42,11 +41,11 @@ DOCS_INSTALL_TARGET_OFF= \
 		install-pkgconfigDATA \
 		install-pkgincludeHEADERS
 MYSQL_USE=	MYSQL=client
-MYSQL_CONFIGURE_ARGS=		--with-dhcp-mysql=${LOCALBASE}/bin
-MYSQL_CONFIGURE_ARGS_OFF=	--without-dhcp-mysql
+MYSQL_CONFIGURE_ON=	--with-dhcp-mysql=${LOCALBASE}/bin/mysql_config
+MYSQL_CONFIGURE_OFF=	--without-dhcp-mysql
 PGSQL_USES=	pgsql
 WANT_PGSQL=	client
-PGSQL_CONFIGURE_ARGS=		--with-dhcp-pgsql=${LOCALBASE}/bin
-PGSQL_CONFIGURE_ARGS_OFF=	--without-dhcp-pgsql
+PGSQL_CONFIGURE_ON=	--with-dhcp-pgsql=${LOCALBASE}/bin/pg_config
+PGSQL_CONFIGURE_OFF=	--without-dhcp-pgsql
 
 .include <bsd.port.mk>

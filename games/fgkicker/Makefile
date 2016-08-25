@@ -10,7 +10,11 @@ MASTER_SITES=	http://www.larfeliz.be/projects/files/fgkicker/
 MAINTAINER=	erik@bz.bzflag.bz
 COMMENT=	Launcher frontend for FlightGear
 
-RUN_DEPENDS=	fgfs:${PORTSDIR}/games/flightgear
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+RUN_DEPENDS=	fgfs:games/flightgear
 
 USE_GNOME=	gtk20
 USES=		gmake pkgconfig tar:tgz

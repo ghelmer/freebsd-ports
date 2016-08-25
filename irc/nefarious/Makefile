@@ -10,8 +10,12 @@ MASTER_SITES=	SF/evilnet/${PORTNAME}%20IRCu/${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	IRC server used by evilnet based off of Undernet's ircu
 
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	bash:shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
 USES=		tar:bzip2
 HAS_CONFIGURE=	yes

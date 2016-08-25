@@ -15,11 +15,12 @@ COMMENT=	Free multi-lingual font designed for screens
 LICENSE=	OFL11
 LICENSE_FILE=	${WRKDIR}/OFL-license.txt
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/mkfontdir:${PORTSDIR}/x11-fonts/mkfontdir \
-		${LOCALBASE}/bin/mkfontscale:${PORTSDIR}/x11-fonts/mkfontscale
+BUILD_DEPENDS=	${LOCALBASE}/bin/mkfontdir:x11-fonts/mkfontdir \
+		${LOCALBASE}/bin/mkfontscale:x11-fonts/mkfontscale
 
 USES=		zip
 NO_BUILD=	yes
+NO_ARCH=	yes
 FONTSDIR=	${PREFIX}/lib/x11/fonts/${PORTNAME}${PKGNAMESUFFIX}
 INSTDAT=	fonts.dir fonts.scale
 

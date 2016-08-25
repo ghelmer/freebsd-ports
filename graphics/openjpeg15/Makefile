@@ -3,6 +3,7 @@
 
 PORTNAME=	openjpeg
 PORTVERSION=	1.5.2
+DISTVERSIONPREFIX=	version.
 PORTREVISION=	1
 CATEGORIES=	graphics
 PKGNAMESUFFIX=	15
@@ -11,10 +12,11 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Open-source JPEG 2000 codec
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	liblcms2.so:${PORTSDIR}/graphics/lcms2 \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	liblcms2.so:graphics/lcms2 \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
 
 OPTIONS_DEFINE=	DOCS
 
@@ -26,7 +28,6 @@ USES=		cmake cpe dos2unix
 PORTDOCS=	CHANGES LICENSE
 
 GH_ACCOUNT=	uclouvain
-GH_TAGNAME=	version.${PORTVERSION}
 USE_GITHUB=	yes
 
 .include <bsd.port.mk>

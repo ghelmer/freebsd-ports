@@ -8,12 +8,12 @@ CATEGORIES=	math
 MASTER_SITES=	http://pari.math.u-bordeaux.fr/pub/pari/unix/OLD/ \
 		http://mirrors.rit.edu/zi/
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Mathematics library and advanced calculator package
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libgmp.so:math/gmp
 
 MAKE_JOBS_UNSAFE=	yes
 

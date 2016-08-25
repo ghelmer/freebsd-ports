@@ -1,23 +1,22 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	bottleneck
-PORTVERSION=	0.8.0
-PORTREVISION=	2
+PORTVERSION=	1.0.0
 CATEGORIES=	math python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Bottleneck-${PORTVERSION}
 
-MAINTAINER=	xmj@chaot.net
+MAINTAINER=	johannes@perceivon.net
 COMMENT=	Collection of fast NumPy array functions written in Cython
 
 LICENSE=	BSD2CLAUSE
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		cython:${PORTSDIR}/lang/cython
+		cython:lang/cython
 RUN_DEPENDS=	${PYNUMPY}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:${PORTSDIR}/devel/py-nose
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose
 
 USES=		python
 USE_PYTHON=	distutils autoplist

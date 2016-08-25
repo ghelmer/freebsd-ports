@@ -13,23 +13,21 @@ COMMENT=	Script to convert DVD image, device, or VIDEO_TS to mkv
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	lame:${PORTSDIR}/audio/lame \
-		normalize:${PORTSDIR}/audio/normalize \
-		oggenc:${PORTSDIR}/audio/vorbis-tools \
-		mencoder:${PORTSDIR}/multimedia/mencoder \
-		mkvmerge:${PORTSDIR}/multimedia/mkvtoolnix \
-		dvdxchap:${PORTSDIR}/multimedia/ogmtools \
-		bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	lame:audio/lame \
+		normalize:audio/normalize \
+		oggenc:audio/vorbis-tools \
+		mencoder:multimedia/mencoder \
+		mkvmerge:multimedia/mkvtoolnix \
+		dvdxchap:multimedia/ogmtools \
+		bash:shells/bash
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-NO_BUILD=	yes
-
 USES=		tar:bzip2
+NO_BUILD=	yes
+NO_ARCH=	yes
 
-OPTIONS_DEFINE=		DOCS EXAMPLES
-
-.include <bsd.port.options.mk>
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -40,13 +38,12 @@ post-patch:
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/iso2mkv ${STAGEDIR}${PREFIX}/bin
 
-post-install:
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	@${INSTALL_MAN} ${WRKSRC}/README.utf8.txt ${STAGEDIR}${DOCSDIR}
-.if ${PORT_OPTIONS:MEXAMPLES}
+
+do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	@${INSTALL_DATA} ${WRKSRC}/iso2mkv.conf ${STAGEDIR}${EXAMPLESDIR}
-	@${ECHO} "Users should copy ${EXAMPLESDIR}/iso2mkv.conf to ~/.mplayer/iso2mkv.conf"
-.endif
+	${INSTALL_DATA} ${WRKSRC}/iso2mkv.conf ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

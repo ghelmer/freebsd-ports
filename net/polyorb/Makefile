@@ -3,7 +3,7 @@
 
 PORTNAME=	polyorb
 PORTVERSION=	2.11.1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 DISTNAME=	polyorb-gpl-${YEAR}-src
@@ -13,7 +13,7 @@ COMMENT=	CORBA, SOAP, Ada 95 Distributed System Annex middleware
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	xmlada>=3.2:${PORTSDIR}/textproc/xmlada
+BUILD_DEPENDS=	xmlada>=3.2:textproc/xmlada
 
 USES=		ada gmake python:build shebangfix
 GNU_CONFIGURE=	yes
@@ -32,8 +32,6 @@ PORTDOCS=	html \
 		txt/polyorb_ug.txt
 SHEBANG_FILES=	compilers/idlac/*.py testsuite/*.py testsuite/tests/*.py
 
-python_OLD_CMD=	/usr/bin/env python
-
 CONFIGURE_ARGS=	--with-appli-perso="corba dsa moma" \
 		--with-proto-perso="giop soap srp" \
 		--with-corba-services="event ir naming notification time"
@@ -47,7 +45,7 @@ OPTIONS_DEFINE=	DOCS TESTSUITE
 OPTIONS_SUB=	TESTSUITE
 
 TESTSUITE_ALL_TARGET=	testsuite
-TESTSUITE_BUILD_DEPENDS=gnatpython>=20101207:${PORTSDIR}/devel/gnatpython
+TESTSUITE_BUILD_DEPENDS=gnatpython>=20101207:devel/gnatpython
 TESTSUITE_DESC=		Enable 'make run-testsuite' target
 
 

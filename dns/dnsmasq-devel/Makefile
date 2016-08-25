@@ -2,9 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	dnsmasq
-DISTVERSION=	2.74rc4
+DISTVERSION=	2.76rc2
+PORTEPOCH=	1
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://www.thekelleys.org.uk/dnsmasq/release-candidates/
+#MASTER_SITES=	http://www.thekelleys.org.uk/dnsmasq/test-releases/
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	mandree@FreeBSD.org
@@ -19,12 +21,12 @@ PORTDOCS=	CHANGELOG CHANGELOG.archive FAQ doc.html setup.html
 
 SUB_FILES=	pkg-message
 
-CFLAGS+=	-Wall -Wno-unused-value
+CFLAGS+=	-Wall -Wno-unused-value -Wno-unused-parameter
 CPPFLAGS+=	-I${LOCALBASE}/include
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" PREFIX="${PREFIX}" COPTS="${CFLAGS}" LIBS="${LDFLAGS}" RPM_OPT_FLAGS="${CPPFLAGS}"
 
 OPTIONS_DEFINE=		IPV6 DBUS LUA DNSSEC DOCS
-OPTIONS_DEFAULT=	IPV6 NLS DNSSEC
+OPTIONS_DEFAULT=	DNSSEC
 OPTIONS_EXCLUDE+=	EXAMPLES
 OPTIONS_RADIO=		INTL
 OPTIONS_RADIO_INTL=	IDN NLS
@@ -48,7 +50,7 @@ CFLAGS+=	-DNO_IPV6
 
 .if ${PORT_OPTIONS:MNLS}
 USES+=		gettext gmake iconv pkgconfig
-LIB_DEPENDS+=	libidn.so:${PORTSDIR}/dns/libidn
+LIB_DEPENDS+=	libidn.so:dns/libidn
 PLIST_SUB+=	NLS=""
 ALL_TARGET=	all-i18n
 _intllibs=	-lintl
@@ -58,13 +60,13 @@ PLIST_SUB+=	NLS="@comment "
 .if ${PORT_OPTIONS:MIDN}
 USES+=		iconv
 CFLAGS+=	-DHAVE_IDN
-LIB_DEPENDS+=	libidn.so:${PORTSDIR}/dns/libidn
+LIB_DEPENDS+=	libidn.so:dns/libidn
 _intllibs+=	-lidn
 .endif
 .endif
 
 .if ${PORT_OPTIONS:MDBUS}
-LIB_DEPENDS+=	libdbus-1.so:${PORTSDIR}/devel/dbus
+LIB_DEPENDS+=	libdbus-1.so:devel/dbus
 USES+=		pkgconfig
 CPPFLAGS+=	`pkg-config --cflags dbus-1`
 CFLAGS+=	-DHAVE_DBUS
@@ -81,8 +83,8 @@ USES+=		lua
 .if ${PORT_OPTIONS:MDNSSEC}
 CFLAGS+=	-DHAVE_DNSSEC
 USES+=		pkgconfig
-LIB_DEPENDS+=	libnettle.so:${PORTSDIR}/security/nettle
-LIB_DEPENDS+=	libgmp.so:${PORTSDIR}/math/gmp
+LIB_DEPENDS+=	libnettle.so:security/nettle
+LIB_DEPENDS+=	libgmp.so:math/gmp
 .endif
 
 USE_RC_SUBR=	dnsmasq

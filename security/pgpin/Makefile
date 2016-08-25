@@ -5,11 +5,13 @@ PORTVERSION=	010323
 CATEGORIES=	security
 MASTER_SITES=	LOCAL/dinoex
 DISTNAME=	pgp263in${PORTVERSION}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	PGP International version - improved for use in IN-CA
 
+BROKEN_powerpc64=	Does not build
+
+USES=		tar:tgz
 WRKSRC=		${WRKDIR}/pgp263in/src
 MAKEFILE=	makefile
 ALL_TARGET=	freebsd-${ARCH} OS_CFLAGS="${CFLAGS}"
@@ -22,7 +24,7 @@ do-install:
 	${INSTALL_DATA} ${FILESDIR}/CHANGES ${PGPLIB}/
 	cd ${WRKSRC}/.. && \
 		${INSTALL_DATA} pgp.hlp doc/pgpdoc1.txt doc/pgpdoc2.txt ${PGPLIB}/
-	${INSTALL_DATA} ${WRKSRC}/../language.txt ${PGPLIB}/language.txt-dist
-	${INSTALL_DATA} ${WRKSRC}/../config.txt ${PGPLIB}/config.txt-dist
+	${INSTALL_DATA} ${WRKSRC}/../language.txt ${PGPLIB}/language.txt.sample
+	${INSTALL_DATA} ${WRKSRC}/../config.txt ${PGPLIB}/config.txt.sample
 
 .include <bsd.port.mk>

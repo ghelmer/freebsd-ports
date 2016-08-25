@@ -3,6 +3,7 @@
 
 PORTNAME=	repng2jpeg
 PORTVERSION=	1.0.5
+PORTREVISION=	1
 CATEGORIES=	graphics
 MASTER_SITES=	http://bsdforge.com/projects/source/graphics/repng2jpeg/
 
@@ -11,7 +12,7 @@ COMMENT=	Small tool to recompress JPEG, PNG, and GIF images
 
 LICENSE=	GPLv1
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd
 
 USES=		tar:xz
 

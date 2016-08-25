@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	phpMyAdmin
-DISTVERSION=	4.5.1
+DISTVERSION=	4.6.4
+PORTREVISION=	1
 CATEGORIES=	databases www
 MASTER_SITES=	https://files.phpmyadmin.net/${PORTNAME}/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
@@ -10,15 +11,17 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Set of PHP-scripts to manage MySQL over the web
 
-NO_ARCH=	yes
 LICENSE=	GPLv2
 
-USES=		cpe shebangfix tar:xz
+BROKEN_powerpc64=	Does not build
+
+USES=		cpe php:web tar:xz
 CPE_PRODUCT=	${PORTNAME:tl}
 
+NO_ARCH=	yes
 NO_BUILD=	yes
 .if !defined(WITHOUT_PHP_DEPENDS)
-IGNORE_WITH_PHP=54
+IGNORE_WITH_PHP=5 54
 USE_PHP=	ctype session filter mbstring json spl mysqli
 .endif
 
@@ -26,10 +29,9 @@ USE_PHP=	ctype session filter mbstring json spl mysqli
 # want this, either turn off GD in the config dialog, or else turn off
 # FONTCONFIG in the graphics/gd port options.
 
-OPTIONS_DEFINE=		APC BZ2 GD MCRYPT OPENSSL PDF XML ZIP ZLIB
+OPTIONS_DEFINE=		BZ2 GD MCRYPT OPENSSL PDF XML ZIP ZLIB
 OPTIONS_DEFAULT=	BZ2 GD MCRYPT OPENSSL XML ZIP ZLIB
 
-APC_DESC=	PHP APC (animated progress bar) support
 BZ2_DESC=	PHP bzip2 library support
 GD_DESC=	PHP GD library support (requires X11)
 MCRYPT_DESC=	PHP MCrypt library support
@@ -41,8 +43,6 @@ ZLIB_DESC=	PHP ZLIB support
 
 .include <bsd.port.options.mk>
 
-WANT_PHP_WEB=	yes
-
 GROUPS?=	${WWWGRP}
 CFG_FILE=	config.inc.php
 
@@ -52,9 +52,6 @@ PLIST_SUB+=	PMA_GRP=${GROUPS}
 SUB_LIST+=	PKGNAME=${PKGNAME}	        \
 		CFG_FILE=${WWWDIR}/${CFG_FILE}
 SUB_FILES+=	pkg-message
-
-SHEBANG_FILES=	libraries/plugins/transformations/generator_main_class.sh \
-		libraries/plugins/transformations/generator_plugin.sh
 
 .if !defined(WITHOUT_PHP_DEPENDS)
 
@@ -67,9 +64,6 @@ USE_PHP+=	${opt:tl}
 .endif
 
 .SILENT:
-
-# When creating a package, empty directories will not be generated
-# from the pkg tarball.	 Therefore make sure no directories are empty.
 
 post-patch:
 	cd ${WRKSRC} ; \

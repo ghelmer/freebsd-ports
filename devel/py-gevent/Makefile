@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gevent
-PORTVERSION=	1.0.2
+PORTVERSION=	1.1.1
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,18 +11,22 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python co-routine networking library based on greenlet
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0.4.7:${PORTSDIR}/devel/py-greenlet
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0.4.7:${PORTSDIR}/devel/py-greenlet \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:${PORTSDIR}/databases/py-sqlite3
+LIB_DEPENDS=	libcares.so:dns/c-ares \
+		libev.so:devel/libev
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0.4.9:devel/py-greenlet
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0.4.9:devel/py-greenlet \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3
 
-USE_PYTHON=	autoplist distutils
-USES=		python:2
+DO_MAKE_TEST=	${SETENV} PYTHONPATH=../ ${PYTHON_CMD}
+MAKE_ENV=	CARES_EMBED=0 LIBEV_EMBED=0
+TEST_TARGET=	testrunner.py
+TEST_WRKSRC=	${WRKSRC}/greentest
+USE_PYTHON=	autoplist concurrent distutils
+USES=		localbase python
 
-post-build:
-	@${STRIP_CMD} ${WRKSRC}/gevent/_semaphore.so ${WRKSRC}/gevent/_util.so ${WRKSRC}/gevent/ares.so ${WRKSRC}/gevent/core.so
-
-regression-test test: build
-	cd ${WRKSRC}/greentest/ && ${SETENV} PYTHONPATH=../ ${PYTHON_CMD} testrunner.py
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/gevent/*.so
 
 .include <bsd.port.mk>

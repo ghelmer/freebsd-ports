@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	python34
-PORTVERSION=	3.4.3
-PORTREVISION=	1
+PORTVERSION=	${PYTHON_PORTVERSION}
 CATEGORIES=	lang python ipv6
 MASTER_SITES=	PYTHON/ftp/python/${PORTVERSION}
 DISTNAME=	Python-${PORTVERSION}
@@ -14,29 +13,34 @@ COMMENT=	Interpreted object-oriented programming language
 
 LICENSE=	PSFL
 
-USES=		cpe ncurses pkgconfig readline tar:xz
-USE_OPENSSL=	yes
+USES=		cpe ncurses pkgconfig readline ssl tar:xz
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 
 CPE_VENDOR=	python
 CPE_PRODUCT=	${CPE_VENDOR}
-CPE_VERSION=	${PORTVERSION}
 
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
 CONFIGURE_ARGS+=	--enable-shared --without-ensurepip
 CONFIGURE_ENV+=		OPT="" DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS}"	# Null out OPT to respect user CFLAGS and remove optimizations
 
 INSTALL_TARGET=		altinstall						# Don't want cloberring of unprefixed files
+
+TEST_TARGET=		buildbottest
+TEST_ARGS=		TESTOPTS=-j${MAKE_JOBS_NUMBER}
+
 MAKE_ARGS+=		INSTALL_SHARED="${INSTALL_LIB}"				# Strip shared library
 MAKE_ARGS+=		LIBPC="${PREFIX}/libdata/pkgconfig"			# Until pathfix gets support for files other than Makefile.in
 MAKE_JOBS_UNSAFE=	yes							# Parser/pgen build bug. See Issue: 200622, 201974
+
+SUB_FILES=		pkg-message
+SUB_LIST=		PYTHON_SUFFIX=${PORTVERSION:R:S/.//g}
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. http://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBFFI NLS PYMALLOC THREADS TSC
-OPTIONS_DEFAULT=	IPV6 LIBFFI NLS PYMALLOC THREADS
+OPTIONS_DEFAULT=	LIBFFI PYMALLOC THREADS
 OPTIONS_RADIO=		HASH
 OPTIONS_RADIO_HASH=	FNV SIPHASH
 OPTIONS_SUB=		yes
@@ -57,7 +61,7 @@ DEBUG_CONFIGURE_WITH=	pydebug
 IPV6_CONFIGURE_ENABLE=	ipv6
 
 LIBFFI_CONFIGURE_ON=	--with-system-ffi
-LIBFFI_LIB_DEPENDS=	libffi.so:${PORTSDIR}/devel/libffi
+LIBFFI_LIB_DEPENDS=	libffi.so:devel/libffi
 
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
@@ -75,6 +79,7 @@ THREADS_LDFLAGS=	-lpthread
 
 TSC_CONFIGURE_WITH=	tsc
 
+.include "${.CURDIR}/Makefile.version"
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MPYMALLOC}
@@ -111,12 +116,9 @@ PLIST_SUB+=	NO_NIS=""
 
 post-install:
 .if ! ${PORT_OPTIONS:MDEBUG}
-	${RM} -f ${STAGEDIR}${PREFIX}/lib/libpython3.so						# Upstream Issue: http://bugs.python.org/issue17975
+	${RM} ${STAGEDIR}${PREFIX}/lib/libpython3.so						# Upstream Issue: http://bugs.python.org/issue17975
 .endif
 	for i in ${STAGEDIR}${PREFIX}/lib/python3.4/lib-dynload/*.so; do \
 		${STRIP_CMD} $$i; done								# Strip shared extensions
-
-regression-test: build
-	@cd ${WRKSRC} && ${MAKE} TESTOPTS=-j${MAKE_JOBS_NUMBER} buildbottest
 
 .include <bsd.port.mk>

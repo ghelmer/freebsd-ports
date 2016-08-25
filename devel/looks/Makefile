@@ -4,7 +4,8 @@
 PORTNAME=	looks
 DISTVERSION=	2_6_0
 CATEGORIES=	devel java
-MASTER_SITES=	http://www.jgoodies.com/download/libraries/${PORTNAME}/
+MASTER_SITES=	http://www.jgoodies.com/download/libraries/${PORTNAME}/ \
+		LOCAL/makc
 DISTNAME=	jgoodies-${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	makc@FreeBSD.org

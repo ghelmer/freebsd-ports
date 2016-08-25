@@ -11,14 +11,14 @@ COMMENT=	Realtime sound processor
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libjack.so:${PORTSDIR}/audio/jack
+LIB_DEPENDS=	libjack.so:audio/jack
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	laudrup
 GH_PROJECT=	Creox4
 
 USES=		cmake:outsource
-USE_KDE4=	automoc4 kdelibs kdeprefix
+USE_KDE4=	automoc4 kdelibs
 USE_QT4=	moc_build qmake_build rcc_build uic_build
 USE_XORG=	xft xpm
 

@@ -14,6 +14,10 @@ EXTRACT_ONLY=	onigd${PORTVERSION:S/./_/g}${EXTRACT_SUFX}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	BSDL Regular Expressions library compatible with POSIX/GNU/Perl
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 CONFLICTS_INSTALL=	oniguruma-4.*
 GNU_CONFIGURE=	yes

@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	lcov
-PORTVERSION=	1.10
+PORTVERSION=	1.12
 CATEGORIES=	devel
 MASTER_SITES=	SF/ltp/Coverage%20Analysis/LCOV-${PORTVERSION}
 
 MAINTAINER=	romain@FreeBSD.org
-COMMENT=	The Linux Test Project GCOV extension
+COMMENT=	Linux Test Project GCOV extension
 
 LICENSE=	GPLv1
 
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
 NO_BUILD=	yes
 USES=		perl5 shebangfix

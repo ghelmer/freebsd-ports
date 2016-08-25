@@ -3,6 +3,7 @@
 
 PORTNAME=	swi-pl
 PORTVERSION=	7.2.3
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	http://www.swi-prolog.org/download/stable/src/
 DISTNAME=	swipl-${PORTVERSION}
@@ -10,11 +11,8 @@ DISTNAME=	swipl-${PORTVERSION}
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Edinburgh-style Prolog compiler
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp \
-		libodbc.so:${PORTSDIR}/databases/unixODBC
-
-CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libodbc.so:databases/unixODBC
 
 SWIPLDIR=	${PORTNAME:C/-//}-${PORTVERSION}
 
@@ -67,6 +65,8 @@ post-patch:
 	@${REINPLACE_CMD} -e '/EXAMPLEEXE/s/INSTALL_PROGRAM/INSTALL_SCRIPT/' \
 		${WRKSRC}/packages/http/Makefile.in \
 		${WRKSRC}/packages/pldoc/Makefile.in
+	@${REINPLACE_CMD} -e 's/malloc\.h/stdlib.h/' \
+		${WRKSRC}/packages/cpp/SWI-cpp.h
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/xpce-client \

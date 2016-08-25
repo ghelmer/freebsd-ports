@@ -7,13 +7,13 @@ CATEGORIES=	devel
 MASTER_SITES=	http://sedsed.sourceforge.net/
 EXTRACT_SUFX=	# empty
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Python script that masters SED scripts
 
 PLIST_FILES=	bin/sedsed
 EXTRACT_CMD=	${CP}
 EXTRACT_BEFORE_ARGS=
-EXTRACT_AFTER_ARGS=	${WRKDIR}
+EXTRACT_AFTER_ARGS=	${WRKSRC}
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

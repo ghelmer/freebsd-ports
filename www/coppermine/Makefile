@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	coppermine
-PORTVERSION=	1.5.38
+PORTVERSION=	1.5.42
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/Coppermine/1.5.x/
 DISTNAME=	cpg${PORTVERSION}
@@ -11,15 +11,18 @@ COMMENT=	Web picture gallery script
 
 LICENSE=	GPLv3
 
+BROKEN_powerpc64=	Does not build
+
 OPTIONS_DEFINE=	DOCS IMAGEMAGICK
 IMAGEMAGICK_DESC=	Use ImageMagick instead of PHP GD extension
 
-IMAGEMAGICK_RUN_DEPENDS+=	convert:${PORTSDIR}/graphics/ImageMagick
+IMAGEMAGICK_RUN_DEPENDS+=	convert:graphics/ImageMagick
 
 USE_PHP=	mysql pcre ctype
 USES=		zip
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/cpg${PORTVERSION:R:R}${PORTVERSION:R:E}x
 DOCFILES=	CHANGELOG.txt COPYING.txt README.txt
 
@@ -40,9 +43,11 @@ pre-everything::
 post-extract:
 	@${CHMOD} -R o-w ${WRKSRC}/
 
-do-install:
+pre-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/
 	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCFILES} ${STAGEDIR}${DOCSDIR}
+
+do-install:
 	cd ${WRKSRC}/ && ${RM} ${DOCFILES}
 	cd ${WRKSRC}/ && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}/
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	rpy
 PORTVERSION=	1.0.3
-PORTREVISION=	34
+PORTREVISION=	35
 CATEGORIES=	math
 MASTER_SITES=	SF
 
@@ -14,9 +14,9 @@ LICENSE=	GPLv2 LGPL21 MPL
 LICENSE_COMB=	dual
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		R:${PORTSDIR}/math/R
+		R:math/R
 RUN_DEPENDS=	${PYNUMPY} \
-		R:${PORTSDIR}/math/R
+		R:math/R
 
 USES=		python
 USE_PYTHON=	distutils autoplist
@@ -32,6 +32,6 @@ pre-configure:
 	exit 1; fi)
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/_rpy3002.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/*.so
 
 .include <bsd.port.mk>

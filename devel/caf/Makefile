@@ -1,8 +1,8 @@
 # Created by: vanilla@
 # $FreeBSD$
 
-PORTNAME=	actor-framework
-PORTVERSION=	0.14.1
+PORTNAME=	caf
+PORTVERSION=	0.14.5
 CATEGORIES=	devel
 
 MAINTAINER=	vallentin@icir.org
@@ -11,12 +11,17 @@ COMMENT=	C++ actor framework
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_powerpc64=	Does not build
+
 CXXFLAGS+=	-std=c++11 -Wextra -Wall -pedantic
 LDFLAGS+=	-pthread
 USES=		cmake:outsource compiler:c++11-lang
 USE_LDCONFIG=	yes
+TEST_TARGET=	test
+TEST_WRKSRC=	${BUILD_WRKSRC}
 USE_GITHUB=	yes
-BROKEN_FreeBSD_8=	"undefined reference to `iswalpha_l'"
+GH_ACCOUNT=	actor-framework
+GH_PROJECT=	${GH_ACCOUNT}
 
 OPTIONS_DEFINE=	DEBUG TEST STATIC
 OPTIONS_RADIO=	LOG_LEVEL
@@ -49,15 +54,12 @@ LOG_LEVEL_TRACE_CMAKE_ON=	-DCAF_LOG_LEVEL:STRING=4
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MTEST}
-regression-test: build
-	@cd ${BUILD_WRKSRC} && ${MAKE} test
-.endif
+regression-test: test
 
 .if ${OSVERSION} < 1001000
 # require clang & libc++
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:${PORTSDIR}/lang/clang34 \
-		${LOCALBASE}/lib/c++/libstdc++.so:${PORTSDIR}/devel/libc++
+BUILD_DEPENDS+=	${LOCALBASE}/bin/clang34:lang/clang34 \
+		${LOCALBASE}/lib/c++/libstdc++.so:devel/libc++
 CXXFLAGS+=	-stdlib=libc++ -I${LOCALBASE}/include/c++/v1 -L${LOCALBASE}/lib
 .endif
 

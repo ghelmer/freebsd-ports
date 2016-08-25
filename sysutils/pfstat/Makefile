@@ -3,14 +3,14 @@
 
 PORTNAME=	pfstat
 PORTVERSION=	2.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	sysutils net
 MASTER_SITES=	http://www.benzedrine.cx/
 
 MAINTAINER=	araujo@FreeBSD.org
 COMMENT=	Utility to render graphical statistics for pf
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd
+LIB_DEPENDS=	libgd.so:graphics/gd
 
 MAKE_ARGS=	"LD_GD=gd"
 MAKE_ENV+=	__MAKE_CONF=/dev/null

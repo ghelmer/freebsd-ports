@@ -11,11 +11,11 @@ COMMENT=	GTK interface to GNUnet
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libgladeui-1.so:${PORTSDIR}/devel/glade3 \
-		libltdl.so:${PORTSDIR}/devel/libltdl \
-		libqrencode.so:${PORTSDIR}/graphics/libqrencode \
-		libgnunetutil.so:${PORTSDIR}/net-p2p/gnunet \
-		libunique-1.0.so:${PORTSDIR}/x11-toolkits/unique
+LIB_DEPENDS=	libgladeui-1.so:devel/glade3 \
+		libltdl.so:devel/libltdl \
+		libqrencode.so:graphics/libqrencode \
+		libgnunetutil.so:net-p2p/gnunet \
+		libunique-1.0.so:x11-toolkits/unique
 
 USES=		gmake iconv libtool pathfix pkgconfig
 USE_GNOME=	gtk20
@@ -41,7 +41,7 @@ post-patch:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for i in AUTHORS ChangeLog NEWS README 
+.for i in AUTHORS ChangeLog NEWS README
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} \
 		${STAGEDIR}${DOCSDIR})
 .endfor

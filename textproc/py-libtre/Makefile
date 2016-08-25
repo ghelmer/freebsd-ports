@@ -10,10 +10,10 @@ MASTER_SITES=	http://laurikari.net/tre/ \
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	tre-${PORTVERSION}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Python interface for the tre regular expressions library
 
-LIB_DEPENDS=	libtre.so:${PORTSDIR}/textproc/libtre
+LIB_DEPENDS=	libtre.so:textproc/libtre
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

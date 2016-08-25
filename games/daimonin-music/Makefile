@@ -12,6 +12,9 @@ DIST_SUBDIR=	daimonin
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Music for daimonin client
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 NO_BUILD=	yes
 USES=		zip
 NO_ARCH=	yes

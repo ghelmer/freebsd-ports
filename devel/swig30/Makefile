@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	swig
-PORTVERSION=	3.0.7
+PORTVERSION=	3.0.10
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 PKGNAMESUFFIX=	30
@@ -12,7 +12,7 @@ COMMENT=	Generate wrappers for calling C/C++ code from other languages
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+LIB_DEPENDS=	libpcre.so:devel/pcre
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -23,9 +23,11 @@ CONFIGURE_ARGS=	--program-suffix=${PORTVERSION:R} \
 		--with-luaincl=${LUA_INCDIR} \
 		--with-lualib=${LUA_LIBDIR}
 GNU_CONFIGURE=	yes
+TEST_TARGET=	check
 USES=		gmake lua
 
-PLIST_SUB=	MAJOR_VER=${PORTVERSION:R}
+PLIST_FILES=	bin/ccache-swig${PORTVERSION:R} \
+		bin/swig${PORTVERSION:R}
 PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
@@ -47,10 +49,11 @@ post-configure:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ccache-swig${PORTVERSION:R} ${STAGEDIR}${PREFIX}/bin/swig${PORTVERSION:R}
-	cd ${WRKSRC}/Doc/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/${PORTVERSION}
-	cd ${WRKSRC}/Examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/${PORTVERSION}
 
-regression-test test: build
-	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
+post-install-DOCS-on:
+	cd ${WRKSRC}/Doc/ && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}/${PORTVERSION}
+
+post-install-EXAMPLES-on:
+	cd ${WRKSRC}/Examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}/${PORTVERSION}
 
 .include <bsd.port.mk>

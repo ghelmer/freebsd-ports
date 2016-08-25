@@ -27,7 +27,6 @@
     SUBDIR += c
     SUBDIR += ccl
     SUBDIR += cdent
-    SUBDIR += cduce
     SUBDIR += ceylon
     SUBDIR += cfortran
     SUBDIR += chibi-scheme
@@ -40,9 +39,9 @@
     SUBDIR += clang35
     SUBDIR += clang36
     SUBDIR += clang37
+    SUBDIR += clang38
     SUBDIR += clojure
     SUBDIR += clojure-mode.el
-    SUBDIR += cloudabi-clang
     SUBDIR += clover
     SUBDIR += cmucl
     SUBDIR += cmucl-extra
@@ -80,6 +79,10 @@
     SUBDIR += fpc-docs
     SUBDIR += fpc-lua
     SUBDIR += fpc-rexx
+    SUBDIR += fpc-rtl-console
+    SUBDIR += fpc-rtl-extra
+    SUBDIR += fpc-rtl-objpas
+    SUBDIR += fpc-rtl-unicode
     SUBDIR += fpc-tcl
     SUBDIR += fpc-units
     SUBDIR += fpc-utils
@@ -88,7 +91,6 @@
     SUBDIR += gauche
     SUBDIR += gawk
     SUBDIR += gcc
-    SUBDIR += gcc-aux
     SUBDIR += gcc-ecj45
     SUBDIR += gcc46
     SUBDIR += gcc47
@@ -97,7 +99,10 @@
     SUBDIR += gcc5
     SUBDIR += gcc5-aux
     SUBDIR += gcc5-devel
+    SUBDIR += gcc6
+    SUBDIR += gcc6-aux
     SUBDIR += gcc6-devel
+    SUBDIR += gcc7-devel
     SUBDIR += gcl
     SUBDIR += gforth
     SUBDIR += ghc
@@ -105,7 +110,10 @@
     SUBDIR += gnat_util
     SUBDIR += gnatdroid-armv7
     SUBDIR += gnatdroid-binutils
+    SUBDIR += gnatdroid-binutils-x86
     SUBDIR += gnatdroid-sysroot
+    SUBDIR += gnatdroid-sysroot-x86
+    SUBDIR += gnatdroid-x86
     SUBDIR += gnu-cobol
     SUBDIR += gnustep-base
     SUBDIR += go
@@ -116,6 +124,7 @@
     SUBDIR += guile
     SUBDIR += guile2
     SUBDIR += harbour
+    SUBDIR += haskell-mode.el
     SUBDIR += hla
     SUBDIR += hope
     SUBDIR += hs-brainfuck
@@ -167,8 +176,8 @@
     SUBDIR += modula3
     SUBDIR += mono
     SUBDIR += mono-basic
-    SUBDIR += moscow_ml
     SUBDIR += mosh
+    SUBDIR += mosml
     SUBDIR += mtasc
     SUBDIR += munger
     SUBDIR += nawk
@@ -253,6 +262,7 @@
     SUBDIR += py-clojure
     SUBDIR += py-mx-base
     SUBDIR += py-prolog
+    SUBDIR += py-qt5-qml
     SUBDIR += pypy
     SUBDIR += pypy3-devel
     SUBDIR += python
@@ -265,7 +275,6 @@
     SUBDIR += python2
     SUBDIR += python27
     SUBDIR += python3
-    SUBDIR += python32
     SUBDIR += python33
     SUBDIR += python34
     SUBDIR += python35
@@ -282,9 +291,9 @@
     SUBDIR += rexx-wrapper
     SUBDIR += rhino
     SUBDIR += rubinius
-    SUBDIR += ruby20
     SUBDIR += ruby21
     SUBDIR += ruby22
+    SUBDIR += ruby23
     SUBDIR += runawk
     SUBDIR += rust
     SUBDIR += rust-nightly
@@ -323,6 +332,7 @@
     SUBDIR += starlogo
     SUBDIR += stldoc
     SUBDIR += swi-pl
+    SUBDIR += swift
     SUBDIR += tcbasic
     SUBDIR += tcc
     SUBDIR += tcl-manual
@@ -330,6 +340,7 @@
     SUBDIR += tcl84
     SUBDIR += tcl85
     SUBDIR += tcl86
+    SUBDIR += tcl87
     SUBDIR += tclX
     SUBDIR += tinypy
     SUBDIR += tolua

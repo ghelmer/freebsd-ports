@@ -7,6 +7,7 @@ PORTREVISION=	1
 CATEGORIES=	www devel python
 MASTER_SITES=	http://distfiles.cse.tw/
 PKGNAMEPREFIX=	trac-
+# Should not be setting DISTNAME, USE_GITHUB already sets a very nice and unique distname.
 DISTNAME=	itota-trac-subtickets-plugin-a0fc153
 
 MAINTAINER=	gaod@hychen.org
@@ -14,7 +15,7 @@ COMMENT=	Offers sub-ticket feature for managing tickets
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS=	tracd:${PORTSDIR}/www/trac
+RUN_DEPENDS=	tracd:www/trac
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	itota
@@ -24,6 +25,6 @@ GITDATE=	20130328
 
 USES=		python:2
 USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
-.include "${.CURDIR}/../../www/trac/plugin.mk"
 .include <bsd.port.mk>

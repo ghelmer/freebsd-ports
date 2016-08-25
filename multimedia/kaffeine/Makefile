@@ -2,30 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	kaffeine
-PORTVERSION=	1.2.2
-PORTREVISION=	8
+PORTVERSION=	1.3.1
+PORTREVISION=	2
 CATEGORIES=	multimedia kde
 MASTER_SITES=	SF/kaffeine/current
 
-MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Xine-base multimedia player
+MAINTAINER=	arved@FreeBSD.org
+COMMENT=	Multimedia player based on KDE and VLC
 
-BUILD_DEPENDS=	${LOCALBASE}/include/linux/dvb/ca.h:${PORTSDIR}/multimedia/v4l_compat
-LIB_DEPENDS=	libxine.so:${PORTSDIR}/multimedia/libxine
-
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_KDE4=	kdeprefix automoc4 kdelibs
-USE_QT4=	corelib gui phonon svg network dbus xml sql \
-		qmake_build moc_build rcc_build uic_build
-USES=		cmake cpe gettext gmake
-USE_LDCONFIG=		yes
+BUILD_DEPENDS=	v4l_compat>0:multimedia/v4l_compat
+LIB_DEPENDS=	libvlc.so:multimedia/vlc-qt4
+
+USES=		cmake cpe gettext pkgconfig
+USE_KDE4=	automoc4 kdelibs
+USE_QT4=	corelib dbus gui network phonon sql svg xml \
+		moc_build qmake_build rcc_build uic_build
 USE_XORG=	xscrnsaver
+
 CPE_VENDOR=	kaffeine
 CPE_PRODUCT=	kaffeine_player
-
-post-patch:
-	${REINPLACE_CMD} -e 's,add_subdirectory(x-test),,' ${WRKSRC}/po/CMakeLists.txt
 
 .include <bsd.port.mk>

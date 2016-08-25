@@ -10,6 +10,9 @@ MASTER_SITES=	http://liblcfg.carnivore.it/files/
 MAINTAINER=	skreuzer@FreeBSD.org
 COMMENT=	Lightweight configuration file library written in C99
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 LICENSE=	GPLv2
 
 USES=		libtool

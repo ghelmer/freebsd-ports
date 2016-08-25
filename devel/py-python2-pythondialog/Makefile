@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	python2-pythondialog
-PORTVERSION=	3.3.0
+PORTVERSION=	3.4.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,6 +11,7 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Backport of pythondialog to Python 2
 
 LICENSE=	LGPL21
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 NO_ARCH=	yes
 USE_PYTHON=	autoplist distutils

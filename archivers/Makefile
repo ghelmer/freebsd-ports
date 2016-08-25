@@ -27,7 +27,6 @@
     SUBDIR += fastjar
     SUBDIR += file-roller
     SUBDIR += fpc-bzip2
-    SUBDIR += fpc-paszlib
     SUBDIR += fpc-unzip
     SUBDIR += freetar
     SUBDIR += freeze
@@ -47,8 +46,8 @@
     SUBDIR += hs-zlib
     SUBDIR += hs-zlib-bindings
     SUBDIR += hs-zlib-enum
+    SUBDIR += innoextract
     SUBDIR += javatar
-    SUBDIR += jzip.org
     SUBDIR += jzlib
     SUBDIR += kzip
     SUBDIR += laszip
@@ -163,13 +162,22 @@
     SUBDIR += ppunpack
     SUBDIR += pxz
     SUBDIR += py-attic
-    SUBDIR += py-liblzma
+    SUBDIR += py-borgbackup
+    SUBDIR += py-bz2file
+    SUBDIR += py-libarchive-c
     SUBDIR += py-librtfcomp
     SUBDIR += py-lz4
     SUBDIR += py-lzma
+    SUBDIR += py-pyliblzma
     SUBDIR += py-python-snappy
+    SUBDIR += py-rarfile
+    SUBDIR += py-rcssmin
+    SUBDIR += py-rjsmin
+    SUBDIR += py-warctools
+    SUBDIR += py3-libarchive-c
     SUBDIR += qpress
     SUBDIR += quazip
+    SUBDIR += quazip-qt5
     SUBDIR += rar
     SUBDIR += rox-archive
     SUBDIR += rpm2cpio
@@ -181,6 +189,7 @@
     SUBDIR += rubygem-bzip2-ruby
     SUBDIR += rubygem-libarchive
     SUBDIR += rubygem-minitar
+    SUBDIR += rubygem-ruby-xz
     SUBDIR += rubygem-rubyzip
     SUBDIR += rubygem-rubyzip2
     SUBDIR += rvm
@@ -189,8 +198,10 @@
     SUBDIR += sharutils
     SUBDIR += snappy
     SUBDIR += snappy-java
+    SUBDIR += snzip
     SUBDIR += squeeze
     SUBDIR += squsq
+    SUBDIR += star
     SUBDIR += stuffit
     SUBDIR += szip
     SUBDIR += tardy
@@ -201,6 +212,7 @@
     SUBDIR += unace
     SUBDIR += unadf
     SUBDIR += unalz
+    SUBDIR += unarchiver
     SUBDIR += unarj
     SUBDIR += undms
     SUBDIR += unfoo
@@ -214,7 +226,6 @@
     SUBDIR += unzip
     SUBDIR += unzoo
     SUBDIR += upx
-    SUBDIR += wzip
     SUBDIR += xar
     SUBDIR += xarchive
     SUBDIR += xarchiver

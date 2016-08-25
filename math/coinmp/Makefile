@@ -6,7 +6,7 @@ PORTVERSION=	1.8.3
 CATEGORIES=	math
 MASTER_SITES=	http://www.coin-or.org/download/source/CoinMP/
 
-MAINTAINER=	cpm@fbsd.es
+MAINTAINER=	cpm@FreeBSD.org
 COMMENT=	Optimization library with support for COIN-OR CLP, CBC, and CGL
 
 LICENSE=	CPL
@@ -14,7 +14,8 @@ LICENSE_NAME=	Common Public License, Version 1.0
 LICENSE_FILE=	${WRKSRC}/CoinMP/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-CONFLICTS=	clp-[0-9]*
+# note: with ogdf only if build with COIN option
+CONFLICTS=	clp-[0-9]* ogdf-[0-9]*
 
 GNU_CONFIGURE=	yes
 USES=	libtool pkgconfig tar:tgz
@@ -28,19 +29,12 @@ GLPK_DESC=	GNU Linear Programming Kit support
 
 PORTDOCS=	*
 
-.include <bsd.port.options.mk>
+DEBUG_CXXFLAGS=		-fomit-frame-pointer
 
-.if ${PORT_OPTIONS:MGLPK}
-CONFIGURE_ARGS+=	--with-gmpl-incdir=${LOCALBASE}/include	\
-		--with-gmpl-lib="-L${LOCALBASE}/lib -lglpk"
-LIB_DEPENDS+=	libglpk.so:${PORTSDIR}/math/glpk
-.else
-CONFIGURE_ARGS+=	--disable-glpk-libcheck
-.endif
-
-.if ${PORT_OPTIONS:MDEBUG}
-CXXFLAGS+=	-fomit-frame-pointer
-.endif
+GLPK_LIB_DEPENDS=	libglpk.so:math/glpk
+GLPK_CONFIGURE_ON=	--with-gmpl-incdir=${LOCALBASE}/include	\
+			--with-gmpl-lib="-L${LOCALBASE}/lib -lglpk"
+GLPK_CONFIGURE_OFF=	--disable-glpk-libcheck
 
 STRIP_FILES=	libCoinUtils libOsi libOsiClp libOsiCommonTests libClp libClpSolver \
 		libCgl libCbc libCbcSolver libOsiCbc libCoinMP

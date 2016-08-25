@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fuse
-PORTVERSION=	1.1.1
-PORTREVISION=	8
+PORTVERSION=	1.2.0
 CATEGORIES=	emulators
 MASTER_SITES=	SF/${PORTNAME}-emulator/${PORTNAME}/${PORTVERSION}
 
@@ -12,17 +11,18 @@ COMMENT=	Free Unix (Sinclair ZX-)Spectrum Emulator
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libspectrum.so:${PORTSDIR}/emulators/libspectrum \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libgcrypt.so:${PORTSDIR}/security/libgcrypt
+LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libgcrypt.so:security/libgcrypt \
+		libpng.so:graphics/png \
+		libspectrum.so:emulators/libspectrum
 
 GNU_CONFIGURE=	yes
-USES=		pkgconfig gmake
-USE_GNOME=	libxml2 glib20
+USES=		gettext gmake localbase pkgconfig
+USE_GNOME=	cairo libxml2 glib20
+USE_XORG=	x11
 
 CONFIGURE_ARGS+=--without-alsa --without-joystick
-CPPFLAGS+=	-I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
 
 OPTIONS_DEFINE=		AO ICONS ROMS
 OPTIONS_DEFAULT=	ICONS GTK2
@@ -33,7 +33,7 @@ OPTIONS_SINGLE_UI=	GTK2 GTK3 SDL SVGALIB
 
 OPTIONS_SUB=		yes
 AO_CONFIGURE_WITH=	libao
-AO_LIB_DEPENDS=		libao.so:${PORTSDIR}/audio/libao
+AO_LIB_DEPENDS=		libao.so:audio/libao
 ICONS_USES=		desktop-file-utils shared-mime-info
 ICONS_CONFIGURE_ENABLE=	desktop-integration
 GTK2_USE=		GNOME=gtk20
@@ -44,10 +44,10 @@ GTK3_CONFIGURE_ENABLE=	gtk3
 SDL_USE=		SDL=sdl
 SDL_CONFIGURE_WITH=	sdl
 SDL_CONFIGURE_ON=	--without-gtk
-SVGALIB_LIB_DEPENDS=	libvga.so:${PORTSDIR}/graphics/svgalib
+SVGALIB_LIB_DEPENDS=	libvga.so:graphics/svgalib
 SVGALIB_CONFIGURE_WITH=	svgalib
 SVGALIB_CONFIGURE_ON=	--without-gtk
-ROMS_RUN_DEPENDS=	fuse-roms>0:${PORTSDIR}/emulators/fuse-roms
+ROMS_RUN_DEPENDS=	fuse-roms>0:emulators/fuse-roms
 
 PORTDOCS=	AUTHORS ChangeLog README THANKS README.copyright
 
@@ -59,6 +59,7 @@ INSTALLS_ICONS=	yes
 
 post-extract:
 	${CP} ${WRKSRC}/roms/README.copyright ${WRKSRC}
+
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}

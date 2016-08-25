@@ -3,7 +3,7 @@
 
 PORTNAME=	ghostscript
 PORTVERSION=	8.71
-PORTREVISION=	19
+PORTREVISION=	21
 CATEGORIES=	print
 MASTER_SITES=	http://downloads.ghostscript.com/public/:gs_srcs \
 		SF/ghostscript/GPL%20Ghostscript/${PORTVERSION}:gs_srcs \
@@ -18,14 +18,14 @@ COMMENT=	Ghostscript 8.x PostScript interpreter, base part
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2 \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libjasper.so:${PORTSDIR}/graphics/jasper \
-		libjbig2dec.so:${PORTSDIR}/graphics/jbig2dec \
-		libpaper.so:${PORTSDIR}/print/libpaper \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libtiff.so:${PORTSDIR}/graphics/tiff
-RUN_DEPENDS=	${LOCALBASE}/share/${PORTNAME}/fonts/a010013l.pfb:${PORTSDIR}/print/gsfonts
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libfreetype.so:print/freetype2 \
+		libjasper.so:graphics/jasper \
+		libjbig2dec.so:graphics/jbig2dec \
+		libpaper.so:print/libpaper \
+		libpng.so:graphics/png \
+		libtiff.so:graphics/tiff
+RUN_DEPENDS=	${LOCALBASE}/share/${PORTNAME}/fonts/a010013l.pfb:print/gsfonts
 
 CONFLICTS_INSTALL= \
 		gambc-[0-9]* \
@@ -55,7 +55,9 @@ CONFIGURE_ARGS=	--disable-compile-inits \
 		--without-x \
 		--disable-gtk \
 		--with-drivers=""
-CPPFLAGS+=	-DUPD_SIGNAL=0 -I. \
+CPPFLAGS+=	-DUPD_SIGNAL=0 \
+		-DJBIG_NO_MEMENTO \
+		-I. \
 		-I${WRKSRC}/jasper/src/libjasper/include \
 		-I${LOCALBASE}/include/freetype2 \
 		-I${LOCALBASE}/include
@@ -70,10 +72,10 @@ SUB_FILES=	pkg-message
 PKGMESSAGE=	${WRKDIR}/pkg-message
 
 OPTIONS_DEFINE=	DOCS CAIRO CUPS FONTCONFIG ICONV
-OPTIONS_DEFAULT=DOCS CAIRO CUPS FONTCONFIG ICONV
+OPTIONS_DEFAULT=CAIRO CUPS FONTCONFIG ICONV
 OPTIONS_SUB=	yes
 FONTCONFIG_DESC=Enable fontconfig support
-FONTCONFIG_LIB_DEPENDS=	libfontconfig.so:${PORTSDIR}/x11-fonts/fontconfig
+FONTCONFIG_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig
 FONTCONFIG_CONFIGURE_ENABLE=	fontconfig
 NO_OPTIONS_SORT=yes
 

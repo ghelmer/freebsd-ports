@@ -13,11 +13,10 @@ COMMENT=	GUPnP wrapper extension
 
 LICENSE=	PHP301
 
-LIB_DEPENDS=	libgupnp-1.0.so:${PORTSDIR}/net/gupnp
+LIB_DEPENDS=	libgupnp-1.0.so:net/gupnp
 
-USE_PHP=	yes
-USE_PHPEXT=	yes
-USES=		pkgconfig tar:tgz
+USES=		php:ext pkgconfig tar:tgz
+IGNORE_WITH_PHP=	70
 
 post-patch:
 	@${REINPLACE_CMD} -e 's| -ldl||g' ${WRKSRC}/config.m4

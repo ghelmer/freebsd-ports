@@ -3,7 +3,7 @@
 
 PORTNAME=	policyd-weight
 PORTVERSION=	0.1.15.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	mail
 MASTER_SITES=	http://www.policyd-weight.org/releases/ \
 		LOCAL/ohauer
@@ -12,11 +12,11 @@ PKGNAMEPREFIX=	postfix-
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Weighted policy daemon for postfix
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	p5-Net-DNS>=0.72:${PORTSDIR}/dns/p5-Net-DNS \
-		p5-Net-IP>0:${PORTSDIR}/net-mgmt/p5-Net-IP
+RUN_DEPENDS=	p5-Net-DNS>=0.72:dns/p5-Net-DNS \
+		p5-Net-IP>0:net-mgmt/p5-Net-IP
 
 SUB_FILES=	pkg-message pkg-install
 PLIST_FILES=	bin/${PORTNAME} \
@@ -33,9 +33,6 @@ USE_PERL5=	run
 NO_BUILD=	yes
 NO_ARCH=	yes
 
-SHEBANG_LANG=	perl
-perl_OLD_CMD=	${SETENV} perl
-perl_CMD=	${PERL}
 SHEBANG_FILES=	${WRKSRC}/policyd-weight
 
 do-install:

@@ -12,7 +12,7 @@ COMMENT=	OCaml arithmetic library for arbitrary precision integers
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
+LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=			gmake perl5 shebangfix tar:tgz
 USE_PERL5=		build
@@ -27,6 +27,8 @@ CPPFLAGS+=		-I${LOCALBASE}/include
 LDFLAGS+=		-L${LOCALBASE}/lib
 
 MAKE_JOBS_UNSAFE=	yes
+
+BROKEN_armv6=	binary /nxb-bin/usr/bin/cc: not found
 PORTDOCS=	html
 DOCSDIR=	${OCAML_DOCSDIR}/${PORTNAME}
 

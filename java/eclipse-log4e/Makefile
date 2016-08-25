@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	log4e
-PORTVERSION=	1.5.0
+PORTVERSION=	1.5.1
 CATEGORIES=	java
 MASTER_SITES=	http://log4e.jayefem.de/download/eclipse3/
 PKGNAMEPREFIX=	eclipse-
@@ -12,7 +12,7 @@ DIST_SUBDIR=	eclipse
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Eclipse plugin to use logger easily in Java projects
 
-RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:${PORTSDIR}/java/eclipse
+RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:java/eclipse
 
 USES=		zip
 NO_BUILD=	yes

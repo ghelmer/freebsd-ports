@@ -15,6 +15,9 @@ DIST_SUBDIR=	ruby
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Ruby library for caching objects based on the LRU algorithm
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 

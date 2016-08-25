@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	testlink
-PORTVERSION=	1.9.13
+PORTVERSION=	1.9.14
 CATEGORIES=	www devel
 MASTER_SITES=	SF/${PORTNAME}/TestLink%201.9/TestLink%20${PORTVERSION}
 
@@ -11,6 +11,8 @@ COMMENT=	Web based test management and test execution system
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_powerpc64=	Does not build
 
 USES=		cpe
 CPE_VENDOR=	teamst

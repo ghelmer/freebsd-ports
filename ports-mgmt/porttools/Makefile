@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	porttools
-PORTVERSION=	1.05
-PORTREVISION=	1
+PORTVERSION=	1.07
 CATEGORIES=	ports-mgmt
 
 MAINTAINER=	skreuzer@FreeBSD.org
@@ -11,10 +10,10 @@ COMMENT=	Tools for testing and submitting port updates and new ports
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	portlint:${PORTSDIR}/ports-mgmt/portlint \
-		cdiff:${PORTSDIR}/textproc/cdiff \
-		sudo:${PORTSDIR}/security/sudo \
-		svn:${PORTSDIR}/devel/subversion
+RUN_DEPENDS=	portlint:ports-mgmt/portlint \
+		cdiff:textproc/cdiff \
+		sudo:security/sudo \
+		svn:devel/subversion
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	skreuzer

@@ -13,7 +13,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 MAINTAINER=	CQG00620@nifty.ne.jp
 COMMENT=	12-dot Kanji font
 
-BUILD_DEPENDS=	bdftopcf:${PORTSDIR}/x11-fonts/bdftopcf
+BUILD_DEPENDS=	bdftopcf:x11-fonts/bdftopcf
 
 USES=		fonts
 FONTNAME=	misc
@@ -39,6 +39,6 @@ post-install:
 	    ${LN} -s ../../../${DATADIR_REL}/*.pcf.gz .
 
 post-install-DOCS-on:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} install-doc
+	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} install-doc
 
 .include <bsd.port.mk>

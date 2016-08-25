@@ -113,7 +113,6 @@
     SUBDIR += p5-Sereal-Encoder
     SUBDIR += p5-Storable-AMF
     SUBDIR += p5-String-Multibyte
-    SUBDIR += p5-String-SetUTF8
     SUBDIR += p5-Text-Bidi
     SUBDIR += p5-Text-Iconv
     SUBDIR += p5-Text-Unidecode
@@ -146,6 +145,8 @@
     SUBDIR += php70-recode
     SUBDIR += psiconv
     SUBDIR += py-bencode
+    SUBDIR += py-bencoder
+    SUBDIR += py-better-bencode
     SUBDIR += py-bsdconv
     SUBDIR += py-iconv
     SUBDIR += py-pisa
@@ -155,6 +156,7 @@
     SUBDIR += rcctools
     SUBDIR += recode
     SUBDIR += ruby-dump.rb
+    SUBDIR += rubygem-base32
     SUBDIR += rubygem-bsdconv
     SUBDIR += shftool
     SUBDIR += showkey
@@ -169,6 +171,7 @@
     SUBDIR += vda2fbd
     SUBDIR += wkhtmltopdf
     SUBDIR += xdeview
+    SUBDIR += xml2c
     SUBDIR += ytnef
     SUBDIR += zbase32
 

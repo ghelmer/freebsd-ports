@@ -14,21 +14,19 @@ COMMENT=	Cacti templates for MySQL, Apache, Memcached, and more by Percona
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	cacti>=0:${PORTSDIR}/net-mgmt/cacti \
-		p5-DBD-mysql>=0:${PORTSDIR}/databases/p5-DBD-mysql \
-		p5-Data-Dumper>=0:${PORTSDIR}/devel/p5-Data-Dumper \
-		p5-Digest-MD5>=0:${PORTSDIR}/security/p5-Digest-MD5 \
-		p5-Getopt-Long>=0:${PORTSDIR}/devel/p5-Getopt-Long \
-		p5-Time-HiRes>=0:${PORTSDIR}/devel/p5-Time-HiRes \
-		bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	cacti>=0:net-mgmt/cacti \
+		p5-DBD-mysql>=0:databases/p5-DBD-mysql \
+		p5-Data-Dumper>=0:devel/p5-Data-Dumper \
+		p5-Digest-MD5>=0:security/p5-Digest-MD5 \
+		p5-Getopt-Long>=0:devel/p5-Getopt-Long \
+		p5-Time-HiRes>=0:devel/p5-Time-HiRes \
+		bash:shells/bash
 
-USES=		shebangfix perl5
+USES=		shebangfix perl5 php:cli
 USE_PERL5=	run
 SHEBANG_FILES=	nagios/bin/pmp-check-pt-table-checksum \
 		cacti/bin/pmp-cacti-*
 USE_MYSQL=	yes
-USE_PHP=	yes
-WANT_PHP_CLI=	yes
 
 NO_BUILD=	yes
 NO_ARCH=	yes

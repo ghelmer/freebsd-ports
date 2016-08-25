@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libbeid
-PORTVERSION=	4.1.2
+PORTVERSION=	4.1.11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -11,7 +11,7 @@ COMMENT=	Belgian eID PKCS #11 module
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpcsclite.so:${PORTSDIR}/devel/pcsc-lite
+LIB_DEPENDS=	libpcsclite.so:devel/pcsc-lite
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Fedict
@@ -27,7 +27,7 @@ DOS2UNIX_FILES=	cardcomm/pkcs11/src/common/datafile.cpp \
 		cardcomm/pkcs11/src/log.h
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-static
+CONFIGURE_ARGS=	--disable-static --with-gtkvers=2
 INSTALL_TARGET=	install-strip
 
 post-patch:

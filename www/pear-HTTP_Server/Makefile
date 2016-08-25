@@ -5,13 +5,13 @@ PORTNAME=	HTTP_Server
 PORTVERSION=	0.4.1
 CATEGORIES=	www devel pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	HTTP server class
 
-BUILD_DEPENDS=	${PEARDIR}/HTTP.php:${PORTSDIR}/www/pear-HTTP \
-		${PEARDIR}/Net/Server.php:${PORTSDIR}/net/pear-Net_Server
-RUN_DEPENDS=	${PEARDIR}/HTTP.php:${PORTSDIR}/www/pear-HTTP \
-		${PEARDIR}/Net/Server.php:${PORTSDIR}/net/pear-Net_Server
+BUILD_DEPENDS=	${PEARDIR}/HTTP.php:www/pear-HTTP \
+		${PEARDIR}/Net/Server.php:net/pear-Net_Server
+RUN_DEPENDS=	${PEARDIR}/HTTP.php:www/pear-HTTP \
+		${PEARDIR}/Net/Server.php:net/pear-Net_Server
 
 USES=	pear
 

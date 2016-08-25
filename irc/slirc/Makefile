@@ -11,6 +11,10 @@ MASTER_SITES=	http://members.core.com/~stabro/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	SLang-based IRC client
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LIB_DEPENDS=	${LIB_DEPENDS_LIBSLANG}
 
 USES=		gmake tar:tgz
@@ -19,7 +23,7 @@ PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SLANG_INCDIR?=	${LOCALBASE}/include
 SLANG_LIBDIR?=	${LOCALBASE}/lib
-LIB_DEPENDS_LIBSLANG?=	libslang.so.2:${PORTSDIR}/devel/libslang2
+LIB_DEPENDS_LIBSLANG?=	libslang.so.2:devel/libslang2
 
 MAKE_ARGS=	SLANG_INCDIR="${SLANG_INCDIR}" \
 		SLANG_LIBDIR="${SLANG_LIBDIR}" \

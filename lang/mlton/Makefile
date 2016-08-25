@@ -12,6 +12,7 @@
 
 PORTNAME=	mlton
 PORTVERSION=	20100608
+PORTREVISION=	1
 CATEGORIES=	lang
 MASTER_SITES=	SF http://www.tbrk.org/distfiles/
 DISTFILES=	${SRC_DIST} ${BOOT_DIST}
@@ -20,9 +21,9 @@ EXTRACT_ONLY=	${SRC_DIST}
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Optimizing Standard ML compiler
 
-LIB_DEPENDS=	libgmp.so:${PORTSDIR}/math/gmp
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
-BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
+LIB_DEPENDS=	libgmp.so:math/gmp
+RUN_DEPENDS=	bash:shells/bash
+BUILD_DEPENDS=	bash:shells/bash
 
 LICENSE_FILE=	doc/license/MLton-LICENSE
 
@@ -31,14 +32,14 @@ SMLNJ_DESC=	Bootstrap with SML/NJ (can take >15 hours)
 MINGW32_DESC=	Add the mingw32 target (requires wine)
 
 MAKE_JOBS_UNSAFE=	yes
-USES=	gmake
+USES=		gmake shebangfix
 USE_GCC=	any
 
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	gsed:${PORTSDIR}/textproc/gsed \
-		htmldoc:${PORTSDIR}/textproc/htmldoc
+BUILD_DEPENDS+=	gsed:textproc/gsed \
+		htmldoc:textproc/htmldoc
 USE_TEX=	latex:build
 .else
 INSTALL_TARGET=	install-no-docs remove-docs
@@ -52,7 +53,7 @@ BROKEN=	${DISTNAME}-${PORTVERSION} does not bootstrap properly with smlnj
 .endif
 
 .if ${PORT_OPTIONS:MSMLNJ}
-BUILD_DEPENDS+=	smlnj>=110.65:${PORTSDIR}/lang/smlnj
+BUILD_DEPENDS+=	smlnj>=110.65:lang/smlnj
 BOOT_DIST=
 MAKE_ENV+=	SMLNJ_DEVEL=yes
 .if ! ${PORT_OPTIONS:MDOCS}
@@ -65,11 +66,11 @@ BOOT_DIST=	${PORTNAME}-${PORTVERSION}-1.${MACHINE_ARCH}-freebsd${OSRELMAJ}.${BOO
 .endif
 
 .if ${PORT_OPTIONS:MMINGW32}
-BUILD_DEPENDS+=	wine:${PORTSDIR}/emulators/wine \
-		mingw32-gcc:${PORTSDIR}/devel/mingw32-gcc \
-		${LOCALBASE}/mingw32/lib/libgmp.a:${PORTSDIR}/math/mingw32-libgmp
-RUN_DEPENDS+=	mingw32-gcc:${PORTSDIR}/devel/mingw32-gcc \
-		${LOCALBASE}/mingw32/lib/libgmp.a:${PORTSDIR}/math/mingw32-libgmp
+BUILD_DEPENDS+=	wine:emulators/wine \
+		mingw32-gcc:devel/mingw32-gcc \
+		${LOCALBASE}/mingw32/lib/libgmp.a:math/mingw32-libgmp
+RUN_DEPENDS+=	mingw32-gcc:devel/mingw32-gcc \
+		${LOCALBASE}/mingw32/lib/libgmp.a:math/mingw32-libgmp
 
 PLIST_SUB+=	MINGW32CROSS=""
 .else
@@ -115,15 +116,15 @@ post-extract:
 .endif
 
 post-patch:
-	${REINPLACE_CMD} 's/CC := gcc -std=gnu99/CC := ${CC} -std=gnu99/g' \
+	@${REINPLACE_CMD} 's/CC := gcc -std=gnu99/CC := ${CC} -std=gnu99/g' \
 		${WRKSRC}/runtime/Makefile \
 		${BOOT_WRKSRC}/lib/mlton/sml/mlnlffi-lib/Makefile
-	${REINPLACE_CMD} 's/gcc -v/${CC} -v/g' ${WRKSRC}/runtime/util/Makefile
-	${REINPLACE_CMD} 's/CC = gcc -std=gnu99/CC = ${CC} -std=gnu99/g' ${WRKSRC}/runtime/util/Makefile
+	@${REINPLACE_CMD} 's/gcc -v/${CC} -v/g' ${WRKSRC}/runtime/util/Makefile
+	@${REINPLACE_CMD} 's/CC = gcc -std=gnu99/CC = ${CC} -std=gnu99/g' ${WRKSRC}/runtime/util/Makefile
 .if ${ARCH} == "i386"
-	${REINPLACE_CMD} 's/ram-slop 0\.7/max-heap 800m/g' ${WRKSRC}/mlton/Makefile
+	@${REINPLACE_CMD} 's/ram-slop 0\.7/max-heap 800m/g' ${WRKSRC}/mlton/Makefile
 .else
-	${REINPLACE_CMD} 's/ram-slop 0\.7/max-heap 2g/g' ${WRKSRC}/mlton/Makefile
+	@${REINPLACE_CMD} 's/ram-slop 0\.7/max-heap 2g/g' ${WRKSRC}/mlton/Makefile
 .endif
 .if ! ${PORT_OPTIONS:MSMLNJ}
 	@${REINPLACE_CMD} -e \
@@ -177,9 +178,13 @@ post-patch:
 		${WRKSRC}/doc/guide/Installation.bak
 
 post-build:
-.if ${PORT_OPTIONS:MMINGW32}
+	@${REINPLACE_CMD} -i '' -e '1s|/usr/bin/perl|${perl_CMD}|' \
+		${WRKSRC}/build/lib/sml/mlrisc-lib/cm/makecm \
+		${WRKSRC}/build/lib/sml/mlrisc-lib/cm/makeallcm \
+		${WRKSRC}/build/lib/sml/mlrisc-lib/Doc/html/mltex2html
+
+post-build-MINGW32-on:
 	@${ECHO} Adding mingw32 target...
 	${WRKSRC}/bin/add-local-cross mingw32 x86 mingw
-.endif
 
 .include <bsd.port.mk>

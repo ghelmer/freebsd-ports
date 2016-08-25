@@ -11,11 +11,15 @@ DISTNAME=	${PORTNAME}.${PORTVERSION}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Oracle Open Source ODBC driver
 
-LIB_DEPENDS=	libodbc.so:${PORTSDIR}/databases/unixODBC
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONFIGURE_ARGS=	--with-unixODBC=${LOCALBASE}
 
-BUILD_DEPENDS=	${ORACLE_HOME}/lib/libclntst8.a:${PORTSDIR}/databases/oracle8-client
-RUN_DEPENDS=	${ORACLE_HOME}/lib/libclntst8.a:${PORTSDIR}/databases/oracle8-client
+BUILD_DEPENDS=	${ORACLE_HOME}/lib/libclntst8.a:databases/oracle8-client
+RUN_DEPENDS=	${ORACLE_HOME}/lib/libclntst8.a:databases/oracle8-client
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 ORACLE_HOME=	${LOCALBASE}/oracle8-client

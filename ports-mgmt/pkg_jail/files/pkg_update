@@ -1,5 +1,5 @@
 #!/bin/sh
-#	$Id: pkg_update,v 1.87 2015/09/26 21:31:24 cvs Exp $
+#	$Id: pkg_update,v 1.89 2016/03/19 10:56:41 cvs Exp $
 #	$FreeBSD$
 #
 # Copyright (c) 2001-2006
@@ -419,7 +419,10 @@ port_uptodate() {
 	fi
 	#
 	for fulldir in `
-	env ${pkg_env} make all-depends-list |
+	(
+		env ${pkg_env} make build-depends-list
+		env ${pkg_env} make package-depends-list | cut -d " " -f2
+	) |
 	sed -f "${depends}"`
 	do
 		dir="${fulldir##${portsdir}/}"
@@ -1489,7 +1492,7 @@ make_version_list() {
 		then
 			pkg_version -v -L = /dev/null | grep -v bsdpan- > "${cache}"
 		else
-			${pkg} version -v -L = /dev/null | grep -v bsdpan- > "${cache}"
+			${pkg} version -v -L = | grep -v bsdpan- > "${cache}"
 		fi
 	fi
 }
@@ -2068,19 +2071,24 @@ update_pkg() {
 		env "PKG_DBDIR=/var/db/pkgng" ${pkg} delete -y -a -f
 	fi
 	/etc/rc.d/ldconfig start
-	( cd "${portsdir}/ports-mgmt/pkg" && env "PKG_DBDIR=/var/db/pkgng" make clean deinstall PREFIX=/usr/pkgng PKGNAMESUFFIX=-pkgng package install )
+	( cd "${portsdir}/ports-mgmt/pkg" && env "FORCE_PKG_REGISTER=yes" "PKG_DBDIR=/var/db/pkgng" make clean deinstall PREFIX=/usr/pkgng PKGNAMESUFFIX=-pkgng package install )
 	if test ! -L /usr/sbin/pkg
 	then
 		mv -f /usr/sbin/pkg /usr/sbin/pkg.orig
 		ln -s "${pkg}" /usr/sbin/pkg
 	fi
-	( cd "${portsdir}/ports-mgmt/pkg" && make clean package install )
+	( cd "${portsdir}/ports-mgmt/pkg" && env "FORCE_PKG_REGISTER=yes" make clean package install )
 	${pkg} delete -y -f pkg
 }
 #
 #
 # update if pkg tools have changed
 check_update_pkg() {
+	defaultdata="${localdir}/data/make-packages.${hostname}"
+	if test ! -f "${defaultdata}"
+	then
+		return
+	fi
 	if test -f "${pkg}"
 	then
 		old=`env "PKG_DBDIR=/var/db/pkgng" ${pkg} query -e '%p == /usr/pkgng' %n-%v`
@@ -2091,6 +2099,19 @@ check_update_pkg() {
 		fi
 	fi
 	update_pkg
+}
+#
+# check if we run in build jail
+check_buildjail() {
+	defaultdata="${localdir}/data/make-packages.${hostname}"
+	if test ! -f "${defaultdata}"
+	then
+		echo "${defaultdata}: no such file, aborted." >&2
+		echo "!!WARNNING!! Such a file should only exist for your build jail" >&2
+		echo "!!WARNNING!! This will uninstall all packages." >&2
+		echo "!!WARNNING!! This will delete your config in /usr/local." >&2
+		exit 64
+	fi
 }
 #
 # inform usage
@@ -2188,16 +2209,8 @@ repo)
 	fi
 	;;
 make-packages)
-	defaultdata="${localdir}/data/make-packages.${hostname}"
-	if test ! -f "${defaultdata}"
-	then
-		echo "${defaultdata}: no such file, make-packages aborted."  >&2
-		echo "!!WARNNING!! Such a file should only exist for your build jail" >&2
-		echo "!!WARNNING!! This will uninstall all packages." >&2
-		echo "!!WARNNING!! This will delete your config in /usr/local." >&2
-		exit 64
-	fi
 	shift
+	check_buildjail
 	validate_make_conf
 	check_update_pkg
 	parse_default "${#}"
@@ -2341,6 +2354,7 @@ clean-packages)
 	pkgall="${packages}/All"
 	pkgold="${packages}/Old"
 	quiet_mkdir "${pkgold}"
+	check_update_pkg
 	#
 	# save pwd
 	(
@@ -2354,6 +2368,7 @@ clean-openssl-packages)
 	pkgall="${packages}/All"
 	pkgold="${packages}/Old"
 	quiet_mkdir "${pkgold}"
+	check_update_pkg
 	#
 	# save pwd
 	(
@@ -2644,15 +2659,11 @@ check-update)
 	/bin/sh "${0}" show-missing-installed
 	next_target "${@}"
 	;;
+diff)
+	diff -u "${portsdir}/ports-mgmt/pkg_jail/files/pkg_update" "${0}"
+	;;
 update-pkg)
-	defaultdata="${localdir}/data/make-packages.${hostname}"
-	if test ! -f "${defaultdata}"
-	then
-		echo "!!WARNNING!! Such a file should only exist for your build jail" >&2
-		echo "!!WARNNING!! This will uninstall all packages." >&2
-		echo "!!WARNNING!! This will delete your config in /usr/local." >&2
-		exit 64
-	fi
+	check_buildjail
 	update_pkg
 	;;
 *)

@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	WebDriver-Tiny
-PORTVERSION=	0.003
+PORTVERSION=	0.004
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:CVLIBRARY
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Selenium 2.0 bindings for Perl
 
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-TEST_DEPENDS=	p5-Test-Deep>=0:${PORTSDIR}/devel/p5-Test-Deep
+TEST_DEPENDS=	p5-Test-Deep>=0:devel/p5-Test-Deep
 
 USES=		perl5
 USE_PERL5=	modbuildtiny

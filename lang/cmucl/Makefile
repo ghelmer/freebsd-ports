@@ -15,7 +15,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-x86-freebsd_6.3-release
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The CMU implementation of Common Lisp
 
-LIB_DEPENDS=	libc.so.6:${PORTSDIR}/misc/compat6x
+LIB_DEPENDS=	libc.so.6:misc/compat6x
 
 # To make available on other archs, has to be cross-compiled (there is a
 # script for this, but a configuration file has to be written).
@@ -29,11 +29,13 @@ PLIST_SUB=	VER=${PORTVERSION}
 OPTIONS_DEFINE=	DOCS
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKDIR}/bin/lisp ${STAGEDIR}${PREFIX}/bin
-	(cd ${WRKDIR} && ${COPYTREE_SHARE} lib ${STAGEDIR}${PREFIX})
-	${INSTALL_MAN} ${WRKDIR}/man/man1/cmucl.1 ${STAGEDIR}${MANPREFIX}/man/man1
-	${INSTALL_MAN} ${WRKDIR}/man/man1/lisp.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/lisp ${STAGEDIR}${PREFIX}/bin
+	cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib
+	${INSTALL_MAN} ${WRKSRC}/man/man1/cmucl.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/lisp.1 ${STAGEDIR}${MANPREFIX}/man/man1
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/doc/cmucl/* ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/cmucl/* ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

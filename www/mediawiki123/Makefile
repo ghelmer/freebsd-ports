@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mediawiki
-PORTVERSION=	1.23.11
+PORTVERSION=	1.23.14
 CATEGORIES=	www
 MASTER_SITES=	http://releases.wikimedia.org/mediawiki/${PORTVERSION:R}/
 PKGNAMESUFFIX=	123
@@ -12,7 +12,7 @@ COMMENT=	Wiki engine used by Wikipedia
 
 LICENSE=	GPLv2
 
-CONFLICTS=	mediawiki119-[0-9]* mediawiki12[45]-[0-9]*
+CONFLICTS=	mediawiki12[456]-[0-9]*
 
 USES=		shebangfix
 SHEBANG_FILES=	maintenance/dev/*.sh \
@@ -20,7 +20,8 @@ SHEBANG_FILES=	maintenance/dev/*.sh \
 SHEBANG_LANG=	hhvm
 hhvm_OLD_CMD=	/usr/bin/hhvm
 hhvm_CMD=	${LOCALBASE}/bin/hhvm # not installed by anything yet
-USE_PHP=	ctype hash iconv mbstring pcre session xml zlib readline dom json
+USE_PHP=	ctype dom hash iconv json mbstring pcre readline \
+		session xml xmlreader zlib
 WANT_PHP_WEB=	yes
 MEDIAWIKIDIR?=	www/mediawiki
 
@@ -38,6 +39,8 @@ APC_DESC=	Use pecl-APC (Mediawiki recommended)
 XCACHE_DESC=	Use xCache (instead of pecl-APC)
 IMAGICK_DESC=	Use ImageMagick
 SOCKETS_DESC=	Use sockets
+
+MYSQL_VARS=	IGNORE_WITH_PHP+=70
 
 .include <bsd.port.options.mk>
 
@@ -59,17 +62,17 @@ USE_PHP+=	ldap
 .endif
 
 .if ${PORT_OPTIONS:MMEMCACHED}
-RUN_DEPENDS=	memcached:${PORTSDIR}/databases/memcached
+RUN_DEPENDS=	memcached:databases/memcached
 .endif
 
 .if ${PORT_OPTIONS:MIMAGICK}
-RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:${PORTSDIR}/graphics/pecl-imagick
+RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/imagick.so:graphics/pecl-imagick
 .endif
 
 .if ${PORT_OPTIONS:MAPC}
-RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/apc.so:${PORTSDIR}/www/pecl-APC
+RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/apc.so:www/pecl-APC
 .elif ${PORT_OPTIONS:MXCACHE}
-RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xcache.so:${PORTSDIR}/www/xcache
+RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/xcache.so:www/xcache
 .endif
 
 .if ${PORT_OPTIONS:MSOCKETS}
@@ -78,6 +81,9 @@ USE_PHP+=	sockets
 
 pre-install:
 	@${FIND} -s -d ${WRKSRC} -not -type d | ${SED} "s?${WRKSRC}?${MEDIAWIKIDIR}?g" >>${PLIST}
+	@${ECHO} "@mode 0777" >> ${PLIST}
+	@${ECHO} "@dir %%WWWDIR%%/images" >> ${PLIST}
+	@${ECHO} "@mode" >> ${PLIST}
 	@${ECHO} @dir ${MEDIAWIKIDIR} >> ${PLIST}
 
 do-install:

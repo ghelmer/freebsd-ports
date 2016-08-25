@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	File-Flock-Retry
-PORTVERSION=	0.60
+PORTVERSION=	0.61
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,8 +13,8 @@ COMMENT=	Yet another flock module
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-TEST_DEPENDS=	p5-File-Slurp-Tiny>=0:${PORTSDIR}/devel/p5-File-Slurp-Tiny \
-		p5-File-chdir>=0:${PORTSDIR}/devel/p5-File-chdir
+TEST_DEPENDS=	p5-File-Slurp-Tiny>=0:devel/p5-File-Slurp-Tiny \
+		p5-File-chdir>=0:devel/p5-File-chdir
 
 NO_ARCH=	yes
 USE_PERL5=	configure

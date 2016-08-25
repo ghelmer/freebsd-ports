@@ -10,12 +10,12 @@ MASTER_SITES=	http://dl.dropbox.com/u/2888238/Knights/
 MAINTAINER=	syncer@gmail.com
 COMMENT=	KDE4 chess interface
 
-RUN_DEPENDS=	${LOCALBASE}/bin/gnuchess:${PORTSDIR}/games/gnuchess
+RUN_DEPENDS=	${LOCALBASE}/bin/gnuchess:games/gnuchess
 
 LICENSE=	GPLv2
 
 USES=		cmake:outsource tar:bzip2
-USE_KDE4=	kdelibs kdeprefix automoc4 workspace libkdegames
+USE_KDE4=	kdelibs automoc4 workspace libkdegames
 USE_QT4=	qmake_build moc_build rcc_build uic_build
 
 OPTIONS_DEFINE=	DOCS NLS

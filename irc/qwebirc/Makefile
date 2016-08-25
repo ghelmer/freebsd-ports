@@ -12,6 +12,10 @@ EXTRACT_SUFX=	.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast, easy to use, free, and open source web IRC client
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	GPLv2
 
 USES=		python twisted:run,conch,mail,names,web,words

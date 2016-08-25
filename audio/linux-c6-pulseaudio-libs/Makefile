@@ -1,10 +1,15 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	pulseaudio-libs
 PORTVERSION=	0.9.21
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio linux
+DISTFILES:=	# hack
+LIB_DISTFILES=	${PORTNAME}-${PORTVERSION}-${RPMVERSION}${EXTRACT_SUFX} \
+		${PORTNAME}-glib2-${PORTVERSION}-${RPMVERSION}${EXTRACT_SUFX}
+
+
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Libraries for PulseAudio clients (Linux CentOS ${LINUX_DIST_VER})
@@ -13,7 +18,7 @@ USE_LINUX=	c6
 USE_LINUX_RPM=	yes
 USE_LINUX_APPS=	dbuslibs libasyncns libsndfile tcp_wrappers-libs xorglibs
 
-RPMVERSION=	17.el6
+RPMVERSION=	24.el6
 USE_LDCONFIG=	yes
 
 DOCSDIR=	${PREFIX}/usr/share/doc/pulseaudio-${PORTVERSION}

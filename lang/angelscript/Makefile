@@ -12,9 +12,11 @@ COMMENT=	AngelCode Scripting Library
 
 LICENSE=	ZLIB
 
+BROKEN_powerpc64=	Does not build
+
 MAKEFILE=	makefile
 MAKE_ARGS=	LOCAL=${STAGEDIR}${PREFIX}
-USES=		gmake zip compiler:c++0x
+USES=		alias gmake zip compiler:c++0x
 USE_LDCONFIG=	yes
 
 WRKSRC=		${WRKDIR}/sdk/angelscript/projects/gnuc/

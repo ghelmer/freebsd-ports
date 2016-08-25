@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	xf86-input-vmmouse
-PORTVERSION=	13.0.0
-PORTREVISION=	5
+PORTVERSION=	13.1.0
 CATEGORIES=	x11-drivers
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X.Org vmmouse input driver
 
-LIB_DEPENDS=	libhal.so:${PORTSDIR}/sysutils/hal
+LIB_DEPENDS=	libhal.so:sysutils/hal
 
 USES=		gmake
 XORG_CAT=	driver

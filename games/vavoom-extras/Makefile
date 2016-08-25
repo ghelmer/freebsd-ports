@@ -18,15 +18,13 @@ COMMENT=	Doom, Doom II, Heretic, Hexen, and Strife source port (extras)
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	vavoom:${PORTSDIR}/games/vavoom
+RUN_DEPENDS=	vavoom:games/vavoom
 
 DATADIR=	${PREFIX}/share/vavoom
 
 USES=		zip
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
-LEGAL_PACKAGE=	package could be up to 655MB; set FORCE_PACKAGE if you really want it
-NO_PACKAGE=	${LEGAL_PACKAGE}
 
 OPTIONS_MULTI=	EXTRA
 OPTIONS_MULTI_EXTRA=	MODELS SOUNDTRACKS TEXTURES

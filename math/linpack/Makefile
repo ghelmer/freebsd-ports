@@ -8,10 +8,10 @@ CATEGORIES=	math
 MASTER_SITES=	NL
 DISTFILES=	${SRCS}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Linear Algebra package
 
-LIB_DEPENDS=	libblas.so:${PORTSDIR}/math/blas
+LIB_DEPENDS=	libblas.so:math/blas
 
 MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
 MAKEFILE=	${FILESDIR}/Makefile.lib

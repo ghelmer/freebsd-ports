@@ -11,6 +11,9 @@ DISTNAME=	${PORTNAME}.${PORTVERSION}
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Game based on "Super Bomberman" for the Super Nintendo
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
 WRKSRC=		${WRKDIR}/${PORTNAME}
 USE_XORG=	x11
 

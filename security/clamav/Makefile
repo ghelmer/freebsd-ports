@@ -2,46 +2,53 @@
 # $FreeBSD$
 
 PORTNAME=	clamav
-PORTVERSION=	0.98.7
+PORTVERSION=	0.99.2
+PORTREVISION=	2
 CATEGORIES=	security
-MASTER_SITES=	SF
+MASTER_SITES=	http://www.clamav.net/downloads/production/
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Command line virus scanner written entirely in C
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libltdl.so:${PORTSDIR}/devel/libltdl \
-		libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS=	libltdl.so:devel/libltdl \
+		libcurl.so:ftp/curl
 
 OPTIONS_DEFINE=	ARC ARJ LHA UNZOO UNRAR LLVM TESTS MILTER LDAP ICONV STDERR \
-		EXPERIMENTAL DOCS IPV6 DMG_XAR
+		EXPERIMENTAL DOCS IPV6 DMG_XAR JSON PCRE
 
 ARC_DESC=		Enable arch archives support
 ARJ_DESC=		Enable arj archives support
 LHA_DESC=		Enable lha archives support
 UNZOO_DESC=		Enable zoo archives support
 UNRAR_DESC=		Enable rar archives support
-LLVM_DESC=		Enable JIT Bytecode compiler (bundled LLVM)
+LLVM_DESC=		Enable JIT Bytecode compiler (req. LLVM)
 TESTS_DESC=		Run compile-time tests (req. python)
 MILTER_DESC=		Compile the milter interface
 STDERR_DESC=		Print logs to stderr instead of stdout
 EXPERIMENTAL_DESC=	Build experimental code
 DMG_XAR_DESC=		Enable DMG and XAR archives support
 
-OPTIONS_DEFAULT=	ARC ARJ LHA UNZOO UNRAR LLVM DOCS IPV6 DMG_XAR
+OPTIONS_DEFAULT=	ARC ARJ LHA UNZOO UNRAR DMG_XAR \
+			JSON PCRE
 
-ARC_RUN_DEPENDS=	arc:${PORTSDIR}/archivers/arc
-ARJ_RUN_DEPENDS=	arj:${PORTSDIR}/archivers/arj
-LHA_RUN_DEPENDS=	lha:${PORTSDIR}/archivers/lha
-UNZOO_RUN_DEPENDS=	unzoo:${PORTSDIR}/archivers/unzoo
+ARC_RUN_DEPENDS=	arc:archivers/arc
+ARJ_RUN_DEPENDS=	arj:archivers/arj
+LHA_RUN_DEPENDS=	lha:archivers/lha
+UNZOO_RUN_DEPENDS=	unzoo:archivers/unzoo
+JSON_LIB_DEPENDS=	libjson-c.so:devel/json-c
+PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 UNRAR_CONFIGURE_ENABLE=	unrar
 MILTER_CONFIGURE_ENABLE=milter
 TESTS_CONFIGURE_ENABLE=	check
-TESTS_BUILD_DEPENDS=	${LOCALBASE}/include/check.h:${PORTSDIR}/devel/libcheck
+JSON_CONFIGURE_WITH=	libjson
+PCRE_CONFIGURE_WITH=	pcre
+TESTS_BUILD_DEPENDS=	${LOCALBASE}/include/check.h:devel/libcheck
 ICONV_CONFIGURE_ON=	--with-iconv
 ICONV_CONFIGURE_OFF=	--without-iconv
 ICONV_USES=		iconv
+LLVM_USES=		compiler:c++11-lib
 EXPERIMENTAL_CONFIGURE_ENABLE=	experimental
 IPV6_CONFIGURE_ENABLE=	ipv6
 DMG_XAR_CONFIGURE_ENABLE=	xml
@@ -49,7 +56,7 @@ DMG_XAR_USE=		GNOME=libxml2
 
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		cpe gmake libtool
+USES=		cpe gmake libtool ncurses
 INSTALL_TARGET=	install-strip
 USE_RC_SUBR=	clamav-clamd clamav-freshclam
 
@@ -129,7 +136,10 @@ GROUPS=	clamav mail
 .endif
 
 .if ${PORT_OPTIONS:MLLVM} && ( ${ARCH} == "i386" || ${ARCH} == "amd64" )
-CONFIGURE_ARGS+=--enable-llvm
+CONFIGURE_ARGS+=--enable-llvm --with-system-llvm=${LOCALBASE}/llvm${LLVMVER}
+BUILD_DEPENDS+=	llvm${LLVMVER}>=0:devel/llvm${LLVMVER}
+# Beware: ClamAV doesn't support LLVM 3.7 or higher yet
+LLVMVER=	36
 . if ${PORT_OPTIONS:MTESTS}
 USES+=		python:build
 . endif
@@ -145,7 +155,7 @@ LDFLAGS+=	-lldap
 . endif
 
 . if !exists(/usr/lib/libmilter.a) || exists(${LOCALBASE}/lib/libmilter.a)
-BUILD_DEPENDS+=	${LOCALBASE}/lib/libmilter.a:${PORTSDIR}/mail/sendmail
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libmilter.a:mail/libmilter
 CONFIGURE_ARGS+=--with-sendmail=${LOCALBASE}/sbin/sendmail
 LDFLAGS+=	-L${LOCALBASE}/lib
 . else

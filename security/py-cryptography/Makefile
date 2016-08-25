@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cryptography
-PORTVERSION=	0.8.2
+PORTVERSION=	1.3.1
 CATEGORIES=	security python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,12 +13,13 @@ COMMENT=	Cryptographic recipes and primitives for Python developers
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=0.8:${PORTSDIR}/devel/py-cffi \
-		${PYTHON_PKGNAMEPREFIX}six>=1.4.1:${PORTSDIR}/devel/py-six \
-		${PYTHON_PKGNAMEPREFIX}asn1>0:${PORTSDIR}/devel/py-asn1
-RUN_DEPENDS:=	${BUILD_DEPENDS}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:${PORTSDIR}/devel/py-pytest \
-		${PYTHON_PKGNAMEPREFIX}iso8601>0:${PORTSDIR}/devel/py-iso8601
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.1.0:devel/py-cffi
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=1.4.1:devel/py-six \
+		${PYTHON_PKGNAMEPREFIX}pyasn1>=0.1.8:devel/py-pyasn1 \
+		${PYTHON_PKGNAMEPREFIX}cffi>=1.1.0:devel/py-cffi \
+		${PYTHON_PKGNAMEPREFIX}idna>=2.0:dns/py-idna
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest \
+		${PYTHON_PKGNAMEPREFIX}iso8601>0:devel/py-iso8601
 
 USES=		python
 USE_OPENSSL=	yes
@@ -29,11 +30,18 @@ LDFLAGS+=	-L${OPENSSLLIB}
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 3400
-BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}enum34>0:${PORTSDIR}/devel/py-enum34
+.if ${PYTHON_REL} < 3300
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}ipaddress>0:net/py-ipaddress
 .endif
 
-regression-test: build
+.if ${PYTHON_REL} < 3400
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}enum34>0:devel/py-enum34
+.endif
+
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/cryptography/hazmat/bindings/*.so
+
+do-test:
 	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.post.mk>

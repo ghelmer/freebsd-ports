@@ -13,7 +13,6 @@ sbin/bacula-sd
 sbin/bcopy
 sbin/bextract
 sbin/bls
-sbin/bpluginfo
 sbin/bregex
 sbin/bscan
 sbin/bsmtp
@@ -50,7 +49,7 @@ sbin/dbcheck
 %%DATADIR%%/make_%%DBTYPE%%_tables
 %%DATADIR%%/mtx-changer
 %%DATADIR%%/mtx-changer.conf
-%%DATADIR%%/query.sql
+@sample(,bacula,640) %%DATADIR%%/query.sql.sample
 %%DATADIR%%/update_bacula_tables
 %%DATADIR%%/update_%%DBTYPE%%_tables
 @owner

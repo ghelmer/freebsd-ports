@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	xboard
-PORTVERSION?=	4.8.0
+PORTVERSION?=	4.9.0
 PORTREVISION?=	0
 PORTEPOCH?=
 CATEGORIES?=	games
@@ -13,7 +13,7 @@ COMMENT?=	X frontend for Crafty, GNUChess, Chess Servers, or e-mail chess
 
 LICENSE?=	GPLv3
 
-LIB_DEPENDS?=	libcairo.so:${PORTSDIR}/graphics/cairo
+LIB_DEPENDS?=	libcairo.so:graphics/cairo
 
 CONFLICTS?=	xboard-devel-[0-9]*
 
@@ -39,14 +39,14 @@ XAW3D_DESC=	Xaw3d GUI toolkit support (not fully supported)
 GTK2_DESC=	GTK+ 2 GUI toolkit support (experimental)
 SOUND_DESC=	Sound Output (optional)
 SOX_DESC=	SoX audio support
-CRAFTY_RUN_DEPENDS+=	crafty:${PORTSDIR}/games/crafty
-FAIRYMAX_RUN_DEPENDS+=	fairymax:${PORTSDIR}/games/fairymax
-GNUCHESS_RUN_DEPENDS+=	gnuchess:${PORTSDIR}/games/gnuchess
-KNIGHTCAP_RUN_DEPENDS+=	KnightCap:${PORTSDIR}/games/KnightCap
-PHALANX_RUN_DEPENDS+=	phalanx:${PORTSDIR}/games/phalanx
-XAW3D_DEPENDS+=	libXaw3d.so:${PORTSDIR}/x11-toolkits/Xaw3d
-SOX_RUN_DEPENDS+=	play:${PORTSDIR}/audio/sox
-ALSA_RUN_DEPENDS+=	aplay:${PORTSDIR}/audio/alsa-utils
+CRAFTY_RUN_DEPENDS+=	crafty:games/crafty
+FAIRYMAX_RUN_DEPENDS+=	fairymax:games/fairymax
+GNUCHESS_RUN_DEPENDS+=	gnuchess:games/gnuchess
+KNIGHTCAP_RUN_DEPENDS+=	KnightCap:games/KnightCap
+PHALANX_RUN_DEPENDS+=	phalanx:games/phalanx
+XAW3D_DEPENDS+=	libXaw3d.so:x11-toolkits/Xaw3d
+SOX_RUN_DEPENDS+=	play:audio/sox
+ALSA_RUN_DEPENDS+=	aplay:audio/alsa-utils
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 ZIPPY_CONFIGURE_ENABLE=	zippy
@@ -134,6 +134,8 @@ post-patch:
 .else
 	@${REINPLACE_CMD} -e "s|\(soundProgram\) .*|\1 \"\"|" ${XBOARDCONF}
 .endif
+	@${REINPLACE_CMD} -e "1s|^|int initialSquareSize;|" \
+		${WRKSRC}/xaw/xboard.c
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/cmail ${STAGEDIR}${PREFIX}/bin/

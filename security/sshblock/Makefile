@@ -11,7 +11,7 @@ EXTRACT_SUFX=	.pl
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Block abusive SSH login attempts
 
-RUN_DEPENDS=	p5-File-Tail>=0:${PORTSDIR}/devel/p5-File-Tail
+RUN_DEPENDS=	p5-File-Tail>=0:devel/p5-File-Tail
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
@@ -21,13 +21,9 @@ USE_RC_SUBR=	sshblock
 SUB_LIST=	PERL=${PERL}
 EXTRACT_CMD=	${CP}
 EXTRACT_BEFORE_ARGS=
-EXTRACT_AFTER_ARGS=	${WRKDIR}
+EXTRACT_AFTER_ARGS=	${WRKSRC}
 SUB_FILES+=	pkg-message
 SHEBANG_FILES=	${WRKSRC}/sshblock-${PORTVERSION}.pl
-
-do-patch:
-	@${REINPLACE_CMD} -e "s@/usr/bin/perl@${PERL}@" \
-		${WRKSRC}/sshblock-${PORTVERSION}.pl
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/sshblock-${PORTVERSION}.pl \

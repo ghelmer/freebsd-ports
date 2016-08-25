@@ -6,6 +6,7 @@ bin/rspamc-%%RSPAMDVERSION%%
 bin/rspamc
 %%REDIRECTOR%%bin/rspamd-redirector
 @sample %%ETCDIR%%/2tld.inc.sample
+@sample %%ETCDIR%%/mime_types.inc.sample
 @sample %%ETCDIR%%/common.conf.sample
 @sample %%ETCDIR%%/composites.conf.sample
 @sample %%ETCDIR%%/dmarc_whitelist.inc.sample
@@ -21,41 +22,53 @@ bin/rspamc
 %%ETCDIR%%/modules.d/hfilter.conf
 %%ETCDIR%%/modules.d/ip_score.conf
 %%ETCDIR%%/modules.d/maillist.conf
+%%ETCDIR%%/modules.d/mime_types.conf
 %%ETCDIR%%/modules.d/multimap.conf
 %%ETCDIR%%/modules.d/once_received.conf
 %%ETCDIR%%/modules.d/phishing.conf
 %%ETCDIR%%/modules.d/ratelimit.conf
 %%ETCDIR%%/modules.d/rbl.conf
 %%ETCDIR%%/modules.d/regexp.conf
+%%ETCDIR%%/modules.d/rspamd_update.conf
 %%ETCDIR%%/modules.d/spf.conf
 %%ETCDIR%%/modules.d/surbl.conf
 %%ETCDIR%%/modules.d/whitelist.conf
 @sample %%ETCDIR%%/options.inc.sample
+%%ETCDIR%%/redirectors.inc
 @sample %%ETCDIR%%/rspamd.conf.sample
 @sample %%ETCDIR%%/spf_dkim_whitelist.inc.sample
 @sample %%ETCDIR%%/statistic.conf.sample
 @sample %%ETCDIR%%/surbl-whitelist.inc.sample
 @sample %%ETCDIR%%/worker-controller.inc.sample
+@sample %%ETCDIR%%/worker-fuzzy.inc
 @sample %%ETCDIR%%/worker-normal.inc.sample
+@sample %%ETCDIR%%/rspamd.newsyslog.conf.sample
+/usr/local/etc/newsyslog.conf.d/rspamd.newsyslog.conf
 lib/rspamd/librspamd-actrie.so
 %%DATADIR%%/effective_tld_names.dat
+%%DATADIR%%/lua/dcc.lua
 %%DATADIR%%/lua/dmarc.lua
 %%DATADIR%%/lua/emails.lua
 %%DATADIR%%/lua/fann_scores.lua
 %%DATADIR%%/lua/forged_recipients.lua
 %%DATADIR%%/lua/fun.lua
+%%DATADIR%%/lua/greylist.lua
 %%DATADIR%%/lua/hfilter.lua
 %%DATADIR%%/lua/ip_score.lua
 %%DATADIR%%/lua/maillist.lua
+%%DATADIR%%/lua/mime_types.lua
 %%DATADIR%%/lua/multimap.lua
 %%DATADIR%%/lua/once_received.lua
 %%DATADIR%%/lua/phishing.lua
 %%DATADIR%%/lua/ratelimit.lua
+%%DATADIR%%/lua/replies.lua
 %%DATADIR%%/lua/rbl.lua
+%%DATADIR%%/lua/rspamd_update.lua
 %%DATADIR%%/lua/settings.lua
 %%DATADIR%%/lua/spamassassin.lua
 %%DATADIR%%/lua/trie.lua
 %%DATADIR%%/lua/whitelist.lua
+%%DATADIR%%/rules/forwarding.lua
 %%DATADIR%%/rules/html.lua
 %%DATADIR%%/rules/http_headers.lua
 %%DATADIR%%/rules/misc.lua
@@ -63,6 +76,7 @@ lib/rspamd/librspamd-actrie.so
 %%DATADIR%%/rules/regexp/fraud.lua
 %%DATADIR%%/rules/regexp/headers.lua
 %%DATADIR%%/rules/regexp/lotto.lua
+%%DATADIR%%/rules/regexp/upstream_spam_filters.lua
 %%DATADIR%%/rules/rspamd.classifiers.lua
 %%DATADIR%%/rules/rspamd.lua
 %%DATADIR%%/www/README.md

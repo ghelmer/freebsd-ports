@@ -2,17 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	liblouis
-PORTVERSION=	2.6.4
+PORTVERSION=	2.6.5
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open-source Braille Translator And Back-translator
 
-LICENSE=	LGPL3 # or any later version
+LICENSE=	LGPL3+
 
-BUILD_DEPENDS=	help2man:${PORTSDIR}/misc/help2man
+BUILD_DEPENDS=	help2man:misc/help2man
 
 USES=		autoreconf gmake libtool pathfix
 USE_GITHUB=	yes

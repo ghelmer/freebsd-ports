@@ -3,7 +3,7 @@
 
 PORTNAME=		mailagent
 PORTVERSION=		3.1.78
-PORTREVISION=		1
+PORTREVISION=		2
 CATEGORIES=		mail
 MASTER_SITES=		http://eron.info/
 
@@ -25,7 +25,7 @@ CONFIGURE_ARGS=		-dres \
 			-Dprefix='${PREFIX}' \
 			-Dmansrc='${STAGEDIR}${PREFIX}/man/man1'
 MAKE_JOBS_UNSAFE=	yes
-MAKE_ENV=	PATH=`dirname ${PERL5}`:${PATH} INSTALL_PREFIX=${STAGEDIR}
+MAKE_ENV=	PATH=`dirname ${PERL}`:${PATH} INSTALL_PREFIX=${STAGEDIR}
 INSTALL_TARGET=	install install.man
 
 SUB_LIST+=	ORGFILE="${ORGFILE}"
@@ -48,7 +48,7 @@ post-patch:
 	    misc/news/newsgate)
 
 TEST_CMD=	'(cd ${WRKSRC}/agent/test; ${SETENV} ${MAKE_ENV} ${MAKE})'
-post-build:
+do-test:
 	@if [ `${ID} -u` = 0 ]; then \
 	  ${CHOWN} -R nobody ${WRKSRC}/agent/test; \
 	  su -m nobody -c ${TEST_CMD}; \

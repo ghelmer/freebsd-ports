@@ -1,11 +1,11 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=		flac
 PORTVERSION=		1.2.1
 PORTREVISION=		3
 CATEGORIES=		audio linux
-MASTER_SITES=		CENTOS_LINUX_UPDATES
+MASTER_SITES=		CENTOS_LINUX
 
 MAINTAINER=		emulation@FreeBSD.org
 COMMENT=		Free lossless audio codec (Linux CentOS ${LINUX_DIST_VER})

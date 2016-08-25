@@ -9,6 +9,10 @@ MASTER_SITES=	# No external mirror available anymore
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Server to print out a smiley with it's explanation
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PLIST_FILES=	bin/smiley man/man1/smiley.1.gz

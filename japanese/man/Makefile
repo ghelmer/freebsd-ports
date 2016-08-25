@@ -18,13 +18,12 @@ COMMENT=	Manual display command for Japanese (EUC)
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${LOCALBASE}/bin/groff:${PORTSDIR}/japanese/groff \
-		jless:${PORTSDIR}/japanese/less
+RUN_DEPENDS=	${LOCALBASE}/bin/groff:japanese/groff \
+		jless:japanese/less
 
 MAKE_ENV=	GZCAT=${GZCAT} GZIP_CMD="${GZIP_CMD}"
-USES+=	shebangfix
+USES=		shebangfix
 SHEBANG_FILES=	catman/catman.perl makewhatis/makewhatis.perl
-SHEBANG_LANG=	perl
 
 post-patch:
 .for file in	apropos/apropos.sh catman/catman.perl \

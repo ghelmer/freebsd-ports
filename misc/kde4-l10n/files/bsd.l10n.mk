@@ -4,7 +4,7 @@ DISTNAME=	${PORTNAME}-${KDE4_L10N}-${PORTVERSION}
 DIST_SUBDIR?=	KDE/${PORTVERSION}/kde-l10n
 
 USE_QT4=	uic_build moc_build qmake_build rcc_build xml
-USE_KDE4=	kdelibs kdeprefix automoc4
+USE_KDE4=	kdelibs automoc4
 USES=		cmake gettext tar:xz
 
 
@@ -66,5 +66,5 @@ OPTIONS_DEFINE+=	HUNSPELL
 HUNSPELL_DESC=		Install hunspell dictionary
 .endif
 
-ASPELL_RUN_DEPENDS+=	${${KDE4_L10N}_aspell_DETECT}:${PORTSDIR}/${${KDE4_L10N}_aspell_PORT}
-HUNSPELL_RUN_DEPENDS+=	${${KDE4_L10N}_hunspell_DETECT}:${PORTSDIR}/${${KDE4_L10N}_hunspell_PORT}
+ASPELL_RUN_DEPENDS+=	${${KDE4_L10N}_aspell_DETECT}:${${KDE4_L10N}_aspell_PORT}
+HUNSPELL_RUN_DEPENDS+=	${${KDE4_L10N}_hunspell_DETECT}:${${KDE4_L10N}_hunspell_PORT}

@@ -1,4 +1,4 @@
-# Created by: Jason Bacon <jwbacon@tds.net>
+# Created by: Jason Bacon <bacon4000@gmail.com>
 # $FreeBSD$
 
 PORTNAME=	plinkseq
@@ -8,10 +8,12 @@ MASTER_SITES=	http://psychgen.u.hpc.mssm.edu/plinkseq_downloads/
 # Default DISTNAME is correct, so leave it alone.
 DISTFILES=	${PORTNAME}-src-${PORTVERSION}.tgz
 
-MAINTAINER=	jwbacon@tds.net
+MAINTAINER=	bacon4000@gmail.com
 COMMENT=	Toolset for working with human genetic variation data
 
 LICENSE=	GPLv2
+
+BROKEN_powerpc64=	Does not build
 
 USES=		libtool gmake
 

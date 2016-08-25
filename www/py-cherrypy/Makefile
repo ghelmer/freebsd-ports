@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cherrypy
-PORTVERSION=	3.2.6
-PORTREVISION=	0
+PORTVERSION=	5.4.0
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +13,8 @@ COMMENT=	Pythonic, object-oriented web development framework
 
 LICENSE=	BSD3CLAUSE
 
-EXAMPLES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah>=2.4.4:${PORTSDIR}/devel/py-cheetah \
-			${PYTHON_PKGNAMEPREFIX}sqlobject>=1.5.1:${PORTSDIR}/databases/py-sqlobject
+EXAMPLES_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cheetah>=2.4.4:devel/py-cheetah \
+			${PYTHON_PKGNAMEPREFIX}sqlobject>=1.5.1:databases/py-sqlobject
 EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
 
 OPTIONS_DEFINE=	EXAMPLES
@@ -30,8 +29,8 @@ USE_PYTHON=	distutils autoplist
 # handle tutorial separately, and remove cherrypy.process from data_files
 # otherwise it confuses build_py.get_outputs() and breaks PYDISTUTILS_AUTOPLIST
 post-patch:
-	@${REINPLACE_CMD} -e '89,96d' -e '68s/"cherrypy.tutorial",//1' \
-		-e '78d' -i.bak ${WRKSRC}/${PYSETUP}
+	@${REINPLACE_CMD} -e '99,106d' -e '78s/"cherrypy.tutorial",//1' \
+		-e '88d' -i.bak ${WRKSRC}/${PYSETUP}
 
 .if ${PORT_OPTIONS:MEXAMPLES}
 post-install:

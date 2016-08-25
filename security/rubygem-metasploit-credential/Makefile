@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	metasploit-credential
-PORTVERSION=	0.14.5
+PORTVERSION=	2.0.3
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 
@@ -11,18 +11,16 @@ COMMENT=	Credential models for metasploit-framework and Metasploit Pro
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-metasploit-concern>=0.4.0:${PORTSDIR}/security/rubygem-metasploit-concern \
-		rubygem-metasploit_data_models>=0.24.0,2:${PORTSDIR}/security/rubygem-metasploit_data_models \
-		rubygem-metasploit-model>=0.29.0:${PORTSDIR}/security/rubygem-metasploit-model \
-		rubygem-pg>=0:${PORTSDIR}/databases/rubygem-pg \
-		rubygem-railties>=3.0.0:${PORTSDIR}/www/rubygem-railties \
-		rubygem-rubyntlm>=0:${PORTSDIR}/net/rubygem-rubyntlm \
-		rubygem-rubyzip>=1.1:${PORTSDIR}/archivers/rubygem-rubyzip
+RUN_DEPENDS=	rubygem-metasploit-concern>=0:security/rubygem-metasploit-concern \
+		rubygem-metasploit_data_models>=0:security/rubygem-metasploit_data_models \
+		rubygem-metasploit-model>=0:security/rubygem-metasploit-model \
+		rubygem-railties4>=0:www/rubygem-railties4 \
+		rubygem-rubyntlm>=0:net/rubygem-rubyntlm \
+		rubygem-rubyzip>=0:archivers/rubygem-rubyzip \
+		rubygem-pg>=0:databases/rubygem-pg
 
+NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
-
-PORTSCOUT=	ignore:1
+USES=		gem
 
 .include <bsd.port.mk>

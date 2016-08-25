@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libraw
-PORTVERSION=	0.17.1
+PORTVERSION=	0.17.2
 CATEGORIES=	graphics
 MASTER_SITES=	http://www.libraw.org/data/
 DISTNAME=	LibRaw-${PORTVERSION}
@@ -40,7 +40,7 @@ DEMOSAIC_PACK_GPL3_CONFIGURE_OFF=	--disable-demosaic-pack-gpl3
 DEMOSAIC_PACK_GPL3_CONFIGURE_ON=	--enable-demosaic-pack-gpl3=../LibRaw-demosaic-pack-GPL3-${PORTVERSION}
 DEMOSAIC_PACK_GPL3_DISTFILES=		LibRaw-demosaic-pack-GPL3-${PORTVERSION}.tar.gz
 LCMS2_CONFIGURE_ENABLE=			lcms
-LCMS2_LIB_DEPENDS=			liblcms2.so:${PORTSDIR}/graphics/lcms2
+LCMS2_LIB_DEPENDS=			liblcms2.so:graphics/lcms2
 OPENMP_CONFIGURE_ENABLE=		openmp
 OPENMP_USE=				GCC=yes
 

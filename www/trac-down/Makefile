@@ -12,10 +12,10 @@ DISTNAME=	TracDown-${PORTVERSION:E}
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Trac plugin for listing released downloads
 
-RUN_DEPENDS=	tracd:${PORTSDIR}/www/trac
+RUN_DEPENDS=	tracd:www/trac
 
 USES=		python:2
 USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
-.include "${.CURDIR}/../../www/trac/plugin.mk"
 .include <bsd.port.mk>

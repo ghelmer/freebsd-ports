@@ -8,10 +8,10 @@ CATEGORIES=	math
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME:C/^m/M/}%20v${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//}
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast factorization of big integers using MPQS and GNFS
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libecm.a:${PORTSDIR}/math/gmp-ecm
+BUILD_DEPENDS=	${LOCALBASE}/lib/libecm.a:math/gmp-ecm
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 USES=		gmake

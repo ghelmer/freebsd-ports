@@ -4,9 +4,9 @@
 PORTNAME=	snortreport
 PORTVERSION=	1.3.4
 CATEGORIES=	security www
-MASTER_SITES=	http://www.symmetrixtech.com/ids/
+MASTER_SITES=	http://symmetrixtech.com/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	vvelox@vvelox.net
 COMMENT=	Add-on module for snort to generate real-time web reports
 
 LICENSE=	GPLv2
@@ -16,25 +16,18 @@ OPTIONS_DEFINE=		BARNYARD JPGRAPH MYSQL PGSQL DOCS
 BARNYARD_DESC=		Depend on Barnyard2
 JPGRAPH_DESC=		Graphical charting
 
-BARNYARD_RUN_DEPENDS=	barnyard2:${PORTSDIR}/security/barnyard2
-JPGRAPH_RUN_DEPENDS=	${LOCALBASE}/share/jpgraph/jpgraph.php:${PORTSDIR}/graphics/jpgraph2
-.include <bsd.port.options.mk>
+BARNYARD_RUN_DEPENDS=	barnyard2:security/barnyard2
+JPGRAPH_RUN_DEPENDS=	${LOCALBASE}/share/jpgraph/jpgraph.php:graphics/jpgraph2
 
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 PORTDOCS=	INSTALL Performance.txt create_indexes.sql
 FTYPES=		css html js php phps png sample
 
-USE_PHP=	yes
-WANT_PHP_WEB=	yes
+USES=		php:web
 
-.if ${PORT_OPTIONS:MMYSQL}
-USE_PHP+=	mysql
-.endif
-
-.if ${PORT_OPTIONS:MPGSQL}
-USE_PHP+=	pgsql
-.endif
+MYSQL_USE=	php=mysql
+PGSQL_USE=	php=pgsql
 
 pre-everything::
 	@${ECHO} ""
@@ -50,10 +43,8 @@ do-install:
 	${INSTALL} -o ${WWWOWN} -g ${WWWGRP} -m 750 -d ${STAGEDIR}${WWWDIR}
 	${INSTALL_DATA} ${FTYPES:S|^|${WRKSRC}/*|} ${STAGEDIR}${WWWDIR}
 
-post-install:
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-.endif
 
 .include <bsd.port.mk>

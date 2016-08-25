@@ -1,7 +1,6 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
-PORTREVISION=	3
 CATEGORIES=	graphics lang
 PKGNAMESUFFIX=	-libpng
 
@@ -19,6 +18,6 @@ OPTIONS_DEFINE=	LIBPNG
 LIBPNG_DESC=	Install png library for manipulating PNG images
 OPTIONS_DEFAULT=	LIBPNG
 
-LIBPNG_LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIBPNG_LIB_DEPENDS=	libpng.so:graphics/png
 
 .include "${MASTERDIR}/Makefile"

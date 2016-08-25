@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME?=	libpurple
-PORTVERSION=	2.10.11
+PORTVERSION=	2.11.0
 PORTREVISION?=	0
 CATEGORIES?=	net-im
 MASTER_SITES=	SF/pidgin/Pidgin/${PORTVERSION}
@@ -41,9 +41,10 @@ PRPL_MODULES=
 
 CPE_VENDOR=	pidgin
 
-OPTIONS_DEFINE=	BONJOUR DBUS GNUTLS NSS SASL GSTREAMER VV IDN PERL TCLTK \
-		SAMETIME SILC GG IRC JABBER MSN MYSPACE NOVELL OSCAR QQ \
-		SIMPLE YAHOO ZEPHYR
+OPTIONS_DEFINE=	BONJOUR DBUS GNUTLS NSS SASL GSTREAMER VV IDN PERL TCLTK
+OPTIONS_GROUP=		PROTOCOLS
+OPTIONS_GROUP_PROTOCOLS=GG SAMETIME SILC IRC JABBER MSN MYSPACE \
+			NOVELL OSCAR QQ SIMPLE YAHOO ZEPHYR
 OPTIONS_DEFAULT=	BONJOUR DBUS NSS GSTREAMER VV IDN GG IRC JABBER MSN \
 			MYSPACE NOVELL OSCAR QQ SIMPLE YAHOO ZEPHYR
 BONJOUR_DESC=	mDNS support
@@ -77,6 +78,8 @@ PLIST_SUB+=	GTKUI="@comment not installed: "
 .endif
 
 .if defined(WITH_CONSOLEUI)
+OPTIONS_DEFINE+=NCURSES
+NCURSES_DESC=	Build with ncurses from ports
 PLIST_SUB+=	CONSOLEUI=""
 .else
 PLIST_SUB+=	CONSOLEUI="@comment not installed: "
@@ -97,13 +100,31 @@ CONFIGURE_ARGS+=	--disable-tcl
 PLIST_SUB+=		TCL:="@comment not installed: "
 .endif
 
-.include <bsd.port.pre.mk>
+.if ${PORT_OPTIONS:MNCURSES}
+USES+=		ncurses:port
+CONFIGURE_ARGS+=--with-ncurses-headers=${LOCALBASE}/include/ncurses/
+.else
+USES+=		ncurses
+.endif
+
+.if ${PORT_OPTIONS:MPERL}
+USES+=			perl5
+CONFIGURE_ARGS+=	--with-perl-lib=site
+PLIST_SUB+=		PERL:=""
+.if !defined(PIDGIN_SLAVE) || defined(WITH_GTKUI)
+PLIST_SUB+=		PERLMAN:=""
+.else
+PLIST_SUB+=		PERLMAN:="@comment not installed: "
+.endif
+.else
+CONFIGURE_ARGS+=	--disable-perl
+PLIST_SUB+=		PERL:="@comment not installed: " \
+			PERLMAN:="@comment not installed: "
+.endif
 
 .if !defined(PIDGIN_SLAVE)
-.if ${HAVE_GNOME:Mgconf2}!="" || exists(${LOCALBASE}/bin/gconftool-2)
 USE_GNOME+=	gconf2
 GCONF_SCHEMAS=	purple.schemas
-.endif
 .endif
 
 #.if defined(WITH_GTKUI) && ${HAVE_GNOME:Mevolutiondataserver}!=""
@@ -122,7 +143,7 @@ CONFIGURE_ARGS+=--disable-gstreamer
 .endif
 
 .if ${PORT_OPTIONS:MVV} && ${PORT_OPTIONS:MGSTREAMER}
-LIB_DEPENDS+=	libgstfarsight-0.10.so:${PORTSDIR}/net-im/farsight2
+LIB_DEPENDS+=	libfarstream-0.2.so:net-im/farstream
 USE_GSTREAMER+=	v4l2
 PLIST_SUB+=	VV=""
 .else
@@ -131,13 +152,13 @@ PLIST_SUB+=	VV="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MIDN}
-LIB_DEPENDS+=	libidn.so:${PORTSDIR}/dns/libidn
+LIB_DEPENDS+=	libidn.so:dns/libidn
 .else
 CONFIGURE_ARGS+=--disable-idn
 .endif
 
 .if ${PORT_OPTIONS:MCAP}
-LIB_DEPENDS+=	libsqlite3.so:${PORTSDIR}/databases/sqlite3
+LIB_DEPENDS+=	libsqlite3.so:databases/sqlite3
 CONFIGURE_ARGS+=--enable-cap
 PLIST_SUB+=	CAP=""
 .else
@@ -146,7 +167,7 @@ PLIST_SUB+=	CAP="@comment not installed: "
 .endif
 
 .if ${PORT_OPTIONS:MGNUTLS}
-LIB_DEPENDS+=		libgnutls.so:${PORTSDIR}/security/gnutls
+LIB_DEPENDS+=		libgnutls.so:security/gnutls
 CONFIGURE_ARGS+=	--enable-gnutls=yes
 PLIST_SUB+=		GNUTLS=""
 .else
@@ -155,7 +176,7 @@ PLIST_SUB+=		GNUTLS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MNSS}
-LIB_DEPENDS+=		libnss3.so:${PORTSDIR}/security/nss
+LIB_DEPENDS+=		libnss3.so:security/nss
 CONFIGURE_ARGS+=	--enable-nss=yes \
 			--with-nspr-includes=${LOCALBASE}/include/nspr \
 			--with-nspr-libs=${LOCALBASE}/lib \
@@ -168,12 +189,12 @@ PLIST_SUB+=		NSS="@comment "
 .endif
 
 .if ${PORT_OPTIONS:MSASL}
-LIB_DEPENDS+=		libsasl2.so:${PORTSDIR}/security/cyrus-sasl2
+LIB_DEPENDS+=		libsasl2.so:security/cyrus-sasl2
 CONFIGURE_ARGS+=	--enable-cyrus-sasl
 .endif
 
 .if ${PORT_OPTIONS:MBONJOUR}
-LIB_DEPENDS+=	libavahi-client.so:${PORTSDIR}/net/avahi-app
+LIB_DEPENDS+=	libavahi-client.so:net/avahi-app
 PLIST_SUB+=	BONJOUR=""
 PRPL_MODULES:=	bonjour,${PRPL_MODULES}
 .else
@@ -182,15 +203,15 @@ PLIST_SUB+=	BONJOUR="@comment not installed: "
 .endif
 
 .if ${PORT_OPTIONS:MGTKSPELL}
-LIB_DEPENDS+=		libgtkspell.so:${PORTSDIR}/textproc/gtkspell
+LIB_DEPENDS+=		libgtkspell.so:textproc/gtkspell
 .else
 CONFIGURE_ARGS+=	--disable-gtkspell
 .endif
 
 .if ${PORT_OPTIONS:MDBUS}
-LIB_DEPENDS+=		libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib
+LIB_DEPENDS+=		libdbus-glib-1.so:devel/dbus-glib
 .if !defined(PIDGIN_SLAVE)
-RUN_DEPENDS+=		${PYTHON_SITELIBDIR}/dbus/__init__.py:${PORTSDIR}/devel/py-dbus
+RUN_DEPENDS+=		${PYTHON_SITELIBDIR}/dbus/__init__.py:devel/py-dbus
 .endif
 CONFIGURE_ARGS+=	--enable-dbus
 PLIST_SUB+=		DBUS=""
@@ -199,23 +220,8 @@ CONFIGURE_ARGS+=	--disable-dbus
 PLIST_SUB+=		DBUS="@comment not installed: "
 .endif
 
-.if ${PORT_OPTIONS:MPERL}
-USES+=			perl5
-CONFIGURE_ARGS+=	--with-perl-lib=site
-PLIST_SUB+=		PERL:=""
-.if !defined(PIDGIN_SLAVE)
-PLIST_SUB+=		PERLMAN:=""
-.else
-PLIST_SUB+=		PERLMAN:="@comment not installed: "
-.endif
-.else
-CONFIGURE_ARGS+=	--disable-perl
-PLIST_SUB+=		PERL:="@comment not installed: " \
-			PERLMAN:="@comment not installed: "
-.endif
-
 .if ${PORT_OPTIONS:MSAMETIME}
-LIB_DEPENDS+=	libmeanwhile.so:${PORTSDIR}/net-im/meanwhile
+LIB_DEPENDS+=	libmeanwhile.so:net-im/meanwhile
 PLIST_SUB+=	SAMETIME=""
 PRPL_MODULES:=	sametime,${PRPL_MODULES}
 .else
@@ -224,7 +230,7 @@ CONFIGURE_ARGS+=--disable-meanwhile
 .endif
 
 .if ${PORT_OPTIONS:MSILC}
-LIB_DEPENDS+=		libsilcclient.so:${PORTSDIR}/devel/silc-toolkit
+LIB_DEPENDS+=		libsilcclient.so:devel/silc-toolkit
 CONFIGURE_ARGS+=	--with-silc-includes=${LOCALBASE}/include/silc \
 			--with-silc-libs=${LOCALBASE}/lib
 PLIST_SUB+=		SILC=""
@@ -322,6 +328,8 @@ post-patch:
 .if defined(PIDGIN_SLAVE)
 	@${FIND} ${BUILD_WRKSRC} -name Makefile.in | ${XARGS} ${REINPLACE_CMD} -e \
 		's|$$(top_builddir)/libpurple/libpurple.la|-lpurple|'
+	@${REINPLACE_CMD} -e 's|gconftool-2|gconftool-disabled|g' \
+		${WRKSRC}/configure
 .endif
 
 .if !defined(PIDGIN_SLAVE) && ${PORT_OPTIONS:MPERL}
@@ -330,4 +338,4 @@ post-stage:
 		${STAGEDIR}${PREFIX}/lib/purple-2/perl/auto/Purple/.packlist
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

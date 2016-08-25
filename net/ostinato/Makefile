@@ -2,19 +2,20 @@
 # $FreeBSD$
 
 PORTNAME=	ostinato
-PORTVERSION=	0.5.1
-PORTREVISION=	2
+PORTVERSION=	0.8
 CATEGORIES=	net security
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	https://bintray.com/artifact/download/pstavirs/ostinato/
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}
 
 MAINTAINER=	zeising@FreeBSD.org
 COMMENT=	Packet crafter/generator and analyzer with friendly GUI
 
-LIB_DEPENDS=	libprotobuf.so:${PORTSDIR}/devel/protobuf
+LICENSE=	GPLv3
+
+LIB_DEPENDS=	libprotobuf.so:devel/protobuf
 
 USES=		qmake
-USE_QT4=	gui moc_build rcc_build uic_build network script \
+USE_QT4=	corelib gui moc_build rcc_build uic_build network script \
 		xml
 
 PLIST_FILES=	bin/drone \

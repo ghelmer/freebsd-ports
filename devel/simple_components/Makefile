@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	simple_components
-PORTVERSION=	4.8
+PORTVERSION=	4.13
 CATEGORIES=	devel
 MASTER_SITES=	http://www.dmitry-kazakov.de/ada/
-DISTNAME=	components_4_8
+DISTNAME=	components_${PORTVERSION:S/./_/}
 
 MAINTAINER=	rodakay@internode.on.net
 COMMENT=	Simple Ada Components
@@ -13,7 +13,7 @@ COMMENT=	Simple Ada Components
 LICENSE=	GPLv2 GMGPL
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	gprbuild:${PORTSDIR}/devel/gprbuild
+BUILD_DEPENDS=	gprbuild:devel/gprbuild
 
 USES=		ada tar:tgz
 DEST=		${STAGEDIR}${PREFIX}

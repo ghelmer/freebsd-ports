@@ -10,9 +10,13 @@ MASTER_SITES=	SAVANNAH
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+ stream directory browser
 
-BUILD_DEPENDS=	rarian-sk-config:${PORTSDIR}/textproc/rarian
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:${PORTSDIR}/misc/gnome-icon-theme
+BROKEN=		Is no longer able to fetch stream information
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	rarian-sk-config:textproc/rarian
+LIB_DEPENDS=	libcurl.so:ftp/curl
+RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/gnome-icon-theme.pc:misc/gnome-icon-theme
 
 USES=		gettext gmake libtool pathfix pkgconfig
 USE_GNOME=	gtk20 gnomeprefix
@@ -43,7 +47,7 @@ PYTHON_CONFIGURE_ENABLE=	python
 .if ${PORT_OPTIONS:MLOCAL}
 PLIST_SUB+=	LOCAL=""
 .if ${PORT_OPTIONS:MLOCAL_METADATA}
-LIB_DEPENDS+=	libtag_c.so:${PORTSDIR}/audio/taglib
+LIB_DEPENDS+=	libtag_c.so:audio/taglib
 .else
 CONFIGURE_ARGS+=	--disable-local-metadata
 .endif

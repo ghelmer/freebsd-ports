@@ -1,7 +1,6 @@
 # Created by: Christopher Key <cjk32@cam.ac.uk>
 # $FreeBSD$
 
-PORTREVISION=	2
 CATEGORIES=	audio lang
 PKGNAMESUFFIX=	-mad
 
@@ -18,6 +17,6 @@ OPTIONS_DEFINE=	LIBMAD
 LIBMAD_DESC=	Install mad library
 OPTIONS_DEFAULT=	LIBMAD
 
-LIBMAD_LIB_DEPENDS=	libmad.so:${PORTSDIR}/audio/libmad
+LIBMAD_LIB_DEPENDS=	libmad.so:audio/libmad
 
 .include "${MASTERDIR}/Makefile"

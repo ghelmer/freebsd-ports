@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jpeg-turbo
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.2
 PORTREVISION?=	0
 CATEGORIES=	graphics
 MASTER_SITES=	SF/lib${PORTNAME}/${PORTVERSION}
@@ -34,7 +34,7 @@ EXAMPLES_MAKE_ARGS_OFF=	dist_example_DATA=""
 .include <bsd.port.options.mk>
 
 .if ${ARCH} == i386 || ${ARCH} == amd64
-BUILD_DEPENDS+=	nasm:${PORTSDIR}/devel/nasm
+BUILD_DEPENDS+=	nasm:devel/nasm
 .endif
 
 .if ${SLAVE_PORT} == yes

@@ -9,19 +9,19 @@ MASTER_SITES=	GOOGLE_CODE
 PROJECTHOST=	php-snappy
 DISTNAME=	${PROJECTHOST}-${PORTVERSION}
 
-MAINTAINER=	melvyn@magemana.nl
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP extension for the snappy compression algorithm
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS+=	libsnappy.so:${PORTSDIR}/archivers/snappy
+LIB_DEPENDS+=	libsnappy.so:archivers/snappy
 CONFIGURE_ARGS+=	--with-snappy-includedir=${LOCALBASE}/include
 
-USE_PHP=	yes
-USE_PHPEXT=	yes
+USES=		php:ext
 PHP_MODNAME=	snappy
 WRKSRC=		${WRKDIR}/${PROJECTHOST}
 OPTIONS_DEFINE=	TEST
+IGNORE_WITH_PHP=	70
 
 post-build-TEST-on:
 	@(cd ${WRKSRC} && ${MAKE} ${MAKE_ENV} NO_INTERACTION=yes ${.TARGET})

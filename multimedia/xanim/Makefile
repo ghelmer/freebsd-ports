@@ -5,8 +5,8 @@ PORTNAME=	xanim
 PORTVERSION=	2.92.0
 PORTREVISION=	2
 CATEGORIES=	multimedia graphics
-MASTER_SITES=	ftp://ftp.nstu.ru/pub/mirrors/xanim.va.pubnix.com/ \
-		LOCAL/dinoex \
+MASTER_SITES=	ftp://ftp.nstu.ru/pub/mirrors/xanim.va.pubnix.com/:main \
+		LOCAL/dinoex:main,DEFAULT \
 		ftp://ftp.nstu.ru/pub/mirrors/xanim.va.pubnix.com/dlls/
 DISTNAME=	xanim2920
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:main ${EXTRA_FILES}
@@ -18,7 +18,7 @@ NO_CDROM=	Must be redistributed without fee
 
 # clang's cpp destroys whitespace, particularly hard tabs in makefiles,
 # which is fatal for imake.
-USES=		imake
+USES=		alias imake
 USE_GCC=	any
 USE_XORG=	xext xt sm ice xext x11
 MAKE_ARGS+=	-j 2 # safe and helps even the single-CPU machines

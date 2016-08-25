@@ -10,6 +10,10 @@ DISTFILES=	mup${PORTVERSION:S/.//}src.tar.gz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Shareware program for typesetting music
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 PLIST_FILES=	bin/mkmupfnt bin/mup bin/mupdisp bin/mupprnt \
 		man/man1/mup.1.gz man/man1/mkmupfnt.1.gz \
 		man/man1/mupdisp.1.gz man/man1/mupprnt.1.gz

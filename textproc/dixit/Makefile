@@ -6,7 +6,7 @@ PORTVERSION=	11.11
 DISTVERSIONSUFFIX=	.${QT_VER}
 PORTREVISION=	1
 CATEGORIES=	textproc
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION} \
+MASTER_SITES=	SF \
 		SF/${PORTNAME}/${PORTNAME}_qdb:db \
 		LOCAL/bdrewery/${PORTNAME}/ \
 		LOCAL/bdrewery/${PORTNAME}:db
@@ -17,7 +17,7 @@ EXTRACT_ONLY=	${DISTNAME}.tgz
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Romanian dictionaries databases and query application
 
-LICENSE=	GPLv3 # (or later)
+LICENSE=	GPLv3+
 
 USES=		qmake
 USE_QT4=	corelib gui network moc_build rcc_build

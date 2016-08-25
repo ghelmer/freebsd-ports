@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	grep
-PORTVERSION=	2.21
-PORTREVISION=	1
+PORTVERSION=	2.25
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	gnu
@@ -11,7 +10,7 @@ PKGNAMEPREFIX=	gnu
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	GNU grep
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	bsd-grep-[0-9]*
@@ -23,7 +22,7 @@ INFO=		grep
 CPE_VENDOR=	gnu
 
 OPTIONS_DEFINE=		ICONV NLS PCRE
-OPTIONS_DEFAULT=	ICONV NLS PCRE
+OPTIONS_DEFAULT=	ICONV PCRE
 OPTIONS_SUB=		yes
 
 ICONV_CONFIGURE_USES=	iconv
@@ -35,7 +34,7 @@ NLS_CONFIGURE_ENABLE=	nls
 NLS_CONFIGURE_ON=	--with-libintl-prefix=${LOCALBASE}
 NLS_CONFIGURE_OFF=	--without-libintl-prefix
 
-PCRE_LIB_DEPENDS=	libpcre.so:${PORTSDIR}/devel/pcre
+PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
 PCRE_CONFIGURE_ENABLE=	perl-regexp
 PCRE_CPPFLAGS=		-I${LOCALBASE}/include
 PCRE_LDFLAGS=		-L${LOCALBASE}/lib
@@ -44,6 +43,7 @@ PCRE_CONFIGURE_OFF=	--disable-perl-regexp
 .include <bsd.port.options.mk>
 
 post-patch:
+	@${REINPLACE_CMD} 's:@grep@:${LOCALBASE}/bin/&:' ${WRKSRC}/src/egrep.sh
 .if empty(PORT_OPTIONS:MNLS)
 	@${REINPLACE_CMD} '/install-exec-local:/s/install-exec-localcharset//' \
 		${WRKSRC}/lib/Makefile.in

@@ -10,13 +10,13 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Redis Store for Rack
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
-RUN_DEPENDS=	rubygem-rack16>=1.5:${PORTSDIR}/www/rubygem-rack16 \
-		rubygem-redis-store>=1.1.0:${PORTSDIR}/devel/rubygem-redis-store
+RUN_DEPENDS=	rubygem-rack16>=1.5:www/rubygem-rack16 \
+		rubygem-redis-store>=1.1.0:devel/rubygem-redis-store
 
 NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=	yes
+USES=		gem
 
 .include <bsd.port.mk>

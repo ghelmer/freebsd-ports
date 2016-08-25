@@ -4,12 +4,12 @@ PORTNAME=	unix-connect
 PORTVERSION=	0.95
 CATEGORIES=	german comms news mail
 MASTER_SITES=	ftp://ftp.dinoex.org/pub/unix-connect/ \
-		SF		
+		SF
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Unix-Connect - mail+news-gateway for Zconnect (tm)
 
-BUILD_DEPENDS=	lrz:${PORTSDIR}/comms/lrzsz
+BUILD_DEPENDS=	lrz:comms/lrzsz
 
 LICENSE_COMB=	multi
 LICENSE=	GPLv2 BSD3CLAUSE

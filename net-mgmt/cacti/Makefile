@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	cacti
-PORTVERSION=	0.8.8f${PATCHLEVEL}
-PORTREVISION=	1
+PORTVERSION=	0.8.8h${PATCHLEVEL}
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	http://www.cacti.net/downloads/ \
 		ftp://ftpmirror.uk/freebsd-ports/cacti/
@@ -13,11 +12,10 @@ COMMENT=	Web-driven graphing interface for RRDTool
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rrdtool:${PORTSDIR}/databases/rrdtool
+RUN_DEPENDS=	rrdtool:databases/rrdtool
 
-USES=		cpe shebangfix
-USE_MYSQL=	yes
-USE_PHP=	mysql pcre session sockets snmp xml
+USES=		cpe mysql shebangfix
+USE_PHP=	mysqli pcre session sockets snmp xml
 WANT_PHP_WEB=	yes
 NO_ARCH=	yes
 NO_BUILD=	yes

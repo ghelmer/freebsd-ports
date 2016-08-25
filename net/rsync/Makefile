@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	rsync
-PORTVERSION=	3.1.1
-PORTREVISION=	3
+PORTVERSION=	3.1.2
 CATEGORIES=	net ipv6
+PORTREVISION=	5
 MASTER_SITES=	http://rsync.samba.org/ftp/rsync/ \
 		ftp://ftp.samba.org/pub/rsync/ \
 		ftp://ftp.sunet.se/pub/unix/admin/rsync/  \
@@ -50,7 +50,7 @@ PTS_DESC=	Functionality provided by third party patches
 TIMELIMIT_DESC=	Time limit patch
 RENAMED_DESC=	Add support for renamed file detection
 FLAGS_DESC=	File system flags support patch, adds --fileflags
-ATIMES_DESC=	Preserve access times, adds --atimes
+ATIMES_DESC=	Preserve access times, adds --atimes (BROKEN)
 ACL_DESC=	Add backward-compatibility for the --acls option
 
 # define default options
@@ -62,17 +62,19 @@ ATIMES_EXTRA_PATCHES=		${WRKSRC}/patches/atimes.diff
 FLAGS_EXTRA_PATCHES=		${WRKSRC}/patches/fileflags.diff \
 				${FILESDIR}/extrapatch-main.c
 RENAMED_EXTRA_PATCHES=		${WRKSRC}/patches/detect-renamed.diff
-ACL_EXTRA_PATCHES=		${WRKSRC}/patches/acls.diff
+ACL_EXTRA_PATCHES=		${WRKSRC}/patches/acls.diff \
+				${FILESDIR}/extrapatch-acl
 
-ICONV_USES=	iconv
+ICONV_USES=	iconv:translit
 ICONV_CPPFLAGS=	-I${LOCALBASE}/include
 ICONV_LDFLAGS=	-L${LOCALBASE}/lib
 ICONV_CONFIGURE_ENABLE=	iconv iconv-open
 
-POPT_PORT_LIB_DEPENDS=	libpopt.so:${PORTSDIR}/devel/popt
+POPT_PORT_LIB_DEPENDS=	libpopt.so:devel/popt
 POPT_PORT_CPPFLAGS=	-I${LOCALBASE}/include
 POPT_PORT_LDFLAGS=	-L${LOCALBASE}/lib
-POPT_CONFIGURE_WITH=	included-popt
+
+POPT_PORT_CONFIGURE_OFF=	--with-included-popt
 
 SSH_CONFIGURE_ON=	--with-rsh=ssh
 SSH_CONFIGURE_OFF=	--with-rsh=rsh
@@ -85,7 +87,7 @@ DISTFILES+=	${PORTNAME}-patches-${PORTVERSION}${EXTRACT_SUFX}
 
 .include <bsd.port.pre.mk>
 
-.if empty(ICONV_LIB)
+.if empty(ICONV_LIB) || ! ${PORT_OPTIONS:MICONV}
 CONFIGURE_ARGS+=ac_cv_search_libiconv_open=no
 .endif
 

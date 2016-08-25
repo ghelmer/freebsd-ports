@@ -29,6 +29,7 @@ TEST_DESC=	Internal test program
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 USE_LDCONFIG=	yes
 USES=		autoreconf gmake libtool pathfix tar:bzip2
 
@@ -45,7 +46,7 @@ AUTOMATED_CONFIGURE_ENABLE=	automated
 BASIC_CONFIGURE_ENABLE=	basic
 CONSOLE_CONFIGURE_ENABLE=	console
 CURSES_CONFIGURE_ENABLE=curses
-CURSES_LDFLAGS=		-lcurses
+CURSES_LDFLAGS=		-lncurses
 CURSES_USES=		ncurses
 DEBUG_CONFIGURE_ENABLE=	debug
 EXAMPLES_CONFIGURE_ENABLE=	examples
@@ -57,8 +58,5 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/@PACKAGE@/Examples/|/examples/@PACKAGE@/|g' ${WRKSRC}/Examples/*/Makefile.am
 	@${REINPLACE_CMD} -e 's|CUnit-[A-Z][a-z]*\.[a-z]*|${DATADIR}/&|' ${WRKSRC}/CUnit/Sources/Automated/Automated.c
 	@${REINPLACE_CMD} -e '/fprintf/ s|Memory-Dump\.[a-z]*|${DATADIR}/&|' ${WRKSRC}/CUnit/Sources/Framework/MyMem.c
-
-regression-test test: build
-	cd ${WRKSRC}/ && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} check
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	braincurses
 PORTVERSION=	1.0.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
 MAINTAINER=	mich@FreeBSD.org
@@ -10,9 +11,10 @@ COMMENT=	Clone of the Mastermind game
 
 LICENSE=	GPLv2
 
+USES=		ncurses
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	bderrly
-GH_TAGNAME=	8f603c1
 
 LDFLAGS+=	-L${LOCALBASE}/lib -lncurses
 

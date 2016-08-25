@@ -2,48 +2,47 @@
 # $FreeBSD$
 
 PORTNAME=	gammu
-PORTVERSION=	1.33.0
-PORTREVISION=	1
+PORTVERSION=	1.37.3
 CATEGORIES=	comms
-MASTER_SITES=	http://dl.cihar.com/gammu/releases/ \
-		http://dl.cihar.com.nyud.net/gammu/releases/
+MASTER_SITES=	http://dl.cihar.com/gammu/releases/
 
-MAINTAINER=	bsam@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU All Mobile Management Utilities
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl
-RUN_DEPENDS=	cdialog:${PORTSDIR}/devel/cdialog
+LIB_DEPENDS=	libcurl.so:ftp/curl
+#RUN_DEPENDS=	cdialog:devel/cdialog
 
 CONFLICTS=	gammu-devel-[1-9]* gammu-python-[1-9]*
 
-OPTIONS_DEFINE=	BASH
+CMAKE_ARGS=	-DINSTALL_LIBDATA_DIR:PATH=${PREFIX}/libdata
 
-CMAKE_ARGS+=	-DINSTALL_LIBDATA_DIR=${LOCALBASE}/libdata
-
-USES=		cmake gettext pkgconfig python shebangfix
+USES=		cmake:outsource gettext iconv pkgconfig shebangfix tar:xz
 SHEBANG_FILES=	utils/jadmaker utils/gammu-config
 bash_CMD=	/bin/sh
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
+PLIST_SUB+=	VERSION=${PORTVERSION}
 
 PORTDOCS=	*
 
-post-patch:
-	@${REINPLACE_CMD} -i '' -e 's:/etc/bash_completion.d:${PREFIX}/etc/bash_completion.d:' \
-		${WRKSRC}/contrib/CMakeLists.txt
+OPTIONS_DEFINE=		BASH DBI DOCS PGSQL MYSQL ODBC
+OPTIONS_DEFAULT=	BASH
+OPTIONS_SUB=		yes
 
-post-install:
-	(cd ${STAGEDIR}${PREFIX} && \
-	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;} && \
-	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		-d ${PYTHONPREFIX_SITELIBDIR} -f ${PYTHONPREFIX_SITELIBDIR:S;${PREFIX}/;;})
-
-BASH_BUILD_DEPENDS=	bash:${PORTSDIR}/shells/bash
+BASH_BUILD_DEPENDS=	bash:shells/bash
 BASH_RUN_DEPENDS=	${BASH_BUILD_DEPENDS}
-BASH_PLIST_FILES=	etc/bash_completion.d/gammu
-BASH_EXTRA_PATCHES_OFF=	${FILESDIR}/extra-patch-contrib_CMakeLists.txt
+BASH_CMAKE_OFF=		-DINSTALL_BASH_COMPLETION:BOOL=OFF
+DBI_DESC=		Database support via LibDBI
+DBI_LIB_DEPENDS=	libdbi.so:databases/libdbi
+DBI_CMAKE_OFF=		-DWITH_LibDBI:BOOL=OFF
+PGSQL_USES=		pgsql
+PGSQL_CMAKE_OFF=	-DWITH_Postgres:BOOL=OFF
+MYSQL_USE=		mysql=yes
+MYSQL_CMAKE_OFF=	-DWITH_MySQL:BOOL=OFF
+ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
+ODBC_CMAKE_OFF=		-DWITH_ODBC:BOOL=OFF
 
 .include <bsd.port.mk>

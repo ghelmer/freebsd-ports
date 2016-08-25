@@ -10,8 +10,12 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 MAINTAINER=	stephen@FreeBSD.org
 COMMENT=	Computer algebra system
 
-BUILD_DEPENDS=	sbcl:${PORTSDIR}/lang/sbcl \
-		noweb:${PORTSDIR}/devel/noweb
+BROKEN=		bootsys goes in an infinite loop during build
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
+BUILD_DEPENDS=	sbcl:lang/sbcl \
+		noweb:devel/noweb
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-lisp=sbcl

@@ -12,6 +12,10 @@ EXTRACT_SUFX=	.tar.Z
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Motorola 6811 simulator
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 NO_WRKSUBDIR=	yes
 
 ALL_TARGET=	sim

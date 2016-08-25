@@ -14,7 +14,7 @@ COMMENT=	Indexing search engine for use on small websites
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/ax_check_gnu_make.m4:${PORTSDIR}/devel/autoconf-archive
+BUILD_DEPENDS=	${LOCALBASE}/share/aclocal/ax_check_gnu_make.m4:devel/autoconf-archive
 
 .if defined(WITH_OPENSSL)
 USE_OPENSSL=	yes
@@ -32,6 +32,8 @@ CONFIGURE_ARGS+=	--prefix=${PREFIX}/${PORTNAME}
 MAKEFILE=	GNUmakefile
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+MAKE_JOBS_UNSAFE=	yes
 
 pre-configure:
 	cd ${WRKSRC}; ${SH} autogen.sh

@@ -5,8 +5,8 @@
      by following mysql commands (for MySQL 4.0 or later):
 
      GRANT SELECT, INSERT, UPDATE, DELETE, INDEX, ALTER, CREATE, LOCK TABLES,
-           CREATE TEMPORARY TABLES, DROP, REFERENCES 
-	   ON <database>.* TO <dbuser>@<host> 
+           CREATE TEMPORARY TABLES, DROP, REFERENCES
+	   ON <database>.* TO <dbuser>@<host>
 	   IDENTIFIED BY '<password>';
      FLUSH PRIVILEGES;
 
@@ -25,9 +25,14 @@
 
 For upgrades:
   0. Back up your data.
-  1. Run "./checksetup.pl" inside %%WWWDIR%%.  You may need to
+
+  1. Run the command inside %%WWWDIR%%
+      find . -mindepth 2 -name .htaccess -exec rm -f {} \;
+
+  2. Run "./checksetup.pl" inside %%WWWDIR%%.  You may need to
      run it several times.
-  2. Restart your Web server, especially if you're using mod_perl: this
+
+  3. Restart your Web server, especially if you're using mod_perl: this
      will save you from a number of troubles.
 
 ==========================================================================

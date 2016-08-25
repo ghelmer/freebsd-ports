@@ -12,8 +12,8 @@ EXTRACT_SUFX=
 MAINTAINER=	holgerrepp@googlemail.com
 COMMENT=	Nagios plugin to check tftp servers
 
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash \
-		${LOCALBASE}/bin/tftp:${PORTSDIR}/ftp/tftp-hpa
+RUN_DEPENDS=	bash:shells/bash \
+		${LOCALBASE}/bin/tftp:ftp/tftp-hpa
 
 PLIST_FILES=	libexec/nagios/check_tftp
 
@@ -25,12 +25,12 @@ post-patch:
 		${WRKSRC}/check_tftp
 
 do-extract:
-	@${MKDIR} ${WRKDIR}
-	@${CP} ${DISTDIR}/${PORTNAME} ${WRKDIR}
+	@${MKDIR} ${WRKSRC}
+	@${CP} ${DISTDIR}/${PORTNAME} ${WRKSRC}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/libexec/nagios
-	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} \
+	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} \
 		${STAGEDIR}${PREFIX}/libexec/nagios
 
 .include <bsd.port.mk>

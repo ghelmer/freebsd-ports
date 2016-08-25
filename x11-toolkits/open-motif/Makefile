@@ -1,28 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	open-motif
-PORTVERSION=	2.3.4
-PORTREVISION=	2
+PORTVERSION=	2.3.6
 CATEGORIES=	x11-toolkits
 # MASTER_SITES=	SF/${PORTNAME}/Motif%202.3.4%20Source%20Code/
-MASTER_SITES=	SF/motif/Motif%202.3.4%20Source%20Code/
-DISTNAME=	motif-${PORTVERSION}-src
+MASTER_SITES=	SF/motif/Motif%202.3.6%20Source%20Code/
+DISTNAME=	motif-${PORTVERSION}
 
-MAINTAINER=	m.tsatsenko@gmail.com
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Motif X11 Toolkit (industry standard GUI (IEEE 1295))
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png
 
 MAKE_JOBS_UNSAFE=	yes
 CONFLICTS=	lesstif-[0-9]*
-# WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-WRKSRC=		${WRKDIR}/motif-${PORTVERSION}
 
-USES=		autoreconf gmake iconv jpeg libtool:keepla pkgconfig tar:tgz
-USE_XORG=	x11 xaw xbitmaps xext xft xt
+USES=		autoreconf gmake iconv jpeg libtool:keepla pkgconfig
+USE_XORG=	x11 xaw xbitmaps xext xft xt xmu xrender sm ice
+LIB_DEPENDS=	libXp.so:x11/libXp \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 MAKE_ENV=	LANG=C

@@ -10,10 +10,10 @@ DISTFILES=	${PORTNAME}${PORTVERSION}.tar.gz patch.tar.gz
 DIST_SUBDIR=	arpack
 EXTRACT_ONLY=	${PORTNAME}${PORTVERSION}.tar.gz
 
-MAINTAINER=	bf@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Argand Library: large eigenvalue subroutines (serial version)
 
-BUILD_DEPENDS=	tradcpp:${PORTSDIR}/devel/tradcpp
+BUILD_DEPENDS=	tradcpp:devel/tradcpp
 
 CONFLICTS=	arpack-ng-[0-9]*
 CPP=		tradcpp
@@ -82,10 +82,10 @@ WITH_BLAS?=	reference
 .endif
 
 .if ${WITH_BLAS} == atlas
-LIB_DEPENDS+=		libatlas.so:${PORTSDIR}/math/atlas
+LIB_DEPENDS+=		libatlas.so:math/atlas
 BLAS?=			-lf77blas
 .else
-LIB_DEPENDS+=		libblas.so:${PORTSDIR}/math/blas
+LIB_DEPENDS+=		libblas.so:math/blas
 BLAS?=			-lblas
 .endif
 

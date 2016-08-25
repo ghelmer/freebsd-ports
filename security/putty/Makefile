@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	putty
-PORTVERSION=	0.66
+PORTVERSION=	0.67
 CATEGORIES=	security ipv6
 MASTER_SITES=	http://the.earth.li/~sgtatham/putty/${PORTVERSION}/ \
 		ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/
@@ -41,11 +41,10 @@ MAKE_ARGS+=	PUTTY_WITH_GTK=yes GTK_CONFIG="pkg-config gtk+-2.0 x11 --cflags"
 MAKE_ARGS+=	GTK_CONFIG=:
 .endif
 
-.include <bsd.port.pre.mk>
-
 .if ${PORT_OPTIONS:MGSSAPI}
 _COMPAT=		-DSTATIC_GSSAPI
-USES+=		gssapi:mit
+USES+=		gssapi:base,flags
+MAKE_ARGS+=	KRB5CONFIG=$(KRB5CONFIG)
 .else
 _COMPAT=		-DNO_GSSAPI
 .endif
@@ -71,4 +70,4 @@ post-patch:
 			      s,make,${MAKE_CMD},'\
 		${WRKSRC}/${MAKEFILE}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	qjail
-PORTVERSION=	4.1
+PORTVERSION=	4.8
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -17,13 +17,13 @@ LICENSE_TEXT=	As per the international "Berne Convention" this work is \
 		obtained from the author <qjail1@a1poweruser.com>. \
 		This work is provided 'AS IS' and you use it at your own risk. \
 		Redistribution and use is permitted providing this license \
-	       	notice is retained.
+		notice is retained.
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		tar:bzip2
 NO_BUILD=	yes
 
-CONFLICTS_INSTALL=	qjail-2.* qjail-3.0 qjail-3.1
+CONFLICTS_INSTALL=	qjail-2.* qjail-3.*
 
 do-install:
 .for i in qjail qjail.vnet.be qjail.vnet.ng

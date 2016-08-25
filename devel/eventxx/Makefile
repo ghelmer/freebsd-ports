@@ -11,9 +11,7 @@ MASTER_SITES=	http://proj.llucax.com.ar/home/eventxx/releases/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	C++ wrapper for libevent
 
-LIB_DEPENDS=	libevent.so:${PORTSDIR}/devel/libevent2
-
-WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
+LIB_DEPENDS=	libevent.so:devel/libevent2
 
 NO_BUILD=	yes
 

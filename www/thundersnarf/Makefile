@@ -20,6 +20,7 @@ PGSQL_DESC=	Install PostgreSQL (report data storing)
 USES=		tar:bzip2
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 PLIST_SUB=	OWNER=${WWWOWN} GROUP=${WWWGRP}
 
@@ -35,13 +36,13 @@ WANT_PGSQL=	server
 .endif
 
 .if ${PORT_OPTIONS:MPHP}
-USE_PHP+=	curl pcre bcmath pdo mcrypt mhash session pgsql spl dom xmlrpc ctype openssl simplexml soap json
+USE_PHP+=	curl pcre bcmath pdo mcrypt hash session pgsql spl dom xmlrpc ctype openssl simplexml soap json
 .  if ${PORT_OPTIONS:MPGSQL}
 USE_PHP+=	pdo_pgsql pgsql
 .  endif
 .endif
 
-LIB_DEPENDS+=	libcurl.so:${PORTSDIR}/ftp/curl
+LIB_DEPENDS+=	libcurl.so:ftp/curl
 
 SUB_FILES=	pkg-message
 
@@ -55,9 +56,8 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/protected/data/bin/thundersnarf* \
 		${STAGEDIR}${PREFIX}/bin/
 
-.if ${PORT_OPTIONS:MDOCS}
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/README.pt_BR
-.endif
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}/README.pt_BR
 
 .include <bsd.port.mk>

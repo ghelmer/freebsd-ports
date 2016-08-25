@@ -12,12 +12,15 @@ COMMENT=	Google protobuf Python Client Library
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-apputils>=0:${PORTSDIR}/devel/py-google-apputils \
-		protoc:${PORTSDIR}/devel/protobuf
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-apputils>=0:${PORTSDIR}/devel/py-google-apputils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-apputils>=0:devel/py-google-apputils \
+		protoc:devel/protobuf
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-apputils>=0:devel/py-google-apputils
 
+DO_MAKE_TEST=	${PYTHON_CMD} ${PYDISTUTILS_SETUP}
+NO_ARCH=	yes
+TEST_TARGET=	test
 USE_PYTHON=	autoplist distutils
-USES=		python tar:bzip2
+USES=		python
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/python
 
 GH_ACCOUNT=	google
@@ -25,8 +28,5 @@ USE_GITHUB=	yes
 
 post-patch:
 	@${MKDIR} ${WRKSRC}/google/protobuf/compiler/
-
-regression-test test: build
-	cd ${WRKSRC}/ && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

@@ -2,12 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	llvm
-PORTVERSION=	3.8.d20150818
+PORTVERSION=	${LLVM_MAJOR}.d${SNAPDATE}
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
+
+BROKEN_powerpc64=	Does not build
 
 LLVM_SUFFIX=	-devel
 LLVM_PREFIX=	${PREFIX}/llvm${LLVM_SUFFIX}
@@ -21,47 +23,52 @@ SUB_FILES=	llvm-wrapper.sh
 SUB_LIST=	LLVM_PREFIX="${LLVM_PREFIX}" LLVM_SUFFIX="${LLVM_SUFFIX}"
 
 CMAKE_INSTALL_PREFIX=	${LLVM_PREFIX}
-CMAKE_ARGS=	-DBUILD_SHARED_LIBS=ON
+CMAKE_ARGS=
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	llvm-mirror
 GH_TAGNAME=	${LLVM_COMMIT}
 
-LLVM_COMMIT=	27aa81cf903ceab79619111243e0e228e46c6747
-CLANG_COMMIT=	f27472a5facd07e48e9cd6d1f8d1d793f866b05f
-COMPILER_RT_COMMIT=	5708a2383ea388510464a12c9c708b224d492e74
-LLD_COMMIT=	d8afe0be205f34c2576df36ee71d9ffadbdace22
-LLDB_COMMIT=	7da1acdcab24b6fbcd3aa6c5e28b30e0226f2a96
-OPENMP_COMMIT=	fc660a2d58e17f60c2904b4be9eb5686110d6d72
+.include "Makefile.snapshot"
 
-OPTIONS_DEFINE=	CLANG COMPILER_RT DOCS GOLD LIT LLD LLDB
-OPTIONS_DEFINE_amd64=	OPENMP
-OPTIONS_DEFAULT=	CLANG GOLD LIT LLD LLDB
+OPTIONS_DEFINE=	CLANG DOCS EXTRAS GOLD LIT LLD LLDB
+OPTIONS_DEFINE_amd64=	COMPILER_RT OPENMP
+OPTIONS_DEFINE_i386=	COMPILER_RT
+OPTIONS_DEFAULT=	CLANG EXTRAS GOLD LIT LLD LLDB
 OPTIONS_DEFAULT_amd64=	COMPILER_RT OPENMP
 OPTIONS_DEFAULT_i386=	COMPILER_RT
 OPTIONS_SUB=	yes
 
+PLIST_FILES=
+
 CLANG_DESC=	Build clang
-CLANG_EXTRA_PATCHES= ${PATCHDIR}/clang-patch-tools_clang_lib_Headers_CMakeLists.txt
+CLANG_EXTRA_PATCHES= \
+	${PATCHDIR}/clang-patch-fformat_extensions.diff \
+	${PATCHDIR}/clang-patch-tools_clang_lib_Headers_CMakeLists.txt
 CLANG_CONFLICTS_INSTALL=	clang-devel-3.[1234567]*
 CLANG_GH_PROJECT=	clang:clang
 CLANG_GH_TAGNAME=	${CLANG_COMMIT}:clang
 CLANG_CMAKE_ON=		-DCLANG_DEFAULT_OPENMP_RUNTIME=libomp
 CLANG_PORTDOCS=		clang
-COMPILER_RT_DESC=	Build compiler-rt (sanitizers)
+COMPILER_RT_DESC=	Sanitizer libraries
 COMPILER_RT_GH_PROJECT=	compiler-rt:compiler_rt
 COMPILER_RT_GH_TAGNAME=	${COMPILER_RT_COMMIT}:compiler_rt
+COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS:S|^|${_CRTLIBDIR}/|}
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON=		-DLLVM_ENABLE_SPHINX=ON \
 			-DSPHINX_WARNINGS_AS_ERRORS=OFF \
 			-DLLVM_BUILD_DOCS=ON
 DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
+EXTRAS_DESC=		Extra clang tools
+EXTRAS_IMPLIES=		CLANG
+EXTRAS_GH_PROJECT=	clang-tools-extra:extras
+EXTRAS_GH_TAGNAME=	${EXTRAS_COMMIT}:extras
 LIT_DESC=		Install lit and FileCheck test tools
 LLD_DESC=		Install lld, the LLVM linker
 LLD_GH_PROJECT=		lld:lld
 LLD_GH_TAGNAME=		${LLD_COMMIT}:lld
 LLDB_DESC=		Install lldb, the LLVM debugger (ignored on 9.x)
-LLDB_BUILD_DEPENDS=	swig:${PORTSDIR}/devel/swig13
+LLDB_BUILD_DEPENDS=	swig:devel/swig13
 LLDB_GH_PROJECT=	lldb:lldb
 LLDB_GH_TAGNAME=	${LLDB_COMMIT}:lldb
 OPENMP_DESC=		Install libomp, the LLVM OpenMP runtime library
@@ -70,11 +77,11 @@ OPENMP_GH_PROJECT=	openmp:openmp
 OPENMP_GH_TAGNAME=	${OPENMP_COMMIT}:openmp
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
 GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
-GOLD_BUILD_DEPENDS=	ld.gold:${PORTSDIR}/devel/binutils
+GOLD_BUILD_DEPENDS=	ld.gold:devel/binutils
 
 OPTIONS_SUB=	yes
 
-DOCS_BUILD_DEPENDS=		sphinx-build:${PORTSDIR}/textproc/py-sphinx
+DOCS_BUILD_DEPENDS=		sphinx-build:textproc/py-sphinx
 
 LLVM_RELEASE=	3.8.0
 
@@ -89,6 +96,7 @@ COMMANDS=	bugpoint \
 		llvm-diff \
 		llvm-dis \
 		llvm-dwarfdump \
+		llvm-dwp \
 		llvm-extract \
 		llvm-link \
 		llvm-mc \
@@ -100,11 +108,13 @@ COMMANDS=	bugpoint \
 		llvm-readobj \
 		llvm-rtdyld \
 		llvm-size \
+		llvm-split \
 		llvm-stress \
 		llvm-symbolizer \
 		llvm-tblgen \
 		macho-dump \
-		opt
+		opt \
+		sancov
 FIRST_COMMAND=	${COMMANDS:C/^/XXXX/1:MXXXX*:C/^XXXX//}
 
 STRIP_LIBS=	BugpointPasses.so \
@@ -112,58 +122,40 @@ STRIP_LIBS=	BugpointPasses.so \
 		${LIBNAME}.0 \
 		libLTO.so
 
+EXTRAS_COMMANDS= \
+		clang-apply-replacements \
+		clang-modernize \
+		clang-query \
+		clang-rename \
+		clang-tidy \
+		modularize
+EXTRAS_LIBS=	\
+		libclangApplyReplacements \
+		libclangQuery \
+		libclangRename \
+		libclangTidy \
+		libclangTidyGoogleModule \
+		libclangTidyLLVMModule \
+		libclangTidyMiscModule \
+		libclangTidyReadabilityModule \
+		libclangTidyUtils \
+		libmodernizeCore
+EXTRAS_PATTERN= ${EXTRAS_COMMANDS:tW:C/  */|/g}|${EXTRAS_LIBS:tW:C/  */|/g}
+
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLANG}
-COMMANDS+=	clang \
+COMMANDS+=	c-index-test \
+		clang \
 		clang++ \
 		clang-check \
 		clang-cpp \
-		clang-format
-MAN1SRCS+=	clang.1
-.endif
-
-.if ${PORT_OPTIONS:MCOMPILER_RT}
-SAN_LIBDIR=${LLVM_PREFIX}/lib/clang/${LLVM_RELEASE}/lib/freebsd
-.if ${ARCH} == "amd64"
-# Disable i386 variants on amd64.
-EXTRA_PATCHES+= \
-    ${PATCHDIR}/compiler-rt-patch-tools_compiler-rt_cmake_config-ix.cmake
-PLIST_FILES+=	\
-	${SAN_LIBDIR}/libclang_rt.asan-preinit-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.asan-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.asan-x86_64.a.syms \
-	${SAN_LIBDIR}/libclang_rt.asan-x86_64.so \
-	${SAN_LIBDIR}/libclang_rt.asan_cxx-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.asan_cxx-x86_64.a.syms \
-	${SAN_LIBDIR}/libclang_rt.builtins-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.dd-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.dyndd-x86_64.so \
-	${SAN_LIBDIR}/libclang_rt.lsan-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.profile-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.safestack-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.tsan-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.tsan-x86_64.a.syms \
-	${SAN_LIBDIR}/libclang_rt.tsan_cxx-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.tsan_cxx-x86_64.a.syms \
-	${SAN_LIBDIR}/libclang_rt.ubsan_standalone-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.ubsan_standalone-x86_64.a.syms \
-	${SAN_LIBDIR}/libclang_rt.ubsan_standalone_cxx-x86_64.a \
-	${SAN_LIBDIR}/libclang_rt.ubsan_standalone_cxx-x86_64.a.syms
-.elif ${ARCH} == "i386"
-PLIST_FILES+=	\
-	${SAN_LIBDIR}/libclang_rt.asan-i386.a \
-	${SAN_LIBDIR}/libclang_rt.asan-i386.so \
-	${SAN_LIBDIR}/libclang_rt.asan-preinit-i386.a \
-	${SAN_LIBDIR}/libclang_rt.asan_cxx-i386.a \
-	${SAN_LIBDIR}/libclang_rt.builtins-i386.a \
-	${SAN_LIBDIR}/libclang_rt.profile-i386.a \
-	${SAN_LIBDIR}/libclang_rt.safestack-i386.a \
-	${SAN_LIBDIR}/libclang_rt.ubsan_standalone-i386.a \
-	${SAN_LIBDIR}/libclang_rt.ubsan_standalone_cxx-i386.a
-.else
-BROKEN=	no packaging data for sanitizers on ${ARCH}.  Disable COMPILER_RT.
-.endif
+		clang-format \
+		scan-build \
+		scan-view
+MAN1SRCS+=	clang.1 \
+		scan-build.1
+CLANG_PATTERN=	(c-index-test|clang|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer)
 .endif
 
 .if ${PORT_OPTIONS:MLIT}
@@ -172,15 +164,9 @@ _USES_PYTHON=	python
 LIT_COMMANDS=	lit llvm-lit FileCheck
 .endif
 
-.if ${PORT_OPTIONS:MLLD}
-COMMANDS+=	lld \
-		lld-link
-PORTDOCS+=	lld
-.endif
-
 .if ${PORT_OPTIONS:MLLDB}
-COMMANDS+=	argdumper \
-		lldb \
+COMMANDS+=	lldb \
+		lldb-argdumper \
 		lldb-mi \
 		lldb-server
 _USES_PYTHON=	python
@@ -206,24 +192,78 @@ NOT_FOR_ARCH=	ia64
 
 .include <bsd.port.pre.mk>
 
+_CRTLIBDIR=	${LLVM_PREFIX:S|${PREFIX}/||}/lib/freebsd
+.if ${ARCH} == "amd64"
+_COMPILER_RT_LIBS= \
+	libclang_rt.asan-preinit-x86_64.a \
+	libclang_rt.asan-x86_64.a \
+	libclang_rt.asan-x86_64.a.syms \
+	libclang_rt.asan-x86_64.so \
+	libclang_rt.asan_cxx-x86_64.a \
+	libclang_rt.asan_cxx-x86_64.a.syms \
+	libclang_rt.builtins-x86_64.a \
+	libclang_rt.dd-x86_64.a \
+	libclang_rt.dyndd-x86_64.so \
+	libclang_rt.lsan-x86_64.a \
+	libclang_rt.profile-x86_64.a \
+	libclang_rt.safestack-x86_64.a \
+	libclang_rt.stats-x86_64.a \
+	libclang_rt.stats_client-x86_64.a \
+	libclang_rt.tsan-x86_64.a \
+	libclang_rt.tsan-x86_64.a.syms \
+	libclang_rt.tsan_cxx-x86_64.a \
+	libclang_rt.tsan_cxx-x86_64.a.syms \
+	libclang_rt.ubsan_standalone-x86_64.a \
+	libclang_rt.ubsan_standalone-x86_64.a.syms \
+	libclang_rt.ubsan_standalone_cxx-x86_64.a \
+	libclang_rt.ubsan_standalone_cxx-x86_64.a.syms
+.endif
+.if ${ARCH} == "i386"
+_COMPILER_RT_LIBS+= \
+	libclang_rt.asan-i386.a \
+	libclang_rt.asan-i386.so \
+	libclang_rt.asan-preinit-i386.a \
+	libclang_rt.asan_cxx-i386.a \
+	libclang_rt.builtins-i386.a \
+	libclang_rt.profile-i386.a \
+	libclang_rt.safestack-i386.a \
+	libclang_rt.stats-i386.a \
+	libclang_rt.stats_client-i386.a \
+	libclang_rt.ubsan_standalone-i386.a \
+	libclang_rt.ubsan_standalone_cxx-i386.a
+.endif
+
+.if ${PORT_OPTIONS:MEXTRAS}
+COMMANDS+=	${EXTRAS_COMMANDS}
+MAN1SRCS+=	extraclangtools.1
+PORTDOCS+=	clang-tools
+.endif
+
+.if ${PORT_OPTIONS:MLLD}
+COMMANDS+=	lld \
+		lld-link
+PORTDOCS+=	lld
+.endif
+
 .if ${OPSYS} == "FreeBSD" && ${COMPILER_TYPE} != clang
-# Evil hack around gcc48 not providing a usable c++11 environment on 9.x
-PLIST_SUB:=	${PLIST_SUB:NLLDB=*} LLDB="@comment "
+BROKEN=	Working C++11 compiler and library required
+.endif
+
+.if ${PORT_OPTIONS:MLLDB} && ${PYTHON_REL} >= 3000
+BROKEN=	LLDB does not build with Python 3
 .endif
 
 post-extract-CLANG-on:
 	${MV} ${WRKSRC_clang} ${PATCH_WRKSRC}/tools/clang
 
-post-extract-COMPILER_RT-on:
-	${MV} ${WRKSRC_compiler_rt} ${PATCH_WRKSRC}/tools/compiler-rt
+post-extract-EXTRAS-on:
+	${MV} ${WRKSRC_extras} ${PATCH_WRKSRC}/tools/clang/tools/extra
 
 post-extract-LLD-on:
 	${MV} ${WRKSRC_lld} ${PATCH_WRKSRC}/tools/lld
 
 post-extract-LLDB-on:
-.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
 	${MV} ${WRKSRC_lldb} ${PATCH_WRKSRC}/tools/lldb
-.endif
 
 post-extract-OPENMP-on:
 	${MV} ${WRKSRC_openmp} ${PATCH_WRKSRC}/tools/openmp
@@ -233,6 +273,14 @@ post-patch:
 	    -e 's|from lit|from lit${LLVM_SUFFIX}|' \
 	    -e 's|lit\.|lit${LLVM_SUFFIX}.|' \
 	    ${WRKSRC}/utils/lit/lit.py ${WRKSRC}/utils/lit/lit/*.py
+
+post-build-COMPILER_RT-on:
+	${MKDIR} ${WRKDIR}/compiler-rt-build
+	cd ${WRKDIR}/compiler-rt-build && \
+	${CMAKE_BIN} ${CMAKE_ARGS} \
+	    -DLLVM_CONFIG_PATH=${CONFIGURE_WRKSRC}/bin/llvm-config \
+	    ${WRKSRC_compiler_rt} && \
+	${MAKE_ENV} ${MAKE_CMD}
 
 post-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/llvm-wrapper.sh \
@@ -255,14 +303,23 @@ post-install-DOCS-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/
 
-post-install-LLDB-on:
-.if ${OPSYS} != "FreeBSD" || ${COMPILER_TYPE} == clang
-	${RM} ${STAGEDIR}${LLVM_PREFIX}/lib/python*/site-packages/lib
+.if ${PORT_OPTIONS:MCLANG}
+post-install-DOCS-off:
+	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/scan-build.1
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/
+	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/man/
 .endif
 
 post-install-CLANG-on:
 	${LN} -f ${STAGEDIR}${LLVM_PREFIX}/bin/clang \
 	    ${STAGEDIR}${LLVM_PREFIX}/bin/clang-cpp
+
+post-install-COMPILER_RT-on:
+	cd ${WRKDIR}/compiler-rt-build && \
+	${MAKE_ENV} ${MAKE_CMD} ${INSTALL_TARGET}
+.if ${ARCH} == "amd64"
+	${RM} ${STAGEDIR}${LLVM_PREFIX}/lib/freebsd/libclang_rt*i386*
+.endif
 
 post-install-LIT-on:
 	${INSTALL_SCRIPT} ${PATCH_WRKSRC}/utils/lit/lit.py \
@@ -300,7 +357,7 @@ build-plist:
 	${ECHO_CMD} %%LIT%%${LLVM_PREFIX:S|${PREFIX}/||}/bin/${command} >> ${PLIST}.tmp
 .endfor
 	${FIND} ${STAGEDIR}${LLVM_PREFIX} -type f -o -type l | \
-	    ${GREP} -v 'lit$$' | ${GREP} -v 'FileCheck$$' | \
+	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PORTVERSION}|%%PORTVERSION%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' | \
@@ -308,8 +365,18 @@ build-plist:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR}/lit${LLVM_SUFFIX} -type f | \
 	    ${SED} -e 's|${STAGEDIR}${PYTHON_SITELIBDIR}|%%LIT%%%%PYTHON_SITELIBDIR%%|' | \
 	    ${SORT} >> ${PLIST}.tmp
-	awk '{if ($$0 ~ /clang/ && $$0 !~ /(omp.h|libclang_rt|sanitizer|blacklist.txt)/) {printf "%%%%CLANG%%%%"} if ($$0 ~ /(libclang_rt|sanitizer|blacklist.txt)/) {printf "%%%%COMPILER_RT%%%%"} if ($$0 ~ /lld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} if ($$0 ~ /(argdumper|lldb)/) {printf "%%%%LLDB%%%%"} if ($$0 ~ /lib.*omp/) {printf "%%%%OPENMP%%%%"} if ($$0 ~ /LLVMgold/) {printf "%%%%GOLD%%%%"} if ($$0 !~ /libclang_rt/) {print}}' ${PLIST}.tmp >> ${PLIST}
-	${RM} -f ${PLIST}.tmp
+	awk '{ \
+	    if ($$0 ~ /${CLANG_PATTERN}/ && $$0 !~ /omp.h|${EXTRAS_PATTERN}|libclang_rt/) {printf "%%%%CLANG%%%%"} \
+	    if ($$0 ~ /asan_blacklist.txt|sanitizer/) \
+		{printf "%%%%COMPILER_RT%%%%"} \
+	    if ($$0 ~ /lld/ && $$0 !~ /lldb/) {printf "%%%%LLD%%%%"} \
+	    if ($$0 ~ /(${EXTRAS_PATTERN})/) {printf "%%%%EXTRAS%%%%"} \
+	    if ($$0 ~ /(argdumper|lldb|six.py)/) {printf "%%%%LLDB%%%%"} \
+	    if ($$0 ~ /lib.*omp/) {printf "%%%%OPENMP%%%%"} \
+	    if ($$0 ~ /LLVMgold/) {printf "%%%%GOLD%%%%"} \
+	    if ($$0 !~ /libclang_rt/) {print} \
+	}' ${PLIST}.tmp >> ${PLIST}
+	${RM} ${PLIST}.tmp
 
 check-commands:
 .for command in ${COMMANDS}

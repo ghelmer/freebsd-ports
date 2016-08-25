@@ -15,6 +15,10 @@ DISTFILES=	yui_${DISTVERSION}r1.zip:main \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	The Yahoo! User Interface (YUI) Library
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	BSD3CLAUSE MIT
 LICENSE_COMB=	multi
 

@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	gdb
-PORTVERSION=	7.10
+PORTVERSION=	7.11.1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -11,6 +12,9 @@ COMMENT=	GNU GDB of newer version than comes with the system
 
 LICENSE=	GPLv3
 
+TEST_DEPENDS=	runtest:misc/dejagnu
+
+TEST_TARGET=	check
 USES=		cpe iconv gmake libtool tar:xz
 USE_CSTD=	gnu89
 CPE_VENDOR=	gnu
@@ -26,21 +30,41 @@ CFLAGS:=	${CFLAGS:C/ +$//}	# blanks at EOL creep in sometimes
 CFLAGS+=	-DRL_NO_COMPAT -Wno-unused-function -Wno-unused-variable
 EXCLUDE=	dejagnu expect sim texinfo intl
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S/^/--exclude /}
+EXTRA_PATCHES=	${FILESDIR}/commit-21002a6 \
+		${FILESDIR}/commit-b00f86d \
+		${FILESDIR}/commit-aa1ed4a \
+		${FILESDIR}/commit-7697fc9 \
+		${FILESDIR}/commit-3350c5f \
+		${FILESDIR}/commit-2faa344 \
+		${FILESDIR}/commit-82372b2 \
+		${FILESDIR}/commit-e6cdd38 \
+		${FILESDIR}/commit-a3405d1 \
+		${FILESDIR}/commit-5077bff \
+		${FILESDIR}/commit-bb2a62e \
+		${FILESDIR}/commit-8607ea6 \
+		${FILESDIR}/commit-2c5c2a3 \
+		${FILESDIR}/commit-ee95032 \
+		${FILESDIR}/commit-bc7b765 \
+		${FILESDIR}/commit-0064d22 \
+		${FILESDIR}/commit-da95a26 \
+		${FILESDIR}/commit-5fa14c6 \
+		${FILESDIR}/commit-dbaed38
 
 VER=		${PORTVERSION:S/.//g}
 PLIST_SUB=	VER=${VER}
 
-ONLY_FOR_ARCHS=	i386 amd64 powerpc powerpc64	# untested elsewhere, might work
+ONLY_FOR_ARCHS=	i386 amd64 powerpc powerpc64 armv6	# untested elsewhere, might work
 
-OPTIONS_DEFINE=	DEBUG EXPAT GDB_LINK GUILE PYTHON THREADS TUI
+OPTIONS_DEFINE=	DEBUG EXPAT GDB_LINK GUILE KGDB PYTHON TUI
 
-OPTIONS_DEFAULT=	GDB_LINK THREADS TUI PORT_READLINE
+OPTIONS_DEFAULT=	EXPAT GDB_LINK KGDB PYTHON TUI PORT_READLINE
 
 OPTIONS_SINGLE=	READLINE
 OPTIONS_SINGLE_READLINE=	BASE_READLINE BUNDLED_READLINE PORT_READLINE
 
 GDB_LINK_DESC=		Create ${PREFIX}/bin/gdb symlink
-BASE_READLINE_DESC=	from base system (experimental)
+KGDB_DESC=		Kernel Debugging Support
+BASE_READLINE_DESC=	from base system
 BUNDLED_READLINE_DESC=	from gdb distfile
 PORT_READLINE_DESC=	from devel/readline port
 TUI_DESC=		Text User Interface enabled
@@ -49,13 +73,14 @@ OPTIONS_SUB=	yes
 
 BASE_READLINE_USES=	readline
 BASE_READLINE_CFLAGS=	-D_rl_echoing_p=readline_echoing_p
+BASE_READLINE_EXTRA_PATCHES=	${FILESDIR}/extrapatch-base-readline
 BUNDLED_READLINE_CONFIGURE_OFF=	--with-system-readline
 DEBUG_CFLAGS=		-g
 EXPAT_CONFIGURE_WITH=	expat
-EXPAT_LIB_DEPENDS=	libexpat.so:${PORTSDIR}/textproc/expat2
+EXPAT_LIB_DEPENDS=	libexpat.so:textproc/expat2
 GUILE_CONFIGURE_WITH=	guile
 GUILE_USES=		pkgconfig
-GUILE_LIB_DEPENDS=	libguile-2.0.so:${PORTSDIR}/lang/guile2
+GUILE_LIB_DEPENDS=	libguile-2.0.so:lang/guile2
 PORT_READLINE_USES=	readline:port
 PYTHON_CONFIGURE_ON=	--with-python=${PYTHON_CMD}
 PYTHON_CONFIGURE_OFF=	--without-python
@@ -63,6 +88,11 @@ PYTHON_USES=		python:2
 TUI_CONFIGURE_ENABLE=	tui
 
 .include <bsd.port.options.mk>
+
+.if ${OSVERSION} < 1000010
+# FreeBSD 9.x and earlier do not define SIGLIBRT in <sys/signal.h>
+CFLAGS+=	-DSIGLIBRT=33
+.endif
 
 .if ! ${PORT_OPTIONS:MBUNDLED_READLINE}
 EXCLUDE+=	readline
@@ -76,9 +106,9 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|$$| [GDB v${PORTVERSION} for FreeBSD]|' \
 		${WRKSRC}/gdb/version.in
 
-post-patch-THREADS-on:
-	@${CP} ${FILESDIR}/fbsd-threads.c ${WRKSRC}/gdb/
-	@${PATCH} ${PATCH_ARGS} < ${FILESDIR}/extrapatch-threads
+post-patch-KGDB-on:
+	@${CP} -r ${FILESDIR}/kgdb/*.[ch] ${WRKSRC}/gdb/
+	@${PATCH} ${PATCH_ARGS} < ${FILESDIR}/extrapatch-kgdb
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/gdb/gdb \
@@ -86,17 +116,28 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/gdb/doc/gdb.1 \
 		${STAGEDIR}${MAN1PREFIX}/man/man1/gdb${VER}.1
 
+do-install-KGDB-on:
+	${INSTALL_PROGRAM} ${WRKSRC}/gdb/kgdb \
+		${STAGEDIR}${PREFIX}/bin/kgdb${VER}
+
 do-install-TUI-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdbtui${VER}
 
+do-install-EXPAT-on:
+	(cd ${WRKSRC}/gdb/data-directory ; \
+		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-syscalls )
+
 do-install-GDB_LINK-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdb
+.if ${PORT_OPTIONS:MKGDB}
+	${LN} -sf kgdb${VER} ${STAGEDIR}${PREFIX}/bin/kgdb
+.endif
 
 do-install-PYTHON-on:
 	(cd ${WRKSRC}/gdb; ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
 	(cd ${WRKSRC}/gdb/data-directory ; \
 		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
-. for f in gdb gdb/command gdb/function
+. for f in gdb gdb/command gdb/function gdb/printer
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb${VER}/python/${f} ; ${CHMOD} 644 *.py* )
 . endfor
 

@@ -13,11 +13,11 @@ COMMENT=	Qt based tool for offline CD/DVD/disk catalogs
 LICENSE=	GPLv2 MPL
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	cryptopp>0:${PORTSDIR}/security/cryptopp
-LIB_DEPENDS=	libtar.so:${PORTSDIR}/devel/libtar \
-		libexif.so:${PORTSDIR}/graphics/libexif \
-		libmediainfo.so:${PORTSDIR}/multimedia/libmediainfo \
-		libzen.so:${PORTSDIR}/multimedia/libzen
+BUILD_DEPENDS=	cryptopp>0:security/cryptopp
+LIB_DEPENDS=	libtar.so:devel/libtar \
+		libexif.so:graphics/libexif \
+		libmediainfo.so:multimedia/libmediainfo \
+		libzen.so:multimedia/libzen
 
 CONFIGURE_WRKSRC=	${WRKSRC}/src
 BUILD_WRKSRC=	${CONFIGURE_WRKSRC}
@@ -62,25 +62,27 @@ pre-configure:
 	@${LRELEASE} ${BUILD_WRKSRC}/${PORTNAME}.pro
 
 do-install:
-	(cd ${BUILD_WRKSRC} && ${INSTALL_PROGRAM} ${PORTNAME} \
-		${STAGEDIR}${PREFIX}/bin)
+	${INSTALL_PROGRAM} ${BUILD_WRKSRC}/${PORTNAME} \
+		${STAGEDIR}${PREFIX}/bin
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTNAME}.png \
-		${STAGEDIR}${DATADIR})
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}.png \
+		${STAGEDIR}${DATADIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/translations
-	(cd ${BUILD_WRKSRC}/lang && ${INSTALL_DATA} *.qm \
-		${STAGEDIR}${DATADIR}/translations)
+	${INSTALL_DATA} ${BUILD_WRKSRC}/lang/*.qm \
+		${STAGEDIR}${DATADIR}/translations
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTNAME}_logo.svg \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps)
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}_logo.svg \
+		${STAGEDIR}${PREFIX}/share/icons/hicolor/scalable/apps
 .for size in 16 22 32 48 64
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${size}x${size}/apps
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTNAME}_logo_${size}x${size}.png \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/${size}x${size}/apps/${PORTNAME}_logo.png)
+	${INSTALL_DATA} ${WRKSRC}/${PORTNAME}_logo_${size}x${size}.png \
+		${STAGEDIR}${PREFIX}/share/icons/hicolor/${size}x${size}/apps/${PORTNAME}_logo.png
 .endfor
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
-	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} ${STAGEDIR}${DOCSDIR})
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

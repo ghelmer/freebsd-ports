@@ -15,15 +15,15 @@ COMMENT=	Ember is a WorldForge 3D client using the OGRE 3D library
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so:${PORTSDIR}/graphics/ogre3d
-RUN_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so:${PORTSDIR}/graphics/ogre3d
-LIB_DEPENDS=	libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
-		liberis-1.3.so:${PORTSDIR}/devel/eris \
-		libvarconf-1.0.so:${PORTSDIR}/devel/varconf \
-		libmercator-0.3.so:${PORTSDIR}/devel/mercator \
-		libwfut-0.2.so:${PORTSDIR}/devel/libwfut \
-		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
-		libCEGUIBase-0.so:${PORTSDIR}/graphics/cegui
+BUILD_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so:graphics/ogre3d
+RUN_DEPENDS=	${LOCALBASE}/lib/libOgreMain.so:graphics/ogre3d
+LIB_DEPENDS=	libsigc-2.0.so:devel/libsigc++20 \
+		liberis-1.3.so:devel/eris \
+		libvarconf-1.0.so:devel/varconf \
+		libmercator-0.3.so:devel/mercator \
+		libwfut-0.2.so:devel/libwfut \
+		libboost_thread.so:devel/boost-libs \
+		libCEGUIBase-0.so:graphics/cegui
 
 CONFIGURE_ARGS=	--with-png-prefix=${LOCALBASE} --enable-binreloc \
 		--program-transform-name= --disable-cppunit --disable-debug \
@@ -39,8 +39,6 @@ USE_LDCONFIG=	yes
 USES=		openal:al,alut pathfix pkgconfig compiler:c++11-lib tar:bzip2 lua:51
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e '\
@@ -60,11 +58,10 @@ post-install:
 	${FIND} ${STAGEDIR}${DATADIR} -type d -print0 | ${XARGS} -0 ${CHMOD} 0755
 	${FIND} ${STAGEDIR}${DATADIR} -type f -print0 | ${XARGS} -0 ${CHMOD} 0644
 
-.if ${PORT_OPTIONS:MDOCS}
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for docfile in README.md COPYING AUTHORS ChangeLog
-	@${INSTALL_DATA} ${WRKSRC}/${docfile} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${docfile} ${STAGEDIR}${DOCSDIR}
 .endfor
-.endif
 
 .include <bsd.port.mk>

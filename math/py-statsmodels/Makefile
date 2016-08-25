@@ -1,4 +1,4 @@
-# Created by: Johannes Meixner <xmj@chaot.net>
+# Created by: Johannes Meixner <johannes@perceivon.net>
 # $FreeBSD$
 
 PORTNAME=	statsmodels
@@ -7,20 +7,20 @@ PORTREVISION=	1
 CATEGORIES=	math python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	xmj@chaot.net
+MAINTAINER=	johannes@perceivon.net
 COMMENT=	Complement to SciPy for statistical computations
 
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		cython:${PORTSDIR}/lang/cython \
-		${PYTHON_PKGNAMEPREFIX}scipy>0:${PORTSDIR}/science/py-scipy \
-		${PYTHON_PKGNAMEPREFIX}pandas>0:${PORTSDIR}/math/py-pandas \
-		${PYTHON_PKGNAMEPREFIX}patsy>0:${PORTSDIR}/math/py-patsy
+		cython:lang/cython \
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy \
+		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas \
+		${PYTHON_PKGNAMEPREFIX}patsy>0:math/py-patsy
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}scipy>0:${PORTSDIR}/science/py-scipy \
-		${PYTHON_PKGNAMEPREFIX}pandas>0:${PORTSDIR}/math/py-pandas \
-		${PYTHON_PKGNAMEPREFIX}patsy>0:${PORTSDIR}/math/py-patsy
+		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy \
+		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas \
+		${PYTHON_PKGNAMEPREFIX}patsy>0:math/py-patsy
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gevent-websocket
-PORTVERSION=	0.9.3
+PORTVERSION=	0.9.5
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ COMMENT=	WebSocket library for the gevent networking library
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gevent>=0:${PORTSDIR}/devel/py-gevent
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gevent>=0:devel/py-gevent
 
 USES=		python
 USE_PYTHON=	distutils autoplist

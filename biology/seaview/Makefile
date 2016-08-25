@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	seaview
-PORTVERSION=	4.5.4.7
+PORTVERSION=	4.6
 PORTEPOCH=	1
 CATEGORIES=	biology
 MASTER_SITES=	ftp://pbil.univ-lyon1.fr/pub/mol_phylogeny/seaview/archive/
@@ -13,8 +13,8 @@ COMMENT=	Multiple DNA/protein sequence alignment editor
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libfltk.so:${PORTSDIR}/x11-toolkits/fltk \
-		libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk \
+		libpng.so:graphics/png
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

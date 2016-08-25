@@ -10,7 +10,7 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	KDE/Qt IDE for microcontroller development
 
-LICENSE=	GPLv2 # (or later)
+LICENSE=	GPLv2+
 
 DOS2UNIX_FILES=	cmake/Piklab.cmake
 USE_QT4=	corelib gui qt3support qtestlib xml \
@@ -22,7 +22,7 @@ OPTIONS_DEFAULT=	KDE4
 OPTIONS_SUB=	yes
 
 KDE4_USES=	shared-mime-info
-KDE4_USE=	KDE4=automoc4,kdelibs,kdeprefix
+KDE4_USE=	KDE4=automoc4,kdelibs
 KDE4_CMAKE_OFF=	-DQT_ONLY:BOOL=ON \
 		-DLOCALE_INSTALL_DIR:STRING="${PREFIX}/share/locale"
 

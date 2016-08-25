@@ -1,4 +1,4 @@
-# Created by: Torsten Zühlsdorff <ports@toco-domains.de>
+# Created by: Torsten Zuhlsdorff <ports@toco-domains.de>
 # $FreeBSD$
 
 PORTNAME=	encryptor
@@ -10,9 +10,10 @@ MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Wrapper for the standard ruby OpenSSL library
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 
+NO_ARCH=	yes
 USE_RUBY=	yes
-USE_RUBYGEMS=	yes
-RUBYGEM_AUTOPLIST=yes
+USES=		gem
 
 .include <bsd.port.mk>

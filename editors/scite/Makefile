@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	scite
-PORTVERSION=	3.6.1
+PORTVERSION=	3.6.5
 CATEGORIES=	editors gnome
 MASTER_SITES=	SF/scintilla/SciTE/${PORTVERSION}
 DISTNAME=	${PORTNAME}${PORTVERSION:S/.//g}
@@ -15,14 +15,14 @@ LICENSE_NAME=	License for Scintilla and SciTE
 LICENSE_FILE=	${WRKSRC}/../License.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-LIB_DEPENDS=	libscintilla.so:${PORTSDIR}/x11-toolkits/scintilla
-RUN_DEPENDS=	xdg-open:${PORTSDIR}/devel/xdg-utils
+LIB_DEPENDS=	libscintilla.so:x11-toolkits/scintilla
+RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 OPTIONS_DEFINE=	DOCS
 
 WRKSRC=		${WRKDIR}/${PORTNAME}/gtk
 
-USES=		desktop-file-utils gmake pkgconfig tar:tgz
+USES=		compiler:c++11-lib desktop-file-utils gmake pkgconfig tar:tgz
 USE_GNOME=	gtk20
 MAKEFILE=	makefile
 

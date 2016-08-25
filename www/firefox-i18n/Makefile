@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	firefox-i18n
-PORTVERSION=	42.0
+PORTVERSION=	47.0.1
 CATEGORIES=	www
 MASTER_SITES=	MOZILLA/${PORTNAME:S|-i18n||}/releases/${DISTVERSION}/linux-i686/xpi \
-		MOZILLA/${PORTNAME:S|-i18n||}/candidates/${DISTVERSION}-candidates/build2/linux-i686/xpi
+		MOZILLA/${PORTNAME:S|-i18n||}/candidates/${DISTVERSION}-candidates/build1/linux-i686/xpi
 PKGNAMEPREFIX=
 DISTFILES=	${FIREFOX_I18N_:S/$/.xpi/}
 DIST_SUBDIR=	xpi/${DISTNAME}
@@ -13,10 +13,10 @@ DIST_SUBDIR=	xpi/${DISTNAME}
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	Localized interface for Firefox
 
-EXTRACT_DEPENDS=	zip:${PORTSDIR}/archivers/zip
+EXTRACT_DEPENDS=	zip:archivers/zip
 
-USES=		zip:infozip gecko:firefox,42,build
-USE_XPI=	firefox linux-firefox
+USES=		zip:infozip gecko:firefox,47,build
+USE_XPI=	firefox
 
 NO_ARCH=	yes
 USE_SUBMAKE=	yes
@@ -32,7 +32,7 @@ PLISTF?=	${WRKDIR}/plist_files
 .include <bsd.port.pre.mk>
 
 .ifndef WITHOUT_SWITCHER
-RUN_DEPENDS+=	xpi-quick-locale-switcher>=0:${PORTSDIR}/www/xpi-quick-locale-switcher
+RUN_DEPENDS+=	xpi-quick-locale-switcher>=0:www/xpi-quick-locale-switcher
 .endif
 
 .include "${.CURDIR}/Makefile.lang"
@@ -62,7 +62,7 @@ do-extract:
 	${CAT} ${PLISTF} | ${SORT} >> ${PLIST}
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${XPI_LIBDIR} ${STAGEDIR}${XPI_SLDIRS_ALL}
+	@${MKDIR} ${STAGEDIR}${XPI_LIBDIR}
 	cd ${WRKSRC}; ${PAX} -rw . ${STAGEDIR}${XPI_LIBDIR}
 	${CHMOD} -R a+rX,go-w ${STAGEDIR}${XPI_LIBDIR}/${WDIR}/
 	@for e in ${STAGEDIR}${XPI_LIBDIR}/${WDIR}; do \
@@ -73,7 +73,7 @@ do-install:
 	@${ECHO_CMD} '@exec ${INSTALL} -d ${XPI_SLDIRS_ALL:S,^${PREFIX},%D,}' ${_A}
 	@${ECHO_CMD} '@exec for _dir in ${XPI_LINKFARMS} ; { \
 		${LN} -sf ${XPI_LIBDIR}/${WDIR} $$_dir/ ${_Q}; }' ${_A}
-	@${ECHO_CMD} '@unexec for _dir in ${XPI_LINKFARMS} ${XPI_LIBDIR}; { ${RM} -f $$_dir/${WDIR} ; }' ${_A}
+	@${ECHO_CMD} '@unexec for _dir in ${XPI_LINKFARMS} ; { ${RM} -f $$_dir/${WDIR} ; }' ${_A}
 
 post-patch:
 	${FIND} ${WRKSRC} -name install.rdf -print0 | \

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	desmume
-PORTVERSION=	0.9.10
-PORTREVISION=	3
+PORTVERSION=	0.9.11
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF
 
@@ -12,8 +12,8 @@ COMMENT=	Nintendo DS emulator
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libgtkglext-x11-1.0.so:${PORTSDIR}/x11-toolkits/gtkglext \
-		libSoundTouch.so:${PORTSDIR}/audio/soundtouch
+LIB_DEPENDS=	libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
+		libSoundTouch.so:audio/soundtouch
 
 USE_GL=		gl
 USE_SDL=	sdl
@@ -28,7 +28,5 @@ CONFIGURE_ARGS=	--enable-glade
 CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib -DGTKGLEXT_AVAILABLE \
 		-DHAVE_LIBGDKGLEXT_X11_1_0 -DHAVE_GL_GL_H -DHAVE_GL_GLU_H
 CXXFLAGS+=	${CFLAGS}
-
-BROKEN_ia64=	Does not compile on ia64
 
 .include <bsd.port.mk>

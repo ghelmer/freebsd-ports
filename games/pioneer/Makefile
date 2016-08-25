@@ -28,17 +28,17 @@ LICENSE_PERMS_GLEW=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_IUP=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_SIL=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-BUILD_DEPENDS=	${LOCALBASE}/include/GL/glu.h:${PORTSDIR}/graphics/libGLU
-LIB_DEPENDS=	libcurl.so:${PORTSDIR}/ftp/curl \
-		libsigc-2.0.so:${PORTSDIR}/devel/libsigc++20 \
-		libfreetype.so:${PORTSDIR}/print/freetype2 \
-		libvorbisfile.so:${PORTSDIR}/audio/libvorbis \
-		libpng.so:${PORTSDIR}/graphics/png \
-		libassimp.so:${PORTSDIR}/multimedia/assimp
+BUILD_DEPENDS=	${LOCALBASE}/include/GL/glu.h:graphics/libGLU
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libsigc-2.0.so:devel/libsigc++20 \
+		libfreetype.so:print/freetype2 \
+		libvorbisfile.so:audio/libvorbis \
+		libpng.so:graphics/png \
+		libassimp.so:multimedia/assimp
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	pioneerspacesim
-GH_TAGNAME=	20150614
+GH_TAGNAME=	20160610
 
 USES=		autoreconf gmake pkgconfig
 USE_GL=		gl
@@ -47,7 +47,7 @@ USE_SDL=	image2 sdl2
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	PIONEER_DATA_DIR="${DATADIR}/data"
 CONFIGURE_ARGS=	--with-version="${GH_TAGNAME}"
-EXTRACT_AFTER_ARGS=	--exclude .gitignore
+EXTRACT_AFTER_ARGS=	--no-same-owner --no-same-permissions --exclude .gitignore
 
 PORTDATA=	data
 PORTDOCS=	AUTHORS.txt Changelog.txt Modelviewer.txt Quickstart.txt README.md
@@ -62,10 +62,12 @@ DESKTOP_ENTRIES="Pioneer" "${COMMENT}" \
 SUB_FILES=	pkg-message
 SUB_LIST=	QUICKSTART_PATH="${QUICKSTART_PATH}"
 
-OPTIONS_DEFINE=		DOCS MODELCOMPILER
+OPTIONS_DEFINE=		DOCS MODELCOMPILER PROFILER
 OPTIONS_DEFAULT=	MODELCOMPILER
 MODELCOMPILER_DESC=	Build/install modelcompiler tool
 MODELCOMPILER_PLIST_FILES=	bin/${PORTNAME}-modelcompiler
+PROFILER_DESC=		Build with internal profiler
+PROFILER_CONFIGURE_ON=	--enable-profiler
 
 .include <bsd.port.options.mk>
 
@@ -86,20 +88,32 @@ QUICKSTART_PATH=	\
 post-patch: .SILENT
 	${REINPLACE_CMD} -e '/^OPTIMISE=/d' \
 		${WRKSRC}/configure.ac
-	${REINPLACE_CMD} -e 's/modelviewer/${PORTNAME} -modelviewer/' \
-		${WRKSRC}/Modelviewer.txt
-.if !${PORT_OPTIONS:MMODELCOMPILER}
+	${REINPLACE_CMD} -e 's/std:://g' \
+		${WRKSRC}/src/Orbit.cpp
+	${REINPLACE_CMD} -e 's/std::to_string/to_string/g' \
+		${WRKSRC}/src/graphics/opengl/RendererGL.cpp
+
+post-patch-MODELCOMPILER-off: .SILENT
 	${REINPLACE_CMD} -e 's/pioneer modelcompiler/pioneer/' \
 		${WRKSRC}/src/Makefile.am
-.endif
+
+post-patch-PROFILER-off: .SILENT
+	${REINPLACE_CMD} -e '/^SUBDIRS/s/ profiler//' \
+		${WRKSRC}/contrib/Makefile.am
+	${REINPLACE_CMD} -i '.p.bak' -e '/libjson.a/s| \\|| ; /libprofiler.a/d' \
+		${WRKSRC}/src/Makefile.am
+	${REINPLACE_CMD} -i '.p.bak' -e '/contrib\/profiler/d' \
+		${WRKSRC}/configure.ac
 
 post-install:
-.if ${PORT_OPTIONS:MMODELCOMPILER}
-	@${MV} ${STAGEDIR}${PREFIX}/bin/modelcompiler \
-		${STAGEDIR}${PREFIX}/bin/${PORTNAME}-modelcompiler
-.endif
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
 	${INSTALL_DATA} ${WRKSRC}/application-icon/pngs/pioneer-256x256.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
+
+post-install-DOCS-on:
+	(cd ${WRKSRC} && ${COPYTREE_SHARE} "${PORTDOCS}" ${STAGEDIR}${DOCSDIR})
+
+post-install-MODELCOMPILER-on:
+	${MV} ${STAGEDIR}${PREFIX}/bin/modelcompiler \
+		${STAGEDIR}${PREFIX}/bin/${PORTNAME}-modelcompiler
 
 .include <bsd.port.mk>

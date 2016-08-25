@@ -11,7 +11,7 @@ COMMENT=	Implementation of HPACK (Header compression for HTTP/2.0)
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libcheck.so:${PORTSDIR}/devel/libcheck
+LIB_DEPENDS=	libcheck.so:devel/libcheck
 
 CMAKE_ARGS=	-DBUILD_DOCS=OFF \
 		-DBUILD_TESTS=OFF \
@@ -21,7 +21,6 @@ USE_LDCONFIG=	yes
 USES=		cmake pkgconfig python:2,build shebangfix tar:xz
 
 SHEBANG_FILES=	gen-config.py libhpack/huffman-gen.py
-python_OLD_CMD=	/usr/bin/env python
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|STATIC|SHARED|' ${WRKSRC}/libchula/CMakeLists.txt ${WRKSRC}/libhpack/CMakeLists.txt

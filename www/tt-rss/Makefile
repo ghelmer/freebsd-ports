@@ -2,18 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	tt-rss
-PORTVERSION=	1.15.3.150720
+PORTVERSION=	16.1.2016.02.23
+PORTREVISION=	1
 CATEGORIES=	www
+MASTER_SITES=	https://tt-rss.org/gitlab/fox/tt-rss/repository/archive${EXTRACT_SUFX}?ref=${GL_TAGNAME}&num;/
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Tiny Tiny RSS: web-based news feed (RSS/Atom) aggregator
 
 LICENSE=	GPLv2
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	gothfox
-GH_PROJECT=	Tiny-Tiny-RSS
-GH_TAGNAME=	2caeb0f
+GL_TAGNAME=	94d425fe
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -22,18 +21,18 @@ USE_PHP=	ctype dom hash json mbstring pcntl posix session xmlrpc
 WANT_PHP_WEB=	yes
 WANT_PHP_CLI=	yes
 REINPLACE_ARGS=	-i ""
-USES=		shebangfix
+USES=		shebangfix tar:bz2 gettext
 SHEBANG_FILES=	lib/dojo-src/rebuild-dojo.sh utils/extract-i18n-js.pl
+WRKSRC=		${WRKDIR}/tt-rss.git
 
 USE_RC_SUBR=	ttrssd
 
-OPTIONS_DEFINE=	CURL GD DBLOCAL
+OPTIONS_DEFINE=	CURL GD
 OPTIONS_SINGLE=	DB
 OPTIONS_SINGLE_DB=	MYSQL PGSQL
-OPTIONS_DEFAULT=	CURL GD MYSQL DBLOCAL
+OPTIONS_DEFAULT=	CURL GD MYSQL
 CURL_DESC=	Use SimplePie instead of Magpie
 GD_DESC=	Use OTP QR code generation
-DBLOCAL_DESC=	Database is local?
 
 .include <bsd.port.options.mk>
 
@@ -42,7 +41,9 @@ USE_PHP+=	pgsql
 DB=		pgsql
 MYSQL=		"\#"
 PGSQL=
-.else
+.endif
+
+.if ${PORT_OPTIONS:MMYSQL}
 USE_PHP+=	mysqli
 DB=		mysql
 MYSQL=
@@ -57,14 +58,8 @@ USE_PHP+=	curl
 USE_PHP+=	gd
 .endif
 
-.if ${PORT_OPTIONS:MDBLOCAL}
-DBLOCAL=
-.else
-DBLOCAL=	"\#"
-.endif
-
 SUB_FILES=	httpd-tt-rss.conf pkg-message
-SUB_LIST=	DB=${DB} WWWOWN=${WWWOWN} MYSQL=${MYSQL} PGSQL=${PGSQL} DBLOCAL=${DBLOCAL}
+SUB_LIST=	DB=${DB} WWWOWN=${WWWOWN} MYSQL=${MYSQL} PGSQL=${PGSQL}
 PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 PKGMESSAGE=	${WRKDIR}/pkg-message
 

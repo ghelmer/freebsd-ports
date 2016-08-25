@@ -16,7 +16,7 @@ EXTRACT_SUFX=	.run
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast-paced first-person-perspective online multiplayer game
 
-RUN_DEPENDS=	bash:${PORTSDIR}/shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
 USES=		makeself
 USE_LINUX=	yes
@@ -32,7 +32,7 @@ PLIST_SUB=	MAP_PACK="${MAP_PACK}"
 OPTIONS_DEFINE=	DOCS
 
 post-extract:
-	@cd ${WRKDIR} && ${TAR} xf legends.tar
+	@cd ${WRKSRC} && ${TAR} xf legends.tar
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|#!/bin/bash|#!${LOCALBASE}/bin/bash|; \

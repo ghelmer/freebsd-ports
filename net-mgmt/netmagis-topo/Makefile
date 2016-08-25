@@ -6,10 +6,11 @@ PKGNAMESUFFIX=	-topo
 
 COMMENT=	Netmagis topology module
 
-RUN_DEPENDS=	netmagis-config:${PORTSDIR}/net-mgmt/netmagis-common \
-		rancid-run:${PORTSDIR}/net-mgmt/rancid \
-		fping:${PORTSDIR}/net/fping
+RUN_DEPENDS=	netmagis-config:net-mgmt/netmagis-common \
+		rancid-run:net-mgmt/rancid \
+		fping:net/fping
 
+NO_ARCH=	# no
 USE_RC_SUBR=	topographd toposendd
 SUB_LIST=	TCLSH=${TCLSH}
 

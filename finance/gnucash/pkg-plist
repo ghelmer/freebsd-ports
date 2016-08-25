@@ -425,7 +425,6 @@ lib/libgnc-qof.so.1.0.4
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/gnucash/gnucash_core_c.pyo
 libexec/gnucash/overrides/gnucash-env
 libexec/gnucash/overrides/gnucash-make-guids
-libexec/gnucash/overrides/guile
 libexec/gnucash/src/libqof/qof/test/kvp_frame.h
 libexec/gnucash/src/libqof/qof/test/qofbook.h
 libexec/gnucash/src/libqof/qof/test/qofinstance.h
@@ -440,6 +439,10 @@ share/applications/gnucash.desktop
 %%PORTDOCS%%%%DOCSDIR%%/AUTHORS
 %%PORTDOCS%%%%DOCSDIR%%/COPYING
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog.1999
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2000
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2001
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2002
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2003
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2004
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2005
@@ -452,6 +455,7 @@ share/applications/gnucash.desktop
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2012
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2013
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2014
+%%PORTDOCS%%%%DOCSDIR%%/ChangeLog.2015
 %%PORTDOCS%%%%DOCSDIR%%/DOCUMENTERS
 %%PORTDOCS%%%%DOCSDIR%%/HACKING
 %%PORTDOCS%%%%DOCSDIR%%/INSTALL
@@ -603,6 +607,7 @@ share/applications/gnucash.desktop
 %%DATADIR%%/accounts/es_MX/acctchrt_spouseretire.gnucash-xea
 %%DATADIR%%/accounts/fi_FI/acctchrt_common.gnucash-xea
 %%DATADIR%%/accounts/fi_FI/acctchrt_ry.gnucash-xea
+%%DATADIR%%/accounts/fi_FI/acctchrt_sbr-xbrl.gnucash-xea
 %%DATADIR%%/accounts/fr_CA/acctchrt_actifsfixes.gnucash-xea
 %%DATADIR%%/accounts/fr_CA/acctchrt_automobile.gnucash-xea
 %%DATADIR%%/accounts/fr_CA/acctchrt_basecommune.gnucash-xea
@@ -747,6 +752,7 @@ share/applications/gnucash.desktop
 %%DATADIR%%/accounts/nb/acctchrt_spouseretire.gnucash-xea
 %%DATADIR%%/accounts/nl/acctchrt_checkbook.gnucash-xea
 %%DATADIR%%/accounts/nl/acctchrt_full.gnucash-xea
+%%DATADIR%%/accounts/nl/acctchrt_rgs_1.1.gnucash-xea
 %%DATADIR%%/accounts/pl/acctchrt_brokerage.gnucash-xea
 %%DATADIR%%/accounts/pl/acctchrt_business.gnucash-xea
 %%DATADIR%%/accounts/pl/acctchrt_carloan.gnucash-xea
@@ -813,8 +819,10 @@ share/applications/gnucash.desktop
 %%DATADIR%%/accounts/sk/acctchrt_spouseretire.gnucash-xea
 %%DATADIR%%/accounts/sv_AX/acctchrt_common.gnucash-xea
 %%DATADIR%%/accounts/sv_AX/acctchrt_rf.gnucash-xea
+%%DATADIR%%/accounts/sv_AX/acctchrt_sbr-xbrl.gnucash-xea
 %%DATADIR%%/accounts/sv_FI/acctchrt_common.gnucash-xea
 %%DATADIR%%/accounts/sv_FI/acctchrt_rf.gnucash-xea
+%%DATADIR%%/accounts/sv_FI/acctchrt_sbr-xbrl.gnucash-xea
 %%DATADIR%%/accounts/sv_SE/acctchrt_common.gnucash-xea
 %%DATADIR%%/accounts/sv_SE/bas_2012.gnucash-xea
 %%DATADIR%%/accounts/tr_TR/acctchrt_TEKDUZ.gnucash-xea

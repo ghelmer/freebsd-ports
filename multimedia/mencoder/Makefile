@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mencoder
-PORTVERSION=	${MPLAYER_PORT_VERSION}
-PORTREVISION=	6
+PORTVERSION=	${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -14,10 +13,10 @@ COMMENT=	Convenient video file and movie encoder
 OPTIONS_DEFINE=	AMR_NB AMR_WB BLURAY CDIO DEBUG DV FAAC FONTCONFIG \
 		FRIBIDI GIF GNUTLS GSM IPV6 JACK LADSPA LIBMNG LZO \
 		MAD NAS OCFLAGS OPENAL OPENJPEG OPUS PULSEAUDIO REAL \
-		RTMP SCHROEDINGER SMB THEORA TWOLAME V4L VPX \
+		RTMP SCHROEDINGER SMB SPEEX THEORA TWOLAME V4L VPX \
 		X264 XVID
 
-OPTIONS_DEFAULT=GIF GNUTLS IPV6 OCFLAGS X264 XVID
+OPTIONS_DEFAULT=GIF GNUTLS OCFLAGS X264 XVID
 
 OPTIONS_DEFINE_i386=	RTCPU
 OPTIONS_DEFINE_amd64=	RTCPU
@@ -75,7 +74,7 @@ CONFIGURE_ARGS+=	--disable-mplayer \
 			--disable-enca \
 			--disable-musepack
 
-LIB_DEPENDS+=	libmp3lame.so:${PORTSDIR}/audio/lame
+LIB_DEPENDS+=	libmp3lame.so:audio/lame
 
 ALL_TARGET=	mencoder
 
@@ -88,9 +87,6 @@ pre-everything::
 	@${ECHO_MSG} "OPTIONS framework. At the moment, these settings are:"
 	@${ECHO_MSG} "DEFAULT_DVD_DEVICE=${DEFAULT_DVD_DEVICE}"
 	@${ECHO_MSG} "DEFAULT_CDROM_DEVICE=${DEFAULT_CDROM_DEVICE}"
-
-pre-patch:
-	${MV} ${WRKDIR}/ffmpeg-${FFMPEG_VERSION} ${WRKSRC}/ffmpeg
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -109,7 +105,8 @@ post-patch:
 			-e 's|[[:space:]]gcc[-[:digit:]\.]+| ${CC}|' \
 			-e 's|[[:space:]]gcc| ${CC}|' \
 			-e 's|\$$\(CC\)|${CC}|' \
-			-e 's|/usr/X11R6|${LOCALBASE}|'
+			-e 's|/usr/X11R6|${LOCALBASE}|' \
+			-e 's|%%LOCALBASE%%|${LOCALBASE}|'
 	@${FIND} ${WRKSRC}/DOCS/man -name "mplayer.1" | ${XARGS} ${REINPLACE_CMD} -E -e \
 		's|/usr/\\:local/\\:etc/\\:mplayer|${DATADIR:S/\//\/\\\:/g}|g ; \
 		 s|/dev/\\:(dvd[[:alnum:]]*[[:>:]])|${DEFAULT_DVD_DEVICE:S/dev\//dev\/\\\:/}|g ; \

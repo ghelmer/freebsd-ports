@@ -3,6 +3,7 @@
 
 PORTNAME=	ffmpeg
 PORTVERSION=	0.6.0.20120114
+PORTREVISION=	1
 DISTVERSIONPREFIX=	php-
 CATEGORIES=	graphics
 MASTER_SITES=	LOCAL/sunpoet
@@ -12,14 +13,12 @@ MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	FFmpeg shared extension for php
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libgd.so:${PORTSDIR}/graphics/gd \
-		libavutil.so:${PORTSDIR}/multimedia/ffmpeg
+LIB_DEPENDS=	libgd.so:graphics/gd \
+		libavutil.so:multimedia/ffmpeg
 
-CFLAGS+=	-I${LOCALBASE}/include
-USE_PHP=	yes
-USE_PHPEXT=	yes
-USE_PHPIZE=	yes
-USES=		tar:xz
+IGNORE_WITH_PHP=70
+USES=		localbase php:ext tar:xz
 
 .include <bsd.port.mk>

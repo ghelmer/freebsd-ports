@@ -13,10 +13,8 @@ COMMENT=	Bzr plugin to construct a bzr branch based on a "recipe"
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	bzr:${PORTSDIR}/devel/bzr
-RUN_DEPENDS=	bzr:${PORTSDIR}/devel/bzr
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+BUILD_DEPENDS=	bzr:devel/bzr
+RUN_DEPENDS=	bzr:devel/bzr
 
 USES=		python
 USE_PYTHON=	distutils autoplist

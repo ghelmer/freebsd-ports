@@ -9,13 +9,13 @@ MASTER_SITES=	http://isis.poly.edu/~bk/${PORTNAME}/ \
 		http://bk.macroblock.net/${PORTNAME}/ \
 		http://svnweb.freebsd.org/base/head/sys/cddl/compat/opensolaris/sys/:nvpair
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		nvpair.h\?revision=279437\&view=co:nvpair
+		nvpair.h?revision=279437&view=co:nvpair
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	spawk@acm.poly.edu
 COMMENT=	Watches for and e-mails admins about GEOM/ZFS state changes
 
-LIB_DEPENDS=	libesmtp.so:${PORTSDIR}/mail/libesmtp
+LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 
 USES=		tar:tbz
 

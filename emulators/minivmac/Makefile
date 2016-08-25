@@ -11,6 +11,10 @@ DISTFILES=	${DISTNAME}.src${EXTRACT_SUFX} \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Miniature Macintosh emulator
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	GPLv2
 
 WRKSRC=		${WRKDIR}/projects/bgclx86d

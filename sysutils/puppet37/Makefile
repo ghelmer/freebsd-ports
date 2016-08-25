@@ -3,7 +3,7 @@
 
 PORTNAME=	puppet
 PORTVERSION=	3.7.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://downloads.puppetlabs.com/puppet/
 PKGNAMESUFFIX=	37
@@ -13,18 +13,17 @@ COMMENT=	Configuration management framework written in Ruby
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	rubygem-facter>=0:${PORTSDIR}/sysutils/rubygem-facter \
-		rubygem-hiera1>=0:${PORTSDIR}/sysutils/rubygem-hiera1
-RUN_DEPENDS=	rubygem-facter>=0:${PORTSDIR}/sysutils/rubygem-facter \
-		rubygem-ruby-augeas>=0:${PORTSDIR}/textproc/rubygem-ruby-augeas \
-		rubygem-hiera1>=0:${PORTSDIR}/sysutils/rubygem-hiera1
+BUILD_DEPENDS=	rubygem-facter>=0:sysutils/rubygem-facter \
+		rubygem-hiera1>=0:sysutils/rubygem-hiera1
+RUN_DEPENDS=	rubygem-facter>=0:sysutils/rubygem-facter \
+		rubygem-ruby-augeas>=0:textproc/rubygem-ruby-augeas \
+		rubygem-hiera1>=0:sysutils/rubygem-hiera1
 
 USES=		cpe
 CPE_VENDOR=	puppetlabs
-CONFLICTS_INSTALL=	puppet-* puppet4-*
+CONFLICTS_INSTALL=	puppet38-* puppet4-*
 NO_BUILD=	yes
 USE_RUBY=	yes
-USE_RUBY_FEATURES=	iconv
 USE_RC_SUBR=	puppet puppetmaster
 PORTDOCS=	LICENSE README.md
 PORTEXAMPLES=	*
@@ -34,13 +33,6 @@ SUB_FILES+=	pkg-message
 SUB_LIST=	RUBY=${RUBY}
 
 OPTIONS_DEFINE=		DOCS EXAMPLES
-
-.include <bsd.port.pre.mk>
-
-# puppet 4.x should support ruby 2.2.x
-.if ${RUBY_VER} >= 2.2
-BROKEN=		Does not work with Ruby 2.2
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|/etc/puppet|${ETCDIR}|" \
@@ -75,4 +67,4 @@ do-install:
 	cd ${WRKSRC}/examples/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/ext/rack/example-passenger-vhost.conf ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

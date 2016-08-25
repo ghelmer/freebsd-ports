@@ -4,11 +4,11 @@ PORTNAME=	Date_Holidays_Denmark
 PORTVERSION=	0.1.3
 CATEGORIES=	devel www pear
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	Driver based class to calculate holidays in Denmark
 
-BUILD_DEPENDS=	${PEARDIR}/Date/Holidays.php:${PORTSDIR}/devel/pear-Date_Holidays
-RUN_DEPENDS=	${PEARDIR}/Date/Holidays.php:${PORTSDIR}/devel/pear-Date_Holidays
+BUILD_DEPENDS=	${PEARDIR}/Date/Holidays.php:devel/pear-Date_Holidays
+RUN_DEPENDS=	${PEARDIR}/Date/Holidays.php:devel/pear-Date_Holidays
 
 USES=	pear
 

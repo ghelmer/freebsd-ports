@@ -11,11 +11,11 @@ DIST_SUBDIR=	KDE
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Image viewer and organizer for KDE
 
-LIB_DEPENDS=	libexiv2.so:${PORTSDIR}/graphics/exiv2
+LIB_DEPENDS=	libexiv2.so:graphics/exiv2
 
 USES=		cmake:outsource jpeg pkgconfig shebangfix tar:bzip2
 SHEBANG_FILES=	script/open-raw.pl script/kpa-backup.sh
-USE_KDE4=	kdelibs kdeprefix libkdcraw libkipi automoc4
+USE_KDE4=	kdelibs libkdcraw libkipi automoc4
 USE_QT4=	phonon sql \
 		qmake_build moc_build rcc_build uic_build
 

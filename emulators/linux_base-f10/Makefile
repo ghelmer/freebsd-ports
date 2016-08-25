@@ -3,7 +3,7 @@
 
 PORTNAME=		f10
 PORTVERSION=		10
-PORTREVISION=		9
+PORTREVISION=		10
 CATEGORIES=		emulators linux
 MASTER_SITES=		LOCAL/ehaupt/rpm/${LINUX_RPM_ARCH}/fedora/${PORTVERSION} \
 			FEDORA_LINUX/../releases/${PORTVERSION}/Everything/${LINUX_RPM_ARCH}/os/Packages/
@@ -203,8 +203,8 @@ do-install:
 #
 # Do install without using linux rpm system
 #
-	@cd ${WRKSRC} && ${FIND} * ! -path "stage*" -type d -exec ${MKDIR} "${STAGEDIR}${PREFIX}/{}" \;
-	@cd ${WRKSRC} && ${FIND} * ! -path "stage/*" ! -type d \
+	@cd ${WRKSRC} && ${FIND} * -type d -exec ${MKDIR} "${STAGEDIR}${PREFIX}/{}" \;
+	@cd ${WRKSRC} && ${FIND} * ! -type d \
 		| ${CPIO} -pm -R root:wheel ${STAGEDIR}${PREFIX}
 
 	@${LN} -sf /var/tmp ${STAGEDIR}${PREFIX}/usr/tmp

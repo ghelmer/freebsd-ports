@@ -1,2 +1,3 @@
-SHA256 (KDE/qt-creator-opensource-src-3.5.0.tar.gz) = 5dc35f81b50d65243a6ae046125061051d03c3d50937a37e29e0669384bb0eb6 
-SIZE (KDE/qt-creator-opensource-src-3.5.0.tar.gz) = 22583597 
+TIMESTAMP = 1466350737
+SHA256 (KDE/Qt/qtcreator/qt-creator-opensource-src-4.0.2.tar.gz) = c2fce74fef0cc3a8f5c03d7ed1e95ccfe508d855ee750647896876824fcaee10
+SIZE (KDE/Qt/qtcreator/qt-creator-opensource-src-4.0.2.tar.gz) = 21651190

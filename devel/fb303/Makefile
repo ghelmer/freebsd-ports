@@ -14,8 +14,8 @@ COMMENT=	Facebook Bassline
 
 LICENSE=	APACHE20
 
-LIB_DEPENDS=	libthrift.so:${PORTSDIR}/devel/thrift-cpp
-BUILD_DEPENDS=	thrift:${PORTSDIR}/devel/thrift
+LIB_DEPENDS=	libthrift.so:devel/thrift-cpp
+BUILD_DEPENDS=	thrift:devel/thrift
 
 ACLOCAL_ARGS=	-I ./aclocal
 AUTOMAKE_ARGS=	-a
@@ -29,6 +29,8 @@ WRKSRC=		${WRKDIR}/${DISTNAME}/contrib/fb303
 PLIST_SUB+=	PORTVERSION="${PORTVERSION}" PYTHON_VER="${PYTHON_VER}"
 
 CONFIGURE_ARGS+=	--without-php
+
+DISTINFO_FILE=	${PORTSDIR}/devel/thrift/distinfo
 
 .include <bsd.port.pre.mk>
 

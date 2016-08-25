@@ -2,55 +2,61 @@
 # $FreeBSD$
 
 PORTNAME=	djview
-PORTVERSION=	4.9
-PORTREVISION=	5
+PORTVERSION=	4.10.6
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	SF/djvu/DjView/${PORTVERSION}
+MASTER_SITES=	SF/djvu/DjView/${PORTVERSION:R}
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Standalone Djvu viewer and plugin based on Qt4 toolkit
+COMMENT=	Standalone Djvu viewer and plugin based on Qt toolkit
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libdjvulibre.so:${PORTSDIR}/graphics/djvulibre \
-		libtiff.so:${PORTSDIR}/graphics/tiff
+LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre \
+		libtiff.so:graphics/tiff
 
+INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	yes
-USES=		desktop-file-utils libtool pkgconfig webplugin:native
-USE_QT4=	gui network linguisttools_build moc_build qmake_build rcc_build \
-		uic_build
-USE_XORG=	sm ice xt
-QT_NONSTANDARD=	yes
-CONFIGURE_ARGS=	--x-includes="${LOCALBASE}/include" \
-		--x-libraries="${LOCALBASE}/lib" --disable-desktopfiles
-CONFIGURE_ENV=	QMAKE="${QMAKE}" \
-		QMAKESPEC="${QMAKESPEC}"
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-MAKE_ENV=	INSTALL_SCRIPT="${INSTALL_SCRIPT}"
-
-WRKSRC=		${WRKDIR}/djview4-${PORTVERSION}
+USES=		autoreconf desktop-file-utils gettext-runtime gmake libtool \
+		localbase pkgconfig webplugin:native
+USE_GL=		gl
+USE_XORG=	sm ice xext xt
+USE_GNOME=	glib20
+CONFIGURE_ENV=	LRELEASE="${LRELEASE}" LUPDATE="${LUPDATE}"
 
 WEBPLUGIN_DIR=		${PREFIX}/lib/djview4/plugins
 WEBPLUGIN_FILES=	nsdejavu.so
 
+OPTIONS_SINGLE=	QT
+OPTIONS_SINGLE_QT=	QT4 QT5
+OPTIONS_DEFAULT=	QT5
+QT_DESC=		Qt toolkit
+
+QT4_USE=	QT4=corelib,gui,network,opengl,linguisttools_build,moc_build,qmake_build,rcc_build,uic_build
+QT4_USE+=	XORG=x11
+QT5_USE=	QT5=core,gui,network,opengl,printsupport,widgets,buildtools_build,linguisttools_build,qmake_build
+
 post-patch:
-	@${REINPLACE_CMD} -e 's,/netscape/,/djview4/,' \
-		${WRKSRC}/nsdejavu/Makefile.in ${WRKSRC}/nsdejavu/nsdejavu.1.in
-	@${REINPLACE_CMD} -e 's,@NSDEJAVU_LIBS@,& -lXt -lXext,g' \
-		${WRKSRC}/nsdejavu/Makefile.in
+# Use prebuilt icons, without using conversion tool
+	@${REINPLACE_CMD} -e 's/conversion_tool=[[:alpha:]]*/conversion_tool=no/' \
+		${WRKSRC}/configure.ac
+	@${REINPLACE_CMD} -e \
+		'/CXXFLAGS=$$/s|^|#| ; \
+		 /CFLAGS=$$/s|^|#| ; \
+		 s|$$OPTS -O2|$$OPTS|' ${WRKSRC}/config/acinclude.m4
+	@${REINPLACE_CMD} -e \
+		's|FLAGS+=|FLAGS_RELEASE=|' ${WRKSRC}/src/Makefile.am
+# Change plugins directory
+# Add GLIB cflags and libs (including -lX*)
+	@${REINPLACE_CMD} -e '/^pluginsdir/s/mozilla/djview4/ ; \
+		/NSDEJAVU_CFLAGS/s|$$| $$(GLIB_CFLAGS)| ; \
+		/NSDEJAVU_LIBS/s|$$| $$(GLIB_LIBS) -lXt -lXext|' \
+		${WRKSRC}/nsdejavu/Makefile.am
 
 post-install:
-.for f in ${WEBPLUGIN_FILES}
-	@${STRIP_CMD} ${STAGEDIR}${WEBPLUGIN_DIR}/${f}
-.endfor
-.for d in 32 64
-	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${d}x${d}/apps
-	${INSTALL_DATA} ${WRKSRC}/desktopfiles/hi${d}-djview4.png \
-		${STAGEDIR}${PREFIX}/share/icons/hicolor/${d}x${d}/apps/djvulibre-djview4.png
-.endfor
-	${INSTALL_DATA} ${WRKSRC}/desktopfiles/djvulibre-djview4.desktop \
-		${STAGEDIR}${PREFIX}/share/applications
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/djview
+# Create a symbolic link to match desktop file exec name
+	${LN} -sf djview ${STAGEDIR}${PREFIX}/bin/djview4
 
 .include <bsd.port.mk>

@@ -10,7 +10,9 @@ MASTER_SITES=	SF
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Show a scrolling 'Matrix' like screen
 
-USES=		gmake
+LICENSE=	GPLv1+ # though COPYING is GPLv2
+
+USES=		gmake ncurses
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	ChangeLog README TODO
@@ -21,6 +23,8 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/cmatrix ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/cmatrix.1 ${STAGEDIR}${MANPREFIX}/man/man1
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}

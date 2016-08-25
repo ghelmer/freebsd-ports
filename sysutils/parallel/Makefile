@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	parallel
-PORTVERSION=	20150822
+PORTVERSION=	20151122
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -35,6 +35,6 @@ PORTDOCS=	niceload.html niceload.pdf niceload.texi \
 
 SHEBANG_FILES=	src/niceload src/sql
 
-DOCS_BUILD_DEPENDS=	${LOCALBASE}/bin/pod2texi:${PORTSDIR}/print/texinfo
+DOCS_BUILD_DEPENDS=	${LOCALBASE}/bin/pod2texi:print/texinfo
 
 .include <bsd.port.mk>

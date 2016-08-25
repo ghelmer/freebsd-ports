@@ -2,33 +2,34 @@
 # $FreeBSD$
 
 PORTNAME=	nikto
-PORTVERSION=	2.1.5
-PORTREVISION=	1
+PORTVERSION=	2.1.6
 PORTEPOCH=	1
 CATEGORIES=	security www
-MASTER_SITES=	http://www.cirt.net/${PORTNAME}/ \
-		http://www.mirrors.wiretapped.net/security/vulnerability-assessment/${PORTNAME}/
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Web and CGI vulnerability scanner with SSL support
 
 LICENSE=	GPLv2
 
+GH_ACCOUNT=	sullo
+USE_GITHUB=	yes
+
 OPTIONS_DEFINE=	SSLEAY DOCS
 OPTIONS_DEFAULT=SSLEAY
 SSLEAY_DESC=	Use NET::SSLeay for ssl scanning
-SSLEAY_RUN_DEPENDS=	p5-Net-SSLeay>0:${PORTSDIR}/security/p5-Net-SSLeay
+SSLEAY_RUN_DEPENDS=	p5-Net-SSLeay>0:security/p5-Net-SSLeay
 
 NO_BUILD=	yes
+NO_ARCH=	yes
 
 USES=		perl5 shebangfix tar:bzip2
 USE_PERL5=	run
 SHEBANG_FILES=	nikto.pl
+WRKSRC_SUBDIR=	program
 
 post-patch:	.SILENT
 	${REINPLACE_CMD} -e \
-		's|/usr/local/bin/perl|${PERL}| ; \
-		 s|/etc/nikto.conf|${PREFIX}/etc/nikto.conf|' ${WRKSRC}/nikto.pl
+		's|/etc/nikto.conf|${PREFIX}/etc/nikto.conf|' ${WRKSRC}/nikto.pl
 	${REINPLACE_CMD} -Ee \
 		's|# (EXECDIR=).*/nikto|\1${DATADIR}| ; \
 		 s|# (DBDIR=).*/databases|\1${DATADIR}/databases| ; \

@@ -11,12 +11,12 @@ MASTER_SITES=	http://downloads.xiph.org/releases/theora/ \
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Theora video codec for the Ogg multimedia streaming system
 
-LIB_DEPENDS=	libvorbis.so:${PORTSDIR}/audio/libvorbis
+LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-sdltest \
 		--disable-examples
-CPPFLAGS+=	-I${LOCALBASE}/include 
+CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 INSTALL_TARGET=	install-strip
 USES=		libtool tar:bzip2

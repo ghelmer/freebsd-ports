@@ -3,7 +3,7 @@
 
 PORTNAME=	xfce4-session
 PORTVERSION=	4.12.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-wm xfce
 MASTER_SITES=	XFCE/src/xfce/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
@@ -13,12 +13,12 @@ COMMENT=	Xfce's session manager
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	iceauth:${PORTSDIR}/x11/iceauth
-RUN_DEPENDS=	iceauth:${PORTSDIR}/x11/iceauth \
-		console-kit-daemon:${PORTSDIR}/sysutils/consolekit
-LIB_DEPENDS=	libdbus-glib-1.so:${PORTSDIR}/devel/dbus-glib \
-		libupower-glib.so:${PORTSDIR}/sysutils/upower \
-		libpolkit-gobject-1.so:${PORTSDIR}/sysutils/polkit
+BUILD_DEPENDS=	iceauth:x11/iceauth
+RUN_DEPENDS=	iceauth:x11/iceauth \
+		console-kit-daemon:sysutils/consolekit
+LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
+		libupower-glib.so:sysutils/upower \
+		libpolkit-gobject-1.so:sysutils/polkit
 
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
@@ -39,5 +39,9 @@ NLS_CONFIGURE_ENABLE=	nls
 OPTIONS_SUB=	yes
 
 PLIST_SUB=	VERSION="4.6"
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${WRKSRC}/scripts/xflock4
 
 .include <bsd.port.mk>

@@ -2,26 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	cfengine
-PORTVERSION=	3.6.5
-PORTEPOCH=	2
+PORTVERSION=	3.6.6
+.if !defined(MASTERDIR)
+PKGNAMESUFFIX=	36
+PORTEPOCH?=	2
+.endif
 CATEGORIES=	sysutils
-MASTER_SITES=	https://s3.amazonaws.com/cfengine.package-repos/tarballs/
+MASTER_SITES=	https://cfengine-package-repos.s3.amazonaws.com/tarballs/
+DISTFILES=	${PORTNAME}-${PORTVERSION}-2.tar.gz
 
 MAINTAINER=	cy@FreeBSD.org
 #		gjb@FreeBSD.org is also committer for this port
+#		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
 
 LICENSE=	GPLv3
 
 CPE_VENDOR=	gnu
 
-.if !defined(MASTERDIR)
-PKGNAMESUFFIX=	36
-.endif
-
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
 
-CONFLICTS=	cfengine-[234]*
+CONFLICTS=	cfengine-[2-57-9]*
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 
@@ -47,8 +48,8 @@ CONFIGURE_ARGS=	--docdir=${DOCSDIR} \
 		--enable-fhs
 INSTALL_TARGET=	install-strip
 
-LIB_DEPENDS+=	libpcre.so:${PORTSDIR}/devel/pcre \
-		liblmdb.so:${PORTSDIR}/databases/lmdb
+LIB_DEPENDS+=	libpcre.so:devel/pcre \
+		liblmdb.so:databases/lmdb
 
 OPTIONS_DEFINE=	PGSQL MYSQL LIBVIRT
 
@@ -57,10 +58,10 @@ PGSQL_CONFIGURE_ON=	--with-postgresql=${LOCALBASE}
 
 MYSQL_USE=		MYSQL=yes
 MYSQL_CONFIGURE_ON=	--with-mysql=${LOCALBASE}
-MYSQL_LIB_DEPENDS=		libmysqlclient.so:${PORTSDIR}/${_MYSQL_CLIENT}
+MYSQL_LIB_DEPENDS=		libmysqlclient.so:${_MYSQL_CLIENT}
 MYSQL_LDFLAGS=		-L${LOCALBASE}/lib/mysql
 
 LIBVIRT_CONFIGURE_ON=	--with-libvirt=${LOCALBASE}
-LIBVIRT_LIB_DEPENDS+=		libvirt.so:${PORTSDIR}/devel/libvirt
+LIBVIRT_LIB_DEPENDS+=		libvirt.so:devel/libvirt
 
 .include <bsd.port.mk>

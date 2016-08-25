@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	joe
-PORTVERSION=	4.1
+PORTVERSION=	4.2
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES?=	editors
 MASTER_SITES=	SF/joe-editor/JOE%20sources/joe-${PORTVERSION}
@@ -12,10 +13,8 @@ COMMENT=	Joe's Own Editor
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	aspell:${PORTSDIR}/textproc/aspell
-RUN_DEPENDS=	aspell:${PORTSDIR}/textproc/aspell
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	ASPELL DOCS
 
 CONFLICTS=	joe-2.*
 
@@ -25,6 +24,12 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib ${ICONV_LIB}
 
 ALL_TARGET=	${PORTNAME}
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MASPELL}
+RUN_DEPENDS=	aspell:textproc/aspell
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e 's|docs/README.old docs/man.md ||' ${WRKSRC}/Makefile.in

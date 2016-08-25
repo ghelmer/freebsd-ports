@@ -19,8 +19,6 @@ ONLY_FOR_ARCHS=	i386 amd64
 USE_LINUX=	yes
 USE_LINUX_APPS=	xorglibs sdl12
 NO_BUILD=	yes
-NO_PACKAGE=	Distribution is 340MB; set FORCE_PACKAGE if you really want\
-		to build this package
 MANUAL_PACKAGE_BUILD=	Requires CD
 RESTRICTED=	Redistribution is limited, see license
 WRKSRC=		${WRKDIR}/${PKGNAME}
@@ -48,7 +46,7 @@ IGNORE= 	requires CD mounting with -b option
 ANTHOLOGY=	yes
 RELEASE_MSG=	"Unreal Anthology"
 CDDIRS+=	Manual
-BUILD_DEPENDS+=	${LOCALBASE}/bin/unshield:${PORTSDIR}/archivers/unshield
+BUILD_DEPENDS+=	${LOCALBASE}/bin/unshield:archivers/unshield
 UNSHIELD=	${LOCALBASE}/bin/unshield
 PLIST_SUB+=	ANTHOLOGY="" ORIGINAL="@comment "
 .else

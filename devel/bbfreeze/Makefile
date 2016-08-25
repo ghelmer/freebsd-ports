@@ -12,8 +12,8 @@ COMMENT=	Module to create standalone executables from Python scripts
 
 LICENSE=	ZLIB
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}altgraph>=0.9:${PORTSDIR}/math/py-altgraph \
-		${PYTHON_PKGNAMEPREFIX}bbfreeze-loader>=1.1.0:${PORTSDIR}/devel/bbfreeze-loader
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}altgraph>=0.9:math/py-altgraph \
+		${PYTHON_PKGNAMEPREFIX}bbfreeze-loader>=1.1.0:devel/bbfreeze-loader
 
 USES=		python:2 zip
 USE_PYTHON=	autoplist distutils
@@ -23,7 +23,7 @@ PORTDOCS=	*
 
 post-patch:
 	@${REINPLACE_CMD} -e '/altgraph/s,==,>=,' ${WRKSRC}/${PYSETUP}
-	@${REINPLACE_CMD} -e '/from altgraph.compat import/d' \
+	@${REINPLACE_CMD} -e '/from altgraph\.compat import/d' \
 		${WRKSRC}/bbfreeze/modulegraph/modulegraph.py
 
 post-install:

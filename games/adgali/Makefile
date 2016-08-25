@@ -5,17 +5,17 @@ PORTNAME=	adgali
 PORTVERSION=	0.2.4
 PORTREVISION=	15
 CATEGORIES=	games devel
-MASTER_SITES=	http://adgali.apiou.org/download/
+MASTER_SITES=	http://www.sourcefiles.org/Programming/Libraries/Games/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source game library useful for 2D game development
 
-LICENSE=	GPLv2 # or later
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:${PORTSDIR}/graphics/png \
-		libtiff.so:${PORTSDIR}/graphics/tiff \
-		libfreetype.so:${PORTSDIR}/print/freetype2
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libtiff.so:graphics/tiff \
+		libfreetype.so:print/freetype2
 
 USES=		execinfo gmake jpeg libtool tar:bzip2
 USE_LDCONFIG=	yes

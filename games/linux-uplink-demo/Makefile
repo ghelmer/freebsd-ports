@@ -31,15 +31,14 @@ NVIDIA_DESC=	support for nvidia
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MNVIDIA}
-RUN_DEPENDS+=	${LINUXBASE}/usr/lib/libGL.so.1:${PORTSDIR}/x11/nvidia-driver
+RUN_DEPENDS+=	${LINUXBASE}/usr/lib/libGL.so.1:x11/nvidia-driver
 USE_LINUX_APPS+=libglu
 .else
 USE_LINUX_APPS+=dri
 .endif
 
 do-extract:
-	@${MKDIR} ${WRKDIR}
-	@cd ${WRKDIR} && ${TAIL} +376 ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} | \
+	@cd ${WRKSRC} && ${TAIL} +376 ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} | \
 		${TAR} zxf -
 
 do-build:

@@ -5,10 +5,11 @@ PORTNAME=	cgichk
 PORTVERSION=	2.60
 PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	SF
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+MASTER_SITES=	http://BSDforge.com/projects/source/www/cgichk/
 
-MAINTAINER=	ports@FreeBSD.org
+LICENSE=	GPLv2
+
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Web site vulnerability scanner
 
 WRKSRC=		${WRKDIR}/${PORTNAME}

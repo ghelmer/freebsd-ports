@@ -3,7 +3,7 @@
 
 PORTNAME=	uniutils
 PORTVERSION=	2.27
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils textproc
 MASTER_SITES=	http://billposer.org/Software/Downloads/
 
@@ -12,7 +12,7 @@ COMMENT=	Unicode Description Utilities
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	ascii2binary:${PORTSDIR}/converters/ascii2binary
+RUN_DEPENDS=	ascii2binary:converters/ascii2binary
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -26,7 +26,7 @@ PORTDOCS=	AUTHORS NEWS README
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 pre-configure:
-	${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/Makefile.in
+	${REINPLACE_CMD} -e 's|/usr/local|${PREFIX}|' ${WRKSRC}/Makefile.in
 	${REINPLACE_CMD} -e 's|TestData|${EXAMPLESDIR}|' ${WRKSRC}/README
 
 regression-test:

@@ -11,6 +11,10 @@ MASTER_SITES=	http://www.ac.auone-net.jp/~baba/jfbterm/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multilingual terminal emulator for framebuffer
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -55,9 +59,9 @@ MAKE_ENV+=	WITHOUT_ICONV=
 
 .if ${PORT_OPTIONS:MPNG}
 . if !defined(NO_SHARED)
-LIB_DEPENDS+=	libpng.so:${PORTSDIR}/graphics/png
+LIB_DEPENDS+=	libpng.so:graphics/png
 . else
-BUILD_DEPENDS+=	${LOCALBASE}/lib/libpng.a:${PORTSDIR}/graphics/png
+BUILD_DEPENDS+=	${LOCALBASE}/lib/libpng.a:graphics/png
 . endif
 .else
 MAKE_ENV+=	WITHOUT_PNG=
@@ -87,7 +91,7 @@ TERMCAP_DEL_RECORD=	${DO_NADA}
 .endif
 
 .if ${PORT_OPTIONS:MUNIFONT}
-RUN_DEPENDS+=	${LOCALBASE}/share/fonts/gnu-unifont/unifont.pcf.gz:${PORTSDIR}/x11-fonts/gnu-unifont
+RUN_DEPENDS+=	${LOCALBASE}/share/fonts/gnu-unifont/unifont.pcf.gz:x11-fonts/gnu-unifont
 .endif
 
 post-extract:	.SILENT

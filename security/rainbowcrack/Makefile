@@ -9,6 +9,10 @@ MASTER_SITES=	http://www.semprixd.com/shares/ports/
 MAINTAINER= 	ports@FreeBSD.org
 COMMENT=	Hash cracker that precomputes plaintext - ciphertext pairs in advance
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2016-07-04
+
 ONLY_FOR_ARCHS=	i386 amd64
 ONLY_FOR_ARCHS_REASON=	uses x86 assembly
 

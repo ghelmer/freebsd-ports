@@ -5,8 +5,8 @@ PORTNAME=	kmfl-sil-ezra
 PORTVERSION=	2.4
 PORTREVISION=	5
 CATEGORIES=	textproc
-MASTER_SITES=	http://scripts.sil.org/cms/scripts/render_download.php\?site_id=nrsi\&format=file\&media_id=EzraSIL251_Src.zip\&filename=/:1 \
-		http://scripts.sil.org/cms/scripts/render_download.php\?site_id=nrsi\&format=file\&media_id=EzraSIL2.5Keying\&filename=/:2 \
+MASTER_SITES=	http://scripts.sil.org/cms/scripts/render_download.php?site_id=nrsi&format=file&media_id=EzraSIL251_Src.zip&filename=/:1 \
+		http://scripts.sil.org/cms/scripts/render_download.php?site_id=nrsi&format=file&media_id=EzraSIL2.5Keying&filename=/:2 \
 		http://anthesphoria.net/FreeBSD/ports/distfiles/${DIST_SUBDIR}/:1,2
 DISTFILES=	EzraSIL251_Src.zip:1 \
 		Keying+in+Hebrew.pdf:2
@@ -16,7 +16,7 @@ EXTRACT_ONLY=	EzraSIL251_Src.zip
 MAINTAINER=	nikola.lecic@anthesphoria.net
 COMMENT=	KMFL keyboard for Unicode Biblical Hebrew
 
-RUN_DEPENDS=	kmflcomp:${PORTSDIR}/textproc/kmflcomp
+RUN_DEPENDS=	kmflcomp:textproc/kmflcomp
 
 WRKSRC=		${WRKDIR}/EzraSIL2.51
 USES=		dos2unix zip

@@ -6,13 +6,13 @@ PORTVERSION=	0.6.3
 CATEGORIES=	x11
 MASTER_SITES=	SF/florence/florence/${PORTVERSION}/
 
-MAINTAINER=	horia@racoviceanu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensible scalable virtual keyboard
 
 LICENSE=	GPLv2 GFDL
 LICENSE_COMB=	dual
 
-LIB_DEPENDS=	libnotify.so:${PORTSDIR}/devel/libnotify
+LIB_DEPENDS=	libnotify.so:devel/libnotify
 
 USES=		gmake iconv libtool pathfix pkgconfig tar:bzip2
 USE_XORG=	xtst xext

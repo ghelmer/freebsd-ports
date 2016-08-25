@@ -15,8 +15,7 @@ COMMENT=	Provides interface to the libeio library
 LICENSE=	PHP301
 
 CONFIGURE_ARGS=	--enable-eio
-USE_PHP=	yes
-USE_PHPEXT=	yes
-IGNORE_WITH_PHP=	52
+USES=		php:ext
+IGNORE_WITH_PHP=	70
 
 .include <bsd.port.mk>

@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	speed-dial
-PORTVERSION=	0.9.5.9
-PORTREVISION=	1
+PORTVERSION=	0.9.6.17
 DISTVERSIONSUFFIX=	-fx
 CATEGORIES=	www
 MASTER_SITES=	http://speeddial.uworks.net/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Access websites through custom thumbnail views
+
+USES=	zip
 
 XPI_DISTNAME=	speed_dial
 XPI_ID=		{64161300-e22b-11db-8314-0800200c9a66}

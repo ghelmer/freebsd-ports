@@ -14,9 +14,10 @@ COMMENT=	Geometry related functions
 LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Math-Matrix>=0:${PORTSDIR}/math/p5-Math-Matrix
+BUILD_DEPENDS=	p5-Math-Matrix>=0:math/p5-Math-Matrix
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
+NO_ARCH=	yes
 USE_PERL5=	configure
 USES=		perl5
 

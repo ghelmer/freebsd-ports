@@ -2,25 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	kdepimlibs
-PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${KDE4_KDELIBS_VERSION}
+PORTREVISION=	2
 CATEGORIES=	deskutils kde
-MASTER_SITES=	KDE/${KDE4_BRANCH}/${PORTVERSION}/src
+MASTER_SITES=	KDE/${KDE4_APPLICATIONS_BRANCH}/applications/${KDE4_APPLICATIONS_VERSION}/src
 DIST_SUBDIR=	KDE/${PORTVERSION}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE PIM Libraries
 
-BUILD_DEPENDS=	xsltproc:${PORTSDIR}/textproc/libxslt
-LIB_DEPENDS=	libgpgme.so:${PORTSDIR}/security/gpgme \
-		libsasl2.so:${PORTSDIR}/security/cyrus-sasl2 \
-		libboost_thread.so:${PORTSDIR}/devel/boost-libs \
-		libical.so:${PORTSDIR}/devel/libical \
-		libuuid.so:${PORTSDIR}/misc/e2fsprogs-libuuid \
-		libprison.so:${PORTSDIR}/graphics/prison \
-		libqjson.so:${PORTSDIR}/devel/qjson
+BUILD_DEPENDS=	xsltproc:textproc/libxslt
+LIB_DEPENDS=	libgpgme.so:security/gpgme \
+		libsasl2.so:security/cyrus-sasl2 \
+		libboost_thread.so:devel/boost-libs \
+		libical.so:devel/libical \
+		libuuid.so:misc/e2fsprogs-libuuid \
+		libprison.so:graphics/prison \
+		libqjson.so:devel/qjson
 
-USE_KDE4=	kdelibs akonadi kdeprefix \
+USE_KDE4=	kdelibs akonadi \
 		automoc4 ontologies soprano
 USES=		cmake:outsource shared-mime-info shebangfix tar:xz
 SHEBANG_FILES=	mailtransport/kconf_update/migrate-transports.pl
