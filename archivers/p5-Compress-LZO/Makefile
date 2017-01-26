@@ -23,7 +23,4 @@ USE_PERL5=	configure
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Compress/LZO/LZO.so
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Compress/LZO/LZO.so
-
 .include <bsd.port.mk>

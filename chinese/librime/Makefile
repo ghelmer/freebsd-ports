@@ -4,7 +4,6 @@
 PORTNAME=	librime
 PORTVERSION=	1.2.9
 DISTVERSIONPREFIX=	rime-
-PORTREVISION=	1
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	lichray@gmail.com
@@ -29,8 +28,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	rime
 
 PLIST_SUB=	VER=${PORTVERSION}
-
-BROKEN_powerpc64=	Does not build on powerpc64
 
 BROKEN_powerpc64=	Does not build on powerpc64
 

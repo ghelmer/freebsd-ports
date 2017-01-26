@@ -3038,56 +3038,6 @@ fetch-urlall-list:
 .if !target(fetch-url-list)
 fetch-url-list: fetch-url-list-int
 .endif
-#
-# Prints out a list of files to fetch (useful to do a batch fetch)
-
-.if !target(fetch-list)
-fetch-list:
-.if !empty(DISTFILES)
-	@${SETENV} \
-			${_DO_FETCH_ENV} ${_MASTER_SITES_ENV} \
-			dp_SITE_FLAVOR=MASTER \
-			${SH} ${SCRIPTSDIR}/do-fetch.sh ${DISTFILES:C/.*/'&'/}
-.endif
-.if defined(PATCHFILES) && !empty(PATCHFILES)
-	@${SETENV} \
-			${_DO_FETCH_ENV} ${_PATCH_SITES_ENV} \
-			dp_SITE_FLAVOR=PATCH \
-			${SH} ${SCRIPTSDIR}/do-fetch.sh ${PATCHFILES:C/:-p[0-9]//:C/.*/'&'/}
-.endif
-.endif
-
-# Used by fetch-urlall-list and fetch-url-list
-
-.if !target(fetch-url-list-int)
-fetch-url-list-int:
-.if !empty(DISTFILES)
-	@${SETENV} \
-			${_DO_FETCH_ENV} ${_MASTER_SITES_ENV} \
-			dp_SITE_FLAVOR=MASTER \
-			${SH} ${SCRIPTSDIR}/do-fetch.sh ${DISTFILES:C/.*/'&'/}
-.endif
-.if defined(PATCHFILES) && !empty(PATCHFILES)
-	@${SETENV} \
-			${_DO_FETCH_ENV} ${_PATCH_SITES_ENV} \
-			dp_SITE_FLAVOR=PATCH \
-			${SH} ${SCRIPTSDIR}/do-fetch.sh ${PATCHFILES:C/:-p[0-9]//:C/.*/'&'/}
-.endif
-.endif
-
-# Prints out all the URL for all the DISTFILES and PATCHFILES.
-
-.if !target(fetch-urlall-list)
-fetch-urlall-list:
-	@cd ${.CURDIR} && ${SETENV} FORCE_FETCH_ALL=yes ${MAKE} fetch-url-list-int
-.endif
-
-# Prints the URL for all the DISTFILES and PATCHFILES that are not here
-
-.if !target(fetch-url-list)
-fetch-url-list: fetch-url-list-int
-.endif
-
 
 
 # Extract

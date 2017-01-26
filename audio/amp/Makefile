@@ -11,9 +11,6 @@ MASTER_SITES=	http://www.gufi.org/ports/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Another mp3 player
 
-BROKEN=		Does not fetch
-DEPRECATED=	Broken for more than 6 months
-EXPIRATION_DATE=	2016-07-04
 USES=		gmake
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_prog_gcc=no

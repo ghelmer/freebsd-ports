@@ -99,6 +99,8 @@ FLTK_MAKE_ARGS_OFF=	buildCsound5GUI=0 buildCSEditor=0 buildWinsound=0 useFLTK=0
 
 DOCS_DISTFILES=		Csound${PORTVERSION:R}_manual_html.zip:manual
 
+.include <bsd.port.pre.mk>
+
 .if ${ARCH} == amd64 || ${ARCH} == sparc64 || ${ARCH} == ia64
 MAKE_ARGS+=	Word64=1
 .endif

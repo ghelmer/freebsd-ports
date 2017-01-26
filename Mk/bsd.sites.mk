@@ -370,7 +370,6 @@ MASTER_SITE_GENTOO+= \
 #                 Using the name of a branch here is incorrect. It is
 #                 possible to do GH_TAGNAME= GIT_HASH to do a snapshot.
 #                 default: ${DISTVERSION}
-# GH_TUPLE      - above shortened to account:project:tagname[:group]
 #
 # GH_SUBDIR     - directory relative to WRKSRC where to move this distfile's
 #                 content after extracting.

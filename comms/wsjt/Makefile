@@ -74,23 +74,6 @@ post-patch:
 	    -e 's|%%PYTHON_VER%%|${PYTHON_VER}|'\
 	    ${WRKSRC}/configure.ac
 
-do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	${CP} ${FILESDIR}/wsjt ${WRKSRC}
-	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
-		-e 's|%%PYTHON%%|${PYTHON_CMD}|' ${WRKSRC}/wsjt
-	${INSTALL_SCRIPT} ${WRKSRC}/wsjt ${STAGEDIR}${LOCALBASE}/bin
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
-	${MKDIR} ${STAGEDIR}${LOCALBASE}/lib/wsjt/WsjtMod
-.for d in Audio.so __init__.py astro.py g.py go.py options.py palettes.py \
-	smeter.py specjt.py
-	${INSTALL_DATA} ${WRKSRC}/WsjtMod/${d} ${STAGEDIR}${LOCALBASE}/lib/wsjt/WsjtMod
-.endfor
-.for d in CALL3.TXT dmet_10_-1_3.dat dmet_10_0_3.dat dmet_20_-2_2.dat \
-	dmet_20_-3_2.dat wsjtrc wsjt.py Pmw.py PmwColor.py PmwBlt.py
-	${INSTALL_DATA} ${WRKSRC}/${d} ${STAGEDIR}${DATADIR}
-.endfor
 do-build:
 	(cd ${WRKSRC};${GMAKE})
 
