@@ -795,7 +795,6 @@
     SUBDIR += p5-Sort-Key-IPv4
     SUBDIR += p5-TFTP
     SUBDIR += p5-Test-URI
-    SUBDIR += p5-TFTP
     SUBDIR += p5-URI
     SUBDIR += p5-URI-FromHash
     SUBDIR += p5-URI-Match
@@ -1052,7 +1051,6 @@
     SUBDIR += qjsonrpc
     SUBDIR += qoauth
     SUBDIR += qt4-network
-    SUBDIR += qt5-enginio
     SUBDIR += qt5-network
     SUBDIR += qtweetlib
     SUBDIR += quagga

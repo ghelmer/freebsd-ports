@@ -941,7 +941,6 @@ lib/emby-server/dashboard-ui/bower_components/webcomponentsjs/ShadowDOM.min.js
 lib/emby-server/dashboard-ui/bower_components/webcomponentsjs/bower.json
 lib/emby-server/dashboard-ui/bower_components/webcomponentsjs/package.json
 lib/emby-server/dashboard-ui/bower_components/webcomponentsjs/webcomponents-lite.min.js
-lib/emby-server/dashboard-ui/bower_components/webcomponentsjs/webcomponents.js
 lib/emby-server/dashboard-ui/bower_components/webcomponentsjs/webcomponents.min.js
 lib/emby-server/dashboard-ui/camerauploadsettings.html
 lib/emby-server/dashboard-ui/channelitems.html

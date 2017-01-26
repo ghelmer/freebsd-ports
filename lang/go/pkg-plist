@@ -3537,6 +3537,7 @@ go/src/os/error_test.go
 go/src/os/error_unix.go
 go/src/os/error_unix_test.go
 go/src/os/error_windows.go
+go/src/os/error_windows_test.go
 go/src/os/exec.go
 go/src/os/exec/example_test.go
 go/src/os/exec/exec.go
@@ -4479,15 +4480,12 @@ go/src/syscall/net_nacl.go
 go/src/syscall/netlink_linux.go
 go/src/syscall/pwd_plan9.go
 go/src/syscall/route_bsd.go
-go/src/syscall/route_bsd_test.go
 go/src/syscall/route_darwin.go
 go/src/syscall/route_dragonfly.go
 go/src/syscall/route_freebsd.go
 go/src/syscall/route_freebsd_32bit.go
 go/src/syscall/route_freebsd_64bit.go
-go/src/syscall/route_ifma_test.go
 go/src/syscall/route_netbsd.go
-go/src/syscall/route_noifma_test.go
 go/src/syscall/route_openbsd.go
 go/src/syscall/security_windows.go
 go/src/syscall/sockcmsg_linux.go

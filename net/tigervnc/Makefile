@@ -4,7 +4,6 @@
 PORTNAME=	tigervnc
 PORTVERSION=	1.7.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
 CATEGORIES=	net x11-servers
 
 MAINTAINER=	meta+ports@vmeta.jp

@@ -233,14 +233,8 @@ post-patch:
 	${CP} ${FILESDIR}/.asterisk.makeopts ${WRKSRC}/menuselect.makeopts
 .endif
 
-.if exists(${FILESDIR}/.asterisk.makeopts)
-USER_MAKEOPTS_FILE=${FILESDIR}/.asterisk.makeopts
-.else
-USER_MAKEOPTS_FILE=
-.endif
-
 post-configure:
-	@cd ${WRKSRC} && ${MAKE_CMD} menuselect.makeopts USER_MAKEOPTS="${USER_MAKEOPTS_FILE}"
+	@cd ${WRKSRC} && ${MAKE_CMD} menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --disable res_timing_kqueue menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable chan_mgcp menuselect.makeopts
 	@cd ${WRKSRC} && ./menuselect/menuselect --enable res_pktccops menuselect.makeopts

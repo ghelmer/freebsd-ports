@@ -1,5 +1,6 @@
 bin/racket
 bin/raco
+%%ETCDIR%%/config.rktd
 include/racket/escheme.h
 include/racket/ext.exp
 include/racket/mzconfig.h

@@ -17,8 +17,6 @@ GH_PROJECT=	${PORTNAME}-gpl
 
 PORTSCOUT=	skipv:v1.2,v1.13,v1.11 # git repo contains required portability fixes
 
-PORTSCOUT=	skipv:v1.2,v1.13,v1.11 # git repo contains required portability fixes
-
 USE_SDL=	sdl2 mixer2 image2
 
 DATADIR=	${PREFIX}/share/abbayev2

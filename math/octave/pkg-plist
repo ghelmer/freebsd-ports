@@ -661,7 +661,7 @@ include/octave-%%OCTAVE_VERSION%%/octave/pt-arg-list.h
 include/octave-%%OCTAVE_VERSION%%/octave/pt-array-list.h
 include/octave-%%OCTAVE_VERSION%%/octave/pt-assign.h
 include/octave-%%OCTAVE_VERSION%%/octave/pt-bp.h
-include/octave-%%OCTAVE_VERSION%%/octave/pt-c%%QT_BINDIR%%op.h
+include/octave-%%OCTAVE_VERSION%%/octave/pt-cbinop.h
 include/octave-%%OCTAVE_VERSION%%/octave/pt-cell.h
 include/octave-%%OCTAVE_VERSION%%/octave/pt-check.h
 include/octave-%%OCTAVE_VERSION%%/octave/pt-classdef.h
@@ -1783,7 +1783,7 @@ share/icons/hicolor/x/apps/octave.png
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/gcf.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/gco.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/ginput.m
-%%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/gnuplot_%%QT_BINDIR%%ary.m
+%%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/gnuplot_binary.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/graphics_toolkit.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/hdl2struct.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/plot/util/hggroup.m
@@ -1881,7 +1881,7 @@ share/icons/hicolor/x/apps/octave.png
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/blackman.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/detrend.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/diffpara.m
-%%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/dur%%QT_BINDIR%%levinson.m
+%%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/durbinlevinson.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/fftconv.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/fftfilt.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/signal/fftshift.m
@@ -2060,10 +2060,10 @@ share/icons/hicolor/x/apps/octave.png
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/logninv.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/lognpdf.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/lognrnd.m
-%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/n%%QT_BINDIR%%cdf.m
-%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/n%%QT_BINDIR%%inv.m
-%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/n%%QT_BINDIR%%pdf.m
-%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/n%%QT_BINDIR%%rnd.m
+%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/nbincdf.m
+%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/nbininv.m
+%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/nbinpdf.m
+%%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/nbinrnd.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/normcdf.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/norminv.m
 %%DATADIR%%/%%OCTAVE_VERSION%%/m/statistics/distributions/normpdf.m

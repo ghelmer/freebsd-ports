@@ -1276,6 +1276,7 @@
 %%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/FIXES.txt
 %%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/build-config.js
 %%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/ckeditor.js
+%%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/ckeditor.orig.js
 %%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/config.js
 %%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/contents.css
 %%WWWDIR%%/rainloop/v/%%VER%%/static/ckeditor/lang/af.js

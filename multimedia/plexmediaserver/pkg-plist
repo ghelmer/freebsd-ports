@@ -2367,7 +2367,6 @@
 %%DATADIR%%/Resources/lastfm-combiner-albums.xml
 %%DATADIR%%/Resources/lastfm-combiner-artists.xml
 %%DATADIR%%/Resources/locale/ar/LC_MESSAGES/plex.mo
-%%DATADIR%%/Resources/locale/ca_AD/LC_MESSAGES/plex.mo
 %%DATADIR%%/Resources/locale/cs_CZ/LC_MESSAGES/plex.mo
 %%DATADIR%%/Resources/locale/da/LC_MESSAGES/plex.mo
 %%DATADIR%%/Resources/locale/de/LC_MESSAGES/plex.mo

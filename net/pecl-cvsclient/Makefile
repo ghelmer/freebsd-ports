@@ -9,7 +9,7 @@ MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
 DIST_SUBDIR=	PECL
 
-MAINTAINER=	miwi@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PHP extension for CVS pserver client
 
 DEPRECATED=	Works only with EOL php 5.5

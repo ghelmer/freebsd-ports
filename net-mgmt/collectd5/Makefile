@@ -281,7 +281,6 @@ CONFIGURE_ARGS+=--enable-aggregation \
 		--enable-cpu \
 		--enable-csv \
 		--enable-df \
-		--enable-disk \
 		--enable-dns \
 		--enable-email \
 		--enable-exec \

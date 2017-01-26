@@ -35,4 +35,4 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/hostapd/hostapd.8 \
 		${STAGEDIR}${MANPREFIX}/man/man8
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

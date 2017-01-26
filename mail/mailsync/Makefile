@@ -28,8 +28,6 @@ post-patch:
 	${REINPLACE_CMD} -e 's|\($withval\),$${OPENSSLLOCATIONS}|\1|g'	\
 		${WRKSRC}/configure
 
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/mailsync ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/doc/mailsync.1 ${STAGEDIR}${MANPREFIX}/man/man1

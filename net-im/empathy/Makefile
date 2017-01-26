@@ -83,9 +83,4 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|clutter-gst-1.0|clutter-gst-2.0|g' \
 			${WRKSRC}/configure
 
-# workaround wierd bug that happened in 3.12.11.
-post-install:
-	@${MV} ${STAGEDIR}/mission-control-plugins.0 \
-		${STAGEDIR}${PREFIX}/lib/
-
 .include <bsd.port.mk>

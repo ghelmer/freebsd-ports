@@ -13,10 +13,6 @@ COMMENT=	High-performance Asterisk voice/video conferencing plugin
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	asterisk:net/asterisk
-RUN_DEPENDS=	asterisk:net/asterisk
-
-
 USE_CSTD=	gnu89
 USES=		compiler:features gmake
 WRKSRC=		${WRKDIR}/${PORTNAME}/konference

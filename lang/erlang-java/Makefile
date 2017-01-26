@@ -18,7 +18,6 @@ PATCHFILES=	patch-otp-19.1.1
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Erlang interface for Java
-LICENSE=	APACHE20
 
 LICENSE=	APACHE20
 

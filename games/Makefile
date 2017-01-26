@@ -14,7 +14,6 @@
     SUBDIR += 54321
     SUBDIR += 7kaa
     SUBDIR += CaribbeanStud
-    SUBDIR += cockatrice
     SUBDIR += HeroesOfMightAndMagic
     SUBDIR += KnightCap
     SUBDIR += abbayedesmorts

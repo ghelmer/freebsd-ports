@@ -93,11 +93,3 @@
  		with_libvarnish="yes"
  	fi; fi; fi
  ],
-@@ -5334,6 +5337,7 @@ fi
- 
- if test "x$ac_system" = "xFreeBSD"
- then
-+	plugin_disk="yes"
- 	plugin_zfs_arc="yes"
- fi
- 

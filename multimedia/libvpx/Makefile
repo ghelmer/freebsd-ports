@@ -81,16 +81,6 @@ EXTRA_PATCHES+=	${FILESDIR}/extra-patch-build_make_Makefile
 IGNORE=	no support for ${ARCH} the moment. testing/patches are welcome
 .endif
 
-.include <bsd.port.pre.mk>
-
-# Workaround for GCC in 9.x post r260075
-# OSVERSION taken from r260135, the closest OSVERSION
-.if ${OPSYS} == FreeBSD && ${OSVERSION} > 902505
-. if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} == 42
-CFLAGS+=	-flax-vector-conversions
-. endif
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} 's|\(link_with_cc\)=gcc|\1=$${CC}|' \
 		${WRKSRC}/build/make/configure.sh

@@ -75,10 +75,6 @@ ZMQ_CONFIGURE_ENABLE=	zmq
 ZMQ_BUILD_DEPENDS=	libzmq4>0:net/libzmq4
 ZMQ_RUN_DEPENDS=	libzmq4>0:net/libzmq4
 
-ZMQ_CONFIGURE_ENABLE=	zmq
-ZMQ_BUILD_DEPENDS=	libzmq4>0:net/libzmq4
-ZMQ_RUN_DEPENDS=	libzmq4>0:net/libzmq4
-
 GH_ACCOUNT=	bitcoin
 
 CONFIGURE_ARGS?=	--without-libs \

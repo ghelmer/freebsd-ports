@@ -468,7 +468,6 @@ lib/dpdk
 %%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_malloc.h
 %%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_malloc_heap.h
 %%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_mbuf.h
-%%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_mbuf_offload.h
 %%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_memcpy.h
 %%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_memory.h
 %%DATADIR%%/x86_64-native-bsdapp-clang/include/rte_mempool.h
@@ -530,7 +529,6 @@ lib/dpdk
 %%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_kvargs.a
 %%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_lpm.a
 %%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_mbuf.a
-%%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_mbuf_offload.a
 %%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_mempool.a
 %%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_meter.a
 %%DATADIR%%/x86_64-native-bsdapp-clang/lib/librte_pdump.a

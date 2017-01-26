@@ -137,7 +137,6 @@ PLIST_SUB=		R_SOVERSION="${R_SOVERSION}" \
 			RBLAS_SOVERSION="${RBLAS_SOVERSION}" \
 			RLAPACK_SOVERSION="${RLAPACK_SOVERSION}"
 
-.include "compiler.mk"
 .include <bsd.port.options.mk>
 .include "compiler.mk"
 

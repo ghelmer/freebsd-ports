@@ -10,7 +10,7 @@ lib/audacious/Effect/compressor.so
 lib/audacious/Effect/crossfade.so
 lib/audacious/Effect/crystalizer.so
 lib/audacious/Effect/echo.so
-%%GTK2%%lib/audacious/Effect/ladspa.so
+lib/audacious/Effect/ladspa.so
 lib/audacious/Effect/mixer.so
 %%SAMPLERATE%%lib/audacious/Effect/resample.so
 lib/audacious/Effect/silence-removal.so
@@ -26,8 +26,7 @@ lib/audacious/General/gnomeshortcuts.so
 lib/audacious/General/gtkui.so
 lib/audacious/General/hotkey.so
 %%LIRC%%lib/audacious/General/lirc.so
-%%GTK2%%lib/audacious/General/lyricwiki.so
-%%QT5%%lib/audacious/General/lyricwiki-qt.so
+lib/audacious/General/lyricwiki.so
 %%MPRIS%%lib/audacious/General/mpris2.so
 %%NOTIFY%%lib/audacious/General/notify.so
 lib/audacious/General/playlist-manager.so

@@ -19,8 +19,6 @@ USE_RC_SUBR=	socat
 
 CPE_VENDOR=	dest-unreach
 
-CPE_VENDOR=	dest-unreach
-
 PORTSCOUT=	skipv:2.0.0-b2
 
 PLIST_FILES=	bin/filan bin/procan bin/socat man/man1/socat.1.gz

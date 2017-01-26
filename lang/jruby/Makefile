@@ -82,10 +82,6 @@ do-install:
 	@${FIND} ${STAGEDIR}${JRUBY_HOME}/lib/jni/x86_64-FreeBSD -type f -name '*\.so' -exec ${STRIP_CMD} {} \;
 	@${ECHO_MSG} " [ DONE ]"
 
-	@${ECHO_MSG} -n ">> Stripping shared libraries for jnr-ffi"
-	@${FIND} ${STAGEDIR}${JRUBY_HOME}/lib/jni/x86_64-FreeBSD -type f -name '*\.so' -exec ${STRIP_CMD} {} \;
-	@${ECHO_MSG} " [ DONE ]"
-
 .if ${PORT_OPTIONS:MDOCS}
 	@${ECHO_MSG} -n ">> Installing Documents files..."
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

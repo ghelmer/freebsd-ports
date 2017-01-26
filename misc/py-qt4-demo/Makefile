@@ -36,12 +36,4 @@ do-install:
 		-f -d ${PYTHONPREFIX_SITELIBDIR} \
 		${STAGEDIR}${EXAMPLESDIR}
 
-post-install:
-	${PYTHON_CMD} ${PYTHON_LIBDIR}/compileall.py \
-		-f -d ${PYTHONPREFIX_SITELIBDIR} \
-		${STAGEDIR}${EXAMPLESDIR}
-	${PYTHON_CMD} -O ${PYTHON_LIBDIR}/compileall.py \
-		-f -d ${PYTHONPREFIX_SITELIBDIR} \
-		${STAGEDIR}${EXAMPLESDIR}
-
 .include <bsd.port.mk>

@@ -44,12 +44,6 @@ INSTALLS_ICONS=	yes
 CXXFLAGS+=	-D_GLIBCXX_USE_C99
 .endif
 
-.include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == gcc
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|-ldl||' \
 		${WRKSRC}/deps/glad/CMakeLists.txt

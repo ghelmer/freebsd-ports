@@ -44,7 +44,6 @@ lib/rustlib/etc/gdb_rust_pretty_printing.py
 %%PORTDOCS%%lib/rustlib/manifest-rust-docs
 lib/rustlib/manifest-rust-std-%%RUST_TARGET%%
 lib/rustlib/manifest-rustc
-lib/rustlib/manifest-rust-std-%%RUST_TARGET%%
 lib/rustlib/rust-installer-version
 lib/rustlib/uninstall.sh
 lib/rustlib/%%RUST_TARGET%%/lib/liballoc-%%RUST_VSN_HASH%%.rlib

@@ -34,6 +34,7 @@ pidfile=${rspamd_pidfile:-"/var/run/rspamd/rspamd.pid"}
 command=%%PREFIX%%/bin/rspamd
 command_adm=%%PREFIX%%/bin/rspamadm
 restart_precmd="rspamd_checkconfig"
+reload_precmd="rspamd_checkconfig"
 configtest_cmd="rspamd_checkconfig"
 reopenlog_cmd="reopenlog_cmd"
 

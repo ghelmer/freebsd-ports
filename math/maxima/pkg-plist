@@ -1713,7 +1713,6 @@ man/man1/maxima.1.gz
 %%DATADIR%%/%%PORTVERSION%%/src/command-line.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/compar.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/compat.lisp
-%%DATADIR%%/%%PORTVERSION%%/src/configure-minimal.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/conjugate.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/cpoly.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/csimp.lisp
@@ -1969,6 +1968,7 @@ man/man1/maxima.1.gz
 %%DATADIR%%/%%PORTVERSION%%/src/sublis.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/sumcon.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/suprv1.lisp
+%%DATADIR%%/%%PORTVERSION%%/src/sys-proclaim.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/tlimit.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/todd-coxeter.lisp
 %%DATADIR%%/%%PORTVERSION%%/src/trans1.lisp

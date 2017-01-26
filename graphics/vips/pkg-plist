@@ -141,13 +141,6 @@ man/man1/vipsthumbnail.1.gz
 %%PORTDOCS%%share/gtk-doc/html/libvips/interconvert.png
 %%PORTDOCS%%share/gtk-doc/html/libvips/left-insensitive.png
 %%PORTDOCS%%share/gtk-doc/html/libvips/left.png
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsForeignSave.html
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsImage.html
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsInterpolate.html
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsObject.html
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsOperation.html
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsRegion.html
-%%PORTDOCS%%share/gtk-doc/html/libvips/libvips-VipsThreadState.html
 %%PORTDOCS%%share/gtk-doc/html/libvips/libvips-arithmetic.html
 %%PORTDOCS%%share/gtk-doc/html/libvips/libvips-basic.html
 %%PORTDOCS%%share/gtk-doc/html/libvips/libvips-buf.html
