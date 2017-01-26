@@ -96,4 +96,3 @@ man/man8/knotd.8.gz
 sbin/keymgr
 sbin/knotc
 sbin/knotd
-sbin/kzonecheck

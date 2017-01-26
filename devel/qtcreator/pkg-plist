@@ -98,7 +98,6 @@ lib/qtcreator/plugins/libQmlDesigner.so
 lib/qtcreator/plugins/libQmlJSEditor.so
 lib/qtcreator/plugins/libQmlJSTools.so
 lib/qtcreator/plugins/libQmlProfiler.so
-lib/qtcreator/plugins/libQmlProfilerExtension.so
 lib/qtcreator/plugins/libQmlProjectManager.so
 lib/qtcreator/plugins/libQnx.so
 lib/qtcreator/plugins/libQtSupport.so

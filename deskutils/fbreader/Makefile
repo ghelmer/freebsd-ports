@@ -67,11 +67,4 @@ pre-configure:
 	@${REINPLACE_CMD} 's|^CFLAGS =.*$$|CFLAGS = ${CFLAGS}|' \
 		${WRKSRC}/makefiles/arch/desktop.mk
 
-pre-configure:
-# This cannot be done in post-patch because build dependencies are installed
-# after patching and they can pull in libiconv which can affect CFLAGS in
-# Mk/Uses/iconv.mk.
-	@${REINPLACE_CMD} 's|^CFLAGS =.*$$|CFLAGS = ${CFLAGS}|' \
-		${WRKSRC}/makefiles/arch/desktop.mk
-
 .include <bsd.port.mk>

@@ -3,9 +3,9 @@ missing dependencies.
 
 --- src/src.pro.orig	2016-02-24 21:41:26 UTC
 +++ src/src.pro
-@@ -1,37 +1,2 @@
+@@ -1,38 +1,3 @@
  TEMPLATE = subdirs
--
+ 
 -qtHaveModule(widgets) {
 -    no-png {
 -        message("Some graphics-related tools are unavailable without PNG support")

@@ -201,6 +201,7 @@ include/dnslg/config-resolver.h
 include/dnslg/dns.h
 include/dnslg/dnslg-config-features.h
 include/dnslg/resolv-conf.h
+include/dnslg/resolv.h
 include/dnszone/dnszone-config-features.h
 include/dnszone/dnszone-config.h
 include/dnszone/dnszone.h

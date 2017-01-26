@@ -14,7 +14,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	utzig
 GH_TAGNAME=	65fbc45
 
-USES=		pkgconfig gmake
+USES=		gmake
 
 PORTDOCS=	*
 PLIST_FILES=	bin/lm4flash bin/lmicdi

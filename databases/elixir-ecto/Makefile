@@ -20,11 +20,6 @@ OPTIONS_SUB=	yes
 POSTGREX_DESC=	PostgreSQL adapter support
 MARIAEX_DESC=	MySQL adapter support
 
-OPTIONS_DEFINE=	POSTGREX MARIAEX
-OPTIONS_SUB=	yes
-POSTGREX_DESC=	PostgreSQL adapter support
-MARIAEX_DESC=	MySQL adapter support
-
 MIX_BUILD_NAME=	shared
 MIX_BUILD_DEPS=	devel/elixir-decimal \
 		devel/elixir-poison \

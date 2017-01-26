@@ -16,13 +16,7 @@ USES=		qmake
 BUILD_WRKSRC=	${WRKSRC}/src/${PORTNAME}
 INSTALL_WRKSRC=	${BUILD_WRKSRC}
 
-QT_DOCDIR=      ${PREFIX}/share/doc/qt5
-
-post-install:
-	${MKDIR} ${STAGEDIR}${QT_DOCDIR} && \
-	cd ${WRKSRC}/doc/global && \
-		${COPYTREE_SHARE} \* ${STAGEDIR}${QT_DOCDIR}/global
-
+PLIST_FILES=	${QT_BINDIR}/qdoc
 
 .include <bsd.port.pre.mk>
 

@@ -68,8 +68,6 @@ RELRO_CONFIGURE_OFF=	--enable-relro=no
 
 MAKE_ENV+=	ac_cv_func_sbrk=0
 
-MAKE_ENV+=	ac_cv_func_sbrk=0
-
 OPTIONS_SUB=	yes
 NLS_USES=	gettext
 NLS_CONFIGURE_ENABLE=	nls

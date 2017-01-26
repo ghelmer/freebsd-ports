@@ -4243,7 +4243,6 @@
     SUBDIR += py-lock_file
     SUBDIR += py-lockfile
     SUBDIR += py-log4py
-    SUBDIR += py-logbook
     SUBDIR += py-logan
     SUBDIR += py-logbook
     SUBDIR += py-logilab-common
@@ -5360,7 +5359,6 @@
     SUBDIR += simian
     SUBDIR += simple_components
     SUBDIR += skalibs
-    SUBDIR += slibtool
     SUBDIR += slf4j
     SUBDIR += slibtool
     SUBDIR += smack

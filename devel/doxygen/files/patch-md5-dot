@@ -44,7 +44,7 @@
    bool regenerate=FALSE;
    if (checkAndUpdateMd5Signature(absBaseName,sigStr) ||
        !checkDeliverables(graphFormat==GOF_BITMAP ? absImgName :
-@@ -4152,10 +4147,8 @@ void generateGraphLegend(const char *pat
+@@ -4099,10 +4094,8 @@ void generateGraphLegend(const char *pat
    md5stream << "  Node18 -> Node9 [dir=\"back\",color=\"darkorchid3\",fontsize=\"" << FONTSIZE << "\",style=\"dashed\",label=\"m_usedClass\",fontname=\"" << FONTNAME << "\"];\n";
    md5stream << "  Node18 [shape=\"box\",label=\"Used\",fontsize=\"" << FONTSIZE << "\",height=0.2,width=0.4,fontname=\"" << FONTNAME << "\",color=\"black\",URL=\"$classUsed" << Doxygen::htmlFileExtension << "\"];\n";
    writeGraphFooter(md5stream);

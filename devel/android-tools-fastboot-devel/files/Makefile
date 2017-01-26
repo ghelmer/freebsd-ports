@@ -134,10 +134,4 @@ PKG_CONFIG?=	pkg-config
 beforeinstall:
 	${INSTALL} -d ${DESTDIR}${FILESDIR}
 
-GIT?=		git
-PKG_CONFIG?=	pkg-config
-
-beforeinstall:
-	${INSTALL} -d ${DESTDIR}${FILESDIR}
-
 .include <bsd.prog.mk>

@@ -4,7 +4,6 @@ PORTNAME=	godep
 PORTVERSION=	74
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
-DISTVERSIONPREFIX=	v
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Godep helps build packages reproducibly
