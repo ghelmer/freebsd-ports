@@ -15,12 +15,18 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libc-client4.so:mail/cclient
 
-USES=		gmake
-USE_OPENSSL=	yes
+USES=		gmake ssl
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-c-client=${LOCALBASE}
+CONFIGURE_ARGS=	--with-c-client=${LOCALBASE} \
+		--with-openssl=${OPENSSLBASE}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+post-patch:
+	${REINPLACE_CMD} -e 's|\($withval\),$${OPENSSLLOCATIONS}|\1|g'	\
+		${WRKSRC}/configure
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 

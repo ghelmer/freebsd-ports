@@ -75,7 +75,7 @@
  
      if (
  #ifdef INT_16BIT
-@@ -2701,6 +2728,12 @@
+@@ -2701,6 +2728,12 @@ __GDEF
      int repeated_buf_err;
      bz_stream bstrm;
  

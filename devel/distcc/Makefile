@@ -6,7 +6,6 @@ PORTNAME=	distcc
 PORTVERSION=	3.1
 PORTREVISION=	6
 CATEGORIES=	devel
-MASTER_SITES=	GOOGLE_CODE
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Distribute compilation of C(++) code acrosss machines on a network
@@ -17,14 +16,17 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpopt.so:devel/popt
 
 GNU_CONFIGURE=	yes
-USES=		alias gmake tar:bzip2
+USES=		autoreconf alias gmake libtool pkgconfig tar:bzip2
+USE_GITHUB=	yes
+GH_ACCOUNT=     distcc
+GH_TAGNAME=	9a09372
 WANT_GNOME=	yes
 
 GROUPS=		distcc
 USERS=		distcc
 
 CCLINKDIR?=	libexec/distcc
-CONFIGURE_ARGS=	--disable-Werror
+CONFIGURE_ARGS=	--disable-Werror CC=${CC} PTHREAD_CC=${CC}
 CONFIGURE_ENV=	PYTHON="${NONEXISTENT}"
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -70,7 +72,7 @@ DISTCC_COMPILERS=	CC c++ cc
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MCLANGLINK}
-CLANG_COMPILERS=	-devel 31 32 33 34 35
+CLANG_COMPILERS=	-devel 31 32 33 34 35 36 37 38 39
 DISTCC_COMPILERS+=	clang++ clang
 DISTCC_COMPILERS+=	${CLANG_COMPILERS:S|^|clang++|}
 DISTCC_COMPILERS+=	${CLANG_COMPILERS:S|^|clang|}

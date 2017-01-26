@@ -4,7 +4,7 @@ PORTNAME=	dxirc
 PORTVERSION=	1.10.0
 PORTREVISION=	3
 CATEGORIES=	irc
-MASTER_SITES=	GOOGLE_CODE
+MASTER_SITES=	SF/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	arch_dvx@users.sourceforge.net
 COMMENT=	Simple IRC client written using the FOX toolkit

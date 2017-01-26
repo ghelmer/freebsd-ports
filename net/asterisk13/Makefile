@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	13.11.2
+PORTVERSION=	13.13.1
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
@@ -250,11 +250,8 @@ post-patch-SYSINFO-on:
 post-patch-SYSINFO-off:
 	@${REINPLACE_CMD} -e '/#define HAVE_SYSINFO 1/d' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/%%LIBSYSINFO%%/d' ${WRKSRC}/main/Makefile
-
 .if exists(${FILESDIR}/.asterisk.makeopts)
-USER_MAKEOPTS_FILE=${FILESDIR}/.asterisk.makeopts
-.else
-USER_MAKEOPTS_FILE=
+	${CP} ${USER_MAKEOPTS_FILE} ${WRKSRC}/menuselect.makeopts
 .endif
 
 post-configure:

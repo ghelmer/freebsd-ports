@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sqlite3
-PORTVERSION=	3.13.0
+PORTVERSION=	3.14.1
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://www.sqlite.org/2016/ http://www2.sqlite.org/2016/ http://www3.sqlite.org/2016/
 DISTNAME=	sqlite-autoconf-${PORTVERSION:C/\.([[:digit:]])[[:>:]]/0\1/g:S/.//g}00
@@ -25,7 +26,7 @@ MAKE_JOBS_UNSAFE=	yes
 OPTIONS_DEFINE=	FTS4 UPD_DEL_LIMIT URI URI_AUTHORITY SOUNDEX METADATA \
 		DIRECT_READ MEMMAN SECURE_DELETE UNLOCK_NOTIFY THREADS \
 		EXTENSION ARMOR STMT DBSTAT FTS5 JSON1 RBU \
-		LIKENOTBLOB STSHELL FTS3_TOKEN SESSION
+		LIKENOTBLOB STSHELL FTS3_TOKEN SESSION UNKNOWN_SQL
 OPTIONS_SINGLE=	RAMT
 OPTIONS_RADIO=	STAT
 OPTIONS_GROUP=	UNICODE RTREEG RL
@@ -50,6 +51,9 @@ LIKENOTBLOB_DESC=	LIKE does not match blobs
 
 # https://www.sqlite.org/compile.html#enable_api_armor
 ARMOR_DESC=		Detect misuse of the API
+
+# http://sqlite.org/compile.html#enable_unknown_sql_function
+UNKNOWN_SQL_DESC=	suppress unknown function errors
 
 # https://www.sqlite.org/fts3.html
 # https://www.sqlite.org/compile.html#enable_fts3_parenthesis
@@ -167,6 +171,7 @@ ICU_LIB_DEPENDS=	libicudata.so:devel/icu
 ICU_CPPFLAGS=	`${LOCALBASE}/bin/icu-config --cppflags` -DSQLITE_ENABLE_ICU=1
 ICU_LDFLAGS=	`${LOCALBASE}/bin/icu-config --ldflags`
 
+UNICODE61_CPPFLAGS=	""
 UNICODE61_CPPFLAGS_OFF=	-DSQLITE_DISABLE_FTS3_UNICODE=1
 
 READLINES_CONFIGURE_ON=	--enable-readline
@@ -186,7 +191,18 @@ STSHELL_CONFIGURE_ENABLE=	static-shell
 
 SESSION_CONFIGURE_ENABLE=	session
 
+UNKNOWN_SQL_CPPFLAGS=	-DSQLITE_ENABLE_UNKNOWN_SQL_FUNCTION=1
+
 .include <bsd.port.options.mk>
+
+# Platform Configuration
+.if !defined(WITH_DEBUG)
+CFLAGS+=	-Os
+.endif
+CPPFLAGS+=	-DHAVE_ISNAN=1 -DHAVE_MALLOC_USABLE_SIZE=1 -DHAVE_GMTIME_R=1 -DHAVE_LOCALTIME_R=1 -DHAVE_USLEEP=1
+.if ${OPSYS} == DragonFly || (${OPSYS} == FreeBSD && ${OSVERSION} >= 1000029)
+CPPFLAGS+=	-DHAVE_STRCHRNUL=1
+.endif
 
 post-configure:
 	@${ECHO_MSG} "===> CONFIGURE_ARGS=${CONFIGURE_ARGS}"

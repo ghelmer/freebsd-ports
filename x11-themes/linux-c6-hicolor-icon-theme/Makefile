@@ -17,7 +17,7 @@ CONFLICTS=	linux-f10-hicolor-icon-theme-[0-9]*
 RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-theme
 
 NO_BUILD=	yes
-USE_LINUX=	c6
+USES=		linux:c6
 USE_LINUX_PREFIX=	yes
 PLIST_FILES=	usr/share/icons/hicolor
 

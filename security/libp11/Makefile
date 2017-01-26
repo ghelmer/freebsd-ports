@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libp11
-PORTVERSION=	0.4.0
+PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security devel
 
@@ -18,9 +18,8 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 USE_GITHUB=	yes
 GH_ACCOUNT=	OpenSC
 
-USE_OPENSSL=	yes
 GNU_CONFIGURE=	yes
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf libtool pkgconfig ssl
 USE_LDCONFIG=	yes
 
 MAKE_JOBS_UNSAFE=	yes
@@ -34,7 +33,13 @@ CONFIGURE_ARGS=	--with-enginesdir=${PREFIX}/lib/engines
 
 INSTALL_TARGET=	install-strip
 
-PORTDOCS=	*
+CONFIGURE_ARGS=	--with-enginesdir=${PREFIX}/lib/engines
+
+.include <bsd.port.pre.mk>
+
+.if ${SSL_DEFAULT:Mlibressl*}
+IGNORE=	detected LibreSSL (numerous OPENSSL_VERSION_NUMBER preprocessor conditions)
+.endif
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -42,4 +47,4 @@ post-install-EXAMPLES-on:
 	${INSTALL_DATA}	${WRKSRC}/examples/Makefile ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA}	${WRKSRC}/examples/*.c ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

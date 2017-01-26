@@ -3,6 +3,7 @@
 
 PORTNAME=	bcompiler
 PORTVERSION=	1.0.2
+PORTREVISION=	1
 CATEGORIES=	devel pear
 MASTER_SITES=	http://pecl.php.net/get/
 PKGNAMEPREFIX=	pecl-
@@ -10,6 +11,9 @@ DIST_SUBDIR=	PECL
 
 MAINTAINER=	miwi@FreeBSD.org
 COMMENT=	Bytecode compiler extension
+
+DEPRECATED=	Works only with EOL php 5.5
+EXPIRATION_DATE=	2016-10-20
 
 LICENSE=	PHP202
 

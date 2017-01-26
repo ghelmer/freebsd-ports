@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	phpMyAdmin
-DISTVERSION=	4.6.4
-PORTREVISION=	1
+DISTVERSION=	4.6.5
 CATEGORIES=	databases www
 MASTER_SITES=	https://files.phpmyadmin.net/${PORTNAME}/${DISTVERSION}/
 DISTNAME=	${PORTNAME}-${DISTVERSION}-all-languages
@@ -12,8 +11,6 @@ MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Set of PHP-scripts to manage MySQL over the web
 
 LICENSE=	GPLv2
-
-BROKEN_powerpc64=	Does not build
 
 USES=		cpe php:web tar:xz
 CPE_PRODUCT=	${PORTNAME:tl}

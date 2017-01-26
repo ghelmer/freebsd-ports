@@ -2,20 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	linux-f10
-PORTVERSION=	0.2
+PORTVERSION=	${LINUX_DIST_VER}
+PORTREVISION=	1
 CATEGORIES=	emulators linux
 
 MAINTAINER=	emulation@FreeBSD.org
 COMMENT=	Meta-port for all things Fedora ${LINUX_DIST_VER}
 
-USES=	metaport
-
-# base
-USE_LINUX=	f10
-
-# non-base
-
-RUN_DEPENDS+=	linux-f10-libasyncns>0:dns/linux-f10-libasyncns \
+RUN_DEPENDS=	linux-f10-libasyncns>0:dns/linux-f10-libasyncns \
 		linux-f10-gtk2>0:x11-toolkits/linux-f10-gtk2 \
 		linux-f10-tk85>0:x11-toolkits/linux-f10-tk85 \
 		linux-f10-qt45>0:x11-toolkits/linux-f10-qt45 \
@@ -36,7 +30,6 @@ RUN_DEPENDS+=	linux-f10-libasyncns>0:dns/linux-f10-libasyncns \
 		linux-f10-dbus-glib>0:devel/linux-f10-dbus-glib \
 		linux-f10-libsigc++20>0:devel/linux-f10-libsigc++20 \
 		linux-f10-ncurses-base>0:devel/linux-f10-ncurses-base \
-		linux_base-f10>0:emulators/linux_base-f10 \
 		linux-f10-xorg-libs>0:x11/linux-f10-xorg-libs \
 		linux-f10-fontconfig>0:x11-fonts/linux-f10-fontconfig \
 		linux-f10-cups-libs>0:print/linux-f10-cups-libs \
@@ -56,7 +49,6 @@ RUN_DEPENDS+=	linux-f10-libasyncns>0:dns/linux-f10-libasyncns \
 		linux-f10-alsa-lib>0:audio/linux-f10-alsa-lib \
 		linux-f10-libv4l>0:multimedia/linux-f10-libv4l \
 		linux-f10-libtheora>0:multimedia/linux-f10-libtheora \
-		linux-f10-flashplugin>0:www/linux-f10-flashplugin11 \
 		linux-f10-nss>0:security/linux-f10-nss \
 		linux-f10-libtasn1>0:security/linux-f10-libtasn1 \
 		linux-f10-libgcrypt>0:security/linux-f10-libgcrypt \
@@ -89,6 +81,8 @@ RUN_DEPENDS+=	linux-f10-libasyncns>0:dns/linux-f10-libasyncns \
 		linux-f10-glew>0:graphics/linux-f10-glew \
 		linux-f10-cairo>0:graphics/linux-f10-cairo
 # don't pull in graphics/linux-f10-libGLU -- conflicts with graphics/linux-f10-dri
+
+USES=		linux:f10 metaport
 
 OPTIONS_DEFINE=	NVIDIA_GL
 

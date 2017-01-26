@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	distilator
-PORTVERSION=	0.2
-PORTREVISION=	2
+PORTVERSION=	0.3
 CATEGORIES=	ports-mgmt perl5
 MASTER_SITES=	LOCAL/ehaupt
 
@@ -14,10 +13,12 @@ LICENSE=	ART10 GPLv1
 LICENSE_COMB=	dual
 
 RUN_DEPENDS=	p5-URI>=1.56:net/p5-URI \
-		p5-libwww>=0:www/p5-libwww
+		p5-libwww>=0:www/p5-libwww \
+		p5-Parallel-ForkManager>=0:devel/p5-Parallel-ForkManager
 BUILD_DEPENDS:=	${RUN_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

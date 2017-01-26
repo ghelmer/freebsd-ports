@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dpaste
-PORTVERSION=	2.9
-PORTREVISION=	1
+PORTVERSION=	2.10
 CATEGORIES=	www python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}django-
 
@@ -14,7 +13,7 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18 \
-		${PYTHON_PKGNAMEPREFIX}django-mptt>=0.7.4:www/py-django-mptt \
+		${PYTHON_PKGNAMEPREFIX}django-mptt>=0.8.3:www/py-django-mptt \
 		${PYTHON_PKGNAMEPREFIX}pygments>=1.6:textproc/py-pygments \
 		${PYTHON_PKGNAMEPREFIX}requests>=2.0.0:www/py-requests
 
@@ -28,9 +27,9 @@ USES=		python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist distutils
 
-GH_ACCOUNT=	bartTC
+NO_ARCH=	yes
 
-regression-test: build
-	@cd ${WRKSRC} && ${PYTHON_CMD} runtests.py
+do-test:
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.mk>

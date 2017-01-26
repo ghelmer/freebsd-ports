@@ -2,6 +2,7 @@
 
 PORTNAME=	wsjt
 DISTVERSION=	${VERSION}.r${SVN_REV}
+PORTREVISION=	1
 CATEGORIES=	comms hamradio
 MASTER_SITES=	LOCAL/db
 DISTNAME=	wsjt-r${SVN_REV}
@@ -40,6 +41,8 @@ VERSION=	10
 PLIST_SUB=	PYVER=${PYTHON_VERSION:S/python//} \
 		VERSION=${VERSION}
 
+OPTIONS_DEFINE=	DOCS
+
 .include <bsd.port.pre.mk>
 
 .if defined(BOOTSTRAP) || defined(SVN_FETCH)
@@ -71,14 +74,6 @@ post-patch:
 	    -e 's|%%PYTHON_VER%%|${PYTHON_VER}|'\
 	    ${WRKSRC}/configure.ac
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for d in WSJT_Source_Code.txt UpdateHistory.txt LICENSE.TXT call_to.txt \
-	calledby.txt wsjt7a.txt
-	${INSTALL_DATA} ${WRKSRC}/${d} ${STAGEDIR}${DOCSDIR}
-.endfor
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/wsjt/WsjtMod/Audio.so
-
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${CP} ${FILESDIR}/wsjt ${WRKSRC}
@@ -98,6 +93,32 @@ do-install:
 .endfor
 do-build:
 	(cd ${WRKSRC};${GMAKE})
+
+do-install:
+	${MKDIR} ${STAGEDIR}${DATADIR}
+	${CP} ${FILESDIR}/wsjt ${WRKSRC}
+	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+		-e 's|%%PYTHON%%|${PYTHON_CMD}|' ${WRKSRC}/wsjt
+	${INSTALL_SCRIPT} ${WRKSRC}/wsjt ${STAGEDIR}${LOCALBASE}/bin
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+	${MKDIR} ${STAGEDIR}${LOCALBASE}/lib/wsjt/WsjtMod
+.for d in Audio.so __init__.py astro.py g.py go.py options.py palettes.py \
+	smeter.py specjt.py
+	${INSTALL_DATA} ${WRKSRC}/WsjtMod/${d} ${STAGEDIR}${LOCALBASE}/lib/wsjt/WsjtMod
+.endfor
+.for d in CALL3.TXT dmet_10_-1_3.dat dmet_10_0_3.dat dmet_20_-2_2.dat \
+	dmet_20_-3_2.dat wsjtrc wsjt.py Pmw.py PmwColor.py PmwBlt.py
+	${INSTALL_DATA} ${WRKSRC}/${d} ${STAGEDIR}${DATADIR}
+.endfor
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/wsjt/WsjtMod/Audio.so
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+.for d in WSJT_Source_Code.txt UpdateHistory.txt LICENSE.TXT call_to.txt \
+	calledby.txt wsjt7a.txt
+	${INSTALL_DATA} ${WRKSRC}/${d} ${STAGEDIR}${DOCSDIR}
+.endfor
 
 .if defined(PACKAGE_BUILDING) && ${PYTHON_VER} != ${PYTHON_DEFAULT}
 IGNORE=	you have python ${PYTHON_DEFAULT} set as the default, and this needs ${PYTHON_VER}

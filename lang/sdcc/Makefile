@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	sdcc
-PORTVERSION=	3.5.0
+PORTVERSION=	3.6.0
 DISTVERSIONPREFIX=	src-
 PORTREVISION=	2
 CATEGORIES=	lang
@@ -62,6 +62,8 @@ post-patch:
 	@${REINPLACE_CMD} '/install:/s/:.*/:/' \
 		${WRKSRC}/Makefile.in \
 		${WRKSRC}/support/sdbinutils/libiberty/Makefile.in
+	@${REINPLACE_CMD} '/^SUBDIRS =/s/doc//' \
+		${WRKSRC}/support/sdbinutils/bfd/Makefile.in
 	@${REINPLACE_CMD} 's/[[:<:]]ARCH[[:>:]]/PICARCH/g' \
 		${WRKSRC}/device/lib/pic14/Makefile.common \
 		${WRKSRC}/device/lib/pic14/Makefile.in \

@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	vmtouch
-PORTVERSION=	1.0.2
-DISTVERSIONPREFIX=	${PORTNAME}-
+PORTVERSION=	1.1.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
 MAINTAINER=	trociny@FreeBSD.org
@@ -11,6 +11,10 @@ COMMENT=	Virtual Memory Toucher
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	hoytech
+LICENSE=	BSD3CLAUSE
+
+USES=		perl5 uidfix
+USE_PERL5=	build # pod2man
 
 USES=		perl5
 USE_PERL5=	build # pod2man

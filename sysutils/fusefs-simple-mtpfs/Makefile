@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	simple-mtpfs
-DISTVERSION=	0.2-24
-DISTVERSIONSUFFIX=	-ga7ab64c
+DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	0.3.0
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
@@ -18,7 +18,6 @@ GH_ACCOUNT=	phatina
 
 USES=		autoreconf compiler:c++11-lib fuse localbase pkgconfig
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 MAKEFILE=	makefile
 INSTALL_TARGET=	install-strip
 PLIST_FILES=	bin/${PORTNAME} \

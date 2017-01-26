@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	squid
-PORTVERSION=	4.0.11
+PORTVERSION=	4.0.17
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://www.squid-cache.org/Versions/v4/ \
 		http://www2.us.squid-cache.org/Versions/v4/ \
@@ -69,7 +69,7 @@ AUTH_SASL_CPPFLAGS=		-I${LOCALBASE}/include
 AUTH_SASL_LDFLAGS=		-L${LOCALBASE}/lib
 AUTH_SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 AUTH_SASL_VARS=			BASIC_AUTH+=SASL
-AUTH_SMB_RUN_DEPENDS=		smbclient:net/samba42
+AUTH_SMB_RUN_DEPENDS=		smbclient:net/samba43
 AUTH_SMB_VARS=			BASIC_AUTH+=SMB EXTERNAL_ACL+=wbinfo_group
 AUTH_SQL_RUN_DEPENDS=		p5-DBI>=1.08:databases/p5-DBI
 AUTH_SQL_VARS=			EXTERNAL_ACL+=SQL_session
@@ -109,7 +109,7 @@ SSL_CONFIGURE_ON=		--with-openssl=${OPENSSLBASE} \
 				--enable-security-cert-generators="file" \
 				LIBOPENSSL_CFLAGS=-I${OPENSSLINC} \
 				LIBOPENSSL_LIBS="-lcrypto -lssl"
-SSL_USE=			OPENSSL=yes
+SSL_USES=			ssl
 SSL_CRTD_CONFIGURE_ENABLE=	ssl-crtd
 SSL_CRTD_IMPLIES=		SSL
 STACKTRACES_CONFIGURE_ENABLE=	stacktraces
@@ -216,6 +216,7 @@ CONFIGURE_ARGS=	--with-default-user=squid \
 		--with-swapdir=/var/squid/cache \
 		--without-gnutls \
 		--enable-auth \
+		--enable-zph-qos \
 		--enable-build-info \
 		--enable-loadable-modules \
 		--enable-removal-policies="lru heap" \
@@ -288,7 +289,7 @@ post-patch:
 		${change_files})
 	@(cd ${WRKSRC} && ${MV} src/mime.conf.default src/mime.conf.sample)
 
-.if !${PORT_OPTIONS:MIPV6}
+post-patch-IPV6-off:
 	@${REINPLACE_CMD} -e's/ ::1//' -e's/ fc00::\/7//' \
 		-e's/ fe80::\/10//' -e's/ 2001:DB8::2//' \
 		-e's/ 2001:DB8::a:0\/64//' \
@@ -296,7 +297,6 @@ post-patch:
 		-e'/tcp_outgoing_address 2001:db8::beef normal_service_net/d' \
 		-e'/tcp_outgoing_address 2001:db8::1/d' \
 		${WRKSRC}/src/cf.data.pre
-.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
@@ -307,11 +307,14 @@ post-install:
 
 .include <bsd.port.pre.mk>
 
-.if ${COMPILER_TYPE} == clang
-#CXXFLAGS+=	-Wno-unused-private-field
-.if ${COMPILER_VERSION} >= 35
-CXXFLAGS+=	-Wno-undefined-bool-conversion -Wno-tautological-undefined-compare -Wno-dynamic-class-memaccess
+.if ${PORT_OPTIONS:MSSL} && ${SSL_DEFAULT:Mopenssl-devel}
+BROKEN=		Does not build with openssl-devel
 .endif
+
+.if ${CHOSEN_COMPILER_TYPE} == clang
+#CXXFLAGS+=	-Wno-unused-private-field
+CXXFLAGS+=	-Wno-unknown-warning-option
+CXXFLAGS+=	-Wno-undefined-bool-conversion -Wno-tautological-undefined-compare -Wno-dynamic-class-memaccess
 .endif
 
 .include <bsd.port.post.mk>

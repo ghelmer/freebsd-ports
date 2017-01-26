@@ -1,4 +1,5 @@
-SHA256 (seamonkey-2.39.source.tar.xz) = c871de0a64cb60acf785df0ea3859b729353e5d1e3274947840386766859930e
-SIZE (seamonkey-2.39.source.tar.xz) = 182627632
-SHA256 (enigmail-1.9.1.tar.gz) = 0393119725fa5931d9888a2a1c9796d440ee7975ca3d005eb63142768b10f993
-SIZE (enigmail-1.9.1.tar.gz) = 1736876
+TIMESTAMP = 1481682190
+SHA256 (seamonkey-2.46.source.tar.xz) = 39c84ce6fa1ed7c30152473e0dcd858df07437e84b29e5a18973db437a28a912
+SIZE (seamonkey-2.46.source.tar.xz) = 204913776
+SHA256 (enigmail-1.9.6.1.tar.gz) = 3874331e981aed864443d3c965d856e003fd84f73e5a89fd5004ced9dc29b96f
+SIZE (enigmail-1.9.6.1.tar.gz) = 1745021

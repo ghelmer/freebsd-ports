@@ -1,7 +1,7 @@
 Only enter the directories we want to build, otherwise we might fail due to
 missing dependencies.
 
---- src/src.pro
+--- src/src.pro.orig	2016-02-24 21:41:26 UTC
 +++ src/src.pro
 @@ -1,37 +1,2 @@
  TEMPLATE = subdirs
@@ -20,6 +20,7 @@ missing dependencies.
 -}
 -
 -SUBDIRS += linguist \
+-    qdoc \
 -    qtplugininfo
 -if(!android|android_app):!ios: SUBDIRS += qtpaths
 -

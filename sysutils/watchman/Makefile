@@ -20,13 +20,23 @@ CONFIGURE_ENV=	ac_cv_prog_HAVE_ARC=false ac_cv_header_sys_inotify_h=no
 CONFIGURE_ARGS=	--without-python --without-ruby # in separate ports
 TEST_TARGET=	check
 
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--disable-silent-rules
-.endif
-
 PLIST_FILES=	bin/${PORTNAME} \
 		"@dir(,,2777) /var/run/${PORTNAME}"
 PORTDOCS=	README.markdown
+
+OPTIONS_DEFINE=	BACKTRACE PCRE
+OPTIONS_DEFAULT=BACKTRACE PCRE
+
+BACKTRACE_DESC=		Stack backtrace support via (lib)execinfo
+BACKTRACE_USES=		execinfo
+BACKTRACE_CPPFLAGS=	${EXECINFO_CPPFLAGS}
+BACKTRACE_LDFLAGS=	${EXECINFO_LDFLAGS}
+BACKTRACE_LIBS=		-lexecinfo
+
+PCRE_LIB_DEPENDS=	libpcre.so:devel/pcre
+PCRE_CONFIGURE_WITH=	pcre
+
+CPPFLAGS+=	-Wno-error
 
 OPTIONS_DEFINE=	BACKTRACE PCRE
 OPTIONS_DEFAULT=BACKTRACE PCRE

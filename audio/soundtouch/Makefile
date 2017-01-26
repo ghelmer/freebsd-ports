@@ -3,6 +3,7 @@
 
 PORTNAME=	soundtouch
 PORTVERSION=	1.9.2
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.surina.net/soundtouch/
 
@@ -14,7 +15,6 @@ LICENSE=	LGPL21
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-silent-rules
 USE_LDCONFIG=	yes
 
 USES=			autoreconf libtool pathfix
@@ -30,7 +30,7 @@ OPTIONS_DEFAULT_i386=	${MACHINE_CPU:tu:MSSE}
 INTEGER_SAMPLES_DESC=	Use integer sample format
 INTEGER_SAMPLES_CONFIGURE_ENABLE=	integer-samples
 OPENMP_CONFIGURE_ENABLE=openmp
-OPENMP_USES=		compiler:openmp
+OPENMP_USES=		compiler:gcc-c++11-lib
 SSE_CONFIGURE_ENABLE=	x86-optimizations
 SSE_USES=		compiler:c++11-lang
 

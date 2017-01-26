@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	knot
-PORTVERSION=	2.3.0
+PORTVERSION=	2.3.2
 CATEGORIES=	dns ipv6
 MASTER_SITES=	https://secure.nic.cz/files/knot-dns/ \
 		http://dns-lab.com/downloads/knot-dns/
@@ -28,11 +28,8 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-rundir=/var/run/knot \
 		--with-storage=/var/db/knot \
-		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
-
-.if defined(BATCH) || defined(PACKAGE_BUILDING)
-CONFIGURE_ARGS+=	--disable-silent-rules
-.endif
+		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
+		--enable-recvmmsg=no
 
 INSTALL_TARGET=	install-strip
 
