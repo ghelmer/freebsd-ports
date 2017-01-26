@@ -64,7 +64,4 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${DOCSRC}/${d}/* ${STAGEDIR}${DOCSDIR}/${d}
 .endfor
 
-post-install:
-	${MKDIR} -m 770 ${STAGEDIR}/var/spool/fcron
-
 .include <bsd.port.mk>

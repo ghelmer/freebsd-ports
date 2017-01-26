@@ -26,10 +26,6 @@ LDFLAGS+=	-L${OPENSSLLIB}
 LDFLAGS+=	-lexecinfo
 .endif
 
-.if exists(/usr/lib/libexecinfo.so)
-LDFLAGS+=	-lexecinfo
-.endif
-
 MAKE_JOBS_UNSAFE=yes
 
 CONFIGURE_ARGS+=--sysconfdir=${PREFIX}/etc

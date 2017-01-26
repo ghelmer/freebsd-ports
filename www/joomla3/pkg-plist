@@ -3845,7 +3845,6 @@
 %%WWWDIR%%/media/com_contenthistory/js/jquery.pretty-text-diff.js
 %%WWWDIR%%/media/com_contenthistory/js/jquery.pretty-text-diff.min.js
 %%WWWDIR%%/media/com_finder/css/dates.css
-%%WWWDIR%%/media/com_finder/css/finder-rtl.css
 %%WWWDIR%%/media/com_finder/css/finder.css
 %%WWWDIR%%/media/com_finder/css/indexer.css
 %%WWWDIR%%/media/com_finder/js/autocompleter.js
@@ -4441,7 +4440,6 @@
 %%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce-small.svg
 %%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce-small.ttf
 %%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce-small.woff
-%%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce.dev.svg
 %%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce.eot
 %%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce.svg
 %%WWWDIR%%/media/editors/tinymce/skins/lightgray/fonts/tinymce.ttf
@@ -5626,6 +5624,7 @@
 %%WWWDIR%%/tests/unit/suites/libraries/cms/installer/data/pkg_joomla.xml
 %%WWWDIR%%/tests/unit/suites/libraries/cms/installer/manifest/JInstallerManifestLibraryTest.php
 %%WWWDIR%%/tests/unit/suites/libraries/cms/installer/manifest/JInstallerManifestPackageTest.php
+%%WWWDIR%%/tests/unit/suites/libraries/cms/language/JLanguageMultilangTest.php
 %%WWWDIR%%/tests/unit/suites/libraries/cms/layout/JLayoutBaseTest.php
 %%WWWDIR%%/tests/unit/suites/libraries/cms/layout/JLayoutFileTest.php
 %%WWWDIR%%/tests/unit/suites/libraries/cms/module/JModuleHelperTest.php

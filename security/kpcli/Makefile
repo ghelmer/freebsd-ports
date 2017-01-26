@@ -34,11 +34,6 @@ PWSAFE3_DESC=		Password Safe V3 file importing
 PWSAFE3_BUILD_DEPENDS+=	p5-Crypt-PWSafe3>=1.21:security/p5-Crypt-PWSafe3
 PWSAFE3_RUN_DEPENDS+=	p5-Crypt-PWSafe3>=1.21:security/p5-Crypt-PWSafe3
 
-OPTIONS_DEFINE=		PWSAFE3
-PWSAFE3_DESC=		Password Safe V3 file importing
-PWSAFE3_BUILD_DEPENDS+=	p5-Crypt-PWSafe3>=1.21:security/p5-Crypt-PWSafe3
-PWSAFE3_RUN_DEPENDS+=	p5-Crypt-PWSafe3>=1.21:security/p5-Crypt-PWSafe3
-
 do-extract:
 	@${MKDIR} ${WRKSRC}
 	${CP} ${DISTDIR}/${PORTNAME}-${PORTVERSION}.pl ${WRKSRC}/${PORTNAME}

@@ -23,7 +23,7 @@ index 48e60c0..ec08417 100644
 +
 +dnl If using Linux, Solaris or BSDs, ensure that OSS is available
 +case "$OS_TARGET" in
-+Linux|SunOS|DragonFly|FreeBSD|GNU/kFreeBSD)
++Linux|SunOS|DragonFly|FreeBSD|NetBSD|GNU/kFreeBSD)
 +    MOZ_OSS=1
 +    ;;
 +esac

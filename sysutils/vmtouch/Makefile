@@ -16,9 +16,6 @@ LICENSE=	BSD3CLAUSE
 USES=		perl5 uidfix
 USE_PERL5=	build # pod2man
 
-USES=		perl5
-USE_PERL5=	build # pod2man
-
 PLIST_FILES=	bin/vmtouch \
 		man/man8/vmtouch.8.gz
 

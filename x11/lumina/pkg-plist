@@ -2,13 +2,10 @@ bin/start-lumina-desktop
 bin/lumina-desktop
 bin/lumina-open
 bin/lumina-config
-bin/lumina-fileinfo
 bin/lumina-fm
-bin/lumina-info
-bin/lumina-open
 bin/lumina-screenshot
 bin/lumina-search
-bin/lumina-textedit
+bin/lumina-info
 bin/lumina-xconfig
 bin/lumina-fileinfo
 bin/lumina-textedit

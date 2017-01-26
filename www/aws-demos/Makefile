@@ -76,7 +76,6 @@ IGNORE_FreeBSD_9=	Requires newer OpenSSL (set DEFAULT_VERSIONS+=ssl=openssl)
 .endif
 
 .if ${PORT_OPTIONS:MSSL}
-LIB_DEPENDS+=	libssl.so:security/openssl
 CONF_ARGS+=	SOCKET=openssl
 DEMO_DIRS+=	agent
 DEMO_DIRS+=	runme

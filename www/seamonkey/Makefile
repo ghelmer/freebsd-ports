@@ -44,7 +44,7 @@ MOZ_PIS_SCRIPTS=	moz_pis_S50cleanhome
 MOZ_EXTENSIONS=	default
 MOZ_OPTIONS+=	--enable-application=suite
 
-USE_MOZILLA=	-opus
+USE_MOZILLA=	# empty
 MOZ_PKGCONFIG_FILES=
 
 NOT_FOR_ARCHS=	ia64

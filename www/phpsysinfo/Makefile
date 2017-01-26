@@ -12,8 +12,6 @@ COMMENT=	PHP script for displaying system information
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	Does not build
-
 USE_GITHUB=	yes
 
 USES=		php:web shebangfix

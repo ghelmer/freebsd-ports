@@ -505,7 +505,6 @@ man/man1/fish_key_reader.1.gz
 %%DATADIR%%/functions/__fish_complete_abook_formats.fish
 %%DATADIR%%/functions/__fish_complete_ant_targets.fish
 %%DATADIR%%/functions/__fish_complete_atool_archive_contents.fish
-%%DATADIR%%/functions/__fish_complete_aura.fish
 %%DATADIR%%/functions/__fish_complete_bittorrent.fish
 %%DATADIR%%/functions/__fish_complete_cd.fish
 %%DATADIR%%/functions/__fish_complete_command.fish

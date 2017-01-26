@@ -723,21 +723,6 @@ CONFIGURE_ARGS+=--add-module=${WRKSRC_vte} --with-cc-opt="-I ${LOCALBASE}/includ
 		-I ${LOCALBASE}/include/ImageMagick"
 .endif
 
-.if ${PORT_OPTIONS:MHTTP_VIDEO_THUMBEXTRACTOR}
-NGINX_VIDEO_THUMBEXTRACTOR_VERSION=	0.7.0
-LIB_DEPENDS+= 	libjpeg.so:graphics/jpeg \
-		libavformat.so:multimedia/ffmpeg \
-		libavcodec.so:multimedia/ffmpeg \
-		libavutil.so:multimedia/ffmpeg \
-		libswscale.so:multimedia/ffmpeg \
-		libMagickWand-6.so:graphics/ImageMagick
-GH_ACCOUNT+=	wandenberg:vte
-GH_PROJECT+=	nginx-video-thumbextractor-module:vte
-GH_TAGNAME+=	${NGINX_VIDEO_THUMBEXTRACTOR_VERSION}:vte
-CONFIGURE_ARGS+=--add-module=${WRKSRC_vte} --with-cc-opt="-I ${LOCALBASE}/include \
-		-I ${LOCALBASE}/include/ImageMagick"
-.endif
-
 .if ${PORT_OPTIONS:MHTTP_XSLT}
 USE_GNOME+=	libxml2 libxslt
 .if !empty(PORT_OPTIONS:MDSO)
@@ -922,7 +907,6 @@ GH_ACCOUNT+=	arut:rtmp
 GH_PROJECT+=	nginx-rtmp-module:rtmp
 GH_TAGNAME+=	v${NGINX_RTMP_VERSION}:rtmp
 CONFIGURE_ARGS+=--add-module=${WRKSRC_rtmp}
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-ngx_rtmp_core_module.c
 .endif
 
 .if ${PORT_OPTIONS:MSET_MISC}

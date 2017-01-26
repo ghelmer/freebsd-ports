@@ -33,7 +33,7 @@ CONFIGURE_ARGS=	--with-enginesdir=${PREFIX}/lib/engines
 
 INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS=	--with-enginesdir=${PREFIX}/lib/engines
+PORTDOCS=	*
 
 .include <bsd.port.pre.mk>
 

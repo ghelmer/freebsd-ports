@@ -1,7 +1,4 @@
 %%WWWDIR%%/.htaccess.txt
-%%WWWDIR%%/admin/controller/analytics/google_analytics.php
-%%WWWDIR%%/admin/controller/captcha/basic_captcha.php
-%%WWWDIR%%/admin/controller/captcha/google_captcha.php
 %%WWWDIR%%/admin/controller/catalog/attribute.php
 %%WWWDIR%%/admin/controller/catalog/attribute_group.php
 %%WWWDIR%%/admin/controller/catalog/category.php
@@ -1013,9 +1010,6 @@
 %%WWWDIR%%/admin/view/stylesheet/sass/bootstrap/mixins/_text-overflow.scss
 %%WWWDIR%%/admin/view/stylesheet/sass/bootstrap/mixins/_vendor-prefixes.scss
 %%WWWDIR%%/admin/view/stylesheet/stylesheet.css
-%%WWWDIR%%/admin/view/template/analytics/google_analytics.tpl
-%%WWWDIR%%/admin/view/template/captcha/basic_captcha.tpl
-%%WWWDIR%%/admin/view/template/captcha/google_captcha.tpl
 %%WWWDIR%%/admin/view/template/catalog/attribute_form.tpl
 %%WWWDIR%%/admin/view/template/catalog/attribute_group_form.tpl
 %%WWWDIR%%/admin/view/template/catalog/attribute_group_list.tpl
@@ -1427,7 +1421,6 @@
 %%WWWDIR%%/catalog/controller/affiliate/success.php
 %%WWWDIR%%/catalog/controller/affiliate/tracking.php
 %%WWWDIR%%/catalog/controller/affiliate/transaction.php
-%%WWWDIR%%/catalog/controller/analytics/google_analytics.php
 %%WWWDIR%%/catalog/controller/api/cart.php
 %%WWWDIR%%/catalog/controller/api/coupon.php
 %%WWWDIR%%/catalog/controller/api/currency.php
@@ -1438,8 +1431,6 @@
 %%WWWDIR%%/catalog/controller/api/reward.php
 %%WWWDIR%%/catalog/controller/api/shipping.php
 %%WWWDIR%%/catalog/controller/api/voucher.php
-%%WWWDIR%%/catalog/controller/captcha/basic_captcha.php
-%%WWWDIR%%/catalog/controller/captcha/google_captcha.php
 %%WWWDIR%%/catalog/controller/checkout/cart.php
 %%WWWDIR%%/catalog/controller/checkout/checkout.php
 %%WWWDIR%%/catalog/controller/checkout/confirm.php
@@ -1984,8 +1975,6 @@
 %%WWWDIR%%/catalog/view/theme/default/template/affiliate/register.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/affiliate/tracking.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/affiliate/transaction.tpl
-%%WWWDIR%%/catalog/view/theme/default/template/captcha/basic_captcha.tpl
-%%WWWDIR%%/catalog/view/theme/default/template/captcha/google_captcha.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/checkout/cart.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/checkout/checkout.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/checkout/confirm.tpl
@@ -2010,9 +1999,6 @@
 %%WWWDIR%%/catalog/view/theme/default/template/common/maintenance.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/common/search.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/common/success.tpl
-%%WWWDIR%%/catalog/view/theme/default/template/credit_card/sagepay_direct_form.tpl
-%%WWWDIR%%/catalog/view/theme/default/template/credit_card/sagepay_direct_list.tpl
-%%WWWDIR%%/catalog/view/theme/default/template/credit_card/sagepay_server_list.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/error/not_found.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/extension/captcha/basic_captcha.tpl
 %%WWWDIR%%/catalog/view/theme/default/template/extension/captcha/google_captcha.tpl

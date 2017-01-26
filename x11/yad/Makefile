@@ -33,9 +33,9 @@ OPTIONS_DEFAULT=	GTK2
 
 NLS_CONFIGURE_OFF=	--disable-nls
 GTK2_CONFIGURE_ON=	--with-gtk=gtk2
-GTK2_USE=		GNOME=gtk20,intltool
+GTK2_USE=		GNOME=gtk20
 GTK3_CONFIGURE_ON=	--with-gtk=gtk3
-GTK3_USE=		GNOME=gtk30,intltool
+GTK3_USE=		GNOME=gtk30
 ICONBROWSER_CONFIGURE_ENABLE=	icon-browser
 
 .include <bsd.port.options.mk>

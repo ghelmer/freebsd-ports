@@ -48,7 +48,7 @@ MAN3PREFIX=	${PREFIX}
 PLIST_SUB+=	RTHOME=share/rt${RT_VER}
 
 # Note: You can install using an arbitrary $PREFIX but only if it
-# matches the $PREFIX used to install www/rt{40,42,44}.  Hence ignore
+# matches the $PREFIX used to install www/rt{40,42}.  Hence ignore
 # $PREFIX in the environment and inherit settings from RT.pm
 
 do-configure:

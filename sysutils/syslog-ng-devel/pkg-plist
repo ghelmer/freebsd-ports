@@ -94,7 +94,6 @@ include/syslog-ng/reloc.h
 include/syslog-ng/children.h
 include/syslog-ng/crypto.h
 include/syslog-ng/dnscache.h
-include/syslog-ng/misc.h
 include/syslog-ng/driver.h
 include/syslog-ng/fdhelpers.h
 include/syslog-ng/file-perms.h

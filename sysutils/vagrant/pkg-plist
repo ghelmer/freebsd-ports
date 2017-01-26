@@ -20,7 +20,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/contrib/sudoers/linux-fedora
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/contrib/sudoers/linux-suse
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/contrib/sudoers/linux-ubuntu
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/contrib/sudoers/linux-suse
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/contrib/sudoers/osx
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/contrib/vim/vagrantfile.vim
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/keys/README.md
@@ -135,7 +134,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/line_ending_helpers.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/network_ip.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/platform.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/presence.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/powershell.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/presence.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/lib/vagrant/util/retryable.rb
@@ -187,14 +185,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/login/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/package/command.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/package/plugin.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/port/command.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/port/locales/en.yml
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/port/plugin.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/powershell/command.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/powershell/errors.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/powershell/plugin.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/powershell/scripts/enable_psremoting.ps1
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/powershell/scripts/reset_trustedhosts.ps1
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/plugin/action.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/plugin/action/install_gem.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/plugin/action/license_plugin.rb
@@ -247,15 +237,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/ssh/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/ssh_config/command.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/ssh_config/plugin.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/delete.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/list.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/pop.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/push.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/push_shared.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/restore.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/root.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/command/save.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/snapshot/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/status/command.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/status/plugin.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/commands/suspend/command.rb
@@ -315,7 +296,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/halt.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/mount_smb_shared_folder.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/mount_vmware_shared_folder.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/remove_public_key.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/rsync.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/shell_expand_guest_path.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/plugins/guests/darwin/cap/verify_vmware_hgfs.rb
@@ -971,7 +951,6 @@ bin/vagrant
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/base.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/cap/public_address_test.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/cap_test.rb
-%%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/cap/public_address_test.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/config_test.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/driver/version_4_0_test.rb
 %%GEM_BASE_DIR%%/vagrant-%%PORTVERSION%%/test/unit/plugins/providers/virtualbox/driver/version_4_1_test.rb

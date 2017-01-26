@@ -35,10 +35,6 @@ GROUPS=	${PORTNAME}
 IGNORE=	does not support FreeBSD versions < 10.0
 .endif
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100000
-LIB_DEPENDS+=	libxo.so:devel/libxo
-.endif
-
 do-install:
 	@${ECHO} "Installing in ${CBSD_HOME}"
 	${MKDIR} ${STAGEDIR}${CBSD_HOME}

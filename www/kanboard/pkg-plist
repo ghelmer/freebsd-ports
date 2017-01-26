@@ -554,7 +554,6 @@
 %%WWWDIR%%/app/Template/analytic/avg_time_columns.php
 %%WWWDIR%%/app/Template/analytic/burndown.php
 %%WWWDIR%%/app/Template/analytic/cfd.php
-%%WWWDIR%%/app/Template/analytic/compare_hours.php
 %%WWWDIR%%/app/Template/analytic/layout.php
 %%WWWDIR%%/app/Template/analytic/lead_cycle_time.php
 %%WWWDIR%%/app/Template/analytic/sidebar.php

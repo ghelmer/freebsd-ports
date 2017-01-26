@@ -162,11 +162,9 @@ index d46b5aa..e452223 100644
 +                  ],
 +                }],
 +              ],
-+            }],
-+          ],
-         }],  # linux
-         ['OS=="mac"', {
-           'sources': [
+             }],  # linux
+             ['OS=="mac"', {
+               'sources': [
 diff --git toolkit/library/moz.build toolkit/library/moz.build
 index 9c16ffa..1db3794 100644
 --- mozilla/toolkit/library/moz.build

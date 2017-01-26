@@ -1,18 +1,5 @@
 # Allow building against system-wide graphite2/harfbuzz.
 
-diff --git build/moz.configure/old.configure build/moz.configure/old.configure
-index 4cbefd5..42ab554 100644
---- build/moz.configure/old.configure
-+++ build/moz.configure/old.configure
-@@ -312,6 +312,8 @@ def old_configure_options(*options):
-     '--with-sixgill',
-     '--with-soft-float',
-     '--with-system-bz2',
-+    '--with-system-graphite2',
-+    '--with-system-harfbuzz',
-     '--with-system-icu',
-     '--with-system-jpeg',
-     '--with-system-libevent',
 diff --git config/Makefile.in config/Makefile.in
 index 10807cf..f4b8587 100644
 --- config/Makefile.in

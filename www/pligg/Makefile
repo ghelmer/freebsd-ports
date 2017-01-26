@@ -12,8 +12,6 @@ COMMENT=	Open Source Web2.0 CMS
 LICENSE=	CC-BY-3.0
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BROKEN_powerpc64=	Does not build
-
 USES=		cpe
 CPE_PRODUCT=	pligg_cms
 CPE_VENDOR=	pligg

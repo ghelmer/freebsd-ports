@@ -62,7 +62,4 @@ do-install:
 		${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR} '${IGNORE_FILES}'
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/data
 
-post-install:
-	@${MKDIR} ${STAGEDIR}${WWWDIR}/data
-
 .include <bsd.port.mk>

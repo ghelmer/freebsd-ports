@@ -21,7 +21,7 @@
    std::unique_ptr<ui::PlatformEventSource> event_source =
        ui::PlatformEventSource::CreateDefault();
 -#elif defined(OS_LINUX)
-+#elif (defined(OS_LINUX) || defined(OS_BSD))
++#elif defined(OS_LINUX) || defined(OS_BSD)
    base::MessageLoop main_message_loop(base::MessageLoop::TYPE_DEFAULT);
  #elif defined(OS_MACOSX)
    // This is necessary for CoreAnimation layers hosted in the GPU process to be
