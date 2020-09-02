@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pygments
-PORTVERSION=	2.4.1
+PORTVERSION=	2.5.2
 PORTREVISION=	0
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
@@ -13,6 +13,7 @@ MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Syntax highlighter written in Python
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		python
 USE_PYTHON=	distutils concurrent autoplist

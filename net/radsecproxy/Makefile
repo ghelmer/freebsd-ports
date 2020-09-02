@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	radsecproxy
-PORTVERSION=	1.8.0
+PORTVERSION=	1.8.1
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	GH
 
 MAINTAINER=	m.tsatsenko@gmail.com
-COMMENT=	Radsecproxy is a generic RADIUS proxy
+COMMENT=	Generic RADIUS proxy
 
 LICENSE=	BSD3CLAUSE
 

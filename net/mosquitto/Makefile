@@ -2,9 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	mosquitto
-PORTVERSION=	1.6.4
+PORTVERSION=	1.6.7
 CATEGORIES=	net
 MASTER_SITES=	http://mosquitto.org/files/source/
+
+PATCH_SITES=	https://github.com/eclipse/mosquitto/commit/
+PATCHFILES=	8a4ae28fa926589e9891674ca4424dc703ad2d88.patch:-p1
 
 MAINTAINER=	joe@thrallingpenguin.com
 COMMENT=	Open source MQTT broker

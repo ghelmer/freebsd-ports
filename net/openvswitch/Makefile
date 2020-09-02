@@ -2,12 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	openvswitch
-DISTVERSION=	2.11.1
-PORTREVISION=	1
+DISTVERSION=	2.14.0
 CATEGORIES=	net
 MASTER_SITES=	http://openvswitch.org/releases/
 
-MAINTAINER=	koue@chaosophia.net
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Production quality, multilayer virtual switch
 
 LICENSE=	APACHE20
@@ -16,9 +15,10 @@ BROKEN_mips64=		fails to compile: ofp-actions.h:486: flexible array member in ot
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
-USES=		compiler:c++14-lang cpe gmake libtool perl5 pkgconfig python:2.7 shebangfix ssl
-SHEBANG_FILES=	ovn/utilities/ovndb-servers.ocf \
-		utilities/bugtool/ovs-bugtool-ovs-ofctl-loop-over-bridges \
+USES=		compiler:c11 cpe gmake libtool perl5 pkgconfig python \
+		shebangfix ssl
+SHEBANG_FILES=	utilities/bugtool/ovs-bugtool-ovs-ofctl-loop-over-bridges \
+		utilities/bugtool/ovs-bugtool-get-port-stats \
 		utilities/ovs-docker \
 		utilities/ovs-appctl-bashcomp.bash \
 		vtep/ovs-vtep.in
@@ -36,8 +36,8 @@ SHLIB_VER=	${DISTVERSION:C/\.[0-9]*$//}
 PLIST_SUB=	SHLIB_VER=${SHLIB_VER}
 
 post-install:
-	@${MKDIR} ${STAGEDIR}/var/run/openvswitch
-	@${MKDIR} ${STAGEDIR}/var/log/openvswitch
+	${MKDIR} ${STAGEDIR}/var/run/openvswitch
+	${MKDIR} ${STAGEDIR}/var/log/openvswitch
 	${INSTALL_DATA} ${WRKSRC}/vswitchd/vswitch.ovsschema ${STAGEDIR}${PREFIX}/share/openvswitch/
 
 .include <bsd.port.mk>

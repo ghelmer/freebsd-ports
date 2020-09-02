@@ -1,3 +1,3 @@
-TIMESTAMP = 1567537102
-SHA256 (KDE/applications/19.08.1/libkgeomap-19.08.1.tar.xz) = aed369217007698beaa3230bf5b5360602d44ca6d333026158b15666f3670555
-SIZE (KDE/applications/19.08.1/libkgeomap-19.08.1.tar.xz) = 150876
+TIMESTAMP = 1596814078
+SHA256 (KDE/release-service/20.08.0/libkgeomap-20.08.0.tar.xz) = bf39da71ec7cc40e536bf071abda61569acec4ae027d896738ae1ace74eaddf7
+SIZE (KDE/release-service/20.08.0/libkgeomap-20.08.0.tar.xz) = 150936

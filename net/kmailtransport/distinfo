@@ -1,3 +1,3 @@
-TIMESTAMP = 1567537331
-SHA256 (KDE/applications/19.08.1/kmailtransport-19.08.1.tar.xz) = 521bcfd334a0e7e4986e6cebff3bae4095175a11fd45f777da673f1460d733da
-SIZE (KDE/applications/19.08.1/kmailtransport-19.08.1.tar.xz) = 166148
+TIMESTAMP = 1596814261
+SHA256 (KDE/release-service/20.08.0/kmailtransport-20.08.0.tar.xz) = af337017b884519065fea520fd66a8fc2e553d84ca3d8afc35739c18e67b4d73
+SIZE (KDE/release-service/20.08.0/kmailtransport-20.08.0.tar.xz) = 167680

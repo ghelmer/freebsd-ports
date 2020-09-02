@@ -1,3 +1,3 @@
-TIMESTAMP = 1567537139
-SHA256 (KDE/applications/19.08.1/kdepim-addons-19.08.1.tar.xz) = eff8e21ae66bf99a33c946886e7d84f5d717b123b06f86e891c9528858b9ec32
-SIZE (KDE/applications/19.08.1/kdepim-addons-19.08.1.tar.xz) = 2092564
+TIMESTAMP = 1596814097
+SHA256 (KDE/release-service/20.08.0/kdepim-addons-20.08.0.tar.xz) = 4045f7879cc47829a82a4ada18a35cb3bdf89a489a15cd0bd48441c305b3cb06
+SIZE (KDE/release-service/20.08.0/kdepim-addons-20.08.0.tar.xz) = 2070316

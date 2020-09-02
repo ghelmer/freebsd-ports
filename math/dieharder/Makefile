@@ -3,7 +3,7 @@
 
 PORTNAME=	dieharder
 PORTVERSION=	3.31.1
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	math
 MASTER_SITES=	http://www.phy.duke.edu/~rgb/General/dieharder/ LOCAL/bf
 
@@ -22,6 +22,9 @@ GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 USE_LDCONFIG=	yes
+
+# Fix build with clang11
+CFLAGS+=	-fcommon
 
 check test: build
 	${WRKSRC}/dieharder/dieharder -a

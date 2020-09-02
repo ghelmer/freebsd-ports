@@ -1,3 +1,3 @@
-TIMESTAMP = 1567573244
-SHA256 (KDE/applications/19.08.1/kipi-plugins-19.08.1.tar.xz) = 6cc8fdc47fbfa5d8b4f9aeb4d82b5f1c9779a300cffbc17f8776dcb2ed61f0e4
-SIZE (KDE/applications/19.08.1/kipi-plugins-19.08.1.tar.xz) = 1629880
+TIMESTAMP = 1596814166
+SHA256 (KDE/release-service/20.08.0/kipi-plugins-20.08.0.tar.xz) = f8f03a9797b4855839693ffca93245460e78fd2f6eeb763d16dd159711f40683
+SIZE (KDE/release-service/20.08.0/kipi-plugins-20.08.0.tar.xz) = 1644472

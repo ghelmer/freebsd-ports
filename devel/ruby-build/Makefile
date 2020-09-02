@@ -1,9 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	ruby-build
-PORTVERSION=	20191002
+PORTVERSION=	20200819
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel ruby
+DIST_SUBDIR=	rbenv
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Compile and install different ruby versions

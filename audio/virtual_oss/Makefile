@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtual_oss
-PORTVERSION=	1.2.4
+PORTVERSION=	1.2.6
 CATEGORIES=	audio
 MASTER_SITES=	http://www.selasky.org/hans_petter/distfiles/ \
 		http://home.selasky.org/distfiles/
@@ -15,16 +15,12 @@ LICENSE=	BSD2CLAUSE
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 
 USES=		tar:bzip2 uidfix
+USE_RC_SUBR=	virtual_oss
 
-OPTIONS_DEFINE=	BLUETOOTH BT_SPEAKER DEBUG EQUALIZER
+OPTIONS_DEFINE=	BLUETOOTH BT_SPEAKER DEBUG EQUALIZER HTTPD
 OPTIONS_DEFAULT=BLUETOOTH EQUALIZER
 
-.if exists(/usr/lib/libcuse.so)
 MAKE_ARGS=	HAVE_CUSE="YES"
-.else
-BUILD_DEPENDS+=	cuse4bsd-kmod>=0.1.24:multimedia/cuse4bsd-kmod
-LIB_DEPENDS+=	libcuse4bsd.so:multimedia/cuse4bsd-kmod
-.endif
 
 BLUETOOTH_DESC=	Build with bluetooth support
 BLUETOOTH_MAKE_ARGS=	HAVE_BLUETOOTH="YES"
@@ -41,6 +37,9 @@ EQUALIZER_MAKE_ARGS=	HAVE_EQUALIZER="YES"
 EQUALIZER_LIB_DEPENDS=	libfftw3.so:math/fftw3
 EQUALIZER_PLIST_FILES=	sbin/virtual_equalizer \
 			man/man8/virtual_equalizer.8.gz
+
+HTTPD_DESC=		Build with HTTP server support
+HTTPD_MAKE_ARGS=	HAVE_HTTPD="YES"
 
 PLIST_FILES=	sbin/virtual_oss \
 		man/man8/virtual_oss.8.gz

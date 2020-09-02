@@ -16,7 +16,6 @@
     SUBDIR += dhrystone
     SUBDIR += dkftpbench
     SUBDIR += fhourstones
-    SUBDIR += filebench
     SUBDIR += fio
     SUBDIR += flamegraph
     SUBDIR += flops
@@ -42,6 +41,7 @@
     SUBDIR += linux-vdbench
     SUBDIR += lmbench
     SUBDIR += lzbench
+    SUBDIR += mangohud
     SUBDIR += mdtest
     SUBDIR += nbench
     SUBDIR += netio
@@ -69,13 +69,14 @@
     SUBDIR += py-naarad
     SUBDIR += py-throughpy
     SUBDIR += py-zopkio
-    SUBDIR += pybench
     SUBDIR += raidtest
     SUBDIR += ramspeed
     SUBDIR += randomio
+    SUBDIR += rubygem-benchmark
     SUBDIR += rubygem-benchmark-ips
     SUBDIR += rubygem-benchmark-memory
     SUBDIR += rubygem-derailed_benchmarks
+    SUBDIR += rubygem-gitlab-derailed_benchmarks
     SUBDIR += rubygem-railsbench
     SUBDIR += scimark2
     SUBDIR += scimark2c

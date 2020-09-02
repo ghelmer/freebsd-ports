@@ -1,3 +1,3 @@
-TIMESTAMP = 1567537263
-SHA256 (KDE/applications/19.08.1/kig-19.08.1.tar.xz) = 8b073fd0310e62483a548ada000b4230f2b70dec8ab11ac8303bd64961829675
-SIZE (KDE/applications/19.08.1/kig-19.08.1.tar.xz) = 3495636
+TIMESTAMP = 1596814201
+SHA256 (KDE/release-service/20.08.0/kig-20.08.0.tar.xz) = fa9754f5a67e35fdfd8b836d423001fc48fe5c41fadbfceece834fb3f5b6cccd
+SIZE (KDE/release-service/20.08.0/kig-20.08.0.tar.xz) = 3490564

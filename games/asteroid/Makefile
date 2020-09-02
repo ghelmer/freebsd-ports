@@ -9,6 +9,10 @@ CATEGORIES=	games
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern version of the arcade classic Asteroid
 
+BROKEN=		unfetchable
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2020-08-26
+
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -16,7 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	chazomaticus
 GH_TAGNAME=	64869df
 
-USES=		cmake
+USES=		cmake gl gnome sdl xorg
 USE_GL=		gl glu glut
 USE_SDL=	mixer sdl
 USE_GNOME=	gtk30

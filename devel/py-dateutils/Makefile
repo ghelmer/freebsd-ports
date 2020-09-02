@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dateutils
-PORTVERSION=	0.6.6
-PORTREVISION=	2
+PORTVERSION=	0.6.10
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +10,10 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Various utilities for working with date and datetime objects
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	BSD0CLAUSE
+LICENSE_NAME=	BSD 0 Clause License
+LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateutil>=0:devel/py-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${PY_FLAVOR}

@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	qtpbfimageplugin
-PORTVERSION=	1.4
-PORTREVISION=	3
+PORTVERSION=	2.1
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	sikmir@gmail.com

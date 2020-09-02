@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wkhtmltopdf
-PORTVERSION=	0.12.5
-PORTREVISION=	4
+PORTVERSION=	0.12.6
 CATEGORIES=	converters
 
 MAINTAINER=	pi@FreeBSD.org
@@ -22,14 +21,14 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
-USES=		compiler:c++11-lang gmake iconv jpeg perl5 pkgconfig ssl
+USES=		compiler:c++11-lang gmake iconv jpeg perl5 pkgconfig ssl xorg
+USE_GCC=	8
 USE_XORG=	x11 xext xrender
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 WKQT_TAGNAME=	5db36ec
 GH_TUPLE=	${PORTNAME}:qt:${WKQT_TAGNAME}:qt
-USE_CXXSTD=	gnu++98
 HAS_CONFIGURE=	yes
 
 PATCH_WRKSRC=		${WRKSRC}/qt

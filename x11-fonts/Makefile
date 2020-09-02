@@ -10,7 +10,9 @@
     SUBDIR += alegreya-sans
     SUBDIR += alfont
     SUBDIR += andika
+    SUBDIR += anomaly-mono
     SUBDIR += anonymous-pro
+    SUBDIR += apl385
     SUBDIR += artwiz-aleczapka
     SUBDIR += artwiz-aleczapka-de
     SUBDIR += artwiz-aleczapka-se
@@ -21,6 +23,7 @@
     SUBDIR += bdftopcf
     SUBDIR += bitstream-vera
     SUBDIR += bitter
+    SUBDIR += blackout
     SUBDIR += c64bdf
     SUBDIR += cantarell-fonts
     SUBDIR += cascadia-code
@@ -69,7 +72,6 @@
     SUBDIR += font-bh-type1
     SUBDIR += font-bitstream-100dpi
     SUBDIR += font-bitstream-75dpi
-    SUBDIR += font-bitstream-speedo
     SUBDIR += font-bitstream-type1
     SUBDIR += font-cronyx-cyrillic
     SUBDIR += font-cursor-misc
@@ -79,7 +81,6 @@
     SUBDIR += font-ibm-type1
     SUBDIR += font-isas-misc
     SUBDIR += font-jis-misc
-    SUBDIR += font-manager
     SUBDIR += font-micro-misc
     SUBDIR += font-misc-cyrillic
     SUBDIR += font-misc-ethiopic
@@ -100,6 +101,7 @@
     SUBDIR += fontconfig
     SUBDIR += fontconfig-reference
     SUBDIR += fontmatrix
+    SUBDIR += fontpreview
     SUBDIR += fonts-indic
     SUBDIR += fonttosfnt
     SUBDIR += freefont-ttf
@@ -119,10 +121,11 @@
     SUBDIR += hermit
     SUBDIR += inconsolata-lgc-ttf
     SUBDIR += inconsolata-ttf
-    SUBDIR += indic-ttf
     SUBDIR += intlfonts
     SUBDIR += iosevka
     SUBDIR += isabella
+    SUBDIR += jetbrains-mono
+    SUBDIR += jf-openhuninn
     SUBDIR += jmk-x11-fonts
     SUBDIR += junction
     SUBDIR += junicode
@@ -136,16 +139,16 @@
     SUBDIR += libFS
     SUBDIR += libXfont
     SUBDIR += libXfont2
-    SUBDIR += libXfontcache
     SUBDIR += libXft
     SUBDIR += liberation-fonts-ttf
+    SUBDIR += libertinus
     SUBDIR += libfontenc
     SUBDIR += linden-hill
-    SUBDIR += linux-c6-fontconfig
     SUBDIR += linux-c7-fontconfig
     SUBDIR += linuxlibertine
     SUBDIR += linuxlibertine-g
     SUBDIR += lohit
+    SUBDIR += manrope
     SUBDIR += manu-gothica
     SUBDIR += material-icons-ttf
     SUBDIR += materialdesign-ttf
@@ -156,8 +159,10 @@
     SUBDIR += mkfontscale
     SUBDIR += mkitalic
     SUBDIR += mondulkiri
+    SUBDIR += monoid
     SUBDIR += montecarlo_fonts
     SUBDIR += montserrat
+    SUBDIR += mourier
     SUBDIR += moveable-type-fonts
     SUBDIR += nerd-fonts
     SUBDIR += nexfontsel
@@ -169,10 +174,12 @@
     SUBDIR += noto-sc
     SUBDIR += noto-tc
     SUBDIR += nucleus
+    SUBDIR += office-code-pro
     SUBDIR += ohsnap
     SUBDIR += oldschool-pc-fonts
     SUBDIR += open-sans
     SUBDIR += orbitron
+    SUBDIR += ots
     SUBDIR += oxygen-fonts
     SUBDIR += p5-Font-AFM
     SUBDIR += p5-Font-TTF
@@ -181,7 +188,6 @@
     SUBDIR += padauk
     SUBDIR += paratype
     SUBDIR += pcf2bdf
-    SUBDIR += pingwi
     SUBDIR += plex-ttf
     SUBDIR += powerline-fonts
     SUBDIR += prociono
@@ -198,8 +204,10 @@
     SUBDIR += py-fontMath
     SUBDIR += py-fontmake
     SUBDIR += py-glyphsLib
+    SUBDIR += py-opentype-sanitizer
     SUBDIR += py-ufo2ft
     SUBDIR += py-ufoLib
+    SUBDIR += py-ufolint
     SUBDIR += raleway
     SUBDIR += roboto-fonts-ttf
     SUBDIR += sgifonts
@@ -209,7 +217,9 @@
     SUBDIR += sourcesanspro-ttf
     SUBDIR += sourceserifpro-ttf
     SUBDIR += spleen
+    SUBDIR += steps-mono
     SUBDIR += stix-fonts
+    SUBDIR += sudo-font
     SUBDIR += suxus
     SUBDIR += symbola
     SUBDIR += tamsyn
@@ -225,6 +235,7 @@
     SUBDIR += urwfonts
     SUBDIR += urwfonts-ttf
     SUBDIR += uw-ttyp0
+    SUBDIR += victor-mono-ttf
     SUBDIR += vollkorn-ttf
     SUBDIR += vtfontcvt-ng
     SUBDIR += webfonts

@@ -3,7 +3,7 @@
 PORTNAME=	pachi
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	12.40
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 PKGNAMESUFFIX=	-game-engine
 
@@ -12,6 +12,9 @@ COMMENT=	Fairly strong Go/Baduk/Weiqi playing program
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Uses deprecated version of python
+EXPIRATION_DATE=	2020-09-15
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \

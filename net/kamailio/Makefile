@@ -2,26 +2,24 @@
 # $FreeBSD$
 
 PORTNAME=	kamailio
-PORTVERSION=	5.2.4
-PORTREVISION=	2
+PORTVERSION=	5.3.5
 CATEGORIES=	net
 MASTER_SITES=	http://www.kamailio.org/pub/kamailio/${PORTVERSION}/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}_src
 
-MAINTAINER=	pi@FreeBSD.org
+MAINTAINER=	dmitry.wagin@ya.ru
 COMMENT=	Very fast and configurable open source SIP proxy
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN_powerpc64=	Does not build: /bin/sh: clang: not found
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libxml2.so:textproc/libxml2 \
 		libcurl.so:ftp/curl
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-USES=		gmake ncurses pkgconfig python:3.5+ readline shebangfix
+USES=		compiler:c11 gmake ncurses pkgconfig python:3.5+ readline \
+		shebangfix
 
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	utils/kamctl/dbtextdb/dbtextdb.py \
@@ -45,10 +43,10 @@ SUB_LIST=	KAMAILIO_USER=${KAMAILIO_USER} \
 		KAMAILIO_GROUP=${KAMAILIO_GROUP} \
 		KAMAILIO_RUNDIR=${KAMAILIO_RUNDIR}
 
-OPTIONS_GROUP=		DATABASE_DRIVERS KEMI
-OPTIONS_GROUP_KEMI=	LUAJIT PYTHON3
+OPTIONS_GROUP=		DATABASE_DRIVERS KEMI_LANGS
 OPTIONS_GROUP_DATABASE_DRIVERS=	MYSQL PGSQL UNIXODBC
-OPTIONS_DEFINE=		DATABASE DIALPLAN DOCS PERL PRESENCE RADIUS \
+OPTIONS_GROUP_KEMI_LANGS=	LUAJIT PYTHON3
+OPTIONS_DEFINE=		DATABASE DIALPLAN DOCS KEMIX PERL PRESENCE RADIUS \
 			SCTP TLS WEBSOCKET
 OPTIONS_DEFAULT=	MYSQL PRESENCE RADIUS TLS
 OPTIONS_SUB=		YES
@@ -70,15 +68,21 @@ UNIXODBC_IMPLIES=	DATABASE
 UNIXODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 UNIXODBC_VARS=		EXTRA_MODULES+=db_unixodbc
 
-KEMI_DESC=		Kamailio Embedded Interface
+KEMIX_DESC=		Core KEMI Functions
+KEMIX_VARS=		EXTRA_MODULES+=kemix
+
+KEMI_LANGS_DESC=	Kamailio Embedded Interface Interpreters
 
 LUAJIT_DESC=		Execute embedded Lua scripts
+LUAJIT_IMPLIES=		KEMIX
 LUAJIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 LUAJIT_MAKE_ARGS=	LUAJIT=yes
 LUAJIT_VARS=		EXTRA_MODULES+=app_lua
 
 PYTHON3_DESC=		Execute embedded Python3 scripts
+PYTHON3_IMPLIES=	KEMIX
 PYTHON3_MAKE_ARGS=	PYTHON3=${PYTHON_CMD}
+PYTHON3_USES=		gettext-runtime
 PYTHON3_VARS=		EXTRA_MODULES+=app_python3
 
 DIALPLAN_DESC=		String translations based on rules
@@ -122,7 +126,7 @@ CFG_ARGS+=	include_modules="${EXTRA_MODULES}"
 .endif
 
 post-patch:
-	${REINPLACE_CMD} '499s|$$(run_prefix)/$$(run_dir)|${KAMAILIO_RUNDIR}|' \
+	${REINPLACE_CMD} '563s|run_target = $$(run_prefix)/$$(run_dir)|run_target = ${KAMAILIO_RUNDIR}|' \
 		${WRKSRC}/src/Makefile.defs
 
 post-patch-DOCS-off:
@@ -133,16 +137,14 @@ pre-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} ${CFG_ARGS} cfg
 
 do-install:
-	@${MKDIR} ${STAGEDIR}${KAMAILIO_RUNDIR}
 	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install
 	@(cd ${STAGEDIR}${ETCDIR}; for i in `${FIND} . -type f`; do ${MV} $$i $$i.sample; done)
 
 post-install:
 	@${RMDIR} ${STAGEDIR}${DATADIR} || true
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kamailio/*.so.1
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kamailio/modules/*.so
+	@${FIND} ${STAGEDIR}${PREFIX} -type f -name '*.so' -exec ${STRIP_CMD} {} +
+	@${FIND} ${STAGEDIR}${PREFIX} -type f -name '*.so.1' -exec ${STRIP_CMD} {} +
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/kamailio
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/kamcmd
-	@${ECHO_CMD} "@dir(${KAMAILIO_USER},${KAMAILIO_GROUP},750) ${KAMAILIO_RUNDIR}" >> ${TMPPLIST}
 
 .include <bsd.port.post.mk>

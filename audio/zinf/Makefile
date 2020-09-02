@@ -4,7 +4,7 @@
 PORTNAME=	zinf
 PORTVERSION=	2.2.5
 PORTREVISION=	24
-CATEGORIES=	audio ipv6
+CATEGORIES=	audio
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
@@ -13,7 +13,8 @@ COMMENT=	GTK-based MP3 player
 LIB_DEPENDS=	libid3.so:audio/id3lib \
 		libgdbm.so:databases/gdbm
 
-USES=		alias gettext gmake libtool ncurses pathfix perl5 pkgconfig
+USES=		alias gettext gmake gnome libtool ncurses pathfix perl5 \
+		pkgconfig
 USE_CXXSTD=	gnu++98
 USE_GNOME=	gtk20
 GNU_CONFIGURE=	yes
@@ -34,6 +35,10 @@ INSTALL_TARGET=	install-strip
 
 VORBIS_CONFIGURE_OFF=	--disable-vorbis
 VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
+
+BROKEN=		Does not build with llvm 11
+DEPRECATED=	Does not build, no upstream
+EXPIRATION_DATE=2020-09-30
 
 .include <bsd.port.pre.mk>
 

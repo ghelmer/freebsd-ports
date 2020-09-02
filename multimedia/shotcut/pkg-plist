@@ -1,8 +1,8 @@
 bin/shotcut
-man/man1/shotcut.1.gz
 share/applications/org.shotcut.Shotcut.desktop
+share/icons/hicolor/128x128/apps/org.shotcut.Shotcut.png
 share/icons/hicolor/64x64/apps/org.shotcut.Shotcut.png
-share/icons/hicolor/64x64/apps/shotcut.png
+share/man/man1/shotcut.1.gz
 share/metainfo/org.shotcut.Shotcut.appdata.xml
 share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/export-edl/export-edl.js
@@ -44,6 +44,8 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/audio_mono/meta.qml
 %%DATADIR%%/qml/filters/audio_mute/meta.qml
 %%DATADIR%%/qml/filters/audio_mute/ui.qml
+%%DATADIR%%/qml/filters/audio_noisegate/meta.qml
+%%DATADIR%%/qml/filters/audio_noisegate/ui.qml
 %%DATADIR%%/qml/filters/audio_normalize_1p/meta.qml
 %%DATADIR%%/qml/filters/audio_normalize_1p/ui.qml
 %%DATADIR%%/qml/filters/audio_normalize_2p/meta.qml
@@ -52,10 +54,25 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/audio_notch/ui.qml
 %%DATADIR%%/qml/filters/audio_pan/meta.qml
 %%DATADIR%%/qml/filters/audio_pan/ui.qml
+%%DATADIR%%/qml/filters/audio_pitch/meta.qml
+%%DATADIR%%/qml/filters/audio_pitch/ui.qml
 %%DATADIR%%/qml/filters/audio_reverb/meta.qml
 %%DATADIR%%/qml/filters/audio_reverb/ui.qml
 %%DATADIR%%/qml/filters/audio_swapchannels/meta.qml
 %%DATADIR%%/qml/filters/audio_swapchannels/ui.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_mask/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_mask/ui.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_to_rect/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_to_rect/ui.qml
+%%DATADIR%%/qml/filters/bigsh0t_eq_to_rect/vui.qml
+%%DATADIR%%/qml/filters/bigsh0t_hemi_to_eq/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_hemi_to_eq/ui.qml
+%%DATADIR%%/qml/filters/bigsh0t_rect_to_eq/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_rect_to_eq/ui.qml
+%%DATADIR%%/qml/filters/bigsh0t_stabilize_360/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_stabilize_360/ui.qml
+%%DATADIR%%/qml/filters/bigsh0t_transform_360/meta.qml
+%%DATADIR%%/qml/filters/bigsh0t_transform_360/ui.qml
 %%DATADIR%%/qml/filters/blend_mode/meta.qml
 %%DATADIR%%/qml/filters/blend_mode/ui.qml
 %%DATADIR%%/qml/filters/bluescreen0r/meta.qml
@@ -84,6 +101,9 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/contrast/meta.qml
 %%DATADIR%%/qml/filters/contrast/meta_movit.qml
 %%DATADIR%%/qml/filters/contrast/ui.qml
+%%DATADIR%%/qml/filters/corners/meta.qml
+%%DATADIR%%/qml/filters/corners/ui.qml
+%%DATADIR%%/qml/filters/corners/vui.qml
 %%DATADIR%%/qml/filters/crop/meta.qml
 %%DATADIR%%/qml/filters/crop/meta_movit.qml
 %%DATADIR%%/qml/filters/crop/ui.qml
@@ -116,6 +136,9 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/glow/meta_movit.qml
 %%DATADIR%%/qml/filters/glow/ui_frei0r.qml
 %%DATADIR%%/qml/filters/glow/ui_movit.qml
+%%DATADIR%%/qml/filters/gradient/meta.qml
+%%DATADIR%%/qml/filters/gradient/ui.qml
+%%DATADIR%%/qml/filters/gradient/vui.qml
 %%DATADIR%%/qml/filters/grain/meta.qml
 %%DATADIR%%/qml/filters/grain/ui.qml
 %%DATADIR%%/qml/filters/grid/meta.qml
@@ -155,10 +178,14 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/mosaic/ui.qml
 %%DATADIR%%/qml/filters/movit_diffusion/meta.qml
 %%DATADIR%%/qml/filters/movit_diffusion/ui.qml
+%%DATADIR%%/qml/filters/nervous/meta.qml
+%%DATADIR%%/qml/filters/nervous/ui.qml
 %%DATADIR%%/qml/filters/noise_fast/meta.qml
 %%DATADIR%%/qml/filters/noise_fast/ui.qml
 %%DATADIR%%/qml/filters/noise_keyframes/meta.qml
 %%DATADIR%%/qml/filters/noise_keyframes/ui.qml
+%%DATADIR%%/qml/filters/nosync/meta.qml
+%%DATADIR%%/qml/filters/nosync/ui.qml
 %%DATADIR%%/qml/filters/oldfilm/meta.qml
 %%DATADIR%%/qml/filters/oldfilm/ui.qml
 %%DATADIR%%/qml/filters/opacity/meta.qml
@@ -166,6 +193,10 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/opacity/ui.qml
 %%DATADIR%%/qml/filters/posterize/meta.qml
 %%DATADIR%%/qml/filters/posterize/ui.qml
+%%DATADIR%%/qml/filters/rectangle/meta.qml
+%%DATADIR%%/qml/filters/rectangle/rectangle.qml
+%%DATADIR%%/qml/filters/rectangle/ui.qml
+%%DATADIR%%/qml/filters/rectangle/vui.qml
 %%DATADIR%%/qml/filters/rgbsplit0r/meta.qml
 %%DATADIR%%/qml/filters/rgbsplit0r/ui.qml
 %%DATADIR%%/qml/filters/rotate/meta.qml
@@ -174,6 +205,7 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/saturation/meta_movit.qml
 %%DATADIR%%/qml/filters/saturation/ui_frei0r.qml
 %%DATADIR%%/qml/filters/saturation/ui_movit.qml
+%%DATADIR%%/qml/filters/scanlines/meta.qml
 %%DATADIR%%/qml/filters/select0r/meta.qml
 %%DATADIR%%/qml/filters/select0r/ui.qml
 %%DATADIR%%/qml/filters/sepia/meta.qml
@@ -212,8 +244,14 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/timer/meta.qml
 %%DATADIR%%/qml/filters/timer/ui.qml
 %%DATADIR%%/qml/filters/timer/vui.qml
+%%DATADIR%%/qml/filters/trails/meta.qml
+%%DATADIR%%/qml/filters/trails/ui.qml
 %%DATADIR%%/qml/filters/unpremultiply/meta.qml
 %%DATADIR%%/qml/filters/unpremultiply/ui.qml
+%%DATADIR%%/qml/filters/vaguedenoiser/meta.qml
+%%DATADIR%%/qml/filters/vaguedenoiser/ui.qml
+%%DATADIR%%/qml/filters/vertigo/meta.qml
+%%DATADIR%%/qml/filters/vertigo/ui.qml
 %%DATADIR%%/qml/filters/vignette/meta_movit.qml
 %%DATADIR%%/qml/filters/vignette/meta_oldfilm.qml
 %%DATADIR%%/qml/filters/vignette/ui_movit.qml
@@ -234,7 +272,12 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/webvfx/templates/webvfx/Basic/Blank with Web Animations/web-animations.html
 %%DATADIR%%/qml/filters/webvfx/templates/webvfx/Basic/Simple Scroll/simple_scroll.html
 %%DATADIR%%/qml/filters/webvfx/templates/webvfx/Basic/Simple Scroll/simple_scroll_ui.qml
+%%DATADIR%%/qml/filters/webvfx/templates/webvfx/Basic/Two Column Scroll/two_column_scroll.html
+%%DATADIR%%/qml/filters/webvfx/templates/webvfx/Basic/Two Column Scroll/two_column_scroll_ui.qml
 %%DATADIR%%/qml/filters/webvfx/ui.qml
+%%DATADIR%%/qml/filters/webvfx_choppy/choppy.html
+%%DATADIR%%/qml/filters/webvfx_choppy/meta.qml
+%%DATADIR%%/qml/filters/webvfx_choppy/ui.qml
 %%DATADIR%%/qml/filters/webvfx_circular_frame/filter-demo.html
 %%DATADIR%%/qml/filters/webvfx_circular_frame/meta.qml
 %%DATADIR%%/qml/filters/webvfx_circular_frame/ui.qml
@@ -269,6 +312,8 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/filters/white/meta_frei0r.qml
 %%DATADIR%%/qml/filters/white/meta_movit.qml
 %%DATADIR%%/qml/filters/white/ui.qml
+%%DATADIR%%/qml/modules/Shotcut/Controls/GradientControl.qml
+%%DATADIR%%/qml/modules/Shotcut/Controls/ToolBarToggle.qml
 %%DATADIR%%/qml/htmleditor/text_outline.qml
 %%DATADIR%%/qml/htmleditor/text_shadow.qml
 %%DATADIR%%/qml/modules/Shotcut/Controls/ColorPicker.qml
@@ -314,9 +359,7 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%DATADIR%%/qml/views/timeline/TrackHead.qml
 %%DATADIR%%/qml/views/timeline/ZoomSlider.qml
 %%DATADIR%%/qml/views/timeline/timeline.qml
-%%DATADIR%%/translations/shotcut_gl.qm
-%%DATADIR%%/translations/shotcut_nn.qm
-%%DATADIR%%/translations/shotcut_sv.qm
+%%NLS%%%%DATADIR%%/translations/shotcut_ar.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_ca.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_cs.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_da.qm
@@ -329,6 +372,7 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%NLS%%%%DATADIR%%/translations/shotcut_fi.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_fr.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_gd.qm
+%%NLS%%%%DATADIR%%/translations/shotcut_gl.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_hu.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_it.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_ja.qm
@@ -336,6 +380,7 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%NLS%%%%DATADIR%%/translations/shotcut_nb.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_ne.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_nl.qm
+%%NLS%%%%DATADIR%%/translations/shotcut_nn.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_oc.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_pl.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_pt_BR.qm
@@ -343,6 +388,8 @@ share/mime/packages/org.shotcut.Shotcut.xml
 %%NLS%%%%DATADIR%%/translations/shotcut_ru.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_sk.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_sl.qm
+%%NLS%%%%DATADIR%%/translations/shotcut_sv.qm
+%%NLS%%%%DATADIR%%/translations/shotcut_th.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_tr.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_uk.qm
 %%NLS%%%%DATADIR%%/translations/shotcut_zh_CN.qm

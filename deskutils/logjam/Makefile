@@ -3,7 +3,7 @@
 
 PORTNAME=	logjam
 PORTVERSION=	4.6.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	deskutils
 MASTER_SITES=	http://andy-shev.github.com/LogJam/download/
 
@@ -12,6 +12,11 @@ COMMENT=	GTK2 interface to livejournals, ie www.livejournal.com
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libdbus-glib-1.so:devel/dbus-glib
+
+CFLAGS+=		-fcommon
+
+DEPRECATED=	Unmaintained and dead upstream, does not build with -fno-common (llvm 11)
+EXPIRATION_DATE=2021-04-01
 
 OPTIONS_DEFINE=	GTKSPELL SQLITE GTKHTML RSVG
 OPTIONS_DEFAULT=	GTKSPELL
@@ -22,7 +27,7 @@ GTKHTML_DESC=	Support rendering HTML
 RSVG_DESC=	Support rendering SVG
 SQLITE_DESC=	Use sqlite3 as a backend
 
-USES=		gettext gmake pathfix pkgconfig tar:bzip2
+USES=		gettext gmake gnome pathfix pkgconfig tar:bzip2
 GNU_CONFIGURE=	yes
 USE_GNOME=	gnomeprefix gtk20 libxml2 intlhack
 CONFIGURE_ARGS=	--program-transform-name="s/$$//"

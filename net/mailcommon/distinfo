@@ -1,3 +1,3 @@
-TIMESTAMP = 1567537345
-SHA256 (KDE/applications/19.08.1/mailcommon-19.08.1.tar.xz) = 3fb6f09ce8bc9ccddfa1420fa1a7c60a47065afdfbb5a30292179efbcebba833
-SIZE (KDE/applications/19.08.1/mailcommon-19.08.1.tar.xz) = 692772
+TIMESTAMP = 1596814271
+SHA256 (KDE/release-service/20.08.0/mailcommon-20.08.0.tar.xz) = fa110a41d5e4848d203d3c17fe18c584d892bf78f750c36a5e88a80c80dcd04a
+SIZE (KDE/release-service/20.08.0/mailcommon-20.08.0.tar.xz) = 708336

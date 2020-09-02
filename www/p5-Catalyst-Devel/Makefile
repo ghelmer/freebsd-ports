@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Catalyst-Devel
-PORTVERSION=	1.39
+PORTVERSION=	1.41
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -13,8 +13,7 @@ COMMENT=	Catalyst Development Tools
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	${RUN_DEPENDS} \
-		p5-Module-Install>=1.02:devel/p5-Module-Install
+BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Catalyst-Action-RenderView>=0.10:www/p5-Catalyst-Action-RenderView \
 		p5-Catalyst-Plugin-ConfigLoader>=0.30:www/p5-Catalyst-Plugin-ConfigLoader \
 		p5-Catalyst-Plugin-Static-Simple>=0.28:www/p5-Catalyst-Plugin-Static-Simple \
@@ -35,5 +34,7 @@ TEST_DEPENDS=	p5-IPC-Run3>=0:devel/p5-IPC-Run3 \
 
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

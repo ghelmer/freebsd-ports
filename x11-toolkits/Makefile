@@ -9,9 +9,8 @@
     SUBDIR += blt
     SUBDIR += bwidget
     SUBDIR += c++-gtk-utils
+    SUBDIR += color-widgets-qt5
     SUBDIR += ctk
-    SUBDIR += diorite
-    SUBDIR += flowcanvas
     SUBDIR += fltk
     SUBDIR += fox14
     SUBDIR += fox16
@@ -19,7 +18,6 @@
     SUBDIR += fpc-gtk2
     SUBDIR += fpc-xforms
     SUBDIR += fxscintilla
-    SUBDIR += gai
     SUBDIR += gdl
     SUBDIR += girara
     SUBDIR += gnocl
@@ -32,6 +30,7 @@
     SUBDIR += gstreamer-plugins-pango
     SUBDIR += gstreamer1-plugins-gtk
     SUBDIR += gstreamer1-plugins-pango
+    SUBDIR += gtk-layer-shell
     SUBDIR += gtk-sharp-beans
     SUBDIR += gtk-sharp20
     SUBDIR += gtk-sharp30
@@ -59,7 +58,6 @@
     SUBDIR += gtksourceview3-reference
     SUBDIR += gtksourceview4
     SUBDIR += gtksourceviewmm3
-    SUBDIR += hippo-canvas
     SUBDIR += irrlicht
     SUBDIR += itk
     SUBDIR += iwidgets
@@ -83,8 +81,6 @@
     SUBDIR += libbonoboui-reference
     SUBDIR += libdazzle
     SUBDIR += libgdiplus
-    SUBDIR += libgnomeprintui
-    SUBDIR += libgnomeprintuimm
     SUBDIR += libgnomeui
     SUBDIR += libgnomeui-reference
     SUBDIR += libgnomeuimm26
@@ -97,11 +93,6 @@
     SUBDIR += libwnck3
     SUBDIR += libxaw3dxft
     SUBDIR += libxfce4gui
-    SUBDIR += linux-c6-gtk2
-    SUBDIR += linux-c6-openmotif
-    SUBDIR += linux-c6-pango
-    SUBDIR += linux-c6-qt47-x11
-    SUBDIR += linux-c6-tk85
     SUBDIR += linux-c7-gtk2
     SUBDIR += linux-c7-gtk3
     SUBDIR += linux-c7-openmotif
@@ -117,7 +108,6 @@
     SUBDIR += nanogui
     SUBDIR += neXtaw
     SUBDIR += ntk
-    SUBDIR += nucleo
     SUBDIR += ocaml-lablgtk2
     SUBDIR += ocaml-labltk
     SUBDIR += open-motif
@@ -181,26 +171,16 @@
     SUBDIR += py-SquareMap
     SUBDIR += py-easygui
     SUBDIR += py-fltk
-    SUBDIR += py-gnome2
     SUBDIR += py-gtk2
-    SUBDIR += py-gtkglext
-    SUBDIR += py-gtksourceview
-    SUBDIR += py-gui
-    SUBDIR += py-kivy
-    SUBDIR += py-kiwi-gtk
+    SUBDIR += py-guietta
+    SUBDIR += py-qt5-chart
     SUBDIR += py-qt5-gui
     SUBDIR += py-qt5-quick
     SUBDIR += py-qt5-quickwidgets
     SUBDIR += py-qt5-widgets
-    SUBDIR += py-sexy
     SUBDIR += py-tkinter
     SUBDIR += py-tktreectrl
-    SUBDIR += py-vte
-    SUBDIR += py-wax
-    SUBDIR += py-wxPython-common
-    SUBDIR += py-wxPython28
-    SUBDIR += py-wxPython28-common
-    SUBDIR += py-wxPython30
+    SUBDIR += py-wxPython40
     SUBDIR += py-xlib
     SUBDIR += pypy-tkinter
     SUBDIR += qml-box2d
@@ -210,8 +190,10 @@
     SUBDIR += qt5-gamepad
     SUBDIR += qt5-gtkplatform
     SUBDIR += qt5-gui
+    SUBDIR += qt5-quick3d
     SUBDIR += qt5-quickcontrols
     SUBDIR += qt5-quickcontrols2
+    SUBDIR += qt5-quicktimeline
     SUBDIR += qt5-uiplugin
     SUBDIR += qt5-virtualkeyboard
     SUBDIR += qt5-widgets
@@ -236,10 +218,8 @@
     SUBDIR += sdl_pango
     SUBDIR += shared-desktop-ontologies
     SUBDIR += skinlf
-    SUBDIR += slingshot
-    SUBDIR += soqt-devel
+    SUBDIR += soqt
     SUBDIR += swt
-    SUBDIR += swt-devel
     SUBDIR += tepl
     SUBDIR += termit
     SUBDIR += tile
@@ -271,7 +251,5 @@
     SUBDIR += xbae
     SUBDIR += xforms
     SUBDIR += xmhtml
-    SUBDIR += xview
-    SUBDIR += xview-clients
 
 .include <bsd.port.subdir.mk>
